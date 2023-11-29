@@ -5550,11 +5550,11 @@ header('location:index');
     }
 </script>
 
-<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script defer src="js/npm/vue/dist/vue.js"></script>
 <script src="js/vue-select.js"></script>
 <script defer src="js/axios.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/exif-js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script defer src="js/npm/exif-js.js"></script>
+<script defer src="js/npm/sweetalert2@9.js"></script>
 <script type="text/javascript" src="js/project03_client_v2.js" defer></script>
 <script defer src="js/a076d05399.js"></script>
 
