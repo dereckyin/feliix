@@ -259,14 +259,26 @@ background-color: #94BABB;
         }
 
         table.spantable tbody tr:last-of-type td{
+           /* border-bottom: none; */
+        }
+
+        table.spantable tfoot tr th {
             border-bottom: none;
+        }
+
+        table.spantable tfoot tr th:first-of-type {
+            border-bottom-left-radius: 9px;
+        }
+
+        table.spantable tfoot tr th:last-of-type {
+            border-bottom-right-radius: 9px;
         }
 
         table.spantable th{
             background-color: #DFEAEA;
         }
 
-        table.spantable td.money{
+        table.spantable td.money, table.spantable th.money {
             text-align: right;
             min-width: 125px;
         }
@@ -386,7 +398,7 @@ background-color: #94BABB;
 
                         <thead>
                         <tr>
-                            <th colspan="7">
+                            <th colspan="8">
                                 {{ record.date }}
                             </th>
                         </tr>
@@ -443,7 +455,7 @@ background-color: #94BABB;
                         <tfoot>
                         <tr>
                             <th colspan="5">Total</th>
-                            <th>總金額<th>
+                            <th class="money">總金額</th>
                             <th colspan="2"></th>
                         </tr>
                         </tfoot>
