@@ -36,7 +36,7 @@ try {
         $access6 = true;
     }
 
-    if($username == "Kristel Tan" || $username == "Kuan" || $username == "Dennis Lin")
+    if($username == "Kristel Tan" || $username == "Kuan" || $username == "Dennis Lin" || $username == "dereck")
     {
         $access6 = true;
     }
@@ -455,7 +455,7 @@ background-color: #94BABB;
                         <tfoot>
                         <tr>
                             <th colspan="5">Total</th>
-                            <th class="money">總金額</th>
+                            <th class="money">{{ Number(record.sum).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</th>
                             <th colspan="2"></th>
                         </tr>
                         </tfoot>
