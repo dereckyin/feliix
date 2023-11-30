@@ -284,18 +284,22 @@ background-color: #94BABB;
         }
 
         table.spantable thead tr:nth-of-type(2) > th:nth-of-type(4){
-            width: 450px
+            width: 400px
         }
 
         table.spantable thead tr:nth-of-type(2) > th:nth-of-type(5){
-            width: 200px
+            width: 180px
         }
 
         table.spantable thead tr:nth-of-type(2) > th:nth-of-type(6){
-            width: 250px
+            width: 180px
         }
 
         table.spantable thead tr:nth-of-type(2) > th:nth-of-type(7){
+            width: 180px
+        }
+
+        table.spantable thead tr:nth-of-type(2) > th:nth-of-type(8){
             width: 200px
         }
     </style>
@@ -393,6 +397,7 @@ background-color: #94BABB;
                             <th>Category</th>
                             <th>Project Name</th>
                             <th>Collected Payments</th>
+                            <th>Total Collected Payments</th>
                             <th>Remaining Amount to Quota</th>
                             <th>Remarks</th>
                         </tr>
@@ -407,6 +412,8 @@ background-color: #94BABB;
                                     <td>{{ it.project_name }}</td>
                                     <!-- 下面這各td要放的是: 這個月份收到的 down payment 和 full payment 的加總金額 -->
                                     <td class="money">{{ it.amount == 0 ? "" : Number(it.amount).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
+                                    <!-- 下面這各td要放的是: 這個月份收到的 down payment 和 full payment 的加總金額 -->
+                                    <td class="money"  v-if="j == 0" :rowspan="item.l_catagory.length + item.o_catagory.length">{{ item.subtotal == 0 ? "0.00" : Number(item.subtotal).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
                                     <!-- 下面這各td要放的是: 2,200,000.00 減掉 這個月份收到的 down payment 和 full payment 的加總金額 -->
                                     <td class="money"  v-if="j == 0" :rowspan="item.l_catagory.length + item.o_catagory.length">{{ item.subtotal == 0 ? "2,200,000.00" : Number(2200000 - item.subtotal).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
                                     <!-- 如果上面的td裡面的金額 小於或等於 0，則下面這各td要放的是字串「Achieved Monthly Quota」；如果金額是大於0，則下面這各td裡不用放任和內容 -->
@@ -420,6 +427,8 @@ background-color: #94BABB;
                                     <td>{{ it.project_name }}</td>
                                     <!-- 下面這各td要放的是: 這個月份收到的 down payment 和 full payment 的加總金額 -->
                                     <td class="money">{{ it.amount == 0 ? "" : Number(it.amount).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
+                                    <!-- 下面這各td要放的是: 這個月份收到的 down payment 和 full payment 的加總金額 -->
+                                    <td class="money" v-if="item.l_catagory.length == 0 && j==0" :rowspan="item.l_catagory.length + item.o_catagory.length">{{ item.subtotal == 0 ? "0.00" : Number(item.subtotal).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
                                     <!-- 下面這各td要放的是: 2,200,000.00 減掉 這個月份收到的 down payment 和 full payment 的加總金額 -->
                                     <td class="money" v-if="item.l_catagory.length == 0 && j==0" :rowspan="item.l_catagory.length + item.o_catagory.length">{{ item.subtotal == 0 ? "2,200,000.00" : Number(2200000 - item.subtotal).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
                                     <!-- 如果上面的td裡面的金額 小於或等於 0，則下面這各td要放的是字串「Achieved Monthly Quota」；如果金額是大於0，則下面這各td裡不用放任和內容 -->
@@ -430,6 +439,14 @@ background-color: #94BABB;
                         
 
                         </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <th colspan="5">Total</th>
+                            <th>總金額<th>
+                            <th colspan="2"></th>
+                        </tr>
+                        </tfoot>
 
                     </table>
                     </template>
