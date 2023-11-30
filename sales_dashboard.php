@@ -36,7 +36,7 @@ try {
         $access6 = true;
     }
 
-    if($username == "Kristel Tan" || $username == "Kuan" || $username == "Dennis Lin")
+    if($username == "Kristel Tan" || $username == "Kuan" || $username == "Dennis Lin" || $username == "dereck")
     {
         $access6 = true;
     }
@@ -92,7 +92,7 @@ catch (Exception $e) {
     <link rel="stylesheet" type="text/css" href="css/ui.css" />
     <link rel="stylesheet" type="text/css" href="css/case.css" />
     <link rel="stylesheet" type="text/css" href="css/mediaqueries.css" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/fontawesome/v5.7.0/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous" />
 
     <!-- jQuery和js載入 -->
     <script type="text/javascript" src="js/rm/jquery-3.4.1.min.js"></script>
@@ -100,7 +100,7 @@ catch (Exception $e) {
     <script type="text/javascript" src="js/main.js" defer></script>
 
     <!-- import CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="css/element-ui/theme-chalk/index.css">
 
 
 
@@ -259,14 +259,26 @@ background-color: #94BABB;
         }
 
         table.spantable tbody tr:last-of-type td{
+           /* border-bottom: none; */
+        }
+
+        table.spantable tfoot tr th {
             border-bottom: none;
+        }
+
+        table.spantable tfoot tr th:first-of-type {
+            border-bottom-left-radius: 9px;
+        }
+
+        table.spantable tfoot tr th:last-of-type {
+            border-bottom-right-radius: 9px;
         }
 
         table.spantable th{
             background-color: #DFEAEA;
         }
 
-        table.spantable td.money{
+        table.spantable td.money, table.spantable th.money {
             text-align: right;
             min-width: 125px;
         }
@@ -284,18 +296,22 @@ background-color: #94BABB;
         }
 
         table.spantable thead tr:nth-of-type(2) > th:nth-of-type(4){
-            width: 450px
+            width: 400px
         }
 
         table.spantable thead tr:nth-of-type(2) > th:nth-of-type(5){
-            width: 200px
+            width: 180px
         }
 
         table.spantable thead tr:nth-of-type(2) > th:nth-of-type(6){
-            width: 250px
+            width: 180px
         }
 
         table.spantable thead tr:nth-of-type(2) > th:nth-of-type(7){
+            width: 180px
+        }
+
+        table.spantable thead tr:nth-of-type(2) > th:nth-of-type(8){
             width: 200px
         }
     </style>
@@ -382,7 +398,7 @@ background-color: #94BABB;
 
                         <thead>
                         <tr>
-                            <th colspan="7">
+                            <th colspan="8">
                                 {{ record.date }}
                             </th>
                         </tr>
@@ -393,6 +409,7 @@ background-color: #94BABB;
                             <th>Category</th>
                             <th>Project Name</th>
                             <th>Collected Payments</th>
+                            <th>Total Collected Payments</th>
                             <th>Remaining Amount to Quota</th>
                             <th>Remarks</th>
                         </tr>
@@ -407,6 +424,8 @@ background-color: #94BABB;
                                     <td>{{ it.project_name }}</td>
                                     <!-- 下面這各td要放的是: 這個月份收到的 down payment 和 full payment 的加總金額 -->
                                     <td class="money">{{ it.amount == 0 ? "" : Number(it.amount).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
+                                    <!-- 下面這各td要放的是: 這個月份收到的 down payment 和 full payment 的加總金額 -->
+                                    <td class="money"  v-if="j == 0" :rowspan="item.l_catagory.length + item.o_catagory.length">{{ item.subtotal == 0 ? "0.00" : Number(item.subtotal).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
                                     <!-- 下面這各td要放的是: 2,200,000.00 減掉 這個月份收到的 down payment 和 full payment 的加總金額 -->
                                     <td class="money"  v-if="j == 0" :rowspan="item.l_catagory.length + item.o_catagory.length">{{ item.subtotal == 0 ? "2,200,000.00" : Number(2200000 - item.subtotal).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
                                     <!-- 如果上面的td裡面的金額 小於或等於 0，則下面這各td要放的是字串「Achieved Monthly Quota」；如果金額是大於0，則下面這各td裡不用放任和內容 -->
@@ -420,6 +439,8 @@ background-color: #94BABB;
                                     <td>{{ it.project_name }}</td>
                                     <!-- 下面這各td要放的是: 這個月份收到的 down payment 和 full payment 的加總金額 -->
                                     <td class="money">{{ it.amount == 0 ? "" : Number(it.amount).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
+                                    <!-- 下面這各td要放的是: 這個月份收到的 down payment 和 full payment 的加總金額 -->
+                                    <td class="money" v-if="item.l_catagory.length == 0 && j==0" :rowspan="item.l_catagory.length + item.o_catagory.length">{{ item.subtotal == 0 ? "0.00" : Number(item.subtotal).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
                                     <!-- 下面這各td要放的是: 2,200,000.00 減掉 這個月份收到的 down payment 和 full payment 的加總金額 -->
                                     <td class="money" v-if="item.l_catagory.length == 0 && j==0" :rowspan="item.l_catagory.length + item.o_catagory.length">{{ item.subtotal == 0 ? "2,200,000.00" : Number(2200000 - item.subtotal).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</td>
                                     <!-- 如果上面的td裡面的金額 小於或等於 0，則下面這各td要放的是字串「Achieved Monthly Quota」；如果金額是大於0，則下面這各td裡不用放任和內容 -->
@@ -430,6 +451,14 @@ background-color: #94BABB;
                         
 
                         </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <th colspan="5">Total</th>
+                            <th class="money">{{ Number(record.sum).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2}) }}</th>
+                            <th colspan="2"></th>
+                        </tr>
+                        </tfoot>
 
                     </table>
                     </template>
@@ -443,13 +472,13 @@ background-color: #94BABB;
         </div>
     </div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/npm/vue/dist/vue.js"></script>
 <script src="js/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="js/npm/sweetalert2@9.js"></script>
 
-<script src="//unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
-<script src="//unpkg.com/element-ui"></script>
-<script src="//unpkg.com/element-ui/lib/umd/locale/en.js"></script>
+<script src="js/vue-i18n/vue-i18n.global.min.js"></script>
+<script src="js/element-ui@2.15.14/index.js"></script>
+<script src="js/element-ui@2.15.14/en.js"></script>
 <script defer src="js/a076d05399.js"></script>
 
 <script>
@@ -457,7 +486,7 @@ background-color: #94BABB;
 </script>
 
 <!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="js/element-ui@2.15.14/lib/index.js"></script>
 <script src="js/sales_dashboard.js"></script>
 
 </html>
