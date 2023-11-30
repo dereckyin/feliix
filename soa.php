@@ -501,10 +501,14 @@ header( 'location:index' );
             overflow-x: auto;
         }
 
+        .qn_page .qn_header_space {
+            height: 35px;
+        }
+
         .qn_page .qn_header {
             width: 100%;
-            height: 275px;
             background-size: 100% auto;
+            display: flex;
         }
 
         .qn_header .left_block {
@@ -516,7 +520,6 @@ header( 'location:index' );
         .qn_header .left_block img.logo {
             display: block;
             width: 260px;
-            margin-top: 35px;
         }
 
         .qn_header .left_block .soa_bill_title {
@@ -524,7 +527,7 @@ header( 'location:index' );
             margin-top: 55px;
             font-weight: 600;
             line-height: 1.2;
-            height: 33.6px;
+            /*height: 33.6px;*/
         }
 
         .qn_header .left_block .soa_bill_title > div {
@@ -546,7 +549,6 @@ header( 'location:index' );
             width: 35%;
             float: right;
             padding-right: 3px;
-            margin-top: 35px;
         }
 
         .qn_header .right_block .soa_description {
@@ -622,6 +624,10 @@ header( 'location:index' );
 
         .qn_page .qn_body {
             padding: 0 30px;
+        }
+
+        .qn_page .qn_footer_space {
+            height: 35px;
         }
 
         .area_total .tb_total {
@@ -753,9 +759,13 @@ header( 'location:index' );
             width: 100%;
         }
 
+        .qn_body .area_subtotal > table:nth-of-type(1) {
+            margin-top: 0!important;
+        }
+
         .area_subtotal .tb_format1 {
             width: 100%;
-            margin-bottom: 30px;
+            /*margin-bottom: 30px;*/
         }
 
         .tb_format1 td {
@@ -977,7 +987,7 @@ header( 'location:index' );
 
         .area_subtotal .tb_format2 {
             width: 100%;
-            margin-bottom: 30px;
+            /*margin-bottom: 30px;*/
         }
 
         .tb_format2 td {
@@ -2674,8 +2684,7 @@ header( 'location:index' );
 
                             <div class="content_box">
 
-                                 <textarea rows="8" style="border: 1px solid black; width: 100%; height: 100%;" v-model="temp_contact">
-  </textarea>
+                                 <textarea rows="8" style="border: 1px solid black; width: 100%; height: 100%;" v-model="temp_contact"></textarea>
 
                             </div>
                         </div>
@@ -2694,94 +2703,106 @@ header( 'location:index' );
         </div>
 
     </div>
-
     <!-- Function Bar end-->
 
 
     <div class="mainContent" style="background-color: rgb(230,230,230)">
 
-        <div class="qn_page">
+        <table class="qn_page">
 
-            <div class="qn_header" v-if="show_title">
+            <thead>
+            <tr>
+                <td>
+                    <div class="qn_header_space">&nbsp;</div>
+                </td>
+            </tr>
+            </thead>
 
-                <div class="left_block">
 
-                    <img class="logo" src="images/Feliix-Logo-Black.png">
+            <tbody>
+            <tr>
+                <td>
 
-                    <div class="soa_bill_title">
-                        Bill to:
-                        <div class="soa_bill_1stline">{{ first_line }}</div>
-                        <div class="soa_bill_2ndline">{{ second_line }}</div>
-                        <div class="soa_bill_3rdline">{{ third_line }}</div>
+                    <div class="qn_header" v-if="show_title">
+
+                        <div class="left_block">
+
+                            <img class="logo" src="images/Feliix-Logo-Black.png">
+
+                            <div class="soa_bill_title">
+                                Bill to:
+                                <div class="soa_bill_1stline">{{ first_line }}</div>
+                                <div class="soa_bill_2ndline">{{ second_line }}</div>
+                                <div class="soa_bill_3rdline">{{ third_line }}</div>
+                            </div>
+
+                        </div>
+
+                        <div class="right_block">
+
+                            <div class="soa_description">Statement of Account</div>
+
+                            <div class="soa_info">
+
+                                <ul class="soa_info_1stline">
+                                    <li>Statement Date: </li>
+                                    <li>{{ statement_date }}</li>
+                                </ul>
+
+                                <ul class="soa_info_2ndline" v-if="quotation_no != ''">
+                                    <li>Quotation Number: </li>
+                                    <li>{{ quotation_no }}</li>
+                                </ul>
+
+                                <ul class="soa_info_3rdline" v-if="po != ''">
+                                    <li>P.O. Number: </li>
+                                    <li>{{ po }}</li>
+                                </ul>
+
+                                <ul class="soa_info_4thline"  v-if="mode_content != ''">
+                                    <li>{{ (mode == 'mode' ? 'Mode of Payment' : (mode == 'term' ? 'Terms of Payment' : caption)) }}:</li>
+                                    <li>{{ mode_content }}</li>
+                                </ul>
+
+                            </div>
+
+                            <div class="soa_account">
+
+                                <ul class="soa_account_summary">
+                                    <li>Account Summary:</li>
+                                    <li>{{ account_summary }}</li>
+                                </ul>
+
+                                <ul class="soa_account_1stline">
+                                    <li>{{ caption_first_line }}</li>
+                                    <li>{{ content_first_line }}</li>
+                                </ul>
+
+                                <ul class="soa_account_2ndline">
+                                    <li>{{ caption_second_line }}</li>
+                                    <li>{{ content_second_line }}</li>
+                                </ul>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                </div>
 
-                <div class="right_block">
+                    <div class="qn_body">
 
-                    <div class="soa_description">Statement of Account</div>
+                        <div class="area_subtotal">
 
-                    <div class="soa_info">
+                            <!-- 預設 margin-top = 30px; 因為最短距離就是30px -->
+                            <template v-for="(pa, index) in pages">
+                                <table :class="[tp.type == 'A' ? 'tb_format1' : 'tb_format2', product_vat == 'P' ? 'vat' : '']"
+                                    v-bind:style="{ 'margin-top': (tp.pixa == '' ? 30 : tp.pixa) + 'px' }"
+                                    v-for="(tp, index) in pa.types">
 
-                        <ul class="soa_info_1stline">
-                            <li>Statement Date: </li>
-                            <li>{{ statement_date }}</li>
-                        </ul>
+                                    <tbody>
 
-                        <ul class="soa_info_2ndline" v-if="quotation_no != ''">
-                            <li>Quotation Number: </li>
-                            <li>{{ quotation_no }}</li>
-                        </ul>
-
-                        <ul class="soa_info_3rdline" v-if="po != ''">
-                            <li>P.O. Number: </li>
-                            <li>{{ po }}</li>
-                        </ul>
-
-                        <ul class="soa_info_4thline"  v-if="mode_content != ''">
-                            <li>{{ (mode == 'mode' ? 'Mode of Payment' : (mode == 'term' ? 'Terms of Payment' : caption)) }}:</li>
-                            <li>{{ mode_content }}</li>
-                        </ul>
-
-                    </div>
-
-                    <div class="soa_account">
-
-                        <ul class="soa_account_summary">
-                            <li>Account Summary:</li>
-                            <li>{{ account_summary }}</li>
-                        </ul>
-
-                        <ul class="soa_account_1stline">
-                            <li>{{ caption_first_line }}</li>
-                            <li>{{ content_first_line }}</li>
-                        </ul>
-
-                        <ul class="soa_account_2ndline">
-                            <li>{{ caption_second_line }}</li>
-                            <li>{{ content_second_line }}</li>
-                        </ul>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="qn_body" style="margin-top: 65px;">
-
-                <div class="area_subtotal">
-
-                    <!-- 預設 margin-top = 30px; 因為最短距離就是30px -->
-                    <template v-for="(pa, index) in pages">
-                        <table :class="[tp.type == 'A' ? 'tb_format1' : 'tb_format2', product_vat == 'P' ? 'vat' : '']"
-                            v-bind:style="{ 'margin-top': (tp.pixa == '' ? 0 : tp.pixa) + 'px' }"
-                            v-for="(tp, index) in pa.types">
-
-                            <tbody>
-
-                            <!-- 表格標題列 -->
+                                    <!-- 表格標題列 -->
 
                             <tr class="thead1" v-if="tp.type == 'A'">
                                 <td class="title" :colspan="product_vat == 'P' ? 7 : 6">{{ tp.name }}</td>
@@ -2940,22 +2961,22 @@ header( 'location:index' );
                     </template>
                 </div>
 
-                <!-- 預設 margin-top = 30px; 因為最短距離就是30px -->
-                <div class="area_total" v-bind:style="{ 'margin-top': (show == '' ? pixa : 0) + 'px' }"
-                     v-if="show == ''">
-                    <table class="tb_total" v-for="(tt, index) in pag.total">
-                        <tbody>
-                        <tr>
-                            <td :rowspan="(tt.vat == 'Y' && tt.discount !== '0' ? 4 : 3)">
-                                <!--
-                                <div>Remarks: Quotation valid for <span class="valid_for">{{ tt.valid }}</span></div>
-                                <div></div>
-                                -->
-                            </td>
-                            <td>SUBTOTAL</td>
-                            <td><span class="numbers">₱ {{ subtotal !== undefined ? Number(subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
-                            </td>
-                        </tr>
+                        <!-- 預設 margin-top = 30px; 因為最短距離就是30px -->
+                        <div class="area_total" v-bind:style="{ 'margin-top': (show == '' ? (pixa == '' ? 30 : pixa) : 0) + 'px' }"
+                            v-if="show == ''">
+                            <table class="tb_total" v-for="(tt, index) in pag.total">
+                                <tbody>
+                                <tr>
+                                    <td :rowspan="(tt.vat == 'Y' && tt.discount !== '0' ? 4 : 3)">
+                                        <!--
+                                        <div>Remarks: Quotation valid for <span class="valid_for">{{ tt.valid }}</span></div>
+                                        <div></div>
+                                        -->
+                                    </td>
+                                    <td>SUBTOTAL</td>
+                                    <td><span class="numbers">₱ {{ subtotal !== undefined ? Number(subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
+                                    </td>
+                                </tr>
 
                         <tr class="total_discount" v-if="tt.discount !== '0'">
                             <td>{{ tt.discount !== undefined ?
@@ -3007,9 +3028,9 @@ header( 'location:index' );
                 </div>
 
 
-                <!-- 預設 margin-top = 30px; 因為最短距離就是30px -->
-                <div class="area_payment" v-bind:style="{ 'margin-top': (org_show_p == '' ? org_pixa_p : 0) + 'px' }"
-                     v-if="pag.payment_term !== undefined && org_show_p == ''">
+                        <!-- 預設 margin-top = 30px; 因為最短距離就是30px -->
+                        <div class="area_payment" v-bind:style="{ 'margin-top': (org_show_p == '' ? (org_pixa_p == '' ? 30 : org_pixa_p) : 0) + 'px' }"
+                            v-if="pag.payment_term !== undefined && org_show_p == ''">
 
                     <b>Payment Details:</b>
 
@@ -3023,9 +3044,9 @@ header( 'location:index' );
                 </div>
 
 
-                <!-- 預設 margin-top = 30px; 因為最短距離就是30px -->
-                <div class="area_terms" v-bind:style="{ 'margin-top': (show_t == '' ? pixa_t : 0) + 'px' }"
-                     v-if="show_t == ''">
+                        <!-- 預設 margin-top = 30px; 因為最短距離就是30px -->
+                        <div class="area_terms" v-bind:style="{ 'margin-top': (show_t == '' ? (pixa_t == '' ? 30 : pixa_t) : 0) + 'px' }"
+                            v-if="show_t == ''">
 
                     <b>Contact:</b>
 
@@ -3034,12 +3055,24 @@ header( 'location:index' );
                 </div>
 
 
-                <!-- 預設 margin-top = 30px; 因為最短距離就是30px -->
-                <div class="copyright">© Feliix Inc.</div>
+                        <div class="copyright">© Feliix Inc.</div>
 
             </div>
 
-        </div>
+
+                </td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <th>
+                    <div class="qn_footer_space">&nbsp;</div>
+                </th>
+            </tr>
+            </tfoot>
+
+        </table>
 
 
         <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -3375,10 +3408,10 @@ header( 'location:index' );
 
                 </div>
 
-
             </div>
 
         </div>
+        <!-- Modal End -->
 
 
         <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -3811,6 +3844,7 @@ header( 'location:index' );
             </div>
 
         </div>
+        <!-- Modal End -->
 
 
 
@@ -3864,16 +3898,14 @@ header( 'location:index' );
 
                         </div>
 
-
                     </div>
 
                 </div>
 
-
             </div>
 
         </div>
-
+        <!-- Modal End -->
 
     </div>
 
