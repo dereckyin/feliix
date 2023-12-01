@@ -41,7 +41,7 @@ try {
         $access6 = true;
     }
 
-    if($username == "Ronnie Fernando Dela Cruz" || $username == "Gina Donato")
+    if($username == "Ronnie Fernando Dela Cruz" || $username == "Gina Donato" || $username == "Aiza Eisma")
     {
         $access7 = true;
     }
