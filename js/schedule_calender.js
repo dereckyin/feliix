@@ -1313,12 +1313,16 @@ var app = new Vue({
         document.getElementById("btn_withdraw").style.display = "none";
     }
 
-    if (app.name == "Dennis Lin" ||
-        app.name == "dereck" ||
-        app.name == "Aiza Eisma" ||
-        app.name == "Kristel Tan" ||
-        app.name == "Alleah Belmonte" 
-    ) {
+    if( app.name == "Dennis Lin" ||
+    app.name == "dereck" ||
+    app.name == "Aiza Eisma" ||
+    app.name == "Kristel Tan" ||
+    app.name == "Alleah Belmonte" ||
+app.name == "Charlenne Cosejo" ||
+app.name == "Ranel Villanueva" ||
+app.name == "Michael Angelo Noveros" ||
+app.name == "Francis Custodio" ||
+app.name == "Marvic Perez") {
         if(app.content.status == '1' || app.content.status == '2')
         {
             document.getElementById("btn_request").style.display = "none";
@@ -2041,12 +2045,16 @@ var initial = async (_id) =>  {
         document.getElementById("btn_withdraw").style.display = "none";
     }
 
-    if (app.name == "Dennis Lin" ||
+    if( app.name == "Dennis Lin" ||
         app.name == "dereck" ||
         app.name == "Aiza Eisma" ||
         app.name == "Kristel Tan" ||
-        app.name == "Alleah Belmonte" 
-    ) {
+        app.name == "Alleah Belmonte" ||
+	app.name == "Charlenne Cosejo" ||
+	app.name == "Ranel Villanueva" ||
+	app.name == "Michael Angelo Noveros" ||
+	app.name == "Francis Custodio" ||
+	app.name == "Marvic Perez") {
         if(sc_content.status == '1' || sc_content.status == '2')
         {
             document.getElementById("btn_request").style.display = "none";
@@ -2999,12 +3007,16 @@ $(document).on("click", "#btn_cancel", async function () {
         document.getElementById("btn_withdraw").style.display = "none";
     }
 
-    if (app.name == "Dennis Lin" ||
+    if( app.name == "Dennis Lin" ||
         app.name == "dereck" ||
         app.name == "Aiza Eisma" ||
         app.name == "Kristel Tan" ||
-        app.name == "Alleah Belmonte" 
-    ) {
+        app.name == "Alleah Belmonte" ||
+	app.name == "Charlenne Cosejo" ||
+	app.name == "Ranel Villanueva" ||
+	app.name == "Michael Angelo Noveros" ||
+	app.name == "Francis Custodio" ||
+	app.name == "Marvic Perez") {
         if(sc_content.status == '1' || sc_content.status == '2')
         {
             document.getElementById("btn_request").style.display = "none";
