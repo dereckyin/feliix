@@ -715,7 +715,7 @@ if (!isset($jwt)) {
             {
                 $sql = "select ck.sid
                             from car_calendar_check ck
-                        where ck.`feliix` = 1 
+                        where 1 = 1
                         and ck.car_use = :car_use 
                         and ck.date_use = :date_use 
                         and ck.status <> -1 ";
@@ -728,14 +728,14 @@ if (!isset($jwt)) {
                 $stmt->execute();
 
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $sql = "select * from work_calendar_main where id = " . $row['sid'] . " and status = 2 and is_enabled = 1";
-                    $stmt1 = $db->prepare($sql);
+                    // $sql = "select * from work_calendar_main where id = " . $row['sid'] . " and status = 2 and is_enabled = 1";
+                    // $stmt1 = $db->prepare($sql);
 
-                    $stmt1->execute();
+                    // $stmt1->execute();
 
-                    while ($row_feliix = $stmt1->fetch(PDO::FETCH_ASSOC)) {
+                    // while ($row_feliix = $stmt1->fetch(PDO::FETCH_ASSOC)) {
                         $auto_pass = false;
-                    }
+                    // }
                 }
 
                 if($auto_pass)
