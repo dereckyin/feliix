@@ -252,8 +252,8 @@ try {
     </div>
 </div>
 </body>
-<script defer src="js/npm/vue/dist/vue.js"></script>
+<script defer src="../js/npm/vue/dist/vue.js"></script>
 <script defer src="../js/axios.min.js"></script>
-<script defer src="js/npm/sweetalert2@9.js"></script>
+<script defer src="../js/npm/sweetalert2@9.js"></script>
 <script defer src="../js/admin/user_profile.js"></script>
 </html>
