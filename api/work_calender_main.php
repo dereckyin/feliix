@@ -728,14 +728,14 @@ if (!isset($jwt)) {
                 $stmt->execute();
 
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $sql = "select * from work_calendar_main where id = " . $row['sid'] . " and status = 2 and is_enabled = 1";
-                    $stmt1 = $db->prepare($sql);
+                    // $sql = "select * from work_calendar_main where id = " . $row['sid'] . " and status = 2 and is_enabled = 1";
+                    // $stmt1 = $db->prepare($sql);
 
-                    $stmt1->execute();
+                    // $stmt1->execute();
 
-                    while ($row_feliix = $stmt1->fetch(PDO::FETCH_ASSOC)) {
+                    // while ($row_feliix = $stmt1->fetch(PDO::FETCH_ASSOC)) {
                         $auto_pass = false;
-                    }
+                    // }
                 }
 
                 if($auto_pass)
