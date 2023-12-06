@@ -715,7 +715,7 @@ if (!isset($jwt)) {
             {
                 $sql = "select ck.sid
                             from car_calendar_check ck
-                        where ck.`feliix` = 1 
+                        where 1 = 1
                         and ck.car_use = :car_use 
                         and ck.date_use = :date_use 
                         and ck.status <> -1 ";
