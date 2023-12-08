@@ -1058,8 +1058,9 @@ function GetVariantAsText($variants)
         $strVariant .= $variant['category'] . ":" . $str_value . PHP_EOL;
     }
 
-    // remove last /r/n
-    $strVariant = substr($strVariant, 0, -2);
+    // remove last /r/n ifhas newline
+    if(substr($strVariant, -2) == PHP_EOL)
+        $strVariant = substr($strVariant, 0, -2);
 
     return $strVariant;
 }
