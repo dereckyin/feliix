@@ -448,6 +448,7 @@ var app = new Vue({
       let result = [];
       
       for(let i = 0;i < lines.length;i++) {
+        if(lines[i].trim() == "") continue;
         // split by colon
         let parts = lines[i].split(":");
 

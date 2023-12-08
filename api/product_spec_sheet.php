@@ -1058,8 +1058,9 @@ function GetVariantAsText($variants)
         $strVariant .= $variant['category'] . ":" . $str_value . PHP_EOL;
     }
 
-    // remove last /r/n
-    $strVariant = substr($strVariant, 0, -2);
+    // remove last /r/n ifhas newline
+    if(substr($strVariant, -2) == PHP_EOL)
+        $strVariant = substr($strVariant, 0, -2);
 
     return $strVariant;
 }
@@ -1071,6 +1072,13 @@ function ParseTextAsVariant($variant_text)
     // each line as an record split by comma
     foreach($lines as $line)
     {
+        // if line is  not contain comma, skip
+        if(strpos($line, ":") == false)
+            continue;
+
+        if(trim($line) == '')
+            continue;
+        
         $key_value = explode(":", $line);
         $key = $key_value[0];
         $values = explode(",", $key_value[1]);
