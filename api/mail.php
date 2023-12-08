@@ -8315,6 +8315,8 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
                     if($list["username"] == 'Cristina Matining'){
                         $receiver .= "Alleah Belmonte" . ", ";
                         $mail->AddAddress("alleah.feliix@gmail.com", "Alleah Belmonte");
+                        $receiver .= "Charlenne Cosejo" . ", ";
+                        $mail->AddAddress("charlenne.feliix@gmail.com", "Charlenne Cosejo");
                     }
                     else{
                         $receiver .= $list["username"] . ", ";
@@ -8336,6 +8338,8 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
                         if($list["username"] == 'Cristina Matining'){
                             $receiver .= "Alleah Belmonte" . ", ";
                             $mail->AddAddress("alleah.feliix@gmail.com", "Alleah Belmonte");
+                            $receiver .= "Charlenne Cosejo" . ", ";
+                            $mail->AddAddress("charlenne.feliix@gmail.com", "Charlenne Cosejo");
                             $receiver .= $list["username"] . ", ";
                             $mail->AddAddress($list["email"], $list["username"]);
                         }
@@ -8371,8 +8375,10 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
                 }
                 else{
                     if($list["username"] == 'Cristina Matining'){
-                        $cc .= "Alleah Belmonte" . ", ";;
+                        $cc .= "Alleah Belmonte" . ", ";
                         $mail->AddCC("alleah.feliix@gmail.com", "Alleah Belmonte");
+                        $cc .= "Charlenne Cosejo" . ", ";
+                        $mail->AddCC("charlenne.feliix@gmail.com", "Charlenne Cosejo");
                     }
                     else{
                         $cc .= $list["username"];
@@ -8394,6 +8400,8 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
                         if($list["username"] == 'Cristina Matining'){
                             $cc .= "Alleah Belmonte";
                             $mail->AddCC("alleah.feliix@gmail.com", "Alleah Belmonte");
+                            $cc .= "Charlenne Cosejo" . ", ";
+                            $mail->AddCC("charlenne.feliix@gmail.com", "Charlenne Cosejo");
                             $cc .= $list["username"];
                             $mail->AddCC($list["email"], $list["username"]);
                         }
@@ -11495,6 +11503,8 @@ function order_notification03($name, $access,  $access_cc, $project_name, $seria
                         {
                             $receiver .= "Alleah Belmonte" . ", ";
                             $mail->AddAddress("alleah.feliix@gmail.com", "Alleah Belmonte");
+                            $receiver .= "Charlenne Cosejo" . ", ";
+                            $mail->AddAddress("charlenne.feliix@gmail.com", "Charlenne Cosejo");
                         }
                         else{
                             $receiver .= $list["username"] . ", ";
@@ -11515,6 +11525,8 @@ function order_notification03($name, $access,  $access_cc, $project_name, $seria
                         {
                             $receiver .= "Alleah Belmonte" . ", ";
                             $mail->AddAddress("alleah.feliix@gmail.com", "Alleah Belmonte");
+                            $receiver .= "Charlenne Cosejo" . ", ";
+                            $mail->AddAddress("charlenne.feliix@gmail.com", "Charlenne Cosejo");
                             $receiver .= $list["username"] . ", ";
                             $mail->AddAddress($list["email"], $list["username"]);
                         }
@@ -12414,6 +12426,8 @@ function order_notification03Access7($name, $access,  $access_cc, $project_name,
                         {
                             $receiver .= "Alleah Belmonte" . ", ";
                             $mail->AddAddress("alleah.feliix@gmail.com", "Alleah Belmonte");
+                            $receiver .= "Charlenne Cosejo" . ", ";
+                            $mail->AddAddress("charlenne.feliix@gmail.com", "Charlenne Cosejo");
                         }
                         else{
                             $receiver .= $list["username"] . ", ";
@@ -12434,6 +12448,8 @@ function order_notification03Access7($name, $access,  $access_cc, $project_name,
                         {
                             $receiver .= "Alleah Belmonte" . ", ";
                             $mail->AddAddress("alleah.feliix@gmail.com", "Alleah Belmonte");
+                            $receiver .= "Charlenne Cosejo" . ", ";
+                            $mail->AddAddress("charlenne.feliix@gmail.com", "Charlenne Cosejo");
                             $receiver .= $list["username"] . ", ";
                             $mail->AddAddress($list["email"], $list["username"]);
                         }

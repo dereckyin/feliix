@@ -573,10 +573,10 @@
             <div class="middle_part read" v-if="mode != 'write'">
                 <table>
                     <tr>
-                        <td>{{ item.legend }}</td>
+                        <td :style="[item.legend == '' ?  { 'visibility' : 'hidden' } : { }]">{{ item.legend }}</td>
                     </tr>
                     <tr>
-                        <td>{{ item.option }}</td>
+                        <td :style="[item.option == '' ?  { 'visibility' : 'hidden' } : { }]">{{ item.option }}</td>
                     </tr>
                 </table>
             </div>
@@ -603,11 +603,11 @@
                     <tr>
                         <td>{{ item.code }}</td>
                         <td>
-                            <span style="background-color: #00AEEF;">{{ item.indoor }}</span>
+                            <span :style="[item.indoor != '' ? { 'background-color':'#00AEEF'} : { 'visibility' : 'hidden' }]">{{ item.indoor }}</span>
                             <div>{{ item.type }}</div>
                         </td>
                         <td>
-                            <span style="background-color: #EC008C;">{{ item.grade }}</span>
+                            <span :style="[item.grade != '' ? { 'background-color':'#EC008C'} : { 'visibility' : 'hidden' }]">{{ item.grade }}</span>
                             <div></div>
                         </td>
                     </tr>
@@ -739,19 +739,19 @@
 
             <table>
                 <tr>
-                    <td>
+                    <td :style="[item.photo3 == '' ? { 'visibility' : 'hidden' } : {}]">
                         <img :src="item.photo3" v-if="item.photo3 != ''">
                     </td>
                     <td></td>
-                    <td>
+                    <td :style="[item.photo4 == '' ? { 'visibility' : 'hidden' } : {}]">
                         <img :src="item.photo4" v-if="item.photo4 != ''">
                     </td>
                     <td></td>
-                    <td>
+                    <td :style="[item.photo5 == '' ? { 'visibility' : 'hidden' } : {}]">
                         <img :src="item.photo5" v-if="item.photo5 != ''">
                     </td>
                     <td></td>
-                    <td>
+                    <td :style="[item.photo6 == '' ? { 'visibility' : 'hidden' } : {}]">
                         <img :src="item.photo6" v-if="item.photo6 != ''">
                     </td>
                 </tr>

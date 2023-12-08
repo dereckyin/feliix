@@ -211,7 +211,7 @@ try {
             $dashboard = true;
         }
        
-        if($username == "Kristel Tan" || $username == "Kuan" || $username == "Dennis Lin" || $username == "Ronnie Fernando Dela Cruz" || $username == "Gina Donato")
+        if($username == "Kristel Tan" || $username == "Kuan" || $username == "Dennis Lin" || $username == "Ronnie Fernando Dela Cruz" || $username == "Gina Donato" || $username == "Aiza Eisma")
         {
             $dashboard = true;
         }
