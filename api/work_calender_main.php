@@ -922,6 +922,7 @@ if (!isset($jwt)) {
                 $driver = $row['driver'];
             }
 
+
             // decode jwt
             //$key = 'myKey';
             //$decoded = JWT::decode($jwt, $key, array('HS256'));
@@ -953,7 +954,7 @@ if (!isset($jwt)) {
                 $driver_check = $check2[0]["driver"];
             }
 
-            
+            $cc = "";
             $creator = $created_by;
 
             $date = date("Y-m-d", strtotime($start_time));
@@ -973,6 +974,15 @@ if (!isset($jwt)) {
                 $att = get_schedule_file($id);
                 withdraw_car_request_mail_4($to, $cc, $project, $creator, $date_check, $time_check, $service_check, $driver_check, $date, $time, $service, $att, $user_name);
             }
+
+            // remove db_sea car_calendar_check's data
+            $sql = "update car_calendar_check set `status` = -1, deleted_at = now(), deleted_by = :deleted_by where sid = :sid and date_use = :date_use and car_use = :car_use and feliix = '1' and `status` <> -1";
+            $stmts = $db_sea->prepare($sql);
+            $stmts->bindParam(':deleted_by', $user_name);
+            $stmts->bindParam(':sid', $id);
+            $stmts->bindParam(':date_use', $date);
+            $stmts->bindParam(':car_use', $service);
+            $stmts->execute();
 
 
             http_response_code(200);
