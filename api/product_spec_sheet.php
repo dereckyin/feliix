@@ -1081,7 +1081,16 @@ function ParseTextAsVariant($variant_text)
         
         $key_value = explode(":", $line);
         $key = $key_value[0];
-        $values = explode(",", $key_value[1]);
+
+        if(strtolower($key) == "life hours")
+        {
+            $values = [];
+            $values[] = $key_value[1];
+        }
+        else
+            $values = explode(",", $key_value[1]);
+
+        //$values = explode(",", $key_value[1]);
         
         $variant[] = array("category" => $key, "value" => $values);
     }
