@@ -1022,7 +1022,7 @@ var app = new Vue({
 
                     window.open('transmittal?id=' + id, '_blank');
                     
-                    _this.getRecords();
+                    _this.clear();
                 })
                 .catch(function(response) {
                     //handle error
