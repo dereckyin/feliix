@@ -60,7 +60,7 @@ else
             $sql = "SELECT distinct 0 as is_checked, p.create_id id, u2.username 
                     FROM transmittal pm 
                     left join project_main p on pm.project_id = p.id
-                    left join `user` u2  on p.create_id = u2.id where pm.status <> -1 ";
+                    left join `user` u2  on p.create_id = u2.id where pm.status <> -1 and pm.project_id <> 0";
 
             if(!empty($_GET['page'])) {
                 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
