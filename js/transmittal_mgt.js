@@ -313,7 +313,7 @@ var app = new Vue({
       let token = localStorage.getItem('accessToken');
 
       axios
-          .get('api/admin/approval_form_quotation_project_creators', { headers: {"Authorization" : `Bearer ${token}`} })
+          .get('api/admin/transmittal_project_creators', { headers: {"Authorization" : `Bearer ${token}`} })
           .then(
           (res) => {
               _this.users = res.data;
@@ -380,7 +380,7 @@ var app = new Vue({
       let token = localStorage.getItem('accessToken');
 
       axios
-          .get('api/admin/approval_form_quotation_creators', { headers: {"Authorization" : `Bearer ${token}`} })
+          .get('api/admin/transmittal_creators', { headers: {"Authorization" : `Bearer ${token}`} })
           .then(
           (res) => {
               _this.creators = res.data;
