@@ -4504,3 +4504,7 @@ CREATE TABLE `transmittal_term` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20231212 access
+ALTER TABLE access_control
+ADD COLUMN `transmittal` text COLLATE utf8mb4_unicode_ci;

@@ -491,6 +491,23 @@
 
                 </div>
 
+                <div class="box-content">
+                    <ul>
+                        <li><b>Transmittal Edit Function</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="transmittal" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(23)">Cancel</a>
+                        <a class="btn" @click="save(23)">Save</a>
+                    </div>
+
+                </div>
 
             </div>
         </div>

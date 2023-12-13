@@ -504,7 +504,7 @@ var app = new Vue({
 
               //DELETE table_name WHERE ID=id;
               $.ajax({
-                  url: "api/approval_form_quotation_delete",
+                  url: "api/transmittal_delete",
                   type: "POST",
                   contentType: 'multipart/form-data',
                   processData: false,
@@ -827,8 +827,16 @@ var app = new Vue({
   
         for (i = 0; i < fileTarget.files.length; i++) {
             
-              this.comm_fileArray.push(fileItem);
-              fileTarget.value = "";
+              // remove duplicate
+              if (
+                this.comm_fileArray.indexOf(fileTarget.files[i]) == -1 ||
+                this.comm_fileArray.length == 0
+              ) {
+                var fileItem = Object.assign(fileTarget.files[i], { progress: 0 });
+                this.comm_fileArray.push(fileItem);
+              }else{
+                fileTarget.value = "";
+              }
           }
 
           await this.comm_upload(id);
@@ -841,6 +849,10 @@ var app = new Vue({
       },
 
       delete_me(file) {
+        let _file = file;
+        let _this = this;
+        let _id = file.id;
+
         if(file.username != this.name && this.transmittal == false)
         {
           Swal.fire({
@@ -850,6 +862,51 @@ var app = new Vue({
           })
           return;
         }
+
+        Swal.fire({
+          title: "Delete",
+          text: "Are you sure to delete?",
+          icon: "info",
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes'
+        }).then((result) => {
+          if (result.value) {
+
+            let me = _this;
+
+              token = localStorage.getItem('token');
+              var form_Data = new FormData();
+              form_Data.append('jwt', token);
+
+              form_Data.append('id', _id);
+
+              //DELETE table_name WHERE ID=id;
+              $.ajax({
+                  url: "api/transmittal_delete_file",
+                  type: "POST",
+                  contentType: 'multipart/form-data',
+                  processData: false,
+                  contentType: false,
+                  data: form_Data,
+
+                  success: function (result) {
+                      console.log(result);
+                      
+                      _this.getRecords();
+                  },
+
+                  // show error message to user
+                  error: function (xhr, resp, text) {
+
+                  }
+              });
+
+          } else {
+
+          }
+      });
       },
 
       async comm_upload(batch_id) {
@@ -857,55 +914,41 @@ var app = new Vue({
         this.comm_canSub = false;
         var myArr = this.comm_fileArray;
         var vm = this;
-       
-        //循环文件数组挨个上传
-        myArr.forEach((element, index) => {
+
+        // upload files async and wait for all uploads to complete
+        await Promise.all(myArr.map(async (file, index) => {
+          var form_Data = new FormData();
+          form_Data.append('file', file);
+          form_Data.append('batch_id', batch_id);
+          form_Data.append("batch_type", "transmittal");
+
           var config = {
             headers: { "Content-Type": "multipart/form-data" },
             onUploadProgress: function(e) {
    
               if (e.lengthComputable) {
-                var rate = e.loaded / e.total; 
-                console.log(index, e.loaded, e.total, rate);
-                if (rate < 1) {
-                  
-                  myArr[index].progress = rate;
-                  vm.$set(vm.comm_fileArray, index, myArr[index]);
-                } else {
-                  myArr[index].progress = 0.99;
-                  vm.$set(vm.comm_fileArray, index, myArr[index]);
-                }
+                var rate = e.loaded / e.total;
+                console.log(rate);
+                vm.comm_upload_progress = rate;
               }
             }
           };
-          var data = myArr[index];
-          var myForm = new FormData();
-          myForm.append('batch_type', 'transmittal');
-          myForm.append('batch_id', batch_id);
-          myForm.append("file", data);
- 
-          axios
-            .post("api/uploadFile_gcp", myForm, config)
-            .then(function(res) {
-              if (res.data.code == 0) {
-           
-                myArr[index].progress = 1;
-                vm.$set(vm.comm_fileArray, index, myArr[index]);
-                console.log(vm.comm_fileArray, index);
 
-              } else {
-                alert(JSON.stringify(res.data));
-              }
-            })
-            .catch(function(err) {
-              console.log(err);
-            });
-        });
+          return await axios.post('api/uploadFile_gcp', form_Data, config);
+        }));
 
         this.comm_canSub = true;
-      
-    },
-  
+        this.getRecords();
+
+        Swal.fire({
+          text: "Uploading Finished!!",
+          icon: 'success',
+          confirmButtonText: 'OK'
+        })
+
+      },
+
+
 
     approve: function() {
 

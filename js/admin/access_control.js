@@ -34,6 +34,7 @@ var app = new Vue({
     halfday: [],
     tag_management: [],
     soa: [],
+    transmittal: [],
   },
 
   created() {
@@ -150,6 +151,10 @@ var app = new Vue({
               _this.soa = res.data[0]["soa"].split(",").filter(function (el) {
                 return el != "";
               });
+              if (kind === 23 || kind === undefined)
+              _this.transmittal = res.data[0]["transmittal"].split(",").filter(function (el) {
+                return el != "";
+              });
 
           },
           (err) => {
@@ -217,6 +222,7 @@ var app = new Vue({
       form_Data.append("halfday", this.halfday.toString());
       form_Data.append("tag_management", this.tag_management.toString());
       form_Data.append("soa", this.soa.toString());
+      form_Data.append("transmittal", this.transmittal.toString());
 
       axios({
         method: "post",

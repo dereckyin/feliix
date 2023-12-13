@@ -196,50 +196,22 @@ header( 'location:index' );
             padding-left: 12px!important;
         }
 
-        .tableframe .tablebox ul li:nth-of-type(4) > a {
+        .tableframe .tablebox ul li:nth-of-type(4) > div {
+            display: flex;
+            justify-content: center;
+        }
+
+        .tableframe .tablebox ul li:nth-of-type(4) > div > a {
             font-size: 18px;
             display: block;
-            margin-bottom: 15px;
-            position: relative;
-            text-align: start;
+            margin: 5px 0;
         }
 
-        .tableframe .tablebox ul li:nth-of-type(4) > a {
-            font-size: 18px;
-            display: block;
-            margin-bottom: 15px;
-            position: relative;
-            text-align: start;
-        }
-
-        .tableframe .tablebox ul li:nth-of-type(4) > a:last-of-type {
-            margin-bottom: 0;
-        }
-
-        .tableframe .tablebox ul li:nth-of-type(4) > a > i.fa-file {
+        .tableframe .tablebox ul li:nth-of-type(4) > div > a > i.fa-file {
             color: var(--fth01);
         }
 
-        .tableframe .tablebox ul li:nth-of-type(4) > a > span {
-            position: absolute;
-            display: inline;
-            width: 24px;
-            height: 24px;
-            border: 1px dashed #EA0029;
-            border-radius: 18px;
-            line-height: 23px;
-            text-align: center;
-            color: #EA0029;
-            font-size: 20px;
-            font-weight: 400;
-            cursor: pointer;
-            top: 1px;
-            bottom: 0;
-            right: 9px;
-        }
-
-        .tableframe .tablebox ul li:nth-of-type(4) > span {
-            position: relative;
+        .tableframe .tablebox ul li:nth-of-type(4) > div > span {
             display: block;
             width: 24px;
             height: 24px;
@@ -251,9 +223,7 @@ header( 'location:index' );
             font-size: 20px;
             font-weight: 400;
             cursor: pointer;
-            top: 1px;
-            bottom: 0;
-            right: 9px;
+            margin: 5px 0 5px 10px;
         }
 
         .tableframe .tablebox ul li:nth-of-type(7) button {
@@ -706,8 +676,10 @@ header( 'location:index' );
                         <!-- 如果使用者已經有上傳檔案到這個客戶同意書記錄中，則需要把每一個上傳的檔案用 a 標籤列出來；如果沒有任何已上傳的檔案，則 li 標籤裡面留空白即可 -->
                         <li>
                             <template v-for="(file, index) in receive_record.files">
-                                <a :href="img_url + file.gcp_name"  target="_blank"><i aria-hidden="true" class="fas fa-file fa-lg"></i></a>
-                                <span @click="delete_me(file)">X</span>
+                                <div>
+                                    <a :href="img_url + file.gcp_name"  target="_blank"><i aria-hidden="true" class="fas fa-file fa-lg"></i></a>
+                                    <span @click="delete_me(file)">X</span>
+                                </div>
                             </template>
                         </li>
 
