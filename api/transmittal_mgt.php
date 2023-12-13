@@ -97,7 +97,7 @@ $query = "SELECT pm.id,
                 COALESCE((SELECT quotation_no FROM quotation WHERE id = pm.q_id), '') AS q_no,
                 COALESCE((SELECT title FROM quotation WHERE id = pm.q_id), '') AS q_title,
                 COALESCE((SELECT pageless FROM quotation WHERE id = pm.q_id), '') AS pageless,
-                (SELECT COUNT(*) FROM gcp_storage_file f where f.batch_id = pm.id AND f.batch_type = 'transmittal') AS q_count
+                (SELECT COUNT(*) FROM gcp_storage_file f where f.batch_id = pm.id AND f.batch_type = 'transmittal'and f.`status` <> -1) AS q_count
           FROM transmittal pm 
                 LEFT JOIN user c_user ON pm.create_id = c_user.id 
                 LEFT JOIN user u_user ON pm.updated_id = u_user.id 
@@ -149,14 +149,14 @@ if($key != "")
 
 if($app == "Y")
 {
-    $query = $query . " and (SELECT COUNT(*) FROM gcp_storage_file f where f.batch_id = pm.id AND f.batch_type = 'transmittal') > 0 ";
-    $query_cnt = $query_cnt . " and (SELECT COUNT(*) FROM gcp_storage_file f where f.batch_id = pm.id AND f.batch_type = 'transmittal') > 0";
+    $query = $query . " and (SELECT COUNT(*) FROM gcp_storage_file f where f.batch_id = pm.id AND f.batch_type = 'transmittal' and status <> -1) > 0 ";
+    $query_cnt = $query_cnt . " and (SELECT COUNT(*) FROM gcp_storage_file f where f.batch_id = pm.id AND f.batch_type = 'transmittal' and status <> -1) > 0";
 }
 
 if($app == "N")
 {
-    $query = $query . " and (SELECT COUNT(*) FROM gcp_storage_file f where f.batch_id = pm.id AND f.batch_type = 'transmittal') = 0 ";
-    $query_cnt = $query_cnt . " and (SELECT COUNT(*) FROM gcp_storage_file f where f.batch_id = pm.id AND f.batch_type = 'transmittal') = 0";
+    $query = $query . " and (SELECT COUNT(*) FROM gcp_storage_file f where f.batch_id = pm.id AND f.batch_type = 'transmittal' and status <> -1) = 0 ";
+    $query_cnt = $query_cnt . " and (SELECT COUNT(*) FROM gcp_storage_file f where f.batch_id = pm.id AND f.batch_type = 'transmittal' and status <> -1) = 0";
 }
 
 
