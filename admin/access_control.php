@@ -493,7 +493,7 @@
 
                 <div class="box-content">
                     <ul>
-                        <li><b>Transmittal Edit Function</b></li>
+                        <li><b>Transmittal Scanned Copy</b></li>
                         <br>
                         <li>
                             <div>
