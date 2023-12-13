@@ -1018,6 +1018,10 @@ var app = new Vue({
                 .then(function(response) {
                     //handle success
                     //this.$forceUpdate();
+                    var id = response.data.id;
+
+                    window.open('transmittal?id=' + id, '_blank');
+                    
                     _this.getRecords();
                 })
                 .catch(function(response) {

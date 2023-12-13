@@ -502,8 +502,11 @@ function GetProjectInfo($id, $db) {
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['catagory_id'];
-
+    if($result == false)
+        return "";
+    else
+        return $result['catagory_id'];
+    
 }
 
 function GetSerailName($db)
