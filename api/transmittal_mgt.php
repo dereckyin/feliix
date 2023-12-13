@@ -177,7 +177,12 @@ if($op1 != "" && $op1 != "0")
             else
                 $sOrder = "Coalesce(pm.updated_at, '9999-99-99') ";
             break;  
-       
+        case 3:
+            if($od1 == 2)
+                $sOrder = "serial_name desc";
+            else
+                $sOrder = "serial_name ";
+            break;  
         
         default:
     }
@@ -198,6 +203,12 @@ if($op2 != "" && $op2 != "0" && $sOrder != "")
                 $sOrder .= ", Coalesce(pm.updated_at, '0000-00-00') desc";
             else
                 $sOrder .= ", Coalesce(pm.updated_at, '9999-99-99') ";
+            break;  
+        case 3:
+            if($od2 == 2)
+                $sOrder .= ", serial_name desc";
+            else
+                $sOrder .= ", serial_name ";
             break;  
       
         
@@ -221,6 +232,12 @@ if($op2 != "" && $op2 != "0" && $sOrder == "")
                 $sOrder = "Coalesce(pm.updated_at, '0000-00-00') desc";
             else
                 $sOrder = "Coalesce(pm.updated_at, '9999-99-99') ";
+            break;  
+        case 3:
+            if($od2 == 2)
+                $sOrder = "serial_name desc";
+            else
+                $sOrder = "serial_name ";
             break;  
        
         
