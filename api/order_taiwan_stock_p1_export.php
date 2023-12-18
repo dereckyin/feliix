@@ -663,12 +663,16 @@ if($jwt){
                 $short_brand = "EL";
             if(strtoupper($brand) == 'GENTECH')
                 $short_brand = "GT";
+            if(strtoupper($brand) == 'GLEDOPTO')
+                $short_brand = "GD";
             if(strtoupper($brand) == 'HUANG GONG')
                 $short_brand = "HG";
             if(strtoupper($brand) == 'LEDOUX')
                 $short_brand = "LD";
             if(strtoupper($brand) == 'ROOSTER')
                 $short_brand = "RT";
+            if(strtoupper($brand) == 'SASUGAS')
+                $short_brand = "SG";
             if(strtoupper($brand) == 'SEEDDESIGN')
                 $short_brand = "SD";
             if(strtoupper($brand) == 'SHAN BEN')
@@ -692,11 +696,7 @@ if($jwt){
             $payable->getFont()->setBold(true);
             $payable->getFont()->setSize(22);
             $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun("\n" . $serial_name . " " . $project_name . "\n" . 'C/NO. ' . $short_brand . "1 (2, 3, …)\n" . '寄件人: ');
-            $payable->getFont()->setSize(18);
-            $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun('盛盛國際 SSIT');
-            $payable->getFont()->setBold(true);
+            $payable = $richText->createTextRun("\n" . $serial_name . " " . $project_name . "\n" . 'C/NO. ' . $short_brand . "1 (2, 3, …)");
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
             $sheet->getCell('B' . $i)->setValue($richText);
@@ -789,25 +789,25 @@ if($jwt){
 
             $sheet->getRowDimension($i)->setRowHeight(126.6);
             $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
-            $payable = $richText->createTextRun('FELIIX Inc.');
+            $payable = $richText->createTextRun('FELIIX INC' . "\n" . 'Address:');
             $payable->getFont()->setBold(true);
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun("\n" . '664 7th Avenue corner, 7th St, Caloocan, 1405 Metro Manila' . "\n" . 'Contact person: ');
+            $payable = $richText->createTextRun(' 664 7th Avenue corner, 7th St, Caloocan, 1405 Metro Manila' . "\n");
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun('KRISTEL TAN');
+            $payable = $richText->createTextRun('Contact Person:');
             $payable->getFont()->setBold(true);
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun("\n" . 'Mobile: 0917-625-1198');
+            $payable = $richText->createTextRun(" Lailani Ong 0927-9087873\n" . '                             Ronnie Paredes 0956-4082194');
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
             $sheet->getCell('B' . $i)->setValue($richText);
-            $sheet->mergeCells('B' . $i . ':D' . $i);
-            $sheet->getStyle('B' . $i . ':D' . $i)->getAlignment()->setHorizontal('left');
-            $sheet->getStyle('B' . $i . ':D' . $i)->getFont()->setSize(18);
-            $sheet->getStyle('B' . $i . ':D' . $i)->getFont()->setName('M+ 1c regular');
+            $sheet->mergeCells('B' . $i . ':E' . $i);
+            $sheet->getStyle('B' . $i . ':E' . $i)->getAlignment()->setHorizontal('left');
+            $sheet->getStyle('B' . $i . ':E' . $i)->getFont()->setSize(18);
+            $sheet->getStyle('B' . $i . ':E' . $i)->getFont()->setName('M+ 1c regular');
             $sheet->getStyle('B' . $i . ':J' . $i)->applyFromArray($bold_border_style2);
             $sheet->getStyle('B'. $i)->getAlignment()->setWrapText(true);
             $i++;
