@@ -696,11 +696,7 @@ if($jwt){
             $payable->getFont()->setBold(true);
             $payable->getFont()->setSize(22);
             $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun("\n" . $serial_name . " " . $project_name . "\n" . 'C/NO. ' . $short_brand . "1 (2, 3, …)\n" . '寄件人: ');
-            $payable->getFont()->setSize(18);
-            $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun('盛盛國際 SSIT');
-            $payable->getFont()->setBold(true);
+            $payable = $richText->createTextRun("\n" . $serial_name . " " . $project_name . "\n" . 'C/NO. ' . $short_brand . "1 (2, 3, …)");
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
             $sheet->getCell('B' . $i)->setValue($richText);
@@ -793,18 +789,18 @@ if($jwt){
 
             $sheet->getRowDimension($i)->setRowHeight(126.6);
             $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
-            $payable = $richText->createTextRun('FELIIX Inc.');
+            $payable = $richText->createTextRun('FELIIX INC\nAddress:');
             $payable->getFont()->setBold(true);
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun("\n" . '664 7th Avenue corner, 7th St, Caloocan, 1405 Metro Manila' . "\n" . 'Contact person: ');
+            $payable = $richText->createTextRun(' 664 7th Avenue corner, 7th St, Caloocan, 1405 Metro Manila' . "\n");
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun('KRISTEL TAN');
+            $payable = $richText->createTextRun('Contact person:');
             $payable->getFont()->setBold(true);
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun("\n" . 'Mobile: 0917-625-1198');
+            $payable = $richText->createTextRun(" Lailani Ong 0927-9087873\n" . '                Ronnie Paredes 0956-4082194');
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
             $sheet->getCell('B' . $i)->setValue($richText);
