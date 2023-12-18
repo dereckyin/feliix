@@ -450,7 +450,7 @@ var app = new Vue({
 
               //DELETE table_name WHERE ID=id;
               $.ajax({
-                  url: "api/approval_form_quotation_duplicate",
+                  url: "api/transmittal_duplicate",
                   type: "POST",
                   contentType: 'multipart/form-data',
                   processData: false,

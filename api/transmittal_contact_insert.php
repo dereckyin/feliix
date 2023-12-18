@@ -30,7 +30,7 @@ require_once '../vendor/autoload.php';
 
 $database = new Database();
 $db = $database->getConnection();
-$db->beginTransaction();
+
 $conf = new Conf();
 
 use \Firebase\JWT\JWT;
@@ -54,7 +54,7 @@ else
         $uid = $user_id;
 
         // quotation_page
-        $query = "UPDATE transmittal set pixa_t = :pixa_t, show_t = :show_t, pageless = :pageless, contact = :contact
+        $query = "UPDATE transmittal set pixa_t = :pixa_t, show_t = :show_t, pageless = :pageless, contact = :contact, updated_id = :updated_id, updated_at = now()
                 WHERE
                 `id` = :quotation_id";
 
@@ -67,29 +67,25 @@ else
         $stmt->bindParam(':pageless', $pageless);
         $stmt->bindParam(':contact', $contact);
         $stmt->bindParam(':quotation_id', $quotation_id);
+        $stmt->bindParam(':updated_id', $uid);
 
         try {
         // execute the query, also check if query was successful
         if (!$stmt->execute()) {
             $arr = $stmt->errorInfo();
             error_log($arr[2]);
-            $db->rollback();
+
             http_response_code(501);
             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
             die();
         }
         } catch (Exception $e) {
         error_log($e->getMessage());
-        $db->rollback();
+
         http_response_code(501);
         echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
         die();
         }
-
-    
-
-        $db->commit();
-
         
         http_response_code(200);
         echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa"), "id" => $quotation_id));
@@ -98,7 +94,6 @@ else
     catch (Exception $e){
 
         error_log($e->getMessage());
-        $db->rollback();
         http_response_code(501);
         echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . $e->getMessage()));
         die();
