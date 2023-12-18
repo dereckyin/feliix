@@ -662,12 +662,16 @@ if($jwt){
                 $short_brand = "EL";
             if(strtoupper($brand) == 'GENTECH')
                 $short_brand = "GT";
+            if(strtoupper($brand) == 'GLEDOPTO')
+                $short_brand = "GD";
             if(strtoupper($brand) == 'HUANG GONG')
                 $short_brand = "HG";
             if(strtoupper($brand) == 'LEDOUX')
                 $short_brand = "LD";
             if(strtoupper($brand) == 'ROOSTER')
                 $short_brand = "RT";
+            if(strtoupper($brand) == 'SASUGAS')
+                $short_brand = "SG";
             if(strtoupper($brand) == 'SEEDDESIGN')
                 $short_brand = "SD";
             if(strtoupper($brand) == 'SHAN BEN')
@@ -791,7 +795,7 @@ if($jwt){
             $payable = $richText->createTextRun(' 664 7th Avenue corner, 7th St, Caloocan, 1405 Metro Manila' . "\n");
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun('Contact person:');
+            $payable = $richText->createTextRun('Contact Person:');
             $payable->getFont()->setBold(true);
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');

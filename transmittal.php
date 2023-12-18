@@ -2221,7 +2221,7 @@ header( 'location:index' );
                         </table>
 
 
-                        <div class="area_remarks">Remarks or Special Instructions: <span>header裡面備註的文字所在</span></div>
+                        <div class="area_remarks">Remarks or Special Instructions: <span>{{ transmittal_remark }}</span></div>
 
 
                         <table class="area_tail">
