@@ -789,7 +789,7 @@ if($jwt){
 
             $sheet->getRowDimension($i)->setRowHeight(126.6);
             $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
-            $payable = $richText->createTextRun('FELIIX INC\nAddress:');
+            $payable = $richText->createTextRun('FELIIX INC' . "\n" . 'Address:');
             $payable->getFont()->setBold(true);
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
@@ -800,14 +800,14 @@ if($jwt){
             $payable->getFont()->setBold(true);
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun(" Lailani Ong 0927-9087873\n" . '                Ronnie Paredes 0956-4082194');
+            $payable = $richText->createTextRun(" Lailani Ong 0927-9087873\n" . '                             Ronnie Paredes 0956-4082194');
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
             $sheet->getCell('B' . $i)->setValue($richText);
-            $sheet->mergeCells('B' . $i . ':D' . $i);
-            $sheet->getStyle('B' . $i . ':D' . $i)->getAlignment()->setHorizontal('left');
-            $sheet->getStyle('B' . $i . ':D' . $i)->getFont()->setSize(18);
-            $sheet->getStyle('B' . $i . ':D' . $i)->getFont()->setName('M+ 1c regular');
+            $sheet->mergeCells('B' . $i . ':E' . $i);
+            $sheet->getStyle('B' . $i . ':E' . $i)->getAlignment()->setHorizontal('left');
+            $sheet->getStyle('B' . $i . ':E' . $i)->getFont()->setSize(18);
+            $sheet->getStyle('B' . $i . ':E' . $i)->getFont()->setName('M+ 1c regular');
             $sheet->getStyle('B' . $i . ':J' . $i)->applyFromArray($bold_border_style2);
             $sheet->getStyle('B'. $i)->getAlignment()->setWrapText(true);
             $i++;
