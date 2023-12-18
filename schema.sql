@@ -4433,6 +4433,7 @@ CREATE TABLE `transmittal` (
   `submit_date` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `signature_page` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `signature_pixel` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
@@ -4508,3 +4509,22 @@ CREATE TABLE `transmittal_term` (
 -- 20231212 access
 ALTER TABLE access_control
 ADD COLUMN `transmittal` text COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE transmittal
+ADD COLUMN  `transmittal_date` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE transmittal
+ADD COLUMN   `transmittal_to` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE transmittal
+ADD COLUMN   `transmittal_from` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE transmittal
+ADD COLUMN   `transmittal_subject` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE transmittal
+ADD COLUMN   `transmittal_remark` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE transmittal
+ADD COLUMN   `transmittal_purpose` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE transmittal
+ADD COLUMN `contact` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE transmittal_page_type_block
+ADD COLUMN  `unit` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';

@@ -110,10 +110,20 @@ else
             `submit_date` = :submit_date,
             
             `pageless` = :pageless,
+            `contact` = :contact,
             
             `status` = 0,
             `create_id` = :create_id,
             `created_at` =  now() ";
+
+$contact = "MAIN OFFICE
+25-E, 25th Flr., BDO Towers Valero,
+8741 Paseo De Roxas,
+1226 Makati City, Metro Manila,
+Philippines
+
+E: info@feliix.com
+T: (+63) 2 8525-6288";
 
         // prepare the query
         $stmt = $db->prepare($query);
@@ -144,7 +154,7 @@ else
         $stmt->bindParam(':submit_by', $submit_by);
         $stmt->bindParam(':submit_date', $submit_date);
 
-        
+        $stmt->bindParam(':contact', $contact);
         $stmt->bindParam(':pageless', $pageless);
 
         $stmt->bindParam(':create_id', $user_id);
