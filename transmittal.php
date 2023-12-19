@@ -2011,18 +2011,8 @@ header( 'location:index' );
 
                 <div class="popupblock">
 
-                    <?php
-                    if ($test_manager[0]  == "1")
-                    {
-                    ?>
                     <a id="project_fn2" class="fn2" :ref="'a_fn2'" @click="show_contact = !show_contact">Contact</a>
-                    <?php
-                    } else {
-                    ?>
-                    <a>Contact</a>
-                    <?php
-                    }
-                    ?>
+                
                     <div id="contact_dialog" class="dialog fn2 show" :ref="'dlg_fn2'" v-show="show_contact">
                         <h6>Contact</h6>
 
