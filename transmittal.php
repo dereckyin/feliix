@@ -1910,18 +1910,8 @@ header( 'location:index' );
 
             <div class="block fn">
                 <div class="popupblock">
-                    <?php
-                if ($test_manager[0]  == "1")
-                {
-                ?>
+                    
                     <a id="status_fn1" class="fn1" :ref="'a_fn1'" @click="show_header = !show_header">Header</a>
-                    <?php
-                } else {
-                ?>
-                    <a>Header</a>
-                    <?php
-                }
-                ?>
                     <div id="header_dialog" class="dialog fn1 show" :ref="'dlg_fn1'" v-show="show_header">
                         <h6>Header</h6>
                         <div class="formbox">
@@ -1975,18 +1965,7 @@ header( 'location:index' );
 
                 <div class="popupblock">
 
-                    <?php
-                    if ($test_manager[0]  == "1")
-                    {
-                    ?>
                     <a id="project_fn2" class="fn2" :ref="'a_fn2'" @click="show_subtotal = !show_subtotal">Transmitted Item</a>
-                    <?php
-                    } else {
-                    ?>
-                    <a>Transmitted Item</a>
-                    <?php
-                    }
-                    ?>
                     <div id="subtotal_dialog" class="dialog fn2 show" :ref="'dlg_fn2'" v-show="show_subtotal">
                         <h6>Transmitted Item</h6>
 
