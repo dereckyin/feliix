@@ -111,6 +111,8 @@ else
             
             `pageless` = :pageless,
             `contact` = :contact,
+
+            `pixa_t` = 10,
             
             `status` = 0,
             `create_id` = :create_id,
