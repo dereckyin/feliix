@@ -807,7 +807,7 @@ var app = new Vue({
 
             code: "",
             photo: photo,
-            qty: "1",
+            qty: "",
             unit: "",
             price: price,
             srp: srp,
@@ -982,7 +982,7 @@ var app = new Vue({
 
             code: this.product.code,
             photo: "",
-            qty: "1",
+            qty: "",
             unit: "",
             price: price,
             srp: srp,
@@ -2163,7 +2163,7 @@ Installation:`;
           type : block_a_image,
           code: "",
           photo: "",
-          qty: "1",
+          qty: "",
           unit: "",
           price: "",
           discount: "0",
@@ -2215,7 +2215,7 @@ Installation:`;
           
           code: "",
           photo: "",
-          qty: "1",
+          qty: "",
           unit: "",
           price: "",
           notes: "",
