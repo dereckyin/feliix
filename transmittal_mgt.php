@@ -289,10 +289,7 @@ header( 'location:index' );
                 <div class="new_project">
                     <a class="add"></a>
 
-                    <?php
-  if ($test_manager[0]  == "1")
-  {
-?>
+
                     <div id="insert_dialog" class="dialog d-add">
                         <h6>Create New Transmittal:</h6>
                         <div class="formbox">
@@ -361,9 +358,7 @@ header( 'location:index' );
                             </div>
                         </div>
                     </div>
-                    <?php
-  }
-?>
+
 
                 </div>
 
