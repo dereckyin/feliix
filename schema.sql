@@ -4528,3 +4528,5 @@ ADD COLUMN `contact` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_
 
 ALTER TABLE transmittal_page_type_block
 ADD COLUMN  `unit` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+alter table transmittal_page_type_block change `qty` `qty` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';

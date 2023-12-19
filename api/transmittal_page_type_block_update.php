@@ -196,7 +196,7 @@ switch ($method) {
                 // prepare the query
                 $stmt = $db->prepare($query);
 
-                $qty = isset($block_array[$i]['qty']) ? $block_array[$i]['qty'] : 0;
+                $qty = isset($block_array[$i]['qty']) ? $block_array[$i]['qty'] : '';
                 $unit = isset($block_array[$i]['unit']) ? $block_array[$i]['unit'] : '';
                 $ratio = isset($block_array[$i]['ratio']) ? $block_array[$i]['ratio'] : 1.0;
                 $price = isset($block_array[$i]['price']) ? $block_array[$i]['price'] : 0;
@@ -213,7 +213,7 @@ switch ($method) {
                 $pid = isset($block_array[$i]['pid']) ? $block_array[$i]['pid'] : 0;
                 $notes = isset($block_array[$i]['notes']) ? $block_array[$i]['notes'] : '';
 
-                $qty == '' ? $qty = 0 : $qty = $qty;
+                // $qty == '' ? $qty = 0 : $qty = $qty;
                 $ratio == '' ? $ratio = 1.0 : $ratio = $ratio;
                 $price == '' ? $price = 0 : $price = $price;
                 $discount == '' ? $discount = 0 : $discount = $discount;

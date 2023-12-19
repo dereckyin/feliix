@@ -524,7 +524,7 @@ T: (+63) 2 8525-6288";
                     // prepare the query
                     $stmt = $db->prepare($query);
 
-                    $qty = isset($block_array[$k]['qty']) ? $block_array[$k]['qty'] : 0;
+                    $qty = isset($block_array[$k]['qty']) ? $block_array[$k]['qty'] : '';
                     $ratio = isset($block_array[$k]['ratio']) ? $block_array[$k]['ratio'] : 0;
                     $price = isset($block_array[$k]['price']) ? $block_array[$k]['price'] : 0;
                     $discount = isset($block_array[$k]['discount']) ? $block_array[$k]['discount'] : 0;
