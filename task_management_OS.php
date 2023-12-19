@@ -102,10 +102,10 @@ catch (Exception $e) {
     <link rel="stylesheet" type="text/css" href="css/mediaqueries.css" />
     <link rel="stylesheet" href="css/vue-select.css" type="text/css">
 
-    <link rel='stylesheet' href='https://unpkg.com/@fullcalendar/core@4.3.1/main.min.css'>
-    <link rel='stylesheet' href='https://unpkg.com/@fullcalendar/core@4.3.0/main.min.css'>
-    <script src='https://unpkg.com/@fullcalendar/core@4.3.1/main.min.js'></script>
-    <script src='https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.js'></script>
+    <link rel='stylesheet' href='css/@fullcalendar/core@4.3.1/main.min.css'>
+    <link rel='stylesheet' href='css/@fullcalendar/core@4.3.0/main.min.css'>
+    <script src='js/@fullcalendar/core@4.3.1/main.min.js'></script>
+    <script src='js/@fullcalendar/daygrid@4.3.0/main.min.js'></script>
 
     <script src="js/moment.js"></script>
 
@@ -5789,11 +5789,11 @@ catch (Exception $e) {
     }
 </script>
 
-<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script defer src="js/npm/vue/dist/vue.js"></script>
 <script src="js/vue-select.js"></script>
 <script defer src="js/axios.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/exif-js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script defer src="js/npm/exif-js.js"></script>
+<script defer src="js/npm/sweetalert2@9.js"></script>
 <script type="text/javascript" src="js/task_management_os.js" defer></script>
 <script defer src="js/a076d05399.js"></script>
 

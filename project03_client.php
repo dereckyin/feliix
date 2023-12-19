@@ -2131,8 +2131,8 @@ header('location:index');
 
     </style>
 
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/fullcalendar@5.1.0/main.min.css">
-    <script defer type="text/javascript" src="https://unpkg.com/fullcalendar@5.1.0/main.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/fullcalendar@5.1.0/main.min.css">
+    <script defer type="text/javascript" src="js/fullcalendar@5.1.0/main.min.js"></script>
     <script src="js/moment.js"></script>
 
     <!-- jQuery和js載入 -->
@@ -3596,11 +3596,11 @@ header('location:index');
     }
 </script>
 
-<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script defer src="js/npm/vue/dist/vue.js"></script>
 <script src="js/vue-select.js"></script>
 <script defer src="js/axios.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/exif-js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script defer src="js/npm/exif-js.js"></script>
+<script defer src="js/npm/sweetalert2@9.js"></script>
 <script type="text/javascript" src="js/project03_client.js?random=<?php echo uniqid(); ?>" defer></script>
 <script defer src="js/a076d05399.js"></script>
 

@@ -303,6 +303,11 @@ try {
                 <a class="list" href="../task_management_SVC">Engineering Department</a>
             </li>
 
+            <li class="sec03">
+                <a class="uni">Inventory<br>Management</a>
+                <a class="list" href="../transmittal_mgt">Transmittal Management</a>
+            </li>
+
             <li class="sec02">
                 <a class="uni">Performance<br>Evaluation</a>
                 <a class="list" href="../performance_dashboard">Performance Evaluation</a>

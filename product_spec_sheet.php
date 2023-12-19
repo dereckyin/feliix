@@ -33,9 +33,9 @@
     <link rel="stylesheet" type="text/css" href="css/mediaqueries.css"/>
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
     <link rel="stylesheet" type="text/css"
-          href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
+          href="css/bootstrap4-toggle@3.6.1/bootstrap4-toggle.min.css">
     <link rel="stylesheet" type="text/css" href="css/tagsinput.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    <link rel="stylesheet" href="css/fontawesome/v5.7.0/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <link rel="stylesheet" href="css/bootstrap-select.min.css">
 
@@ -47,7 +47,7 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript"
-            src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+            src="js/bootstrap4-toggle@3.6.1/bootstrap4-toggle.min.js"></script>
     <script type="text/javascript" src="js/tagsinput.js"></script>
     <script src="js/bootstrap-select.js"></script>
 
@@ -573,10 +573,10 @@
             <div class="middle_part read" v-if="mode != 'write'">
                 <table>
                     <tr>
-                        <td>{{ item.legend }}</td>
+                        <td :style="[item.legend == '' ?  { 'visibility' : 'hidden' } : { }]">{{ item.legend }}</td>
                     </tr>
                     <tr>
-                        <td>{{ item.option }}</td>
+                        <td :style="[item.option == '' ?  { 'visibility' : 'hidden' } : { }]">{{ item.option }}</td>
                     </tr>
                 </table>
             </div>
@@ -603,11 +603,11 @@
                     <tr>
                         <td>{{ item.code }}</td>
                         <td>
-                            <span style="background-color: #00AEEF;">{{ item.indoor }}</span>
+                            <span :style="[item.indoor != '' ? { 'background-color':'#00AEEF'} : { 'visibility' : 'hidden' }]">{{ item.indoor }}</span>
                             <div>{{ item.type }}</div>
                         </td>
                         <td>
-                            <span style="background-color: #EC008C;">{{ item.grade }}</span>
+                            <span :style="[item.grade != '' ? { 'background-color':'#EC008C'} : { 'visibility' : 'hidden' }]">{{ item.grade }}</span>
                             <div></div>
                         </td>
                     </tr>
@@ -739,19 +739,19 @@
 
             <table>
                 <tr>
-                    <td>
+                    <td :style="[item.photo3 == '' ? { 'visibility' : 'hidden' } : {}]">
                         <img :src="item.photo3" v-if="item.photo3 != ''">
                     </td>
                     <td></td>
-                    <td>
+                    <td :style="[item.photo4 == '' ? { 'visibility' : 'hidden' } : {}]">
                         <img :src="item.photo4" v-if="item.photo4 != ''">
                     </td>
                     <td></td>
-                    <td>
+                    <td :style="[item.photo5 == '' ? { 'visibility' : 'hidden' } : {}]">
                         <img :src="item.photo5" v-if="item.photo5 != ''">
                     </td>
                     <td></td>
-                    <td>
+                    <td :style="[item.photo6 == '' ? { 'visibility' : 'hidden' } : {}]">
                         <img :src="item.photo6" v-if="item.photo6 != ''">
                     </td>
                 </tr>
@@ -837,13 +837,13 @@
 </body>
 
 
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/npm/vue/dist/vue.js"></script>
 <script src="js/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="js/npm/sweetalert2@9.js"></script>
 
-<script src="//unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
-<script src="//unpkg.com/element-ui"></script>
-<script src="//unpkg.com/element-ui/lib/umd/locale/en.js"></script>
+<script src="js/vue-i18n/vue-i18n.global.min.js"></script>
+<script src="js/element-ui@2.15.14/index.js"></script>
+<script src="js/element-ui@2.15.14/en.js"></script>
 
 <!-- Awesome Font for current webpage -->
 <script src="js/a076d05399.js"></script>
@@ -853,7 +853,7 @@
 </script>
 
 <!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="js/element-ui@2.15.14/lib/index.js"></script>
 
 <script src="js/product_spec_sheet.js"></script>
 
