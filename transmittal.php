@@ -636,6 +636,10 @@ header( 'location:index' );
             text-align: left;
         }
 
+        .area_content tr.desc1 td:nth-of-type(3) > span:nth-of-type(2) {
+            white-space: break-spaces;
+        }
+
         .area_content tr td:nth-of-type(1) {
             width: 80px;
         }
