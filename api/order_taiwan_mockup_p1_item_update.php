@@ -105,7 +105,10 @@ switch ($method) {
 
                 // insert quotation_page_type_block
                 $query = "UPDATE od_item
-                    SET
+                    SET ";
+                if($pre_confirm != $confirm)
+                    $query .= " `status_at` = now(), ";
+                $query .= "
                     `sn` = :sn,
                     `confirm` = :confirm,
                     `brand` = :brand,

@@ -482,6 +482,12 @@ try {
             cursor: pointer;
         }
 
+        .tb_order span.status_date {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
         .block.C .tb_order thead tr th:nth-of-type(2), .block.C .tb_order tbody tr td:nth-of-type(2) {
             min-width: 90px;
             text-align: center;
@@ -1534,7 +1540,7 @@ try {
                         <td>
                             <div class="read_block" v-if="!item.is_edit">
                             {{ item.confirm_text }}<br>
-                            
+                            <span class="status_date">{{ item.status_at }}</span>
                             </div>
 
                             <div class="write_block" v-if="item.is_edit">

@@ -328,6 +328,12 @@ try {
         .tb_order tbody tr.canceled > td {
             background: rgba(255, 0, 0, 0.2);
         }
+
+        .tb_order span.status_date {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+        }
         
         .NTD_price {
 
@@ -1473,7 +1479,7 @@ try {
                         <td>
                             <div class="read_block" v-if="!item.is_edit">
                             {{ item.confirm_text }}<br>
-                            
+                            <span class="status_date">{{ item.status_at }}</span>
                             </div>
 
                             <div class="write_block" v-if="item.is_edit">
