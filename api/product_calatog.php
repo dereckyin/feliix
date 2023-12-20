@@ -552,6 +552,8 @@ else
                 $s_price = "";
                 if(count($pro_price) == 1)
                 {
+                    $pro_price[0] = $pro_price[0] + 0;
+
                     $s_price = "PHP " . number_format($pro_price[0]);
                     $srp = $pro_price[0];
                 }
@@ -566,6 +568,8 @@ else
 
                         $e = $pro_price[$i];
                     }
+                    $b = $b + 0;
+                    $e = $e + 0;
                     $s_price = "PHP " . number_format($b) . " ~ " . "PHP " . number_format($e);
 
                     $srp = $e;
@@ -575,6 +579,7 @@ else
 
                 if(count($pro_price_ntd) == 1)
                 {
+                    $pro_price_ntd[0] = $pro_price_ntd[0] + 0;
                     $s_price_ntd = $currency . " " . number_format($pro_price_ntd[0]);
                 }
                 if(count($pro_price_ntd) > 1)
@@ -588,12 +593,15 @@ else
 
                         $e = $pro_price_ntd[$i];
                     }
+                    $b = $b + 0;
+                    $e = $e + 0;
                     $s_price_ntd = $currency . " " . number_format($b) . " ~ " . $currency . " " . number_format($e);
                 }
 
                 $s_price_quoted = "";
                 if(count($pro_price_quoted) == 1)
                 {
+                    $pro_price_quoted[0] = $pro_price_quoted[0] + 0;
                     $s_price_quoted = "PHP " . number_format($pro_price_quoted[0]);
                     $srp_quoted = $pro_price_quoted[0];
                 }
@@ -608,10 +616,16 @@ else
 
                         $e = $pro_price_quoted[$i];
                     }
+                    $b = $b + 0;
+                    $e = $e + 0;
                     $s_price_quoted = "PHP " . number_format($b) . " ~ " . "PHP " . number_format($e);
 
                     $srp_quoted = $e;
                 }
+
+                $price = $price + 0;
+                $price_ntd = $price_ntd + 0;
+                $quoted_price = $quoted_price + 0;
 
                 if($s_price == "")
                     $price = "PHP " .  number_format($price);
