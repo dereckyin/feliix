@@ -541,14 +541,15 @@ try {
         }
 
         .block.C .tb_order tbody tr td:nth-of-type(14),
-        .block.C .tb_order tbody tr td:nth-of-type(15) {
+        .block.C .tb_order tbody tr td:nth-of-type(15),
+        .block.C .tb_order tbody tr td:nth-of-type(16) {
             min-width: 180px;
         }
 
-        .block.C .tb_order tbody tr td:nth-of-type(16),
         .block.C .tb_order tbody tr td:nth-of-type(17),
         .block.C .tb_order tbody tr td:nth-of-type(18),
-        .block.C .tb_order tbody tr td:nth-of-type(19) {
+        .block.C .tb_order tbody tr td:nth-of-type(19),
+        .block.C .tb_order tbody tr td:nth-of-type(20) {
             min-width: 400px;
         }
 
@@ -1519,6 +1520,7 @@ try {
                         <th>Notes</th>
                         <th>Notes (Only for Approved Stage)</th>
                         <th>Shipping Way</th>
+                        <th>Date Sent</th>
                         <th>ETA</th>
                         <th>Arrival Date</th>
                         <th>Warehouse In Charge</th>
@@ -1528,6 +1530,7 @@ try {
                         <th>Action</th>
                     </tr>
                     </thead>
+
 
                     <tbody>
                     <tr v-for="(item, index) in items" :class="['print_area_' + item.id, (item.confirm == 'E' ? 'canceled' : ''), item.normal == 1 ? 'need_revise' : '']">
@@ -1743,6 +1746,16 @@ try {
                         <option value="cfs">卡菲斯</option>
                         <option value="dy">東渝</option>
                     </select>
+                </div>
+            </td>
+
+            <!-- 新增的 Date Sent 欄位 -->
+            <td>
+                <div class="read_block" v-if="SentRead(item)">
+                    <input type="text" v-model="item.date_sent" readonly>
+                </div>
+                <div class="write_block" v-if="SentWrite(item)">
+                    <input type="text" v-model="item.date_sent">
                 </div>
             </td>
 

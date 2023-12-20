@@ -4530,3 +4530,7 @@ ALTER TABLE transmittal_page_type_block
 ADD COLUMN  `unit` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
 
 alter table transmittal_page_type_block change `qty` `qty` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20231220 od_item
+ALTER TABLE od_item add column `status_at` timestamp NULL DEFAULT NULL;
+ALTER TABLE od_item add column `date_send` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';

@@ -96,7 +96,8 @@ try{
         {
             $query = "update od_item
             SET
-                `confirm` = 'O'
+                `confirm` = 'O',
+                `status_at` = now()
             where id = :id  ";
 
             // prepare the query
