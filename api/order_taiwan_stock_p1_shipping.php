@@ -140,6 +140,7 @@ switch ($method) {
             $shipping_number = $items[$i]['shipping_number'];
             $shipping_vendor = $items[$i]['shipping_vendor'];
             $eta = $items[$i]['eta'];
+            $date_send = $items[$i]['date_send'];
             $arrive = $items[$i]['arrive'];
             $charge = $items[$i]['charge'];
             $test = $items[$i]['test'];
@@ -213,6 +214,7 @@ switch ($method) {
             $stmt->bindParam(':shipping_number', $shipping_number);
             $stmt->bindParam(':shipping_vendor', $shipping_vendor);
             $stmt->bindParam(':eta', $eta);
+            $stmt->bindParam(':date_send', $date_send);
             $stmt->bindParam(':arrive', $arrive);
             $stmt->bindParam(':charge', $charge);
             $stmt->bindParam(':test', $test);
@@ -386,6 +388,7 @@ function GetShipping($id, $db){
         $shipping_number = $row['shipping_number'];
         $shipping_vendor = $row['shipping_vendor'];
         $eta = $row['eta'];
+        $date_send = $row['date_send'];
         $arrive = $row['arrive'];
         $charge = $row['charge'];
         $test = $row['test'];
@@ -409,6 +412,7 @@ function GetShipping($id, $db){
             "shipping_number" => $shipping_number,
             "shipping_vendor" => $shipping_vendor,
             "eta" => $eta,
+            "date_send" => $date_send,
             "arrive" => $arrive,
             "charge" => $charge,
             "test" => $test,

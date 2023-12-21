@@ -81,7 +81,9 @@ if($jwt){
             delivery,
             final,
             `status`,
-            pid
+            pid,
+            status_at,
+            date_send
             FROM od_item
             WHERE status <> -1 and od_id=$id";
             
@@ -132,7 +134,8 @@ if($jwt){
         $status = $row['status'];
 
         $pid = $row['pid'];
-    
+        $status_at = $row['status_at'];
+        $date_send = $row['date_send'];
 
         $merged_results[] = array(
         "is_checked" => "",
@@ -168,8 +171,9 @@ if($jwt){
         "final" => $final,
         "status" => $status,
         "confirm_text" => $confirm_text,
-        "pid" => $pid
-            
+        "pid" => $pid,
+        "status_at" => $status_at,
+        "date_send" => $date_send,
         );
         }
           
