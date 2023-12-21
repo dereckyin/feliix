@@ -70,6 +70,7 @@ if (!isset($jwt)) {
                     v2,
                     v3,
                     eta,
+                    date_send,
                     arrive,
                     remark,
                     remark_t,
@@ -148,6 +149,7 @@ if (!isset($jwt)) {
         $shipping_number = $row['shipping_number'];
         $shipping_vendor = $row['shipping_vendor'];
         $eta = $row['eta'];
+        $date_send = $row['date_send'];
         $arrive = $row['arrive'];
         $remark = $row['remark'];
         $remark_t = $row['remark_t'];
@@ -219,6 +221,7 @@ if (!isset($jwt)) {
             "v2" => $v2,
             "v3" => $v3,
             "eta" => $eta,
+            "date_send" => $date_send, 
             "arrive" => $arrive,
             "remark" => $remark,
             "remark_t" => $remark_t,

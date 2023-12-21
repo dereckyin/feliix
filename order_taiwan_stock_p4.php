@@ -1457,6 +1457,7 @@ try {
                         <th>Notes</th>
                         <th>Notes (Only for Approved Stage)</th>
                         <th>Shipping Way</th>
+                        <th>Date Sent</th>
                         <th>ETA</th>
                         <th>Arrival Date</th>
                         <th>Warehouse In Charge</th>
@@ -1643,6 +1644,16 @@ try {
                     </select>
                 </div>
 
+            </td>
+
+            <!-- 新增的 Date Sent 欄位 -->
+            <td>
+                <div class="read_block" v-if="SentRead(item)">
+                    <input type="text" v-model="item.date_send" readonly>
+                </div>
+                <div class="write_block" v-if="SentWrite(item)">
+                    <input type="text" v-model="item.date_send">
+                </div>
             </td>
 
             <td>

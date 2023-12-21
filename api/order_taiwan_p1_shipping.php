@@ -113,6 +113,31 @@ switch ($method) {
 
             add_process($o_id, $comment, $type, json_encode($pre_item, JSON_PRETTY_PRINT), $uid, $db);
 
+            // dennis rules
+            if($items[$i]['shipping_way'] == 'air' ){
+                if( $items[$i]['date_send'] != $pre_item['date_send']  ){
+                   // 用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;                            
+                }
+                else{
+                    if( $items[$i]['shipping_number'] != $pre_item['shipping_number']  ){
+                        if( $items[$i]['shipping_number'] != '' ){
+                            //用「使用者點擊 Save 按鈕的日期 去更新資料表 od_item 中的 Date Sent 欄位 」; 
+                            $items[$i]['date_send'] = date("Y-m-d");
+                        }
+                        else{
+                            // 用「空值 去更新資料表 od_item 中的 Date Sent 欄位 」; 
+                            $items[$i]['date_send'] = '';
+                        }
+                    }
+                    else{
+                        //用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;
+                    }
+                }
+            }
+            else{
+                //用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;
+            }
+
             $test_update = false;
             $delivery_updeate = false;
 

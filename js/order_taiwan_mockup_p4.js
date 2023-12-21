@@ -643,6 +643,22 @@ var app = new Vue({
           return false;
       },
 
+      SentRead(item)
+      {
+        if(!item.is_info )
+          return true;
+        else
+          return false;
+      },
+
+      SentWrite(item)
+      {
+        if(item.is_info && (this.access2 == true || this.access4 == true || this.access5 == true))
+          return true;
+        else
+          return false;
+      },
+
       EtaRead(item)
       {
         if(!item.is_info || (this.access4 == true || this.access5 == true || this.access6 == true))
@@ -2073,6 +2089,7 @@ var app = new Vue({
         if(item.shipping_way != '' 
         || item.shipping_number != '' 
         || item.eta != '' 
+        || item.date_send != '' 
         || item.arrive != '' 
         || item.charge != '' 
         || item.remark != '' 

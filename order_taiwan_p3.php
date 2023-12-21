@@ -1758,10 +1758,10 @@ try {
             <!-- 新增的 Date Sent 欄位 -->
             <td>
                 <div class="read_block" v-if="SentRead(item)">
-                    <input type="text" v-model="item.date_sent" readonly>
+                    <input type="text" v-model="item.date_send" readonly>
                 </div>
                 <div class="write_block" v-if="SentWrite(item)">
-                    <input type="text" v-model="item.date_sent">
+                    <input type="text" v-model="item.date_send">
                 </div>
             </td>
 
