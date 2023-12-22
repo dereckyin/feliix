@@ -351,7 +351,7 @@ var app = new Vue({
       }
       
       this.get_product_records();
-      this.getQuoMasterRecords();
+      //this.getQuoMasterRecords();
       this.getRecord();
       this.getUserName();
       this.get_brands();
