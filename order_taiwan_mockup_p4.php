@@ -549,14 +549,15 @@ try {
         }
 
         .block.D .tb_order tbody tr td:nth-of-type(16),
-        .block.D .tb_order tbody tr td:nth-of-type(17) {
+        .block.D .tb_order tbody tr td:nth-of-type(17),
+        .block.D .tb_order tbody tr td:nth-of-type(18) {
             min-width: 180px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(18),
         .block.D .tb_order tbody tr td:nth-of-type(19),
         .block.D .tb_order tbody tr td:nth-of-type(20),
-        .block.D .tb_order tbody tr td:nth-of-type(21) {
+        .block.D .tb_order tbody tr td:nth-of-type(21),
+        .block.D .tb_order tbody tr td:nth-of-type(22) {
             min-width: 400px;
         }
 
