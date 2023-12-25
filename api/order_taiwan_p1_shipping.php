@@ -113,13 +113,27 @@ switch ($method) {
 
             add_process($o_id, $comment, $type, json_encode($pre_item, JSON_PRETTY_PRINT), $uid, $db);
 
+            // $msg = "";
+            // $msg .= 'shipping_way in pg: ' . $items[$i]['shipping_way'] . '\n';
+            // $msg .= 'date_send in pg: ' . $items[$i]['date_send'] . '\n';
+            // $msg .= 'date_send in db: ' .  $pre_item[0]['date_send'] . '\n';
+            // $msg .= 'shipping_number in pg: ' . $items[$i]['shipping_number'] . '\n';
+            // $msg .= 'shipping_number in db: ' . $pre_item[0]['shipping_number'] . '\n';
+
+
+            // alert('shipping_way in pg: ' + $items[$i]['shipping_way']);
+            // alert('date_send in pg: ' + $items[$i]['date_send']);
+            // alert('date_send in db: ' +  $pre_item['date_send']);
+            // alert('shipping_number in pg: ' + $items[$i]['shipping_number']);
+            // alert('shipping_number in db: ' + $pre_item['shipping_number']);
+
             // dennis rules
             if($items[$i]['shipping_way'] == 'air' ){
-                if( $items[$i]['date_send'] != $pre_item['date_send']  ){
+                if( $items[$i]['date_send'] != $pre_item[0]['date_send']  ){
                    // 用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;                            
                 }
                 else{
-                    if( $items[$i]['shipping_number'] != $pre_item['shipping_number']  ){
+                    if( $items[$i]['shipping_number'] != $pre_item[0]['shipping_number']  ){
                         if( $items[$i]['shipping_number'] != '' ){
                             //用「使用者點擊 Save 按鈕的日期 去更新資料表 od_item 中的 Date Sent 欄位 」; 
                             $items[$i]['date_send'] = date("Y-m-d");

@@ -115,11 +115,11 @@ switch ($method) {
 
             // dennis rules
             if($items[$i]['shipping_way'] == 'air' ){
-                if( $items[$i]['date_send'] != $pre_item['date_send']  ){
+                if( $items[$i]['date_send'] != $pre_item[0]['date_send']  ){
                    // 用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;                            
                 }
                 else{
-                    if( $items[$i]['shipping_number'] != $pre_item['shipping_number']  ){
+                    if( $items[$i]['shipping_number'] != $pre_item[0]['shipping_number']  ){
                         if( $items[$i]['shipping_number'] != '' ){
                             //用「使用者點擊 Save 按鈕的日期 去更新資料表 od_item 中的 Date Sent 欄位 」; 
                             $items[$i]['date_send'] = date("Y-m-d");
