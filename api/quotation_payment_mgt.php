@@ -46,7 +46,7 @@ $id = (isset($_GET['id']) ?  $_GET['id'] : '');
 $fc = (isset($_GET['fc']) ?  $_GET['fc'] : '');
 $fs = (isset($_GET['fs']) ?  $_GET['fs'] : '');
 $ft = (isset($_GET['ft']) ?  $_GET['ft'] : '');
-
+$fp = (isset($_GET['fp']) ?  $_GET['fp'] : '');
 $ft = urldecode($ft);
 
 $fal = (isset($_GET['fal']) ?  $_GET['fal'] : '');
@@ -157,6 +157,30 @@ if($fs == "w")
 {
     $query = $query . " and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status  > 0  AND pp.`kind` <> 2) = 0 ";
     $query_cnt = $query_cnt . " and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status  > 0  AND pp.`kind` <> 2) = 0 ";
+}
+
+if($fp == "A")
+{
+    $query = $query . " and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status > 0  AND pp.`kind` = 0) > 0 and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status > 0  AND pp.`kind` = 1) > 0 ";
+    $query_cnt = $query_cnt . " and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status  > 0  AND pp.`kind` = 0) > 0 and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status  > 0  AND pp.`kind` = 1) > 0 ";
+}
+
+if($fp == "D")
+{
+    $query = $query . " and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status > 0  AND pp.`kind` = 0) > 0 and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status > 0  AND pp.`kind` = 1) = 0 ";
+    $query_cnt = $query_cnt . " and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status  > 0  AND pp.`kind` = 0) > 0 and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status  > 0  AND pp.`kind` = 1) = 0 ";
+}
+
+if($fp == "F")
+{
+    $query = $query . " and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status > 0  AND pp.`kind` = 0) = 0 and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status > 0  AND pp.`kind` = 1) > 0 ";
+    $query_cnt = $query_cnt . " and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status  > 0  AND pp.`kind` = 0) = 0 and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status  > 0  AND pp.`kind` = 1) > 0 ";
+}
+
+if($fp == "N")
+{
+    $query = $query . " and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status > 0  AND pp.`kind` = 0) = 0 and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status > 0  AND pp.`kind` = 1) = 0 ";
+    $query_cnt = $query_cnt . " and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status  > 0  AND pp.`kind` = 0) = 0 and (SELECT count(*) FROM   project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status  > 0  AND pp.`kind` = 1) = 0 ";
 }
 
 if($ft != "" && $ft != "0")
