@@ -8,7 +8,7 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$jwt = (isset($_POST['jwt']) ?  $_POST['jwt'] : null);
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
 include_once 'libs/php-jwt-master/src/ExpiredException.php';
