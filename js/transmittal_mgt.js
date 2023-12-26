@@ -21,6 +21,7 @@ var app = new Vue({
     projects : [],
 
     kind: '',
+    generate: '',
     task_a : [],
     task_d : [],
     task_l : [],
@@ -482,6 +483,26 @@ var app = new Vue({
     deleteRow: function(item){
       let _id = item['id'];
       let _this = this;
+
+      if(item['files'].length > 0)
+      {
+        Swal.fire({
+          text: "User is not allowed to delete the transmittal record already with scanned copy. Please delete the scanned copy first.",
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        })
+        return;
+      }
+
+      if(item['created_by'] != this.name && this.transmittal == false)
+      {
+        Swal.fire({
+          text: "Permission Deny! Please contact the creator of this transmittal record for deleting.",
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        })
+        return;
+      }
 
       Swal.fire({
           title: "Delete",
@@ -989,6 +1010,7 @@ var app = new Vue({
             if(this.type == 'task')
               form_Data.append('kind', _this.kind);
 
+            form_Data.append("generate", _this.generate);
             form_Data.append("first_line", '');
             form_Data.append("second_line", '');
             form_Data.append("project_category", '');

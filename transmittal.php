@@ -1915,7 +1915,7 @@ header( 'location:index' );
             <div class="block fn">
                 <div class="popupblock">
                     
-                    <a id="status_fn1" class="fn1" :ref="'a_fn1'" @click="show_header = !show_header">Header</a>
+                    <a id="status_fn1" class="fn1" :ref="'a_fn1'" @click="open_header()">Header</a>
                     <div id="header_dialog" class="dialog fn1 show" :ref="'dlg_fn1'" v-show="show_header">
                         <h6>Header</h6>
                         <div class="formbox">
@@ -1969,7 +1969,7 @@ header( 'location:index' );
 
                 <div class="popupblock">
 
-                    <a id="project_fn2" class="fn2" :ref="'a_fn2'" @click="show_subtotal = !show_subtotal">Transmitted Item</a>
+                    <a id="project_fn2" class="fn2" :ref="'a_fn2'" @click="open_item()">Transmitted Item</a>
                     <div id="subtotal_dialog" class="dialog fn2 show" :ref="'dlg_fn2'" v-show="show_subtotal">
                         <h6>Transmitted Item</h6>
 
@@ -2015,7 +2015,7 @@ header( 'location:index' );
 
                 <div class="popupblock">
 
-                    <a id="project_fn2" class="fn2" :ref="'a_fn2'" @click="show_contact = !show_contact">Contact</a>
+                    <a id="project_fn2" class="fn2" :ref="'a_fn2'" @click="open_contact()">Contact</a>
                 
                     <div id="contact_dialog" class="dialog fn2 show" :ref="'dlg_fn2'" v-show="show_contact">
                         <h6>Contact</h6>
