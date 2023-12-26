@@ -482,6 +482,12 @@ try {
             cursor: pointer;
         }
 
+        .tb_order span.status_date {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
         .block.C .tb_order thead tr th:nth-of-type(2), .block.C .tb_order tbody tr td:nth-of-type(2) {
             min-width: 90px;
             text-align: center;
@@ -541,14 +547,15 @@ try {
         }
 
         .block.C .tb_order tbody tr td:nth-of-type(14),
-        .block.C .tb_order tbody tr td:nth-of-type(15) {
+        .block.C .tb_order tbody tr td:nth-of-type(15),
+        .block.C .tb_order tbody tr td:nth-of-type(16) {
             min-width: 180px;
         }
 
-        .block.C .tb_order tbody tr td:nth-of-type(16),
         .block.C .tb_order tbody tr td:nth-of-type(17),
         .block.C .tb_order tbody tr td:nth-of-type(18),
-        .block.C .tb_order tbody tr td:nth-of-type(19) {
+        .block.C .tb_order tbody tr td:nth-of-type(19),
+        .block.C .tb_order tbody tr td:nth-of-type(20) {
             min-width: 400px;
         }
 
@@ -1519,6 +1526,7 @@ try {
                         <th>Notes</th>
                         <th>Notes (Only for Approved Stage)</th>
                         <th>Shipping Way</th>
+                        <th>Date Sent</th>
                         <th>ETA</th>
                         <th>Arrival Date</th>
                         <th>Warehouse In Charge</th>
@@ -1529,6 +1537,7 @@ try {
                     </tr>
                     </thead>
 
+
                     <tbody>
                     <tr v-for="(item, index) in items" :class="['print_area_' + item.id, (item.confirm == 'E' ? 'canceled' : ''), item.normal == 1 ? 'need_revise' : '']">
                         <td><input type="checkbox" class="alone" :value="item.index" :true-value="1" v-model:checked="item.is_checked"></td>
@@ -1536,7 +1545,7 @@ try {
                         <td>
                             <div class="read_block" v-if="!item.is_edit">
                             {{ item.confirm_text }}<br>
-                            
+                            <span class="status_date">{{ item.status_at }}</span>
                             </div>
 
                             <div class="write_block" v-if="item.is_edit">
@@ -1743,6 +1752,16 @@ try {
                         <option value="cfs">卡菲斯</option>
                         <option value="dy">東渝</option>
                     </select>
+                </div>
+            </td>
+
+            <!-- 新增的 Date Sent 欄位 -->
+            <td>
+                <div class="read_block" v-if="SentRead(item)">
+                    <input type="text" v-model="item.date_send" readonly>
+                </div>
+                <div class="write_block" v-if="SentWrite(item)">
+                    <input type="text" v-model="item.date_send">
                 </div>
             </td>
 

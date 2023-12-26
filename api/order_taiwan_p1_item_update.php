@@ -107,7 +107,12 @@ switch ($method) {
                 $query = "UPDATE od_item
                     SET
                     `sn` = :sn,
-                    `confirm` = :confirm,
+                    `confirm` = :confirm, ";
+
+                if($pre_confirm != $confirm)
+                    $query .= " `status_at` = now(), ";
+
+                $query .= "
                     `brand` = :brand,
                     `brand_other` = :brand_other, ";
 

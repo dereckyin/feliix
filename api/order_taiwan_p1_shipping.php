@@ -113,6 +113,45 @@ switch ($method) {
 
             add_process($o_id, $comment, $type, json_encode($pre_item, JSON_PRETTY_PRINT), $uid, $db);
 
+            // $msg = "";
+            // $msg .= 'shipping_way in pg: ' . $items[$i]['shipping_way'] . '\n';
+            // $msg .= 'date_send in pg: ' . $items[$i]['date_send'] . '\n';
+            // $msg .= 'date_send in db: ' .  $pre_item[0]['date_send'] . '\n';
+            // $msg .= 'shipping_number in pg: ' . $items[$i]['shipping_number'] . '\n';
+            // $msg .= 'shipping_number in db: ' . $pre_item[0]['shipping_number'] . '\n';
+
+
+            // alert('shipping_way in pg: ' + $items[$i]['shipping_way']);
+            // alert('date_send in pg: ' + $items[$i]['date_send']);
+            // alert('date_send in db: ' +  $pre_item['date_send']);
+            // alert('shipping_number in pg: ' + $items[$i]['shipping_number']);
+            // alert('shipping_number in db: ' + $pre_item['shipping_number']);
+
+            // dennis rules
+            if($items[$i]['shipping_way'] == 'air' ){
+                if( $items[$i]['date_send'] != $pre_item[0]['date_send']  ){
+                   // 用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;                            
+                }
+                else{
+                    if( $items[$i]['shipping_number'] != $pre_item[0]['shipping_number']  ){
+                        if( $items[$i]['shipping_number'] != '' ){
+                            //用「使用者點擊 Save 按鈕的日期 去更新資料表 od_item 中的 Date Sent 欄位 」; 
+                            $items[$i]['date_send'] = date("Y-m-d");
+                        }
+                        else{
+                            // 用「空值 去更新資料表 od_item 中的 Date Sent 欄位 」; 
+                            $items[$i]['date_send'] = '';
+                        }
+                    }
+                    else{
+                        //用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;
+                    }
+                }
+            }
+            else{
+                //用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;
+            }
+
             $test_update = false;
             $delivery_updeate = false;
 
@@ -140,6 +179,7 @@ switch ($method) {
             $shipping_number = $items[$i]['shipping_number'];
             $shipping_vendor = $items[$i]['shipping_vendor'];
             $eta = $items[$i]['eta'];
+            $date_send = $items[$i]['date_send'];
             $arrive = $items[$i]['arrive'];
             $charge = $items[$i]['charge'];
             $test = $items[$i]['test'];
@@ -164,6 +204,7 @@ switch ($method) {
                 `shipping_number` = :shipping_number,
                 `shipping_vendor` = :shipping_vendor,
                 `eta` = :eta,
+                `date_send` = :date_send,
                 `arrive` = :arrive,
                 `charge` = :charge,
                 `test` = :test,
@@ -213,6 +254,7 @@ switch ($method) {
             $stmt->bindParam(':shipping_number', $shipping_number);
             $stmt->bindParam(':shipping_vendor', $shipping_vendor);
             $stmt->bindParam(':eta', $eta);
+            $stmt->bindParam(':date_send', $date_send);
             $stmt->bindParam(':arrive', $arrive);
             $stmt->bindParam(':charge', $charge);
             $stmt->bindParam(':test', $test);
@@ -353,6 +395,7 @@ function GetShipping($id, $db){
             n.shipping_number,
             n.shipping_vendor,
             n.eta,
+            n.date_send,
             n.arrive,
             n.charge,
             n.test,
@@ -386,6 +429,7 @@ function GetShipping($id, $db){
         $shipping_number = $row['shipping_number'];
         $shipping_vendor = $row['shipping_vendor'];
         $eta = $row['eta'];
+        $date_send = $row['date_send'];
         $arrive = $row['arrive'];
         $charge = $row['charge'];
         $test = $row['test'];
@@ -409,6 +453,7 @@ function GetShipping($id, $db){
             "shipping_number" => $shipping_number,
             "shipping_vendor" => $shipping_vendor,
             "eta" => $eta,
+            "date_send" => $date_send,
             "arrive" => $arrive,
             "charge" => $charge,
             "test" => $test,

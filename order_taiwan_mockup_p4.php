@@ -329,6 +329,12 @@ try {
             background: rgba(255, 0, 0, 0.2);
         }
 
+        .tb_order span.status_date {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
         .NTD_price {
 
         }
@@ -543,14 +549,15 @@ try {
         }
 
         .block.D .tb_order tbody tr td:nth-of-type(16),
-        .block.D .tb_order tbody tr td:nth-of-type(17) {
+        .block.D .tb_order tbody tr td:nth-of-type(17),
+        .block.D .tb_order tbody tr td:nth-of-type(18) {
             min-width: 180px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(18),
         .block.D .tb_order tbody tr td:nth-of-type(19),
         .block.D .tb_order tbody tr td:nth-of-type(20),
-        .block.D .tb_order tbody tr td:nth-of-type(21) {
+        .block.D .tb_order tbody tr td:nth-of-type(21),
+        .block.D .tb_order tbody tr td:nth-of-type(22) {
             min-width: 400px;
         }
 
@@ -1452,6 +1459,7 @@ try {
                         <th>Notes</th>
                         <th>Notes (Only for Approved Stage)</th>
                         <th>Shipping Way</th>
+                        <th>Date Sent</th>
                         <th>ETA</th>
                         <th>Arrival Date</th>
                         <th>Warehouse In Charge</th>
@@ -1472,7 +1480,7 @@ try {
                         <td>
                             <div class="read_block" v-if="!item.is_edit">
                             {{ item.confirm_text }}<br>
-                            
+                            <span class="status_date">{{ item.status_at }}</span>
                             </div>
 
                             <div class="write_block" v-if="item.is_edit">
@@ -1638,6 +1646,15 @@ try {
                     </select>
                 </div>
 
+            </td>
+
+            <td>
+                <div class="read_block" v-if="SentRead(item)">
+                    <input type="text" v-model="item.date_send" readonly>
+                </div>
+                <div class="write_block" v-if="SentWrite(item)">
+                    <input type="text" v-model="item.date_send">
+                </div>
             </td>
 
             <td>

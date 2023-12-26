@@ -70,6 +70,7 @@ if (!isset($jwt)) {
                     v2,
                     v3,
                     eta,
+                    date_send,
                     arrive,
                     remark,
                     remark_t,
@@ -90,7 +91,9 @@ if (!isset($jwt)) {
                     test_updated_at,
                     delivery_updated_name,
                     delivery_updated_at,
-                    normal
+                    normal,
+                    status_at,
+                    date_send
                     FROM od_item, 
                     (SELECT @a:=@a+1 serial_number, id FROM od_item, (SELECT @a:= 0) AS a WHERE status <> -1 and od_id=$id order by ABS(sn)) b
                     WHERE status <> -1 and od_id=$id and od_item.id = b.id
@@ -146,6 +149,7 @@ if (!isset($jwt)) {
         $shipping_number = $row['shipping_number'];
         $shipping_vendor = $row['shipping_vendor'];
         $eta = $row['eta'];
+        $date_send = $row['date_send'];
         $arrive = $row['arrive'];
         $remark = $row['remark'];
         $remark_t = $row['remark_t'];
@@ -180,6 +184,12 @@ if (!isset($jwt)) {
 
         $normal = $row['normal'];
 
+        if($row['status_at'] != null)
+            $status_at = date_format(date_create($row['status_at']), "Y-m-d");
+        else
+            $status_at = "";
+        $date_send = $row['date_send'];
+
         $notes = GetNotes($row['id'], $db);
 
         $notes_a = GetNotesA($row['id'], $db);
@@ -211,6 +221,7 @@ if (!isset($jwt)) {
             "v2" => $v2,
             "v3" => $v3,
             "eta" => $eta,
+            "date_send" => $date_send, 
             "arrive" => $arrive,
             "remark" => $remark,
             "remark_t" => $remark_t,
@@ -236,6 +247,8 @@ if (!isset($jwt)) {
             "notes_a" => $notes_a,
             "serial_number" => $serial_number,
             "normal" => $normal,
+            "status_at" => $status_at,
+            "date_send" => $date_send,
         );
     }
 

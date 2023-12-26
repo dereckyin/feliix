@@ -105,6 +105,7 @@ switch ($method) {
                     `v3` = :v3,
                     `btn2` = :btn2,
                     `status` = :status,
+                    `status_at` = now(),
                     `create_id` = :create_id,
                     `created_at` = now()";
 

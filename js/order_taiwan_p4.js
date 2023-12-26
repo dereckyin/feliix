@@ -350,7 +350,7 @@ var app = new Vue({
       }
       
       this.get_product_records();
-      this.getQuoMasterRecords();
+      //this.getQuoMasterRecords();
       this.getRecord();
       this.getUserName();
       this.get_brands();
@@ -637,6 +637,22 @@ var app = new Vue({
       ShipwayWrite(item)
       {
         if(item.is_info && this.access2 == true)
+          return true;
+        else
+          return false;
+      },
+
+      SentRead(item)
+      {
+        if(!item.is_info )
+          return true;
+        else
+          return false;
+      },
+
+      SentWrite(item)
+      {
+        if(item.is_info && (this.access2 == true || this.access4 == true || this.access5 == true))
           return true;
         else
           return false;
@@ -2076,6 +2092,7 @@ var app = new Vue({
         if(item.shipping_way != '' 
         || item.shipping_number != '' 
         || item.eta != '' 
+        || item.date_send != '' 
         || item.arrive != '' 
         || item.charge != '' 
         || item.remark != '' 

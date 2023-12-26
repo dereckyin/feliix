@@ -79,6 +79,7 @@ if($jwt){
             shipping_number,
             shipping_vendor,
             eta,
+            date_send,
             arrive,
             remark,
             remark_t,
@@ -138,6 +139,7 @@ if($jwt){
             $shipping_vendor = $row['shipping_vendor'];
 
             $eta = $row['eta'];
+            $date_send = $row['date_send'];
             $arrive = $row['arrive'];
             $remark = $row['remark'];
             $remark_t = $row['remark_t'];
@@ -178,6 +180,7 @@ if($jwt){
             "product" => $product,
 
             "eta" => $eta,
+            "date_send" => $date_send,
             "arrive" => $arrive,
             "remark" => $remark,
             "remark_t" => $remark_t,
