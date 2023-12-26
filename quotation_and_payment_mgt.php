@@ -671,6 +671,17 @@ $(function(){
                                     </select>
                                 </dd>
 
+                                <dt>Has Verified Payment Proof?</dt>
+                                <dd>
+                                    <select v-model="fil_proof">
+                                        <option value=""></option>
+                                        <option value="A">Has Verified Downpayment Proof and Has Verified Fullpayment Proof</option>
+                                        <option value="D">Has Verified Downpayment Proof but Not Have Verified Fullpayment Proof</option>
+                                        <option value="F">Not Have Verified Downpayment Proof but Has Verified Fullpayment Proof</option>
+                                        <option value="N">Not Have Verified Downpayment Proof and Not Have Verified Fullpayment Proof</option>
+                                    </select>
+                                </dd>
+
                                 <dt style="margin-bottom:-18px;">Amount</dt>
                                 <div class="half">
                                     <dt>lower bound</dt>

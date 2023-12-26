@@ -105,6 +105,8 @@ var app = new Vue({
     fil_keyowrd: "",
     fil_keyowrd_p: "",
 
+    fil_proof : "",
+
     od_factor1: "",
     od_factor1_order: "",
     od_factor2: "",
@@ -141,6 +143,9 @@ var app = new Vue({
               break;
             case "fs":
               _this.fil_status = tmp[1];
+              break;
+            case "fp":
+              _this.fil_proof = tmp[1];
               break;
             case "ft":
               _this.fil_creator = decodeURI(tmp[1]);
@@ -527,6 +532,8 @@ var app = new Vue({
         _this.fil_category +
         "&fs=" +
         _this.fil_status +
+        "&fp=" +
+        _this.fil_proof +
         "&ft=" +
         _this.fil_creator +
         "&fal=" +
@@ -573,6 +580,8 @@ var app = new Vue({
         _this.fil_category +
         "&fs=" +
         _this.fil_status +
+        "&fp=" +
+        _this.fil_proof +
         "&ft=" +
         _this.fil_creator +
         "&fal=" +
@@ -614,6 +623,7 @@ var app = new Vue({
         id: _this.id,
         fc: _this.fil_category,
         fs: _this.fil_status,
+        fp: _this.fil_proof,
         ft: _this.fil_creator,
         fal: _this.fil_amount_lower,
         fau: _this.fil_amount_upper,
@@ -984,6 +994,7 @@ var app = new Vue({
     filter_remove: function() {
       this.fil_category = '';
       this.fil_status = '';
+      this.fil_proof = '';
       this.fil_creator = '';
       this.fil_amount_upper = '';
       this.fil_amount_lower = '';
@@ -2202,6 +2213,7 @@ var app = new Vue({
         id: _this.id,
         fc: _this.fil_category,
         fs: _this.fil_status,
+        fp: _this.fil_proof,
         ft: _this.fil_creator,
         fal: _this.fil_amount_lower,
         fau: _this.fil_amount_upper,
