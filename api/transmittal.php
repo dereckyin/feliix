@@ -175,7 +175,7 @@ if (!isset($jwt)) {
         $transmittal_remark = $row['transmittal_remark'];
         $transmittal_purpose = array_filter(explode(',', $row['transmittal_purpose']));
 
-
+        $files = GetRecentFiles($row['id'], $db);
 
         $page_count = $row['page_count'];
         $pages = GetPages($row['id'], $db, $prefix);
@@ -269,6 +269,8 @@ if (!isset($jwt)) {
             "submit_date" => $submit_date,
             "signature_page" => $signature_page,
             "signature_pixel" => $signature_pixel,
+
+            "files" => $files,
 
             "product_array" => $product_array,
         );
@@ -2018,4 +2020,27 @@ function GetProductId($code, $db)
     }
 
     return $pid;
+}
+
+function GetRecentFiles($pid, $db){
+    // $sql = "SELECT f.id, COALESCE(f.filename, '') filename, COALESCE(f.bucketname, '') bucket, COALESCE(f.gcp_name, '') gcp_name, u.username, pm.created_at FROM transmittal pm LEFT JOIN gcp_storage_file f ON f.batch_id = pm.id left join user u on u.id = f.create_id  AND f.batch_type = 'transmittal' where pm.id = " . $pid . " and pm.status <> -1 and f.status <> -1";
+    $sql = "SELECT f.id, COALESCE(f.filename, '') filename, COALESCE(f.bucketname, '') bucket, COALESCE(f.gcp_name, '') gcp_name, (select username from user where id = f.create_id) username, f.created_at FROM transmittal pm  LEFT JOIN gcp_storage_file f ON f.batch_id = pm.id AND f.batch_type = 'transmittal' where pm.id = " . $pid . " and pm.status <> -1 and f.status <> -1";
+    $stmt = $db->prepare( $sql );
+
+    $stmt->execute();
+
+    $result = [];
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $result[] = array(
+            "id" => $row['id'],
+            "filename" => $row['filename'],
+            "bucket" => $row['bucket'],
+            "gcp_name" => $row['gcp_name'],
+            "username" => $row['username'],
+            "created_at" => $row['created_at'],
+        );
+    }
+
+    return $result;
 }

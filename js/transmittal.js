@@ -44,6 +44,7 @@ var app = new Vue({
       caption_second_line: '',
       content_second_line: '',
 
+      files: [],
 
       // header old
       project_category : '',
@@ -541,6 +542,51 @@ var app = new Vue({
     },
   
     methods: {
+      open_header: function() {
+
+        if(this.files.length > 0)
+        {
+          Swal.fire({
+            text: "Transmittal record already with scanned copy is not allowed to edit anymore. If needing to edit, please delete the scanned copy first.",
+            icon: 'warning',
+            confirmButtonText: 'OK'
+          })
+          return;
+        }
+        else
+          this.show_header = !this.show_header;
+      },
+
+      open_item: function() {
+
+        if(this.files.length > 0)
+        {
+          Swal.fire({
+            text: "Transmittal record already with scanned copy is not allowed to edit anymore. If needing to edit, please delete the scanned copy first.",
+            icon: 'warning',
+            confirmButtonText: 'OK'
+          })
+          return;
+        }
+        else
+          this.show_subtotal = !this.show_subtotal;
+      },
+
+      open_contact: function() {
+
+        if(this.files.length > 0)
+        {
+          Swal.fire({
+            text: "Transmittal record already with scanned copy is not allowed to edit anymore. If needing to edit, please delete the scanned copy first.",
+            icon: 'warning',
+            confirmButtonText: 'OK'
+          })
+          return;
+        }
+        else
+          this.show_contact = !this.show_contact;
+      },
+
       getTagGroup: function() {
         let _this = this;
           
@@ -2573,6 +2619,8 @@ Installation:`;
               _this.transmittal_var_remark = _this.receive_records[0].transmittal_remark;
               _this.transmittal_purpose = _this.receive_records[0].transmittal_purpose;
               _this.transmittal_var_purpose = _this.receive_records[0].transmittal_purpose;
+
+              _this.files = _this.receive_records[0].files;
 
               // page
               _this.pages = _this.receive_records[0].pages;

@@ -32,6 +32,8 @@ $submit_date = isset($_POST['submit_date']) ? $_POST['submit_date'] : '';
 
 $add_term = isset($_POST['add_term']) ? $_POST['add_term'] : '';
 
+$generate = isset($_POST['generate']) ? $_POST['generate'] : '';
+
 $title = isset($_POST['title']) ? $_POST['title'] : '';
 $kind = isset($_POST['kind']) ? $_POST['kind'] : '';
 $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : 0;
@@ -80,7 +82,10 @@ else
         // now you can apply
         $uid = $user_id;
 
-        $serial_name = GetSerailName($db);
+        if($generate == 'N')
+            $serial_name = "";
+        else
+            $serial_name = GetSerailName($db);
     
         $query = "INSERT INTO transmittal
         SET

@@ -295,7 +295,15 @@ header( 'location:index' );
                         <div class="formbox">
                             <dl>
                                 <dt>Transmittal Name</dt>
-                                <dd><input type="text" placeholder="" v-model="ins_title"></dd>
+                                <dd><input type="text" placeholder="" v-model="ins_title" style="margin-bottom: 15px;"></dd>
+
+                                <dt>Need System to Generate Transmittal Number?</dt>
+                                <dd style="margin-bottom: 15px;">
+                                    <select v-model='generate'>
+                                        <option value="">Yes</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </dd>
 
                                 <dt>Relate To</dt>
                                 <dd class="relate_to" style="margin-top: -5px;">
