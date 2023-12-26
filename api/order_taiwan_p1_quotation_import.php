@@ -582,14 +582,16 @@ function IsNormalProduct($pid, $v1, $v2, $v3, $db){
 }
 
 function MatchBrandPattern($code){
-    $patterns = ['FELIIX CL ==> COLORS',
+    $patterns = ['FELIIX CL ==>COLORS',
     'FELIIX DL ==>DANCELIGHT',
     'FELIIX ET ==>ELITES',
     'FELIIX EL ==>EVERLIGHT',
+    'FELIIX GD ==>GLEDOPTO',
     'FELIIX GT ==>GENTECH',
     'FELIIX HG ==>HUANG GONG',
     'FELIIX LD ==>LEDOUX',
     'FELIIX RT ==>ROOSTER',
+    'FELIIX SG ==>SASUGAS',
     'FELIIX SD ==>SEEDDESIGN',
     'FELIIX SB ==>SHAN BEN',
     'FELIIX ST ==>SHINE TOP',
