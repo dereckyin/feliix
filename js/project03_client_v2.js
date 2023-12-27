@@ -54,7 +54,7 @@ var app = new Vue({
         { project_status: "Close", id: 2 },
       ],
 
-    baseURL:'https://storage.cloud.google.com/feliiximg/',
+    baseURL:'https://storage.googleapis.com/feliiximg/',
 
     // Venue
     venue: '',
@@ -2764,7 +2764,7 @@ var app1 = new Vue({
     ],
     perPage: 5,
 
-    baseURL: 'https://storage.cloud.google.com/feliiximg/',
+    baseURL: 'https://storage.googleapis.com/feliiximg/',
 
 
     // calendar

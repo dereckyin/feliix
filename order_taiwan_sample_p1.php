@@ -1783,7 +1783,7 @@ try {
                                 1 ( show available swatches ) , change the size to 1.5x 1.5 ,kindly include cable
                                 management ( cable outlets) and vertical pole ( same color with the table legs grey
                                 color.
-                                <a href="https://storage.cloud.google.com/feliiximg/1648525715_additional table.jpg"
+                                <a href="https://storage.googleapis.com/feliiximg/1648525715_additional table.jpg"
                                    target="_blank" class="attch">additional table.jpg</a>
                                 <i class="t">(Stan Fernandez at 2022-03-29 11:48:35)</i>
                                 <div class="already_read">Dennis Lin</div>
@@ -1799,7 +1799,7 @@ try {
                                 1 ( show available swatches ) , change the size to 1.5x 1.5 ,kindly include cable
                                 management ( cable outlets) and vertical pole ( same color with the table legs grey
                                 color.
-                                <a href="https://storage.cloud.google.com/feliiximg/1648525715_additional table.jpg"
+                                <a href="https://storage.googleapis.com/feliiximg/1648525715_additional table.jpg"
                                    target="_blank" class="attch">additional table.jpg</a>
                                 <i class="t">(Stan
                                     Fernandez at 2022-03-29 11:48:35)</i>

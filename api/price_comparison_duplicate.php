@@ -1010,9 +1010,9 @@ function GetItems($option_id, $legend_id, $db){
         $v2 = $row['v2'];
         $v3 = $row['v3'];
         
-        $url1 = $photo1 == "" ? "" : "https://storage.cloud.google.com/feliiximg/" . $photo1;
-        $url2 = $photo2 == "" ? "" : "https://storage.cloud.google.com/feliiximg/" . $photo2;
-        $url3 = $photo3 == "" ? "" : "https://storage.cloud.google.com/feliiximg/" . $photo3;
+        $url1 = $photo1 == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo1;
+        $url2 = $photo2 == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo2;
+        $url3 = $photo3 == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo3;
         
         
         $merged_results[] = array(
@@ -1565,7 +1565,7 @@ function GetSig($qid, $page, $db)
                 "id" => $id,
                 "type" => $type,
                 "photo" => $photo,
-                "url" =>  $photo != '' ? 'https://storage.cloud.google.com/feliiximg/' . $photo : '',
+                "url" =>  $photo != '' ? 'https://storage.googleapis.com/feliiximg/' . $photo : '',
                 "name" => $name,
                 "position" => $position,
                 "phone" => $phone,
@@ -1838,7 +1838,7 @@ function GetBlocks($qid, $db){
         $listing = $row['listing'];
         
         $type == "" ? "" : "image";
-        $url = $photo == "" ? "" : "https://storage.cloud.google.com/feliiximg/" . $photo;
+        $url = $photo == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo;
         
         $merged_results[] = array(
             "id" => $id,

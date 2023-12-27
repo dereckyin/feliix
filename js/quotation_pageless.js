@@ -10,7 +10,7 @@ var app = new Vue({
       p_pid:0,
       p_brand:0,
 
-      //img_url: 'https://storage.cloud.google.com/feliiximg/',
+      //img_url: 'https://storage.googleapis.com/feliiximg/',
 
       img_url: 'https://storage.googleapis.com/feliiximg/',
        

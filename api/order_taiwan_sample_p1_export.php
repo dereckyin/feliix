@@ -1120,7 +1120,7 @@ function GetProductMain($id, $v1, $v2, $v3, $db)
 }
 
 function GetProduct($id, $pv1, $pv2, $pv3, $db){
-    $sql = "SELECT *, CONCAT('https://storage.cloud.google.com/feliiximg/' , photo) url FROM product WHERE product_id = ". $id . " and STATUS <> -1";
+    $sql = "SELECT *, CONCAT('https://storage.googleapis.com/feliiximg/' , photo) url FROM product WHERE product_id = ". $id . " and STATUS <> -1";
 
     $merged_results = array();
 

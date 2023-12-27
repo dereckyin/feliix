@@ -351,7 +351,7 @@ function addMultiLineAttach($cell, $strArr)
 {
     // add text line together
     foreach ($strArr as $v) {
-        $cell->addLink("https://storage.cloud.google.com/feliiximg/" . $v['gcp_name'], htmlspecialchars($v['filename']), 'Link', ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, 'valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER]);
+        $cell->addLink("https://storage.googleapis.com/feliiximg/" . $v['gcp_name'], htmlspecialchars($v['filename']), 'Link', ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, 'valign' => \PhpOffice\PhpWord\SimpleType\VerticalJc::CENTER]);
     }
 }
 
