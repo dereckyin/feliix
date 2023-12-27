@@ -59,7 +59,7 @@ function sendGridMail($name, $email1,  $leaver, $projectname, $remark)
     $email->setSubject("Downpayment Proof Submitted by " . $leaver . "(" . $projectname . ")" );
     $email->addTo($email1, $name);
 
-    $baseURL = "https://storage.cloud.google.com/feliiximg/";
+    $baseURL = "https://storage.googleapis.com/feliiximg/";
 
     $content =  "<p>Dear " . $name . ",</p>";
     $content = $content . "<p>" . $leaver . " has applied for downpayment proof, Following are the details:</p>";
@@ -14457,7 +14457,7 @@ $content = $content . '
     <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
 
     if($_record["photo1"] != "")
-        $content .= "<img style='max-width: 400px; max-height: 400px;' src='https://storage.cloud.google.com/feliiximg/" . $_record["photo1"] . "' >";
+        $content .= "<img style='max-width: 400px; max-height: 400px;' src='https://storage.googleapis.com/feliiximg/" . $_record["photo1"] . "' >";
 
     $content .= '</td>
     </tr>

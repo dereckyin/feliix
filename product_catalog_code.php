@@ -848,6 +848,6 @@
 
 <!-- import JavaScript -->
 <script src="js/element-ui@2.15.14/lib/index.js"></script>
-<script src="js/product_calatog_code.js"></script>
+<script defer src="js/product_calatog_code.js"></script>
 
 </html>

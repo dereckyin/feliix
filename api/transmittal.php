@@ -1427,7 +1427,7 @@ function GetSigInfo($qid, $db, $prefix)
                 "id" => $id,
                 "type" => $type,
                 "photo" => $photo,
-                "url" =>  $photo != '' ? 'https://storage.cloud.google.com/feliiximg/' . $photo : '',
+                "url" =>  $photo != '' ? 'https://storage.googleapis.com/feliiximg/' . $photo : '',
                 "name" => $name,
                 "position" => $position,
                 "phone" => $phone,
@@ -1517,7 +1517,7 @@ function GetSig($qid, $page, $db, $prefix)
                 "id" => $id,
                 "type" => $type,
                 "photo" => $photo,
-                "url" =>  $photo != '' ? 'https://storage.cloud.google.com/feliiximg/' . $photo : '',
+                "url" =>  $photo != '' ? 'https://storage.googleapis.com/feliiximg/' . $photo : '',
                 "name" => $name,
                 "position" => $position,
                 "phone" => $phone,
@@ -1944,7 +1944,7 @@ function GetProductItems($pages, $q_id, $db)
                 $listing = $row['list'];
             
                 $type == "" ? "" : "image";
-                $url = $photo == "" ? "" : "https://storage.cloud.google.com/feliiximg/" . $photo;
+                $url = $photo == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo;
             
                 $merged_results[] = array(
                     "id" => $id,

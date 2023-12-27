@@ -50,7 +50,7 @@ var app = new Vue({
 
     perPage: 10,
 
-    baseURL: "https://storage.cloud.google.com/feliiximg/",
+    baseURL: "https://storage.googleapis.com/feliiximg/",
 
     // I&AM
     my_department: "",
@@ -2739,7 +2739,7 @@ var app1 = new Vue({
     ],
     perPage: 5,
 
-    baseURL: "https://storage.cloud.google.com/feliiximg/",
+    baseURL: "https://storage.googleapis.com/feliiximg/",
 
     // calendar
     attendee: [],

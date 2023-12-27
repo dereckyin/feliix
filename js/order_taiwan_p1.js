@@ -7,7 +7,7 @@ var app = new Vue({
       l_id:0,
       id:0,
 
-      //img_url: 'https://storage.cloud.google.com/feliiximg/',
+      //img_url: 'https://storage.googleapis.com/feliiximg/',
 
       img_url: 'https://storage.googleapis.com/feliiximg/',
        
@@ -303,7 +303,7 @@ var app = new Vue({
         // product information
         p_product : {},
 
-        p_baseURL: "https://storage.cloud.google.com/feliiximg/",
+        p_baseURL: "https://storage.googleapis.com/feliiximg/",
 
         p_category: "",
         p_sub_category: "",

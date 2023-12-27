@@ -974,7 +974,7 @@ function GetSigInfo($qid, $db)
                 "id" => $id,
                 "type" => $type,
                 "photo" => $photo,
-                "url" =>  $photo != '' ? 'https://storage.cloud.google.com/feliiximg/' . $photo : '',
+                "url" =>  $photo != '' ? 'https://storage.googleapis.com/feliiximg/' . $photo : '',
                 "name" => $name,
                 "position" => $position,
                 "phone" => $phone,
@@ -1061,7 +1061,7 @@ function GetSig($qid, $page, $db)
                 "id" => $id,
                 "type" => $type,
                 "photo" => $photo,
-                "url" =>  $photo != '' ? 'https://storage.cloud.google.com/feliiximg/' . $photo : '',
+                "url" =>  $photo != '' ? 'https://storage.googleapis.com/feliiximg/' . $photo : '',
                 "name" => $name,
                 "position" => $position,
                 "phone" => $phone,
@@ -1301,7 +1301,7 @@ function GetBlocks($qid, $db){
 
     
         $type == "" ? "" : "image";
-        $url = $photo == "" ? "" : "https://storage.cloud.google.com/feliiximg/" . $photo;
+        $url = $photo == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo;
   
         $merged_results[] = array(
             "id" => $id,

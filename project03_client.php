@@ -2561,11 +2561,11 @@ header('location:index');
                         <li><b>{{ receive_record.num }}</b></li>
                         <li class="cmt">
                             <p style="white-space: pre;">{{ receive_record.message }}
-                                <a v-for="item in receive_record.attachments" class="attch" :href="'https://storage.cloud.google.com/feliiximg/' + item.gcp_name" target="_blank">{{ item.name }}</a>
+                                <a v-for="item in receive_record.attachments" class="attch" :href="'https://storage.googleapis.com/feliiximg/' + item.gcp_name" target="_blank">{{ item.name }}</a>
                                 <i class="t">{{ receive_record.username }} at {{receive_record.created_at }}</i>
                             </p>
                             <p v-for="item in receive_record.items" style="white-space: pre;">{{ item.f_message }}
-                                <a class="attch" v-for="it in item.f_attachments" :href="'https://storage.cloud.google.com/feliiximg/'+ it.gcp_name" target="_blank">{{ it.name }}</a>
+                                <a class="attch" v-for="it in item.f_attachments" :href="'https://storage.googleapis.com/feliiximg/'+ it.gcp_name" target="_blank">{{ it.name }}</a>
                                 <i class="t"> {{ item.f_username }} at {{ item.f_created_at }}</i>
                             </p>
                         </li>
@@ -3024,7 +3024,7 @@ header('location:index');
                                 var elm = '<div class="file-element">' +
                                     '<input type="checkbox" id="' + element + '" name="file_elements_old" value="' + element + '" checked disabled>' +
                                     '<label for="' + element + '">' +
-                                    '<a href="https://storage.cloud.google.com/feliiximg/' + element + '" target="_blank">' + element + '</a>' +
+                                    '<a href="https://storage.googleapis.com/feliiximg/' + element + '" target="_blank">' + element + '</a>' +
                                     '</label>' +
                                     '</div>';
 
@@ -3559,7 +3559,7 @@ header('location:index');
                 var elm = '<div class="file-element">' +
                     '<input type="checkbox" id="' + element + '" name="file_elements_old" value="' + element + '" checked disabled>' +
                     '<label for="' + element + '">' +
-                    '<a href="https://storage.cloud.google.com/feliiximg/' + element + '" target="_blank">' + element + '</a>' +
+                    '<a href="https://storage.googleapis.com/feliiximg/' + element + '" target="_blank">' + element + '</a>' +
                     '</label>' +
                     '</div>';
 

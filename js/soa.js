@@ -12,7 +12,7 @@ var app = new Vue({
 
       soa: false,
 
-      //img_url: 'https://storage.cloud.google.com/feliiximg/',
+      //img_url: 'https://storage.googleapis.com/feliiximg/',
 
       img_url: 'https://storage.googleapis.com/feliiximg/',
        

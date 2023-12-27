@@ -546,7 +546,7 @@ var filter = new Vue({
           ],
           perPage: 5,
       
-          baseURL: 'https://storage.cloud.google.com/feliiximg/',
+          baseURL: 'https://storage.googleapis.com/feliiximg/',
       
       
           // calendar
@@ -872,7 +872,7 @@ var memo = new Vue({
       ],
       perPage: 5,
   
-      baseURL: 'https://storage.cloud.google.com/feliiximg/',
+      baseURL: 'https://storage.googleapis.com/feliiximg/',
   
   
       // calendar
