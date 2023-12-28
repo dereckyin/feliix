@@ -807,7 +807,7 @@ if($jwt){
             $payable->getFont()->setBold(true);
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
-            $payable = $richText->createTextRun(" Lailani Ong 0927-9087873\n" . '                             Ronnie Paredes 0956-4082194');
+            $payable = $richText->createTextRun(" Lailani Ong 0938-7388808\n" . '                             Ronnie Paredes 0956-4082194');
             $payable->getFont()->setSize(18);
             $payable->getFont()->setName('M+ 1c regular');
             $sheet->getCell('B' . $i)->setValue($richText);
