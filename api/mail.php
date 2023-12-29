@@ -14457,7 +14457,7 @@ $content = $content . '
     <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
 
     if($_record["photo1"] != "")
-        $content .= "<img style='max-width: 400px; max-height: 400px;' src='https://storage.googleapis.com/feliiximg/" . $_record["photo1"] . "' >";
+        $content .= "<img style='max-width: 400px; max-height: 400px;' src='https://storage.googleapis.com/feliiximg/" . urlencode($_record["photo1"]) . "' >";
 
     $content .= '</td>
     </tr>
