@@ -4534,3 +4534,29 @@ alter table transmittal_page_type_block change `qty` `qty` varchar(24) COLLATE u
 -- 20231220 od_item
 ALTER TABLE od_item add column `status_at` timestamp NULL DEFAULT NULL;
 ALTER TABLE od_item add column `date_send` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20231228 add product code
+update product_category_attribute set category = 'Single Product' where cat_id = '10010000' and level = 2; 
+update product_category_attribute set category = 'Product Set' where cat_id = '10020000' and level = 2; 
+update product_category_attribute set `status` = -1 where cat_id = '10030000' and level = 2; 
+
+ALTER TABLE product_category
+ADD COLUMN `p1_code` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE product_category
+ADD COLUMN `p2_code` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE product_category
+ADD COLUMN `p3_code` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE product_category
+ADD COLUMN `p1_id` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE product_category
+ADD COLUMN `p2_id` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE product_category
+ADD COLUMN `p3_id` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE product_category
+ADD COLUMN `p1_qty` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE product_category
+ADD COLUMN `p2_qty` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE product_category
+ADD COLUMN `p3_qty` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';

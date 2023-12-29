@@ -63,6 +63,20 @@ var app = new Vue({
 
     variation_product: [],
 
+    // product set
+    p1_code : "",
+    p1_qty : "",
+    p1_id : "",
+
+    p2_code : "",
+    p2_qty : "",
+    p2_id : "",
+
+    p3_code : "",
+    p3_qty : "",
+    p3_id : "",
+
+
     // info
     name :"",
     title: "",
@@ -100,6 +114,16 @@ var app = new Vue({
 
     tag_group : [],
 
+
+    search: '',
+    toggle: false,
+    books: [
+      {name: 'Liste des livres de Chair de poule'},
+      {name: 'Les Cent Meilleurs Romans policiers de tous les temps'},
+      {name: 'Liste des livres publiés par Champ libre'}
+    ],
+    newBooks: []
+
   },
 
   created() {
@@ -132,8 +156,8 @@ var app = new Vue({
         this.accessory_item.find((element) => element.cat_id == this.category)
       ).lv2[0];
 
-      if(this.category == "10000000")
-        this.sub_category = "10010000";
+      // if(this.category == "10000000")
+      //   this.sub_category = "10010000";
     },
 
     sub_category() {
@@ -163,6 +187,16 @@ var app = new Vue({
     quoted_price () {
       this.quoted_price_change = new Date().toISOString().slice(0, 10);
     },
+
+    search(val) {
+      this.newBooks = [];
+      this.books.forEach(element => {
+        if(element.name.includes(val) && val != "") {
+          this.newBooks.push(element);
+        }
+      });
+    }
+    
 
   },
 
@@ -222,13 +256,14 @@ var app = new Vue({
       });
     },
 
-    search() {
-      this.filter_apply();
-    },
+    // search() {
+    //   this.filter_apply();
+    // },
 
     edit_category() {
       this.edit_mode = true;
 $("#tag01").selectpicker("refresh");
+$("#tag0102").selectpicker("refresh");
       console.log("edit category");
     },
 
@@ -854,6 +889,11 @@ $("#tag01").selectpicker("refresh");
       return "";
     },
 
+    is_code_existed: async function(code) {
+      let ret = await axios.get("api/product_code_existed_check", { params: { code: code, id: 0 } });
+
+      return ret.data;
+    },
 
 
     save: async function() {
@@ -867,6 +907,81 @@ $("#tag01").selectpicker("refresh");
         });
         return;
       }
+
+      if(this.sub_category == '10020000')
+      {
+        if(this.p1_code.trim() == '' || this.p2_code.trim() == '')
+        {
+          Swal.fire({
+            text: "You have to input the code and qty for Product 1 and Product 2. Qty should be greater than 0.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+  
+        // p1_qty and p2_qty string to number > 0
+        this.p1_qty = Number(this.p1_qty);
+        this.p2_qty = Number(this.p2_qty);
+        
+        if(this.p1_qty <= 0 || this.p2_qty <= 0)
+        {
+          Swal.fire({
+            text: "You have to input the code and qty for Product 1 and Product 2. Qty should be greater than 0.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+  
+        let p1_data = [];
+        let p2_data = [];
+        let p3_data = [];
+  
+        this.p1_id = "";
+        this.p2_id = "";
+        this.p3_id = "";
+  
+        let error_msg = '';
+  
+        if(this.p1_code.trim() != '')
+        {
+          p1_data = await this.is_code_existed(this.p1_code.trim());
+          if(p1_data.length > 0)
+            this.p1_id = p1_data[0].id;
+          else
+            error_msg = error_msg + 'Product 1 ';
+        }
+  
+        if(this.p2_code.trim() != '')
+        {
+          p2_data = await this.is_code_existed(this.p2_code.trim());
+          if(p2_data.length > 0)
+            this.p2_id = p2_data[0].id;
+          else
+            error_msg = error_msg + 'Product 2 ';
+        }
+  
+        if(this.p3_code.trim() != '')
+        {
+          p3_data = await this.is_code_existed(this.p3_code.trim());
+          if(p3_data.length > 0)
+            this.p3_id = p3_data[0].id;
+          else
+            error_msg = error_msg + 'Product 3 ';
+        }
+  
+        if(error_msg != '')
+        {
+          Swal.fire({
+            text: error_msg + 'that you input is not an existing product in the product database. Please check product code again!!',
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+      }
+
 
       let show_confirm = true;
 
@@ -936,59 +1051,64 @@ $("#tag01").selectpicker("refresh");
           var form_Data = new FormData();
 
           let attributes = [];
-          // special_infomation -> attributes
-          for (var i = 0; i < this.special_infomation.length; i++) {
-            let category = this.special_infomation[i].category;
-            let cat_id = this.special_infomation[i].cat_id;
-            let value = this.$refs[cat_id][0].value
-            
-            var obj = {
-              category: category,
-              cat_id: cat_id,
-              value: value
-            };
-            attributes.push(obj);
+          if(this.sub_category != '10020000')
+          {
+            // special_infomation -> attributes
+            for (var i = 0; i < this.special_infomation.length; i++) {
+              let category = this.special_infomation[i].category;
+              let cat_id = this.special_infomation[i].cat_id;
+              let value = this.$refs[cat_id][0].value
+              
+              var obj = {
+                category: category,
+                cat_id: cat_id,
+                value: value
+              };
+              attributes.push(obj);
+            }
           }
 
           let accessory = [];
-          for(var i = 0; i < this.accessory_infomation.length; i++) {
-            let category = this.accessory_infomation[i].category;
-            let cat_id = this.accessory_infomation[i].cat_id;
-            let detail = this.accessory_infomation[i].detail[0];
-            
-            let item = [];
-            for(var j = 0; j < detail.length; j++) {
-              let id = detail[j].id;
-              let code = detail[j].code;
-              let name = detail[j].name;
-              let price = detail[j].price;
-              let price_ntd = detail[j].price_ntd;
-              let url = detail[j].url;
+
+            for(var i = 0; i < this.accessory_infomation.length; i++) {
+              let category = this.accessory_infomation[i].category;
+              let cat_id = this.accessory_infomation[i].cat_id;
+              let detail = this.accessory_infomation[i].detail[0];
               
-              let file = document.getElementById('accessory_' + cat_id + '_' + id).files[0];
-              if(typeof file !== 'undefined') 
-                form_Data.append('accessory_' + cat_id + '_' + id, file);
-
+              let item = [];
+              for(var j = 0; j < detail.length; j++) {
+                let id = detail[j].id;
+                let code = detail[j].code;
+                let name = detail[j].name;
+                let price = detail[j].price;
+                let price_ntd = detail[j].price_ntd;
+                let url = detail[j].url;
+                
+                let file = document.getElementById('accessory_' + cat_id + '_' + id).files[0];
+                if(typeof file !== 'undefined') 
+                  form_Data.append('accessory_' + cat_id + '_' + id, file);
+  
+                var obj = {
+                  id: id,
+                  code: code,
+                  name: name,
+                  price: price,
+                  price_ntd: price_ntd,
+                  url: url,
+                };
+                item.push(obj);
+              }
+  
               var obj = {
-                id: id,
-                code: code,
-                name: name,
-                price: price,
-                price_ntd: price_ntd,
-                url: url,
+                category: category,
+                cat_id: cat_id,
+                detail: item,
               };
-              item.push(obj);
+  
+              accessory.push(obj);
+  
             }
-
-            var obj = {
-              category: category,
-              cat_id: cat_id,
-              detail: item,
-            };
-
-            accessory.push(obj);
-
-          }
+          
 
           let variation = [];
           // variation
@@ -1064,12 +1184,16 @@ $("#tag01").selectpicker("refresh");
           form_Data.append("sub_category", _this.sub_category);
           form_Data.append("brand", _this.brand);
 
-          let tag01 = $('#tag01').val();
-         // let tag02 = $('#tag02').val();
-        //  if( _this.category === '10000000')
+          if(this.sub_category == '10020000')
+          {
+            let tag0102 = $('#tag0102').val();
+            form_Data.append("tags", tag0102.join());
+          }
+          else
+          {
+            let tag01 = $('#tag01').val();
             form_Data.append("tags", tag01.join());
-          // else
-          //   form_Data.append("tags", "");
+          }
 
           form_Data.append("code", _this.code);
           form_Data.append("price_ntd", _this.price_ntd);
@@ -1095,6 +1219,18 @@ $("#tag01").selectpicker("refresh");
           form_Data.append("attributes", JSON.stringify(attributes));
           form_Data.append("accessory", JSON.stringify(accessory));
           form_Data.append("variation", JSON.stringify(variation));
+
+          form_Data.append("p1_code", _this.p1_code);
+          form_Data.append("p1_qty", _this.p1_qty);
+          form_Data.append("p1_id", _this.p1_id);
+
+          form_Data.append("p2_code", _this.p2_code);
+          form_Data.append("p2_qty", _this.p2_qty);
+          form_Data.append("p2_id", _this.p2_id);
+
+          form_Data.append("p3_code", _this.p3_code);
+          form_Data.append("p3_qty", _this.p3_qty);
+          form_Data.append("p3_id", _this.p3_id);
 
           for (var i = 1; i < 4; i++) {
             let file = document.getElementById('photo' + i).files[0];
@@ -1160,6 +1296,9 @@ $("#tag01").selectpicker("refresh");
 
       $('#tag01').val('default');
       $('#tag01').selectpicker('refresh');
+
+      $('#tag0102').val('default');
+      $('#tag0102').selectpicker('refresh');
 
      // $('#tag02').val('default');
      // $('#tag02').selectpicker('refresh');
@@ -1238,6 +1377,18 @@ $("#tag01").selectpicker("refresh");
       if(f2) f2.value = "";
       var f3 = document.getElementById('photo3');
       if(f3) f3.value = "";
+
+      this.p1_code = '';
+      this.p1_qty = '';
+      this.p1_id = '';
+
+      this.p2_code = '';
+      this.p2_qty = '';
+      this.p2_id = '';
+
+      this.p3_code = '';
+      this.p3_qty = '';
+      this.p3_id = '';
 
     },
 

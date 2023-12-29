@@ -141,6 +141,19 @@ else
                 $price_change = $row['price_change'];
                 $price_ntd_change = $row['price_ntd_change'];
 
+                $p1_code = $row['p1_code'];
+                $p1_id = $row['p1_id'];
+                $p1_qty = $row['p1_qty'];
+
+                $p2_code = $row['p2_code'];
+                $p2_id = $row['p2_id'];
+                $p2_qty = $row['p2_qty'];
+
+                $p3_code = $row['p3_code'];
+                $p3_id = $row['p3_id'];
+                $p3_qty = $row['p3_qty'];
+
+
                 $product = GetProduct($id, $db);
 
                 $variation1_value = [];
@@ -287,6 +300,18 @@ else
                                     "quoted_price_change" => substr($quoted_price_change, 0, 10),
                                     "price_change" => substr($price_change, 0, 10),
                                     "price_ntd_change" => substr($price_ntd_change, 0, 10),
+
+                                    "p1_code" => $p1_code,
+                                    "p1_qty" => $p1_qty,
+                                    "p1_id" => $p1_id,
+
+                                    "p2_code" => $p2_code,
+                                    "p2_qty" => $p2_qty,
+                                    "p2_id" => $p2_id,
+
+                                    "p3_code" => $p3_code,
+                                    "p3_qty" => $p3_qty,
+                                    "p3_id" => $p3_id,
 
             );
             }

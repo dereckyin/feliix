@@ -303,6 +303,13 @@ try {
             display: inline-block;
         }
 
+        .one_fifth{
+            width: 20%;
+            display: inline-block;
+            margin-left: 40px;
+            min-width: 100px;
+        }
+
         .one_whole {
             width: 96%;
             display: inline-block;
@@ -721,10 +728,11 @@ try {
                         </option>
                     </select>
 
-                    <select v-if="category == '10000000'" class="form-control">
-                       
-                    </select>
-                </li>
+                        <select v-if="category == '10000000'" class="form-control" v-model="sub_category">
+                            <option v-for="(item, index) in sub_cateory_item" :value="item.cat_id" :key="item.category">
+                                {{ item.category }}</option>
+                        </select>
+                    </li>
 
                 <li v-if="edit_mode == false">
                     <button class="btn btn-primary" :disabled="sub_category == '' || category == ''"
@@ -738,7 +746,7 @@ try {
         </div>
 
 
-        <div class="region" v-if="edit_mode == true">
+        <div class="region" v-if="edit_mode == true && sub_category != '10020000'">
             <span class="heading">Basic Information</span>
 
             <ul>
@@ -761,8 +769,11 @@ try {
                         <option v-for="(item, index) in sub_cateory_item" :value="item.cat_id" :key="item.category">{{ item.category }}</option>
                     </select>
 
-                    <select v-if="category == '10000000'" class="form-control one_third" :disabled="edit_mode == true">
-                    </select>
+                    <select v-if="category == '10000000'" class="form-control one_third" v-model="sub_category"
+                            :disabled="edit_mode == true">
+                            <option v-for="(item, index) in sub_cateory_item" :value="item.cat_id" :key="item.category">
+                                {{ item.category }}</option>
+                        </select>
                 </li>
             </ul>
 
@@ -947,7 +958,121 @@ try {
         </div>
 
 
-        <div class="region" v-if="edit_mode == true">
+        <!-- 因應 Lighitng 類別的 Product Set 子類別，所建立的 表單區塊 -->
+        <div class="region" v-show="edit_mode == true && sub_category == '10020000'">
+            <span class="heading">Basic Information</span>
+
+            <ul>
+                <li>ID</li>
+                <li><input type="text" v-model="id" class="form-control one_half" disabled></li>
+            </ul>
+
+            <ul>
+                <li>
+                    Category
+                </li>
+                <li>
+                    <select class="form-control one_third" v-model="category" :disabled="edit_mode == true">
+                        <option value="" selected>Select one value</option>
+                        <option value="10000000">Lighting</option>
+                        <option value="20000000">Systems Furniture</option>
+                    </select>
+
+                    <select v-if="category == '20000000'" class="form-control one_third" v-model="sub_category" :disabled="edit_mode == true">
+                        <option v-for="(item, index) in sub_cateory_item" :value="item.cat_id" :key="item.category">{{ item.category }}</option>
+                    </select>
+
+                    <select v-if="category == '10000000'" class="form-control one_third" v-model="sub_category"
+                            :disabled="edit_mode == true">
+                            <option v-for="(item, index) in sub_cateory_item" :value="item.cat_id" :key="item.category">
+                                {{ item.category }}</option>
+                        </select>
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    Tag
+                </li>
+                <li>
+                <select class="selectpicker" multiple data-live-search="true" data-size="8" data-width="96%" title="No tag selected"
+        id="tag0102">
+
+        <?php
+            for ($x = 0; $x < count($tag_group); $x++) {
+                echo "<optgroup label='" . $tag_group[$x]["group"] . "'>";
+
+                for($j=0; $j < count($tag_group[$x]['items']); $j++) {
+                    echo "<option value='" . $tag_group[$x]['items'][$j]['item_name'] . "'>" . $tag_group[$x]['items'][$j]['item_name'] . "</option>";
+                }
+                echo "</optgroup>";
+            }
+        ?>
+<!--
+        <optgroup v-for="(group, index) in tag_group" :label="group.group">
+
+            <option v-for="(it, index2) in group.items" :value="it.item_name">{{ it.item_name }}</option>
+
+        </optgroup>
+        -->
+</select>
+                </li>
+                <!-- <li v-show="category == '20000000'">
+                    <select class="selectpicker" multiple data-live-search="true" data-size="8" data-width="96%" title="No tag selected">
+
+                    </select>
+                </li> -->
+            </ul>
+
+            <ul>
+                <li>
+                    Code
+                </li>
+                <li>
+                    <input type="text" class="form-control one_half" v-model="code">
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    Description
+                </li>
+                <li>
+                    <textarea class="form-control one_whole" rows="10" v-model="description">
+
+                    </textarea>
+                </li>
+            </ul>
+
+            <ul>
+                <li>Product 1</li>
+                <li>
+                    <input type="text" class="form-control one_half" placeholder="Product Code" v-model="p1_code">
+                    <input type="number" class="form-control one_fifth" min="1" placeholder="Qty" v-model="p1_qty">
+                </li>
+            </ul>
+
+            <ul>
+                <li>Product 2</li>
+                <li>
+                    <input type="text" class="form-control one_half" placeholder="Product Code" v-model="p2_code">
+                    <input type="number" class="form-control one_fifth" min="1" placeholder="Qty" v-model="p2_qty">
+                </li>
+            </ul>
+
+            <ul>
+                <li>Product 3</li>
+                <li>
+                    <input type="text" class="form-control one_half" placeholder="Product Code" v-model="p3_code">
+                    <input type="number" class="form-control one_fifth" min="1" placeholder="Qty" v-model="p3_qty">
+                </li>
+            </ul>
+
+        </div>
+
+
+
+        <div class="region" v-if="edit_mode == true && sub_category != '10020000'">
             <span class="heading">Specification Information</span>
 
             <ul v-for="(item, index) in special_infomation">
