@@ -1090,7 +1090,7 @@
             </div>
 
 
-            <div class="toggle-switch" v-show="edit_mode == true">
+            <div class="toggle-switch" v-show="edit_mode == true && sub_category != '10020000'">
                 <label for="variation_mode" class="description">Variation Mode</label>
                 <input type="checkbox" data-toggle="toggle" data-width="100px" data-onstyle="primary"
                     data-offstyle="secondary" data-on="Yes" data-off="No" id="variation_mode" v-model="variation_mode"
