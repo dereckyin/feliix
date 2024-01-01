@@ -14457,7 +14457,7 @@ $content = $content . '
     <td style="background-color: #F0F0F0; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
 
     if($_record["photo1"] != "")
-        $content .= "<img style='max-width: 400px; max-height: 400px;' src='https://storage.googleapis.com/feliiximg/" . urlencode($_record["photo1"]) . "' >";
+        $content .= "<img style='max-width: 400px; max-height: 400px;' src='https://storage.googleapis.com/feliiximg/" . _rawurlencode($_record["photo1"]) . "' >";
 
     $content .= '</td>
     </tr>
@@ -15394,6 +15394,11 @@ function delete_car_request_mail_6($to, $cc, $project, $creator, $date_check, $t
 //        echo "Email sent successfully";
     }
 
+}
+
+function _rawurlencode($string) {
+    $string = rawurlencode($string);
+        return $string;
 }
 
 function SetupMail($mail, $conf)

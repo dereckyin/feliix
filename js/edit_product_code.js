@@ -411,6 +411,11 @@ var app = new Vue({
               {
                 $("#tag0102").selectpicker('val', select_items);
               }
+
+              autocomplete(document.getElementById("product_1"), codes);
+              autocomplete(document.getElementById("product_2"), codes);
+              autocomplete(document.getElementById("product_3"), codes);
+
             }, 1000);
           })
           .catch(function(error) {

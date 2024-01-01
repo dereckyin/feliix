@@ -1,4 +1,5 @@
 var app = new Vue({
+  // vuetify: new Vuetify(),
   el: "#app",
   data: {
     submit: false,
@@ -115,14 +116,6 @@ var app = new Vue({
     tag_group : [],
 
 
-    search: '',
-    toggle: false,
-    books: [
-      {name: 'Liste des livres de Chair de poule'},
-      {name: 'Les Cent Meilleurs Romans policiers de tous les temps'},
-      {name: 'Liste des livres publiés par Champ libre'}
-    ],
-    newBooks: []
 
   },
 
@@ -188,19 +181,23 @@ var app = new Vue({
       this.quoted_price_change = new Date().toISOString().slice(0, 10);
     },
 
-    search(val) {
-      this.newBooks = [];
-      this.books.forEach(element => {
-        if(element.name.includes(val) && val != "") {
-          this.newBooks.push(element);
-        }
-      });
-    }
-    
 
   },
 
   methods: {
+    
+    auto_complete_product_code: async function(key) {
+      let _this = this;
+      let token = localStorage.getItem("accessToken");
+      let params = {
+        code: key,
+      };
+
+      let ret = await axios.get("api/product_code_auto_complete", { params, headers: {"Authorization" : `Bearer ${token}`} });
+
+      return ret.data;
+    },
+
     getTagGroup: function() {
       let _this = this;
         
