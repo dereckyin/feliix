@@ -811,7 +811,7 @@ else
 
         // update product_category srp_max 
         if($sub_category != "10020000")
-            check_code_exist_in_product($id, $srp_max, $srp_min, $qp_max, $qp_min, $db);
+            check_code_exist_in_product($product_id, $srp_max, $srp_min, $qp_max, $qp_min, $db);
 
             
         $db->commit();
@@ -1840,9 +1840,8 @@ function get_product_info_from_code($code, $db) {
 
 // check if code exist in p1_id or p2_id or p3_id
 function check_code_exist_in_product($pid, $p_srp_max, $p_srp_min, $p_qp_max, $p_qp_min, $db) {
-    $query = "SELECT id, p1_code, p2_code, p3_code, p1_qty, p2_qty, p3_qty FROM product_category WHERE p1_id = :pid or p2_id = :pid or p3_id = :pid ";
+    $query = "SELECT id, p1_code, p2_code, p3_code, p1_qty, p2_qty, p3_qty FROM product_category WHERE p1_id = " . $pid . " or p2_id = " . $pid . " or p3_id = " . $pid . " ";
     $stmt = $db->prepare($query);
-    $stmt->bindParam(':pid', $pid);
 
     $stmt->execute();
 
@@ -1868,7 +1867,7 @@ function check_code_exist_in_product($pid, $p_srp_max, $p_srp_min, $p_qp_max, $p
         if($row['p3_code'] != "")
             $p3_data = get_product_info_from_code($row['p3_code'], $db);
 
-        if(count($p1_data) > 0 && $p1_data['id'] != $pid)
+        if(count($p1_data) > 0)
         {
             $smax += ($p1_data['srp_max'] + 0) * ($row['p1_qty'] + 0);
             $smin += ($p1_data['srp_min'] + 0) * ($row['p1_qty'] + 0);
@@ -1876,16 +1875,9 @@ function check_code_exist_in_product($pid, $p_srp_max, $p_srp_min, $p_qp_max, $p
             $qmax += ($p1_data['qp_max'] + 0) * ($row['p1_qty'] + 0);
             $qmin += ($p1_data['qp_min'] + 0) * ($row['p1_qty'] + 0);
         }
-        else
-        {
-            $smax += ($p_srp_max + 0) * ($row['p1_qty'] + 0);
-            $smin += ($p_srp_min + 0) * ($row['p1_qty'] + 0);
 
-            $qmax += ($p_qp_max + 0) * ($row['p1_qty'] + 0);
-            $qmin += ($p_qp_min + 0) * ($row['p1_qty'] + 0);
-        }
 
-        if(count($p2_data) > 0 && $p2_data['id'] != $pid)
+        if(count($p2_data) > 0)
         {
             $smax += ($p2_data['srp_max'] + 0) * ($row['p2_qty'] + 0);
             $smin += ($p2_data['srp_min'] + 0) * ($row['p2_qty'] + 0);
@@ -1893,16 +1885,9 @@ function check_code_exist_in_product($pid, $p_srp_max, $p_srp_min, $p_qp_max, $p
             $qmax += ($p2_data['qp_max'] + 0) * ($row['p2_qty'] + 0);
             $qmin += ($p2_data['qp_min'] + 0) * ($row['p2_qty'] + 0);
         }
-        else
-        {
-            $smax += ($p_srp_max + 0) * ($row['p2_qty'] + 0);
-            $smin += ($p_srp_min + 0) * ($row['p2_qty'] + 0);
+   
 
-            $qmax += ($p_qp_max + 0) * ($row['p2_qty'] + 0);
-            $qmin += ($p_qp_min + 0) * ($row['p2_qty'] + 0);
-        }
-
-        if(count($p3_data) > 0 && $p3_data['id'] != $pid)
+        if(count($p3_data) > 0)
         {
             $smax += ($p3_data['srp_max'] + 0) * ($row['p3_qty'] + 0);
             $smin += ($p3_data['srp_min'] + 0) * ($row['p3_qty'] + 0);
@@ -1910,14 +1895,7 @@ function check_code_exist_in_product($pid, $p_srp_max, $p_srp_min, $p_qp_max, $p
             $qmax += ($p3_data['qp_max'] + 0) * ($row['p3_qty'] + 0);
             $qmin += ($p3_data['qp_min'] + 0) * ($row['p3_qty'] + 0);
         }
-        else
-        {
-            $smax += ($p_srp_max + 0) * ($row['p3_qty'] + 0);
-            $smin += ($p_srp_min + 0) * ($row['p3_qty'] + 0);
-
-            $qmax += ($p_qp_max + 0) * ($row['p3_qty'] + 0);
-            $qmin += ($p_qp_min + 0) * ($row['p3_qty'] + 0);
-        }
+     
       
 
         if($smax != 0)
