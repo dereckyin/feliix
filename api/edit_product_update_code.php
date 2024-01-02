@@ -809,6 +809,10 @@ else
             die();
         }
 
+        // update product_category srp_max 
+        if($sub_category != "10020000")
+            check_code_exist_in_product($id, $db);
+
             
         $db->commit();
 
@@ -1823,7 +1827,7 @@ function remove_related_product_by_code($code, $org, $db) {
 }
 
 function get_product_info_from_code($code, $db) {
-    $query = "SELECT id, code, srp_max, srp_min, qp_max, qp_min FROM product_category WHERE code = :code and STATUS <> -1 limit 1";
+    $query = "SELECT id, code, srp_max, srp_min, qp_max, qp_min, p1_qty, p2_qty, p3_qty FROM product_category WHERE code = :code and STATUS <> -1 limit 1";
     $stmt = $db->prepare($query);
     $stmt->bindParam(':code', $code);
     $stmt->execute();
@@ -1832,4 +1836,84 @@ function get_product_info_from_code($code, $db) {
         return $row;
     }
 
+}
+
+// check if code exist in p1_id or p2_id or p3_id
+function check_code_exist_in_product($pid, $db) {
+    $query = "SELECT id, p1_code, p2_code, p3_code, p1_qty, p2_qty, p3_qty FROM product_category WHERE p1_id = :pid or p2_id = :pid or p3_id = :pid ";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':pid', $pid);
+
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $srp_max = "";
+        $srp_min = "";
+        $qp_max = "";
+        $qp_min = "";
+    
+        $smax = 0;
+        $smin = 0;
+        $qmax = 0;
+        $qmin = 0;
+    
+        $p1_data = [];
+        $p2_data = [];
+        $p3_data = [];
+
+        if($row['p1_code'] != "")
+            $p1_data = get_product_info_from_code($row['p1_code'], $db);
+        if($row['p2_code'] != "")
+            $p2_data = get_product_info_from_code($row['p2_code'], $db);
+        if($row['p3_code'] != "")
+            $p3_data = get_product_info_from_code($row['p3_code'], $db);
+
+        if(count($p1_data) > 0)
+        {
+            $smax += ($p1_data['srp_max'] + 0) * ($row['p1_qty'] + 0);
+            $smin += ($p1_data['srp_min'] + 0) * ($row['p1_qty'] + 0);
+
+            $qmax += ($p1_data['qp_max'] + 0) * ($row['p1_qty'] + 0);
+            $qmin += ($p1_data['qp_min'] + 0) * ($row['p1_qty'] + 0);
+        }
+
+        if(count($p2_data) > 0)
+        {
+            $smax += ($p2_data['srp_max'] + 0) * ($row['p2_qty'] + 0);
+            $smin += ($p2_data['srp_min'] + 0) * ($row['p2_qty'] + 0);
+
+            $qmax += ($p2_data['qp_max'] + 0) * ($row['p2_qty'] + 0);
+            $qmin += ($p2_data['qp_min'] + 0) * ($row['p2_qty'] + 0);
+        }
+
+        if(count($p3_data) > 0)
+        {
+            $smax += ($p3_data['srp_max'] + 0) * ($row['p3_qty'] + 0);
+            $smin += ($p3_data['srp_min'] + 0) * ($row['p3_qty'] + 0);
+
+            $qmax += ($p3_data['qp_max'] + 0) * ($row['p3_qty'] + 0);
+            $qmin += ($p3_data['qp_min'] + 0) * ($row['p3_qty'] + 0);
+        }
+
+        if($smax != 0)
+            $srp_max = $smax;
+        if($smin != 0)
+            $srp_min = $smin;
+        if($qmax != 0)
+            $qp_max = $qmax;
+        if($qmin != 0)  
+            $qp_min = $qmin;
+
+        $query = "update product_category set srp_max = :srp_max, srp_min = :srp_min, qp_max = :qp_max, qp_min = :qp_min where id = :id";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':srp_max', $srp_max);
+        $stmt->bindParam(':srp_min', $srp_min);
+        $stmt->bindParam(':qp_max', $qp_max);
+        $stmt->bindParam(':qp_min', $qp_min);
+        $stmt->bindParam(':id', $row['id']);
+
+        $stmt->execute();
+    }
+
+    return false;
 }

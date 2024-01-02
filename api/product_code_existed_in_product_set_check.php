@@ -47,7 +47,7 @@ else
       include_once 'config/database.php';
 
       $code = (isset($_GET['code']) ?  $_GET['code'] : "");
-
+      $id = (isset($_GET['id']) ?  $_GET['id'] : 0);
 
       $database = new Database();
       $db = $database->getConnection();
@@ -64,17 +64,16 @@ else
               break;
             }
 
-            $sql = "SELECT distinct code  FROM product_category p  WHERE  p.STATUS <> -1 and p.code like ? and sub_category <> '10020000' order by code limit 10";
+            $sql = "SELECT id, code  FROM product_category p  WHERE  p.STATUS <> -1 and p.code = ? and sub_category = '10020000' limit 1";
 
             $merged_results = array();
 
             $stmt = $db->prepare( $sql );
-            $stmt->bindValue(1, $code . "%", PDO::PARAM_STR);
-          
+            $stmt->bindValue(1, $code, PDO::PARAM_STR);
             $stmt->execute();
 
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $merged_results[] = $row["code"];
+                $merged_results[] = $row;
             }
 
             echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);

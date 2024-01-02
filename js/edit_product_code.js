@@ -1004,12 +1004,19 @@ var app = new Vue({
     check_input: function(){
       return "";
     },
-    
-      is_code_existed: async function(code) {
-        let ret = await axios.get("api/product_code_existed_check", { params: { code: code, id: 0 } });
-  
-        return ret.data;
-      },
+
+    is_code_existed: async function(code) {
+      let ret = await axios.get("api/product_code_existed_check", { params: { code: code, id: 0 } });
+
+      return ret.data;
+    },
+
+    is_code_existed_in_product_set: async function(code) {
+      let ret = await axios.get("api/product_code_existed_in_product_set_check", { params: { code: code, id: 0 } });
+
+      return ret.data;
+    },
+
 
     save: async function() {
       let _this = this;
@@ -1049,6 +1056,18 @@ var app = new Vue({
           });
           return;
         }
+
+        this.p3_qty = Number(this.p3_qty);
+
+        if(this.p3_code.trim() != '' && this.p3_qty <= 0)
+        {
+          Swal.fire({
+            text: "Qty for Product 3 should be greater than 0.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
   
         let p1_data = [];
         let p2_data = [];
@@ -1059,6 +1078,7 @@ var app = new Vue({
         this.p3_id = "";
   
         let error_msg = '';
+        let err_product_set = '';
   
         if(this.p1_code.trim() != '')
         {
@@ -1067,6 +1087,10 @@ var app = new Vue({
             this.p1_id = p1_data[0].id;
           else
             error_msg = error_msg + 'Product 1 ';
+
+          p1_data = await this.is_code_existed_in_product_set(this.p1_code.trim());
+          if(p1_data.length > 0)
+            err_product_set = err_product_set + 'Product 1 ';
         }
   
         if(this.p2_code.trim() != '')
@@ -1076,6 +1100,10 @@ var app = new Vue({
             this.p2_id = p2_data[0].id;
           else
             error_msg = error_msg + 'Product 2 ';
+
+          p2_data = await this.is_code_existed_in_product_set(this.p2_code.trim());
+          if(p2_data.length > 0)
+            err_product_set = err_product_set + 'Product 2 ';
         }
   
         if(this.p3_code.trim() != '')
@@ -1085,12 +1113,27 @@ var app = new Vue({
             this.p3_id = p3_data[0].id;
           else
             error_msg = error_msg + 'Product 3 ';
+
+          p3_data = await this.is_code_existed_in_product_set(this.p3_code.trim());
+          if(p3_data.length > 0)
+            err_product_set = err_product_set + 'Product 3 ';
+
         }
   
         if(error_msg != '')
         {
           Swal.fire({
             text: error_msg + 'that you input is not an existing product in the product database. Please check product code again!!',
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+
+        if(err_product_set != '')
+        {
+          Swal.fire({
+            text: 'User is not allowed to input any product belonging to "Product Set" sub category into Product 1/2/3.',
             icon: "warning",
             confirmButtonText: "OK",
           });
