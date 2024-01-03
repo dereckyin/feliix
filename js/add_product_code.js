@@ -1017,7 +1017,7 @@ $("#tag0102").selectpicker("refresh");
         if(err_product_set != '')
         {
           Swal.fire({
-            text: 'User is not allowed to input any product belonging to "Product Set" sub category into Product 1/2/3. Please revise the code of ' + err_product_set,
+            text: 'User is not allowed to input any product belonging to "Product Set" sub category into Product 1/2/3. Please revise the code of ' + err_product_set + '.',
             icon: "warning",
             confirmButtonText: "OK",
           });
