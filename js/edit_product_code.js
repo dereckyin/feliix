@@ -1086,11 +1086,11 @@ var app = new Vue({
           if(p1_data.length > 0)
             this.p1_id = p1_data[0].id;
           else
-            error_msg = error_msg + 'Product 1 ';
+            error_msg = error_msg + 'Product 1, ';
 
           p1_data = await this.is_code_existed_in_product_set(this.p1_code.trim());
           if(p1_data.length > 0)
-            err_product_set = err_product_set + 'Product 1 ';
+            err_product_set = err_product_set + 'Product 1, ';
         }
   
         if(this.p2_code.trim() != '')
@@ -1099,11 +1099,11 @@ var app = new Vue({
           if(p2_data.length > 0)
             this.p2_id = p2_data[0].id;
           else
-            error_msg = error_msg + 'Product 2 ';
+            error_msg = error_msg + 'Product 2, ';
 
           p2_data = await this.is_code_existed_in_product_set(this.p2_code.trim());
           if(p2_data.length > 0)
-            err_product_set = err_product_set + 'Product 2 ';
+            err_product_set = err_product_set + 'Product 2, ';
         }
   
         if(this.p3_code.trim() != '')
@@ -1112,18 +1112,22 @@ var app = new Vue({
           if(p3_data.length > 0)
             this.p3_id = p3_data[0].id;
           else
-            error_msg = error_msg + 'Product 3 ';
+            error_msg = error_msg + 'Product 3, ';
 
           p3_data = await this.is_code_existed_in_product_set(this.p3_code.trim());
           if(p3_data.length > 0)
-            err_product_set = err_product_set + 'Product 3 ';
+            err_product_set = err_product_set + 'Product 3, ';
 
         }
+
+        // trim the last comma
+        error_msg = error_msg.replace(/,\s*$/, "");
+        err_product_set = err_product_set.replace(/,\s*$/, "");
   
         if(error_msg != '')
         {
           Swal.fire({
-            text: error_msg + 'that you input is not an existing product in the product database. Please check product code again!!',
+            text: error_msg + ' that you input is not an existing product in the product database. Please check product code again!!',
             icon: "warning",
             confirmButtonText: "OK",
           });
@@ -1133,7 +1137,7 @@ var app = new Vue({
         if(err_product_set != '')
         {
           Swal.fire({
-            text: 'User is not allowed to input any product belonging to "Product Set" sub category into Product 1/2/3.',
+            text: 'User is not allowed to input any product belonging to "Product Set" sub category into Product 1/2/3. Please revise the code of ' + err_product_set,
             icon: "warning",
             confirmButtonText: "OK",
           });

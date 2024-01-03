@@ -48,6 +48,11 @@ $p3_code = (isset($_POST['p3_code']) ?  $_POST['p3_code'] : '');
 $p3_qty = (isset($_POST['p3_qty']) ?  $_POST['p3_qty'] : '');
 $p3_id = (isset($_POST['p3_id']) ?  $_POST['p3_id'] : '');
 
+if($p3_code == '')
+{
+    $p3_qty = '';
+    $p3_id = '';
+}
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
