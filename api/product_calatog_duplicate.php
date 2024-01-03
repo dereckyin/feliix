@@ -51,11 +51,13 @@ else
     photo1, photo2, photo3, accessory_mode, attributes, variation_mode, variation, notes, price_ntd_change, 
     price_change, quoted_price, quoted_price_change, moq, `tags`, related_product, `OUT`, currency, srp_max, 
     srp_min, qp_max, qp_min, max_price_change, min_price_change, max_price_ntd_change, min_price_ntd_change, 
+    p1_code, p2_code, p3_code, p1_id, p2_id, p3_id, p1_qty, p2_qty, p3_qty, 
     max_quoted_price_change, min_quoted_price_change, phased_out_cnt, print_option, create_id)
     SELECT category, sub_category, brand, `code`, price_ntd, price, `description`, 
     photo1, photo2, photo3, accessory_mode, attributes, variation_mode, variation, notes, price_ntd_change, 
     price_change, quoted_price, quoted_price_change, moq, `tags`, related_product, `OUT`, currency, srp_max, 
     srp_min, qp_max, qp_min, max_price_change, min_price_change, max_price_ntd_change, min_price_ntd_change, 
+    p1_code, p2_code, p3_code, p1_id, p2_id, p3_id, p1_qty, p2_qty, p3_qty,
     max_quoted_price_change, min_quoted_price_change, phased_out_cnt, print_option, :updated_id FROM 
     product_category WHERE id = :id";
 
