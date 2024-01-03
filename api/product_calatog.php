@@ -694,7 +694,7 @@ else
                     }
                     else
                     {
-                        $_srp = number_format($srp_min) . " ~ " . number_format($srp_max);
+                        $_srp = number_format($srp_min) . " ~ PHP " . number_format($srp_max);
                     }
 
                     $price = "PHP " .  $_srp;
@@ -705,7 +705,7 @@ else
                     }
                     else
                     {
-                        $_qp = number_format($qp_min) . " ~ " . number_format($qp_max);
+                        $_qp = number_format($qp_min) . " ~ PHP " . number_format($qp_max);
                     }
 
                     $price_quoted = "PHP " .  $_qp;

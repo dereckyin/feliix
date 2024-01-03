@@ -770,13 +770,7 @@
                                 <li>
                                     Category:
                                 </li>
-                                <li v-if="item.category == 'Lighting' && item.sub_category != '10020000'">
-                                    {{ item.category}}
-                                </li>
-                                <li v-if="item.category == 'Lighting' && item.sub_category == '10020000'">
-                                    {{ item.category}} >> {{ item.sub_category_name}}
-                                </li>
-                                <li v-if="item.category != 'Lighting'">
+                                <li>
                                     {{ item.category}} >> {{ item.sub_category_name}}
                                 </li>
 
@@ -875,10 +869,7 @@
                                 <li>
                                     Category:
                                 </li>
-                                <li v-if="set.category == 'Lighting'">
-                                    {{ set.category}}
-                                </li>
-                                <li v-if="set.category != 'Lighting'">
+                                <li>
                                     {{ set.category}} >> {{ set.sub_category_name}}
                                 </li>
 
@@ -997,10 +988,7 @@
                                 <li>
                                     Category:
                                 </li>
-                                <li v-if="item.category == 'Lighting'">
-                                    {{ item.category}}
-                                </li>
-                                <li v-if="item.category != 'Lighting'">
+                                <li>
                                     {{ item.category}} >> {{ item.sub_category_name}}
                                 </li>
 
