@@ -47,6 +47,7 @@ var app = new Vue({
     fil_lower : '',
     fil_upper : '',
     fil_kind : '',
+    fil_followup : '',
 
     fil_approval : '',
 
@@ -103,6 +104,7 @@ var app = new Vue({
     name :"",
     title: "",
     is_manager: "",
+    followup: "",
 
     comm_fileArray: [],
     comm_canSub: true,
@@ -134,6 +136,9 @@ var app = new Vue({
               break;
             case "key":
               _this.fil_keyword = decodeURI(tmp[1]);
+              break;
+            case "up":
+              _this.fil_followup = decodeURI(tmp[1]);
               break;
             case "app":
               _this.fil_approval = decodeURI(tmp[1]);
@@ -422,6 +427,7 @@ var app = new Vue({
          this.task_id = item['project_id'];
 
         this.kind = item['kind'];
+        this.followup = item['followup'];
 
         console.log(item);
     },
@@ -577,6 +583,7 @@ var app = new Vue({
 
         form_Data.append('title', title);
         form_Data.append('project_id', project_id);
+        form_Data.append('followup', this.followup);
         form_Data.append('id', item['id']);
 
         axios({
@@ -704,6 +711,7 @@ var app = new Vue({
                 fpt: _this.fil_creator,
        
                 key: _this.fil_keyword,
+                up: _this.fil_followup,
                 app: _this.fil_approval,
                 kind: _this.fil_kind,
 
@@ -1026,6 +1034,8 @@ var app = new Vue({
             form_Data.append("footer_second_line", '');
             form_Data.append("add_term", 'y');
 
+            form_Data.append("followup", _this.followup);
+
             form_Data.append("pages", JSON.stringify([]));
 
             axios({
@@ -1099,6 +1109,8 @@ var app = new Vue({
           _this.fil_project_creator +
           "&key=" +
           _this.fil_keyword +
+          "&up=" +
+          _this.fil_followup +
           "&app=" +
           _this.fil_approval +
           "&kind=" +
@@ -1133,6 +1145,7 @@ var app = new Vue({
         this.fil_keyword = '';
         this.fil_approval = '';
         this.fil_kind = '';
+        this.fil_followup = '';
         this.page = 1;
 
         let _this = this;
@@ -1148,6 +1161,8 @@ var app = new Vue({
           _this.fil_project_creator +
           "&key=" +
           _this.fil_keyword +
+          "&up=" +
+          _this.fil_followup +
           "&app=" +
           _this.fil_approval +
           "&kind=" +
@@ -1184,6 +1199,8 @@ var app = new Vue({
           _this.fil_project_creator +
           "&key=" +
           _this.fil_keyword +
+          "&up=" +
+          _this.fil_followup +
           "&app=" +
           _this.fil_approval +
           "&kind=" +
@@ -1218,6 +1235,8 @@ var app = new Vue({
           _this.fil_project_creator +
           "&key=" +
           _this.fil_keyword +
+          "&up=" +
+          _this.fil_followup +
           "&app=" +
           _this.fil_approval +
           "&kind=" +

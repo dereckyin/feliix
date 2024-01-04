@@ -32,10 +32,10 @@ try {
 
     if(trim(strtoupper($department)) == 'ADMIN')
     {
-        if(trim(strtoupper($position)) == 'OPERATIONS MANAGER' || trim(strtoupper($position)) == 'ASSISTANT OPERATIONS MANAGER')
-        {
+        //if(trim(strtoupper($position)) == 'OPERATIONS MANAGER' || trim(strtoupper($position)) == 'ASSISTANT OPERATIONS MANAGER')
+        //{
             $access6 = true;
-        }
+        //}
     }
 
     if(trim(strtoupper($position)) == 'SUPPLY CHAIN MANAGER')

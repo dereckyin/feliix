@@ -4560,3 +4560,7 @@ ALTER TABLE product_category
 ADD COLUMN `p2_qty` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
 ALTER TABLE product_category
 ADD COLUMN `p3_qty` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20240104 transmittal followup
+ALTER TABLE transmittal
+ADD COLUMN   `followup` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '';
