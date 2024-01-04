@@ -179,6 +179,10 @@ header( 'location:index' );
             min-width: 200px;
         }
 
+        .tableframe .tablebox ul li:nth-of-type(1) a.red {
+            color: red;
+        }
+
         .tableframe .tablebox ul li:nth-of-type(1) input[type='text'] {
             margin-top: 10px;
             width: 90%;
@@ -623,7 +627,7 @@ header( 'location:index' );
                     </ul>
                     <ul v-for='(receive_record, index) in displayedPosts'>
                         <li>
-                            <a v-show="receive_record.is_edited == 1" v-bind:href="'transmittal?id=' + receive_record.id">{{
+                            <a v-show="receive_record.is_edited == 1" :class="receive_record.followup == 'Y' ? 'red' : ''" v-bind:href="'transmittal?id=' + receive_record.id">{{
                                 receive_record.title }}</a>
                             <input name="title" type="text"
                                    v-show="receive_record.is_edited == 0"
