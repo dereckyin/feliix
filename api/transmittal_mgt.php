@@ -71,6 +71,8 @@ $kind = (isset($_GET['kind']) ?  urldecode($_GET['kind']) : "");
 
 $type = (isset($_GET['type']) ?  urldecode($_GET['type']) : '');
 
+$followup = (isset($_GET['up']) ?  urldecode($_GET['up']) : '');
+
 $all = (isset($_GET['all']) ?  urldecode($_GET['all']) : '');
 
 $merged_results = array();
@@ -82,6 +84,7 @@ $query = "SELECT pm.id,
                 pm.status, 
                 pm.project_id,
                 pm.kind,
+                pm.followup,
                 COALESCE((SELECT project_name FROM project_main WHERE id = pm.project_id and pm.kind = ''), '') AS project_name,
                 COALESCE((SELECT title FROM project_other_task_a WHERE id = pm.project_id and pm.kind = 'a'), '') AS project_name_a,
                 COALESCE((SELECT title FROM project_other_task_d WHERE id = pm.project_id and pm.kind = 'd'), '') AS project_name_d,
@@ -134,6 +137,14 @@ if($kind != "")
     $query_cnt = $query_cnt . " and pm.kind = '" . $kind . "' ";
 }
 
+if($followup != "")
+{
+    if($followup == "N")
+        $followup = "";
+    
+    $query = $query . " and pm.followup = '" . $followup . "' ";
+    $query_cnt = $query_cnt . " and pm.followup = '" . $followup . "' ";
+}
 
 if($fc != "")
 {
@@ -302,7 +313,9 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $q_no = $row['q_no'];
     $q_title = $row['q_title'];
     $pageless = $row['pageless'];
-   
+
+    $followup = $row['followup'];
+
     $post = GetRecentPost($row['id'], $db);
     $files = GetRecentFiles($row['id'], $db);
 
@@ -313,6 +326,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "title" => $title,
         "serial_name" => $serial_name,
         "kind" => $kind,
+        "followup" => $followup, 
         "status" => $status,
         "project_id" => $project_id,
         "project_name" => $project_name,

@@ -22,6 +22,8 @@ $prepare_by_second_line = isset($_POST['prepare_by_second_line']) ? $_POST['prep
 $footer_first_line = isset($_POST['footer_first_line']) ? $_POST['footer_first_line'] : '';
 $footer_second_line = isset($_POST['footer_second_line']) ? $_POST['footer_second_line'] : '';
 
+$followup = isset($_POST['followup']) ? $_POST['followup'] : '';
+
 $project_name = isset($_POST['project_name']) ? $_POST['project_name'] : '';
 $project_location = isset($_POST['project_location']) ? $_POST['project_location'] : '';
 $po = isset($_POST['po']) ? $_POST['po'] : '';
@@ -113,6 +115,8 @@ else
             `request_date` = :request_date,
             `submit_by` = :submit_by,
             `submit_date` = :submit_date,
+
+            `followup` = :followup,
             
             `pageless` = :pageless,
             `contact` = :contact,
@@ -160,6 +164,8 @@ T: (+63) 2 8525-6288";
         $stmt->bindParam(':request_date', $request_date);
         $stmt->bindParam(':submit_by', $submit_by);
         $stmt->bindParam(':submit_date', $submit_date);
+
+        $stmt->bindParam(':followup', $followup);
 
         $stmt->bindParam(':contact', $contact);
         $stmt->bindParam(':pageless', $pageless);

@@ -179,17 +179,38 @@ header( 'location:index' );
             min-width: 200px;
         }
 
+        .tableframe .tablebox ul li:nth-of-type(1) a.red {
+            color: red;
+        }
+
         .tableframe .tablebox ul li:nth-of-type(1) input[type='text'] {
+            margin-top: 10px;
             width: 90%;
             border-color: #1e6ba8;
             background-color: white;
+        }
+
+        .tableframe .tablebox ul li:nth-of-type(1) div.need_followup {
+            margin-top: 10px;
+        }
+
+        .tableframe .tablebox ul li:nth-of-type(1) div.need_followup span {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        .tableframe .tablebox ul li:nth-of-type(1) div.need_followup select {
+            border-color: #1e6ba8;
+            background-color: white;
+            background-image: url(../images/ui/icon_form_select_arrow_blue.svg);
+            transform: translateY(-3px);
         }
 
         .tableframe .tablebox ul li:nth-of-type(2) select {
             width: 90%;
             border-color: #1e6ba8;
             background-color: white;
-            background-image: url(../images/ui/icon_form_select_arrow_blue.svg)
+            background-image: url(../images/ui/icon_form_select_arrow_blue.svg);
         }
 
         .tableframe .tablebox ul li:nth-of-type(4) {
@@ -302,6 +323,14 @@ header( 'location:index' );
                                     <select v-model='generate'>
                                         <option value="">Yes</option>
                                         <option value="N">No</option>
+                                    </select>
+                                </dd>
+
+                                <dt>Need Follow-up?</dt>
+                                <dd style="margin-bottom: 15px;">
+                                    <select v-model='followup'>
+                                        <option value="Y">Yes</option>
+                                        <option value="">No</option>
                                     </select>
                                 </dd>
 
@@ -422,6 +451,15 @@ header( 'location:index' );
                                 <dt>Has Scanned Copy?</dt>
                                 <dd>
                                     <select v-model="fil_approval">
+                                        <option value=""></option>
+                                        <option value="Y">Yes</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </dd>
+
+                                <dt>Need Follow-up?</dt>
+                                <dd>
+                                    <select v-model="fil_followup">
                                         <option value=""></option>
                                         <option value="Y">Yes</option>
                                         <option value="N">No</option>
@@ -589,11 +627,21 @@ header( 'location:index' );
                     </ul>
                     <ul v-for='(receive_record, index) in displayedPosts'>
                         <li>
-                            <a v-show="receive_record.is_edited == 1" v-bind:href="'transmittal?id=' + receive_record.id">{{
+                            <a v-show="receive_record.is_edited == 1" :class="receive_record.followup == 'Y' ? 'red' : ''" v-bind:href="'transmittal?id=' + receive_record.id">{{
                                 receive_record.title }}</a>
                             <input name="title" type="text"
                                    v-show="receive_record.is_edited == 0"
-                                   v-model="title" maxlength="1024"></li>
+                                   v-model="title" maxlength="1024">
+
+                            <div class="need_followup" v-show="receive_record.is_edited == 0">
+                                <span>Need Follow-up?</span>
+                                <select v-model="followup">
+                                    <option value="Y">Yes</option>
+                                    <option value="">No</option>
+                                </select>
+                            </div>
+                        </li>
+
                         <li>
                             <a v-show="receive_record.is_edited == 1 && receive_record.kind == ''"
                                v-bind:href="'project02?p='+ receive_record.project_id">Project: {{ receive_record.project_name }}
