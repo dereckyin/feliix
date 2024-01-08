@@ -521,9 +521,9 @@
                         <img :src="set.url == '' ? null : set.url">
                     </div>
                     <div class="image_list">
-                        <img v-if="url1" :src="url1" @click="change_url_set(set.url, set.url1)"/>
-                        <img v-if="url2" :src="url2" @click="change_url_set(set.url, set.url2)"/>
-                        <img v-if="url3" :src="url3" @click="change_url_set(set.url, set.url3)"/>
+                        <img v-if="set.url1" :src="set.url1" @click="change_url_set(set.url, set.url1)"/>
+                        <img v-if="set.url2" :src="set.url2" @click="change_url_set(set.url, set.url2)"/>
+                        <img v-if="set.url3" :src="set.url3" @click="change_url_set(set.url, set.url3)"/>
                         <!-- <img v-for="(item, index) in variation_product" v-if="item.url" :src="item.url" @click="change_url(item.url)"> -->
                     </div>
 
