@@ -659,18 +659,18 @@
                         <div v-for='(g, groupIndex) in set.groupedItems'
                             :class="['carousel-item', (groupIndex == 0 ? 'active' : '')]">
                             <div class="row custom">
-                                <div class="col custom" v-for='(item, index) in g'>
-                                    <img :src="baseURL + item.photo1" :alt="'No Product Picture'">
+                                <div class="col custom" v-for='(it, index) in g'>
+                                    <img :src="baseURL + it.photo1" :alt="'No Product Picture'">
                                     <div>
-                                        <a :href="'product_display_code?id=' + item.id">
-                                            {{ item.code }}
+                                        <a :href="'product_display_code?id=' + it.id">
+                                            {{ it.code }}
                                         </a>
                                     </div>
                                     <div>
                                         <!-- 網頁載入時，對於每一個相關產品，會根據「該產品是否停產」以及「有多少子規格停產」，來決定下面三個<span class="phasedout2">結構要顯示哪一個 -->
-                                        <span class="phasedout2" v-if="item.out == 'Y' && item.phased_out_cnt == 0">Phased Out</span>
-                                        <span class="phasedout2" v-if="item.phased_out_cnt == 1" @click="RelatedPhaseOutAlert(item.phased_out_text)">1 variant is phased out</span>
-                                        <span class="phasedout2" v-if="item.phased_out_cnt > 1" @click="RelatedPhaseOutAlert(item.phased_out_text)">{{ item.phased_out_cnt }} variants are phased out</span>
+                                        <span class="phasedout2" v-if="it.out == 'Y' && it.phased_out_cnt == 0">Phased Out</span>
+                                        <span class="phasedout2" v-if="it.phased_out_cnt == 1" @click="RelatedPhaseOutAlert(it.phased_out_text)">1 variant is phased out</span>
+                                        <span class="phasedout2" v-if="it.phased_out_cnt > 1" @click="RelatedPhaseOutAlert(it.phased_out_text)">{{ it.phased_out_cnt }} variants are phased out</span>
                                     </div>
                                 </div>
 
