@@ -450,6 +450,10 @@
                 overflow-y: hidden;
             }
 
+            .upper_section {
+                margin: 0 15vw 0;
+            }
+
             .noPrint {
                 display: none;
             }
@@ -461,7 +465,7 @@
 
         @page {
             size: A4 portrait;
-            margin: 0;
+            margin: 20px 0 0;
         }
 
     </style>
