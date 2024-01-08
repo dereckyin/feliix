@@ -540,9 +540,9 @@
                         <span class="phasedout1" v-if="set.out_cnt == 1" @click="PhaseOutAlert_set(set.phased_out_text)">1 variant is phased out</span>
                         <span class="phasedout1" v-if="set.out_cnt > 1" @click="PhaseOutAlert_set(set.phased_out_text)">{{ set.out_cnt }} variants are phased out</span>
 
-                        <h3 :class="set.pid == true ? '' : 'noPrint'">ID: {{ set.pid }}</h3>
+                        <h3 :class="set.print_option.pid == true ? '' : 'noPrint'">ID: {{ set.pid }}</h3>
                         <h3 style="word-break: break-all;">{{set.code}}</h3>
-                        <h6 :class="set.brand == true ? '' : 'noPrint'">{{set.brand}}</h6>
+                        <h6 :class="set.print_option.brand == true ? '' : 'noPrint'">{{set.brand}}</h6>
                         <h6>{{ set.category}} >> {{ set.sub_category_name}}</h6>
                         <div class="tags">
                             <span v-for="(it, index) in set.tags">{{ it }}</span>
@@ -555,11 +555,11 @@
                             Cost Price: <span>{{ set.price_ntd }}</span><span>{{ set.str_price_ntd_change }}</span>
                         </li>
 
-                        <li :class="set.srp == true ? '' : 'noPrint'">
+                        <li :class="set.print_option.srp == true ? '' : 'noPrint'">
                             Standard Retail Price: <span>{{set.price}}</span><span>{{ set.str_price_change }}</span>
                         </li>
 
-                        <li :class="set.qp == true ? '' : 'noPrint'">
+                        <li :class="set.print_option.qp == true ? '' : 'noPrint'">
                             Quoted Price: <span>{{set.quoted_price}}</span><span>{{ set.str_quoted_price_change }}</span>
                         </li>
 
