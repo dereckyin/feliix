@@ -696,7 +696,7 @@
                 {{ set.description }}
                 </p>
 
-                <p v-if="notes != null && notes != ''">
+                <p v-if="set.notes != null && set.notes != ''">
                     Notes: {{ set.notes }}
                 </p>
 
