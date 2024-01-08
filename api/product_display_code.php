@@ -173,6 +173,10 @@ else
 
                 $product_set = [];
 
+                $previous_print_option = ['pid' => 'true', 'brand' => 'true', 'srp' => 'true', 'qp' => 'true' ];
+                if($row['print_option'] != "")
+                    $previous_print_option = json_decode($row['print_option']);
+
                 $product_set_cnt = 0;
 
                 if($sub_category == '10020000')
@@ -587,6 +591,8 @@ else
                                     "product_set_cnt" => $product_set_cnt,
 
                                     "sub_cateory_item" => $sub_category_item,
+
+                                    "print_option" => $previous_print_option,
             );
             }
 

@@ -135,6 +135,7 @@ var app = new Vue({
     phased_out_text : [],
 
     product_set : [],
+    print_option: {},
   },
 
   created() {
@@ -576,6 +577,7 @@ var app = new Vue({
             _this.set_up_specification();
 
             _this.edit_mode = true;
+            _this.print_option = _this.record[0]['print_option'];
           })
           .catch(function(error) {
             console.log(error);
@@ -663,6 +665,8 @@ var app = new Vue({
         console.log(err)
         alert('error')
       }
+
+      this.get_records(this.id);
     },
 
     async get_previous_print_options(id) {
@@ -733,10 +737,10 @@ var app = new Vue({
       window.print();
     },
 
-    async print_option_page(id) {
+    async print_option_page() {
       let _this = this;
 
-      res = await this.get_previous_print_options(id);
+      res = await this.get_previous_print_options(this.id);
       var pid = res.data.pid;
       var brand = res.data.brand;
       var srp = res.data.srp;
