@@ -696,7 +696,6 @@ function GetProduct($id, $db, $currency){
                                     "status" => $status, 
                                     "url" => $url, 
                                     "photo" => $photo, 
-                                    "photo1" => $photo, 
                                     "currency" => $currency,
                                     "enabled" => $enabled,
                                    
@@ -1225,6 +1224,9 @@ function GetProductSet($id, $db){
 
                 $related_product = GetRelatedProductCode($id, $db);
 
+                $groupedItems[] = array_slice($related_product, 0, 4);
+
+
                 $variation1_value = [];
                 $variation2_value = [];
                 $variation3_value = [];
@@ -1505,7 +1507,7 @@ function GetProductSet($id, $db){
                                     "created_at" => $created_at,
                                     "create_id" => $create_id,
                                     "related_product" => $related_product,
-                                    "groupedItems" => array_slice($related_product, 0, 4),
+                                    "groupedItems" => $groupedItems,
                                     "product" => $product,
                                     "variation1_text" => $variation1_text,
                                     "variation2_text" => $variation2_text,
