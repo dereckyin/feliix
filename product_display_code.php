@@ -660,7 +660,7 @@
                             :class="['carousel-item', (groupIndex == 0 ? 'active' : '')]">
                             <div class="row custom">
                                 <div class="col custom" v-for='(it, index) in g'>
-                                    <img :src="baseURL + it.photo1" :alt="'No Product Picture'" v-if="it.photo1 != null">
+                                    <img :src="baseURL + it.photo1" :alt="'No Product Picture'">
                                     <div>
                                         <a :href="'product_display_code?id=' + it.id">
                                             {{ it.code }}

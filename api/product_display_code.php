@@ -696,6 +696,7 @@ function GetProduct($id, $db, $currency){
                                     "status" => $status, 
                                     "url" => $url, 
                                     "photo" => $photo, 
+                                    "photo1" => $photo, 
                                     "currency" => $currency,
                                     "enabled" => $enabled,
                                    
