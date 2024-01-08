@@ -345,9 +345,7 @@ var app = new Vue({
 
     },
 
-    goto_sheet(id){
-      if(id)
-        this.sheet_url = 'product_spec_sheet?sd=' + id;
+    goto_sheet(){
       window.open(this.sheet_url, '_blank');
     },
 
@@ -1250,6 +1248,10 @@ var app = new Vue({
    
    }
  },
+
+ goto_sheet_set(set){
+  window.open(set.sheet_url, '_blank');
+},
 
   },
 });

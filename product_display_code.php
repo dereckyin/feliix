@@ -614,7 +614,7 @@
                     </ul>
 
                     <div class="btnbox noPrint">
-                        <button class="btn btn-secondary" @click="print_option_page(set.id)">Export Setting</button> <button class="btn btn-info" @click="print_page()">Export</button>  <button class="btn btn-info" @click="goto_sheet(set.id)" >Spec. Sheet</button>
+                        <button class="btn btn-secondary" @click="print_option_page(set.id)">Export Setting</button> <button class="btn btn-info" @click="print_page()">Export</button>  <button class="btn btn-info" @click="goto_sheet_set(set)" >Spec. Sheet</button>
                         
                     </div>
 
