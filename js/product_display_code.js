@@ -1101,8 +1101,13 @@ var app = new Vue({
       return result;
     },
 
-    change_url_set: function(targeet_url, replace_url) {
-      targeet_url = replace_url;
+    change_url_set: function(set, uid) {
+      if(uid == 1)
+        set.url = set.url1;
+      if(uid == 2)
+        set.url = set.url2;
+      if(uid == 3)
+        set.url = set.url3;
   },
 
   PhaseOutAlert_set(phased_out_text){
