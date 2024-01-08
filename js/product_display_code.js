@@ -167,7 +167,7 @@ var app = new Vue({
 
     this.get_records(this.id);
     this.getUserName();
-    this.load_print_option();
+    this.load_print_option(this.id);
   },
 
   computed: {
@@ -345,7 +345,9 @@ var app = new Vue({
 
     },
 
-    goto_sheet(){
+    goto_sheet(id){
+      if(id)
+        this.sheet_url = 'product_spec_sheet?sd=' + id;
       window.open(this.sheet_url, '_blank');
     },
 
@@ -643,13 +645,13 @@ var app = new Vue({
       }
     },
 
-    async save_print_options()
+    async save_print_options(id)
     {
       let token = localStorage.getItem("accessToken");
 
       var form_Data = new FormData();
 
-       form_Data.append('id', this.id)
+       form_Data.append('id', id)
        form_Data.append('pid', this.print_pid)
        form_Data.append('brand', this.print_brand)
        form_Data.append('srp', this.print_srp)
@@ -665,11 +667,11 @@ var app = new Vue({
       }
     },
 
-    async get_previous_print_options() {
+    async get_previous_print_options(id) {
       let token = localStorage.getItem("accessToken");
       var res = {pid: true, brand: true, srp: true, qp: true};
       const params = {
-        id: this.id,
+        id: id,
       };
 
       try {
@@ -687,7 +689,7 @@ var app = new Vue({
     },
 
     async load_print_option() {
-      res = await this.get_previous_print_options();
+      res = await this.get_previous_print_options(id);
       var pid = res.data.pid;
       var brand = res.data.brand;
       var srp = res.data.srp;
@@ -733,10 +735,10 @@ var app = new Vue({
       window.print();
     },
 
-    async print_option_page() {
+    async print_option_page(id) {
       let _this = this;
 
-      res = await this.get_previous_print_options();
+      res = await this.get_previous_print_options(id);
       var pid = res.data.pid;
       var brand = res.data.brand;
       var srp = res.data.srp;
@@ -793,7 +795,7 @@ var app = new Vue({
             $('#print_qp').addClass('noPrint')
           }
           
-          _this.save_print_options();
+          _this.save_print_options(id);
         })
 
 

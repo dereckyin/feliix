@@ -1475,6 +1475,10 @@ function GetProductSet($id, $db){
                     }
                 }
 
+                $previous_print_option = ['pid' => 'true', 'brand' => 'true', 'srp' => 'true', 'qp' => 'true' ];
+                if($row['print_option'] != "")
+                    $previous_print_option = json_decode($row['print_option']);
+              
                 $merged_results[] = array( "id" => $id,
                                     "category" => $category,
                                     "sub_category" => $sub_category,
@@ -1557,7 +1561,7 @@ function GetProductSet($id, $db){
                                     "v3" => '',
                                     "record" => [],
                                     "specification" => [],
-                                    
+                                    "print_option" => $previous_print_option,
 
 
             );
