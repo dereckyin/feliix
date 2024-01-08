@@ -453,6 +453,10 @@
             .noPrint {
                 display: none;
             }
+
+            .change_page{
+                page-break-after: always;
+            }
         }
 
         @page {
@@ -477,7 +481,7 @@
     <div class="mainContent">
 
         <!-- 如果載入的產品為 Product Set 子類別的產品，則需要使用下面的結構來顯示 Product Set 產品的基本資訊 -->
-        <div class="upper_section product_set" v-if="sub_category == '10020000'">
+        <div class="upper_section product_set noPrint" v-if="sub_category == '10020000'">
 
             <div class="infobox">
                 <div class="basic_info">
@@ -507,6 +511,13 @@
                 <div class="product_set_desc">
                     <span>Description: </span> {{ description }}
                 </div>
+
+                <div class="btnbox">
+                        <button class="btn btn-secondary" @click="print_option_page(set.id)">Export Setting</button>
+                        <button class="btn btn-info" @click="print_page()">Export</button>
+                </div>
+
+
             </div>
 
         </div>
@@ -614,8 +625,7 @@
                     </ul>
 
                     <div class="btnbox noPrint">
-                        <button class="btn btn-secondary" @click="print_option_page(set.id)">Export Setting</button> <button class="btn btn-info" @click="print_page()">Export</button>  <button class="btn btn-info" @click="goto_sheet_set(set)" >Spec. Sheet</button>
-                        
+                        <button class="btn btn-info" @click="goto_sheet_set(set)" >Spec. Sheet</button>
                     </div>
 
                 </div>
@@ -691,24 +701,22 @@
 
 
                 <div class="lower_section" v-if="(set.notes != null && set.notes != '') || set.description != ''">
-                <h5>Description</h5>
-                <p style="white-space: break-spaces;">
-                {{ set.description }}
-                </p>
+                    <h5>Description</h5>
+                    <p style="white-space: break-spaces;">{{ set.description }}</p>
 
-                <p v-if="set.notes != null && set.notes != ''">
-                    Notes: {{ set.notes }}
-                </p>
+                    <p v-if="set.notes != null && set.notes != ''">Notes: {{ set.notes }}</p>
 
-                <!--
-                <div class="desc_imgbox">
-                    <img src="images/realwork.png">
-                    <img src="images/realwork.png">
-                    <img src="images/wash_hands.png">
-                    <img src="images/realwork.png">
+                    <!--
+                    <div class="desc_imgbox">
+                        <img src="images/realwork.png">
+                        <img src="images/realwork.png">
+                        <img src="images/wash_hands.png">
+                        <img src="images/realwork.png">
+                    </div>
+                    -->
                 </div>
-                -->
-                </div>
+
+                <div class="change_page"></div>
 
         </template>
 
@@ -814,8 +822,9 @@
                 </ul>
 
                 <div class="btnbox noPrint">
-                    <button class="btn btn-secondary" @click="print_option_page()">Export Setting</button> <button class="btn btn-info" @click="print_page()">Export</button>  <button class="btn btn-info" @click="goto_sheet()" >Spec. Sheet</button>
-                    
+                    <button class="btn btn-secondary" @click="print_option_page()">Export Setting</button>
+                    <button class="btn btn-info" @click="print_page()">Export</button>
+                    <button class="btn btn-info" @click="goto_sheet()" >Spec. Sheet</button>
                 </div>
 
             </div>
@@ -892,13 +901,9 @@
 
         <div class="lower_section" v-if="((notes != null && notes != '') || description != '') && sub_category != '10020000'">
             <h5>Description</h5>
-            <p style="white-space: break-spaces;">
-{{ description }}
-            </p>
+            <p style="white-space: break-spaces;">{{ description }}</p>
 
-            <p v-if="notes != null && notes != ''">
-                Notes: {{ notes }}
-            </p>
+            <p v-if="notes != null && notes != ''">Notes: {{ notes }}</p>
 
             <!--
             <div class="desc_imgbox">
