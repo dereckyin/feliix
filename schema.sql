@@ -4564,3 +4564,22 @@ ADD COLUMN `p3_qty` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
 -- 20240104 transmittal followup
 ALTER TABLE transmittal
 ADD COLUMN   `followup` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20240109 order_taiwan_moq_check
+CREATE TABLE `order_taiwan_moq_check` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `items` JSON,
+  `msg` JSON,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20240109 mail trigger id
+ALTER TABLE mail_log
+ADD COLUMN `create_id` int(11) DEFAULT 0;
+
+ALTER TABLE mail_log
+ADD COLUMN `from_ip` varchar(256) DEFAULT '';

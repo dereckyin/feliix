@@ -1225,7 +1225,7 @@ $("#tag0102").selectpicker("refresh");
           form_Data.append("jwt", token);
           form_Data.append("category", _this.category);
           form_Data.append("sub_category", _this.sub_category);
-          form_Data.append("brand", _this.brand);
+          form_Data.append("brand", _this.brand.toUpperCase().trim());
 
           if(this.sub_category == '10020000')
           {

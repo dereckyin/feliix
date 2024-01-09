@@ -620,6 +620,7 @@ header( 'location:index' );
             padding: 7px 20px;
             font-weight: 600;
             text-align: center;
+            height: 40px;
         }
 
         .area_content tr:first-of-type td {

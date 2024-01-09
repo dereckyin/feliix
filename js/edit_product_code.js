@@ -1353,7 +1353,7 @@ var app = new Vue({
           form_Data.append("id", _this.id);
           form_Data.append("category", _this.category);
           form_Data.append("sub_category", _this.sub_category);
-          form_Data.append("brand", _this.brand);
+          form_Data.append("brand", _this.brand.toUpperCase().trim());
           form_Data.append("currency", _this.currency);
           form_Data.append("code", _this.code);
           form_Data.append("price_ntd", _this.price_ntd);
