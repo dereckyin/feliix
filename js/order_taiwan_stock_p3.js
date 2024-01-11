@@ -2570,7 +2570,7 @@ var app = new Vue({
                 confirm: item.confirm,
                 confirm_text: "",
                 brand:item.brand,
-                brand_other:item.brand_other,
+                brand_other:item.brand_other.toUpperCase().trim(),
                 photo1:item.photo1,
                 photo2:item.photo2,
                 photo3:item.photo3,

@@ -207,6 +207,9 @@ var app = new Vue({
 
     project_orders: [],
 
+    // transmittal
+    transmittal: [],
+
   },
 
   created () {
@@ -238,6 +241,7 @@ var app = new Vue({
         _this.getExpenseRecord(_this.project_id);
         
         _this.getOrderRecord(_this.project_id);
+        _this.getTransmittal(_this.project_id);
       });
     }
 
@@ -791,6 +795,35 @@ var app = new Vue({
                     
                 });
         },
+
+        getTransmittal: function(keyword) {
+          let _this = this;
+    
+          if(keyword == 0)
+            return;
+    
+          const params = {
+                  pid : keyword,
+                };
+    
+              let token = localStorage.getItem('accessToken');
+        
+              axios
+                  .get('api/project_transmittal', { params, headers: {"Authorization" : `Bearer ${token}`} })
+                  .then(
+                  (res) => {
+
+                      _this.transmittal = res.data;
+
+                  },
+                  (err) => {
+                      alert(err.response);
+                  },
+                  )
+                  .finally(() => {
+                      
+                  });
+          },
 
       apply_for_expense : function() {
         location.href = "apply_for_expense?prj_id=" + this.project_id;

@@ -1344,7 +1344,7 @@ try {
             success: function (result) {
                 console.log(result);
 
-                _func.notify_mail(id, 2);
+                //_func.notify_mail(id, 2);
 
                 var obj_meeting = {
                     title: $("#oldSubject_note").val().trim(),

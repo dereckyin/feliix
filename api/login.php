@@ -63,11 +63,16 @@ use \Firebase\JWT\JWT;
 // check if email exists and if password is correct
 //if($user_exists && password_verify($password, $user->password) && $cap == 1 && $user->status == 1){
 if($user_exists && password_verify($password, $user->password)  && $user->status == 1){
+
+    $issuedAt   = new DateTimeImmutable();
+    $expire     = $issuedAt->modify('+24 hours')->getTimestamp(); 
+
     $token = array(
        "iss" => $iss,
        "aud" => $aud,
        "iat" => $iat,
        "nbf" => $nbf,
+       "exp" => $expire,
        "data" => array(
            "id" => $user->id,
            "username" => $user->username,

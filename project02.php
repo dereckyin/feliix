@@ -337,6 +337,14 @@ header('location:index');
             display: block;
             min-width: 180px;
         }
+
+        div.red {
+            color: red;
+        }
+
+        div.red a {
+            color: red!important;
+        }
     </style>
 
 </head>
@@ -1396,6 +1404,24 @@ if ($access6 == true) {
                                 <span v-for="item in receive_record.items">
                                         <a :href="baseURL + item.bucket + '\\' + item.gcp_name" target="_blank"
                                            class="attch">{{item.filename}}</a>
+                                    </span>
+                                <br>({{ receive_record.username }} at {{ receive_record.created_at }})
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tablebox lv2a" v-if="title != 'technician'">
+                    <ul class="head">
+                        <li style="text-align: center !important;">Transmittal</li>
+                    </ul>
+                    <ul>
+                        <li class="morespace">
+                            <div v-for='(receive_record, index) in transmittal' :class="receive_record.followup == 'Y' ? 'red' : ''">
+                                <a :href="'transmittal?id=' + receive_record.id">• {{ receive_record.comment }}</a> <br v-if="receive_record.items.length > 0">
+                                <span v-for="item in receive_record.items">
+                                        <a :href="baseURL + item.bucket + '\\' + item.gcp_name" target="_blank"
+                                           class="attch" style="color: var(--fth05);">{{item.filename}}</a>
                                     </span>
                                 <br>({{ receive_record.username }} at {{ receive_record.created_at }})
                             </div>

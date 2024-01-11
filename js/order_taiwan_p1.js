@@ -704,6 +704,28 @@ var app = new Vue({
         });
       },
 
+      check_qty : async function(items) {
+        var msg = "";
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+
+        form_Data.append("jwt", token);
+        form_Data.append("items", JSON.stringify(items));
+
+        let res = await axios({
+          method: 'post',
+          url: 'api/order_taiwan_moq_check',
+          data: form_Data,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        msg = res.data.ret;
+
+        return msg;
+      },
+
       approval : async function() {
         let element = [];
 
@@ -721,6 +743,26 @@ var app = new Vue({
 
         if(element.length == 0)
           return;
+
+          // check items qty + backup_qty > item.pid.moq
+        var msg = await this.check_qty(element);
+
+        if(msg != "")
+        {
+          let res = await Swal.fire({
+            title: 'MOQ Check',
+            html: msg + "Are you sure to continue submitting for approval?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+          });
+
+          if(! res.isConfirmed)
+          {
+            return;
+          }
+        }
 
         var token = localStorage.getItem("token");
         var form_Data = new FormData();
@@ -2156,7 +2198,7 @@ var app = new Vue({
                 confirm: item.confirm,
                 confirm_text: "",
                 brand:item.brand,
-                brand_other:item.brand_other,
+                brand_other:item.brand_other.toUpperCase().trim(),
                 photo1:item.photo1,
                 photo2:item.photo2,
                 photo3:item.photo3,
