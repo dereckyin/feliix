@@ -53,31 +53,12 @@ else
       switch ($method) {
           case 'GET':
             $pid = (isset($_GET['pid']) ?  $_GET['pid'] : "");
-            $page = (isset($_GET['page']) ?  $_GET['page'] : "");
-            $size = (isset($_GET['size']) ?  $_GET['size'] : "");
-            $keyword = (isset($_GET['keyword']) ?  $_GET['keyword'] : "");
 
-            $sql = "SELECT pm.id, pm.title comment, pm.followup, COALESCE(f.filename, '') filename, COALESCE(f.bucketname, '') bucket, COALESCE(f.gcp_name, '') gcp_name, u.username, pm.created_at FROM transmittal pm left join user u on u.id = pm.create_id LEFT JOIN gcp_storage_file f ON f.batch_id = pm.id AND f.batch_type = 'transmittal' where pm.project_id = " . $pid . " and f.`status` <> -1 and pm.kind = '' and pm.status <> -1 ";
 
-            if(!empty($_GET['page'])) {
-                $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
-                if(false === $page) {
-                    $page = 1;
-                }
-            }
+            $sql = "SELECT pm.id, pm.title comment, pm.followup, u.username, pm.created_at 
+            FROM transmittal pm left join user u on u.id = pm.create_id 
+            where pm.project_id = " . $pid . " and pm.kind = '' and pm.status <> -1 ";
 
-            $sql = $sql . " ORDER BY pm.id ";
-
-            if(!empty($_GET['size'])) {
-                $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
-                if(false === $size) {
-                    $size = 10;
-                }
-
-                $offset = ($page - 1) * $size;
-
-                $sql = $sql . " LIMIT " . $offset . "," . $size;
-            }
 
             $merged_results = array();
 
@@ -94,50 +75,22 @@ else
             $items = [];
 
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
-                if($id != $row['id'] && $id != 0)
-                {
-                    $merged_results[] = array( "id" => $id, 
-                                            "comment" => $comment,
-                                            "followup" => $followup,
-                                            "items" => $items,
-                                            "username" => $username,
-                                            "created_at" => $created_at
-                    );
-
-                    $items = [];
-
-                }
-
                 $id = $row['id'];
                 $created_at = $row['created_at'];
                 $username = $row['username'];
-                $gcp_name = $row['gcp_name'];
-                $filename = $row['filename'];
-                $bucket = $row['bucket'];
                 $comment = $row['comment'];
                 $followup = $row['followup'];
 
-                if($filename != "")
-                  $items[] = array('filename' => $filename,
-                                 'gcp_name' => $gcp_name,
-                                 'bucket' => $bucket );
-            }
+                $items = GetRecentFiles($id, $db);
 
-            if($id != 0)
-            {
-                $merged_results[] = array( "id" => $id, 
-                                            "comment" => $comment,
-                                            "followup" => $followup,
-                                                "items" => $items,
-                                                "username" => $username,
-                                                "created_at" => $created_at
-                        );
-            }
-
-
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $merged_results[] = $row;
+                $merged_results[] = array(
+                    "id" => $id,
+                    "comment" => $comment,
+                    "followup" => $followup,
+                    "username" => $username,
+                    "created_at" => $created_at,
+                    "items" => $items
+                );
             }
 
             echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);
@@ -148,4 +101,27 @@ else
 
 
 
+      function GetRecentFiles($pid, $db){
+        // $sql = "SELECT f.id, COALESCE(f.filename, '') filename, COALESCE(f.bucketname, '') bucket, COALESCE(f.gcp_name, '') gcp_name, u.username, pm.created_at FROM transmittal pm LEFT JOIN gcp_storage_file f ON f.batch_id = pm.id left join user u on u.id = f.create_id  AND f.batch_type = 'transmittal' where pm.id = " . $pid . " and pm.status <> -1 and f.status <> -1";
+        $sql = "SELECT f.id, COALESCE(f.filename, '') filename, COALESCE(f.bucketname, '') bucket, COALESCE(f.gcp_name, '') gcp_name, (select username from user where id = f.create_id) username, f.created_at FROM transmittal pm  LEFT JOIN gcp_storage_file f ON f.batch_id = pm.id AND f.batch_type = 'transmittal' where pm.id = " . $pid . " and pm.status <> -1 and f.status <> -1";
+        $stmt = $db->prepare( $sql );
+    
+        $stmt->execute();
+    
+        $result = [];
+    
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = array(
+                "id" => $row['id'],
+                "filename" => $row['filename'],
+                "bucket" => $row['bucket'],
+                "gcp_name" => $row['gcp_name'],
+                "username" => $row['username'],
+                "created_at" => $row['created_at'],
+            );
+        }
+    
+        return $result;
+    }
+    
 ?>
