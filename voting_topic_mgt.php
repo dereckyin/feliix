@@ -25,6 +25,11 @@ try {
             $user_id = $decoded->data->id;
             $username = $decoded->data->username;
 
+            if($decoded->exp < time())
+            {
+                header( 'location:index' );
+            }
+
             $database = new Database();
             $db = $database->getConnection();
 

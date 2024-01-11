@@ -81,7 +81,7 @@ try{
 
             if($qty + $back_qty < $moq)
             {
-                $msg = $msg . "MOQ FOR ITEM #" . $items_array[$i]['sn'] . ", ID: " . $pid . " is " . $moq . ". <br>";
+                $msg = $msg . "MOQ for ITEM #" . $items_array[$i]['serial_number'] . ", ID: " . $pid . " is " . $moq . ". <br>";
             }
 
         }
