@@ -1421,7 +1421,7 @@ if ($access6 == true) {
                                 <a :href="'transmittal?id=' + receive_record.id">• {{ receive_record.comment }}</a> <br v-if="receive_record.items.length > 0">
                                 <span v-for="item in receive_record.items">
                                         <a :href="baseURL + item.bucket + '\\' + item.gcp_name" target="_blank"
-                                           class="attch">{{item.filename}}</a>
+                                           class="attch" style="color: var(--fth05);">{{item.filename}}</a>
                                     </span>
                                 <br>({{ receive_record.username }} at {{ receive_record.created_at }})
                             </div>
@@ -1869,14 +1869,14 @@ if ($access6 == true) {
     }
 
     div.block.left a.attch {
-        color: var(--fth05)!important;
+        color: var(--fth05);
         transition: .3s;
         margin: 0 15px 0 0;
         font-size: 13px;
     }
 
     div.block.left a.attch:hover {
-        color: var(--fth01)!important;
+        color: var(--fth01);
     }
 
     li.morespace > div + div {
