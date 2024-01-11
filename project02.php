@@ -1869,14 +1869,14 @@ if ($access6 == true) {
     }
 
     div.block.left a.attch {
-        color: var(--fth05);
+        color: var(--fth05)!important;
         transition: .3s;
         margin: 0 15px 0 0;
         font-size: 13px;
     }
 
     div.block.left a.attch:hover {
-        color: var(--fth01);
+        color: var(--fth01)!important;
     }
 
     li.morespace > div + div {
