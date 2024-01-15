@@ -411,6 +411,7 @@ else
                         $product_set_cnt++;
                         $product_set_1 = GetProductSet($p1_id, $db);
                         array_push($product_set, $product_set_1);
+
                     }
                     if($p2_id != '')
                     {
@@ -1536,7 +1537,6 @@ function GetProductSet($id, $db){
                 $product = [];
                 $accessory = [];
 
-
                 $quoted_price = '';
                 $quoted_price_change = '';
 
@@ -1560,6 +1560,9 @@ function GetProductSet($id, $db){
                 $sub_category_name = GetCategory($row['sub_category'], $db);
         
                 $brand = $row['brand'];
+
+                $pid = $row['id'];
+                
                 $code = $row['code'];
                 $price_ntd = $row['price_ntd'];
                 $price_org = $row['price'];
@@ -2128,6 +2131,7 @@ function GetProductSet($id, $db){
 
             return $merged_results;
 }
+
 
 
 ?>

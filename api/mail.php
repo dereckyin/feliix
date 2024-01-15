@@ -899,11 +899,15 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
     // 判斷 Project Type 和 Proof Kind 和 Project Final Amount 來決定 稱呼者名稱
     // Project Type = Normal
     if($special == "")
-	$content = $content . "Glen has checked " . $payment . " proof, Please check details below:";
+	    $content = $content . "Glen has checked " . $payment . " proof, Please check details below:";
 
-    // Project Type = X-Deal
-    if($special == "s")
+    // Project Type = X-Deal and Kind = 0 or 1
+    if($special == "s" && ($kind == 0 || $kind == 1))
         $content = $content . "Boss has checked " . $payment . " proof, Please check details below:";
+
+    // Project Type = X-Deal and Kind = 2
+    if($special == "s" && $kind == 2)
+        $content = $content . "Glen has checked " . $payment . " proof, Please check details below:";
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
     if($special == "sn" && $kind == 0 && $final_amount <= 100000)
@@ -1315,11 +1319,18 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
 	$mail->AddCC('kristel@feliix.com', 'Kristel Tan');
     }
 
-    // Project Type = X-Deal
-    if($special == "s"){
+    // Project Type = X-Deal and Kind = 0 or 1
+    if($special == "s" && ($kind == 0 || $kind == 1)){
         $mail->AddAddress('kuan@feliix.com', 'Kuan');
 	$mail->AddCC('kristel@feliix.com', 'Kristel Tan');
 	$mail->AddCC('glen@feliix.com', 'Glendon Wendell Co');
+    }
+
+    // Project Type = X-Deal and Kind = 2
+    if($special == "s" && $kind == 2){
+        $mail->AddAddress('glen@feliix.com', 'Glendon Wendell Co');
+	$mail->AddCC('kuan@feliix.com', 'Kuan');
+	$mail->AddCC('kristel@feliix.com', 'Kristel Tan');
     }
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
@@ -1396,11 +1407,15 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
     // 判斷 Project Type 和 Proof Kind 和 Project Final Amount 來決定 稱呼者名稱
     // Project Type = Normal
     if($special == "")
-	$content = $content . ' Dear Glendon, ';
+	    $content = $content . ' Dear Glendon, ';
 
-    // Project Type = X-Deal
-    if($special == "s")
+    // Project Type = X-Deal and Kind = 0 or 1
+    if($special == "s" && ($kind == 0 || $kind == 1))
         $content = $content . ' Dear Boss, ';
+
+    // Project Type = X-Deal and Kind = 2
+    if($special == "s" && $kind == 2)
+        $content = $content . ' Dear Glendon, ';
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
     if($special == "sn" && $kind == 0 && $final_amount <= 100000)
@@ -15436,24 +15451,24 @@ function _rawurlencode($string) {
 
 function SetupMail($mail, $conf)
 {
-    $mail->SMTPDebug  = 0;
-    $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = "ssl";
-    $mail->Port       = 465;
-    $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf::$mail_host;
-    $mail->Username   = $conf::$mail_username;
-    $mail->Password   = $conf::$mail_password;
-
-
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "tls";
-    // $mail->Port       = 587;
+    // $mail->SMTPSecure = "ssl";
+    // $mail->Port       = 465;
     // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = 'smtp.ethereal.email';
-    // $mail->Username   = 'jermey.wilkinson@ethereal.email';
-    // $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
+    // $mail->Host       = $conf::$mail_host;
+    // $mail->Username   = $conf::$mail_username;
+    // $mail->Password   = $conf::$mail_password;
+
+
+    $mail->SMTPDebug  = 0;
+    $mail->SMTPAuth   = true;
+    $mail->SMTPSecure = "tls";
+    $mail->Port       = 587;
+    $mail->SMTPKeepAlive = true;
+    $mail->Host       = 'smtp.ethereal.email';
+    $mail->Username   = 'jermey.wilkinson@ethereal.email';
+    $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
 
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;

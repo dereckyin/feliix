@@ -260,7 +260,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $who_color = "orange";
     if($special == 'sn' && $kind == 0 && $final_amount > 100000)
         $who_color = "red";
-    if($special == 's')
+    if($special == 's' && ($kind == 0 || $kind == 1))
         $who_color = "red";
 
     $final_quotation = GetFinalQuote($row['pid'], $db);

@@ -161,6 +161,10 @@ else
                 $p2_id = $row['p2_id'];
                 $p3_id = $row['p3_id'];
 
+                $p1_qty = $row['p1_qty'];
+                $p2_qty = $row['p2_qty'];
+                $p3_qty = $row['p3_qty'];
+
                 $qp_max = $row['qp_max'];
                 $qp_min = $row['qp_min'];
 
@@ -184,7 +188,7 @@ else
                     if($p1_id != '')
                     {
                         $product_set_cnt++;
-                        $product_set_1 = GetProductSet($p1_id, $db);
+                        $product_set_1 = GetProductSet($p1_id, $p1_qty, $db);
 
                         // $product_set_1[0]['record']  is a copy of $product_set_1[0]
                         $product_set_1[0]['record'] = json_decode(json_encode($product_set_1));
@@ -194,7 +198,7 @@ else
                     if($p2_id != '')
                     {
                         $product_set_cnt++;
-                        $product_set_2 = GetProductSet($p2_id, $db);
+                        $product_set_2 = GetProductSet($p2_id, $p2_qty, $db);
 
                         // $product_set_1[0]['record']  is a copy of $product_set_1[0]
                         $product_set_2[0]['record'] = json_decode(json_encode($product_set_2));
@@ -204,7 +208,7 @@ else
                     if($p3_id != '')
                     {
                         $product_set_cnt++;
-                        $product_set_3 = GetProductSet($p3_id, $db);
+                        $product_set_3 = GetProductSet($p3_id, $p3_qty, $db);
 
                         // $product_set_1[0]['record']  is a copy of $product_set_1[0]
                         $product_set_3[0]['record'] = json_decode(json_encode($product_set_3));
@@ -1097,7 +1101,7 @@ function GetRelatedProductCode($id, $db){
 
 }
 
-function GetProductSet($id, $db){
+function GetProductSet($id, $qty, $db){
     $merged_results = array();
 
             // product main
@@ -1268,18 +1272,18 @@ function GetProductSet($id, $db){
                         }
 
                         // price_retail
-                        if (!in_array($product[$i]['price'],$pro_price))
+                        if (!in_array($product[$i]['price'],$pro_price) && $product[$i]['price'] != null)
                         {
                             array_push($pro_price,$product[$i]['price']);
                         }
                         // price_ntd
-                        if (!in_array($product[$i]['price_ntd'],$pro_price_ntd))
+                        if (!in_array($product[$i]['price_ntd'],$pro_price_ntd) && $product[$i]['price_ntd'] != null)
                         {
                             array_push($pro_price_ntd,$product[$i]['price_ntd']);
                         }
 
                          // price_quoted
-                         if (!in_array($product[$i]['quoted_price'],$pro_price_quoted))
+                         if (!in_array($product[$i]['quoted_price'],$pro_price_quoted) && $product[$i]['quoted_price'] != null)
                          {
                              array_push($pro_price_quoted,$product[$i]['quoted_price']);
                          }
@@ -1362,6 +1366,7 @@ function GetProductSet($id, $db){
                     $price_quoted = "PHP " .  number_format($price_quoted);
                 else
                     $price_quoted = $s_price_quoted; 
+
 
                 $accessory = GetAccessory($id, $db);
                 $sub_category_item = GetSubCategoryItem($category, $db);
@@ -1572,6 +1577,7 @@ function GetProductSet($id, $db){
                                     "record" => [],
                                     "specification" => [],
                                     "print_option" => $previous_print_option,
+                                    "qty" => $qty,
 
 
             );
