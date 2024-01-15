@@ -430,8 +430,12 @@ var app = new Vue({
 
       this.who_detail = '';
 
-      if(this.record.special == 's' && this.name == 'Kuan')
+      if(this.record.special == 's' && (this.record.kind == '0' || this.record.kind == '1') && this.name == 'Kuan')
         this.who_detail = 's';
+
+      if(this.record.special == 's' && this.record.kind == '2' && this.name == 'Glendon Wendell Co')
+        this.who_detail = 'g';
+
       if(this.record.special == '' && this.name == 'Glendon Wendell Co')
         this.who_detail = 'g';
 
