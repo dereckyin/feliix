@@ -361,6 +361,13 @@
             margin-bottom: 0;
         }
 
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(2) ul li span.phasedout {
+            background-color: red;
+            color: white;
+            padding: 0px 5px 3px;
+            border-radius: 10px;
+        }
+
         #tb_product_list tbody tr.set_format2 > td:nth-of-type(3) {
             width: 430px!important;
         }
