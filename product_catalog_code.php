@@ -311,6 +311,81 @@
             outline-color: transparent;
         }
 
+        #tb_product_list tbody tr.set_format1 td, #tb_product_list tbody tr.set_format2 td {
+            background-color: rgba(255,255,0,0.1)!important;
+        }
+
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(1) {
+            width: 50px!important;
+        }
+
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(2) {
+            width: 940px!important;
+            columns: 2!important;
+            padding: 10px 25px!important;
+        }
+
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(2) ul {
+            margin-bottom: 0;
+        }
+
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(3) {
+            width: 220px!important;
+        }
+
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) {
+            width: 100px!important;
+        }
+
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) button {
+            border: 2px solid black;
+            width: 34px;
+            box-sizing: border-box;
+            padding: 6px
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(1) {
+            width: 130px!important;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(1) img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(2) {
+            width: 380px!important;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(2) ul {
+            margin-bottom: 0;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(2) ul li span.phasedout {
+            background-color: red;
+            color: white;
+            padding: 0px 5px 3px;
+            border-radius: 10px;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(3) {
+            width: 430px!important;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(3) ul {
+            margin-bottom: 0;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 3px;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(3) ul:last-of-type {
+            border-bottom: none;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(4) {
+            width: 220px!important;
+        }
+
         .NTD_price {
 
         }
@@ -664,135 +739,352 @@
                 </thead>
 
                 <tbody>
-                <tr v-for="(item, index) in displayedPosts">
-                    <td>
-                        <input type="checkbox" class="alone">
-                    </td>
-                    <td>
-                        <a target="_blank" :href="'product_display_code?id='+item.id"><img :src="baseURL + item.photo1" v-if="item.photo1"></a>
-                    </td>
-                    <td>
-                        <ul v-if="item.out == 'Y'">
-                        <li>
-                                <span class="phasedout">Phased Out</span>
-                        </li>
-                        <li></li>
-                        </ul>
-                        <ul>
+
+                
+
+
+
+                <!-- 非 Product Set 子類別的產品，套用以下格式輸出到頁面上 -->
+                <template v-for="(item, index) in displayedPosts">
+                    <!-- Product Set 子類別的產品，套用以下格式輸出到頁面上 -->
+                    <!-- set_format1 會套用在 Product Set 產品的主敘述，set_format2 會套用在 Product Set 產品的 Product1, Product 2, Product 3 -->
+                    <tr class="set_format1" v-if="item.sub_category == '10020000'">
+                        <!-- 如果這個 Product Set 產品有 Product1 和 Product 2，則 rowspan=3；如果這個 Product Set 產品有 Product1 和 Product 2 和 Product 3，則 rowspan=4 -->
+                        <td :rowspan="item.product_set_cnt + 1">
+                            <input type="checkbox" class="alone">
+                        </td>
+                        <td colspan="3">
+                            <ul>
+                                <li>
+                                    ID:
+                                </li>
+                                <li>
+                                {{ item.id }}
+                                </li>
+
+                            </ul>
+                            <ul>
+                                <li>
+                                    Code:
+                                </li>
+                                <li>
+                                <a target="_blank" :href="'product_display_code?id='+item.id">{{ item.code }}</a>
+                                </li>
+
+                            </ul>
+
+                            <ul>
+                                <li>
+                                    Category:
+                                </li>
+                                <li>
+                                    {{ item.category}} >> {{ item.sub_category_name}}
+                                </li>
+
+                            </ul>
+                            <ul>
+                                <li>
+                                    Tags:
+                                </li>
+                                <li>
+                                    <span v-for="(it, index) in item.tags">{{ it }}</span>
+                                </li>
+
+                            </ul>
+
+                            <ul>
+                                <li>
+                                    Created:
+                                </li>
+                                <li>
+                                    {{ item.created_at }} {{ item.created_name !== null ? '(' + item.created_name + ')' : '' }}
+                                </li>
+
+                            </ul>
+
+                            <ul>
+                                <li>
+                                    Updated:
+                                </li>
+                                <li>
+                                    {{ item.updated_name !== null ? item.updated_at : '' }} {{ item.updated_name !== null ? '(' + item.updated_name + ')' : '' }}
+                                </li>
+
+                            </ul>
+
+                            <ul>
+                                <li>
+                                    Description:
+                                </li>
+                                <li>
+                                    {{ item.description }}
+                                </li>
+
+                            </ul>
+
+                        </td>
+
+                        <td>
+                            <span>SRP: {{ item.price }}<br></span>
+                            <span>QP: {{ item.quoted_price }}<br></span>
+                        </td>
+
+                        <!-- 如果這個 Product Set 產品有 Product1 和 Product 2，則 rowspan=3；如果這個 Product Set 產品有 Product1 和 Product 2 和 Product 3，則 rowspan=4 -->
+                        <td :rowspan="item.product_set_cnt + 1">
+                            <button id="edit01" @click="btnEditClick(item.id)"><i class="fas fa-edit"></i>
+                            </button>
+
+                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="name == 'dereck' || name == 'Dennis Lin' || name == 'Ariel Lin'"><i class="fas fa-copy"></i></button>
+
+                            <button @click="btnDelClick(item.id)"><i class="fas fa-times"></i></button>
+
+                        </td>
+                    </tr>
+
+                    <!-- set_format1 會套用在 Product Set 產品的主敘述，set_format2 會套用在 Product Set 產品的 Product1, Product 2, Product 3 -->
+                    <tr class="set_format2" v-for="(set, index) in item.product_set">
+                        <td>
+                            <a target="_blank" :href="'product_display_code?id='+set.id"><img :src="baseURL + set.photo1" v-if="set.photo1"></a>
+                        </td>
+                        <td>
+                            <ul v-if="set.out == 'Y'">
                             <li>
-                                ID:
+                                    <span class="phasedout">Phased Out</span>
                             </li>
+                            <li></li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    ID:
+                                </li>
+                                <li>
+                                {{ set.id }}
+                                </li>
+
+                            </ul>
+                            <ul>
+                                <li>
+                                    Code:
+                                </li>
+                                <li>
+                                <a target="_blank" :href="'product_display_code?id='+set.id">{{ set.code }}</a>
+                                </li>
+
+                            </ul>
+
+                            <ul>
+                                <li>
+                                    Category:
+                                </li>
+                                <li>
+                                    {{ set.category}} >> {{ set.sub_category_name}}
+                                </li>
+
+                            </ul>
+                            <ul>
+                                <li>
+                                    Tags:
+                                </li>
+                                <li>
+                                    <span v-for="(it, index) in set.tags">{{ it }}</span>
+                                </li>
+
+                            </ul>
+                            <ul>
+                                <li>
+                                    Brand:
+                                </li>
+                                <li>
+                                    {{ set.brand }}
+                                </li>
+
+                            </ul>
+
+                            <ul>
+                                <li>
+                                    Created:
+                                </li>
+                                <li>
+                                    {{ set.created_at }} {{ set.created_name !== null ? '(' + set.created_name + ')' : '' }}
+                                </li>
+
+                            </ul>
+
+                            <ul>
+                                <li>
+                                    Updated:
+                                </li>
+                                <li>
+                                    {{ set.updated_name !== null ? set.updated_at : '' }} {{ set.updated_name !== null ? '(' + set.updated_name + ')' : '' }}
+                                </li>
+
+                            </ul>
+
+                            <!-- 如果停產的子規格數目大於 0，才需要顯示下面的<div class="phasedout_variant"> 結構 -->
+                            <div class="phasedout_variant" v-if="set.phased_out_cnt > 0">
+
+                                <!-- 如果停產的子規格數目大於或等於2，則顯示下面這一行 -->
+                                ※ {{ set.phased_out_cnt }} variant{{ set.phased_out_cnt > 1 ? 's' : '' }} are phased out.
+
+                                <!-- 當使用者點擊下方的 info 按鈕，這時候系統才會向資料庫利用這個產品的id，去查詢product這張表裡這個商品是哪些子規格停產，之後則會利用 sweetalert2@9 跑出一個彈出訊息框，訊息框裡面會列出停產子規格的資訊 -->
+                                <!-- 並不需要網頁載入時，就把所有停產的子規格查詢出來 且 掛在網頁上。只有當使用者點擊下方的 info 按鈕，才需去額外查詢停產的子規格，以減少頁面負載量。 -->
+                                <button @click="phased_out_info(set.phased_out_text)">info</button>
+                            </div>
+
+                        </td>
+
+
+                        <td>
+                            <ul v-for="(att, index) in set.attribute_list">
+                                <li>
+                                    {{ att.category }}:
+                                </li>
+                                <li v-if="att.value.length > 1">
+                                    <span v-for="(att_value, index) in att.value">{{att_value}}</span>
+                                </li>
+                                <li v-if="att.value.length == 1">
+                                    <template v-for="(att_value, index) in att.value">{{att_value}}</template>
+                                </li>
+
+                            </ul>
+
+                        </td>
+                        <td>
+                            <span v-show="show_ntd == true && toggle == true">CP: {{ set.price_ntd }} <br v-if="set.str_price_ntd_change"> {{ set.str_price_ntd_change ?  set.str_price_ntd_change : '' }} <br></span>
+                            <span>SRP: {{ set.price }} <br v-if="set.str_price_change"> {{ set.str_price_change ?  set.str_price_change : '' }} <br></span>
+                            <span>QP: {{ set.quoted_price }} <br v-if="set.str_quoted_price_change"> {{ set.str_quoted_price_change ? set.str_quoted_price_change : '' }} <br></span>
+                        </td>
+                    </tr>
+
+
+
+                    <tr v-if="item.sub_category != '10020000'">
+                        <td>
+                            <input type="checkbox" class="alone">
+                        </td>
+                        <td>
+                            <a target="_blank" :href="'product_display_code?id='+item.id"><img :src="baseURL + item.photo1" v-if="item.photo1"></a>
+                        </td>
+                        <td>
+                            <ul v-if="item.out == 'Y'">
                             <li>
-                               {{ item.id }}
+                                    <span class="phasedout">Phased Out</span>
                             </li>
+                            <li></li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    ID:
+                                </li>
+                                <li>
+                                {{ item.id }}
+                                </li>
 
-                        </ul>
-                        <ul>
-                            <li>
-                                Code:
-                            </li>
-                            <li>
-                               <a target="_blank" :href="'product_display_code?id='+item.id">{{ item.code }}</a>
-                            </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    Code:
+                                </li>
+                                <li>
+                                <a target="_blank" :href="'product_display_code?id='+item.id">{{ item.code }}</a>
+                                </li>
 
-                        </ul>
+                            </ul>
 
-                        <ul>
-                            <li>
-                                Category:
-                            </li>
-                            <li v-if="item.category == 'Lighting'">
-                                {{ item.category}}
-                            </li>
-                            <li v-if="item.category != 'Lighting'">
-                                {{ item.category}} >> {{ item.sub_category_name}}
-                            </li>
+                            <ul>
+                                <li>
+                                    Category:
+                                </li>
+                                <li>
+                                    {{ item.category}} >> {{ item.sub_category_name}}
+                                </li>
 
-                        </ul>
-                        <ul>
-                            <li>
-                                Tags:
-                            </li>
-                            <li>
-                                <span v-for="(it, index) in item.tags">{{ it }}</span>
-                            </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    Tags:
+                                </li>
+                                <li>
+                                    <span v-for="(it, index) in item.tags">{{ it }}</span>
+                                </li>
 
-                        </ul>
-                        <ul>
-                            <li>
-                                Brand:
-                            </li>
-                            <li>
-                                {{ item.brand }}
-                            </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    Brand:
+                                </li>
+                                <li>
+                                    {{ item.brand }}
+                                </li>
 
-                        </ul>
+                            </ul>
 
-                        <ul>
-                            <li>
-                                Created:
-                            </li>
-                            <li>
-                                {{ item.created_at }} {{ item.created_name !== null ? '(' + item.created_name + ')' : '' }}
-                            </li>
+                            <ul>
+                                <li>
+                                    Created:
+                                </li>
+                                <li>
+                                    {{ item.created_at }} {{ item.created_name !== null ? '(' + item.created_name + ')' : '' }}
+                                </li>
 
-                        </ul>
+                            </ul>
 
-                        <ul>
-                            <li>
-                                Updated:
-                            </li>
-                            <li>
-                                {{ item.updated_name !== null ? item.updated_at : '' }} {{ item.updated_name !== null ? '(' + item.updated_name + ')' : '' }}
-                            </li>
+                            <ul>
+                                <li>
+                                    Updated:
+                                </li>
+                                <li>
+                                    {{ item.updated_name !== null ? item.updated_at : '' }} {{ item.updated_name !== null ? '(' + item.updated_name + ')' : '' }}
+                                </li>
 
-                        </ul>
+                            </ul>
 
-                        <!-- 如果停產的子規格數目大於 0，才需要顯示下面的<div class="phasedout_variant"> 結構 -->
-                        <div class="phasedout_variant" v-if="item.phased_out_cnt > 0">
+                            <!-- 如果停產的子規格數目大於 0，才需要顯示下面的<div class="phasedout_variant"> 結構 -->
+                            <div class="phasedout_variant" v-if="item.phased_out_cnt > 0">
 
-                            <!-- 如果停產的子規格數目大於或等於2，則顯示下面這一行 -->
-                            ※ {{ item.phased_out_cnt }} variant{{ item.phased_out_cnt > 1 ? 's' : '' }} are phased out.
+                                <!-- 如果停產的子規格數目大於或等於2，則顯示下面這一行 -->
+                                ※ {{ item.phased_out_cnt }} variant{{ item.phased_out_cnt > 1 ? 's' : '' }} are phased out.
 
-                            <!-- 當使用者點擊下方的 info 按鈕，這時候系統才會向資料庫利用這個產品的id，去查詢product這張表裡這個商品是哪些子規格停產，之後則會利用 sweetalert2@9 跑出一個彈出訊息框，訊息框裡面會列出停產子規格的資訊 -->
-                            <!-- 並不需要網頁載入時，就把所有停產的子規格查詢出來 且 掛在網頁上。只有當使用者點擊下方的 info 按鈕，才需去額外查詢停產的子規格，以減少頁面負載量。 -->
-                            <button @click="phased_out_info(item.phased_out_text)">info</button>
-                        </div>
+                                <!-- 當使用者點擊下方的 info 按鈕，這時候系統才會向資料庫利用這個產品的id，去查詢product這張表裡這個商品是哪些子規格停產，之後則會利用 sweetalert2@9 跑出一個彈出訊息框，訊息框裡面會列出停產子規格的資訊 -->
+                                <!-- 並不需要網頁載入時，就把所有停產的子規格查詢出來 且 掛在網頁上。只有當使用者點擊下方的 info 按鈕，才需去額外查詢停產的子規格，以減少頁面負載量。 -->
+                                <button @click="phased_out_info(item.phased_out_text)">info</button>
+                            </div>
 
-                    </td>
+                        </td>
 
 
-                    <td>
-                        <ul v-for="(att, index) in item.attribute_list">
-                            <li>
-                                {{ att.category }}:
-                            </li>
-                            <li v-if="att.value.length > 1">
-                                <span v-for="(att_value, index) in att.value">{{att_value}}</span>
-                            </li>
-                            <li v-if="att.value.length == 1">
-                                <template v-for="(att_value, index) in att.value">{{att_value}}</template>
-                            </li>
+                        <td>
+                            <ul v-for="(att, index) in item.attribute_list">
+                                <li>
+                                    {{ att.category }}:
+                                </li>
+                                <li v-if="att.value.length > 1">
+                                    <span v-for="(att_value, index) in att.value">{{att_value}}</span>
+                                </li>
+                                <li v-if="att.value.length == 1">
+                                    <template v-for="(att_value, index) in att.value">{{att_value}}</template>
+                                </li>
 
-                        </ul>
+                            </ul>
 
-                    </td>
-                    <td>
-                        <span v-show="show_ntd == true && toggle == true">CP: {{ item.price_ntd }} <br v-if="item.str_price_ntd_change"> {{ item.str_price_ntd_change ?  item.str_price_ntd_change : '' }} <br></span>
-                        <span>SRP: {{ item.price }} <br v-if="item.str_price_change"> {{ item.str_price_change ?  item.str_price_change : '' }} <br></span>
-                        <span>QP: {{ item.quoted_price }} <br v-if="item.str_quoted_price_change"> {{ item.str_quoted_price_change ? item.str_quoted_price_change : '' }} <br></span>
-                    </td>
-                    <!-- <td></td> -->
-                    <td>
-                        <button id="edit01" @click="btnEditClick(item.id)"><i class="fas fa-edit"></i>
-                        </button>
+                        </td>
+                        <td>
+                            <span v-show="show_ntd == true && toggle == true">CP: {{ item.price_ntd }} <br v-if="item.str_price_ntd_change"> {{ item.str_price_ntd_change ?  item.str_price_ntd_change : '' }} <br></span>
+                            <span>SRP: {{ item.price }} <br v-if="item.str_price_change"> {{ item.str_price_change ?  item.str_price_change : '' }} <br></span>
+                            <span>QP: {{ item.quoted_price }} <br v-if="item.str_quoted_price_change"> {{ item.str_quoted_price_change ? item.str_quoted_price_change : '' }} <br></span>
+                        </td>
+                        <!-- <td></td> -->
+                        <td>
+                            <button id="edit01" @click="btnEditClick(item.id)"><i class="fas fa-edit"></i>
+                            </button>
 
-                        <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="name == 'dereck' || name == 'Dennis Lin' || name == 'Ariel Lin'"><i class="fas fa-copy"></i></button>
+                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="name == 'dereck' || name == 'Dennis Lin' || name == 'Ariel Lin'"><i class="fas fa-copy"></i></button>
 
-                        <button @click="btnDelClick(item.id)"><i class="fas fa-times"></i></button>
+                            <button @click="btnDelClick(item.id)"><i class="fas fa-times"></i></button>
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                </template>
 
                 </tbody>
 
