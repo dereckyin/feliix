@@ -3874,9 +3874,29 @@ Installation:`;
     // add phased out information
     if((set.phased_out_cnt > 0 && set.phased == 1) || (set.phased_out_cnt > 0 && all == 'all'))
     {
-      list += "\n";
-      list += "Phased-out Variants:\n";
-      list += set.phased_out_text.split("<br/>").join("\n");
+      // if string or is string array
+      if(typeof set.phased_out_text === 'string' || set.phased_out_text instanceof String)
+      {
+        list += "\n";
+        list += "Phased-out Variants:\n";
+        list += set.phased_out_text.split("<br/>").join("\n");
+      }
+      else if(Array.isArray(set.phased_out_text))
+      {
+        for(var i=0; i<set.phased_out_text.length; i++)
+        {
+          list += "\n";
+          list += "Phased-out Variants:\n";
+          list += set.phased_out_text[i].split("<br/>").join("\n");
+        }
+      }
+      else
+      {
+        list += "\n";
+        list += "Phased-out Variants:\n";
+        list += set.phased_out_text.split("<br/>").join("\n");
+      }
+      
     }
 
     if(price == null)
@@ -4057,9 +4077,28 @@ Installation:`;
     // add phased out information
     if((set.phased_out_cnt > 0 && set.phased == 1) || (set.phased_out_cnt > 0 && all == 'all'))
     {
-      list += "\n";
-      list += "Phased-out Variants:\n";
-      list += set.phased_out_text.split("<br/>").join("\n");
+      // if string or is string array
+      if(typeof set.phased_out_text === 'string' || set.phased_out_text instanceof String)
+      {
+        list += "\n";
+        list += "Phased-out Variants:\n";
+        list += set.phased_out_text.split("<br/>").join("\n");
+      }
+      else if(Array.isArray(set.phased_out_text))
+      {
+        for(var i=0; i<set.phased_out_text.length; i++)
+        {
+          list += "\n";
+          list += "Phased-out Variants:\n";
+          list += set.phased_out_text[i].split("<br/>").join("\n");
+        }
+      }
+      else
+      {
+        list += "\n";
+        list += "Phased-out Variants:\n";
+        list += set.phased_out_text.split("<br/>").join("\n");
+      }
     }
 
     list.replace(/\n+$/, "");

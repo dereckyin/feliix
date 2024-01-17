@@ -986,9 +986,6 @@ else
                                     "phased_out_info" => $phased_out_info,
                                     "phased_out_text" => $phased_out_text,
 
-                                    "out" => $out,
-                                    "phased_out_cnt" => $phased_out_cnt,
-
                                     "phased_out_text1" => $phased_out_text1,
                                     
                                     "product_set" => $product_set,

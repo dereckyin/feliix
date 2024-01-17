@@ -1210,6 +1210,7 @@ function GetProductSet($id, $qty, $db){
                 $product = GetProduct($id, $db, $currency);
                 $phased_out_cnt = 0;
                 $phased_out_text = [];
+                $phased_out_text1 = [];
                 for($i = 0; $i < count($product); $i++)
                 {
                     if($product[$i]['enabled'] != 1)
@@ -1227,6 +1228,7 @@ function GetProductSet($id, $qty, $db){
                         $key_value_text = substr($key_value_text, 0, -2);
 
                         array_push($phased_out_text, $key_value_text);
+                        array_push($phased_out_text1, $key_value_text);
                     }
                         
                 }
@@ -1586,6 +1588,8 @@ function GetProductSet($id, $qty, $db){
                                     "phased_out_cnt" => $phased_out_cnt,
 
                                     "phased_out_text" => $phased_out_text,
+                                    "phased_out_text1" => $phased_out_text1,
+                                    
                                     "special_infomation" => [],
                                     "accessory_infomation" => $accessory_information,
                                     "sheet_url" => "product_spec_sheet?sd=" . $id,
