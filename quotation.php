@@ -4287,7 +4287,7 @@ header( 'location:index' );
 
                             <div class="imagebox">
                                 <div class="selected_image">
-                                    <img :src="url" v-if="url !== ''">
+                                    <img :src="set.url" v-if="set.url !== ''">
                                 </div>
                                 <div class="image_list">
                                     <img v-if="set.photo1" :src="img_url + set.photo1"
