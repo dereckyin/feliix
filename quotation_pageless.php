@@ -2246,8 +2246,7 @@ header( 'location:index' );
         div.upper_section.product_set .infobox .product_set_desc {
             font-size: 16px;
             margin-left: 22px;
-            padding: 10px 20px 15px;
-            border-top: 2px solid rgb(225,225,225);
+            padding: 0 20px 15px;
         }
 
         div.upper_section.product_set .infobox .product_set_desc span {
