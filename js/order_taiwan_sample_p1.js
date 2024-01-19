@@ -436,6 +436,9 @@ var app = new Vue({
         p_phased_out_text : [],
 
         p_item_product : {},
+
+        product_set : [],
+        show_accessory: false,
     },
   
     created() {
@@ -1628,9 +1631,31 @@ var app = new Vue({
    
       },
 
-      btnEditClick: function(product) {
+      btnEditClick: async function(product) {
+        let _this = this;
+        let data = {};
+        if(product.sub_category == '10020000')
+         {
+            data = await this.get_records_prod(product.id);
+
+            this.product = data[0];
+
+            this.product_set = this.product['product_set'];
+
+            for(var i = 0; i < this.product_set.length; i++)
+            {
+              this.product_set[i]['special_infomation'] = this.product_set[i].record[0]['special_information'][0].lv3[0]
+              this.product_set[i]['specification'] = [];
+              this.set_up_specification_set(this.product_set[i]);
+            }
+
+          
+         }
+         else
+          this.product = product;
+
         $('#modal_product_display').modal('toggle');
-        this.product = product;
+        //this.product = product;
         this.url = (this.product.photo1 !== '' && this.product.photo1 !== undefined) ? this.img_url + this.product.photo1 : '';
 
         this.special_infomation = product.special_information[0].lv3[0];
@@ -2900,6 +2925,28 @@ var app = new Vue({
         });
       },
 
+      get_records_prod: async function(id) {
+        let _this = this;
+        let record = {};
+  
+        if(id === -1)
+            return {};
+  
+        const params = {
+          id: id,
+        };
+  
+        let token = localStorage.getItem("accessToken");
+  
+        let res = await axios
+          .get("api/product_display_code", {
+            params,
+            headers: { Authorization: `Bearer ${token}` },
+          });
+  
+          return res.data;
+          
+      },
 
       
     get_records: function(id, item_id) {
@@ -3131,6 +3178,557 @@ var app = new Vue({
      }
    },
 
+   change_url_set: function(set, uid) {
+    if(uid == 1)
+      set.url = set.url1;
+    if(uid == 2)
+      set.url = set.url2;
+    if(uid == 3)
+      set.url = set.url3;
+},
+
+PhaseOutAlert_set(phased_out_text){
+  hl = "";
+  for(var i = 0; i < phased_out_text.length; i++)
+  {
+    hl += "(" + Number(i+1) + ") " + phased_out_text[i] + "<br/>";
+  }
+
+  Swal.fire({
+    title: 'Phased Out Variants:',
+    html: hl,
+    confirmButtonText: 'OK',
+    });
+  
+},
+
+change_v_set(set){
+  let item_product = this.shallowCopy(
+    set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == this.v3)
+  )
+
+  if(item_product.id != undefined)
+  {
+    if(item_product.photo != "")
+    set.url = this.img_url + item_product.photo;
+    else
+    set.url = "";
+    set.price_ntd = item_product.currency + " " + Number(item_product.price_ntd).toLocaleString();
+    set.price = "PHP " + Number(item_product.price).toLocaleString();
+    set.quoted_price = "PHP " + Number(item_product.quoted_price).toLocaleString();
+
+    set.str_price_ntd_change = (item_product.price_ntd_change != "" ? "(" + item_product.price_ntd_change + ")" : "");
+    set.str_price_change = (item_product.price_change != "" ? "(" + item_product.price_change + ")" : "");
+    set.str_quoted_price_change = (item_product.quoted_price_change != "" ? "(" + item_product.quoted_price_change + ")" : "");
+
+    set.phased_out = (item_product.enabled == 0 ? "F" : "");
+
+    set.sheet_url = 'product_spec_sheet?sd=' + set.pid + '&d=' + item_product.id;
+
+    set.out = item_product.enabled == 1 ? "" : "Y";
+    set.out_cnt = 0;
+
+    if(set.record[0]['out'] == 'Y')
+    {
+      set.out = "Y";
+      set.out_cnt = 0;
+    }
+  }
+  else
+  {
+    set.url = set.url1;
+    set.price_ntd = set.record[0]['price_ntd'];
+    set.price = set.record[0]['price'];
+    set.quoted_price = set.record[0]['quoted_price'];
+
+    set.str_price_ntd_change = set.record[0]['str_price_ntd_change'];
+    set.str_price_change = set.record[0]['str_price_change'];
+    set.str_quoted_price_change = set.record[0]['str_quoted_price_change'];
+
+    set.phased_out = "";
+
+    set.sheet_url = 'product_spec_sheet?sd=' + set.pid;
+
+    set.out = set.record[0]['out'];
+    set.out_cnt = set.record[0]['phased_out_cnt'];
+  }
+
+},
+
+
+set_up_specification_set(set) {
+  let k1 = '';
+  let k2 = '';
+
+  let v1 = '';
+  let v2 = '';
+
+ for(var i=0; i < set.special_infomation.length; i++)
+ {
+   if(set.special_infomation[i].value != "")
+   {
+     if(k1 == "")
+     {
+       k1 = set.special_infomation[i].category;
+       v1 = set.special_infomation[i].value;
+     }else if(k1 !== "" && k2 == "")
+     {
+       k2 = set.special_infomation[i].category;
+       v2 = set.special_infomation[i].value;
+
+       obj = {k1: k1, v1: v1, k2: k2, v2: v2};
+       set.specification.push(obj);
+       k1  = '';
+       k2  = '';
+       v1  = '';
+       v2  = '';
+     }
+   }
+ }
+
+ if(k1 == "" && set.record[0]['moq'] !== "")
+ {
+   k1 = 'MOQ';
+   v1 = set.record[0]['moq'];
+ }else if(k1 !== "" && k2 == "" && set.record[0]['moq'] !== "")
+ {
+   k2 = 'MOQ';
+   v2 = set.record[0]['moq'];
+
+   obj = {k1: k1, v1: v1, k2: k2, v2: v2};
+   set.specification.push(obj);
+   k1  = '';
+   k2  = '';
+   v1  = '';
+   v2  = '';
+ }
+/*
+ if(k1 == "" && this.record[0]['notes'] !== "")
+ {
+   k1 = 'Notes';
+   v1 = this.record[0]['notes'];
+ }else if(k1 !== "" && k2 == "" && this.record[0]['notes'] !== "")
+ {
+   k2 = 'Notes';
+   v2 = this.record[0]['notes'];
+
+   obj = {k1: k1, v1: v1, k2: k2, v2: v2};
+   this.specification.push(obj);
+   k1  = '';
+   k2  = '';
+   v1  = '';
+   v2  = '';
+ }
+*/
+ if(k1 !== "" && k2 == "")
+ {
+   k2 = '';
+   v2 = '';
+
+   obj = {k1: k1, v1: v1, k2: k2, v2: v2};
+   set.specification.push(obj);
+ 
+ }
+},
+
+add_with_image_set(set, all) {
+
+var photo = "";
+var photo2 = "";
+var photo3 = "";
+
+var price = "";
+var list = "";
+
+var srp = 0;
+
+let _this = this;
+
+let item_product = this.shallowCopy(
+  set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
+)
+
+if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
+  alert('Please choose an option for each attribute');
+  return;
+}
+
+if(item_product.id != undefined)
+{
+  if(item_product.photo != "")
+    photo = item_product.photo;
+
+    photo2 = set.photo2;
+    photo3 = set.photo3;
+
+    // price = Number(item_product.price) != 0 ? Number(item_product.price) : Number(item_product.quoted_price);
+    price = Number(item_product.quoted_price) != 0 ? Number(item_product.quoted_price) : Number(item_product.price);
+    srp =  Number(item_product.price);
+    if(set.v1 != "")
+      list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+    if(set.v2 != "")
+      list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+    if(set.v3 != "")
+      list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+}
+else
+{
+  photo = set.photo1;
+  photo2 = set.photo2;
+  photo3 = set.photo3;
+  // price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+  price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+  srp = Number(set.price_org);
+  list = "";
+}
+
+if(all == 'all')
+{
+  list = "";
+  var k1, k2, k3;
+  k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
+  k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
+  k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
+
+  if(k1 !== '')
+    list += set.variation1 === "custom" ? set.variation1_custom : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+  if(k2 !== '')
+    list += set.variation2 === "custom" ? set.variation2_custom : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+  if(k3 !== '')
+    list += set.variation3 === "custom" ? set.variation3_custom : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+
+  photo = set.photo1;
+  photo2 = set.photo2;
+  photo3 = set.photo3;
+
+  if(set.srp !== null || set.srp_quoted !== null)
+    price = set.srp_quoted !== null ? set.srp_quoted : set.srp;
+
+  srp = set.srp;
+    //price = set.srp !== null ? set.srp : set.srp_quoted;
+
+  if(price == null)
+    //price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+    price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+    
+}
+
+for(var i=0; i<set.specification.length; i++)
+{
+    if(set.specification[i].k1 !== '')
+      list += set.specification[i].k1 + ': ' + set.specification[i].v1 + "\n";
+    if(set.specification[i].k2 !== '')
+      list += set.specification[i].k2 + ': ' + set.specification[i].v2 + "\n";
+}
+
+// add phased out information
+if((set.phased_out_cnt > 0 && set.phased == 1) || (set.phased_out_cnt > 0 && all == 'all'))
+{
+  // if string or is string array
+  if(typeof set.phased_out_text === 'string' || set.phased_out_text instanceof String)
+  {
+    list += "\n";
+    list += "Phased-out Variants:\n";
+    list += set.phased_out_text.split("<br/>").join("\n");
+  }
+  else if(Array.isArray(set.phased_out_text))
+  {
+    for(var i=0; i<set.phased_out_text.length; i++)
+    {
+      list += "\n";
+      list += "Phased-out Variants:\n";
+      list += set.phased_out_text[i].split("<br/>").join("\n");
+    }
+  }
+  else
+  {
+    list += "\n";
+    list += "Phased-out Variants:\n";
+    list += set.phased_out_text.split("<br/>").join("\n");
+  }
+  
+}
+
+if(price == null)
+  price = set.srp_quoted !== 0 ?  set.srp_quoted : set.srp;
+  // price = set.srp !== 0 ?  set.srp : set.srp_quoted;
+
+if(srp == null)
+  srp = 0;
+
+
+  var sn = 0;
+
+  for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].id * 1> sn) {
+        sn = this.items[i].id * 1;
+      }
+  }
+  sn = sn * 1 + 1;
+
+  items = [];
+
+
+list.replace(/\n+$/, "");
+sn = sn + 1;
+
+
+
+
+item = {
+  is_checked:false,
+  is_edit: false,
+  id: sn,
+  sn: sn,
+  confirm: "N",
+  confirm_text: "Not Yet Confirmed",
+  brand:set.brand,
+  brand_other:"",
+  photo1:photo != '' ? photo : '',
+  photo2:set.photo2 != '' ? set.photo2 : '',
+  photo3:set.photo3 != '' ? set.photo3 : '',
+  code:set.code,
+  brief:list,
+  listing:"",
+  qty:set.qty,
+  backup_qty:"",
+  srp:price,
+  date_needed:"",
+  pid: set.id,
+  status:"",
+  shipping_way:"",
+  shipping_number:"",
+  notes:[],
+  v1: all == 'all' ? '' : set.v1,
+    v2: all == 'all' ? '' : set.v2,
+    v3: all == 'all' ? '' : set.v3,
+  btn2:"1",
+};
+
+items.push(item);
+
+var token = localStorage.getItem("token");
+  var form_Data = new FormData();
+
+  form_Data.append("jwt", token);
+  form_Data.append("od_id", this.id);
+  form_Data.append("block", JSON.stringify(items));
+
+  form_Data.append("access7", this.access7);
+
+  axios({
+    method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    url: "api/order_taiwan_p1_item_insert",
+    data: form_Data,
+  })
+    .then(function(response) {
+      //handle success
+
+      _this.getRecord();
+      alert('Add Successfully');
+
+    })
+    .catch(function(error) {
+      alert(error);
+
+    });
+
+
+},
+
+add_without_image_set(set, all) {
+
+var photo = "";
+var price = "";
+var list = "";
+
+var srp = 0;
+
+let _this = this;
+
+let item_product = this.shallowCopy(
+  set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
+)
+
+if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
+  alert('Please choose an option for each attribute');
+  return;
+}
+
+if(item_product.id != undefined)
+{
+  if(item_product.photo != "")
+    photo = item_product.photo;
+    //price = Number(item_product.price) != 0 ? Number(item_product.price) : Number(item_product.quoted_price);
+    price = Number(item_product.quoted_price) != 0 ? Number(item_product.quoted_price) : Number(item_product.price);
+    srp =  Number(item_product.price);
+    if(set.v1 != "")
+      list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+    if(set.v2 != "")
+      list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+    if(set.v3 != "")
+      list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+}
+else
+{
+  photo = set.photo1;
+  //price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+  price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+  srp = Number(set.price_org);
+  list = "";
+}
+
+if(all == 'all')
+{
+  list = "";
+  var k1, k2, k3;
+  k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
+  k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
+  k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
+
+  if(k1 !== '')
+    list += set.variation1 === "custom" ? set.variation1_custom : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+  if(k2 !== '')
+    list += set.variation2 === "custom" ? set.variation2_custom : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+  if(k3 !== '')
+    list += set.variation3 === "custom" ? set.variation3_custom : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+
+  photo = set.photo1;
+
+  if(set.srp !== null || set.srp_quoted !== null)
+    price = set.srp_quoted !== null ? set.srp_quoted : set.srp;
+
+    //price = set.srp !== null ? set.srp : set.srp_quoted;
+
+  if(price == null)
+    //price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+    price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+    
+    
+  srp = set.srp;
+}
+
+if(price == null)
+  price = set.srp_quoted !== 0 ?  set.srp_quoted : set.srp;
+  //price = set.srp !== 0 ?  set.srp : set.srp_quoted;
+
+if(srp == null)
+  srp = 0;
+
+for(var i=0; i<set.specification.length; i++)
+{
+    if(set.specification[i].k1 !== '')
+      list += set.specification[i].k1 + ': ' + set.specification[i].v1 + "\n";
+    if(set.specification[i].k2 !== '')
+      list += set.specification[i].k2 + ': ' + set.specification[i].v2 + "\n";
+}
+
+// add phased out information
+if((set.phased_out_cnt > 0 && set.phased == 1) || (set.phased_out_cnt > 0 && all == 'all'))
+{
+  // if string or is string array
+  if(typeof set.phased_out_text === 'string' || set.phased_out_text instanceof String)
+  {
+    list += "\n";
+    list += "Phased-out Variants:\n";
+    list += set.phased_out_text.split("<br/>").join("\n");
+  }
+  else if(Array.isArray(set.phased_out_text))
+  {
+    for(var i=0; i<set.phased_out_text.length; i++)
+    {
+      list += "\n";
+      list += "Phased-out Variants:\n";
+      list += set.phased_out_text[i].split("<br/>").join("\n");
+    }
+  }
+  else
+  {
+    list += "\n";
+    list += "Phased-out Variants:\n";
+    list += set.phased_out_text.split("<br/>").join("\n");
+  }
+}
+
+list.replace(/\n+$/, "");
+
+var sn = 0;
+
+for (let i = 0; i < this.items.length; i++) {
+  if (this.items[i].id * 1 > sn) {
+    sn = this.items[i].id * 1;
+  }
+}
+
+sn = sn * 1 + 1;
+
+items = [];
+
+item = {
+    is_checked:false,
+    is_edit: false,
+    id: sn,
+    sn: sn,
+    confirm: "N",
+    confirm_text: "Not Yet Confirmed",
+    brand:set.brand,
+    brand_other:"",
+    photo1:'',
+    photo2:'',
+    photo3:'',
+    code:set.code,
+    brief:list,
+    listing:"",
+    qty:set.qty,
+    backup_qty:"",
+    srp:price,
+    date_needed:"",
+    pid: set.id,
+    v1: all == 'all' ? '' : set.v1,
+    v2: all == 'all' ? '' : set.v2,
+    v3: all == 'all' ? '' : set.v3,
+    shipping_way:"",
+      shipping_number:"",
+    status:"",
+    notes:[],
+    btn2:"1"
+  };
+
+  items.push(item);
+
+    var token = localStorage.getItem("token");
+      var form_Data = new FormData();
+
+      form_Data.append("jwt", token);
+      form_Data.append("od_id", this.id);
+      form_Data.append("block", JSON.stringify(items));
+
+      form_Data.append("access7", this.access7);
+
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        url: "api/order_taiwan_p1_item_insert",
+        data: form_Data,
+      })
+        .then(function(response) {
+          //handle success
+
+          _this.getRecord();
+          alert('Add Successfully');
+
+        })
+        .catch(function(error) {
+      
+
+        });
+
+},
     }
   
   });

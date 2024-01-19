@@ -4604,8 +4604,7 @@ header( 'location:index' );
                                     <span class="phasedout1" v-if="out_cnt > 1" @click="PhaseOutAlert(product.phased_out_text1)">{{ out_cnt }} variants are phased out</span>
                                 <h3 style="word-break: break-all;">{{product.code}}</h3> <h6>
                                     {{product.brand}}</h6>
-                                    <h6 v-if="category == 'Lighting'">{{ product.category}}</h6>
-                                    <h6 v-if="category != 'Lighting'">{{ product.category}} >> {{
+                                    <h6>{{ product.category}} >> {{
                                         product.sub_category_name}}</h6>
                                     <!---->
                                     <div class="tags"><span v-for="(it, index) in product.tags">{{ it }}</span></div>
