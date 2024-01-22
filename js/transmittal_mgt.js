@@ -51,6 +51,10 @@ var app = new Vue({
 
     fil_approval : '',
 
+    fil_towhom : '',
+    fil_date_from : '',
+    fil_date_to : '',
+
     od_opt1 : '',
     od_ord1 : '',
 
@@ -142,6 +146,15 @@ var app = new Vue({
               break;
             case "app":
               _this.fil_approval = decodeURI(tmp[1]);
+              break;
+            case "fto":
+              _this.fil_towhom = decodeURI(tmp[1]);
+              break;
+            case "fdf":
+              _this.fil_date_from = decodeURI(tmp[1]);
+              break;
+            case "fdt":
+              _this.fil_date_to = decodeURI(tmp[1]);
               break;
             case "kind":
               _this.fil_kind = decodeURI(tmp[1]);
@@ -715,6 +728,10 @@ var app = new Vue({
                 app: _this.fil_approval,
                 kind: _this.fil_kind,
 
+                fto: _this.fil_towhom,
+                fdf: _this.fil_date_from,
+                fdt: _this.fil_date_to,
+
                 op1: _this.od_opt1,
                 od1: _this.od_ord1,
                 op2: _this.od_opt2,
@@ -1113,6 +1130,12 @@ var app = new Vue({
           _this.fil_followup +
           "&app=" +
           _this.fil_approval +
+          "&fto=" +
+          _this.fil_towhom +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
           "&kind=" +
           _this.fil_kind +
           "&op1=" +
@@ -1146,6 +1169,10 @@ var app = new Vue({
         this.fil_approval = '';
         this.fil_kind = '';
         this.fil_followup = '';
+        this.fil_towhom = '';
+        this.fil_date_from = '';
+        this.fil_date_to = '';
+
         this.page = 1;
 
         let _this = this;
@@ -1165,6 +1192,12 @@ var app = new Vue({
           _this.fil_followup +
           "&app=" +
           _this.fil_approval +
+          "&fto=" +
+          _this.fil_towhom +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
           "&kind=" +
           _this.fil_kind +
           "&op1=" +
@@ -1205,6 +1238,12 @@ var app = new Vue({
           _this.fil_approval +
           "&kind=" +
           _this.fil_kind +
+          "&fto=" +
+          _this.fil_towhom +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
           "&op1=" +
           _this.od_opt1 +
           "&od1=" +
@@ -1241,6 +1280,12 @@ var app = new Vue({
           _this.fil_approval +
           "&kind=" +
           _this.fil_kind +
+          "&fto=" +
+          _this.fil_towhom +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
           "&op1=" +
           _this.od_opt1 +
           "&od1=" +

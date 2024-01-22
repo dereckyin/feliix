@@ -3027,7 +3027,7 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <!-- 如果產品停產 或 子產品停產，Add 按鈕不用產生出來 -->
-                                        <li v-if="out==''">
+                                        <li>
                                             <button class="btn btn-info" @click="add_without_image_set(set)" >Add</button>
                                         </li>
 
@@ -3217,7 +3217,7 @@ header( 'location:index' );
                                 <div class="btnbox">
                                 <ul>
                                         <!-- 如果產品停產 或 子產品停產，Add 按鈕不用產生出來 -->
-                                        <li v-if="out==''">
+                                        <li>
                                             <button class="btn btn-info" @click="add_without_image_set(set)" >Add</button>
                                         </li>
 
@@ -3383,7 +3383,7 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <!-- 如果產品停產 或 子產品停產，Add 按鈕不用產生出來 -->
-                                        <li v-if="out==''">
+                                        <li>
                                             <button class="btn btn-info" @click="add_without_image()">Add</button>
                                         </li>
                                         <li>
@@ -3582,7 +3582,7 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <!-- 如果產品停產 或 子產品停產，Add 按鈕不用產生出來 -->
-                                        <li v-if="out==''">
+                                        <li>
                                             <button class="btn btn-info" @click="add_without_image()" >Add</button>
                                         </li>
 
