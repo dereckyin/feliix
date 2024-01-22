@@ -139,14 +139,14 @@ if($fto != "")
 
 if($fdf != "")
 {
-    $query = $query . " and STR_TO_DATE(pm.transmittal_date, '%Y/%m/%d') >= '" . $fdf . "' ";
-    $query_cnt = $query_cnt . " and STR_TO_DATE(pm.transmittal_date, '%Y/%m/%d') >= '" . $fdf . "' ";
+    $query = $query . " and pm.transmittal_date >= '" . $fdf . "' ";
+    $query_cnt = $query_cnt . " and pm.transmittal_date >= '" . $fdf . "' ";
 }
 
 if($fdt != "")
 {
-    $query = $query . " and STR_TO_DATE(pm.transmittal_date, '%Y/%m/%d') <= '" . $fdt . "' ";
-    $query_cnt = $query_cnt . " and STR_TO_DATE(pm.transmittal_date, '%Y/%m/%d') <= '" . $fdt . "' ";
+    $query = $query . " and pm.transmittal_date <= '" . $fdt . "' ";
+    $query_cnt = $query_cnt . " and pm.transmittal_date <= '" . $fdt . "' ";
 }
 
 if($fpc != "")
