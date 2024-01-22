@@ -133,6 +133,9 @@ var app = new Vue({
     out : "",
     out_cnt : 0,
     phased_out_text : [],
+
+    product_set : [],
+    print_option: {},
   },
 
   created() {
@@ -165,7 +168,7 @@ var app = new Vue({
 
     this.get_records(this.id);
     this.getUserName();
-    this.load_print_option();
+    this.load_print_option(this.id);
   },
 
   computed: {
@@ -518,6 +521,14 @@ var app = new Vue({
             _this.out_cnt = _this.record[0]['phased_out_cnt'];
             _this.phased_out_text = _this.record[0]['phased_out_text'];
 
+            _this.product_set = _this.record[0]['product_set'];
+
+            for(var i = 0; i < _this.product_set.length; i++)
+            {
+              _this.product_set[i]['special_infomation'] = _this.product_set[i].record[0]['special_information'][0].lv3[0]
+              _this.set_up_specification_set(_this.product_set[i]);
+            }
+
             //var select_items = _this.record[0]['tags'].split(',');
 
             // if(_this.category === '10000000')
@@ -566,6 +577,7 @@ var app = new Vue({
             _this.set_up_specification();
 
             _this.edit_mode = true;
+            _this.print_option = _this.record[0]['print_option'];
           })
           .catch(function(error) {
             console.log(error);
@@ -633,13 +645,13 @@ var app = new Vue({
       }
     },
 
-    async save_print_options()
+    async save_print_options(id)
     {
       let token = localStorage.getItem("accessToken");
 
       var form_Data = new FormData();
 
-       form_Data.append('id', this.id)
+       form_Data.append('id', id)
        form_Data.append('pid', this.print_pid)
        form_Data.append('brand', this.print_brand)
        form_Data.append('srp', this.print_srp)
@@ -653,13 +665,15 @@ var app = new Vue({
         console.log(err)
         alert('error')
       }
+
+      this.get_records(this.id);
     },
 
-    async get_previous_print_options() {
+    async get_previous_print_options(id) {
       let token = localStorage.getItem("accessToken");
       var res = {pid: true, brand: true, srp: true, qp: true};
       const params = {
-        id: this.id,
+        id: id,
       };
 
       try {
@@ -677,7 +691,7 @@ var app = new Vue({
     },
 
     async load_print_option() {
-      res = await this.get_previous_print_options();
+      res = await this.get_previous_print_options(id);
       var pid = res.data.pid;
       var brand = res.data.brand;
       var srp = res.data.srp;
@@ -726,7 +740,7 @@ var app = new Vue({
     async print_option_page() {
       let _this = this;
 
-      res = await this.get_previous_print_options();
+      res = await this.get_previous_print_options(this.id);
       var pid = res.data.pid;
       var brand = res.data.brand;
       var srp = res.data.srp;
@@ -783,7 +797,7 @@ var app = new Vue({
             $('#print_qp').addClass('noPrint')
           }
           
-          _this.save_print_options();
+          _this.save_print_options(id);
         })
 
 
@@ -1090,5 +1104,163 @@ var app = new Vue({
       }
       return result;
     },
+
+    change_url_set: function(set, uid) {
+      if(uid == 1)
+        set.url = set.url1;
+      if(uid == 2)
+        set.url = set.url2;
+      if(uid == 3)
+        set.url = set.url3;
+  },
+
+  PhaseOutAlert_set(phased_out_text){
+    hl = "";
+    for(var i = 0; i < phased_out_text.length; i++)
+    {
+      hl += "(" + Number(i+1) + ") " + phased_out_text[i] + "<br/>";
+    }
+
+    Swal.fire({
+      title: 'Phased Out Variants:',
+      html: hl,
+      confirmButtonText: 'OK',
+      });
+    
+  },
+
+  change_v_set(set){
+    let item_product = this.shallowCopy(
+      set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == this.v3)
+    )
+
+    if(item_product.id != undefined)
+    {
+      if(item_product.photo != "")
+      set.url = this.baseURL + item_product.photo;
+      else
+      set.url = "";
+      set.price_ntd = item_product.currency + " " + Number(item_product.price_ntd).toLocaleString();
+      set.price = "PHP " + Number(item_product.price).toLocaleString();
+      set.quoted_price = "PHP " + Number(item_product.quoted_price).toLocaleString();
+
+      set.str_price_ntd_change = (item_product.price_ntd_change != "" ? "(" + item_product.price_ntd_change + ")" : "");
+      set.str_price_change = (item_product.price_change != "" ? "(" + item_product.price_change + ")" : "");
+      set.str_quoted_price_change = (item_product.quoted_price_change != "" ? "(" + item_product.quoted_price_change + ")" : "");
+
+      set.phased_out = (item_product.enabled == 0 ? "F" : "");
+
+      set.sheet_url = 'product_spec_sheet?sd=' + set.pid + '&d=' + item_product.id;
+
+      set.out = item_product.enabled == 1 ? "" : "Y";
+      set.out_cnt = 0;
+
+      if(set.record[0]['out'] == 'Y')
+      {
+        set.out = "Y";
+        set.out_cnt = 0;
+      }
+    }
+    else
+    {
+      set.url = set.url1;
+      set.price_ntd = set.record[0]['price_ntd'];
+      set.price = set.record[0]['price'];
+      set.quoted_price = set.record[0]['quoted_price'];
+
+      set.str_price_ntd_change = set.record[0]['str_price_ntd_change'];
+      set.str_price_change = set.record[0]['str_price_change'];
+      set.str_quoted_price_change = set.record[0]['str_quoted_price_change'];
+
+      set.phased_out = "";
+
+      set.sheet_url = 'product_spec_sheet?sd=' + set.pid;
+
+      set.out = set.record[0]['out'];
+      set.out_cnt = set.record[0]['phased_out_cnt'];
+    }
+
+  },
+
+  
+  set_up_specification_set(set) {
+    let k1 = '';
+    let k2 = '';
+
+    let v1 = '';
+    let v2 = '';
+
+   for(var i=0; i < set.special_infomation.length; i++)
+   {
+     if(set.special_infomation[i].value != "")
+     {
+       if(k1 == "")
+       {
+         k1 = set.special_infomation[i].category;
+         v1 = set.special_infomation[i].value;
+       }else if(k1 !== "" && k2 == "")
+       {
+         k2 = set.special_infomation[i].category;
+         v2 = set.special_infomation[i].value;
+
+         obj = {k1: k1, v1: v1, k2: k2, v2: v2};
+         set.specification.push(obj);
+         k1  = '';
+         k2  = '';
+         v1  = '';
+         v2  = '';
+       }
+     }
+   }
+
+   if(k1 == "" && set.record[0]['moq'] !== "")
+   {
+     k1 = 'MOQ';
+     v1 = set.record[0]['moq'];
+   }else if(k1 !== "" && k2 == "" && set.record[0]['moq'] !== "")
+   {
+     k2 = 'MOQ';
+     v2 = set.record[0]['moq'];
+ 
+     obj = {k1: k1, v1: v1, k2: k2, v2: v2};
+     set.specification.push(obj);
+     k1  = '';
+     k2  = '';
+     v1  = '';
+     v2  = '';
+   }
+/*
+   if(k1 == "" && this.record[0]['notes'] !== "")
+   {
+     k1 = 'Notes';
+     v1 = this.record[0]['notes'];
+   }else if(k1 !== "" && k2 == "" && this.record[0]['notes'] !== "")
+   {
+     k2 = 'Notes';
+     v2 = this.record[0]['notes'];
+ 
+     obj = {k1: k1, v1: v1, k2: k2, v2: v2};
+     this.specification.push(obj);
+     k1  = '';
+     k2  = '';
+     v1  = '';
+     v2  = '';
+   }
+*/
+   if(k1 !== "" && k2 == "")
+   {
+     k2 = '';
+     v2 = '';
+ 
+     obj = {k1: k1, v1: v1, k2: k2, v2: v2};
+     set.specification.push(obj);
+   
+   }
+ },
+
+ goto_sheet_set(set){
+  window.open(set.sheet_url, '_blank');
+},
+
   },
 });

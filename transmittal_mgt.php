@@ -22,6 +22,12 @@ try {
         try {
             // decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
+
+            if($decoded->exp < time())
+            {
+                header( 'location:index' );
+            }
+            
             $user_id = $decoded->data->id;
 
 $GLOBALS['position'] = $decoded->data->position;
@@ -465,6 +471,20 @@ header( 'location:index' );
                                         <option value="N">No</option>
                                     </select>
                                 </dd>
+
+                                <dt>To Whom</dt>
+                                <dd><input type="text" v-model="fil_towhom"></dd>
+
+                                <dt style="margin-bottom:-18px;">Date</dt>
+                                <div class="half">
+                                    <dt>from</dt>
+                                    <dd><input type="date" v-model="fil_date_from"></dd>
+                                </div>
+
+                                <div class="half">
+                                    <dt>to</dt>
+                                    <dd><input type="date" v-model="fil_date_to"></dd>
+                                </div>
 
                                 <dt>Keyword (for transmittal name, project name or transmittal number)</dt>
                                 <dd><input type="text" v-model="fil_keyword"></dd>

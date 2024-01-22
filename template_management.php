@@ -22,6 +22,12 @@ try {
         try {
             // decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
+
+            if($decoded->exp < time())
+            {
+                header( 'location:index' );
+            }
+            
             $user_id = $decoded->data->id;
 
             $position = $decoded->data->position;

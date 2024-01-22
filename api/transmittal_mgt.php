@@ -49,6 +49,12 @@ $fc = (isset($_GET['fc']) ?  $_GET['fc'] : '');
 
 $fpt = urldecode($fpt);
 
+$fto = (isset($_GET['fto']) ?  $_GET['fto'] : '');
+$fto = urldecode($fto);
+
+$fdf = (isset($_GET['fdf']) ?  $_GET['fdf'] : '');
+$fdt = (isset($_GET['fdt']) ?  $_GET['fdt'] : '');
+
 $fpc = (isset($_GET['fpc']) ?  $_GET['fpc'] : '');
 $fpc = urldecode($fpc);
 
@@ -123,6 +129,24 @@ if($fpt != "")
 {
     $query = $query . " and c_user.username = '" . $fpt . "' ";
     $query_cnt = $query_cnt . " and c_user.username = '" . $fpt . "' ";
+}
+
+if($fto != "")
+{
+    $query = $query . " and pm.transmittal_to like '%" . $fto . "%' ";
+    $query_cnt = $query_cnt . " and pm.transmittal_to like '%" . $fto . "%' ";
+}
+
+if($fdf != "")
+{
+    $query = $query . " and STR_TO_DATE(pm.transmittal_date, '%Y-%m-%d') >= '" . $fdf . "' ";
+    $query_cnt = $query_cnt . " and STR_TO_DATE(pm.transmittal_date, '%Y-%m-%d') >= '" . $fdf . "' ";
+}
+
+if($fdt != "")
+{
+    $query = $query . " and STR_TO_DATE(pm.transmittal_date, '%Y-%m-%d') <= '" . $fdt . "' ";
+    $query_cnt = $query_cnt . " and STR_TO_DATE(pm.transmittal_date, '%Y-%m-%d') <= '" . $fdt . "' ";
 }
 
 if($fpc != "")

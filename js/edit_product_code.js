@@ -77,6 +77,20 @@ var app = new Vue({
 
     variation_product: [],
 
+    // product set
+    p1_code : "",
+    p1_qty : "",
+    p1_id : "",
+
+    p2_code : "",
+    p2_qty : "",
+    p2_id : "",
+
+    p3_code : "",
+    p3_qty : "",
+    p3_id : "",
+
+
     // info
     name :"",
     title: "",
@@ -146,6 +160,7 @@ var app = new Vue({
     this.get_records(this.id);
     this.getUserName();
     //this.getTagGroup();
+
   },
 
   computed: {
@@ -155,10 +170,11 @@ var app = new Vue({
       else
       return false;
     }
+
   },
 
   mounted() {
-  
+
   },
 
   watch: {
@@ -176,6 +192,7 @@ var app = new Vue({
       if(this.quoted_price != this.quoted_price_org)
         this.quoted_price_change = new Date().toISOString().slice(0, 10);
     },
+
   },
 
   methods: {
@@ -320,14 +337,29 @@ var app = new Vue({
             _this.quoted_price_change = _this.record[0]['quoted_price_change'];
             _this.moq = _this.record[0]['moq'];
 
+            _this.p1_code = _this.record[0]['p1_code'];
+            _this.p1_qty = _this.record[0]['p1_qty'];
+            _this.p1_id = _this.record[0]['p1_id'];
+
+            _this.p2_code = _this.record[0]['p2_code'];
+            _this.p2_qty = _this.record[0]['p2_qty'];
+            _this.p2_id = _this.record[0]['p2_id'];
+
+            _this.p3_code = _this.record[0]['p3_code'];
+            _this.p3_qty = _this.record[0]['p3_qty'];
+            _this.p3_id = _this.record[0]['p3_id'];
+
             var select_items = _this.record[0]['tags'].split(',');
 
             //$("#tag01").selectpicker("refresh");
 
-         //   if(_this.category === '10000000')
-              $('#tag01').selectpicker('val', select_items);
-           // if(_this.category === '20000000')
-           //   $('#tag02').selectpicker('val', select_items);
+            $('#tag01').selectpicker('val', select_items);
+
+           if(_this.sub_category == '10020000')
+           {
+            $("#tag0102").selectpicker("refresh");
+             $("#tag0102").selectpicker('val', select_items);
+           }
 
             $('#related_product').tagsinput('removeAll');
             var related_product = _this.record[0]['related_product'].split(',');
@@ -372,6 +404,19 @@ var app = new Vue({
 
 
             _this.edit_mode = true;
+
+            setTimeout(function() {
+              //your code to be executed after 1 second
+              if(_this.sub_category == '10020000')
+              {
+                $("#tag0102").selectpicker('val', select_items);
+              }
+
+              autocomplete(document.getElementById("product_1"), codes);
+              autocomplete(document.getElementById("product_2"), codes);
+              autocomplete(document.getElementById("product_3"), codes);
+
+            }, 1000);
           })
           .catch(function(error) {
             console.log(error);
@@ -960,6 +1005,19 @@ var app = new Vue({
       return "";
     },
 
+    is_code_existed: async function(code) {
+      let ret = await axios.get("api/product_code_existed_check", { params: { code: code, id: 0 } });
+
+      return ret.data;
+    },
+
+    is_code_existed_in_product_set: async function(code) {
+      let ret = await axios.get("api/product_code_existed_in_product_set_check", { params: { code: code, id: 0 } });
+
+      return ret.data;
+    },
+
+
     save: async function() {
       let _this = this;
       let reason = this.check_input();
@@ -970,6 +1028,121 @@ var app = new Vue({
           confirmButtonText: "OK",
         });
         return;
+      }
+
+      
+      if(this.sub_category == '10020000')
+      {
+        if(this.p1_code.trim() == '' || this.p2_code.trim() == '')
+        {
+          Swal.fire({
+            text: "You have to input the code and qty for Product 1 and Product 2. Qty should be greater than 0.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+  
+        // p1_qty and p2_qty string to number > 0
+        this.p1_qty = Number(this.p1_qty);
+        this.p2_qty = Number(this.p2_qty);
+        
+        if(this.p1_qty <= 0 || this.p2_qty <= 0)
+        {
+          Swal.fire({
+            text: "You have to input the code and qty for Product 1 and Product 2. Qty should be greater than 0.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+
+        this.p3_qty = Number(this.p3_qty);
+
+        if(this.p3_code.trim() != '' && this.p3_qty <= 0)
+        {
+          Swal.fire({
+            text: "Qty for Product 3 should be greater than 0.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+  
+        let p1_data = [];
+        let p2_data = [];
+        let p3_data = [];
+  
+        this.p1_id = "";
+        this.p2_id = "";
+        this.p3_id = "";
+  
+        let error_msg = '';
+        let err_product_set = '';
+  
+        if(this.p1_code.trim() != '')
+        {
+          p1_data = await this.is_code_existed(this.p1_code.trim());
+          if(p1_data.length > 0)
+            this.p1_id = p1_data[0].id;
+          else
+            error_msg = error_msg + 'Product 1, ';
+
+          p1_data = await this.is_code_existed_in_product_set(this.p1_code.trim());
+          if(p1_data.length > 0)
+            err_product_set = err_product_set + 'Product 1, ';
+        }
+  
+        if(this.p2_code.trim() != '')
+        {
+          p2_data = await this.is_code_existed(this.p2_code.trim());
+          if(p2_data.length > 0)
+            this.p2_id = p2_data[0].id;
+          else
+            error_msg = error_msg + 'Product 2, ';
+
+          p2_data = await this.is_code_existed_in_product_set(this.p2_code.trim());
+          if(p2_data.length > 0)
+            err_product_set = err_product_set + 'Product 2, ';
+        }
+  
+        if(this.p3_code.trim() != '')
+        {
+          p3_data = await this.is_code_existed(this.p3_code.trim());
+          if(p3_data.length > 0)
+            this.p3_id = p3_data[0].id;
+          else
+            error_msg = error_msg + 'Product 3, ';
+
+          p3_data = await this.is_code_existed_in_product_set(this.p3_code.trim());
+          if(p3_data.length > 0)
+            err_product_set = err_product_set + 'Product 3, ';
+
+        }
+
+        // trim the last comma
+        error_msg = error_msg.replace(/,\s*$/, "");
+        err_product_set = err_product_set.replace(/,\s*$/, "");
+  
+        if(error_msg != '')
+        {
+          Swal.fire({
+            text: error_msg + ' that you input is not an existing product in the product database. Please check product code again!!',
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+
+        if(err_product_set != '')
+        {
+          Swal.fire({
+            text: 'User is not allowed to input any product belonging to "Product Set" sub category into Product 1/2/3. Please revise the code of ' + err_product_set + '.',
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
       }
 
       let show_confirm = true;
@@ -1039,18 +1212,21 @@ var app = new Vue({
           var form_Data = new FormData();
 
           let attributes = [];
-          // special_infomation -> attributes
-          for (var i = 0; i < this.special_infomation.length; i++) {
-            let category = this.special_infomation[i].category;
-            let cat_id = this.special_infomation[i].cat_id;
-            let value = this.$refs[cat_id][0].value
-            
-            var obj = {
-              category: category,
-              cat_id: cat_id,
-              value: value
-            };
-            attributes.push(obj);
+          if(this.sub_category != '10020000')
+          {
+            // special_infomation -> attributes
+            for (var i = 0; i < this.special_infomation.length; i++) {
+              let category = this.special_infomation[i].category;
+              let cat_id = this.special_infomation[i].cat_id;
+              let value = this.$refs[cat_id][0].value
+              
+              var obj = {
+                category: category,
+                cat_id: cat_id,
+                value: value
+              };
+              attributes.push(obj);
+            }
           }
 
           let accessory = [];
@@ -1194,12 +1370,16 @@ var app = new Vue({
           form_Data.append("quoted_price_change", _this.quoted_price_change);
           form_Data.append("moq", _this.moq);
 
-          let tag01 = $('#tag01').val();
-       //   let tag02 = $('#tag02').val();
-        //  if( _this.category === '10000000')
+          if(this.sub_category == '10020000')
+          {
+            let tag0102 = $('#tag0102').val();
+            form_Data.append("tags", tag0102.join());
+          }
+          else
+          {
+            let tag01 = $('#tag01').val();
             form_Data.append("tags", tag01.join());
-          // else
-          //   form_Data.append("tags", "");
+          }
 
           let related_product = $('#related_product').val();
           form_Data.append("related_product", related_product);
@@ -1211,10 +1391,25 @@ var app = new Vue({
           form_Data.append("accessory", JSON.stringify(accessory));
           form_Data.append("variation", JSON.stringify(variation));
 
-          for (var i = 1; i < 4; i++) {
-            let file = document.getElementById('photo' + i).files[0];
-            if(typeof file !== 'undefined') 
-              form_Data.append('photo' + i, file);
+          form_Data.append("p1_code", _this.p1_code);
+          form_Data.append("p1_qty", _this.p1_qty);
+          form_Data.append("p1_id", _this.p1_id);
+
+          form_Data.append("p2_code", _this.p2_code);
+          form_Data.append("p2_qty", _this.p2_qty);
+          form_Data.append("p2_id", _this.p2_id);
+
+          form_Data.append("p3_code", _this.p3_code);
+          form_Data.append("p3_qty", _this.p3_qty);
+          form_Data.append("p3_id", _this.p3_id);
+
+          if(this.sub_category != '10020000')
+          {
+            for (var i = 1; i < 4; i++) {
+              let file = document.getElementById('photo' + i).files[0];
+              if(typeof file !== 'undefined') 
+                form_Data.append('photo' + i, file);
+            }
           }
 
           form_Data.append("url1", _this.url1 === null ? "" : _this.url1);
@@ -1334,6 +1529,19 @@ var app = new Vue({
 
       document.getElementById('select_all_product').checked = false;
       document.getElementById('bulk_select_all_product').checked = false;
+
+      this.p1_code = '';
+      this.p1_qty = '';
+      this.p1_id = '';
+
+      this.p2_code = '';
+      this.p2_qty = '';
+      this.p2_id = '';
+
+      this.p3_code = '';
+      this.p3_qty = '';
+      this.p3_id = '';
+
 
       this.get_records(this.id);
     },

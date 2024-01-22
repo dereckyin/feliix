@@ -44,6 +44,24 @@ $url1 = (isset($_POST['url1']) ? $_POST['url1'] : '');
 $url2 = (isset($_POST['url2']) ? $_POST['url2'] : '');
 $url3 = (isset($_POST['url3']) ? $_POST['url3'] : '');
 
+$p1_code = (isset($_POST['p1_code']) ?  $_POST['p1_code'] : '');
+$p1_qty = (isset($_POST['p1_qty']) ?  $_POST['p1_qty'] : '');
+$p1_id = (isset($_POST['p1_id']) ?  $_POST['p1_id'] : '');
+
+$p2_code = (isset($_POST['p2_code']) ?  $_POST['p2_code'] : '');
+$p2_qty = (isset($_POST['p2_qty']) ?  $_POST['p2_qty'] : '');
+$p2_id = (isset($_POST['p2_id']) ?  $_POST['p2_id'] : '');
+
+$p3_code = (isset($_POST['p3_code']) ?  $_POST['p3_code'] : '');
+$p3_qty = (isset($_POST['p3_qty']) ?  $_POST['p3_qty'] : '');
+$p3_id = (isset($_POST['p3_id']) ?  $_POST['p3_id'] : '');
+
+if($p3_code == '')
+{
+    $p3_qty = '';
+    $p3_id = '';
+}
+
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -92,9 +110,69 @@ else
         $srp_min = "";
         $qp_max = "";
         $qp_min = "";
+
+        $smax = 0;
+        $smin = 0;
+        $qmax = 0;
+        $qmin = 0;
+
+        $p1_data = [];
+        $p2_data = [];
+        $p3_data = [];
         
         // now you can apply
         $uid = $user_id;
+
+        if($p1_code != '')
+        {
+            $p1_data = get_product_info_from_code($p1_code, $db);
+        }
+
+        if($p2_code != '')
+        {
+            $p2_data = get_product_info_from_code($p2_code, $db);
+        }
+
+        if($p3_code != '')
+        {
+            $p3_data = get_product_info_from_code($p3_code, $db);
+        }
+
+        if(count($p1_data) > 0)
+        {
+            $smax += ($p1_data['srp_max'] + 0) * ($p1_qty + 0);
+            $smin += ($p1_data['srp_min'] + 0) * ($p1_qty + 0);
+
+            $qmax += ($p1_data['qp_max'] + 0) * ($p1_qty + 0);
+            $qmin += ($p1_data['qp_min'] + 0) * ($p1_qty + 0);
+        }
+
+        if(count($p2_data) > 0)
+        {
+            $smax += ($p2_data['srp_max'] + 0) * ($p2_qty + 0);
+            $smin += ($p2_data['srp_min'] + 0) * ($p2_qty + 0);
+
+            $qmax += ($p2_data['qp_max'] + 0) * ($p2_qty + 0);
+            $qmin += ($p2_data['qp_min'] + 0) * ($p2_qty + 0);
+        }
+
+        if(count($p3_data) > 0)
+        {
+            $smax += ($p3_data['srp_max'] + 0) * ($p3_qty + 0);
+            $smin += ($p3_data['srp_min'] + 0) * ($p3_qty + 0);
+
+            $qmax += ($p3_data['qp_max'] + 0) * ($p3_qty + 0);
+            $qmin += ($p3_data['qp_min'] + 0) * ($p3_qty + 0);
+        }
+
+        if($smax != 0)
+            $srp_max = $smax;
+        if($smin != 0)
+            $srp_min = $smin;
+        if($qmax != 0)
+            $qp_max = $qmax;
+        if($qmin != 0)  
+            $qp_min = $qmin;
     
         $query = "update product_category
         SET
@@ -207,6 +285,19 @@ else
             `variation_mode` = :variation_mode,
             `attributes` = :attributes,
             `status` = 1,
+
+            `p1_code` = :p1_code,
+            `p1_qty` = :p1_qty,
+            `p1_id` = :p1_id,
+
+            `p2_code` = :p2_code,
+            `p2_qty` = :p2_qty,
+            `p2_id` = :p2_id,
+
+            `p3_code` = :p3_code,
+            `p3_qty` = :p3_qty,
+            `p3_id` = :p3_id,
+
             `updated_id` = :updated_id,
             `updated_at` = now() 
             where id = :id";
@@ -245,6 +336,20 @@ else
         $stmt->bindParam(':accessory_mode', $accessory_mode);
         $stmt->bindParam(':variation_mode', $variation_mode);
         $stmt->bindParam(':attributes', $attributes);
+
+        $stmt->bindParam(':p1_code', $p1_code);
+        $stmt->bindParam(':p1_qty', $p1_qty);
+        $stmt->bindParam(':p1_id', $p1_id);
+
+        $stmt->bindParam(':p2_code', $p2_code);
+        $stmt->bindParam(':p2_qty', $p2_qty);
+        $stmt->bindParam(':p2_id', $p2_id);
+
+        $stmt->bindParam(':p3_code', $p3_code);
+        $stmt->bindParam(':p3_qty', $p3_qty);
+        $stmt->bindParam(':p3_id', $p3_id);
+
+
         $stmt->bindParam(':updated_id', $user_id);
         $stmt->bindParam(':id', $id);
 
@@ -709,6 +814,10 @@ else
             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
             die();
         }
+
+        // update product_category srp_max 
+        if($sub_category != "10020000")
+            check_code_exist_in_product($product_id, $srp_max, $srp_min, $qp_max, $qp_min, $db);
 
             
         $db->commit();
@@ -1721,4 +1830,99 @@ function remove_related_product_by_code($code, $org, $db) {
         $stmt->execute();
     }
 
+}
+
+function get_product_info_from_code($code, $db) {
+    $query = "SELECT id, code, srp_max, srp_min, qp_max, qp_min, p1_qty, p2_qty, p3_qty FROM product_category WHERE code = :code and STATUS <> -1 limit 1";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':code', $code);
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        return $row;
+    }
+
+}
+
+// check if code exist in p1_id or p2_id or p3_id
+function check_code_exist_in_product($pid, $p_srp_max, $p_srp_min, $p_qp_max, $p_qp_min, $db) {
+    $query = "SELECT id, p1_code, p2_code, p3_code, p1_qty, p2_qty, p3_qty FROM product_category WHERE p1_id = " . $pid . " or p2_id = " . $pid . " or p3_id = " . $pid . " ";
+    $stmt = $db->prepare($query);
+
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $srp_max = "";
+        $srp_min = "";
+        $qp_max = "";
+        $qp_min = "";
+    
+        $smax = 0;
+        $smin = 0;
+        $qmax = 0;
+        $qmin = 0;
+    
+        $p1_data = [];
+        $p2_data = [];
+        $p3_data = [];
+
+        if($row['p1_code'] != "")
+            $p1_data = get_product_info_from_code($row['p1_code'], $db);
+        if($row['p2_code'] != "")
+            $p2_data = get_product_info_from_code($row['p2_code'], $db);
+        if($row['p3_code'] != "")
+            $p3_data = get_product_info_from_code($row['p3_code'], $db);
+
+        if(count($p1_data) > 0)
+        {
+            $smax += ($p1_data['srp_max'] + 0) * ($row['p1_qty'] + 0);
+            $smin += ($p1_data['srp_min'] + 0) * ($row['p1_qty'] + 0);
+
+            $qmax += ($p1_data['qp_max'] + 0) * ($row['p1_qty'] + 0);
+            $qmin += ($p1_data['qp_min'] + 0) * ($row['p1_qty'] + 0);
+        }
+
+
+        if(count($p2_data) > 0)
+        {
+            $smax += ($p2_data['srp_max'] + 0) * ($row['p2_qty'] + 0);
+            $smin += ($p2_data['srp_min'] + 0) * ($row['p2_qty'] + 0);
+
+            $qmax += ($p2_data['qp_max'] + 0) * ($row['p2_qty'] + 0);
+            $qmin += ($p2_data['qp_min'] + 0) * ($row['p2_qty'] + 0);
+        }
+   
+
+        if(count($p3_data) > 0)
+        {
+            $smax += ($p3_data['srp_max'] + 0) * ($row['p3_qty'] + 0);
+            $smin += ($p3_data['srp_min'] + 0) * ($row['p3_qty'] + 0);
+
+            $qmax += ($p3_data['qp_max'] + 0) * ($row['p3_qty'] + 0);
+            $qmin += ($p3_data['qp_min'] + 0) * ($row['p3_qty'] + 0);
+        }
+     
+      
+
+        if($smax != 0)
+            $srp_max = $smax;
+        if($smin != 0)
+            $srp_min = $smin;
+        if($qmax != 0)
+            $qp_max = $qmax;
+        if($qmin != 0)  
+            $qp_min = $qmin;
+
+        $query = "update product_category set srp_max = :srp_max, srp_min = :srp_min, qp_max = :qp_max, qp_min = :qp_min where id = :id";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':srp_max', $srp_max);
+        $stmt->bindParam(':srp_min', $srp_min);
+        $stmt->bindParam(':qp_max', $qp_max);
+        $stmt->bindParam(':qp_min', $qp_min);
+        $stmt->bindParam(':id', $row['id']);
+
+        $stmt->execute();
+    }
+
+    return false;
 }

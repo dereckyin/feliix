@@ -303,6 +303,13 @@ try {
             display: inline-block;
         }
 
+        .one_fifth{
+            width: 20%;
+            display: inline-block;
+            margin-left: 40px;
+            min-width: 100px;
+        }
+
         .one_whole {
             width: 96%;
             display: inline-block;
@@ -678,6 +685,53 @@ try {
         .swal2-content .text-left > div > a, .swal2-content .text-left > div > a:visited {
             color: #000!important;
         }
+
+        .autocomplete {
+            /*the container must be positioned relative:*/
+            position: relative;
+            display: inline-block;
+        }
+        .autocomplete input {
+            border: 1px solid transparent;
+            background-color: #f1f1f1;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .autocomplete input[type=text] {
+            background-color: #f1f1f1;
+            width: 48%;
+        }
+        .autocomplete input[type=submit] {
+            background-color: DodgerBlue;
+            color: #fff;
+        }
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            /*position the autocomplete items to be the same width as the container:*/
+            top: 100%;
+            width: 48%;
+            left: 0;
+            right: 0;
+        }
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+        }
+        .autocomplete-items div:hover {
+            /*when hovering an item:*/
+            background-color: #e9e9e9;
+        }
+        .autocomplete-active {
+            /*when navigating through the items using the arrow keys:*/
+            background-color: DodgerBlue !important;
+            color: #ffffff;
+        }
     </style>
 
 </head>
@@ -721,10 +775,11 @@ try {
                         </option>
                     </select>
 
-                    <select v-if="category == '10000000'" class="form-control">
-                       
-                    </select>
-                </li>
+                        <select v-if="category == '10000000'" class="form-control" v-model="sub_category">
+                            <option v-for="(item, index) in sub_cateory_item" :value="item.cat_id" :key="item.category">
+                                {{ item.category }}</option>
+                        </select>
+                    </li>
 
                 <li v-if="edit_mode == false">
                     <button class="btn btn-primary" :disabled="sub_category == '' || category == ''"
@@ -738,7 +793,7 @@ try {
         </div>
 
 
-        <div class="region" v-if="edit_mode == true">
+        <div class="region" v-if="edit_mode == true && sub_category != '10020000'">
             <span class="heading">Basic Information</span>
 
             <ul>
@@ -761,8 +816,11 @@ try {
                         <option v-for="(item, index) in sub_cateory_item" :value="item.cat_id" :key="item.category">{{ item.category }}</option>
                     </select>
 
-                    <select v-if="category == '10000000'" class="form-control one_third" :disabled="edit_mode == true">
-                    </select>
+                    <select v-if="category == '10000000'" class="form-control one_third" v-model="sub_category"
+                            :disabled="edit_mode == true">
+                            <option v-for="(item, index) in sub_cateory_item" :value="item.cat_id" :key="item.category">
+                                {{ item.category }}</option>
+                        </select>
                 </li>
             </ul>
 
@@ -947,7 +1005,121 @@ try {
         </div>
 
 
-        <div class="region" v-if="edit_mode == true">
+        <!-- 因應 Lighitng 類別的 Product Set 子類別，所建立的 表單區塊 -->
+        <div class="region" v-show="edit_mode == true && sub_category == '10020000'">
+            <span class="heading">Basic Information</span>
+
+            <ul>
+                <li>ID</li>
+                <li><input type="text" v-model="id" class="form-control one_half" disabled></li>
+            </ul>
+
+            <ul>
+                <li>
+                    Category
+                </li>
+                <li>
+                    <select class="form-control one_third" v-model="category" :disabled="edit_mode == true">
+                        <option value="" selected>Select one value</option>
+                        <option value="10000000">Lighting</option>
+                        <option value="20000000">Systems Furniture</option>
+                    </select>
+
+                    <select v-if="category == '20000000'" class="form-control one_third" v-model="sub_category" :disabled="edit_mode == true">
+                        <option v-for="(item, index) in sub_cateory_item" :value="item.cat_id" :key="item.category">{{ item.category }}</option>
+                    </select>
+
+                    <select v-if="category == '10000000'" class="form-control one_third" v-model="sub_category"
+                            :disabled="edit_mode == true">
+                            <option v-for="(item, index) in sub_cateory_item" :value="item.cat_id" :key="item.category">
+                                {{ item.category }}</option>
+                        </select>
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    Tag
+                </li>
+                <li>
+                <select class="selectpicker" multiple data-live-search="true" data-size="8" data-width="96%" title="No tag selected"
+        id="tag0102">
+
+        <?php
+            for ($x = 0; $x < count($tag_group); $x++) {
+                echo "<optgroup label='" . $tag_group[$x]["group"] . "'>";
+
+                for($j=0; $j < count($tag_group[$x]['items']); $j++) {
+                    echo "<option value='" . $tag_group[$x]['items'][$j]['item_name'] . "'>" . $tag_group[$x]['items'][$j]['item_name'] . "</option>";
+                }
+                echo "</optgroup>";
+            }
+        ?>
+<!--
+        <optgroup v-for="(group, index) in tag_group" :label="group.group">
+
+            <option v-for="(it, index2) in group.items" :value="it.item_name">{{ it.item_name }}</option>
+
+        </optgroup>
+        -->
+</select>
+                </li>
+                <!-- <li v-show="category == '20000000'">
+                    <select class="selectpicker" multiple data-live-search="true" data-size="8" data-width="96%" title="No tag selected">
+
+                    </select>
+                </li> -->
+            </ul>
+
+            <ul>
+                <li>
+                    Code
+                </li>
+                <li>
+                    <input type="text" class="form-control one_half" v-model="code">
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    Description
+                </li>
+                <li>
+                    <textarea class="form-control one_whole" rows="10" v-model="description">
+
+                    </textarea>
+                </li>
+            </ul>
+
+            <ul>
+                <li>Product 1</li>
+                <li class="autocomplete">
+                    <input type="text" class="form-control one_half" placeholder="Product Code" v-model="p1_code" id="product_1">
+                    <input type="number" class="form-control one_fifth" min="1" placeholder="Qty" v-model="p1_qty">
+                </li>
+            </ul>
+
+            <ul>
+                <li>Product 2</li>
+                <li class="autocomplete">
+                    <input type="text" class="form-control one_half" placeholder="Product Code" v-model="p2_code" id="product_2">
+                    <input type="number" class="form-control one_fifth" min="1" placeholder="Qty" v-model="p2_qty">
+                </li>
+            </ul>
+
+            <ul>
+                <li>Product 3</li>
+                <li class="autocomplete">
+                    <input type="text" class="form-control one_half" placeholder="Product Code" v-model="p3_code" id="product_3">
+                    <input type="number" class="form-control one_fifth" min="1" placeholder="Qty" v-model="p3_qty">
+                </li>
+            </ul>
+
+        </div>
+
+
+
+        <div class="region" v-if="edit_mode == true && sub_category != '10020000'">
             <span class="heading">Specification Information</span>
 
             <ul v-for="(item, index) in special_infomation">
@@ -1007,7 +1179,7 @@ try {
         </div>
 
 
-        <div class="toggle-switch" v-show="edit_mode == true">
+        <div class="toggle-switch" v-show="edit_mode == true && sub_category != '10020000'">
             <label for="variation_mode" class="description">Variation Mode</label>
             <input type="checkbox" data-toggle="toggle" data-width="100px" data-onstyle="primary"
                    data-offstyle="secondary" data-on="Yes" data-off="No" id="variation_mode" v-model="variation_mode"
@@ -1744,6 +1916,127 @@ try {
 <script src="js/edit_product_code.js"></script>
 
 <script>
+var codes = [];
+
+function autocomplete(inp, arr) {
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+  var currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", async function(e) {
+      var a, b, i, val = this.value;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false;}
+
+
+    let _arr = await axios.get('api/product_code_auto_complete', {
+            params: {
+                code: val
+            }
+        });
+
+
+    arr = _arr.data;
+      
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          /*execute a function when someone clicks on the item value (DIV element):*/
+              b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              if(inp.id == 'product_1') {
+                app.p1_code = inp.value;
+              } else if(inp.id == 'product_2') {
+                app.p2_code = inp.value;
+              } else if(inp.id == 'product_3') {
+                app.p3_code = inp.value;
+              }
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+          });
+          a.appendChild(b);
+        }
+      }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+      }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+      x[i].parentNode.removeChild(x[i]);
+    }
+  }
+}
+/*execute a function when someone clicks in the document:*/
+document.addEventListener("click", function (e) {
+    closeAllLists(e.target);
+});
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    
+    
+});
 
     $(function () {
         $('#accessory_mode').change(function () {
