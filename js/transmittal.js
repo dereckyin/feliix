@@ -977,7 +977,7 @@ var app = new Vue({
         // replace newline with 
         list = list.replace(/(?:\r\n|\r|\n)/g, '; ');
         if(list != "")
-          list = list + '\n';
+          list = '\n' + list;
 
         var block_a_image = 'noimage';
         var sn = 0;
@@ -4018,7 +4018,7 @@ Installation:`;
     // replace newline with 
     list = list.replace(/(?:\r\n|\r|\n)/g, '; ');
     if(list != "")
-          list = list + '\n';
+          list = '\n' + list;
 
     var block_a_image = 'noimage';
     var sn = 0;
