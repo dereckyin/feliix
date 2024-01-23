@@ -219,8 +219,39 @@ switch ($method) {
             }
 
 
+            // delete previous -1
+            $query = "delete from quotation_page 
+            WHERE
+            `quotation_id` = :quotation_id
+            AND `status` = -1 ";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':quotation_id', $last_id);
+
+            try {
+            // execute the query, also check if query was successful
+            if (!$stmt->execute()) {
+                $arr = $stmt->errorInfo();
+                error_log($arr[2]);
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                die();
+            }
+            } catch (Exception $e) {
+            error_log($e->getMessage());
+            $db->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
+            }
+
             // quotation_page
-            $query = "DELETE FROM quotation_page
+            $query = "update quotation_page
+                        set `status` = -1
                       WHERE
                       `quotation_id` = :quotation_id";
 
@@ -246,10 +277,41 @@ switch ($method) {
                 http_response_code(501);
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
+            }
+
+            // delete previous -1
+            $query = "delete from quotation_page_type 
+            WHERE
+            `quotation_id` = :quotation_id
+            AND `status` = -1 ";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':quotation_id', $last_id);
+
+            try {
+            // execute the query, also check if query was successful
+            if (!$stmt->execute()) {
+                $arr = $stmt->errorInfo();
+                error_log($arr[2]);
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                die();
+            }
+            } catch (Exception $e) {
+            error_log($e->getMessage());
+            $db->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
             }
 
             // quotation_page_type
-            $query = "DELETE FROM quotation_page_type
+            $query = "update quotation_page_type
+                        set `status` = -1
                       WHERE
                       `quotation_id` = :quotation_id";
 
@@ -276,6 +338,65 @@ switch ($method) {
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
             }
+
+            // delete previous -1
+            $query = "delete from quotation_page_type_block 
+            WHERE `quotation_id` = :quotation_id AND `status` = -1 ";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':quotation_id', $last_id);
+
+            try {
+            // execute the query, also check if query was successful
+            if (!$stmt->execute()) {
+                $arr = $stmt->errorInfo();
+                error_log($arr[2]);
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                die();
+            }
+            } catch (Exception $e) {
+            error_log($e->getMessage());
+            $db->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
+            }
+
+            // quotation_page_type_block
+            $query = "insert into quotation_page_type_block(quotation_id, type_id, code, type, photo, qty, price, discount, amount, description, listing, status, create_id, created_at, num, pid, v1, v2, v3, ratio, photo2, photo3, notes) 
+            select :quotation_id, type_id, code, type, photo, qty, price, discount, amount, description, listing, -1, create_id, now(), num, pid, v1, v2, v3, ratio, photo2, photo3, notes from quotation_page_type_block where quotation_id = :org_id and status = 0";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':quotation_id', $last_id);
+            $stmt->bindParam(':org_id', $id);
+
+            try {
+            // execute the query, also check if query was successful
+            if (!$stmt->execute()) {
+                $arr = $stmt->errorInfo();
+                error_log($arr[2]);
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                die();
+            }
+            } catch (Exception $e) {
+            error_log($e->getMessage());
+            $db->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
+            }
+            
+
 
             for($i=0 ; $i < count($pages_array) ; $i++)
             {
@@ -412,9 +533,9 @@ function IsExist($quotation_id, $db)
 }
 
 function UpdateTypeBlock($org_id, $new_id, $db){
-    
+
     $query = "update quotation_page_type_block
-    SET type_id = :new_id where type_id=:org_id";
+    SET type_id = :new_id where type_id=:org_id and status = 0";
 
     // prepare the query
     $stmt = $db->prepare($query);

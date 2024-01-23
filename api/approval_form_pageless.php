@@ -832,9 +832,9 @@ function GetSubTotalInfo($qid, $db, $prefix)
 
     $query = "
             select COALESCE(sum(amount), 0) amt from " . $prefix . "quotation_page_type_block
-            WHERE `status` <> -1 and  type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and real_amount = 0)
+            WHERE `status` <> -1 and  type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and real_amount = 0 and status <> -1)
             union all
-            select COALESCE(sum(real_amount), 0) from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and real_amount <> 0
+            select COALESCE(sum(real_amount), 0) from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and real_amount <> 0 and status <> -1
     ";
 
     // prepare the query
@@ -858,9 +858,9 @@ function GetSubTotalInfoNotShowA($qid, $db, $prefix)
 
     $query = "
             select COALESCE(sum(amount), 0) amt from " . $prefix . "quotation_page_type_block
-            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and block_type = 'A'  and real_amount = 0)
+            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and block_type = 'A'  and real_amount = 0 and status <> -1)
             union all
-            select COALESCE(sum(real_amount), 0) from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and real_amount <> 0 and block_type = 'A' 
+            select COALESCE(sum(real_amount), 0) from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and real_amount <> 0 and block_type = 'A'  and status <> -1
     ";
 
     // prepare the query
@@ -885,9 +885,9 @@ function GetSubTotalInfoNotShowB($qid, $db, $prefix)
 
     $query = "
             select COALESCE(sum(amount), 0) amt from " . $prefix . "quotation_page_type_block
-            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and block_type = 'B'  and real_amount = 0)
+            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and block_type = 'B'  and real_amount = 0 and status <> -1)
             union all
-            select COALESCE(sum(real_amount), 0) from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and real_amount <> 0 and block_type = 'B' 
+            select COALESCE(sum(real_amount), 0) from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and real_amount <> 0 and block_type = 'B'  and status <> -1
     ";
 
     // prepare the query
@@ -911,7 +911,7 @@ function GetSubTotalNoVat($qid, $db, $prefix)
 
     $query = "
             select sum(qty * price * (1 - discount / 100) * ratio) amt from " . $prefix . "quotation_page_type_block
-            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' )
+            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and status <> -1 )
     ";
 
     // prepare the query
@@ -936,7 +936,7 @@ function GetSubTotalNoVatA($qid, $db, $prefix)
 
     $query = "
             select sum(qty * price * (1 - discount / 100) * ratio) amt from " . $prefix . "quotation_page_type_block
-            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and block_type = 'A')
+            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and block_type = 'A' and status <> -1)
     ";
 
     // prepare the query
@@ -961,7 +961,7 @@ function GetSubTotalNoVatB($qid, $db, $prefix)
 
     $query = "
             select sum(qty * price * (1 - discount / 100) * ratio) amt from " . $prefix . "quotation_page_type_block
-            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and block_type = 'B')
+            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and block_type = 'B' and status <> -1)
     ";
 
     // prepare the query
@@ -985,7 +985,7 @@ function GetSubTotalNoVatNotShow($qid, $db, $prefix)
 
     $query = "
             select COALESCE(sum(qty * ratio * price * (1 - discount / 100)), 0) amt from " . $prefix . "quotation_page_type_block
-            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '')
+            WHERE `status` <> -1 and type_id in (select id from " . $prefix . "quotation_page_type where quotation_id = " . $qid . " and not_show = '' and status <> -1)
     ";
 
     // prepare the query
