@@ -3188,8 +3188,8 @@ Installation:`;
         if(empty)
         {
           Swal.fire({
-            title: "Please check content before save",
-            text: "If click yes, all the pages and sub block will be erased.",
+            title: "WARNING",
+            text: "If click yes, all the pages and subtotal blocks will be erased.",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
