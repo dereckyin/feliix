@@ -3174,6 +3174,37 @@ Installation:`;
 
       },
 
+      page_save_pre: function() {
+        let _this = this;
+        let empty = true;
+        // check if page is empty
+        for(var i = 0; i < this.temp_pages.length; i++) {
+          if(this.temp_pages[i].types.length != 0){
+            empty = false;
+            break;
+          }
+        }
+        
+        if(empty)
+        {
+          Swal.fire({
+            title: "Please check content before save",
+            text: "If click yes, all the pages and sub block will be erased.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+          }).then((result) => {
+            if (result.value) {
+              _this.page_save();
+            }
+          });
+        }
+        else
+          _this.page_save();
+        },
+
       page_save : function() {
         if (this.submit == true) return;
 
