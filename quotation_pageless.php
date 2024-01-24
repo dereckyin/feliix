@@ -2612,7 +2612,7 @@ header( 'location:index' );
                         <div class="formbox">
                             <div class="btnbox">
                                 <a class="btn small" @click="show_page = false">Close</a>
-                                <a class="btn small green" @click="page_save()">Save</a>
+                                <a class="btn small green" @click="page_save_pre()">Save</a>
                             </div>
                         </div>
 
