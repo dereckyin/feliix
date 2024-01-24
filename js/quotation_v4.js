@@ -3109,6 +3109,9 @@ Installation:`;
             break;
           }
         }
+
+        if(this.temp_pages.length != 0)
+          empty = false;
         
         if(empty)
         {
