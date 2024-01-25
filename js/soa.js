@@ -322,6 +322,8 @@ var app = new Vue({
         is_load : false,
         product_set : [],
         show_accessory: false,
+
+        temp_pages_verify : [],
     },
   
     created() {
@@ -3468,10 +3470,46 @@ Installation:`;
         this.temp_pages = JSON.parse(JSON.stringify(this.pages));
       },
 
-      page_save : function() {
+      get_latest_record: async function() {
+        let _this = this;
+        if(_this.id == 0)
+          return;
+  
+        const params = {
+          id: _this.id,
+        };
+  
+        let token = localStorage.getItem("accessToken");
+
+        let res = await axios({ 
+          method: 'get', 
+          url: 'api/soa', 
+          params,
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        this.temp_pages_verify = JSON.parse(JSON.stringify(res.data[0].pages));
+
+        },
+
+      page_save : async function() {
         if (this.submit == true) return;
 
         this.submit = true;
+
+        await this.get_latest_record();
+
+        // check if this.temp_pages and this.temp_pages_verify identical
+        if(JSON.stringify(this.pages ) != JSON.stringify(this.temp_pages_verify))
+        {
+          Swal.fire({
+            text: "This form has been modified by other user. Please reload the page and try again.",
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+          this.submit = false;
+          return;
+        }
   
         var token = localStorage.getItem("token");
         var form_Data = new FormData();

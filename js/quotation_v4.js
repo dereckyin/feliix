@@ -261,6 +261,8 @@ var app = new Vue({
 
         product_set : [],
         show_accessory: false,
+
+        temp_pages_verify : [],
     },
   
     created() {
@@ -2535,7 +2537,31 @@ Installation:`;
         // page
         this.pages = [];
         this.temp_pages = [];
+
       },
+
+      get_latest_record: async function() {
+        let _this = this;
+        if(_this.id == 0)
+          return;
+  
+        const params = {
+          id: _this.id,
+        };
+  
+        let token = localStorage.getItem("accessToken");
+
+        let res = await axios({ 
+          method: 'get', 
+          url: 'api/quotation', 
+          params,
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        this.temp_pages_verify = JSON.parse(JSON.stringify(res.data[0].pages));
+
+        },
+
 
       getRecord: function() {
         let _this = this;
@@ -3099,10 +3125,24 @@ Installation:`;
 
       },
 
-      page_save_pre: function() {
+      page_save_pre: async function() {
         let _this = this;
         let empty = true;
         // check if page is empty
+
+        await this.get_latest_record();
+
+        // check if this.temp_pages and this.temp_pages_verify identical
+        if(JSON.stringify(this.pages ) != JSON.stringify(this.temp_pages_verify))
+        {
+          Swal.fire({
+            text: "This quotation has been modified by other user. Please reload the page and try again.",
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+
         for(var i = 0; i < this.temp_pages.length; i++) {
           if(this.temp_pages[i].types.length != 0){
             empty = false;
