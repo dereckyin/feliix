@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, min-width=640, user-scalable=0, viewport-fit=cover"/>
 
 <!-- favicon.ico iOS icon 152x152px -->
-<link rel="shortcut icon" href="../images/favicon.ico" />
-<link rel="Bookmark" href="../images/favicon.ico" />
-<link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
-<link rel="apple-touch-icon" href="../images/iosicon.png"/>
+<link rel="shortcut icon" href="images/favicon.ico" />
+<link rel="Bookmark" href="images/favicon.ico" />
+<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="apple-touch-icon" href="images/iosicon.png"/>
 
 <!-- SEO -->
 <title>Management of Employee Basic Info</title>
@@ -28,15 +28,15 @@
 <!-- Google Analytics -->
 
 <!-- CSS -->
-<link rel="stylesheet" type="text/css" href="../css/default.css"/>
-<link rel="stylesheet" type="text/css" href="../css/ui.css"/>
-<link rel="stylesheet" type="text/css" href="../css/case.css"/>
-<link rel="stylesheet" type="text/css" href="../css/mediaqueries.css"/>
+<link rel="stylesheet" type="text/css" href="css/default.css"/>
+<link rel="stylesheet" type="text/css" href="css/ui.css"/>
+<link rel="stylesheet" type="text/css" href="css/case.css"/>
+<link rel="stylesheet" type="text/css" href="css/mediaqueries.css"/>
 
 <!-- jQuery和js載入 -->
-<script type="text/javascript" src="../js/rm/jquery-3.4.1.min.js" ></script>
-<script type="text/javascript" src="../js/rm/realmediaScript.js"></script>
-<script type="text/javascript" src="../js/main.js" defer></script>
+<script type="text/javascript" src="js/rm/jquery-3.4.1.min.js" ></script>
+<script type="text/javascript" src="js/rm/realmediaScript.js"></script>
+<script type="text/javascript" src="js/main.js" defer></script>
 
 <!-- 這個script之後寫成aspx時，改用include方式載入header.htm，然後這個就可以刪掉了 -->
 <script>
@@ -564,12 +564,12 @@ $(function(){
     </div>
 </div>
 </body>
-<script defer src="../js/npm/vue/dist/vue.js"></script> 
-<script defer src="../js/axios.min.js"></script> 
-<script defer src="../js/npm/sweetalert2@9.js"></script>
+<script defer src="js/npm/vue/dist/vue.js"></script> 
+<script defer src="js/axios.min.js"></script> 
+<script defer src="js/npm/sweetalert2@9.js"></script>
 
 <!-- Awesome Font for current webpage -->
 <script src="js/a076d05399.js"></script>
 
-<script defer src="../js/admin/user.js"></script>
+<script defer src="js/admin/user.js"></script>
 </html>
