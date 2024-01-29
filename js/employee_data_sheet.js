@@ -166,8 +166,9 @@ var app = new Vue({
             this.record = this.shallowCopy(this.user_records.find(element => element.id == favorite));
             this.isEditing = true;
 
-            if(this.record.updated_at != '')
-                this.record.updated_str = this.record.updated_at.substring(0, 10);
+            // if(this.record.updated_at != '')
+            //     this.record.updated_str = this.record.updated_at.substring(0, 10);
+            this.record.updated_str = new Date().toISOString().slice(0,10);
 
             this.toggle_input();
   
