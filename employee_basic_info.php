@@ -192,7 +192,7 @@ $(function(){
         <!-- tags js在 main.js -->
         <div class="tags">
             <a class="tag A" href="">Employee Data Sheet</a>
-            <a class="tag B" focus>Basic Info</a>
+            <a class="tag B focus">Basic Info</a>
         </div>
 
         <!-- Blocks -->
@@ -291,7 +291,7 @@ $(function(){
                                 <input type="text">
                             </li>
 
-                            <-- 會載入目前系統上所建立的所有部門名稱當作 option，然後系統根據這位使用者在 user 資料表中已經設定的部門值，把它當作這個欄位的預選值  -->
+                            <-- 系統根據這位使用者在 user 資料表中已經設定的部門，把它載入到這個欄位中，管理人員無法修改此欄位的值  -->
                             <li><b>Department:</b></li>
                             <li>
                                 <select>
@@ -299,7 +299,7 @@ $(function(){
                                 </select>
                             </li>
 
-                            <-- 會載入目前系統上所建立的該部門之下所有的職稱名稱當作 option，然後系統根據這位使用者在 user 資料表中已經設定的職稱，把它當作這個欄位的預選值  -->
+                            <-- 系統根據這位使用者在 user 資料表中已經設定的職稱，把它載入到這個欄位中，管理人員無法修改此欄位的值  -->
                             <li><b>Position Title:</b></li>
                             <li>
                                 <select>

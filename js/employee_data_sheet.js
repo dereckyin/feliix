@@ -245,7 +245,7 @@ var app = new Vue({
             for (i = 0; i < this.user_records.length; i++) 
             {
               if(this.user_records[i].is_checked == 1)
-                favorite.push(this.user_records[i].id);
+                favorite.push(this.user_records[i].data_id);
             }
 
             //$.each($("input[name='record_id']:checked"), function() {
@@ -263,8 +263,8 @@ var app = new Vue({
             }
 
             Swal.fire({
-                title: "Reset Record",
-                text: "Are you sure to reset this record?",
+                title: "WARNING",
+                text: "Are you sure to erase this record?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",

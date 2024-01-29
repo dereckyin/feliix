@@ -65,7 +65,7 @@ else
             $stmt->execute();
 
             http_response_code(200);
-            echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa"), "id" => $last_id));
+            echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));
     }
     catch (Exception $e){
 
