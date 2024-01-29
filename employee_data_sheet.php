@@ -173,6 +173,10 @@ $(function(){
         border-right: 1px solid black;
     }
 
+    .modal .box-content .data_sheet tr td span.content {
+        font-weight: 400;
+    }
+
     .modal .box-content .data_sheet tr td span.block_title {
         font-size: 15px;
     }
@@ -539,7 +543,7 @@ $(function(){
 
 
 
-            <!-- Input Modal start -->
+            <!-- View Modal start -->
             <div id="Modal_view" class="modal">
 
                 <!-- Modal content -->
@@ -561,7 +565,7 @@ $(function(){
                             <tr>
                                 <td colspan="2">
                                     <span class="caption">Position:</span>
-                                    <span class="content">{{ record.department }}>> {{ record.title}}</span>
+                                    <span class="content">{{ record.department }} >> {{ record.title}}</span>
                                 </td>
 
                                 <td>
@@ -872,7 +876,7 @@ $(function(){
                 </div>
 
             </div>
-            <!-- Input Modal end -->
+            <!-- View Modal end -->
 
 
         </div>
