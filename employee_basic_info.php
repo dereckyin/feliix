@@ -191,7 +191,7 @@ $(function(){
     <div class="mainContent">
         <!-- tags js在 main.js -->
         <div class="tags">
-            <a class="tag A" href="">Employee Data Sheet</a>
+            <a class="tag A" href="employee_data_sheet">Employee Data Sheet</a>
             <a class="tag B focus">Basic Info</a>
         </div>
 
@@ -211,19 +211,19 @@ $(function(){
                     </ul>
                     <ul v-for='(record, index) in displayedPosts' :key="index">
                         <li>
-                            <input type="radio" name="record_id" class="alone cyan" :value="record.index"
+                            <input type="radio" name="record_id" class="alone cyan" :value="record.index" @click="uncheck(record.id)"
                                    v-model="record.is_checked">
                         </li>
                         <li>{{record.username}}</li>
                         <li>{{record.department}}</li>
                         <li>{{record.title}}</li>
-                        <li>{{ }}</li>
+                        <li>{{record.updated_at }}</li>
                     </ul>
 
                 </div>
 
                 <div class="btnbox">
-                    <a class="btn" @click="editRecord()">View</a>
+                    <a class="btn" @click="viewRecord()">View</a>
                     <a class="btn" @click="editRecord()">Edit</a>
                     <a class="btn" @click="resetRecord()">Reset</a>
                 </div>
@@ -239,7 +239,7 @@ $(function(){
 
                     <div class="modal-header">
                         <h6>Employee Basic Info</h6>
-                        <a href="javascript: void(0)" onclick="ToggleModal(2)">
+                        <a href="javascript: void(0)" @click="cancel_input()">
                             <i class="fa fa-times fa-lg" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -281,8 +281,8 @@ $(function(){
                             <li><b>Employment Status:</b></li>
                             <li>
                                 <select>
-                                    <option value="">PROBATION</option>
-                                    <option value="">REGULAR</option>
+                                    <option value="probation">PROBATION</option>
+                                    <option value="regular">REGULAR</option>
                                 </select>
                             </li>
 
@@ -310,11 +310,11 @@ $(function(){
                             <li><b>Employee Category:</b></li>
                             <li>
                                 <select>
-                                    <option value="">STAFF</option>
-                                    <option value="">RANK & FILE</option>
-                                    <option value="">SENIOR</option>
-                                    <option value="">ASSISTANT DEPARTMENT MANAGER</option>
-                                    <option value="">DEPARTMENT MANAGER</option>
+                                    <option value="staff">STAFF</option>
+                                    <option value="rank">RANK & FILE</option>
+                                    <option value="senior">SENIOR</option>
+                                    <option value="assistant">ASSISTANT DEPARTMENT MANAGER</option>
+                                    <option value="department">DEPARTMENT MANAGER</option>
                                 </select>
                             </li>
 

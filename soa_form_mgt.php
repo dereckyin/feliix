@@ -31,8 +31,8 @@ if($GLOBALS['department'] == 'Lighting' || $GLOBALS['department'] == 'Office' ||
 $test_manager = "1";
 }
 
-//  ('Kuan', 'Dennis Lin', 'dereck', 'Ariel Lin', 'Kristel Tan');
-if($user_id == 48 || $user_id == 2 || $user_id == 1 || $user_id == 6 || $user_id == 3 || $user_id == 89 || $user_id == 129 || $user_id == 137 || $user_id == 138 || $user_id == 148)
+//  ('dereck', 'Dennis Lin', 'Kristel Tan', 'Kuan', 'Aiza Eisma', 'Ranel Villanueva', 'Francis Custodio', 'Michael Angelo Noveros', 'Alleah Belmonte', 'Gina Donato', 'Ronnie Fernando Dela Cruz');
+if($user_id == 1 || $user_id == 2 || $user_id == 6 || $user_id == 3 || $user_id == 89 || $user_id == 129 || $user_id == 137 || $user_id == 138 || $user_id == 148 || $user_id == 146 || $user_id == 139)
 $test_manager = "1";
 }
 

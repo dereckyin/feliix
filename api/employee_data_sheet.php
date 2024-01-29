@@ -62,9 +62,9 @@ else
 
             $sql = "SELECT 0 as is_checked, user.id, user.id user_id, user.username, user.email, user.status,  COALESCE(department, '') department, apartment_id, title_id, COALESCE(title, '') title, 
                         COALESCE(eds.id, 0) data_id,
-                        COALESCE(eds.first_name , '') first_name,
-                        COALESCE(eds.middle_name , '') middle_name,
-                        COALESCE(eds.surname , '') surname,
+                        COALESCE(user.first_name , '') first_name,
+                        COALESCE(user.middle_name , '') middle_name,
+                        COALESCE(user.surname , '') surname,
                         COALESCE(eds.gender , '') gender,
                         COALESCE(eds.present_address , '') present_address,
                         COALESCE(eds.permanent_address , '') permanent_address,

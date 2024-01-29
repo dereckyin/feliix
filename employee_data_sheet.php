@@ -207,7 +207,7 @@ $(function(){
         <!-- tags js在 main.js -->
         <div class="tags">
             <a class="tag A focus">Employee Data Sheet</a>
-            <a class="tag B" href="user_profile">Basic Info</a>
+            <a class="tag B" href="employee_basic_info">Basic Info</a>
         </div>
 
         <!-- Blocks -->
@@ -226,7 +226,7 @@ $(function(){
                     </ul>
                     <ul v-for='(record, index) in user_records' :key="index">
                         <li>
-                            <input type="radio" name="record_id" class="alone cyan" value="1" @click="uncheck(record.id)"
+                            <input type="radio" name="record_id" class="alone cyan" :value="record.index" @click="uncheck(record.id)"
                                    v-model="record.is_checked">
                         </li>
                         <li>{{record.username}}</li>
