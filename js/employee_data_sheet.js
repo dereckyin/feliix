@@ -203,7 +203,7 @@ var app = new Vue({
                 //alert("請選一筆資料進行修改 (Please select one row to edit!)");
                 //$(window).scrollTop(0);
                 Swal.fire({
-                    html: "Please select one user to edit!",
+                    html: "Please select one user to view!",
                     icon: "info",
                     confirmButtonText: "OK",
                   });
@@ -237,7 +237,46 @@ var app = new Vue({
         },
 
         resetRecord: function() {
-            this.record = {};
+            let _this = this;
+            var favorite = [];
+            this.resetError();
+
+            for (i = 0; i < this.user_records.length; i++) 
+            {
+              if(this.user_records[i].is_checked == 1)
+                favorite.push(this.user_records[i].id);
+            }
+
+            //$.each($("input[name='record_id']:checked"), function() {
+            //    favorite.push($(this).val());
+            //});
+            if (favorite.length != 1) {
+                //alert("請選一筆資料進行修改 (Please select one row to edit!)");
+                //$(window).scrollTop(0);
+                Swal.fire({
+                    html: "Please select one user to edit!",
+                    icon: "info",
+                    confirmButtonText: "OK",
+                  });
+                return;
+            }
+
+            Swal.fire({
+                title: "Reset Record",
+                text: "Are you sure to reset this record?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes",
+                }).then((result) => {
+                if (result.value) {
+                    _this.do_reset_record(favorite[0]);
+                }
+            });
+
+            this.unCheckCheckbox();
+
             this.resetError();
         },
 
@@ -246,6 +285,43 @@ var app = new Vue({
 
             this.toggle_input();
             this.resetForm();
+        },
+
+        do_reset_record: function(id) {
+            let _this = this;
+
+            let formData = new FormData();
+
+            formData.append('id', id);
+
+            const token = sessionStorage.getItem('token');
+
+            axios({
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${token}`
+                    },
+                    url: 'api/employee_data_sheet_reset',
+                    data: formData
+                    
+                })
+                .then(function(response) {
+                    //handle success
+                    console.log(response)
+                    Swal.fire({
+                        text: response.data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                      })
+                })
+                .catch(function(response) {
+                    //handle error
+                    console.log(response)
+                })
+                .finally(function() {
+                    _this.resetForm();
+                });
         },
 
         save_input: function(event) {

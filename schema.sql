@@ -4607,7 +4607,7 @@ CREATE TABLE `employee_data_sheet` (
   `language` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `medical` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `spouse` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `father_ocupation` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `spouse_ocupation` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `children` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `father` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `father_ocupation` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
@@ -4634,7 +4634,6 @@ CREATE TABLE `employee_data_sheet` (
   `employment_company2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `employment_position2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `employment_period2` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
-
   `status` int(11) DEFAULT 0,
   `create_id` int(11) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),

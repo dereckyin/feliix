@@ -132,7 +132,7 @@ else
             $stmt->bindParam(':father', $rs['father']);
             $stmt->bindParam(':father_ocupation', $rs['father_ocupation']);
             $stmt->bindParam(':mother', $rs['mother']);
-            $stmt->bindParam(':mother_ocupation', $rs['other_ocupation']);
+            $stmt->bindParam(':mother_ocupation', $rs['mother_ocupation']);
             $stmt->bindParam(':siblings', $rs['siblings']);
             $stmt->bindParam(':tin', $rs['tin']);
             $stmt->bindParam(':sss', $rs['sss']);
@@ -249,7 +249,7 @@ else
             $stmt->bindParam(':father', $rs['father']);
             $stmt->bindParam(':father_ocupation', $rs['father_ocupation']);
             $stmt->bindParam(':mother', $rs['mother']);
-            $stmt->bindParam(':mother_ocupation', $rs['other_ocupation']);
+            $stmt->bindParam(':mother_ocupation', $rs['mother_ocupation']);
             $stmt->bindParam(':siblings', $rs['siblings']);
             $stmt->bindParam(':tin', $rs['tin']);
             $stmt->bindParam(':sss', $rs['sss']);
