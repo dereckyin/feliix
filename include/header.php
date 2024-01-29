@@ -119,19 +119,19 @@ try {
             $access11 = true;
         }
 
-        // 可以存取Expense Recorder的人員名單如下：Dennis Lin(2), Glendon Wendell Co(41), Kristel Tan(6), Kuan(3), Mary Jude Jeng Articulo(9), Thalassa Wren Benzon(41), Stefanie Mika C. Santos(99)
-        //為了測試先加入testmanager byBB
+        $access3 = false;
         if($user_id == 1 || $user_id == 4 || $user_id == 6 || $user_id == 2 || $user_id == 41 || $user_id == 3 || $user_id == 9 || $user_id == 87 || $user_id == 99 || $user_id == 139 || $user_id == 143 || $user_id == 146 || $user_id == 154)
             $access3 = true;
 
-        // 5. 針對 Reporting Section的內容，只有 Kristel Tan 和Thalassa Wren Benzon 和 Dennis Lin有權限可以進入和看到 幫Mary Jude Jeng Articulo(9) 和 Glendon Wendell Co(41)
+        // 5. 針對 Reporting Section的內容，只有 Kristel Tan 和Thalassa Wren Benzon 和 Dennis Lin有權限可以進入和看到
         if($user_id == 1 || $user_id == 6 || $user_id == 2 || $user_id == 3 || $user_id == 4 || $user_id == 9 || $user_id == 41 || $user_id == 99 || $user_id == 139 || $user_id == 146)
             $access5 = true;
 
         // QOUTE AND PAYMENT Management
         if(trim(strtoupper($department)) == 'SALES')
         {
-            if(trim(strtoupper($position)) == 'JR. ACCOUNT EXECUTIVE' 
+            if(trim(strtoupper($position)) == 'SALES COORDINATOR'
+            || trim(strtoupper($position)) == 'JR. ACCOUNT EXECUTIVE'
             || trim(strtoupper($position)) == 'ACCOUNT EXECUTIVE'
             || trim(strtoupper($position)) == 'SR. ACCOUNT EXECUTIVE'
             || trim(strtoupper($position)) == 'ASSISTANT SALES MANAGER'
@@ -189,7 +189,7 @@ try {
             }
         }
 
-        if(trim($department) == '')
+        if(trim(strtoupper($department)) == '')
         {
             if(trim(strtoupper($position)) == 'OWNER' || trim(strtoupper($position)) == 'MANAGING DIRECTOR' || trim(strtoupper($position)) == 'CHIEF ADVISOR')
             {
@@ -318,7 +318,7 @@ try {
                 if($access1 == true || $access2 == true || $access3 == true || $access4 == true || $access8 == true || $access9 == true || $access10 == true)
                 {
             ?>
-            <li class="gray05">
+            <li class="gray05" style="border: 3px solid var(--black01);">
                 <a class="uni">Admin<br>Section</a>
                 <?=($access1 == true) ? '<a class="list" href="ammend">Verify and Review</a>' : '' ?>
                 <?=($access2 == true) ? '<a class="list" href="query_export">Query and Export</a>' : '' ?>
