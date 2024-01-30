@@ -188,7 +188,7 @@ $(function(){
 	<header>header</header>
     <!-- header end -->
 
-    <div class="mainContent">
+    <div class="mainContent" id="app">
         <!-- tags js在 main.js -->
         <div class="tags">
             <a class="tag A" href="employee_data_sheet">Employee Data Sheet</a>
@@ -209,9 +209,9 @@ $(function(){
                         <li>Position</li>
                         <li>Updated Time</li>
                     </ul>
-                    <ul v-for='(record, index) in displayedPosts' :key="index">
+                    <ul v-for='(record, index) in user_records' :key="index">
                         <li>
-                            <input type="radio" name="record_id" class="alone cyan" :value="record.index" @click="uncheck(record.id)"
+                            <input type="radio" name="record_id" class="alone cyan" value="1" @click="uncheck(record.id)"
                                    v-model="record.is_checked">
                         </li>
                         <li>{{record.username}}</li>
@@ -250,37 +250,37 @@ $(function(){
                         <ul>
                             <li><b>Employee Number:</b></li>
                             <li>
-                                <input type="text">
+                                <input type="text" v-model="record.emp_number">
                             </li>
 
                             <li><b>First Name:</b></li>
                             <li>
-                                <input type="text">
+                                <input type="text" v-model="record.first_name">
                             </li>
 
                             <li><b>Middle Name:</b></li>
                             <li>
-                                <input type="text">
+                                <input type="text" v-model="record.middle_name">
                             </li>
 
                             <li><b>Surname:</b></li>
                             <li>
-                                <input type="text">
+                                <input type="text" v-model="record.surname">
                             </li>
 
                             <li><b>Date Hired:</b></li>
                             <li>
-                                <input type="date">
+                                <input type="date" v-model="record.date_hired">
                             </li>
 
                             <li><b>Regularization Date:</b></li>
                             <li>
-                                <input type="date">
+                                <input type="date" v-model="record.regular_hired">
                             </li>
 
                             <li><b>Employment Status:</b></li>
                             <li>
-                                <select>
+                                <select v-model="record.emp_status">
                                     <option value="probation">PROBATION</option>
                                     <option value="regular">REGULAR</option>
                                 </select>
@@ -288,28 +288,28 @@ $(function(){
 
                             <li><b>Company:</b></li>
                             <li>
-                                <input type="text">
+                                <input type="text" v-model="record.company">
                             </li>
 
-                            <-- 系統根據這位使用者在 user 資料表中已經設定的部門，把它載入到這個欄位中，管理人員無法修改此欄位的值  -->
+                            <!-- 系統根據這位使用者在 user 資料表中已經設定的部門，把它載入到這個欄位中，管理人員無法修改此欄位的值  -->
                             <li><b>Department:</b></li>
                             <li>
-                                <select>
-                                    <option value=""></option>
+                                <select name="department" id="department" disabled="true">
+                                    <option :value="record.department">{{record.department}}</option>
                                 </select>
                             </li>
 
-                            <-- 系統根據這位使用者在 user 資料表中已經設定的職稱，把它載入到這個欄位中，管理人員無法修改此欄位的值  -->
+                            <!-- 系統根據這位使用者在 user 資料表中已經設定的職稱，把它載入到這個欄位中，管理人員無法修改此欄位的值  -->
                             <li><b>Position Title:</b></li>
                             <li>
-                                <select>
-                                    <option value=""></option>
+                                <select name="title" id="title" disabled="true">
+                                    <option :value="record.title">{{record.title}}</option>
                                 </select>
                             </li>
 
                             <li><b>Employee Category:</b></li>
                             <li>
-                                <select>
+                                <select v-model="record.emp_category">
                                     <option value="staff">STAFF</option>
                                     <option value="rank">RANK & FILE</option>
                                     <option value="senior">SENIOR</option>
@@ -318,19 +318,22 @@ $(function(){
                                 </select>
                             </li>
 
-                            <-- 系統會載入目前網站上已經註冊且 status=1 的使用者名稱當作 option  -->
+                            <!-- 系統會載入目前網站上已經註冊且 status=1 的使用者名稱當作 option  -->
                             <li><b>Next Level Manager/Superior:</b></li>
                             <li>
-                                <select>
-                                    <option value="">Male</option>
+                                <select v-model="record.superior">
+                                    <option value=""></option>
+                                    <template v-for='(rc, index) in user_records'>
+                                        <option :value="rc.username" v-if="rc.username != record.username">{{rc.username}}</option>
+                                    </template>
                                 </select>
                             </li>
 
                         </ul>
 
                         <div class="btnbox">
-                            <a class="btn red" @click="cancel">Cancel</a>
-                            <a class="btn" @click="save">Save</a>
+                            <a class="btn red" @click="cancel_input">Cancel</a>
+                            <a class="btn" @click="save_input">Save</a>
                         </div>
 
                     </div>
@@ -350,7 +353,7 @@ $(function(){
 
                     <div class="modal-header">
                         <h6>Employee Basic Info</h6>
-                        <a href="javascript: void(0)" onclick="ToggleModal(2)">
+                        <a href="javascript: void(0)" @click="close_view">
                             <i class="fa fa-times fa-lg" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -360,7 +363,7 @@ $(function(){
 
                         <table class="info_sheet">
 
-                            <-- 以下欄位載入值時，系統都需要把載入的值轉換成英文大寫，再放入欄位中  -->
+                            <!-- 以下欄位載入值時，系統都需要把載入的值轉換成英文大寫，再放入欄位中  -->
                             <tbody>
                             <tr>
                                 <td>
@@ -370,7 +373,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.emp_number }}</span>
                                 </td>
                             </tr>
 
@@ -386,7 +389,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.first_name }}</span>
                                 </td>
                             </tr>
 
@@ -398,7 +401,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.middle_name }}</span>
                                 </td>
                             </tr>
 
@@ -410,7 +413,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.surname }}</span>
                                 </td>
                             </tr>
 
@@ -418,7 +421,7 @@ $(function(){
                                 <td></td>
                             </tr>
 
-                            <-- 日期載入值的格式為： 完整月份英文 日, 四位數西元年分，例如： DECEMBER 12, 2023  -->
+                            <!-- 日期載入值的格式為： 完整月份英文 日, 四位數西元年分，例如： DECEMBER 12, 2023  -->
                             <tr>
                                 <td>
                                     <span class="caption">Date Hired</span>
@@ -427,7 +430,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.date_hired }}</span>
                                 </td>
                             </tr>
 
@@ -443,7 +446,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.regular_hired }}</span>
                                 </td>
                             </tr>
 
@@ -459,7 +462,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.emp_status }}</span>
                                 </td>
                             </tr>
 
@@ -475,7 +478,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.company }}</span>
                                 </td>
                             </tr>
 
@@ -491,7 +494,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.department }}</span>
                                 </td>
                             </tr>
 
@@ -507,7 +510,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.title }}</span>
                                 </td>
                             </tr>
 
@@ -523,7 +526,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.emp_category }}</span>
                                 </td>
                             </tr>
 
@@ -539,7 +542,7 @@ $(function(){
 
                             <tr>
                                 <td>
-                                    <span class="content">{{ }}</span>
+                                    <span class="content">{{ view_data.superior}} </span>
                                 </td>
                             </tr>
 
@@ -548,7 +551,7 @@ $(function(){
                         </table>
 
                         <div class="btnbox" style="margin-bottom: -20px;">
-                            <a class="btn red" @click="cancel">Close</a>
+                            <a class="btn red" @click="close_view">Close</a>
                         </div>
 
                     </div>
@@ -571,5 +574,5 @@ $(function(){
 <!-- Awesome Font for current webpage -->
 <script src="js/a076d05399.js"></script>
 
-<script defer src="js/admin/user.js"></script>
+<script defer src="js/employee_basic_info.js"></script>
 </html>

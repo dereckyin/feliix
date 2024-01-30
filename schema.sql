@@ -4588,9 +4588,6 @@ ADD COLUMN `from_ip` varchar(256) DEFAULT '';
 CREATE TABLE `employee_data_sheet` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT 0,
-  `first_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `middle_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `surname` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `gender` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `present_address` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `permanent_address` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
@@ -4634,6 +4631,37 @@ CREATE TABLE `employee_data_sheet` (
   `employment_company2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `employment_position2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `employment_period2` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20240129 employee_data_sheet
+ALTER TABLE user
+ADD COLUMN `first_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE user
+ADD COLUMN `middle_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE user
+ADD COLUMN `surname` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+
+
+-- 20240124 employee_basic_info
+CREATE TABLE `employee_basic_info` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT 0,
+  `emp_number` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `date_hired` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `regular_hired` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `emp_status` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `company` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `emp_category` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `superior` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `status` int(11) DEFAULT 0,
   `create_id` int(11) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),

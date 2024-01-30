@@ -226,7 +226,7 @@ $(function(){
                     </ul>
                     <ul v-for='(record, index) in user_records' :key="index">
                         <li>
-                            <input type="radio" name="record_id" class="alone cyan" :value="record.index" @click="uncheck(record.id)"
+                            <input type="radio" name="record_id" class="alone cyan" value="1" @click="uncheck(record.id)"
                                    v-model="record.is_checked">
                         </li>
                         <li>{{record.username}}</li>

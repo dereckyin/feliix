@@ -60,7 +60,7 @@ else
 
             $apartment_id = (isset($_GET['apartment_id']) ? $_GET['apartment_id'] : "");
 
-            $sql = "SELECT 0 as is_checked, user.id, user.id user_id, user.username, user.email, user.status,  COALESCE(department, '') department, apartment_id, title_id, COALESCE(title, '') title, 
+            $sql = "SELECT 0 as is_checked, user.id, user.id user_id, user.username,  user.status,  COALESCE(department, '') department, apartment_id, title_id, COALESCE(title, '') title, 
                         COALESCE(eds.id, 0) data_id,
                         COALESCE(user.first_name , '') first_name,
                         COALESCE(user.middle_name , '') middle_name,

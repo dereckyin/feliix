@@ -3471,9 +3471,7 @@ header( 'location:index' );
                         <div class="area_terms" v-bind:style="{ 'margin-top': (show_t == '' ? pixa_t : 0) + 'px' }" v-if="show_t == ''">
                             <div class="terms" v-for="(tt, index) in pag.term">
                                 <div class="title">{{ tt.title }}</div>
-                                <div class="brief" :style="tt.brief == '' ? 'white-space: pre-line; display: none;' : 'white-space: pre-line;'">
-                                    {{ tt.brief }}
-                                </div>
+                                <div class="brief" :style="tt.brief == '' ? 'white-space: pre-line; display: none;' : 'white-space: pre-line;'">{{ tt.brief }}</div>
                                 <div class="listing" style="white-space: pre-line;">{{ tt.list }}</div>
                             </div>
                         </div>
