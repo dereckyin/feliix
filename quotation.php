@@ -3409,10 +3409,7 @@ header( 'location:index' );
                 <div class="area_terms">
                     <div class="terms" v-for="(tt, index) in pg.term">
                         <div class="title">{{ tt.title }}</div>
-                        <div class="brief"
-                             :style="tt.brief == '' ? 'white-space: pre-line; display: none;' : 'white-space: pre-line;'">
-                            {{ tt.brief }}
-                        </div>
+                        <div class="brief" :style="tt.brief == '' ? 'white-space: pre-line; display: none;' : 'white-space: pre-line;'">{{ tt.brief }}</div>
                         <div class="listing" style="white-space: pre-line;">{{ tt.list }}</div>
                     </div>
                 </div>
