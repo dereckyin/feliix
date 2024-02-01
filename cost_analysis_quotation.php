@@ -224,12 +224,12 @@ if (!isset($jwt)) {
                         }
                     }
 
-                    $sheet->getStyle('A' . $i . ':' . 'P' . $i)->applyFromArray($styleArray);
-
+                    // $sheet->getStyle('A' . $i . ':' . 'P' . $i)->applyFromArray($styleArray);
                     $i++;
                 }
             
                 $sheet->getStyle('A1:' . 'P1')->getFont()->setBold(true);
+                $sheet->getStyle('A1:' . 'P' . --$i)->applyFromArray($styleArray);
     
                 ob_end_clean();
     
