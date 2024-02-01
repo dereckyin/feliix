@@ -194,7 +194,7 @@ if (!isset($jwt)) {
                     {
                         $product = $row['product'];
 
-                        if($product['currency'] != "NTD")
+                        if($product['currency'] == "")
                         {
                             $sheet->setCellValue('J' . $i, $product['price']);
                             $sheet->setCellValue('I' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
@@ -211,13 +211,13 @@ if (!isset($jwt)) {
                         $sheet->setCellValue('K' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
                         $sheet->setCellValue('L' . $i, $product['price']);
 
-                        if($product['price'] != 0 && $product['currency'] != "NTD")
+                        if($product['price'] != 0 && $product['currency'] == "")
                         {
                             $sheet->setCellValue('O' . $i, round($product['price'] / $product['price'], 2));
                             $sheet->setCellValue('P' . $i, round($price / $product['price'], 2));
                         }
                         
-                        if($product['price_ntd'] != 0 && $product['currency'] == "NTD")
+                        if($product['price_ntd'] != 0 && $product['currency'] != "")
                         {
                             $sheet->setCellValue('O' . $i, round($product['price'] / $product['price_ntd'], 2));
                             $sheet->setCellValue('P' . $i, round($price / $product['price_ntd'], 2));
