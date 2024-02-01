@@ -171,9 +171,15 @@ if (!isset($jwt)) {
                 $i = 2;
                 foreach($product_array as $row)
                 {
-                   
+                    if($row['is_selected'] == 'xxx')
+                    {
+                        $i++;
+                        continue;
+                    }
+
                     $sheet->setCellValue('A' . $i, $row['num']);
-                    $sheet->setCellValue('B' . $i, $row['pid']);
+                    if($row['pid'] != '0')
+                        $sheet->setCellValue('B' . $i, $row['pid']);
                     $sheet->setCellValue('C' . $i, $row['qty']);
 
                     $discount = $row['discount'];
@@ -1119,7 +1125,7 @@ function GetProductItems($pages, $q_id, $db)
         {
             foreach($type['blocks'] as $row)
             {
-            
+
                 $id = $row['id'];
                 $type_id = $row['type_id'];
                 $type = $row['type'];
@@ -1176,6 +1182,31 @@ function GetProductItems($pages, $q_id, $db)
                 );
                 
             }
+
+            $merged_results[] = array(
+                "id" => $id,
+                "is_selected" => "xxx",
+                "type_id" => $type_id,
+                "code" => $code,
+                "type" => $type,
+                "photo" => $photo,
+                "type" => $type,
+                "url" => $url,
+                "qty" => $qty,
+                "notes" => $notes,
+                "num" => $num,
+                "pid" => $pid,
+                "price" => $price,
+                "discount" => $discount,
+                "amount" => $amount,
+                "desc" => $description,
+                "v1" => $v1,
+                "v2" => $v2,
+                "v3" => $v3,
+                "list" => $listing,
+
+                "product" => $product,
+            );
         }
     }
 
