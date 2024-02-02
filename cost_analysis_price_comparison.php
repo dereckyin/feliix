@@ -254,8 +254,11 @@ if (!isset($jwt)) {
                     $sheet->getColumnDimension('N')->setWidth(18.82);
                     $sheet->getColumnDimension('O')->setWidth(18.82);
                     $sheet->getColumnDimension('P')->setWidth(18.82);
+
+                    // remove characters from title
+                    $title = preg_replace('/[\/\*\[\]:?]/', '', $opt["title"]);
         
-                    $sheet->setTitle($opt["title"]);
+                    $sheet->setTitle($title);
 
                     $i = 2;
                     foreach($legends as $legend)
@@ -341,7 +344,7 @@ if (!isset($jwt)) {
                 ob_end_clean();
     
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                header('Content-Disposition: attachment;filename="cost_analysis_quotation.xlsx"');
+                header('Content-Disposition: attachment;filename="cost_analysis_price_comparison.xlsx"');
     
                 header('Cache-Control: max-age=0');
                 // If you're serving to IE 9, then the following may be needed
