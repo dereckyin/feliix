@@ -215,6 +215,8 @@ if (!isset($jwt)) {
                         ->setKeywords('PhpOffice')
                         ->setCategory('PhpOffice');
     
+                $total_page = count($options);
+
                 $page = 0;
                 foreach($options as $opt)
                 {        
@@ -327,10 +329,12 @@ if (!isset($jwt)) {
 
                     $page++;
                 
-                    $spreadsheet->createSheet();
-
-                    $spreadsheet->setActiveSheetIndex($page);
-                    $sheet = $spreadsheet->getActiveSheet();
+                    if($page < $total_page)
+                    {
+                        $spreadsheet->createSheet();
+                        $spreadsheet->setActiveSheetIndex($page);
+                        $sheet = $spreadsheet->getActiveSheet();
+                    }
 
                     
                 }
