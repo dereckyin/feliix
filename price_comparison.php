@@ -3267,12 +3267,12 @@ header( 'location:index' );
                                                         <span class="numbers" v-if="row.gp3.id != 0">₱ {{ Number(row.gp3.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</span> <!----></td> <!----> <!----> <!---->
 
 
-                                                        <td class="amount" v-if="org_options.length == 3 && row.gp2.amount != '0.00'">
-                                                        <span class="numbers" v-if="row.gp2.id != 0">₱ {{ row.gp2.amount !== undefined ? Number(row.gp2.amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
+                                                        <td class="amount" v-if="org_options.length == 3 && row.gp3.amount != '0.00'">
+                                                        <span class="numbers" v-if="row.gp3.id != 0">₱ {{ row.gp3.amount !== undefined ? Number(row.gp3.amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
                                                     </td>
-                                                    <td class="amount" v-if="org_options.length == 3 && row.gp2.amount == '0.00'">
-                                                        <span class="numbers deleted" v-if="row.gp2.id != 0">₱ {{ (row.gp2.qty * row.gp2.price  !== undefined ? Number(row.gp2.qty * row.gp2.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
-                                                        <span class="numbers red" v-if="row.gp2.id != 0">FREE AS PACKAGE!</span>
+                                                    <td class="amount" v-if="org_options.length == 3 && row.gp3.amount == '0.00'">
+                                                        <span class="numbers deleted" v-if="row.gp3.id != 0">₱ {{ (row.gp3.qty * row.gp3.price  !== undefined ? Number(row.gp3.qty * row.gp3.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
+                                                        <span class="numbers red" v-if="row.gp3.id != 0">FREE AS PACKAGE!</span>
                                                     </td>
 
 
