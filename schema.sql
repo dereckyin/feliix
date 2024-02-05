@@ -4669,3 +4669,11 @@ CREATE TABLE `employee_basic_info` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20240202 individual_data_sheet
+ALTER TABLE employee_data_sheet
+ADD COLUMN `first_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE employee_data_sheet
+ADD COLUMN `middle_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE employee_data_sheet
+ADD COLUMN `surname` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
