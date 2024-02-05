@@ -195,7 +195,9 @@ var app = new Vue({
 
             // if(this.record.updated_at != '')
             //     this.record.updated_str = this.record.updated_at.substring(0, 10);
-            this.record.updated_str = new Date().toISOString().slice(0,10);
+            var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+            var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+            this.record.updated_str = localISOTime.slice(0,10);
 
             this.toggle_input();
   
@@ -354,6 +356,8 @@ var app = new Vue({
 
         save_prompt: async function(event) {
             let _this = this;
+
+            await getReceiveRecords_1();
 
             if(this.user_records_1.length == 0)
             {
