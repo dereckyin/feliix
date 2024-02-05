@@ -357,7 +357,7 @@ var app = new Vue({
         save_prompt: async function(event) {
             let _this = this;
 
-            await getReceiveRecords_1();
+            await this.getReceiveRecords_1();
 
             if(this.user_records_1.length == 0)
             {
