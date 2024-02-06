@@ -168,7 +168,6 @@ var app = new Vue({
                     icon: "info",
                     confirmButtonText: "OK",
                   });
-                return;
             }
 
             for (i = 0; i < this.user_records.length; i++) 
