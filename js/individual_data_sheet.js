@@ -375,6 +375,9 @@ var app = new Vue({
                     }).then((result) => {
                     if (result.value) {
                         _this.save_input();
+                    } else {
+                        _this.toggle_input();
+                        _this.resetForm();
                     }
                 }
                 );
@@ -554,6 +557,7 @@ var app = new Vue({
              this.record = {};
             this.resetError();
             this.getReceiveRecords();
+            this.getReceiveRecords_1();
         },
 
  
