@@ -225,6 +225,15 @@ var app = new Vue({
                 favorite.push(this.user_records[i].id);
             }
 
+            if(this.user_records_1.length > 0)
+            {
+                Swal.fire({
+                    html: "Your previously submitting data sheet is still under review by your supervisor and thus the data sheet shown in this window now is old.",
+                    icon: "info",
+                    confirmButtonText: "OK",
+                  });
+            }
+
             //$.each($("input[name='record_id']:checked"), function() {
             //    favorite.push($(this).val());
             //});
