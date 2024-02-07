@@ -11,6 +11,9 @@ let mainState = {
     is_checked: false,
     id: 0,
     username: '',
+
+    title: "",
+
     pic_url: '',
     tel: '',
     date_start_company: '',
@@ -32,7 +35,9 @@ let mainState = {
     perPage: 10000,
 
     user_records: [],
+
     record: {},
+    r_record: {},
 
     error_username: '',
 
@@ -43,6 +48,8 @@ let mainState = {
     surname : "",
 
     user : {},
+
+    edit_emp: false,
 
 };
 
@@ -55,11 +62,54 @@ var app = new Vue({
       console.log('Vue created');
       this.getReceiveRecords();
 
-
+      this.getUserName();
+      this.getAccess();
     },
 
  
 	methods:{
+
+        getAccess: async function() {
+            var token = localStorage.getItem('token');
+            var form_Data = new FormData();
+      
+            let res = await axios.get('api/access_control_kind_get', { headers: { "Authorization": `Bearer ${token}` }, params: { kind: 'edit_emp' } });
+            this.edit_emp = res.data.edit_emp;
+          },
+      
+      
+
+        getUserName: function() {
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+            let _this = this;
+
+            form_Data.append("jwt", token);
+    
+            axios({
+                method: 'post',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                url: 'api/on_duty_get_myname',
+                data: form_Data
+            })
+            .then(function(response) {
+                //handle success
+                _this.username = response.data.username;
+                _this.title = response.data.title.trim();
+    
+            })
+            .catch(function(response) {
+                //handle error
+                Swal.fire({
+                text: JSON.stringify(response),
+                icon: 'error',
+                confirmButtonText: 'OK'
+                })
+            });
+        },
+
 		getReceiveRecords: function(keyword) {
             let _this = this;
           console.log("getReceiveRecords");
@@ -186,6 +236,11 @@ var app = new Vue({
             this.resetForm();
         },
 
+        close_review: function() {
+            this.toggle_review();
+            this.resetForm();
+        },
+
         viewRecord() {
 
             var favorite = [];
@@ -227,6 +282,118 @@ var app = new Vue({
             $(window).scrollTop(0);
         },
 
+        permission: function(data_title) {
+            permission = true;
+
+            if(this.title == "Value Delivery Manager")
+            {
+                if(data_title == "Value Delivery Manager" || data_title == "Owner" || data_title == "Managing Director" || data_title == "Chief Advisor")
+                    permission = false;
+            }
+
+            if(this.title == "Sales Manager")
+            {
+                if(data_title == "Sales Manager")
+                    permission = false;
+            }
+        
+            if(this.title == "Lighting Manager")
+            {
+                if(data_title == "Lighting Manager")
+                    permission = false;
+            }
+
+            if(this.title == "Office Systems Manager")
+            {
+                if(data_title == "Office Systems Manager")
+                    permission = false;
+            }
+
+            if(this.title == "Engineering Manager")
+            {
+                if(data_title == "Engineering Manager")
+                    permission = false;
+            }
+
+            if(this.title == "Operations Manager")
+            {
+                if(data_title == "Operations Manager")
+                    permission = false;
+            }
+
+            return false;
+        },
+
+        reviewRecord() {
+
+            var favorite = [];
+            this.resetError();
+
+            for (i = 0; i < this.user_records.length; i++) 
+            {
+              if(this.user_records[i].is_checked == 1)
+                favorite.push(this.user_records[i].id);
+            }
+
+            //$.each($("input[name='record_id']:checked"), function() {
+            //    favorite.push($(this).val());
+            //});
+            if (favorite.length != 1) {
+                //alert("請選一筆資料進行修改 (Please select one row to edit!)");
+                //$(window).scrollTop(0);
+                Swal.fire({
+                    html: "Please select one user to view!",
+                    icon: "info",
+                    confirmButtonText: "OK",
+                  });
+                return;
+            }
+
+            this.record = this.shallowCopy(this.user_records.find(element => element.id == favorite));
+
+            if(this.permission(this.record.title) == false)
+            {
+                Swal.fire({
+                    html: 'Permission Denied.',
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                });
+
+                return;
+            }
+
+            if(this.record.need_review == 0)
+            {
+                Swal.fire({
+                    html: 'The employee data sheet of the selected user doesn’t need to be reviewed.',
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                });
+
+                return;
+            }
+
+            this.r_record = this.record['review'][0];
+
+            this.isEditing = true;
+
+            if(this.record.updated_at != '')
+                this.record.updated_str = this.record.updated_at.substring(0, 10);
+
+            if(this.r_record.updated_at != '')
+                this.r_record.updated_str = this.r_record.updated_at.substring(0, 10);
+
+            this.toggle_review();
+
+            console.log(this.record.date_receive);
+            // $( "#upddate" ).value = this.record.date_receive;
+
+            this.unCheckCheckbox();
+
+            //$(".alone").prop("checked", false);
+            $(window).scrollTop(0);
+        },
+
         toggle_input: function() {
             window.jQuery(".mask").toggle();
             window.jQuery("#Modal_input").toggle();
@@ -235,6 +402,11 @@ var app = new Vue({
         toggle_view: function() {
             window.jQuery(".mask").toggle();
             window.jQuery("#Modal_view").toggle();
+        },
+
+        toggle_review: function() {
+            window.jQuery(".mask").toggle();
+            window.jQuery("#Modal_review").toggle();
         },
 
         resetRecord: function() {
@@ -309,6 +481,7 @@ var app = new Vue({
                 })
                 .then(function(response) {
                     //handle success
+                    
                     console.log(response)
                     Swal.fire({
                         text: response.data.message,
@@ -321,6 +494,87 @@ var app = new Vue({
                     console.log(response)
                 })
                 .finally(function() {
+                    _this.resetForm();
+                });
+        },
+
+        
+        do_reject_record: function(record) {
+            let _this = this;
+
+            let formData = new FormData();
+
+            formData.append('record', JSON.stringify(record));
+
+            const token = sessionStorage.getItem('token');
+
+            axios({
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${token}`
+                    },
+                    url: 'api/employee_data_sheet_reject',
+                    data: formData
+                    
+                })
+                .then(function(response) {
+                    //handle success
+                    
+
+                    console.log(response)
+                    Swal.fire({
+                        text: response.data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                      })
+                })
+                .catch(function(response) {
+                    //handle error
+                    console.log(response)
+                })
+                .finally(function() {
+                    _this.toggle_review();
+                    _this.resetForm();
+                });
+        },
+        
+        do_approve_record: function(record) {
+            let _this = this;
+
+            let formData = new FormData();
+
+            formData.append('record', JSON.stringify(record));
+
+            const token = sessionStorage.getItem('token');
+
+            axios({
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${token}`
+                    },
+                    url: 'api/employee_data_sheet_approve',
+                    data: formData
+                    
+                })
+                .then(function(response) {
+                    //handle success
+                    
+
+                    console.log(response)
+                    Swal.fire({
+                        text: response.data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                      })
+                })
+                .catch(function(response) {
+                    //handle error
+                    console.log(response)
+                })
+                .finally(function() {
+                    _this.toggle_review();
                     _this.resetForm();
                 });
         },

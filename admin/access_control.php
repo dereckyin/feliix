@@ -509,6 +509,24 @@
 
                 </div>
 
+                <div class="box-content">
+                    <ul>
+                        <li><b>Management of Employee Data Sheet: Edit and Reset</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="edit_emp" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(24)">Cancel</a>
+                        <a class="btn" @click="save(24)">Save</a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

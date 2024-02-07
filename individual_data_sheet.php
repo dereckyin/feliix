@@ -56,24 +56,24 @@ $(function(){
         cursor: pointer;
     }
 
-    body.gray header nav a, body.gray header nav a:link {
-        color: #000!important;
+    body.cyan header nav a, body.cyan header nav a:link {
+        color: #000;
     }
 
-    body.gray header nav a:hover {
-        color: #333!important;
+    body.cyan header nav a:hover {
+        color: #333;
     }
 
-    body.gray header nav {
-        font-family: 'M PLUS 1p', Arial, Helvetica, 'LiHei Pro', "微軟正黑體", 'Microsoft JhengHei', "新細明體", sans-serif!important;
+    body.cyan header nav {
+        font-family: 'M PLUS 1p', Arial, Helvetica, 'LiHei Pro', "微軟正黑體", 'Microsoft JhengHei', "新細明體", sans-serif;
     }
 
-    body.gray header nav ul.info {
-        margin-bottom: 0!important;
+    body.cyan header nav ul.info {
+        margin-bottom: 0;
     }
 
-    body.gray header nav ul.info b {
-        font-weight: bold!important;
+    body.cyan header nav ul.info b {
+        font-weight: bold;
     }
 
     div.btnbox a.btn {

@@ -28,7 +28,22 @@ else
 
           $user_id = $decoded->data->id;
           $position = $decoded->data->position;
-          $apartment_id = $decoded->data->apartment_id;
+          $apartment_id = -1;
+
+          if($position == 'Owner' || $position == 'Managing Director' || $position == 'Chief Advisor' || $position == 'Value Delivery Manager' ) {
+              $apartment_id = "";
+          }
+
+          if($position == 'Sales Manager' || $position == 'Lighting Manager' || $position == 'Office Systems Manager' || $position == 'Engineering Manager' || $position == 'Operations Manager') {
+              $apartment_id = $decoded->data->apartment_id;
+          }
+
+          if($apartment_id == -1)
+            {
+                http_response_code(401);
+                echo json_encode(array("message" => "Access denied."));
+                die();
+            }
       }
       // if decode fails, it means jwt is invalid
       catch (Exception $e){
@@ -59,9 +74,9 @@ else
 
             $sql = "SELECT 0 as is_checked, user.id, user.id user_id, user.username,  user.status,  COALESCE(department, '') department, apartment_id, title_id, COALESCE(title, '') title, 
                         COALESCE(eds.id, 0) data_id,
-                        COALESCE(user.first_name , '') first_name,
-                        COALESCE(user.middle_name , '') middle_name,
-                        COALESCE(user.surname , '') surname,
+                        COALESCE(eds.first_name , '') first_name,
+                        COALESCE(eds.middle_name , '') middle_name,
+                        COALESCE(eds.surname , '') surname,
                         COALESCE(eds.gender , '') gender,
                         COALESCE(eds.present_address , '') present_address,
                         COALESCE(eds.permanent_address , '') permanent_address,
@@ -105,7 +120,11 @@ else
                         COALESCE(eds.employment_company2 , '') employment_company2,
                         COALESCE(eds.employment_position2 , '') employment_position2,
                         COALESCE(eds.employment_period2 , '') employment_period2,
+                        
+                        eds.status as eds_status,
 
+                        (select count(*) from employee_data_sheet eds where eds.user_id = user.id and eds.status = 1) as need_review,
+                        
                         COALESCE(eds.updated_at , '') updated_at,
                         '' updated_str
                     FROM user 
@@ -121,7 +140,7 @@ else
                 }
             }
 
-            $sql = $sql . " ORDER BY username ";
+            $sql = $sql . " ORDER BY username, eds.status ";
 
             if(!empty($_GET['size'])) {
                 $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
@@ -139,10 +158,21 @@ else
             $stmt = $db->prepare( $sql );
             $stmt->execute();
 
-
+            // remove eds_status = 0, keep eds_status = 1
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $merged_results[] = $row;
-            }
+                if($row['need_review'] == 1 && $row['eds_status'] == 1)
+                {
+                    // add to previous row
+                    array_push($merged_results[count($merged_results) - 1]['review'], $row);
+                }
+                else
+                {
+                    $row['review'] = array();
+                    $merged_results[] = $row;
+                }
+        
+            }            
+
 
             echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);
 
