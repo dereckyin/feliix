@@ -4583,3 +4583,97 @@ ADD COLUMN `create_id` int(11) DEFAULT 0;
 
 ALTER TABLE mail_log
 ADD COLUMN `from_ip` varchar(256) DEFAULT '';
+
+-- 20240124 employee_data_sheet
+CREATE TABLE `employee_data_sheet` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT 0,
+  `gender` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `present_address` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `permanent_address` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `telephone` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `cellphone` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `email` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `birthday` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `birthplace` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `civil_status` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `citizenship` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `height` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `weight` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `religion` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `language` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `medical` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `spouse` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `spouse_ocupation` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `children` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `father` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `father_ocupation` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `mother` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `mother_ocupation` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `siblings` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `tin` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `sss` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `philhealth` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pagibig` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `emergency_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `emergency_address` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `emergency_contact` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `emergency_relationship` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `education_elementary` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `education_elementary_year` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `education_highschool` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `education_highschool_year` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `education_college` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `education_college_year` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `employment_company1` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `employment_position1` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `employment_period1` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `employment_company2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `employment_position2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `employment_period2` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20240129 employee_data_sheet
+ALTER TABLE user
+ADD COLUMN `first_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE user
+ADD COLUMN `middle_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE user
+ADD COLUMN `surname` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+
+
+-- 20240124 employee_basic_info
+CREATE TABLE `employee_basic_info` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT 0,
+  `emp_number` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `date_hired` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `regular_hired` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `emp_status` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `company` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `emp_category` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `superior` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 20240202 individual_data_sheet
+ALTER TABLE employee_data_sheet
+ADD COLUMN `first_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE employee_data_sheet
+ADD COLUMN `middle_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE employee_data_sheet
+ADD COLUMN `surname` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';

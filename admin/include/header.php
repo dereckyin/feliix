@@ -13,17 +13,19 @@ include_once '../../api/libs/php-jwt-master/src/JWT.php';
 include_once '../../api/config/database.php';
 use \Firebase\JWT\JWT;
 
-$access1 = false;
-$access2 = false;
-$access3 = false;
-$access4 = false;
-$access5 = false;
-$access6 = false;
-$access7 = false;
-$access8 = false;
-$access9 = false;
-$access10 = false;
-$access11 = false;
+    $access1 = false;
+    $access2 = false;
+    $access3 = false;
+    $access4 = false;
+    $access5 = false;
+    $access6 = false;
+    $access7 = false;
+    $access8 = false;
+    $access9 = false;
+    $access10 = false;
+    $access11 = false;
+    $access12 = false;
+
 
 $pic_url = "man6.jpg";
 
@@ -224,6 +226,17 @@ try {
 
         if($pic_url == "")
             $pic_url = "avatar.svg";
+
+
+        //HR & Admin Section Access
+        if(trim(strtoupper($position)) == 'OWNER' || trim(strtoupper($position)) == 'MANAGING DIRECTOR' || trim(strtoupper($position)) == 'CHIEF ADVISOR' || trim(strtoupper($position)) == 'VALUE DELIVERY MANAGER'
+        || trim(strtoupper($position)) == 'SALES MANAGER' || trim(strtoupper($position)) == 'LIGHTING MANAGER' || trim(strtoupper($position)) == 'OFFICE SYSTEMS MANAGER'
+        || trim(strtoupper($position)) == 'ENGINEERING MANAGER' || trim(strtoupper($position)) == 'OPERATIONS MANAGER')
+        {
+                $access12 = true;
+        }
+
+
         //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
         //    header( 'location:index.php' );
     }
@@ -390,6 +403,10 @@ try {
                 <a class="list" href="../knowledge_mgt">Knowledge Management</a>
             </li>
 
+            <li class="cyan01" style="border: 3px solid var(--cyan01);">
+                <a class="uni">Personal<br>Section</a>
+                <a class="list" href="../individual_data_sheet">Employee Data Sheet</a>
+            </li>
 
             <li class="cyan01" style="border: 3px solid var(--cyan01);">
                 <a class="uni" href="user">System<br>Section</a>
