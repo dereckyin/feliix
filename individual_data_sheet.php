@@ -51,6 +51,31 @@ $(function(){
 
     <style>
 
+    a, a:link, a:visited, a:active, a:hover, area {
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    body.gray header nav a, body.gray header nav a:link {
+        color: #000;
+    }
+
+    body.gray header nav a:hover {
+        color: #333;
+    }
+
+    body.gray header nav {
+        font-family: 'M PLUS 1p', Arial, Helvetica, 'LiHei Pro', "微軟正黑體", 'Microsoft JhengHei', "新細明體", sans-serif;
+    }
+
+    body.gray header nav ul.info {
+        margin-bottom: 0;
+    }
+
+    body.gray header nav ul.info b {
+        font-weight: bold;
+    }
+
     div.btnbox a.btn {
         width: 120px;
     }
@@ -216,6 +241,10 @@ $(function(){
         font-size: 15px;
     }
 
+    .modal .btnbox a.btn {
+        color: #FFF!important;
+    }
+
     @media screen and (min-width: 0px) and (max-width: 767px) {
         #my-content { display: none; }  /* hide it on small screens */
     }
@@ -278,7 +307,7 @@ $(function(){
 
                     <ul>
                         <li><b>Position:</b></li>
-                        <li class="content">{{ record.department }} {{ record.department == '' ? '' : '>>' }} {{ record.title }}</li>
+                        <li class="content">{{ record.department }} {{ record.department == '   ' ? '' : '>>' }} {{ record.title }}</li>
 
                         <li><b>Date:</b></li>
                         <li>
@@ -578,7 +607,7 @@ $(function(){
                         <tr>
                             <td colspan="2">
                                 <span class="caption">Position:</span>
-                                <span class="content">{{ record.department }} {{ record.department == '' ? '' : '>>' }} {{ record.title}}</span>
+                                <span class="content">{{ record.department }} {{ record.department == '   ' ? '' : '>>' }} {{ record.title}}</span>
                             </td>
 
                             <td>
