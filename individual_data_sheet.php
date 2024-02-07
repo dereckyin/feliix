@@ -32,11 +32,14 @@
     <link rel="stylesheet" type="text/css" href="css/ui.css"/>
     <link rel="stylesheet" type="text/css" href="css/case.css"/>
     <link rel="stylesheet" type="text/css" href="css/mediaqueries.css"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
 
     <!-- jQuery和js載入 -->
     <script type="text/javascript" src="js/rm/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="js/rm/realmediaScript.js"></script>
     <script type="text/javascript" src="js/main.js" defer></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
 
     <!-- 這個script之後寫成aspx時，改用include方式載入header.htm，然後這個就可以刪掉了 -->
     <script>
@@ -92,6 +95,11 @@ $(function(){
         flex-grow: 1;
     }
 
+    .heading-and-btn ul li:nth-of-type(1) > button {
+        margin: 0 8px;
+        width: 80px;
+    }
+
     .heading-and-btn ul li:nth-of-type(2){
         width: 240px;
         text-align: center;
@@ -131,6 +139,8 @@ $(function(){
         color: var(--cyan01);
         border-bottom: none;
         padding: 0;
+        font-size: 36px;
+        font-weight: 700;
     }
 
     .modal .modal-content .modal-header a {
@@ -268,7 +278,7 @@ $(function(){
 
                     <ul>
                         <li><b>Position:</b></li>
-                        <li class="content">{{ record.department }} >> {{ record.title }}</li>
+                        <li class="content">{{ record.department }} {{ record.department == '' ? '' : '>>' }} {{ record.title }}</li>
 
                         <li><b>Date:</b></li>
                         <li>
@@ -568,7 +578,7 @@ $(function(){
                         <tr>
                             <td colspan="2">
                                 <span class="caption">Position:</span>
-                                <span class="content">{{ record.department }} >> {{ record.title}}</span>
+                                <span class="content">{{ record.department }} {{ record.department == '' ? '' : '>>' }} {{ record.title}}</span>
                             </td>
 
                             <td>

@@ -24,6 +24,8 @@ use \Firebase\JWT\JWT;
     $access9 = false;
     $access10 = false;
     $access11 = false;
+    $access12 = false;
+
 
     $pic_url = "man6.jpg";
 
@@ -224,6 +226,16 @@ try {
         if($pic_url == "")
             $pic_url = "avatar.svg";
 
+
+        //HR & Admin Section Access
+        if(trim(strtoupper($position)) == 'OWNER' || trim(strtoupper($position)) == 'MANAGING DIRECTOR' || trim(strtoupper($position)) == 'CHIEF ADVISOR' || trim(strtoupper($position)) == 'VALUE DELIVERY MANAGER'
+        || trim(strtoupper($position)) == 'SALES MANAGER' || trim(strtoupper($position)) == 'LIGHTING MANAGER' || trim(strtoupper($position)) == 'OFFICE SYSTEMS MANAGER'
+        || trim(strtoupper($position)) == 'ENGINEERING MANAGER' || trim(strtoupper($position)) == 'OPERATIONS MANAGER')
+        {
+                $access12 = true;
+        }
+
+
         //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
         //    header( 'location:index.php' );
     }
@@ -332,6 +344,18 @@ try {
                 }
             ?>
 
+            <?php
+                if($access12 == true)
+                {
+            ?>
+            <li class="cyan01" style="border: 3px solid var(--cyan01);">
+                <a class="uni">HR & Admin<br>Section</a>
+                <a class="list" href="employee_data_sheet">Employee Data Sheet</a>
+            </li>
+            <?php
+                }
+            ?>
+
 <?php 
                 if($access5 == true || $access7 == true || $dashboard == true)
                 {
@@ -389,6 +413,11 @@ try {
                 <a class="uni">Knowledge<br>Library</a>
                 <a class="list" href="knowledge_display">Knowledge List</a>
                 <a class="list" href="knowledge_mgt">Knowledge Management</a>
+            </li>
+
+            <li class="cyan01" style="border: 3px solid var(--cyan01);">
+                <a class="uni">Personal<br>Section</a>
+                <a class="list" href="individual_data_sheet">Employee Data Sheet</a>
             </li>
 
             <li class="cyan01" style="border: 3px solid var(--cyan01);">
