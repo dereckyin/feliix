@@ -57,23 +57,23 @@ $(function(){
     }
 
     body.gray header nav a, body.gray header nav a:link {
-        color: #000;
+        color: #000!important;
     }
 
     body.gray header nav a:hover {
-        color: #333;
+        color: #333!important;
     }
 
     body.gray header nav {
-        font-family: 'M PLUS 1p', Arial, Helvetica, 'LiHei Pro', "微軟正黑體", 'Microsoft JhengHei', "新細明體", sans-serif;
+        font-family: 'M PLUS 1p', Arial, Helvetica, 'LiHei Pro', "微軟正黑體", 'Microsoft JhengHei', "新細明體", sans-serif!important;
     }
 
     body.gray header nav ul.info {
-        margin-bottom: 0;
+        margin-bottom: 0!important;
     }
 
     body.gray header nav ul.info b {
-        font-weight: bold;
+        font-weight: bold!important;
     }
 
     div.btnbox a.btn {
