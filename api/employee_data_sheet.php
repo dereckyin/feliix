@@ -24,15 +24,11 @@ else
   try {
           // decode jwt
           $decoded = JWT::decode($jwt, $key, array('HS256'));
-          if(!$decoded->data->is_admin)
-          {
-            http_response_code(401);
-     
-            echo json_encode(array("message" => "Access denied."));
-            die();
-          }
+
 
           $user_id = $decoded->data->id;
+          $position = $decoded->data->position;
+          $apartment_id = $decoded->data->apartment_id;
       }
       // if decode fails, it means jwt is invalid
       catch (Exception $e){
@@ -58,7 +54,8 @@ else
             $size = (isset($_GET['size']) ?  $_GET['size'] : "");
             $keyword = (isset($_GET['keyword']) ?  $_GET['keyword'] : "");
 
-            $apartment_id = (isset($_GET['apartment_id']) ? $_GET['apartment_id'] : "");
+
+
 
             $sql = "SELECT 0 as is_checked, user.id, user.id user_id, user.username,  user.status,  COALESCE(department, '') department, apartment_id, title_id, COALESCE(title, '') title, 
                         COALESCE(eds.id, 0) data_id,

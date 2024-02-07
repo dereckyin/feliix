@@ -25,13 +25,6 @@ else
   try {
           // decode jwt
           $decoded = JWT::decode($jwt, $key, array('HS256'));
-          if(!$decoded->data->is_admin)
-          {
-            http_response_code(401);
-     
-            echo json_encode(array("message" => "Access denied."));
-            die();
-          }
 
           $user_id = $decoded->data->id;
       }
