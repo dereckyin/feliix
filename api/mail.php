@@ -15447,11 +15447,11 @@ function delete_car_request_mail_6($to, $cc, $project, $creator, $date_check, $t
 
 function GetDataSheetChecker($requestor)
 {
-    $database = new Database_Sea();
+    $database = new Database();
     $db = $database->getConnection();
 
     // get department and position from user
-    $sql = "SELECT username, email, department, title FROM user u LEFT JOIN user_department ud ON u.apartment_id = ud.id LEFT JOIN user_title ut ON u.title_id = ut.id WHERE u.status <> 1";
+    $sql = "SELECT username, email, department, title FROM user u LEFT JOIN user_department ud ON u.apartment_id = ud.id LEFT JOIN user_title ut ON u.title_id = ut.id WHERE u.status <> -1";
 
     $merged_results = array();
 
@@ -15688,16 +15688,16 @@ function employee_data_sheet_notification($requestor)
     $content = $content . "<p>" . $requestor . " submitted the revised employee data sheet and it is waiting for your review. </p>";
     $content = $content . "<p>Please log on to Feliix >> Admin Section >> Employee Data Sheet to view the revised employee data.</p>";
     $content = $content . "<p></p>";
-    $content = $content . "<p>URL: https://feliix.myvnc.com/employee_data_sheet</p>";
+    $content = $content . "URL: <a href='https://feliix.myvnc.com/employee_data_sheet'>https://feliix.myvnc.com/employee_data_sheet</a>";
 
     $mail->MsgHTML($content);
     if($mail->Send()) {
-        logMail($to, $content);
+        logMail($requestor, $content);
         return true;
 //        echo "Error while sending Email.";
 //        var_dump($mail);
     } else {
-        logMail($to, $mail->ErrorInfo . $content);
+        logMail($requestor, $mail->ErrorInfo . $content);
         return false;
 //        echo "Email sent successfully";
     }
