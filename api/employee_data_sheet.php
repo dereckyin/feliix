@@ -228,9 +228,9 @@ else
                         $dummy['eds_status'] = 0;
 
                         $dummy['need_review'] = 1;
-                        $dummy['updated_at'] = $row['updated_at'];
+                        $dummy['updated_at'] = date('Y-m-d H:i:s');
                         $dummy['updated_str'] = '';
-                        
+
                         $dummy['review'] = $row;
 
                         $merged_results[] = $dummy;
