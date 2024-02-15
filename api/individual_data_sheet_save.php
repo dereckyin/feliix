@@ -24,6 +24,8 @@ include_once 'config/database.php';
 include_once 'config/conf.php';
 require_once '../vendor/autoload.php';
 
+include_once 'mail.php';
+
 $database = new Database();
 $db = $database->getConnection();
 
@@ -45,6 +47,7 @@ else
         $decoded = JWT::decode($jwt, $key, array('HS256'));
 
         $user_id = $decoded->data->id;
+        $username = $decoded->data->username;
   
         // now you can apply
         $uid = $user_id;
@@ -330,6 +333,8 @@ else
 
             
             $stmt->execute();
+
+            employee_data_sheet_notification($username);
 
             // // update user table for first_name, middle_name, surname
             // $query = "update user set 

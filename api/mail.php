@@ -15444,6 +15444,266 @@ function delete_car_request_mail_6($to, $cc, $project, $creator, $date_check, $t
 
 }
 
+
+function GetDataSheetChecker($requestor)
+{
+    $database = new Database_Sea();
+    $db = $database->getConnection();
+
+    // get department and position from user
+    $sql = "SELECT username, email, department, title FROM user u LEFT JOIN user_department ud ON u.apartment_id = ud.id LEFT JOIN user_title ut ON u.title_id = ut.id WHERE u.status <> 1";
+
+    $merged_results = array();
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = $row;
+    }
+
+    $my_title = "";
+    $my_department = "";
+
+    foreach($merged_results as &$list)
+    {
+        if($list["username"] == $requestor)
+        {
+            $my_title = $list["title"];
+            $my_department = $list["department"];
+        }
+    }
+
+    $notifior = array();
+
+
+    if($my_title == "Sales Manager")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Value Delivery Manager" || $list["title"] == "Managing Director")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+
+    if($my_title == "Lighting Manager")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Value Delivery Manager" || $list["title"] == "Managing Director")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+
+    if($my_title == "Office Systems Manager")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Value Delivery Manager" || $list["title"] == "Managing Director")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+
+    if($my_title == "Engineering Manager")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Value Delivery Manager" || $list["title"] == "Managing Director")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+
+    if($my_title == "Operations Manager")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Value Delivery Manager" || $list["title"] == "Managing Director")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+
+    if($my_title == "Value Delivery Manager")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Managing Director")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+    
+    
+    if($my_title == "Managing Director")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Chief Advisor")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+
+    if($my_department == "Sales")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Sales Manager")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+    
+
+    if($my_department == "Ligthting")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Lighting Manager")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+    
+    if($my_department == "Office")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Office Systems Manager")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+
+    if($my_department == "Engineering")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Engineering Manager")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+    
+    if($my_department == "Admin")
+    {
+        foreach($merged_results as &$list)
+        {
+            if($list["title"] == "Operations Manager")
+            {
+                $notifior[] = $list;
+            }
+        }
+
+        return $notifior;
+    }
+    
+    
+    return $merged_results;
+}
+
+function employee_data_sheet_notification($requestor)
+{
+    $conf = new Conf();
+
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->Mailer = "smtp";
+    $mail->CharSet = 'UTF-8';
+    $mail->Encoding = 'base64';
+
+    // $mail->SMTPDebug  = 0;
+    // $mail->SMTPAuth   = true;
+    // $mail->SMTPSecure = "ssl";
+    // $mail->Port       = 465;
+    // $mail->SMTPKeepAlive = true;
+    // $mail->Host       = $conf::$mail_host;
+    // $mail->Username   = $conf::$mail_username;
+    // $mail->Password   = $conf::$mail_password;
+
+    $mail = SetupMail($mail, $conf);
+
+    $mail->IsHTML(true);
+
+    $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
+    $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
+
+    $notifior = array();
+    $notifior = GetNotifiersByName($requestor);
+    foreach($notifior as &$list)
+    {
+        $mail->AddCC($list["email"], $list["username"]);
+    }
+
+
+    $notifior = GetDataSheetChecker($requestor);
+    $checker1 = "";
+    foreach($notifior as &$list)
+    {
+        $mail->AddAddress($list["email"], $list["username"]);
+        $checker1 .= $list["username"] . ", ";
+    }
+
+    $checker1 = rtrim($checker1, ", ");
+
+    $mail->Subject = "[Employee Data Sheet Notification] Revised employee data sheet submitted by " . $requestor . " needs your review ";
+    $content =  "<p>Dear " . $checker1 . ",</p>";
+    $content = $content . "<p>" . $requestor . " submitted the revised employee data sheet and it is waiting for your review. </p>";
+    $content = $content . "<p>Please log on to Feliix >> Admin Section >> Employee Data Sheet to view the revised employee data.</p>";
+    $content = $content . "<p></p>";
+    $content = $content . "<p>URL: https://feliix.myvnc.com/employee_data_sheet</p>";
+
+    $mail->MsgHTML($content);
+    if($mail->Send()) {
+        logMail($to, $content);
+        return true;
+//        echo "Error while sending Email.";
+//        var_dump($mail);
+    } else {
+        logMail($to, $mail->ErrorInfo . $content);
+        return false;
+//        echo "Email sent successfully";
+    }
+}
+
+
 function _rawurlencode($string) {
     $string = rawurlencode($string);
         return $string;
@@ -15451,24 +15711,24 @@ function _rawurlencode($string) {
 
 function SetupMail($mail, $conf)
 {
-    $mail->SMTPDebug  = 0;
-    $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = "ssl";
-    $mail->Port       = 465;
-    $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf::$mail_host;
-    $mail->Username   = $conf::$mail_username;
-    $mail->Password   = $conf::$mail_password;
-
-
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "tls";
-    // $mail->Port       = 587;
+    // $mail->SMTPSecure = "ssl";
+    // $mail->Port       = 465;
     // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = 'smtp.ethereal.email';
-    // $mail->Username   = 'jermey.wilkinson@ethereal.email';
-    // $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
+    // $mail->Host       = $conf::$mail_host;
+    // $mail->Username   = $conf::$mail_username;
+    // $mail->Password   = $conf::$mail_password;
+
+
+    $mail->SMTPDebug  = 0;
+    $mail->SMTPAuth   = true;
+    $mail->SMTPSecure = "tls";
+    $mail->Port       = 587;
+    $mail->SMTPKeepAlive = true;
+    $mail->Host       = 'smtp.ethereal.email';
+    $mail->Username   = 'jermey.wilkinson@ethereal.email';
+    $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
 
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
