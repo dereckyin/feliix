@@ -231,6 +231,8 @@ else
                         $dummy['updated_at'] = '';
                         $dummy['updated_str'] = '';
 
+                        $dummy['review'] = array();
+
                         array_push($dummy['review'], $row);
 
                         $merged_results[] = $dummy;
