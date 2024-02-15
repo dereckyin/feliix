@@ -163,7 +163,74 @@ else
                 if($row['need_review'] == 1 && $row['eds_status'] == 1)
                 {
                     // add to previous row
-                    array_push($merged_results[count($merged_results) - 1]['review'], $row);
+                    if($merged_results[count($merged_results) - 1]['username'] == $row['username'])
+                        array_push($merged_results[count($merged_results) - 1]['review'], $row);
+                    else
+                    {
+                        // add dummy row
+                        $dummy['is_checked'] = 0;
+                        $dummy['id'] = $row['id'];
+                        $dummy['user_id'] = $row['user_id'];
+                        $dummy['username'] = $row['username'];
+                        $dummy['status'] = $row['status'];
+                        $dummy['department'] = $row['department'];
+                        $dummy['apartment_id'] = $row['apartment_id'];
+                        $dummy['title_id'] = $row['title_id'];
+                        $dummy['title'] = $row['title'];
+
+                        $dummy['data_id'] = 0;
+                        $dummy['first_name'] = '';
+                        $dummy['middle_name'] = '';
+                        $dummy['surname'] = '';
+                        $dummy['gender'] = '';
+                        $dummy['present_address'] = '';
+                        $dummy['permanent_address'] = '';
+                        $dummy['telephone'] = '';
+                        $dummy['cellphone'] = '';
+                        $dummy['email'] = '';
+                        $dummy['birthday'] = '';
+                        $dummy['birthplace'] = '';
+                        $dummy['civil_status'] = '';
+                        $dummy['citizenship'] = '';
+                        $dummy['height'] = '';
+                        $dummy['weight'] = '';
+                        $dummy['religion'] = '';
+                        $dummy['language'] = '';
+                        $dummy['medical'] = '';
+                        $dummy['spouse'] = '';
+                        $dummy['spouse_ocupation'] = '';
+                        $dummy['children'] = '';
+                        $dummy['father'] = '';
+                        $dummy['father_ocupation'] = '';
+                        $dummy['mother'] = '';
+                        $dummy['mother_ocupation'] = '';
+                        $dummy['siblings'] = '';
+                        $dummy['tin'] = '';
+                        $dummy['sss'] = '';
+                        $dummy['philhealth'] = '';
+                        $dummy['pagibig'] = '';
+                        $dummy['emergency_name'] = '';
+                        $dummy['emergency_address'] = '';
+                        $dummy['emergency_contact'] = '';
+                        $dummy['emergency_relationship'] = '';
+                        $dummy['education_elementary'] = '';
+                        $dummy['education_elementary_year'] = '';
+                        $dummy['education_highschool'] = '';
+                        $dummy['education_highschool_year'] = '';
+                        $dummy['education_college'] = '';
+                        $dummy['education_college_year'] = '';
+                        $dummy['employment_company1'] = '';
+                        $dummy['employment_position1'] = '';
+                        $dummy['employment_period1'] = '';
+                        $dummy['employment_company2'] = '';
+                        $dummy['employment_position2'] = '';
+                        $dummy['employment_period2'] = '';
+                        $dummy['eds_status'] = 0;
+
+                        $dummy['review'] = $row;
+
+                        $merged_results[] = $dummy;
+                    }
                 }
                 else
                 {
