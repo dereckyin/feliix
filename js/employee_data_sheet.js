@@ -321,7 +321,7 @@ var app = new Vue({
                     permission = false;
             }
 
-            return false;
+            return permission;
         },
 
         reviewRecord() {
