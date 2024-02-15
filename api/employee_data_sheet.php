@@ -228,10 +228,10 @@ else
                         $dummy['eds_status'] = 0;
 
                         $dummy['need_review'] = 1;
-                        $dummy['updated_at'] = date('Y-m-d H:i:s');
-                        $dummy['updated_str'] = date('Y-m-d H:i:s');
+                        $dummy['updated_at'] = '';
+                        $dummy['updated_str'] = '';
 
-                        $dummy['review'] = $row;
+                        array_push($dummy['review'], $row);
 
                         $merged_results[] = $dummy;
                     }
