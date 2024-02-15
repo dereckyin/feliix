@@ -229,7 +229,7 @@ else
 
                         $dummy['need_review'] = 1;
                         $dummy['updated_at'] = date('Y-m-d H:i:s');
-                        $dummy['updated_str'] = '';
+                        $dummy['updated_str'] = date('Y-m-d H:i:s');
 
                         $dummy['review'] = $row;
 
