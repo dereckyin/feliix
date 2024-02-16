@@ -15583,7 +15583,7 @@ function GetDataSheetChecker($requestor)
     }
     
 
-    if($my_department == "Ligthting")
+    if($my_department == "Lighting")
     {
         foreach($merged_results as &$list)
         {
