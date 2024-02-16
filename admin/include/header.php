@@ -343,7 +343,20 @@ try {
             <?php 
                 }
             ?>
-            <?php 
+
+            <?php
+                if($access12 == true)
+                {
+            ?>
+            <li class="cyan01" style="border: 3px solid var(--cyan01);">
+                <a class="uni">HR & Admin<br>Section</a>
+                <a class="list" href="../employee_data_sheet">Employee Data Sheet</a>
+            </li>
+            <?php
+                }
+            ?>
+
+<?php 
                 if($access5 == true || $access7 == true || $dashboard == true)
                 {
             ?>

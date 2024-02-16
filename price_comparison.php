@@ -459,7 +459,7 @@ header( 'location:index' );
             text-align: left;
         }
 
-        #tb_specification_list tbody tr td:nth-of-type(3) div.code {
+        #tb_specification_list tbody tr td:nth-of-type(3) div.pid, #tb_specification_list tbody tr td:nth-of-type(3) div.code {
             font-size: 16px;
             font-weight: 800;
             word-break: break-all;
@@ -920,7 +920,7 @@ header( 'location:index' );
             max-width: 120px;
         }
 
-        .tb_format1 tbody tr td div.code {
+        .tb_format1 tbody tr td div.pid, .tb_format1 tbody tr td div.code {
             font-size: 16px;
             font-weight: 800;
             word-break: break-all;
@@ -3190,6 +3190,7 @@ header( 'location:index' );
                                                     <img v-if="row.gp1.url1 !==''" :src="row.gp1.url1">
                                                 </td>
                                                 <td rowspan="2" class="spec">
+                                                    <div class="pid noPrint" v-if="row.gp1.pid != 0">{{ "ID: " + row.gp1.pid }}</div>
                                                     <div class="code" v-if="row.gp1.code != ''">{{ row.gp1.code }}</div>
                                                     <div class="brief" style="white-space: pre-line;" v-if="row.gp1.desc != ''">{{ row.gp1.desc }}
                                                     </div>
@@ -3219,6 +3220,7 @@ header( 'location:index' );
                                                     <img v-if="row.gp2.url1 !==''" :src="row.gp2.url1">
                                                 </td>
                                                 <td rowspan="2" class="spec">
+                                                    <div class="pid noPrint" v-if="row.gp2.pid != 0">{{ "ID: " + row.gp2.pid }}</div>
                                                     <div class="code" v-if="row.gp2.code != ''">{{ row.gp2.code }}</div>
                                                     <div class="brief" style="white-space: pre-line;" v-if="row.gp2.desc != ''">{{ row.gp2.desc }}
                                                     </div>
@@ -3249,6 +3251,7 @@ header( 'location:index' );
                                                     <img v-if="org_options.length == 3 && row.gp3.url1 !==''" :src="row.gp3.url1">
                                                 </td>
                                                 <td rowspan="2" class="spec" v-if="org_options.length == 3">
+                                                    <div class="pid noPrint" v-if="row.gp3.pid != 0">{{ "ID: " + row.gp3.pid }}</div>
                                                     <div class="code" v-if="org_options.length == 3 && row.gp3.code != ''">{{ row.gp3.code }}</div>
                                                     <div class="brief" style="white-space: pre-line;" v-if="org_options.length == 3 && row.gp3.desc != ''">{{ row.gp3.desc }}
                                                     </div>
@@ -3264,12 +3267,12 @@ header( 'location:index' );
                                                         <span class="numbers" v-if="row.gp3.id != 0">₱ {{ Number(row.gp3.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</span> <!----></td> <!----> <!----> <!---->
 
 
-                                                        <td class="amount" v-if="org_options.length == 3 && row.gp2.amount != '0.00'">
-                                                        <span class="numbers" v-if="row.gp2.id != 0">₱ {{ row.gp2.amount !== undefined ? Number(row.gp2.amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
+                                                        <td class="amount" v-if="org_options.length == 3 && row.gp3.amount != '0.00'">
+                                                        <span class="numbers" v-if="row.gp3.id != 0">₱ {{ row.gp3.amount !== undefined ? Number(row.gp3.amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
                                                     </td>
-                                                    <td class="amount" v-if="org_options.length == 3 && row.gp2.amount == '0.00'">
-                                                        <span class="numbers deleted" v-if="row.gp2.id != 0">₱ {{ (row.gp2.qty * row.gp2.price  !== undefined ? Number(row.gp2.qty * row.gp2.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
-                                                        <span class="numbers red" v-if="row.gp2.id != 0">FREE AS PACKAGE!</span>
+                                                    <td class="amount" v-if="org_options.length == 3 && row.gp3.amount == '0.00'">
+                                                        <span class="numbers deleted" v-if="row.gp3.id != 0">₱ {{ (row.gp3.qty * row.gp3.price  !== undefined ? Number(row.gp3.qty * row.gp3.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
+                                                        <span class="numbers red" v-if="row.gp3.id != 0">FREE AS PACKAGE!</span>
                                                     </td>
 
 

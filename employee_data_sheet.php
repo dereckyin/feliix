@@ -1,4 +1,54 @@
-<?php include 'check.php';?>
+<?php
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
+if ($jwt === NULL || $jwt === '') {
+    setcookie("userurl", $_SERVER['REQUEST_URI']);
+    header('location:index');
+}
+
+include_once 'api/config/core.php';
+include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
+include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'api/libs/php-jwt-master/src/JWT.php';
+include_once 'api/project03_is_creator.php';
+
+use \Firebase\JWT\JWT;
+
+try {
+    // decode jwt
+    $decoded = JWT::decode($jwt, $key, array('HS256'));
+
+    $user_id = $decoded->data->id;
+    $username = $decoded->data->username;
+
+    $position = $decoded->data->position;
+    $department = $decoded->data->department;
+
+    //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
+    //    header( 'location:index.php' );
+
+    $access6 = false;
+
+    if (trim(strtoupper($position)) == 'OWNER' || trim(strtoupper($position)) == 'MANAGING DIRECTOR' || trim(strtoupper($position)) == 'CHIEF ADVISOR'
+        || trim(strtoupper($position)) == 'VALUE DELIVERY MANAGER' || trim(strtoupper($position)) == 'SALES MANAGER'
+        || trim(strtoupper($position)) == 'LIGHTING MANAGER' || trim(strtoupper($position)) == 'OFFICE SYSTEMS MANAGER' || trim(strtoupper($position)) == 'ENGINEERING MANAGER'
+        || trim(strtoupper($position)) == 'OPERATIONS MANAGER')
+    {
+        $access6 = true;
+    }
+
+
+    if ($access6 == false)
+        header('location:index');
+}
+// if decode fails, it means jwt is invalid
+catch (Exception $e) {
+
+    header('location:index');
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,6 +122,10 @@ $(function(){
         top: 0;
         z-index: 1;
         display: none;
+    }
+
+    div.tablebox ul.need_review li {
+        background: rgba(255, 255, 0, 0.2);
     }
 
     .modal {
@@ -177,6 +231,11 @@ $(function(){
         font-weight: 400;
     }
 
+    .modal .box-content .data_sheet tr td span.content span.new_value {
+        color: red;
+        font-weight: 600;
+    }
+
     .modal .box-content .data_sheet tr td span.block_title {
         font-size: 15px;
     }
@@ -207,7 +266,6 @@ $(function(){
         <!-- tags js在 main.js -->
         <div class="tags">
             <a class="tag A focus">Employee Data Sheet</a>
-            <a class="tag B" href="employee_basic_info">Basic Info</a>
         </div>
 
         <!-- Blocks -->
@@ -224,7 +282,7 @@ $(function(){
                         <li>Position</li>
                         <li>Updated Time</li>
                     </ul>
-                    <ul v-for='(record, index) in user_records' :key="index">
+                    <ul v-for='(record, index) in user_records' :key="index" :class="[ record.need_review > 0 ? 'need_review' : '']">
                         <li>
                             <input type="radio" name="record_id" class="alone cyan" value="1" @click="uncheck(record.id)"
                                    v-model="record.is_checked">
@@ -239,8 +297,9 @@ $(function(){
 
                 <div class="btnbox">
                     <a class="btn" @click="viewRecord()">View</a>
-                    <a class="btn" @click="editRecord()">Edit</a>
-                    <a class="btn" @click="resetRecord()">Reset</a>
+                    <a class="btn" @click="reviewRecord()">Review</a>
+                    <a class="btn" @click="editRecord()" v-if="edit_emp">Edit</a>
+                    <a class="btn" @click="resetRecord()" v-if="edit_emp">Reset</a>
                 </div>
 
             </div>
@@ -264,7 +323,7 @@ $(function(){
 
                         <ul>
                             <li><b>Position:</b></li>
-                            <li class="content">{{ record.department }} >> {{ record.title }}</li>
+                            <li class="content">{{ record.department }} {{ record.department == '   ' ? '' : '>>' }} {{ record.title }}</li>
 
                             <li><b>Date:</b></li>
                             <li>
@@ -565,7 +624,7 @@ $(function(){
                             <tr>
                                 <td colspan="2">
                                     <span class="caption">Position:</span>
-                                    <span class="content">{{ record.department }} >> {{ record.title}}</span>
+                                    <span class="content">{{ record.department }} {{ record.department == '   ' ? '' : '>>' }} {{ record.title}}</span>
                                 </td>
 
                                 <td>
@@ -877,6 +936,344 @@ $(function(){
 
             </div>
             <!-- View Modal end -->
+
+
+
+            <!-- Review Modal start -->
+            <div id="Modal_review" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h6>Employee Data Sheet</h6>
+                        <a href="javascript: void(0)" @click="close_review">
+                            <i class="fa fa-times fa-lg" aria-hidden="true"></i>
+                        </a>
+                    </div>
+
+
+                    <div class="box-content">
+
+                        <table class="data_sheet">
+
+                            <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Position:</span>
+                                    <span class="content">{{ record.department }} {{ record.department == '   ' ? '' : '>>' }} {{ record.title}}</span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Date:</span>
+                                    <span class="content">{{ record.updated_str }} <span class="new_value" v-if="record.updated_str !=r_record.updated_str"> → {{r_record.updated_str}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Name:</span>
+                                    <span class="content">{{ record.full_name }} <span class="new_value" v-if="record.full_name !=r_record.full_name"> → {{r_record.full_name}} </span> </span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Gender:</span>
+                                    <span class="content">{{ record.gender == 'M' ? 'Male' : (record.gender == 'F' ? 'Female' : '') }}  <span class="new_value" v-if="record.gender !=r_record.gender"> → {{ r_record.gender == 'M' ? 'Male' : (r_record.gender == 'F' ? 'Female' : '') }} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="caption">Present Address:</span>
+                                    <span class="content">{{ record.present_address }} <span class="new_value" v-if="record.present_address !=r_record.present_address"> → {{r_record.present_address}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="caption">Permanent Address:</span>
+                                    <span class="content">{{ record.permanent_address }} <span class="new_value" v-if="record.permanent_address !=r_record.permanent_address"> → {{r_record.permanent_address}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Telephone No:</span>
+                                    <span class="content">{{ record.telephone }} <span class="new_value" v-if="record.telephone !=r_record.telephone"> → {{r_record.telephone}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Cellphone No:</span>
+                                    <span class="content">{{ record.cellphone }} <span class="new_value" v-if="record.cellphone !=r_record.cellphone"> → {{r_record.cellphone}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="caption">Email Address:</span>
+                                    <span class="content">{{ record.email }} <span class="new_value" v-if="record.email !=r_record.email"> → {{r_record.email}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Date of Birth:</span>
+                                    <span class="content">{{ record.birthday }} <span class="new_value" v-if="record.birthday !=r_record.birthday"> → {{r_record.birthday}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Place of Birth:</span>
+                                    <span class="content">{{record.birthplace}} <span class="new_value" v-if="record.birthplace !=r_record.birthplace"> → {{r_record.birthplace}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Civil Status:</span>
+                                    <span class="content">{{record.civil_status}} <span class="new_value" v-if="record.civil_status !=r_record.civil_status"> → {{r_record.civil_status}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Citizenship:</span>
+                                    <span class="content">{{record.citizenship}} <span class="new_value" v-if="record.citizenship !=r_record.citizenship"> → {{r_record.citizenship}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Height:</span>
+                                    <span class="content">{{record.height}} <span class="new_value" v-if="record.height !=r_record.height"> → {{r_record.height}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Weight:</span>
+                                    <span class="content">{{record.weight}} <span class="new_value" v-if="record.weight !=r_record.weight"> → {{r_record.weight}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Religion:</span>
+                                    <span class="content">{{record.religion}} <span class="new_value" v-if="record.religion !=r_record.religion"> → {{r_record.religion}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Language/Dialect Spoken:</span>
+                                    <span class="content">{{record.language}} <span class="new_value" v-if="record.language !=r_record.language"> → {{r_record.language}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="caption">Medical Condition/Allergies:</span>
+                                    <span class="content">{{record.medical}} <span class="new_value" v-if="record.medical !=r_record.medical"> → {{r_record.medical}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Spouse:</span>
+                                    <span class="content">{{record.spouse}} <span class="new_value" v-if="record.spouse !=r_record.spouse"> → {{r_record.spouse}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Occupation:</span>
+                                    <span class="content">{{record.spouse_ocupation}} <span class="new_value" v-if="record.spouse_ocupation !=r_record.spouse_ocupation"> → {{r_record.spouse_ocupation}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="caption">Name of Children:</span>
+                                    <span class="content">{{record.children}} <span class="new_value" v-if="record.children !=r_record.children"> → {{r_record.children}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Father's Name:</span>
+                                    <span class="content">{{record.father}} <span class="new_value" v-if="record.father !=r_record.father"> → {{r_record.father}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Occupation:</span>
+                                    <span class="content">{{record.father_ocupation}} <span class="new_value" v-if="record.father_ocupation !=r_record.father_ocupation"> → {{r_record.father_ocupation}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Mother's Name:</span>
+                                    <span class="content">{{record.mother}} <span class="new_value" v-if="record.mother !=r_record.mother"> → {{r_record.mother}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Occupation:</span>
+                                    <span class="content">{{record.mother_ocupation}} <span class="new_value" v-if="record.mother_ocupation !=r_record.mother_ocupation"> → {{r_record.mother_ocupation}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="caption">Name of Siblings:</span>
+                                    <span class="content">{{record.siblings}} <span class="new_value" v-if="record.siblings !=r_record.siblings"> → {{r_record.siblings}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">TIN No:</span>
+                                    <span class="content">{{record.tin}} <span class="new_value" v-if="record.tin !=r_record.tin"> → {{r_record.tin}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">SSS No:</span>
+                                    <span class="content">{{record.sss}} <span class="new_value" v-if="record.sss !=r_record.sss"> → {{r_record.sss}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Philhealth No:</span>
+                                    <span class="content">{{record.philhealth}} <span class="new_value" v-if="record.philhealth !=r_record.philhealth"> → {{r_record.philhealth}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Pag-ibig No:</span>
+                                    <span class="content">{{record.pagibig}} <span class="new_value" v-if="record.pagibig !=r_record.pagibig"> → {{r_record.pagibig}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="block_title">Person to contact in case of emergency</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="caption">Name:</span>
+                                    <span class="content">{{record.emergency_name}} <span class="new_value" v-if="record.emergency_name !=r_record.emergency_name"> → {{r_record.emergency_name}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="caption">Address:</span>
+                                    <span class="content">{{record.emergency_address}} <span class="new_value" v-if="record.emergency_address !=r_record.emergency_address"> → {{r_record.emergency_address}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="caption">His/Her Contact Number:</span>
+                                    <span class="content">{{record.emergency_contact}} <span class="new_value" v-if="record.emergency_contact !=r_record.emergency_contact"> → {{r_record.emergency_contact}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="caption">Relationship:</span>
+                                    <span class="content">{{record.emergency_relationship}} <span class="new_value" v-if="record.emergency_relationship !=r_record.emergency_relationship"> → {{r_record.emergency_relationship}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="block_title">Educational Background</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">Elementary:</span>
+                                    <span class="content">{{record.education_elementary}} <span class="new_value" v-if="record.education_elementary !=r_record.education_elementary"> → {{r_record.education_elementary}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Year Graduated:</span>
+                                    <span class="content">{{record.education_elementary_year}} <span class="new_value" v-if="record.education_elementary_year !=r_record.education_elementary_year"> → {{r_record.education_elementary_year}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">High School:</span>
+                                    <span class="content">{{record.education_highschool}} <span class="new_value" v-if="record.education_highschool !=r_record.education_highschool"> → {{r_record.education_highschool}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Year Graduated:</span>
+                                    <span class="content">{{record.education_highschool_year}} <span class="new_value" v-if="record.education_highschool_year !=r_record.education_highschool_year"> → {{r_record.education_highschool_year}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <span class="caption">College:</span>
+                                    <span class="content">{{record.education_college}} <span class="new_value" v-if="record.education_college !=r_record.education_college"> → {{r_record.education_college}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Year Graduated:</span>
+                                    <span class="content">{{record.education_college_year}} <span class="new_value" v-if="record.education_college_year !=r_record.education_college_year"> → {{r_record.education_college_year}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <span class="block_title">Employment Record</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span class="caption">Company:</span>
+                                    <span class="content">{{record.employment_company1}} <span class="new_value" v-if="record.employment_company1 !=r_record.employment_company1"> → {{r_record.employment_company1}} </span></span>
+                                </td>
+
+                                <td style="border-left: none;">
+                                    <span class="caption">Position:</span>
+                                    <span class="content">{{record.employment_position1}} <span class="new_value" v-if="record.employment_position1 !=r_record.employment_position1"> → {{r_record.employment_position1}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Period:</span>
+                                    <span class="content">{{record.employment_period1}} <span class="new_value" v-if="record.employment_period1 !=r_record.employment_period1"> → {{r_record.employment_period1}} </span></span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span class="caption">Company:</span>
+                                    <span class="content">{{record.employment_company2}} <span class="new_value" v-if="record.employment_company2 !=r_record.employment_company2"> → {{r_record.employment_company2}} </span></span>
+                                </td>
+
+                                <td style="border-left: none;">
+                                    <span class="caption">Position:</span>
+                                    <span class="content">{{record.employment_position2}} <span class="new_value" v-if="record.employment_position2 !=r_record.employment_position2"> → {{r_record.employment_position2}} </span></span>
+                                </td>
+
+                                <td>
+                                    <span class="caption">Period:</span>
+                                    <span class="content">{{record.employment_period2}} <span class="new_value" v-if="record.employment_period2 !=r_record.employment_period2"> → {{r_record.employment_period2}} </span></span>
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+
+                        <div class="btnbox" style="margin-bottom: -20px;">
+                            <a class="btn red" @click="do_reject_record(record)">Reject</a>
+                            <a class="btn" @click="do_approve_record(record)">Approve</a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- Review Modal end -->
 
 
         </div>

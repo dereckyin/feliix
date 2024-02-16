@@ -34,6 +34,7 @@ $halfday = (isset($_POST['halfday']) ?  $_POST['halfday'] : '');
 $tag_management = (isset($_POST['tag_management']) ?  $_POST['tag_management'] : '');
 $soa = (isset($_POST['soa']) ?  $_POST['soa'] : '');
 $transmittal = (isset($_POST['transmittal']) ?  $_POST['transmittal'] : '');
+$edit_emp = (isset($_POST['edit_emp']) ?  $_POST['edit_emp'] : '');
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -59,7 +60,7 @@ if (!isset($jwt)) {
     if ($action == 1) {
         //select all
         try {
-            $query = "SELECT payess1, payess2, payess3, salary payess4, salary_mgt payess5, salary_slip_mgt payess6, payess7, payess8, access1, access2, access3, access4, access5, access6, access7, knowledge, vote1, vote2, schedule_confirm, halfday, tag_management, soa, transmittal from access_control where id = 1";
+            $query = "SELECT payess1, payess2, payess3, salary payess4, salary_mgt payess5, salary_slip_mgt payess6, payess7, payess8, access1, access2, access3, access4, access5, access6, access7, knowledge, vote1, vote2, schedule_confirm, halfday, tag_management, soa, transmittal, edit_emp from access_control where id = 1";
 
             $stmt = $db->prepare($query);
             $stmt->execute();
@@ -99,7 +100,8 @@ if (!isset($jwt)) {
                             halfday = :halfday,
                             tag_management = :tag_management,
                             soa = :soa,
-                            transmittal = :transmittal
+                            transmittal = :transmittal,
+                            edit_emp = :edit_emp
                         where id = :id";
 
             // prepare the query
@@ -131,7 +133,8 @@ if (!isset($jwt)) {
             $tag_management = htmlspecialchars(strip_tags($tag_management));
             $soa = htmlspecialchars(strip_tags($soa));
             $transmittal = htmlspecialchars(strip_tags($transmittal));
-
+            $edit_emp = htmlspecialchars(strip_tags($edit_emp));
+            
             // bind the values
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':payess1', $payess1);
@@ -157,6 +160,7 @@ if (!isset($jwt)) {
             $stmt->bindParam(':tag_management', $tag_management);
             $stmt->bindParam(':soa', $soa);
             $stmt->bindParam(':transmittal', $transmittal);
+            $stmt->bindParam(':edit_emp', $edit_emp);
 
             try {
                 // execute the query, also check if query was successful
