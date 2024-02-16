@@ -15687,7 +15687,7 @@ function employee_data_sheet_notification($requestor)
     $content =  "<p>Dear " . $checker1 . ",</p>";
     $content = $content . "<p>" . $requestor . " submitted the revised employee data sheet and it is waiting for your review. </p>";
     $content = $content . "<br/>";
-    $content = $content . "<p>Please log on to Feliix >> Admin Section >> Employee Data Sheet to view the revised employee data.</p>";
+    $content = $content . "<p>Please log on to Feliix >> HR & Admin Section >> Employee Data Sheet to view the revised employee data.</p>";
     $content = $content . "URL: <a href='https://feliix.myvnc.com/employee_data_sheet'>https://feliix.myvnc.com/employee_data_sheet</a>";
 
     $mail->MsgHTML($content);
