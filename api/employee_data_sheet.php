@@ -77,7 +77,7 @@ else
                         COALESCE(eds.first_name , '') first_name,
                         COALESCE(eds.middle_name , '') middle_name,
                         COALESCE(eds.surname , '') surname,
-                        COALESCE(eds.first_name , '') + ' ' + COALESCE(eds.middle_name , '') + ' ' + COALESCE(eds.surname , '') full_name,
+                        CONCAT(eds.first_name , eds.middle_name, eds.surname) full_name,
                         COALESCE(eds.gender , '') gender,
                         COALESCE(eds.present_address , '') present_address,
                         COALESCE(eds.permanent_address , '') permanent_address,
