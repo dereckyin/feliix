@@ -15636,7 +15636,7 @@ function GetDataSheetChecker($requestor)
     }
     
     
-    return $merged_results;
+    return $notifior;
 }
 
 function employee_data_sheet_notification($requestor)
