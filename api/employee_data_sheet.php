@@ -77,6 +77,7 @@ else
                         COALESCE(eds.first_name , '') first_name,
                         COALESCE(eds.middle_name , '') middle_name,
                         COALESCE(eds.surname , '') surname,
+                        COALESCE(eds.first_name , '') + ' ' + COALESCE(eds.middle_name , '') + ' ' + COALESCE(eds.surname , '') full_name,
                         COALESCE(eds.gender , '') gender,
                         COALESCE(eds.present_address , '') present_address,
                         COALESCE(eds.permanent_address , '') permanent_address,
@@ -182,6 +183,7 @@ else
                         $dummy['first_name'] = '';
                         $dummy['middle_name'] = '';
                         $dummy['surname'] = '';
+                        $dummy['full_name'] = '';
                         $dummy['gender'] = '';
                         $dummy['present_address'] = '';
                         $dummy['permanent_address'] = '';

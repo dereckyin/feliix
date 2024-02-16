@@ -974,7 +974,7 @@ $(function(){
                             <tr>
                                 <td colspan="2">
                                     <span class="caption">Name:</span>
-                                    <span class="content">{{ record.first_name }} <span class="new_value" v-if="record.first_name !=r_record.first_name"> → {{r_record.first_name}} </span> {{ record.middle_name }} <span class="new_value" v-if="record.middle_name !=r_record.middle_name"> → {{r_record.middle_name}} </span>  {{ record.surname }} <span class="new_value" v-if="record.surname !=r_record.surname"> → {{r_record.surname}} </span></span>
+                                    <span class="content">{{ record.full_name }} <span class="new_value" v-if="record.full_name !=r_record.full_name"> → {{r_record.full_name}} </span> </span>
                                 </td>
 
                                 <td>
