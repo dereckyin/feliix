@@ -266,7 +266,6 @@ $(function(){
         <!-- tags js在 main.js -->
         <div class="tags">
             <a class="tag A focus">Employee Data Sheet</a>
-            <a class="tag B" href="employee_basic_info">Basic Info</a>
         </div>
 
         <!-- Blocks -->
@@ -324,7 +323,7 @@ $(function(){
 
                         <ul>
                             <li><b>Position:</b></li>
-                            <li class="content">{{ record.department }} >> {{ record.title }}</li>
+                            <li class="content">{{ record.department }} {{ record.department == '   ' ? '' : '>>' }} {{ record.title }}</li>
 
                             <li><b>Date:</b></li>
                             <li>
@@ -625,7 +624,7 @@ $(function(){
                             <tr>
                                 <td colspan="2">
                                     <span class="caption">Position:</span>
-                                    <span class="content">{{ record.department }} >> {{ record.title}}</span>
+                                    <span class="content">{{ record.department }} {{ record.department == '   ' ? '' : '>>' }} {{ record.title}}</span>
                                 </td>
 
                                 <td>
@@ -962,7 +961,7 @@ $(function(){
                             <tr>
                                 <td colspan="2">
                                     <span class="caption">Position:</span>
-                                    <span class="content">{{ record.department }} >> {{ record.title}}</span>
+                                    <span class="content">{{ record.department }} {{ record.department == '   ' ? '' : '>>' }} {{ record.title}}</span>
                                 </td>
 
                                 <td>
