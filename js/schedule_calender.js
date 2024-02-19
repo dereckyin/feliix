@@ -1336,7 +1336,7 @@ app.name == "Marvic Perez") {
         }
     }
 
-    if(sc_content.Service == 'Grab' || sc_content.Service == 'Avanza Gold')
+    if(sc_content.Service == 'Innova' || sc_content.Service == 'Grab' || sc_content.Service == 'Avanza Gold')
     {
         document.getElementById("btn_request").style.display = "none";
         document.getElementById("btn_withdraw").style.display = "none";
@@ -2083,7 +2083,7 @@ var initial = async (_id) =>  {
         }
     }
 
-    if(sc_content.Service == 'Grab' || sc_content.Service == 'Avanza Gold')
+    if(sc_content.Service == 'Innova' || sc_content.Service == 'Grab' || sc_content.Service == 'Avanza Gold')
     {
         document.getElementById("btn_request").style.display = "none";
         document.getElementById("btn_withdraw").style.display = "none";
@@ -3030,7 +3030,7 @@ $(document).on("click", "#btn_cancel", async function () {
         }
     }
 
-    if(sc_content.Service == 'Grab' || sc_content.Service == 'Avanza Gold')
+    if(sc_content.Service == 'Innova' || sc_content.Service == 'Grab' || sc_content.Service == 'Avanza Gold')
     {
         document.getElementById("btn_request").style.display = "none";
         document.getElementById("btn_withdraw").style.display = "none";
