@@ -1018,12 +1018,12 @@ $(function(){
                         <p>I hereby give my consent to Feliix Inc. to collect, store, process, transfer and update personal data as necessary. Only authorized personnel are permitted and have access to the collected information and will treat under strict confidentiality.</p>
                         <p>I certify that the information given above is true and correct.</p>
 
-                        <div class="employee_name bg_gray">
+                        <div :class="['employee_name', (auth_date == '' ? 'bg_gray' : '')]">
                             <div id="signature_name" v-if="auth_date == ''"></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_name" v-if="record.sig_name">
                         </div>
 
-                        <div class="date_signed bg_gray">
+                        <div :class="['date_signed', (auth_date == '' ? 'bg_gray' : '')]">
                             <div id="signature_date" v-if="auth_date == ''"></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_date" v-if="record.sig_date">
                         </div>
