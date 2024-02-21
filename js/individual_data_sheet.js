@@ -51,6 +51,8 @@ let mainState = {
     sig_name: {},
     sig_date: {},
 
+    loading: false,
+
 };
 
 var app = new Vue({
@@ -77,6 +79,11 @@ var app = new Vue({
                     _this.user_records = response.data;
 
                     _this.auth_date = _this.user_records[0].auth_date;
+
+                    if(_this.auth_date == "")
+                    {
+                        _this.authRecord();
+                    }
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -196,8 +203,13 @@ var app = new Vue({
         this.toggle_auth();
         if(this.auth_date == "")
         {
-            this.sig_date = $("#signature_date").jSignature();
-            this.sig_name = $("#signature_name").jSignature();
+            if(this.loading == false)
+            {
+                this.sig_date = $("#signature_date").jSignature();
+                this.sig_name = $("#signature_name").jSignature();
+
+                this.loading = true;
+            }
         }
     },
     
