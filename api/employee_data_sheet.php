@@ -121,6 +121,10 @@ else
                         COALESCE(eds.employment_company2 , '') employment_company2,
                         COALESCE(eds.employment_position2 , '') employment_position2,
                         COALESCE(eds.employment_period2 , '') employment_period2,
+
+                        COALESCE(eds.auth_date , '') auth_date,
+                        COALESCE(eds.sig_name , '') sig_name,
+                        COALESCE(eds.sig_date , '') sig_date,
                         
                         eds.status as eds_status,
 
@@ -232,6 +236,11 @@ else
                         $dummy['need_review'] = 1;
                         $dummy['updated_at'] = '';
                         $dummy['updated_str'] = '';
+
+                        $dummy['auth_date'] = '';
+                        $dummy['sig_name'] = '';
+                        $dummy['sig_date'] = '';
+
 
                         $dummy['review'] = array();
 
