@@ -84,14 +84,14 @@ else
             $stmt->execute();
 
             // update user table for first_name, middle_name, surname
-            $query = "update user set 
+            $query = "update employee_data_sheet set 
                         first_name = :first_name,
                         middle_name = :middle_name,
                         surname = :surname,
                         updated_id = :updated_id, 
                         updated_at = now()
 
-                        where id = :id
+                        where user_id = :id and status = 0
             ";
 
             // prepare the query
@@ -148,14 +148,14 @@ else
             $stmt->execute();
 
             // update user table for first_name, middle_name, surname
-            $query = "update user set 
+            $query = "update employee_data_sheet set 
                         first_name = :first_name,
                         middle_name = :middle_name,
                         surname = :surname,
                         updated_id = :updated_id, 
                         updated_at = now()
 
-                        where id = :id
+                        where user_id = :id and status = 0
             ";
 
             // prepare the query

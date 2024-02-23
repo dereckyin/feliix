@@ -55,9 +55,9 @@ else
 
             $sql = "SELECT 0 as is_checked, user.id, user.id user_id, user.username, user.email, user.status,  COALESCE(department, '') department, apartment_id, title_id, COALESCE(title, '') title, 
                         COALESCE(eds.id, 0) data_id,
-                        COALESCE(user.first_name , '') first_name,
-                        COALESCE(user.middle_name , '') middle_name,
-                        COALESCE(user.surname , '') surname,
+                        COALESCE(es.first_name , '') first_name,
+                        COALESCE(es.middle_name , '') middle_name,
+                        COALESCE(es.surname , '') surname,
                         COALESCE(eds.emp_number , '') emp_number,
                         COALESCE(eds.date_hired , '') date_hired,
                         COALESCE(eds.regular_hired , '') regular_hired,
@@ -72,6 +72,7 @@ else
                     LEFT JOIN user_department ON user.apartment_id = user_department.id 
                     LEFT JOIN user_title ON user.title_id = user_title.id 
                     LEFT JOIN employee_basic_info eds ON user.id = eds.user_id and eds.status <> -1
+                    LEFT JOIN employee_data_sheet es on user.id = es.user_id and es.status = 0
                     where user.status <> -1 ".($id ? " and id=$id" : '') . ($apartment_id ? " and user.apartment_id=$apartment_id" : '');
 
             if(!empty($_GET['page'])) {

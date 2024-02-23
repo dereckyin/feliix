@@ -124,7 +124,7 @@ $(function(){
     .modal .modal-content .box-content select,
     .modal .modal-content .box-content input[type="date"] {
         border: 2px solid var(--cyan01);
-        width: 250px;
+        width: 300px;
         padding: 8px 35px 8px 15px;
     }
 
@@ -151,6 +151,7 @@ $(function(){
 
     .modal .box-content .info_sheet {
         width: 100%;
+        margin: 0 6px;
     }
 
 
@@ -159,7 +160,12 @@ $(function(){
         font-family: "M PLUS 1p", Arial, Helvetica, "LiHei Pro", 微軟正黑體, "Microsoft JhengHei", 新細明體, sans-serif;
         font-size: 16px;
         font-weight: 400;
-        padding: 4px 7px;
+        padding: 4px 0;
+        height: 32px;
+    }
+
+    .modal .box-content .info_sheet tr td.underline {
+        border-bottom: 1px solid black;
     }
 
     .modal .box-content .info_sheet tr td span.caption {
@@ -254,19 +260,13 @@ $(function(){
                             </li>
 
                             <li><b>First Name:</b></li>
-                            <li>
-                                <input type="text" v-model="record.first_name">
-                            </li>
+                            <li class="content">{{ record.first_name }}</li>
 
                             <li><b>Middle Name:</b></li>
-                            <li>
-                                <input type="text" v-model="record.middle_name">
-                            </li>
+                            <li class="content">{{ record.middle_name }}</li>
 
                             <li><b>Surname:</b></li>
-                            <li>
-                                <input type="text" v-model="record.surname">
-                            </li>
+                            <li class="content">{{ record.surname }}</li>
 
                             <li><b>Date Hired:</b></li>
                             <li>
@@ -345,7 +345,7 @@ $(function(){
 
 
 
-            <!-- Input Modal start -->
+            <!-- View Modal start -->
             <div id="Modal_view" class="modal">
 
                 <!-- Modal content -->
@@ -372,7 +372,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.emp_number }}</span>
                                 </td>
                             </tr>
@@ -388,7 +388,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.first_name }}</span>
                                 </td>
                             </tr>
@@ -400,7 +400,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.middle_name }}</span>
                                 </td>
                             </tr>
@@ -412,7 +412,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.surname }}</span>
                                 </td>
                             </tr>
@@ -429,7 +429,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.date_hired }}</span>
                                 </td>
                             </tr>
@@ -445,7 +445,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.regular_hired }}</span>
                                 </td>
                             </tr>
@@ -461,7 +461,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.emp_status }}</span>
                                 </td>
                             </tr>
@@ -477,7 +477,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.company }}</span>
                                 </td>
                             </tr>
@@ -493,7 +493,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.department }}</span>
                                 </td>
                             </tr>
@@ -509,7 +509,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.title }}</span>
                                 </td>
                             </tr>
@@ -525,7 +525,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.emp_category }}</span>
                                 </td>
                             </tr>
@@ -541,7 +541,7 @@ $(function(){
                             </tr>
 
                             <tr>
-                                <td>
+                                <td class="underline">
                                     <span class="content">{{ view_data.superior}} </span>
                                 </td>
                             </tr>
@@ -559,7 +559,7 @@ $(function(){
                 </div>
 
             </div>
-            <!-- Input Modal end -->
+            <!-- View Modal end -->
 
 
         </div>
