@@ -4683,11 +4683,11 @@ ALTER TABLE access_control
 ADD COLUMN `edit_emp` text COLLATE utf8mb4_unicode_ci;
 
 -- 20240220 individual_data_sheet with authorization
-ALTER TABLE employee_data_sheet
+ALTER TABLE user
 ADD COLUMN `auth_date` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
 
-ALTER TABLE employee_data_sheet
+ALTER TABLE user
 ADD COLUMN `sig_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
 
-ALTER TABLE employee_data_sheet
+ALTER TABLE user
 ADD COLUMN `sig_date` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';

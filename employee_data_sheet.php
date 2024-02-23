@@ -1387,7 +1387,7 @@ $(function(){
 
                     <div class="btnbox" style="margin-bottom: -20px;">
                         <a class="btn red" @click="toggle_auth()">Close</a>
-                        <a class="btn red" @click="auth_reset(record.data_id)">Reset</a>
+                        <a class="btn red" @click="auth_reset(record.user_id)">Reset</a>
                     </div>
 
                 </div>

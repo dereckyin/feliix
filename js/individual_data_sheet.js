@@ -178,7 +178,7 @@ var app = new Vue({
         var sig = this.sig_date.jSignature('getData', 'image');
         var sig1 = this.sig_name.jSignature('getData', 'image');
 
-        let data = { image_date: sig, image_name: sig1, item_id: this.record.data_id };
+        let data = { image_date: sig, image_name: sig1, item_id: this.record.user_id };
         this.loading = true;
 
         axios

@@ -103,9 +103,9 @@ else
                         COALESCE(eds.employment_position2 , '') employment_position2,
                         COALESCE(eds.employment_period2 , '') employment_period2,
 
-                        COALESCE(eds.auth_date , '') auth_date,
-                        COALESCE(eds.sig_name , '') sig_name,
-                        COALESCE(eds.sig_date , '') sig_date,
+                        COALESCE(user.auth_date , '') auth_date,
+                        COALESCE(user.sig_name , '') sig_name,
+                        COALESCE(user.sig_date , '') sig_date,
 
                         COALESCE(eds.updated_at , '') updated_at,
                         '' updated_str

@@ -250,7 +250,7 @@ switch ($method) {
         }
 
         // update employee_data_sheet
-        $query = "UPDATE employee_data_sheet
+        $query = "UPDATE user
             SET
                 sig_name = :sig_name,
                 sig_date = :sig_date,

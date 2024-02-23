@@ -47,7 +47,7 @@ else
         // now you can apply
         $uid = $user_id;
 
-        $query = "update employee_data_sheet set 
+        $query = "update user set 
         auth_date = '',
         sig_name = '',
         sig_date = '',
