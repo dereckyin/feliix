@@ -237,9 +237,9 @@ else
                         $dummy['updated_at'] = '';
                         $dummy['updated_str'] = '';
 
-                        $dummy['auth_date'] = '';
-                        $dummy['sig_name'] = '';
-                        $dummy['sig_date'] = '';
+                        $dummy['auth_date'] = $row['auth_date'];
+                        $dummy['sig_name'] = $row['sig_name'];
+                        $dummy['sig_date'] = $row['sig_date'];
 
 
                         $dummy['review'] = array();
