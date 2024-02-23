@@ -282,6 +282,60 @@ var app = new Vue({
             $(window).scrollTop(0);
         },
 
+        
+        viewAuth() {
+
+            var favorite = [];
+            this.resetError();
+
+            for (i = 0; i < this.user_records.length; i++) 
+            {
+              if(this.user_records[i].is_checked == 1)
+                favorite.push(this.user_records[i].id);
+            }
+
+            //$.each($("input[name='record_id']:checked"), function() {
+            //    favorite.push($(this).val());
+            //});
+            if (favorite.length != 1) {
+                //alert("請選一筆資料進行修改 (Please select one row to edit!)");
+                //$(window).scrollTop(0);
+                Swal.fire({
+                    html: "Please select one user to view!",
+                    icon: "info",
+                    confirmButtonText: "OK",
+                  });
+                return;
+            }
+            
+            this.record = this.shallowCopy(this.user_records.find(element => element.id == favorite));
+            
+            if (this.record.auth_date == '') {
+
+                Swal.fire({
+                    html: "The selected employee has not submitted the authorization form.",
+                    icon: "info",
+                    confirmButtonText: "OK",
+                  });
+                return;
+            }
+            
+            this.isEditing = true;
+
+            if(this.record.updated_at != '')
+                this.record.updated_str = this.record.updated_at.substring(0, 10);
+
+            this.toggle_auth();
+
+            console.log(this.record.date_receive);
+            // $( "#upddate" ).value = this.record.date_receive;
+
+            this.unCheckCheckbox();
+
+            //$(".alone").prop("checked", false);
+            $(window).scrollTop(0);
+        },
+
         permission: function(data_title) {
             permission = true;
 
@@ -407,6 +461,11 @@ var app = new Vue({
         toggle_review: function() {
             window.jQuery(".mask").toggle();
             window.jQuery("#Modal_review").toggle();
+        },
+
+        toggle_auth: function() {
+            window.jQuery(".mask").toggle();
+            window.jQuery("#Modal_authorize").toggle();
         },
 
         resetRecord: function() {
@@ -746,6 +805,46 @@ var app = new Vue({
              this.record = {};
             this.resetError();
             this.getReceiveRecords();
+        },
+
+        
+        auth_reset: function(id) {
+            let _this = this;
+
+            let formData = new FormData();
+
+            formData.append('id', id);
+
+            const token = sessionStorage.getItem('token');
+
+            axios({
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${token}`
+                    },
+                    url: 'api/employee_data_sheet_auth_reset',
+                    data: formData
+                    
+                })
+                .then(function(response) {
+                    //handle success
+                    
+                    console.log(response)
+                    Swal.fire({
+                        text: response.data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                      })
+                })
+                .catch(function(response) {
+                    //handle error
+                    console.log(response)
+                })
+                .finally(function() {
+                    _this.toggle_auth();
+                    _this.resetForm();
+                });
         },
 
  

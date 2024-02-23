@@ -46,6 +46,13 @@ let mainState = {
 
     user : {},
 
+    auth_date : "",
+
+    sig_name: {},
+    sig_date: {},
+
+    loading: false,
+
 };
 
 var app = new Vue({
@@ -71,7 +78,12 @@ var app = new Vue({
                     console.log(response.data);
                     _this.user_records = response.data;
 
+                    _this.auth_date = _this.user_records[0].auth_date;
 
+                    if(_this.auth_date == "")
+                    {
+                        _this.authRecord();
+                    }
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -155,6 +167,51 @@ var app = new Vue({
             if (item.id !== id) item.is_checked = "0"
         })
     },
+
+    reset_auth() {
+        this.sig_date.jSignature('reset');
+        this.sig_name.jSignature('reset');
+    },
+
+    submit_auth() {
+        let _this = this;
+        var sig = this.sig_date.jSignature('getData', 'image');
+        var sig1 = this.sig_name.jSignature('getData', 'image');
+
+        let data = { image_date: sig, image_name: sig1, item_id: this.record.user_id };
+        this.loading = true;
+
+        axios
+        .post("api/individual_data_sheet_snapshot", data, {
+            headers: {
+            "Content-Type": "application/json"
+            }
+        }).then(function(response) {
+            console.log(response.data);
+            _this.close_auth();
+            _this.reset_auth();
+                
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+
+    },
+
+    authRecord() {
+        this.record = this.shallowCopy(this.user_records[0]);
+        this.toggle_auth();
+        if(this.auth_date == "")
+        {
+            if(this.loading == false)
+            {
+                this.sig_date = $("#signature_date").jSignature();
+                this.sig_name = $("#signature_name").jSignature();
+
+                this.loading = true;
+            }
+        }
+    },
     
         editRecord() {
           console.log("editRecord");
@@ -214,6 +271,11 @@ var app = new Vue({
             this.resetForm();
         },
 
+        close_auth: function() {
+            this.toggle_auth();
+            this.resetForm();
+        },
+
         viewRecord() {
 
             var favorite = [];
@@ -267,6 +329,11 @@ var app = new Vue({
         toggle_input: function() {
             window.jQuery(".mask").toggle();
             window.jQuery("#Modal_input").toggle();
+        },
+
+        toggle_auth: function() {
+            window.jQuery(".mask").toggle();
+            window.jQuery("#Modal_authorize").toggle();
         },
 
         toggle_view: function() {

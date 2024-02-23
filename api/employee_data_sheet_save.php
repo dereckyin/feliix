@@ -51,6 +51,9 @@ else
         {
             $query = "insert into employee_data_sheet set 
                         user_id = :user_id,
+                        first_name = :first_name,
+                        middle_name = :middle_name,
+                        surname = :surname,
                         gender = :gender,
                         present_address = :present_address,
                         permanent_address = :permanent_address, 
@@ -105,6 +108,9 @@ else
 
             // bind the values
             $stmt->bindParam(':user_id', $rs['id']);
+            $stmt->bindParam(':first_name', $rs['first_name']);
+            $stmt->bindParam(':middle_name', $rs['middle_name']);
+            $stmt->bindParam(':surname', $rs['surname']);
             $stmt->bindParam(':gender', $rs['gender']);
             $stmt->bindParam(':present_address', $rs['present_address']);
             $stmt->bindParam(':permanent_address', $rs['permanent_address']);
@@ -153,29 +159,29 @@ else
             
             $stmt->execute();
 
-            // update user table for first_name, middle_name, surname
-            $query = "update user set 
-                        first_name = :first_name,
-                        middle_name = :middle_name,
-                        surname = :surname,
-                        updated_id = :updated_id, 
-                        updated_at = now()
+            // // update user table for first_name, middle_name, surname
+            // $query = "update user set 
+            //             first_name = :first_name,
+            //             middle_name = :middle_name,
+            //             surname = :surname,
+            //             updated_id = :updated_id, 
+            //             updated_at = now()
 
-                        where id = :id
-            ";
+            //             where id = :id
+            // ";
 
-            // prepare the query
-            $stmt = $db->prepare($query);
+            // // prepare the query
+            // $stmt = $db->prepare($query);
 
-            // bind the values
-            $stmt->bindParam(':first_name', $rs['first_name']);
-            $stmt->bindParam(':middle_name', $rs['middle_name']);
-            $stmt->bindParam(':surname', $rs['surname']);
-            $stmt->bindParam(':updated_id', $user_id);
+            // // bind the values
+            // $stmt->bindParam(':first_name', $rs['first_name']);
+            // $stmt->bindParam(':middle_name', $rs['middle_name']);
+            // $stmt->bindParam(':surname', $rs['surname']);
+            // $stmt->bindParam(':updated_id', $user_id);
 
-            $stmt->bindParam(':id', $rs['id']);
+            // $stmt->bindParam(':id', $rs['id']);
 
-            $stmt->execute();
+            // $stmt->execute();
 
             http_response_code(200);
             echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));
@@ -185,6 +191,9 @@ else
         {
             $query = "update employee_data_sheet set 
                         user_id = :user_id,
+                        first_name = :first_name,
+                        middle_name = :middle_name,
+                        surname = :surname,
                         gender = :gender,
                         present_address = :present_address,
                         permanent_address = :permanent_address, 
@@ -240,6 +249,9 @@ else
 
             // bind the values
             $stmt->bindParam(':user_id', $rs['user_id']);
+            $stmt->bindParam(':first_name', $rs['first_name']);
+            $stmt->bindParam(':middle_name', $rs['middle_name']);
+            $stmt->bindParam(':surname', $rs['surname']);
             $stmt->bindParam(':gender', $rs['gender']);
             $stmt->bindParam(':present_address', $rs['present_address']);
             $stmt->bindParam(':permanent_address', $rs['permanent_address']);
@@ -290,29 +302,29 @@ else
             
             $stmt->execute();
 
-            // update user table for first_name, middle_name, surname
-            $query = "update user set 
-                        first_name = :first_name,
-                        middle_name = :middle_name,
-                        surname = :surname,
-                        updated_id = :updated_id, 
-                        updated_at = now()
+            // // update user table for first_name, middle_name, surname
+            // $query = "update user set 
+            //             first_name = :first_name,
+            //             middle_name = :middle_name,
+            //             surname = :surname,
+            //             updated_id = :updated_id, 
+            //             updated_at = now()
 
-                        where id = :id
-            ";
+            //             where id = :id
+            // ";
 
-            // prepare the query
-            $stmt = $db->prepare($query);
+            // // prepare the query
+            // $stmt = $db->prepare($query);
 
-            // bind the values
-            $stmt->bindParam(':first_name', $rs['first_name']);
-            $stmt->bindParam(':middle_name', $rs['middle_name']);
-            $stmt->bindParam(':surname', $rs['surname']);
-            $stmt->bindParam(':updated_id', $user_id);
+            // // bind the values
+            // $stmt->bindParam(':first_name', $rs['first_name']);
+            // $stmt->bindParam(':middle_name', $rs['middle_name']);
+            // $stmt->bindParam(':surname', $rs['surname']);
+            // $stmt->bindParam(':updated_id', $user_id);
 
-            $stmt->bindParam(':id', $rs['id']);
+            // $stmt->bindParam(':id', $rs['id']);
 
-            $stmt->execute();
+            // $stmt->execute();
 
             http_response_code(200);
             echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));

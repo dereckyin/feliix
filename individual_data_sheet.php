@@ -122,7 +122,7 @@ $(function(){
 
     .heading-and-btn ul li:nth-of-type(1) > button {
         margin: 0 8px;
-        width: 80px;
+        width: 220px;
     }
 
     .heading-and-btn ul li:nth-of-type(2){
@@ -245,6 +245,84 @@ $(function(){
         color: #FFF!important;
     }
 
+
+    #Modal_authorize .modal-content {
+        width: 40%;
+        min-width: 768px;
+    }
+
+    #Modal_authorize .modal-content .modal-header h6 {
+        text-align: center;
+        width: 100%;
+    }
+
+    #Modal_authorize .modal-content .authorize_dialog p {
+        font-size: 22px;
+        text-align: justify;
+    }
+
+    #Modal_authorize .modal-content .authorize_dialog .employee_name {
+        position: relative;
+        border-bottom: 1px solid black;
+        margin: 30px 0 10px;
+        padding: 10px 20px;
+        width: 55%;
+        min-width: 400px;
+    }
+
+    #Modal_authorize .modal-content .authorize_dialog .employee_name.bg_gray {
+        background-color: rgba(0,0,0,0.05);
+    }
+
+    #Modal_authorize .modal-content .authorize_dialog .employee_name::after {
+        content: "Employee Name";
+        position: absolute;
+        bottom: -27px;
+        left: 5px;
+        font-size: 18px;
+    }
+
+    #Modal_authorize .modal-content .authorize_dialog .employee_name #signature_name {
+        width: 100%;
+        height: 80px;
+    }
+
+    #Modal_authorize .modal-content .authorize_dialog .employee_name img {
+        max-width: 80%;
+        max-height: 80px;
+    }
+
+    #Modal_authorize .modal-content .authorize_dialog .date_signed {
+        position: relative;
+        border-bottom: 1px solid black;
+        margin: 40px 0 60px;
+        padding: 10px 20px;
+        width: 55%;
+        min-width: 400px;
+    }
+
+    #Modal_authorize .modal-content .authorize_dialog .date_signed.bg_gray {
+        background-color: rgba(0,0,0,0.05);
+    }
+
+    #Modal_authorize .modal-content .authorize_dialog .date_signed::after {
+        content: "Date Signed";
+        position: absolute;
+        bottom: -27px;
+        left: 5px;
+        font-size: 18px;
+    }
+
+    #Modal_authorize .modal-content .authorize_dialog .date_signed #signature_date {
+        width: 100%;
+        height: 80px;
+    }
+
+    #Modal_authorize .modal-content .authorize_dialog .date_signed img {
+        max-width: 80%;
+        max-height: 80px;
+    }
+
     @media screen and (min-width: 0px) and (max-width: 767px) {
         #my-content { display: none; }  /* hide it on small screens */
     }
@@ -281,8 +359,9 @@ $(function(){
 
             <ul>
                 <li>
-                    <button class="btn btn-primary" @click="viewRecord()">View</button>
-                    <button class="btn btn-primary" @click="editRecord()">Edit</button>
+                    <button class="btn btn-primary" @click="authRecord()">View Authorization Form</button>
+                    <button class="btn btn-primary" @click="viewRecord()" v-if="auth_date != ''">View Employee Data Sheet</button>
+                    <button class="btn btn-primary" @click="editRecord()" v-if="auth_date != ''">Edit Employee Data Sheet</button>
                 </li>
             </ul>
 
@@ -921,6 +1000,51 @@ $(function(){
         <!-- View Modal end -->
 
 
+
+        <!-- Authorize Modal start -->
+        <div id="Modal_authorize" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h6>Employee Data Sheet</h6>
+                </div>
+
+
+                <div class="box-content">
+
+                    <div class="authorize_dialog">
+                        <p>I hereby give my consent to Feliix Inc. to collect, store, process, transfer and update personal data as necessary. Only authorized personnel are permitted and have access to the collected information and will treat under strict confidentiality.</p>
+                        <p>I certify that the information given above is true and correct.</p>
+
+                        <div :class="['employee_name', (auth_date == '' ? 'bg_gray' : '')]">
+                            <div id="signature_name" v-if="auth_date == ''"></div>
+                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_name" v-if="record.sig_name">
+                        </div>
+
+                        <div :class="['date_signed', (auth_date == '' ? 'bg_gray' : '')]">
+                            <div id="signature_date" v-if="auth_date == ''"></div>
+                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_date" v-if="record.sig_date">
+                        </div>
+
+                    </div>
+
+
+                    <div class="btnbox" style="margin-bottom: -20px;">
+                        <a class="btn red" @click="toggle_auth()">Close</a>
+                        <a class="btn red" @click="reset_auth()" v-if="auth_date == ''">Reset</a>
+                        <a class="btn" @click="submit_auth()" v-if="auth_date == ''">Submit</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- Authorize Modal end -->
+
+
     </div>
 
 </div>
@@ -934,4 +1058,7 @@ $(function(){
 <script src="js/a076d05399.js"></script>
 
 <script defer src="js/individual_data_sheet.js"></script>
+<script src="js/jSignature/flashcanvas.js"></script>
+<script src="js/jSignature/jSignature.min.js"></script>
+
 </html>
