@@ -61,10 +61,20 @@ var app = new Vue({
       this.getReceiveRecords();
 
       this.getUserName();
+      this.getAccess();
     },
 
  
 	methods:{
+
+        getAccess: async function() {
+            var token = localStorage.getItem('token');
+            var form_Data = new FormData();
+      
+            let res = await axios.get('api/access_control_kind_get', { headers: { "Authorization": `Bearer ${token}` }, params: { kind: 'edit_basic' } });
+            this.edit_emp = res.data.edit_emp;
+          },
+
 		getReceiveRecords: function(keyword) {
             let _this = this;
           console.log("getReceiveRecords");
