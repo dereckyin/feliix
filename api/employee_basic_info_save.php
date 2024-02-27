@@ -100,29 +100,29 @@ else
             
             $stmt->execute();
 
-            // update user table for first_name, middle_name, surname
-            $query = "update employee_data_sheet set 
-                        first_name = :first_name,
-                        middle_name = :middle_name,
-                        surname = :surname,
-                        updated_id = :updated_id, 
-                        updated_at = now()
+            // // update user table for first_name, middle_name, surname
+            // $query = "update employee_data_sheet set 
+            //             first_name = :first_name,
+            //             middle_name = :middle_name,
+            //             surname = :surname,
+            //             updated_id = :updated_id, 
+            //             updated_at = now()
 
-                        where user_id = :id and status = 0
-            ";
+            //             where user_id = :id and status = 0
+            // ";
 
-            // prepare the query
-            $stmt = $db->prepare($query);
+            // // prepare the query
+            // $stmt = $db->prepare($query);
 
-            // bind the values
-            $stmt->bindParam(':first_name', $rs['first_name']);
-            $stmt->bindParam(':middle_name', $rs['middle_name']);
-            $stmt->bindParam(':surname', $rs['surname']);
-            $stmt->bindParam(':updated_id', $user_id);
+            // // bind the values
+            // $stmt->bindParam(':first_name', $rs['first_name']);
+            // $stmt->bindParam(':middle_name', $rs['middle_name']);
+            // $stmt->bindParam(':surname', $rs['surname']);
+            // $stmt->bindParam(':updated_id', $user_id);
 
-            $stmt->bindParam(':id', $rs['id']);
+            // $stmt->bindParam(':id', $rs['id']);
 
-            $stmt->execute();
+            // $stmt->execute();
 
             http_response_code(200);
             echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));
@@ -188,8 +188,8 @@ else
 
         //     $stmt->execute();
 
-            http_response_code(200);
-            echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));
+            // http_response_code(200);
+            // echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));
         //}
     }
     catch (Exception $e){
