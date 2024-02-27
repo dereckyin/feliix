@@ -529,7 +529,7 @@
 
                 <div class="box-content">
                     <ul>
-                        <li><b>Management of Employee Data Sheet: Edit and Reset</b></li>
+                        <li><b>Management of Employee Basic Info: View and Edit and Reset</b></li>
                         <br>
                         <li>
                             <div>

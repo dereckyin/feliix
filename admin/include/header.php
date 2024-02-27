@@ -25,6 +25,7 @@ use \Firebase\JWT\JWT;
     $access10 = false;
     $access11 = false;
     $access12 = false;
+    $access13 = false;
 
 
 $pic_url = "man6.jpg";
@@ -229,11 +230,22 @@ try {
 
 
         //HR & Admin Section Access
+        // access12 is for Employee Data Sheet
+        // access13 is for Employee Basic Info
         if(trim(strtoupper($position)) == 'OWNER' || trim(strtoupper($position)) == 'MANAGING DIRECTOR' || trim(strtoupper($position)) == 'CHIEF ADVISOR' || trim(strtoupper($position)) == 'VALUE DELIVERY MANAGER'
         || trim(strtoupper($position)) == 'SALES MANAGER' || trim(strtoupper($position)) == 'LIGHTING MANAGER' || trim(strtoupper($position)) == 'OFFICE SYSTEMS MANAGER'
         || trim(strtoupper($position)) == 'ENGINEERING MANAGER' || trim(strtoupper($position)) == 'OPERATIONS MANAGER')
         {
                 $access12 = true;
+                $access13 = true;
+
+        }
+
+        $query = "SELECT * FROM access_control WHERE edit_basic LIKE '%" . $username . "%' ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $access13 = true;
         }
 
 
@@ -350,7 +362,23 @@ try {
             ?>
             <li class="cyan01" style="border: 3px solid var(--cyan01);">
                 <a class="uni">HR & Admin<br>Section</a>
+                <?php
+                    if($access12 == true)
+                    {
+                ?>
                 <a class="list" href="../employee_data_sheet">Employee Data Sheet</a>
+                <?php
+                    }
+                ?>
+
+                <?php
+                    if($access13 == true)
+                    {
+                ?>
+                <a class="list" href="../employee_basic_info">Employee Basic Info</a>
+                <?php
+                    }
+                ?>
             </li>
             <?php
                 }

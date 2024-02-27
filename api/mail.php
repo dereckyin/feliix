@@ -8482,6 +8482,9 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $mail->Subject = 'Items of "' . $order_type . ': ' . $serial_name . '" need your feedback';
         $header = 'Items of "' . $order_type . ': ' . $serial_name . '" need your feedback. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p1?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     if($action == 'withdraw_note_tw')
@@ -8489,6 +8492,9 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $mail->Subject = 'Request for feedback was withdrawn on items of "' . $order_type . ': ' . $serial_name . '" ';
         $header = 'The request for your feedback was withdrawn on items of  "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p1?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     if($action == 'approval')
@@ -8496,6 +8502,9 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $mail->Subject = 'Items of "' . $order_type . ': ' . $serial_name . '" need your approval';
         $header = 'Items of "' . $order_type . ': ' . $serial_name . '" need your approval. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p2?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     if($action == 'finish_notes')
@@ -8503,6 +8512,9 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $mail->Subject = 'Taiwan office already provided feedback for items of "' . $order_type . ': ' . $serial_name . '"';
         $header = 'Taiwan office already provided feedback for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p1?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     // for approve
@@ -8511,6 +8523,9 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $mail->Subject = 'Items of "' . $order_type . ': ' . $serial_name . '" were approved';
         $header = 'Items of "' . $order_type . ': ' . $serial_name . '" were already approved and need you to follow. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     if($action == 'reject')
@@ -8518,6 +8533,9 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $mail->Subject = 'Items of "' . $order_type . ': ' . $serial_name . '" were rejected';
         $header = 'Items of "' . $order_type . ': ' . $serial_name . '" were already rejected and need you to follow. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p1?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     if($action == 'withdraw')
@@ -8525,6 +8543,9 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $mail->Subject = 'Request for approval was withdrawn on items of "' . $order_type . ': ' . $serial_name . '" ';
         $header = 'The request for your approval was withdrawn on items of  "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p1?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     // APPROVED
@@ -8534,6 +8555,9 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $mail->Subject = 'Items of "' . $order_type . ': ' . $serial_name . '" are ordered';
         $header = 'Items of "' . $order_type . ': ' . $serial_name . '" are ordered. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     // Canceled
@@ -8543,6 +8567,9 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $mail->Subject = 'Items of "' . $order_type . ': ' . $serial_name . '" are canceled';
         $header = 'Items of "' . $order_type . ': ' . $serial_name . '" are canceled. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     if($action == 'ship_info')
@@ -8551,6 +8578,9 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $mail->Subject = 'Shipping info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = 'Shipping info for items of "' . $order_type . ': ' . $serial_name . '" is updated. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     if($action == 'ware_info')
@@ -8559,6 +8589,9 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $mail->Subject = 'Warehouse info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = 'Warehouse info for items of "' . $order_type . ': ' . $serial_name . '" is updated. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     if($action == 'batch')
@@ -8568,6 +8601,8 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
         $header = 'Shipping info for items of "' . $order_type . ': ' . $serial_name . '" is updated. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $od_id;
 
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
     $content = '<!DOCTYPE html>
@@ -9179,6 +9214,9 @@ function inquiry_notification($name, $access,  $access_cc, $project_name, $seria
     $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
     $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
 
+    //每一個 inquiry 都應該 cc 給 Sales Manager 
+    $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
+
     $mail->Subject = "";
 
     $header = "";
@@ -9207,6 +9245,13 @@ function inquiry_notification($name, $access,  $access_cc, $project_name, $seria
         $mail->Subject = '[Inquiry Notification] Taiwan office already provided feedback for Inquiry "' . $serial_name . '".';
         $header = 'Taiwan office already provided feedback for Inquiry "' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/inquiry_taiwan?id=" . $od_id;
+    }
+
+
+    // 如果是 Lighting 的 inquiry，則 Cristina Matining 一定至少要出現在 cc 收件者
+    if( substr($serial_name, 0, 1) == "L")
+    {
+        $mail->AddCC("cristina@feliix.com", "Cristina Matining");
     }
 
 
@@ -11610,6 +11655,8 @@ function order_notification03($name, $access,  $access_cc, $project_name, $seria
 
     $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
     $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
+
+    $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
 
     $mail->Subject = "";
 

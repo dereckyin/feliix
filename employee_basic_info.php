@@ -199,6 +199,7 @@ $(function(){
         text-align: left;
         border-bottom: 2px solid var(--cyan01);
         vertical-align: middle;
+        height: 35px;
     }
 
     .modal .box-content div.subtitle {
@@ -257,7 +258,6 @@ $(function(){
     <div class="mainContent" id="app">
         <!-- tags js在 main.js -->
         <div class="tags">
-            <a class="tag A" href="employee_data_sheet">Employee Data Sheet</a>
             <a class="tag B focus">Basic Info</a>
         </div>
 
