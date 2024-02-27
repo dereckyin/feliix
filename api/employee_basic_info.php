@@ -31,11 +31,11 @@ else
           $position = $decoded->data->position;
           $apartment_id = -1;
 
-          if($position == 'Owner' || $position == 'Managing Director' || $position == 'Chief Advisor' || $position == 'Value Delivery Manager' ) {
+          if($position == 'Owner' || $position == 'Managing Director' || $position == 'Chief Advisor' || $position == 'Value Delivery Manager'  || $position == 'Operations Manager') {
               $apartment_id = "";
           }
 
-          if($position == 'Sales Manager' || $position == 'Lighting Manager' || $position == 'Office Systems Manager' || $position == 'Engineering Manager' || $position == 'Operations Manager') {
+          if($position == 'Sales Manager' || $position == 'Lighting Manager' || $position == 'Office Systems Manager' || $position == 'Engineering Manager') {
               $apartment_id = $decoded->data->apartment_id;
           }
 
