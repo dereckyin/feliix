@@ -26,6 +26,7 @@ else
           $decoded = JWT::decode($jwt, $key, array('HS256'));
 
           $user_id = $decoded->data->id;
+          $username = $decoded->data->username;
 
           $position = $decoded->data->position;
           $apartment_id = -1;
@@ -56,6 +57,14 @@ else
 
       $database = new Database();
       $db = $database->getConnection();
+
+      // get access_control
+        $query = "SELECT * FROM access_control WHERE edit_basic LIKE '%" . $username . "%' ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $apartment_id = "";
+        }
 
       switch ($method) {
           case 'GET':
