@@ -36,6 +36,7 @@ var app = new Vue({
     soa: [],
     transmittal: [],
     edit_emp: [],
+    edit_basic: [],
   },
 
   created() {
@@ -160,6 +161,10 @@ var app = new Vue({
               _this.edit_emp = res.data[0]["edit_emp"].split(",").filter(function (el) {
                 return el != "";
               });
+              if (kind === 25 || kind === undefined)
+              _this.edit_basic = res.data[0]["edit_basic"].split(",").filter(function (el) {
+                return el != "";
+              });
 
           },
           (err) => {
@@ -229,6 +234,7 @@ var app = new Vue({
       form_Data.append("soa", this.soa.toString());
       form_Data.append("transmittal", this.transmittal.toString());
       form_Data.append("edit_emp", this.edit_emp.toString());
+      form_Data.append("edit_basic", this.edit_basic.toString());
 
       axios({
         method: "post",

@@ -30,7 +30,7 @@ else
           $position = $decoded->data->position;
           $apartment_id = -1;
 
-          if($position == 'Owner' || $position == 'Managing Director' || $position == 'Chief Advisor' || $position == 'Value Delivery Manager' ) {
+          if($position == 'Owner' || $position == 'Managing Director' || $position == 'Chief Advisor' || $position == 'Value Delivery Manager') {
               $apartment_id = "";
           }
 
