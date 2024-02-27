@@ -72,7 +72,7 @@ var app = new Vue({
             var form_Data = new FormData();
       
             let res = await axios.get('api/access_control_kind_get', { headers: { "Authorization": `Bearer ${token}` }, params: { kind: 'edit_basic' } });
-            this.edit_emp = res.data.edit_emp;
+            this.edit_basic = res.data.edit_basic;
           },
 
 		getReceiveRecords: function(keyword) {
