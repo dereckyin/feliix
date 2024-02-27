@@ -4691,3 +4691,7 @@ ADD COLUMN `sig_name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
 
 ALTER TABLE user
 ADD COLUMN `sig_date` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20240227 access
+ALTER TABLE access_control
+ADD COLUMN `edit_basic` text COLLATE utf8mb4_unicode_ci;

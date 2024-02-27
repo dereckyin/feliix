@@ -11,6 +11,7 @@ let mainState = {
     is_checked: false,
     id: 0,
     username: '',
+    title: '',
     pic_url: '',
     tel: '',
     date_start_company: '',
@@ -46,6 +47,8 @@ let mainState = {
 
     user : {},
 
+    edit_emp: false,
+
 };
 
 var app = new Vue({
@@ -57,7 +60,7 @@ var app = new Vue({
       console.log('Vue created');
       this.getReceiveRecords();
 
-
+      this.getUserName();
     },
 
  
@@ -77,6 +80,44 @@ var app = new Vue({
                     console.log(error);
                 });
         },
+
+        
+        getUserName: function() {
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+            let _this = this;
+
+            form_Data.append("jwt", token);
+    
+            axios({
+                method: 'post',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                url: 'api/on_duty_get_myname',
+                data: form_Data
+            })
+            .then(function(response) {
+                //handle success
+                _this.username = response.data.username;
+                _this.title = response.data.title.trim();
+
+                if(_this.title == "Chief Advisor" || _this.title == "Operations Manager")
+                    _this.edit_emp = true;
+                else
+                    _this.edit_emp = false;
+    
+            })
+            .catch(function(response) {
+                //handle error
+                Swal.fire({
+                text: JSON.stringify(response),
+                icon: 'error',
+                confirmButtonText: 'OK'
+                })
+            });
+        },
+
 
 		getIndex(index) {
             return ((this.page - 1) * this.perPage.id) + index

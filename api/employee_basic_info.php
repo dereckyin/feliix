@@ -26,6 +26,19 @@ else
           $decoded = JWT::decode($jwt, $key, array('HS256'));
 
           $user_id = $decoded->data->id;
+
+          $position = $decoded->data->position;
+          $apartment_id = -1;
+
+          if($position == 'Owner' || $position == 'Managing Director' || $position == 'Chief Advisor' || $position == 'Value Delivery Manager' ) {
+              $apartment_id = "";
+          }
+
+          if($position == 'Sales Manager' || $position == 'Lighting Manager' || $position == 'Office Systems Manager' || $position == 'Engineering Manager' || $position == 'Operations Manager') {
+              $apartment_id = $decoded->data->apartment_id;
+          }
+
+          
       }
       // if decode fails, it means jwt is invalid
       catch (Exception $e){
@@ -51,13 +64,15 @@ else
             $size = (isset($_GET['size']) ?  $_GET['size'] : "");
             $keyword = (isset($_GET['keyword']) ?  $_GET['keyword'] : "");
 
-            $apartment_id = (isset($_GET['apartment_id']) ? $_GET['apartment_id'] : "");
+            //$apartment_id = (isset($_GET['apartment_id']) ? $_GET['apartment_id'] : "");
 
             $sql = "SELECT 0 as is_checked, user.id, user.id user_id, user.username, user.email, user.status,  COALESCE(department, '') department, apartment_id, title_id, COALESCE(title, '') title, 
                         COALESCE(eds.id, 0) data_id,
+
                         COALESCE(es.first_name , '') first_name,
                         COALESCE(es.middle_name , '') middle_name,
                         COALESCE(es.surname , '') surname,
+
                         COALESCE(eds.emp_number , '') emp_number,
                         COALESCE(eds.date_hired , '') date_hired,
                         COALESCE(eds.regular_hired , '') regular_hired,
@@ -67,6 +82,11 @@ else
                         COALESCE(eds.superior , '') superior,
 
                         COALESCE(eds.updated_at , '') updated_at,
+
+                        eds.status as eds_status,
+
+                        (select count(*) from employee_basic_info where employee_basic_info.user_id = user.id and employee_basic_info.status = 1) as need_review,
+                        
                         '' updated_str
                     FROM user 
                     LEFT JOIN user_department ON user.apartment_id = user_department.id 
@@ -102,15 +122,57 @@ else
 
 
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $merged_results[] = $row;
-            }
+                if($row['need_review'] == 1 && $row['eds_status'] == 1)
+                {
+                    if($merged_results[count($merged_results) - 1]['username'] == $row['username'])
+                        array_push($merged_results[count($merged_results) - 1]['review'], $row);
+                    else
+                    {
+                        // add dummy row
+                        $dummy['is_checked'] = 0;
+                        $dummy['id'] = $row['id'];
+                        $dummy['user_id'] = $row['user_id'];
+                        $dummy['username'] = $row['username'];
+                        $dummy['email'] = $row['email'];
+                        $dummy['status'] = $row['status'];
+                        $dummy['department'] = $row['department'];
+                        $dummy['apartment_id'] = $row['apartment_id'];
+                        $dummy['title_id'] = $row['title_id'];
+                        $dummy['title'] = $row['title'];
+                        $dummy['data_id'] = $row['data_id'];
+                        $dummy['first_name'] = $row['first_name'];
+                        $dummy['middle_name'] = $row['middle_name'];
+                        $dummy['surname'] = $row['surname'];
+                        $dummy['emp_number'] = '';
+                        $dummy['date_hired'] = '';
+                        $dummy['regular_hired'] = '';
+                        $dummy['emp_status'] = '';
+                        $dummy['company'] = '';
+                        $dummy['emp_category'] = '';
+                        $dummy['superior'] = '';
+                        $dummy['updated_at'] = '';
+                        $dummy['eds_status'] = 0;
+                        $dummy['need_review'] = 1;
+                        $dummy['updated_str'] = '';
 
+                        $dummy['review'] = array();
+
+                        array_push($dummy['review'], $row);
+
+                        $merged_results[] = $dummy;
+
+                    }
+                }
+                else
+                {
+                    $row['review'] = array();
+                    $merged_results[] = $row;
+                }
+            }
             echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);
 
             break;
 
-      }
-
-
+    }
 
 ?>

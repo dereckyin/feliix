@@ -1,4 +1,64 @@
-<?php include 'check.php';?>
+<?php
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
+if ($jwt === NULL || $jwt === '') {
+    setcookie("userurl", $_SERVER['REQUEST_URI']);
+    header('location:index');
+}
+
+include_once 'api/config/core.php';
+include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
+include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'api/libs/php-jwt-master/src/JWT.php';
+include_once 'api/project03_is_creator.php';
+
+use \Firebase\JWT\JWT;
+
+try {
+    // decode jwt
+    $decoded = JWT::decode($jwt, $key, array('HS256'));
+
+    $user_id = $decoded->data->id;
+    $username = $decoded->data->username;
+
+    $position = $decoded->data->position;
+    $department = $decoded->data->department;
+
+    $database = new Database();
+    $db = $database->getConnection();
+
+    //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
+    //    header( 'location:index.php' );
+
+    $access6 = false;
+
+    if (trim(strtoupper($position)) == 'OWNER' || trim(strtoupper($position)) == 'MANAGING DIRECTOR' || trim(strtoupper($position)) == 'CHIEF ADVISOR'
+        || trim(strtoupper($position)) == 'VALUE DELIVERY MANAGER' || trim(strtoupper($position)) == 'SALES MANAGER'
+        || trim(strtoupper($position)) == 'LIGHTING MANAGER' || trim(strtoupper($position)) == 'OFFICE SYSTEMS MANAGER' || trim(strtoupper($position)) == 'ENGINEERING MANAGER'
+        || trim(strtoupper($position)) == 'OPERATIONS MANAGER')
+    {
+        $access6 = true;
+    }
+
+    $query = "SELECT * FROM access_control WHERE edit_basic LIKE '%" . $username . "%' ";
+    $stmt = $db->prepare( $query );
+    $stmt->execute();
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $access6 = true;
+    }
+
+
+    if ($access6 == false)
+        header('location:index');
+}
+// if decode fails, it means jwt is invalid
+catch (Exception $e) {
+
+    header('location:index');
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -230,8 +290,8 @@ $(function(){
 
                 <div class="btnbox">
                     <a class="btn" @click="viewRecord()">View</a>
-                    <a class="btn" @click="editRecord()">Edit</a>
-                    <a class="btn" @click="resetRecord()">Reset</a>
+                    <a class="btn" @click="editRecord()" v-if="edit_emp">Edit</a>
+                    <a class="btn" @click="resetRecord()" v-if="edit_emp">Reset</a>
                 </div>
 
             </div>
