@@ -285,10 +285,12 @@ switch ($method) {
         // prepare the query
         $stmt = $db->prepare($query);
 
+        $json = json_encode($general_requirement_ary['block']);
+
         // bind the values
         $stmt->bindParam(':quotation_id', $last_id);
         $stmt->bindParam(':title', $general_requirement_ary['title']);
-        $stmt->bindParam(':block', json_encode($general_requirement_ary['block']));
+        $stmt->bindParam(':block', $json);
         $stmt->bindParam(':create_id', $user_id);
     
         try {

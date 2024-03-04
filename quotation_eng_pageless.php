@@ -2421,12 +2421,12 @@ header( 'location:index' );
                                             <span>No.:</span> <input style="width: 105px;" type="text" v-model="block.no"><br>
                                             <span>Description:</span> <input type="text" v-model="block.desc"><br>
 
-                                            <span>Qty:</span> <input type="number" min="1" step="1" v-model="block.qty">
+                                            <span>Qty:</span> <input type="number" min="1" step="1" v-model="block.qty" @change="chang_block_amount(block)">
                                             <span>Unit:</span> <input style="width: 105px;" type="text" v-model="block.unit">
                                             <span>Unit Labor Cost:</span> <input type="number" v-model="block.unit_cost" disabled><br>
 
-                                            <span>Discount:</span> <input type="number" v-model="block.discount" min="0" max="100" @change="chang_amount(block)" oninput="this.value|=0">
-                                            <span>Total Labor Cost:</span> <input type="number" v-model="block.total" @change="chang_my_amount(block)"><br>
+                                            <span>Discount:</span> <input type="number" v-model="block.discount" min="0" max="100" @change="chang_block_amount(block)" oninput="this.value|=0">
+                                            <span>Total Labor Cost:</span> <input type="number" v-model="block.total"><br>
 
                                             <input type="checkbox" class="alone" value="1" v-model="block.not_show" style="margin-left: 0;"> Not show this item
                                         </li>
@@ -2494,11 +2494,11 @@ header( 'location:index' );
 
                         <div class="detailbox">
 
-                            <div class="title_box" v-if="temp_detail_block.desc">
+                            <div class="title_box" v-if="requirement_id != 0">
                                 {{temp_detail_block.desc}}
                             </div>
 
-                            <div class="function_box" v-if="temp_detail_block.desc">
+                            <div class="function_box" v-if="requirement_id != 0">
                                 <select id="cost_type">
                                     <option value="material">Unit Material Cost</option>
                                     <option value="labor">Unit Labor Cost</option>
@@ -2514,12 +2514,12 @@ header( 'location:index' );
                                         <span>Description:</span> <input type="text" v-model="detail.desc"><br>
 
 
-                                        <span>Quantity:</span> <input type="number" min="1" step="1" v-model="detail.qty" @change="chang_amount(detail)" oninput="this.value|=0">
+                                        <span>Quantity:</span> <input type="number" min="1" step="1" v-model="detail.qty" @change="chang_detail_amount(detail)" oninput="this.value|=0">
                                         <span>Unit:</span> <input style="width: 105px;" type="text" v-model="detail.unit">
                                         <span>Duration (Days):</span> <input type="number" v-model="detail.duration"><br>
 
-                                        <span>Unit Material Cost 或 Unit Labor Cost:</span> <input type="number" v-model="detail.price" @change="chang_amount(detail)">
-                                        <span>Multiplier(%):</span> <input type="number" v-model="detail.ratio" @change="chang_amount(detail)">
+                                        <span v-if="detail.cost_type == 'material'">Unit Material Cost</span><span v-if="detail.cost_type == 'labor'">Labor Cost:</span> <input type="number" v-model="detail.price" @change="chang_detail_amount(detail)">
+                                        <span>Multiplier(%):</span> <input type="number" v-model="detail.ratio" @change="chang_detail_amount(detail)" max="100">
                                         <span>Total:</span> <input type="number" v-model="detail.total" @change="chang_my_amount(detail)">
                                     </li>
                                     <li>

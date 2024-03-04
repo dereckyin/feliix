@@ -75,6 +75,8 @@ var app = new Vue({
       block_names : [],
       block_value : [],
 
+      requirement_id : 0,
+      
       general_requirement : [],
       consumable : [],
 
@@ -2110,7 +2112,7 @@ var app = new Vue({
       
       },
 
-      subtotal_save_changes: async function (id, type_id, temp_block) {
+      subtotal_save_changes: async function (id, rid) {
         if (this.submit == true) return;
 
         this.submit = true;
@@ -2122,38 +2124,15 @@ var app = new Vue({
         form_Data.append("jwt", token);
  
         form_Data.append("id", id);
-        form_Data.append("type_id", type_id);
-        form_Data.append("block", JSON.stringify(temp_block));
-        form_Data.append("pageless", 'Y');
-      
-        for (var i = 0; i < temp_block.length; i++) {
-          let file = document.getElementById('block_image_' + temp_block[i].id + '_1');
-          if(file) {
-            let f = file.files[0];
-            if(typeof f !== 'undefined') 
-              form_Data.append('block_image_' + temp_block[i].id + '_1', f);
-          }
-
-          let file2 = document.getElementById('block_image_' + temp_block[i].id + '_2');
-          if(file2) {
-            let f = file2.files[0];
-            if(typeof f !== 'undefined') 
-              form_Data.append('block_image_' + temp_block[i].id + '_2', f);
-          }
-
-          let file3 = document.getElementById('block_image_' + temp_block[i].id + '_3');
-          if(file3) {
-            let f = file3.files[0];
-            if(typeof f !== 'undefined') 
-              form_Data.append('block_image_' + temp_block[i].id + '_3', f);
-          }
-        }
-    
+        form_Data.append("rid", rid);
+        form_Data.append("quotation_id", this.id);
+        form_Data.append("block", JSON.stringify(this.temp_general_requirement_detail));
+          
 
         try {
           let res = await axios({
             method: 'post',
-            url: 'api/quotation_page_type_block_update',
+            url: 'api/quotation_eng_page_type_block_update',
             data: form_Data,
             headers: {
               "Content-Type": "multipart/form-data",
@@ -2163,6 +2142,7 @@ var app = new Vue({
           if(res.status == 200){
             // test for status you want, etc
             _this.block_value = [];
+            _this.requirement_id = 0;
             _this.submit = false;
 
             Swal.fire({
@@ -2187,40 +2167,22 @@ var app = new Vue({
 
         },
 
-      subtotal_save() {
-        if(this.block_value.id == undefined)
+      async subtotal_save() {
+        if(this.requirement_id == 0)
           return;
 
         if(this.check_value() == false)
           return;
 
-        var _id = this.block_value.id;
-        var _type = this.block_value.type;
-        var _page = this.block_value.page;
-
-        var element = this.receive_records[0].pages.find(({ page }) => page === _page);
-        var type = element.types.find(({ id }) => id === _id);
-        
-        if(_type == "A" && this.temp_block_a.length >= 0) {
-          type.block_a = this.temp_block_a;
-
-          this.subtotal_save_changes(this.id, _id, this.temp_block_a);
-        }
-
-        if(_type == "B" && this.temp_block_b.length >= 0) {
-          type.block_b = this.temp_block_b;
-
-          this.subtotal_save_changes(this.id, _id, this.temp_block_b);
-        }
-        
-        
+        await this.subtotal_save_changes(this.requirement_id, this.temp_general_requirement.id);
+            
         this.subtotal_close();
 
       },
 
       check_value() {
-        for(var i = 0; i < this.temp_block_a.length; i++) {
-          if(this.temp_block_a[i].qty < 1 || this.temp_block_a[i].qty === '') {
+        for(var i = 0; i < this.temp_detail_block.details.length; i++) {
+          if(this.temp_detail_block.details[i].qty < 1 || this.temp_detail_block.details[i].qty === '') {
             Swal.fire({
               text: "Qty must greater then 1.",
               icon: "info",
@@ -2230,7 +2192,7 @@ var app = new Vue({
             return false;
           }
 
-          if(this.temp_block_a[i].discount < 0 || this.temp_block_a[i].discount > 100 || this.temp_block_a[i].discount === '') {
+          if(this.temp_detail_block.details[i].discount < 0 || this.temp_detail_block.details[i].discount > 100 || this.temp_detail_block.details[i].discount === '') {
             Swal.fire({
               text: "Discount must between 0 and 100.",
               icon: "info",
@@ -2240,29 +2202,6 @@ var app = new Vue({
             return false;
           }
         }
-
-        for(var i = 0; i < this.temp_block_b.length; i++) {
-          if(this.temp_block_b[i].qty < 1 || this.temp_block_b[i].qty === '') {
-            Swal.fire({
-              text: "Qty must greater then 1.",
-              icon: "info",
-              confirmButtonText: "OK",
-            });
-
-            return false;
-          }
-
-          if(this.temp_block_b[i].discount < 0 || this.temp_block_b[i].discount > 100 || this.temp_block_b[i].discount === '') {
-            Swal.fire({
-              text: "Discount must between 0 and 100.",
-              icon: "info",
-              confirmButtonText: "OK",
-            });
-
-            return false;
-          }
-        }
-
         return true;
       },
 
@@ -2273,12 +2212,15 @@ var app = new Vue({
         this.temp_block_a = [];
         this.temp_block_b = [];
 
+        this.temp_detail_block.details = [];
+
         this.edit_type_a_image = false;
         this.edit_type_a_noimage = false;
           
         this.edit_type_b_noimage = false;
 
         this.block_value = [];
+        this.requirement_id = 0;
 
         this.is_load = false;
       },
@@ -2319,28 +2261,34 @@ var app = new Vue({
         if (toIndex < 0) 
           return;
 
-        var element = this.temp_block_a.find(({ id }) => id === eid);
-        this.temp_block_a.splice(fromIndex, 1);
-        this.temp_block_a.splice(toIndex, 0, element);
+        var element = this.temp_detail_block.details.find(({ id }) => id === eid);
+        this.temp_detail_block.details.splice(fromIndex, 1);
+        this.temp_detail_block.details.splice(toIndex, 0, element);
+
+        this.$forceUpdate();
       },
 
       block_a_down: function(fromIndex, eid) {
         var toIndex = fromIndex + 1;
 
-        if (toIndex > this.temp_block_a.length - 1) 
+        if (toIndex > this.temp_detail_block.details.length - 1) 
           return;
   
-        var element = this.temp_block_a.find(({ id }) => id === eid);
-        this.temp_block_a.splice(fromIndex, 1);
-        this.temp_block_a.splice(toIndex, 0, element);
+        var element = this.temp_detail_block.details.find(({ id }) => id === eid);
+        this.temp_detail_block.details.splice(fromIndex, 1);
+        this.temp_detail_block.details.splice(toIndex, 0, element);
+
+        this.$forceUpdate();
       },
 
       block_a_del: function(eid) {
 
-        var index = this.temp_block_a.findIndex(({ id }) => id === eid);
+        var index = this.temp_detail_block.details.findIndex(({ id }) => id === eid);
         if (index > -1) {
-          this.temp_block_a.splice(index, 1);
+          this.temp_detail_block.details.splice(index, 1);
         }
+
+        this.$forceUpdate();
       },
 
       clear_photo(_id, num) {
@@ -2439,11 +2387,11 @@ var app = new Vue({
             });
       },
 
-      chang_amount: function(row) {
+      chang_block_amount: function(row) {
         if(row.qty == '')
           return;
 
-        if(row.price == '')
+        if(row.unit_cost == '')
           return;
 
         row.qty = Math.floor(row.qty);
@@ -2453,23 +2401,33 @@ var app = new Vue({
 
         
         // let charge = this.payment_record.charge;
-        let charge = (Number(row.qty)) * Number(row.price) * Number(row.ratio)  * ((100 - Math.floor(row.discount)) / 100);
+        let charge = (Number(row.qty)) * Number(row.unit_cost) *  ((100 - Math.floor(row.discount)) / 100);
 
-        if(this.product_vat == 'P')
-          charge = charge * 1.12;
+        row.total = charge.toFixed(2);
 
-        row.amount = charge.toFixed(2);
+      },
 
-        let ss =  Number(row.price) * Number(row.ratio)  * ((100 - Math.floor(row.discount)) / 100);
+      
+      chang_detail_amount: function(row) {
+        if(row.qty == '')
+          return;
 
-        if(charge < row.srp * Number(row.qty))
-        {
-          Swal.fire({
-            text: "Warning!! Current discounted product price (P " + (row.amount / Number(row.qty)).toFixed(2) + ") is already lower than SRP (P " + Number(row.srp).toFixed(2) + ").",
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-        }
+        if(row.price == '')
+          return;
+
+        if(row.ratio == '')
+          return;
+
+        row.qty = Math.floor(row.qty);
+        row.ratio = Math.floor(row.ratio);
+        
+        // let charge = this.payment_record.charge;
+        let charge = (Number(row.qty)) * Number(row.price) *  Math.floor(row.ratio);
+
+        row.total = charge.toFixed(2);
+
+        this.$forceUpdate();
+
       },
 
       add_block_a() {
@@ -2561,6 +2519,7 @@ Installation:`;
         return;
 
          this.temp_detail_block = this.block_value;
+         this.requirement_id = this.block_value.id;
 
          if(this.temp_detail_block.details == undefined)
          {
