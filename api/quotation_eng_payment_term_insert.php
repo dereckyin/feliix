@@ -15,7 +15,6 @@ $detail_array = json_decode($detail, true);
 
 $pixa = isset($_POST['pixa']) ? $_POST['pixa'] : 0;
 $show = isset($_POST['show']) ? $_POST['show'] : '';
-$pageless = isset($_POST['pageless']) ? $_POST['pageless'] : '';
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -111,10 +110,7 @@ else
         echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
         die();
         }
-
-        $page = $detail_array['page'];
-        $page == '' ? $page = 1 : $page = $page;
-     
+    
     
         $query = "INSERT INTO quotation_eng_payment_term
         SET

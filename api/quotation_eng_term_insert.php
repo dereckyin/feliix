@@ -52,7 +52,7 @@ else
         $uid = $user_id;
 
         // quotation_page
-        $query = "UPDATE quotation_eng set pixa_t = :pixa_t, show_t = :show_t, pageless = :pageless
+        $query = "UPDATE quotation_eng set pixa_t = :pixa_t, show_t = :show_t
                 WHERE
                 `id` = :quotation_id";
 
@@ -62,7 +62,6 @@ else
         // bind the values
         $stmt->bindParam(':pixa_t', $pixa);
         $stmt->bindParam(':show_t', $show);
-        $stmt->bindParam(':pageless', $pageless);
         $stmt->bindParam(':quotation_id', $quotation_id);
 
         try {
@@ -112,8 +111,6 @@ else
         die();
         }
 
-        $page = $detail_array['page'];
-        $page == '' ? $page = 1 : $page = $page;
      
         for($i=0 ; $i < count($detail_array['item']) ; $i++)
         {
@@ -133,7 +130,6 @@ else
 
             // bind the values
             $stmt->bindParam(':quotation_id', $quotation_id);
-            $stmt->bindParam(':page', $page);
             $stmt->bindParam(':title', $detail_array['item'][$i]['title']);
             $stmt->bindParam(':brief', $detail_array['item'][$i]['brief']);
             $stmt->bindParam(':list', $detail_array['item'][$i]['list']);

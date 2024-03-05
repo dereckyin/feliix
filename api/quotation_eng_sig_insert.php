@@ -15,7 +15,6 @@ $detail_array = json_decode($detail, true);
 
 $pixa = isset($_POST['pixa']) ? $_POST['pixa'] : 0;
 $show = isset($_POST['show']) ? $_POST['show'] : '';
-$pageless = isset($_POST['pageless']) ? $_POST['pageless'] : '';
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -112,7 +111,6 @@ else
         die();
         }
 
-        $page = $detail_array['page'];
      
         for($i=0 ; $i < count($detail_array['item_client']) ; $i++)
         {
@@ -134,7 +132,7 @@ else
 
             // bind the values
             $stmt->bindParam(':quotation_id', $quotation_id);
-            $stmt->bindParam(':page', $page);
+      
             $stmt->bindParam(':name', $detail_array['item_client'][$i]['name']);
             $stmt->bindParam(':position', $detail_array['item_client'][$i]['position']);
             $stmt->bindParam(':phone', $detail_array['item_client'][$i]['phone']);
@@ -190,7 +188,7 @@ else
 
             // bind the values
             $stmt->bindParam(':quotation_id', $quotation_id);
-            $stmt->bindParam(':page', $page);
+     
             $stmt->bindParam(':name', $detail_array['item_company'][$i]['name']);
             $stmt->bindParam(':position', $detail_array['item_company'][$i]['position']);
             $stmt->bindParam(':phone', $detail_array['item_company'][$i]['phone']);
