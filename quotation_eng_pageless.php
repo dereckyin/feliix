@@ -2394,13 +2394,13 @@ header( 'location:index' );
 
                                 <dt class="head">Choose whether to show the block of general requirements in this document:</dt>
                                 <dd>
-                                    <select v-model="show_r">
+                                    <select v-model="temp_general_requirement.show_r">
                                         <option value="N">No</option>
                                         <option value="">Yes</option>
                                     </select>
                                 </dd>
 
-                                <dt class="head" v-if="show_r == ''">Distance from Next Block: <input type="number" v-model="pixa_r"> pixel</dt>
+                                <dt class="head" v-if="temp_general_requirement.show_r == ''">Distance from Next Block: <input type="number" v-model="temp_general_requirement.pixa_r"> pixel</dt>
                             </dl>
                         </div>
 
@@ -3269,7 +3269,7 @@ header( 'location:index' );
 
                                 <!-- 表格標題列 -->
                                 <tr class="thead1">
-                                    <td class="title" colspan="6">{{ tp.name }}</td>
+                                    <td class="title" colspan="6">{{ general_requirement.title }}</td>
                                 </tr>
 
                                 <tr class="thead2">
@@ -3281,15 +3281,15 @@ header( 'location:index' );
                                     <td>Total Labor Cost</td>
                                 </tr>
 
-                                <template v-for="(bk, index) in tp.blocks">
+                                <template v-for="(bk, index) in general_requirement.block">
                                 <!-- 表格內容物 -->
 
-                                <tr class="desc1">
+                                <tr class="desc1" v-if="bk.not_show == ''">
 
-                                    <td>{{ bk.num }}</td>
+                                    <td>{{ bk.no }}</td>
 
                                     <td>
-                                        <div class="description">{{ bk.description }}</div>
+                                        <div class="description">{{ bk.desc }}</div>
                                     </td>
 
                                     <td>
@@ -3302,20 +3302,20 @@ header( 'location:index' );
 
                                     <!-- Unit Labor Cost -->
                                     <td>
-                                        <span class="numbers" v-if="bk.discount == 0">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers deleted" v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">₱ {{ (bk.price * bk.ratio  !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}<span
-                                                v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio - (bk.price * bk.ratio * (bk.discount / 100))).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount == 100 || bk.amount == '0.00')">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers" v-if="bk.discount == 0">₱ {{ bk.qty * bk.unit_cost !== undefined ? Number(bk.qty * bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers deleted" v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">₱ {{ (bk.qty * bk.unit_cost  !== undefined ? Number(bk.qty * bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}<span
+                                                v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">
+                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">₱ {{ bk.qty * bk.unit_cost !== undefined ? Number(bk.qty * bk.unit_cost - (bk.qty * bk.unit_cost * (bk.discount / 100))).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount == 100 || bk.total == '0.00')">₱ {{ bk.qty * bk.unit_cost !== undefined ? Number(bk.qty * bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
                                     </td>
 
                                     <!-- Total Labor Cost -->
-                                    <td v-if="bk.amount != '0.00' && product_vat !== 'P'">
-                                        <span class="numbers">₱ {{ bk.amount !== undefined ? Number(bk.amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
+                                    <td v-if="bk.total != '0.00' && product_vat !== 'P'">
+                                        <span class="numbers">₱ {{ bk.total !== undefined ? Number(bk.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
                                     </td>
 
-                                    <td v-if="bk.amount == '0.00' && product_vat !== 'P'">
-                                        <span class="numbers deleted">₱ {{ (bk.qty * bk.ratio * bk.price  !== undefined ? Number(bk.qty * bk.ratio * bk.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
+                                    <td v-if="bk.total == '0.00' && product_vat !== 'P'">
+                                        <span class="numbers deleted">₱ {{ (bk.qty * bk.unit_cost * bk.qty  !== undefined ? Number(bk.qty * bk.unit_cost * bk.qty).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
                                         <span class="numbers red">FREE AS PACKAGE!</span>
                                     </td>
                                 </tr>
@@ -3327,12 +3327,12 @@ header( 'location:index' );
                                 <tr class="tfoot1">
                                     <td colspan="4"></td>
                                     <td>SUBTOTAL</td>
-                                    <td v-if="tp.real_amount == 0">₱ {{ tp.subtotal !== undefined ?
-                                        Number(tp.subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
+                                    <td v-if="general_requirement.general_requirement_total == 0">₱ {{ general_requirement.general_requirement_total !== undefined ?
+                                        Number(general_requirement.general_requirement_total).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
                                         "$1,") : '0.00' }}
                                     </td>
-                                    <td v-if="tp.real_amount != 0">₱ {{ tp.real_amount !== undefined ?
-                                        Number(tp.real_amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
+                                    <td v-if="general_requirement.general_requirement_total != 0">₱ {{ general_requirement.general_requirement_total !== undefined ?
+                                        Number(general_requirement.general_requirement_total).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
                                         "$1,") : '0.00' }}
                                     </td>
                                 </tr>

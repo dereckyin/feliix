@@ -71,6 +71,12 @@ else
   
         // now you can apply
         $uid = $user_id;
+
+        $show_r = '';
+        $pixa_r = 0;
+
+        $show_r = $general_requirement_ary["show_r"];
+        $pixa_r = $general_requirement_ary["pixa_r"];
     
         $query = "INSERT INTO quotation_eng
         SET
@@ -89,6 +95,9 @@ else
             `prepare_by_second_line` = :prepare_by_second_line,
             `footer_first_line` = :footer_first_line,
             `footer_second_line` = :footer_second_line,
+
+            `show_r` = :show_r,
+            `pixa_r` = :pixa_r,
             
             `status` = 0,
             `create_id` = :create_id,
@@ -113,6 +122,9 @@ else
         $stmt->bindParam(':prepare_by_second_line', $prepare_by_second_line);
         $stmt->bindParam(':footer_first_line', $footer_first_line);
         $stmt->bindParam(':footer_second_line', $footer_second_line);
+
+        $stmt->bindParam(':show_r', $show_r);
+        $stmt->bindParam(':pixa_r', $pixa_r);
 
         $stmt->bindParam(':create_id', $user_id);
        
@@ -148,13 +160,15 @@ else
             `create_id` = :create_id,
             `created_at` = now()";
 
+        $json = json_encode($general_requirement_ary['block']);
+
         // prepare the query
         $stmt = $db->prepare($query);
 
         // bind the values
         $stmt->bindParam(':quotation_id', $last_id);
         $stmt->bindParam(':title', $general_requirement_ary['title']);
-        $stmt->bindParam(':block', json_encode($general_requirement_ary['block']));
+        $stmt->bindParam(':block', $json);
         $stmt->bindParam(':create_id', $user_id);
     
         try {

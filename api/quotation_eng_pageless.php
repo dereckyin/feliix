@@ -133,7 +133,16 @@ if (!isset($jwt)) {
         $pixa_c = $row['pixa_c'] == '' ? 0 : $row['pixa_c'];
         $show_c = $row['show_c'];
 
-        $general_requirement = GetGeneralRequirement($row['id'], $db);
+        $general_requirement = GetGeneralRequirement($row['id'], $db, $show_r, $pixa_r);
+        $general_requirement_total = 0;
+        foreach($general_requirement['block'] as $item)
+        {
+            if($item['not_show'] == '')
+                $general_requirement_total += $item['total'];
+        }
+
+        $general_requirement['general_requirement_total'] = $general_requirement_total;
+
         $consumable = GetConsumable($row['id'], $db);
 
         $total_info = GetTotalInfo($row['id'], $db);
@@ -186,6 +195,7 @@ if (!isset($jwt)) {
             "show_c" => $show_c,
 
             "general_requirement" => $general_requirement,
+            
             "consumable" => $consumable,
 
             "total_info" => $total_info,
@@ -225,7 +235,9 @@ if (!isset($jwt)) {
         $pixa_c = 0;
         $show_c = '';
 
-        $general_requirement = GetGeneralRequirement(0, $db);
+        $general_requirement = GetGeneralRequirement(0, $db, $show_r, $pixa_r);
+        $general_requirement['general_requirement_total'] = 0;
+       
         $consumable = GetConsumable(0, $db);
 
         $total_info = GetTotalInfo(0, $db);
@@ -262,6 +274,7 @@ if (!isset($jwt)) {
             "show_c" => $show_c,
 
             "general_requirement" => $general_requirement,
+
             "consumable" => $consumable,
 
             "total_info" => $total_info,
@@ -1465,7 +1478,7 @@ function GetProductId($code, $db)
     return $pid;
 }
 
-function GetGeneralRequirement($qid, $db)
+function GetGeneralRequirement($qid, $db, $show_r, $pixa_r)
 {
     $query = "
         SELECT 
@@ -1490,6 +1503,9 @@ function GetGeneralRequirement($qid, $db)
         {
             $item = json_decode($list, TRUE);
             $row['block'] = $item;
+            
+            $row["show_r"] = $show_r;
+            $row["pixa_r"] = $pixa_r;
         }
 
         $merged_results = $row;
@@ -1501,6 +1517,8 @@ function GetGeneralRequirement($qid, $db)
             "id" => 0,
             "quotation_id" => $qid,
             "title" => "",
+            "show_r" => $show_r,
+            "pixa_r" => $pixa_r,
             "block" => [],
         );
     }

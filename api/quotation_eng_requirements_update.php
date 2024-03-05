@@ -78,6 +78,9 @@ switch ($method) {
         $general_requirement = (isset($_POST['general_requirement']) ?  $_POST['general_requirement'] : '[]');
         $general_requirement_ary = json_decode($general_requirement, true);
 
+        $show_r = (isset($general_requirement_ary['show_r']) ?  $general_requirement_ary['show_r'] : '');
+        $pixa_r = (isset($general_requirement_ary['pixa_r']) ?  $general_requirement_ary['pixa_r'] : 0);
+
         if ($id == 0) {
             http_response_code(401);
             echo json_encode(array("message" => "Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . "Access denied."));
@@ -103,6 +106,10 @@ switch ($method) {
                         `prepare_by_second_line` = :prepare_by_second_line,
                         `footer_first_line` = :footer_first_line,
                         `footer_second_line` = :footer_second_line,
+
+                        `show_r` = :show_r,
+                        `pixa_r` = :pixa_r,
+
                         `status` = 0,
                         `create_id` = :create_id,
                         `created_at` =  now() ";
@@ -123,6 +130,9 @@ switch ($method) {
                     $stmt->bindParam(':prepare_by_second_line', $prepare_by_second_line);
                     $stmt->bindParam(':footer_first_line', $footer_first_line);
                     $stmt->bindParam(':footer_second_line', $footer_second_line);
+
+                    $stmt->bindParam(':show_r', $show_r);
+                    $stmt->bindParam(':pixa_r', $pixa_r);
 
                     $stmt->bindParam(':create_id', $user_id);
                 
@@ -165,6 +175,10 @@ switch ($method) {
                         `prepare_by_second_line` = :prepare_by_second_line,
                         `footer_first_line` = :footer_first_line,
                         `footer_second_line` = :footer_second_line,
+
+                        `show_r` = :show_r,
+                        `pixa_r` = :pixa_r,
+
                         `updated_id` = :updated_id,
                         `updated_at` = now()
                         where id = :id";
@@ -185,6 +199,9 @@ switch ($method) {
                 $stmt->bindParam(':prepare_by_second_line', $prepare_by_second_line);
                 $stmt->bindParam(':footer_first_line', $footer_first_line);
                 $stmt->bindParam(':footer_second_line', $footer_second_line);
+
+                $stmt->bindParam(':show_r', $show_r);
+                $stmt->bindParam(':pixa_r', $pixa_r);
                 
                 $stmt->bindParam(':updated_id', $user_id);
 

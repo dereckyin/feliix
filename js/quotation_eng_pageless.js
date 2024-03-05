@@ -2082,7 +2082,7 @@ var app = new Vue({
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          url: "api/quotation_total_insert",
+          url: "api/quotation_eng_total_insert",
           data: form_Data,
         })
           .then(function(response) {
