@@ -1737,7 +1737,7 @@ var app = new Vue({
         try {
           let res = await axios({
             method: 'post',
-            url: 'api/quotation_sig_insert',
+            url: 'api/quotation_eng_sig_insert',
             data: form_Data,
             headers: {
               "Content-Type": "multipart/form-data",
@@ -1795,7 +1795,6 @@ var app = new Vue({
 
         form_Data.append("pixa", this.pixa_t);
         form_Data.append("show", this.show_t);
-        form_Data.append("pageless", 'Y');
 
         try {
           let res = await axios({
@@ -1880,12 +1879,11 @@ var app = new Vue({
 
         form_Data.append("pixa", this.pixa_p);
         form_Data.append("show", this.show_p);
-        form_Data.append("pageless", 'Y');
 
         try {
           let res = await axios({
             method: 'post',
-            url: 'api/quotation_payment_term_insert',
+            url: 'api/quotation_eng_payment_term_insert',
             data: form_Data,
             headers: {
               "Content-Type": "multipart/form-data",
