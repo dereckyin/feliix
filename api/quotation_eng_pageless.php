@@ -137,7 +137,7 @@ if (!isset($jwt)) {
         $general_requirement_total = 0;
         foreach($general_requirement['block'] as $item)
         {
-            if($item['not_show'] == '' && is_numeric($string))
+            if($item['not_show'] == '' && is_numeric($item['total']))
                 $general_requirement_total += $item['total'];
         }
 
