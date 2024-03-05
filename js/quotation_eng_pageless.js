@@ -1799,7 +1799,7 @@ var app = new Vue({
         try {
           let res = await axios({
             method: 'post',
-            url: 'api/quotation_term_insert',
+            url: 'api/quotation_eng_term_insert',
             data: form_Data,
             headers: {
               "Content-Type": "multipart/form-data",
