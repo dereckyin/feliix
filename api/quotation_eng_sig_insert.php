@@ -50,6 +50,7 @@ else
   
         // now you can apply
         $uid = $user_id;
+        $last_id = 0;
 
         // quotation_page
         $query = "UPDATE quotation_eng set pixa_s = :pixa_s, show_s = :show_s
