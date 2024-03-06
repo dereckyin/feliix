@@ -2118,6 +2118,14 @@ var app = new Vue({
         var token = localStorage.getItem("token");
         var form_Data = new FormData();
         let _this = this;
+
+        for(var i = 0; i < this.temp_general_requirement_detail.block.length; i++) {
+          if(this.temp_general_requirement_detail.block[i].id == id) {
+            this.temp_general_requirement_detail.block[i] = this.temp_detail_block;
+          
+          }
+        }
+  
   
         form_Data.append("jwt", token);
  
@@ -2210,6 +2218,8 @@ var app = new Vue({
         this.temp_block_a = [];
         this.temp_block_b = [];
 
+        this.temp_detail_block.details = [];
+
         this.edit_type_a_image = false;
         this.edit_type_a_noimage = false;
           
@@ -2219,6 +2229,8 @@ var app = new Vue({
         this.requirement_id = 0;
 
         this.is_load = false;
+
+        this.$forceUpdate();
       },
 
       block_b_up: function(fromIndex, eid) {
@@ -2514,7 +2526,7 @@ Installation:`;
         if(this.block_value.desc == undefined)
         return;
 
-         this.temp_detail_block = this.block_value;
+         this.temp_detail_block = JSON.parse(JSON.stringify(this.block_value));
          this.requirement_id = this.block_value.id;
 
          if(this.temp_detail_block.details == undefined)
@@ -2523,7 +2535,7 @@ Installation:`;
          }
 
           this.is_load = true;
-
+         this.$forceUpdate();
       
       },
 
