@@ -2210,8 +2210,6 @@ var app = new Vue({
         this.temp_block_a = [];
         this.temp_block_b = [];
 
-        this.temp_detail_block.details = [];
-
         this.edit_type_a_image = false;
         this.edit_type_a_noimage = false;
           
