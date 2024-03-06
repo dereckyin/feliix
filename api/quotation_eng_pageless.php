@@ -222,14 +222,14 @@ if (!isset($jwt)) {
         $footer_first_line = '';
         $footer_second_line = '';
         
-        $pixa_s = 0;
+        $pixa_s = 30;
         $show_s = '';
-        $pixa_t = 0;
+        $pixa_t = 30;
         $show_t = '';
-        $pixa_p = 0;
+        $pixa_p = 30;
         $show_p = '';
-        $pixa_r = 0;
-        $show_r = '';
+        $pixa_r = 30;
+        $show_r = 'N';
         $pixa_i = 0;
         $show_i = '';
         $pixa_c = 0;
