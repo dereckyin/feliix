@@ -3310,11 +3310,11 @@ header( 'location:index' );
                                     </td>
 
                                     <!-- Total Labor Cost -->
-                                    <td v-if="bk.total != '0.00' && product_vat !== 'P'">
+                                    <td v-if="bk.total != '0.00' && bk.total != '' && product_vat !== 'P'">
                                         <span class="numbers">₱ {{ bk.total !== undefined ? Number(bk.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
                                     </td>
 
-                                    <td v-if="bk.total == '0.00' && product_vat !== 'P'">
+                                    <td v-if="(bk.total == '0.00' || bk.total == '0.00') && product_vat !== 'P'">
                                         <span class="numbers deleted">₱ {{ (bk.qty * bk.unit_cost * bk.qty  !== undefined ? Number(bk.qty * bk.unit_cost * bk.qty).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
                                         <span class="numbers red">FREE AS PACKAGE!</span>
                                     </td>
