@@ -2661,17 +2661,17 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <dl>
-                                <dt class="head">Name of this sub block: <input type="text"></dt>
+                                <dt class="head">Name of this sub block: <input type="text" v-model="temp_consumable.title"></dt>
 
                                 <dt class="head">Choose whether to show the block of consumables in this document:</dt>
                                 <dd>
-                                    <select v-model="show_c">
+                                    <select v-model="temp_consumable.show_c">
                                         <option value="N">No</option>
                                         <option value="">Yes</option>
                                     </select>
                                 </dd>
 
-                                <dt class="head" v-if="show_c == ''">Distance from Next Block: <input type="number" v-model="pixa_c"> pixel</dt>
+                                <dt class="head" v-if="temp_consumable.show_c == ''">Distance from Next Block: <input type="number" v-model="temp_consumable.pixa_c"> pixel</dt>
                             </dl>
 
                         </div>
@@ -2683,35 +2683,35 @@ header( 'location:index' );
                             <div class="item_block">
 
                                 <div class="function_box">
-                                    <a class="btn small green" @click="add_item(page.id)">Add Blank Item</a>
+                                    <a class="btn small green" @click="add_item_consumable(temp_consumable.block)">Add Blank Item</a>
                                 </div>
 
                                 <div class="content_box">
 
-                                    <ul v-for="(block, block_index) in temp_consumable.item">
+                                    <ul v-for="(block, block_index) in temp_consumable.block">
 
                                         <li>
-                                            <span>No.:</span> <input style="width: 105px;" type="text" v-model="item.num"><br>
-                                            <span>Description:</span> <input type="text" v-model="item.description"><br>
+                                            <span>No.:</span> <input style="width: 105px;" type="text" v-model="block.no"><br>
+                                            <span>Description:</span> <input type="text" v-model="block.desc"><br>
 
-                                            <span>Qty:</span> <input type="number" min="1" step="1" v-model="item.qty">
-                                            <span>Unit:</span> <input style="width: 105px;" type="text" v-model="item.unit"><br>
+                                            <span>Qty:</span> <input type="number" min="1" step="1" v-model="block.qty" @change="chang_amount_consumable(block)">
+                                            <span>Unit:</span> <input style="width: 105px;" type="text" v-model="block.unit"><br>
 
-                                            <span>Unit Labor Cost:</span> <input type="number" v-model="item.unit_labor_cost" disabled>
-                                            <span>Multiplier(%):</span> <input type="number" v-model="item.ratio" @change="chang_amount(block)">
+                                            <span>Unit Labor Cost:</span> <input type="number" v-model="block.unit_cost" disabled>
+                                            <span>Multiplier(%):</span> <input type="number" v-model="block.ratio" @change="chang_amount_consumable(block)">
                                             <br>
 
-                                            <span>Discount:</span> <input type="number" v-model="item.discount" min="0" max="100" @change="chang_amount(block)" oninput="this.value|=0">
-                                            <span>Total Labor Cost:</span> <input type="number" v-model="item.amount" @change="chang_my_amount(block)"><br>
+                                            <span>Discount:</span> <input type="number" v-model="block.discount" min="0" max="100" @change="chang_amount_consumable(block)" oninput="this.value|=0">
+                                            <span>Total Labor Cost:</span> <input type="number" v-model="block.total"><br>
 
-                                            <input type="checkbox" class="alone" value="1" v-model="item.not_show" style="margin-left: 0;"> Not show this item
+                                            <input type="checkbox" class="alone" value="1" v-model="block.not_show" style="margin-left: 0;"> Not show this item
                                         </li>
                                         <li>
-                                            <i class="fas fa-arrow-alt-circle-up" @click="set_up(page.id, block_index, block.id)"></i>
+                                            <i class="fas fa-arrow-alt-circle-up" @click="set_up_consumable(page.id, block_index, block.id)"></i>
 
-                                            <i class="fas fa-arrow-alt-circle-down" @click="set_down(page.id, block_index, block.id)"></i>
+                                            <i class="fas fa-arrow-alt-circle-down" @click="set_down_consumable(page.id, block_index, block.id)"></i>
 
-                                            <i class="fas fa-trash-alt" @click="del_block(page.id, block.id)"></i>
+                                            <i class="fas fa-trash-alt" @click="del_block_consumable(page.id, block.id)"></i>
                                         </li>
                                     </ul>
 
@@ -2723,8 +2723,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="show_page = false">Close</a>
-                                <a class="btn small green" @click="page_save_pre()">Save</a>
+                                <a class="btn small" @click="show_consumables = false">Close</a>
+                                <a class="btn small green" @click="consumalbe_save_pre()">Save</a>
                             </div>
                         </div>
 
@@ -2803,7 +2803,7 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="subtotal_close()">Close</a>
+                                <a class="btn small" @click="close_detail_consumables()">Close</a>
                                 <a class="btn small green" @click="subtotal_save()" v-if="is_load">Save</a>
                             </div>
                         </div>
@@ -3241,7 +3241,7 @@ header( 'location:index' );
                             </div>
 
                             <div class="qn_by">
-                                <br>
+                            Prepared by:<br>
                                 <div class="line1">{{ prepare_by_first_line }}</div>
                                 <div class="line2">{{ prepare_by_second_line }}</div>
                             </div>
