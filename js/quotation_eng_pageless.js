@@ -69,13 +69,18 @@ var app = new Vue({
       temp_detail_block: [],
 
         temp_consumable: [],
+        temp_consumable_detail: [],
+        temp_detail_block_consumable: [],
       
 
       // block_names
       block_names : [],
       block_value : [],
 
+      block_value_consumable : [],
+
       requirement_id : 0,
+      requirement_id_consumable : 0,
       
       general_requirement : [],
       consumable : [],
@@ -163,6 +168,11 @@ var app = new Vue({
         item_client: [],
         item_company: [],
       },
+
+      temp_total: [],
+      temp_term: [],
+      temp_payment_term: [],
+      temp_sig: [],
 
       subtotal:0,
       subtotal_novat:0,
@@ -312,6 +322,7 @@ var app = new Vue({
         out_cnt : 0,
 
         is_load : false,
+        is_load_consumable : false,
 
         product_set : [],
         show_accessory: false,
@@ -2069,6 +2080,7 @@ var app = new Vue({
         form_Data.append("discount", this.total.discount);
         form_Data.append("vat", this.total.vat);
         form_Data.append("show_vat", this.total.show_vat);
+        form_Data.append("show_word", this.total.show_word);
         form_Data.append("valid", this.total.valid);
         form_Data.append("total", this.total.total);
         form_Data.append("pixa", this.pixa);
@@ -2186,6 +2198,84 @@ var app = new Vue({
 
       },
 
+      
+      subtotal_save_consumable_changes: async function (id, rid) {
+        if (this.submit == true) return;
+
+        this.submit = true;
+  
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+        let _this = this;
+
+        for(var i = 0; i < this.temp_consumable_detail.block.length; i++) {
+          if(this.temp_consumable_detail.block[i].id == id) {
+            this.temp_consumable_detail.block[i] = this.temp_detail_block_consumable;
+          
+          }
+        }
+  
+  
+        form_Data.append("jwt", token);
+ 
+        form_Data.append("id", id);
+        form_Data.append("rid", rid);
+        form_Data.append("quotation_id", this.id);
+        form_Data.append("block", JSON.stringify(this.temp_consumable_detail));
+          
+
+        try {
+          let res = await axios({
+            method: 'post',
+            url: 'api/quotation_eng_consumable_block_update',
+            data: form_Data,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+
+          if(res.status == 200){
+            // test for status you want, etc
+            _this.block_value_consumable = [];
+            _this.requirement_id_consumable = 0;
+            _this.submit = false;
+
+            Swal.fire({
+              html: res.data.message,
+              icon: "info",
+              confirmButtonText: "OK",
+            });
+        } 
+          
+        } catch (err) {
+          console.log(err)
+          Swal.fire({
+            text: err,
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+
+            _this.submit = false;
+        }
+
+        this.reload();
+
+        },
+
+      async subtotal_save_consumable() {
+        if(this.requirement_id_consumable == 0)
+          return;
+
+        if(this.check_value_consumable() == false)
+          return;
+
+        await this.subtotal_save_consumable_changes(this.requirement_id_consumable, this.temp_consumable.id);
+            
+        this.close_detail_consumables();
+
+      },
+
+      
       check_value() {
         for(var i = 0; i < this.temp_detail_block.details.length; i++) {
           if(this.temp_detail_block.details[i].qty < 1 || this.temp_detail_block.details[i].qty === '') {
@@ -2211,6 +2301,22 @@ var app = new Vue({
         return true;
       },
 
+      check_value_consumable() {
+        for(var i = 0; i < this.temp_detail_block_consumable.details.length; i++) {
+          if(this.temp_detail_block_consumable.details[i].qty < 1 || this.temp_detail_block_consumable.details[i].qty === '') {
+            Swal.fire({
+              text: "Qty must greater then 1.",
+              icon: "info",
+              confirmButtonText: "OK",
+            });
+
+            return false;
+          }
+
+        }
+        return true;
+      },
+
       subtotal_close() {
         this.show_detail_requirements = false;
         this.edit_type_a = false;
@@ -2229,6 +2335,19 @@ var app = new Vue({
         this.requirement_id = 0;
 
         this.is_load = false;
+
+        this.$forceUpdate();
+      },
+
+      close_detail_consumables() {
+        this.show_detail_consumables = false;
+
+        this.temp_detail_block_consumable.details = [];
+
+        this.block_value_consumable = [];
+        this.requirement_id_consumable = 0;
+
+        this.is_load_consumable = false;
 
         this.$forceUpdate();
       },
@@ -2294,6 +2413,43 @@ var app = new Vue({
         var index = this.temp_detail_block.details.findIndex(({ id }) => id === eid);
         if (index > -1) {
           this.temp_detail_block.details.splice(index, 1);
+        }
+
+        this.$forceUpdate();
+      },
+
+
+      block_a_up_consumable: function(fromIndex, eid) {
+        var toIndex = fromIndex - 1;
+  
+        if (toIndex < 0) 
+          return;
+
+        var element = this.temp_detail_block_consumable.details.find(({ id }) => id === eid);
+        this.temp_detail_block_consumable.details.splice(fromIndex, 1);
+        this.temp_detail_block_consumable.details.splice(toIndex, 0, element);
+
+        this.$forceUpdate();
+      },
+
+      block_a_down_consumable: function(fromIndex, eid) {
+        var toIndex = fromIndex + 1;
+
+        if (toIndex > this.temp_detail_block_consumable.details.length - 1) 
+          return;
+  
+        var element = this.temp_detail_block_consumable.details.find(({ id }) => id === eid);
+        this.temp_detail_block_consumable.details.splice(fromIndex, 1);
+        this.temp_detail_block_consumable.details.splice(toIndex, 0, element);
+
+        this.$forceUpdate();
+      },
+
+      block_a_del_consumable: function(eid) {
+
+        var index = this.temp_detail_block_consumable.details.findIndex(({ id }) => id === eid);
+        if (index > -1) {
+          this.temp_detail_block_consumable.details.splice(index, 1);
         }
 
         this.$forceUpdate();
@@ -2415,6 +2571,34 @@ var app = new Vue({
 
       },
 
+      chang_amount_consumable: function(row) {
+        ratio = 1;
+
+        if(row.qty == '')
+          return;
+
+        if(row.unit_cost == '')
+          return;
+
+          if(row.ratio != '')
+          ratio = Math.floor(row.ratio);
+
+        row.qty = Math.floor(row.qty);
+        row.discount = Math.floor(row.discount);
+        
+        if(row.ratio > 100)
+          row.ratio = 100;
+
+        if(row.discount > 100)
+          row.discount = 100;
+
+        // let charge = this.payment_record.charge;
+        let charge = (Number(row.qty)) * Number(row.unit_cost) *  ((100 - Math.floor(row.discount)) / 100) * Number(ratio);
+
+        row.total = charge.toFixed(2);
+
+      },
+
       
       chang_detail_amount: function(row) {
         if(row.qty == '')
@@ -2431,6 +2615,25 @@ var app = new Vue({
         
         // let charge = this.payment_record.charge;
         let charge = (Number(row.qty)) * Number(row.price) *  Math.floor(row.ratio);
+
+        row.total = charge.toFixed(2);
+
+        this.$forceUpdate();
+
+      },
+
+      
+      chang_detail_amount_consumable: function(row) {
+        if(row.qty == '')
+          return;
+
+        if(row.price == '')
+          return;
+
+        row.qty = Math.floor(row.qty);
+        
+        // let charge = this.payment_record.charge;
+        let charge = (Number(row.qty)) * Number(row.price);
 
         row.total = charge.toFixed(2);
 
@@ -2466,6 +2669,37 @@ var app = new Vue({
         };
 
         this.temp_detail_block.details.push(item);
+
+        this.$forceUpdate();
+      },
+
+      add_block_a_consumable() {
+
+        var sn = 0;
+        var items = this.temp_detail_block_consumable.details;
+
+
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].id > sn) {
+            sn = items[i].id;
+          }
+        }
+
+        sn = sn + 1;
+
+        item = {
+          id: sn,
+
+          qty: "",
+          unit: "",
+          particulars: "",
+
+          price: "",
+          total: "",
+          remark: "",
+        };
+
+        this.temp_detail_block_consumable.details.push(item);
 
         this.$forceUpdate();
       },
@@ -2535,6 +2769,24 @@ Installation:`;
          }
 
           this.is_load = true;
+         this.$forceUpdate();
+      
+      },
+
+      load_block_consumable() {
+
+        if(this.block_value_consumable.desc == undefined)
+        return;
+
+         this.temp_detail_block_consumable = JSON.parse(JSON.stringify(this.block_value_consumable));
+         this.requirement_id_consumable = this.block_value_consumable.id;
+
+         if(this.temp_detail_block_consumable.details == undefined)
+         {
+            this.temp_detail_block_consumable.details = [];
+         }
+
+          this.is_load_consumable = true;
          this.$forceUpdate();
       
       },
@@ -2734,6 +2986,7 @@ Installation:`;
 
               _this.consumable = _this.receive_records[0].consumable;
               _this.temp_consumable = JSON.parse(JSON.stringify(_this.consumable));
+              _this.temp_consumable_detail = JSON.parse(JSON.stringify(_this.consumable));
               
               _this.subtotal = _this.receive_records[0].subtotal_info;
               _this.subtotal_novat_a = _this.receive_records[0].subtotal_novat_a;
@@ -2744,22 +2997,27 @@ Installation:`;
               _this.pixa = _this.total.pixa;
               _this.show = _this.total.show;
 
+              
+
               // get product_vat from total.vat
               _this.total.vat !== undefined ? _this.product_vat = _this.total.vat : _this.product_vat = '';
 
-              _this.subtotal_info_not_show_a = _this.receive_records[0].subtotal_info_not_show_a;
-              _this.subtotal_info_not_show_b = _this.receive_records[0].subtotal_info_not_show_b;
+              _this.subtotal_info_not_show_a = _this.receive_records[0].total_info.subtotal_info_not_show_a;
+              _this.subtotal_info_not_show_b = _this.receive_records[0].total_info.subtotal_info_not_show_b;
               _this.count_subtotal();
+              _this.temp_total = JSON.parse(JSON.stringify(_this.total));
 
               // term
               _this.term = _this.receive_records[0].term_info;
-
+              _this.temp_term = JSON.parse(JSON.stringify(_this.term));
+              
               // term
               _this.payment_term = _this.receive_records[0].payment_term_info;
+              _this.temp_payment_term = JSON.parse(JSON.stringify(_this.payment_term));
 
               // sig
               _this.sig = _this.receive_records[0].sig_info;
-
+              _this.temp_sig = JSON.parse(JSON.stringify(_this.sig));
               
 
               // temp
@@ -2807,7 +3065,7 @@ Installation:`;
         else
           this.total.total = Number(this.total.total).toFixed(2);
 
-        this.total.real_total = ((this.subtotal_info_not_show_a * 1 + this.subtotal_info_not_show_b * 1)  * (1 - this.total.discount * 0.01));
+        this.total.real_total = ((this.total.subtotal_info_not_show_a * 1 + this.total.subtotal_info_not_show_b * 1)  * (1 - this.total.discount * 0.01));
 
         if(this.total.vat == 'Y')
           this.total.real_total = (this.total.real_total * 1) + (this.subtotal_info_not_show_a * (1 - this.total.discount * 0.01) * 0.12);
@@ -2842,6 +3100,54 @@ Installation:`;
   
         this.temp_pages.push(obj);
       },
+
+      
+      add_item_consumable(block) {
+       
+        let obj_id = 0;
+
+        if(block != undefined)
+        {
+            
+          if(block.length != 0)
+            obj_id = Math.max.apply(Math, block.map(function(o) { return o.id; }))
+          
+          obj = {
+            "id" : obj_id + 1,
+            "no" : "",
+            "desc" : "",
+            "qty" : "",
+            "unit" : "",
+            "unit_cost" : "",
+            "discount" : "",
+            "ratio" : "",
+            "total" : "",
+            "not_show" : "",
+          }, 
+
+          block.push(obj);
+        }
+        else
+        {
+          new_block = [];
+          obj = {
+            "id" : obj_id + 1,
+            "no" : "",
+            "desc" : "",
+            "qty" : "",
+            "unit" : "",
+            "unit_cost" : "",
+            "discount" : "",
+            "ratio" : "",
+            "total" : "",
+            "not_show" : "",
+          }, 
+
+          new_block.push(obj);
+          block = new_block;
+        }
+      },
+
 
       add_item(block) {
        
@@ -2966,6 +3272,36 @@ Installation:`;
         var index = this.temp_general_requirement.block.findIndex(({ id }) => id === eid);
         if (index > -1) {
           this.temp_general_requirement.block.splice(index, 1);
+        }
+      },
+      
+      set_up_consumable: function(fromIndex, eid) {
+        var toIndex = fromIndex - 1;
+  
+        if (toIndex < 0) 
+          return;
+
+        var element = this.temp_consumable.block.find(({ id }) => id === eid);
+        this.temp_consumable.block.splice(fromIndex, 1);
+        this.temp_consumable.block.splice(toIndex, 0, element);
+      },
+
+      set_down_consumable: function(fromIndex, eid) {
+        var toIndex = fromIndex + 1;
+
+        if (toIndex > this.temp_consumable.block.length - 1) 
+          return;
+  
+        var element = this.temp_consumable.block.find(({ id }) => id === eid);
+        this.temp_consumable.block.splice(fromIndex, 1);
+        this.temp_consumable.block.splice(toIndex, 0, element);
+      },
+
+      del_block_consumable: function(eid) {
+
+        var index = this.temp_consumable.block.findIndex(({ id }) => id === eid);
+        if (index > -1) {
+          this.temp_consumable.block.splice(index, 1);
         }
       },
 
@@ -3459,10 +3795,141 @@ Installation:`;
       
       },
 
+
+      
+      consumalbe_save_pre: async function() {
+        let _this = this;
+        let empty = true;
+
+        if(this.temp_consumable.block.length != 0)
+          empty = false;
+        
+        if(empty)
+        {
+          Swal.fire({
+            title: "WARNING",
+            text: "If click yes, all the consumable will be erased.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+          }).then((result) => {
+            if (result.value) {
+              _this.consumable_save();
+            }
+          });
+        }
+        else
+          _this.consumable_save();
+        },
+
+        consumable_save : function() {
+        if (this.submit == true) return;
+
+        this.submit = true;
+  
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+        let _this = this;
+  
+        form_Data.append("jwt", token);
+ 
+        form_Data.append("id", this.id);
+
+        form_Data.append("first_line", this.first_line);
+        form_Data.append("second_line", this.second_line);
+        form_Data.append("project_category", this.project_category);
+        form_Data.append("quotation_no", this.quotation_no);
+        form_Data.append("quotation_date", this.quotation_date);
+        form_Data.append("prepare_for_first_line", this.prepare_for_first_line);
+        form_Data.append("prepare_for_second_line", this.prepare_for_second_line);
+        form_Data.append("prepare_for_third_line", this.prepare_for_third_line);
+        form_Data.append("prepare_by_first_line", this.prepare_by_first_line);
+        form_Data.append("prepare_by_second_line", this.prepare_by_second_line);
+
+        form_Data.append("footer_first_line", this.footer_first_line);
+        form_Data.append("footer_second_line", this.footer_second_line);
+
+        form_Data.append("consumable", JSON.stringify(this.temp_consumable));
+
+        if(this.id == 0) {
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/quotation_eng_consumable_insert",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              _this.id = response.data.id;
+              
+              Swal.fire({
+                html: response.data.message,
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            })
+            .catch(function(error) {
+              //handle error
+              Swal.fire({
+                text: JSON.stringify(error),
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            });
+        }
+
+        if(this.id != 0) {
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/quotation_eng_consumable_update",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              Swal.fire({
+                html: response.data.message,
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            })
+            .catch(function(error) {
+              //handle error
+              Swal.fire({
+                text: JSON.stringify(error),
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            });
+        }
+      
+      },
+
+
+
       reload : function() {
         this.close_all();
 
         this.is_load = false;
+        this.is_load_consumable = false;
 
         if(this.l_id == 0 && this.id != 0) 
         {

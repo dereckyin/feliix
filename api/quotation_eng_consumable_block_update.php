@@ -90,15 +90,15 @@ switch ($method) {
                 }
 
                 $block_array["block"][$i]["unit_cost"] = $total;
-                if($block_array["block"][$i]["qty"] != '' && $block_array["block"][$i]["discount"] != '' && $block_array["block"][$i]["unit_cost"] != '')
-                $block_array["block"][$i]["total"] = number_format($total * $block_array["block"][$i]["qty"] * (100- $block_array["block"][$i]["discount"]) / 100, 2, '.', '');
+                if($block_array["block"][$i]["qty"] != '' && $block_array["block"][$i]["ratio"] != '' && $block_array["block"][$i]["discount"] != '' && $block_array["block"][$i]["unit_cost"] != '')
+                    $block_array["block"][$i]["total"] = number_format($total * $block_array["block"][$i]["qty"] * $block_array["block"][$i]["ratio"] * (100- $block_array["block"][$i]["discount"]) / 100, 2, '.', '');
             }
         }
 
         $json = json_encode($block_array["block"]);
 
             // quotation_page
-            $query = "update quotation_eng_general_requirement
+            $query = "update quotation_eng_consumable
                         set block = :block
                       WHERE
                       `id` = :id";

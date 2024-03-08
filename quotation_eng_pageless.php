@@ -2520,7 +2520,7 @@ header( 'location:index' );
 
                                         <span v-if="detail.cost_type == 'material'">Unit Material Cost</span><span v-if="detail.cost_type == 'labor'">Labor Cost:</span> <input type="number" v-model="detail.price" @change="chang_detail_amount(detail)">
                                         <span>Multiplier(%):</span> <input type="number" v-model="detail.ratio" @change="chang_detail_amount(detail)" max="100">
-                                        <span>Total:</span> <input type="number" v-model="detail.total" @change="chang_my_amount(detail)">
+                                        <span>Total:</span> <input type="number" v-model="detail.total" >
                                     </li>
                                     <li>
                                         <i class="fas fa-arrow-alt-circle-up" @click="block_a_up(index, detail.id)"></i>
@@ -2707,11 +2707,11 @@ header( 'location:index' );
                                             <input type="checkbox" class="alone" value="1" v-model="block.not_show" style="margin-left: 0;"> Not show this item
                                         </li>
                                         <li>
-                                            <i class="fas fa-arrow-alt-circle-up" @click="set_up_consumable(page.id, block_index, block.id)"></i>
+                                            <i class="fas fa-arrow-alt-circle-up" @click="set_up_consumable(block_index, block.id)"></i>
 
-                                            <i class="fas fa-arrow-alt-circle-down" @click="set_down_consumable(page.id, block_index, block.id)"></i>
+                                            <i class="fas fa-arrow-alt-circle-down" @click="set_down_consumable(block_index, block.id)"></i>
 
-                                            <i class="fas fa-trash-alt" @click="del_block_consumable(page.id, block.id)"></i>
+                                            <i class="fas fa-trash-alt" @click="del_block_consumable(block.id)"></i>
                                         </li>
                                     </ul>
 
@@ -2755,12 +2755,12 @@ header( 'location:index' );
                             <ul>
                                 <li class="head" style="width: 160px;">Choose Item:</li>
                                 <li class="mix">
-                                    <select v-model="block_value">
-                                        <option v-for="(block, index) in block_names" :value="block">{{ block.name }}
+                                    <select v-model="block_value_consumable">
+                                        <option v-for="(block, index) in temp_consumable_detail.block" :value="block">{{ block.desc }}
                                         </option>
                                     </select>
 
-                                    <a class="btn small green" @click="load_block()">Load</a>
+                                    <a class="btn small green" @click="load_block_consumable()">Load</a>
                                 </li>
                             </ul>
                         </div>
@@ -2768,32 +2768,32 @@ header( 'location:index' );
 
                         <div class="detailbox">
 
-                            <div class="title_box">
-                                {{block_value.name}}
+                            <div class="title_box" v-if="requirement_id_consumable != 0">
+                                {{block_value_consumable.desc}}
                             </div>
 
-                            <div class="function_box">
-                                <a class="btn small green" @click="add_block_a()">Add Blank Detail</a>
+                            <div class="function_box" v-if="requirement_id_consumable != 0">
+                                <a class="btn small green" @click="add_block_a_consumable()">Add Blank Detail</a>
                             </div>
 
                             <div class="content_box">
 
-                                <ul v-for="(block, index) in temp_block_a">
+                                <ul v-for="(detail, index) in temp_detail_block_consumable.details">
                                     <li>
-                                        <span>Quantity:</span> <input type="number" min="1" step="1" v-model="detail.qty" @change="chang_amount(block)" oninput="this.value|=0">
+                                        <span>Quantity:</span> <input type="number" min="1" step="1" v-model="detail.qty" @change="chang_detail_amount_consumable(detail)" oninput="this.value|=0">
                                         <span>Unit:</span> <input type="text" style="width: 105px;" v-model="detail.unit"><br>
 
                                         <span>Particulars:</span> <input type="text" style="width: calc(100% - 160px);" v-model="detail.particulars"><br>
 
-                                        <span>Price:</span> <input type="number" v-model="detail.price" @change="chang_amount(block)">
-                                        <span>Total:</span> <input type="number" v-model="detail.amount" @change="chang_my_amount(block)"><br>
+                                        <span>Price:</span> <input type="number" v-model="detail.price" @change="chang_detail_amount_consumable(detail)">
+                                        <span>Total:</span> <input type="number" v-model="detail.total" ><br>
 
-                                        <span>Remarks:</span> <textarea rows="2" v-model="item.remarks"></textarea>
+                                        <span>Remarks:</span> <textarea rows="2" v-model="detail.remark"></textarea>
                                     </li>
                                     <li>
-                                        <i class="fas fa-arrow-alt-circle-up" @click="block_a_up(index, block.id)"></i>
-                                        <i class="fas fa-arrow-alt-circle-down" @click="block_a_down(index, block.id)"></i>
-                                        <i class="fas fa-trash-alt" @click="block_a_del(block.id)"></i>
+                                        <i class="fas fa-arrow-alt-circle-up" @click="block_a_up_consumable(index, detail.id)"></i>
+                                        <i class="fas fa-arrow-alt-circle-down" @click="block_a_down_consumable(index, detail.id)"></i>
+                                        <i class="fas fa-trash-alt" @click="block_a_del_consumable(detail.id)"></i>
                                     </li>
                                 </ul>
 
@@ -2804,7 +2804,7 @@ header( 'location:index' );
                         <div class="formbox">
                             <div class="btnbox">
                                 <a class="btn small" @click="close_detail_consumables()">Close</a>
-                                <a class="btn small green" @click="subtotal_save()" v-if="is_load">Save</a>
+                                <a class="btn small green" @click="subtotal_save_consumable()" v-if="is_load_consumable">Save</a>
                             </div>
                         </div>
 
@@ -2882,7 +2882,7 @@ header( 'location:index' );
                             <dl>
                                 <dt class="head">Show "Amount in Words" in the Quotation:</dt>
                                 <dd>
-                                    <select v-model="total.show_in_words">
+                                    <select v-model="total.show_word">
                                         <option value="Y">Yes</option>
                                         <option value="">No</option>
                                     </select>
@@ -3234,14 +3234,14 @@ header( 'location:index' );
                             </div>
 
                             <div class="qn_for">
-                                Prepared for:<br>
+                                Prepare for:<br>
                                 <div class="line1">{{ prepare_for_first_line }}</div>
                                 <div class="line2">{{ prepare_for_second_line }}</div>
                                 <div class="line3">{{ prepare_for_third_line }}</div>
                             </div>
 
                             <div class="qn_by">
-                            Prepared by:<br>
+                            Prepare by:<br>
                                 <div class="line1">{{ prepare_by_first_line }}</div>
                                 <div class="line2">{{ prepare_by_second_line }}</div>
                             </div>
@@ -3434,7 +3434,7 @@ header( 'location:index' );
 
                                 <!-- 表格標題列 -->
                                 <tr class="thead1">
-                                    <td class="title" colspan="6">{{ tp.name }}</td>
+                                    <td class="title" colspan="6">{{ consumable.title }}</td>
                                 </tr>
 
                                 <tr class="thead2">
@@ -3446,15 +3446,15 @@ header( 'location:index' );
                                     <td>Total Labor Cost</td>
                                 </tr>
 
-                                <template v-for="(bk, index) in tp.blocks">
+                                <template v-for="(bk, index) in consumable.block">
                                 <!-- 表格內容物 -->
 
                                 <tr class="desc1">
 
-                                    <td>{{ bk.num }}</td>
+                                    <td>{{ bk.no }}</td>
 
                                     <td>
-                                        <div class="description">{{ bk.description }}</div>
+                                        <div class="description">{{ bk.desc }}</div>
                                     </td>
 
                                     <td>
@@ -3467,20 +3467,20 @@ header( 'location:index' );
 
                                     <!-- Unit Labor Cost -->
                                     <td>
-                                        <span class="numbers" v-if="bk.discount == 0">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers deleted" v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">₱ {{ (bk.price * bk.ratio  !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}<span
-                                                v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio - (bk.price * bk.ratio * (bk.discount / 100))).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount == 100 || bk.amount == '0.00')">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers" v-if="bk.discount == 0">₱ {{ bk.qty * bk.unit_cost * bk.ratio !== undefined ? Number(bk.qty * bk.unit_cost * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers deleted" v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">₱ {{ (bk.qty * bk.unit_cost * bk.ratio  !== undefined ? Number(bk.qty * bk.unit_cost * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}<span
+                                                v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">
+                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">₱ {{ bk.qty * bk.unit_cost * bk.ratio !== undefined ? Number(bk.qty * bk.unit_cost * bk.ratio - (bk.qty * bk.unit_cost * bk.ratio * (bk.discount / 100))).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount == 100 || bk.total == '0.00')">₱ {{ bk.qty * bk.unit_cost * bk.ratio !== undefined ? Number(bk.qty * bk.unit_cost * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
                                     </td>
 
                                     <!-- Total Labor Cost -->
-                                    <td v-if="bk.amount != '0.00' && product_vat !== 'P'">
-                                        <span class="numbers">₱ {{ bk.amount !== undefined ? Number(bk.amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
+                                    <td v-if="bk.total != '0.00' && product_vat !== 'P'">
+                                        <span class="numbers">₱ {{ bk.total !== undefined ? Number(bk.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
                                     </td>
 
-                                    <td v-if="bk.amount == '0.00' && product_vat !== 'P'">
-                                        <span class="numbers deleted">₱ {{ (bk.qty * bk.ratio * bk.price  !== undefined ? Number(bk.qty * bk.ratio * bk.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
+                                    <td v-if="bk.total == '0.00' && product_vat !== 'P'">
+                                        <span class="numbers deleted">₱ {{ (bk.qty * bk.unit_cost * bk.ratio * bk.qty * bk.unit_cost  !== undefined ? Number(bk.qty * bk.unit_cost * bk.ratio * bk.qty * bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
                                         <span class="numbers red">FREE AS PACKAGE!</span>
                                     </td>
                                 </tr>
@@ -3492,12 +3492,12 @@ header( 'location:index' );
                                 <tr class="tfoot1">
                                     <td colspan="4"></td>
                                     <td>SUBTOTAL</td>
-                                    <td v-if="tp.real_amount == 0">₱ {{ tp.subtotal !== undefined ?
-                                        Number(tp.subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
+                                    <td v-if="consumable.consumable_total == 0">₱ {{ consumable.consumable_total !== undefined ?
+                                        Number(consumable.consumable_total).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
                                         "$1,") : '0.00' }}
                                     </td>
-                                    <td v-if="tp.real_amount != 0">₱ {{ tp.real_amount !== undefined ?
-                                        Number(tp.real_amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
+                                    <td v-if="consumable.consumable_total != 0">₱ {{ consumable.consumable_total !== undefined ?
+                                        Number(consumable.consumable_total).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
                                         "$1,") : '0.00' }}
                                     </td>
                                 </tr>
@@ -3510,30 +3510,30 @@ header( 'location:index' );
 
 
                         <div class="area_total" v-bind:style="{ 'margin-bottom': pixa + 'px' }" v-if="show == ''">
-                            <table class="tb_total" v-for="(tt, index) in pag.total">
+                            <table class="tb_total">
                                 <tbody>
                                 <tr>
-                                    <td :rowspan="(tt.vat == 'Y' && tt.discount !== '0' ? 3 :  2)">
-                                        <div>Remarks: Quotation valid for <span class="valid_for">{{ tt.valid }}</span></div>
+                                    <td :rowspan="(temp_total.vat == 'Y' && temp_total.discount !== '0' ? 3 :  2)">
+                                        <div>Remarks: Quotation valid for <span class="valid_for">{{ temp_total.valid }}</span></div>
                                         <div></div>
                                     </td>
                                     <td>SUBTOTAL</td>
-                                    <td><span class="numbers">₱ {{ subtotal !== undefined ? Number(subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
+                                    <td><span class="numbers">₱ {{ total.back_total !== undefined ? Number(total.back_total).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
                                     </td>
                                 </tr>
 
-                                <tr class="total_discount" v-if="tt.discount !== '0'">
-                                    <td>{{ tt.discount !== undefined ?
-                                        Math.floor(tt.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}%
+                                <tr class="total_discount" v-if="temp_total.discount !== '0'">
+                                    <td>{{ temp_total.discount !== undefined ?
+                                        Math.floor(temp_total.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}%
                                         DISCOUNT
                                     </td>
-                                    <td><span class="numbers">₱ {{ (subtotal * tt.discount / 100) !== undefined ? (subtotal * tt.discount / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                                    <td><span class="numbers">₱ {{ (subtotal * temp_total.discount / 100) !== undefined ? (subtotal * temp_total.discount / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
                                 </tr>
 
-                                <tr class="total_vat" v-if="tt.vat == 'Y'">
+                                <tr class="total_vat" v-if="temp_total.vat == 'Y'">
                                     <td>(12% VAT)</td>
-                                    <td><span class="numbers">₱ {{ ((subtotal_info_not_show_a * (100 - tt.discount) / 100) * 12 / 100) !== undefined ? ((subtotal_info_not_show_a * (100 - tt.discount) / 100) * 12 / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                                    <td><span class="numbers">₱ {{ ((subtotal_info_not_show_a * (100 - temp_total.discount) / 100) * 12 / 100) !== undefined ? ((subtotal_info_not_show_a * (100 - temp_total.discount) / 100) * 12 / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -3541,28 +3541,28 @@ header( 'location:index' );
                                 <tfoot>
                                 <tr>
                                     <td>
-                                        <span class="total_discount" v-if="tt.show_vat == 'Y'">*price inclusive of VAT</span>
+                                        <span class="total_discount" v-if="temp_total.show_vat == 'Y'">*price inclusive of VAT</span>
                                     </td>
                                     <td>GRAND TOTAL</td>
-                                    <td v-if="tt.total != '0.00'">
-                                        <span class="numbers deleted" v-if="tt.total != total.back_total">₱ {{ total.back_total !== "" ? Number(total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span><br
-                                            v-if="tt.total != total.back_total">
-                                        <span class="numbers">₱ {{ tt.total !== "" ? Number(tt.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                                    <td v-if="temp_total.total != '0.00'">
+                                        <span class="numbers deleted" v-if="temp_total.total != total.back_total">₱ {{ total.back_total !== "" ? Number(total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span><br
+                                            v-if="temp_total.total != total.back_total">
+                                        <span class="numbers">₱ {{ temp_total.total !== "" ? Number(temp_total.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
-                                    <td v-if="tt.total == '0.00'">
+                                    <td v-if="temp_total.total == '0.00'">
                                         <span class="numbers">₱ {{ total.back_total !== "" ? Number(total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
                                 </tr>
                                 </tfoot>
 
-                                <div class="amount_in_words" v-if="1==1">Amount in Words : {{ }}</div>
+                                <div class="amount_in_words" v-if="temp_total.show_word == 'Y'">Amount in Words : {{ total.total_text }}</div>
                             </table>
                         </div>
 
 
 
                         <div class="area_terms" v-bind:style="{ 'margin-bottom': pixa_t + 'px' }" v-if="show_t == ''">
-                            <div class="terms" v-for="(tt, index) in pag.term">
+                            <div class="terms" v-for="(tt, index) in temp_term.item">
                                 <div class="title">{{ tt.title }}</div>
                                 <div class="brief" :style="tt.brief == '' ? 'white-space: pre-line; display: none;' : 'white-space: pre-line;'">{{ tt.brief }}</div>
                                 <div class="listing" style="white-space: pre-line;">{{ tt.list }}</div>
@@ -3571,20 +3571,20 @@ header( 'location:index' );
 
 
 
-                        <div class="area_payment" v-bind:style="{ 'margin-bottom': pixa_p + 'px' }" v-if="pag.payment_term !== undefined && show_p == ''">
+                        <div class="area_payment" v-bind:style="{ 'margin-bottom': pixa_p + 'px' }" v-if="payment_term !== undefined && show_p == ''">
                             <table class="tb_payment">
                                 <tbody>
                                 <tr>
                                     <td colspan="2">Payment Terms:</td>
                                     <td>
                                         <div>
-                                            <span v-for="(tt, index) in pag.payment_term.payment_method">{{ tt }}</span>
+                                            <span v-for="(tt, index) in payment_term.payment_method_list">{{ tt }}</span>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">
-                                        {{ pag.payment_term.brief }}
+                                        {{ payment_term.brief }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -3597,7 +3597,7 @@ header( 'location:index' );
                                     <td>
                                         <b>For Bank Details for Wiring</b>
 
-                                        <div class="acount_info" v-for="(tt, index) in pag.payment_term.list">
+                                        <div class="acount_info" v-for="(tt, index) in payment_term.item">
                                             <span class="account_name">{{ tt.bank_name }}</span>
                                             <span>: </span>
                                             <div class="first_line">
@@ -3616,13 +3616,13 @@ header( 'location:index' );
 
                         <div class="area_conforme" v-bind:style="{ 'margin-bottom': pixa_s + 'px' }" v-if="show_s == ''">
                             <div class="conforme"
-                                v-if="(pag.sig != undefined ? pag.sig.item_client.length : 0)  + (pag.sig != undefined ?  pag.sig.item_company.length : 0) > 0">
+                                v-if="(sig != undefined ? sig.item_client.length : 0)  + (sig != undefined ?  sig.item_company.length : 0) > 0">
                                 CONFORME
                             </div>
 
-                            <div class="client_signature" v-if="(pag.sig != undefined ? pag.sig.item_client.length : 0) > 0">
+                            <div class="client_signature" v-if="(sig != undefined ? sig.item_client.length : 0) > 0">
 
-                                <div class="signature" v-for="(tt, index) in pag.sig.item_client">
+                                <div class="signature" v-for="(tt, index) in sig.item_client">
                                     <div class="pic"></div>
                                     <div class="name">{{ tt.name }}</div>
                                     <div class="line1">{{ tt.position }}</div>
@@ -3632,9 +3632,9 @@ header( 'location:index' );
 
                             </div>
 
-                            <div class="company_signature" v-if="(pag.sig != undefined ? pag.sig.item_company.length : 0) > 0">
+                            <div class="company_signature" v-if="(sig != undefined ? sig.item_company.length : 0) > 0">
 
-                                <div class="signature" v-for="(tt, index) in pag.sig.item_company">
+                                <div class="signature" v-for="(tt, index) in sig.item_company">
                                     <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
                                     <div class="name">{{ tt.name }}</div>
                                     <div class="line1">{{ tt.position }}</div>

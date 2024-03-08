@@ -17,6 +17,7 @@ $valid = isset($_POST['valid']) ? $_POST['valid'] : '';
 $total = isset($_POST['total']) ? $_POST['total'] : 0;
 $pixa = isset($_POST['pixa']) ? $_POST['pixa'] : 0;
 $show = isset($_POST['show']) ? $_POST['show'] : '';
+$show_word = isset($_POST['show_word']) ? $_POST['show_word'] : '';
 
 $total == '' ? $total = 0 : $total = $total;
 $discount == '' ? $discount = 0 : $discount = $discount;
@@ -73,6 +74,7 @@ else
                 `total` = :total,
                 `pixa` = :pixa,
                 `show` = :show,
+                `show_word` = :show_word,
             
                 `status` = 0,
                 `create_id` = :create_id,
@@ -90,6 +92,7 @@ else
             $stmt->bindParam(':total', $total);
             $stmt->bindParam(':pixa', $pixa);
             $stmt->bindParam(':show', $show);
+            $stmt->bindParam(':show_word', $show_word);
 
             $stmt->bindParam(':create_id', $user_id);
         
@@ -127,6 +130,7 @@ else
                     `total` = :total,
                     `pixa` = :pixa,
                     `show` = :show,
+                    `show_word` = :show_word,
 
                     `updated_id` = :updated_id,
                     `updated_at` = now()
@@ -143,6 +147,7 @@ else
             $stmt->bindParam(':total', $total);
             $stmt->bindParam(':pixa', $pixa);
             $stmt->bindParam(':show', $show);
+            $stmt->bindParam(':show_word', $show_word);
             
             $stmt->bindParam(':updated_id', $user_id);
 

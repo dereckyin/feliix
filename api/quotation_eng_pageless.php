@@ -143,11 +143,42 @@ if (!isset($jwt)) {
 
         $general_requirement['general_requirement_total'] = $general_requirement_total;
 
-        $consumable = GetConsumable($row['id'], $db);
+        $consumable = GetConsumable($row['id'], $db, $show_c, $pixa_c);
+        $consumable_total = 0;
+        foreach($consumable['block'] as $item)
+        {
+            if($item['not_show'] == '' && is_numeric($item['total']))
+                $consumable_total += $item['total'];
+        }
+
+        $consumable['consumable_total'] = $consumable_total;
 
         $total_info = GetTotalInfo($row['id'], $db);
+        $total_info['real_total'] = $general_requirement_total + $consumable_total;
+        $total_info['back_total'] = $general_requirement_total + $consumable_total;
+        $total_info['subtotal_info_not_show_a'] = $general_requirement_total;
+        $total_info['subtotal_info_not_show_b'] = $consumable_total;
+
+        if(is_numeric($total_info['real_total']) && $total_info['total'] == '')
+            $total_info['total'] = $total_info['real_total'];
+
+        if(is_numeric($total_info['total']))
+        {
+
+            $total_info['total_text'] = convertNumberToWord($total_info['total']) ;
+            if($total_info['total_text'] != '')
+                $total_info['total_text'] .= " Pesos Only"; 
+        }
+        
         $term_info = GetTermInfo($row['id'], $db);
         $payment_term_info = GetPaymentTermInfo($row['id'], $db);
+
+        $payment_method = array();
+        $payment_method = explode(';', $payment_term_info['payment_method']);
+        // remove empty
+        $payment_method = array_filter($payment_method);
+        $payment_term_info['payment_method_list'] = $payment_method;
+
         $sig_info = GetSigInfo($row['id'], $db);
 
         // $subtotal_info = GetSubTotalInfo($row['id'], $db);
@@ -232,13 +263,14 @@ if (!isset($jwt)) {
         $show_r = 'N';
         $pixa_i = 0;
         $show_i = '';
-        $pixa_c = 0;
-        $show_c = '';
+        $pixa_c = 30;
+        $show_c = 'N';
 
         $general_requirement = GetGeneralRequirement(0, $db, $show_r, $pixa_r);
         $general_requirement['general_requirement_total'] = 0;
        
-        $consumable = GetConsumable(0, $db);
+        $consumable = GetConsumable(0, $db, $show_c, $pixa_c);
+        $consumable['consumable_total'] = 0;
 
         $total_info = GetTotalInfo(0, $db);
         $term_info = GetTermInfo(0, $db);
@@ -467,62 +499,6 @@ function GetSubTotalNoVatNotShow($qid, $db)
 }
 
 
-function GetBlockNames($qid, $db){
-    $query = "
-            SELECT qpt.id,
-                qp.page,
-                block_type,
-                block_name,
-                not_show,
-                real_amount,
-                pixa,
-                page_id
-            FROM   quotation_page_type qpt
-            left join quotation_page qp on qpt.page_id = qp.id
-            WHERE  qpt.quotation_id = " . $qid . "
-            AND qpt.`status` <> -1 
-            and qp.`status` <> -1
-            and qp.page = 1
-            ORDER BY qpt.id
-    ";
-
-    // prepare the query
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-
-    $merged_results = [];
-
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $id = $row['id'];
-        $page = $row['page'];
-        $block_type = $row['block_type'];
-        $block_name = $row['block_name'];
-        $page_id = $row['page_id'];
-        $pixa = $row['pixa'];
-        $not_show = $row['not_show'];
-        $real_amount = $row['real_amount'];
-
-        $blocks = [];
-
-        $blocks = GetBlocks($id, $db);
-        $subtotal = GetSubtotal($blocks);
-
-        $merged_results[] = array(
-            "id" => $id,
-            "page" => $page,
-            "type" => $block_type,
-            "name" => $block_name,
-            "not_show" => $not_show,
-            "real_amount" => $real_amount,
-            "pixa" => $pixa == '' ? 0 : $pixa,
-            "blocks" => $blocks,
-            "page_id" => $page_id,
-            "subtotal" => $subtotal,
-        );
-    }
-
-    return $merged_results;
-}
 
 function GetSubtotal($ary)
 {
@@ -534,244 +510,7 @@ function GetSubtotal($ary)
     return $total;
 }
 
-function AddPageIfNotExist($qid, $db)
-{
-    $query = "
-        SELECT id,
-            page
-        FROM   quotation_eng_page
-        WHERE  quotation_id = " . $qid . "
-        AND `status` <> -1 ";
 
-    // prepare the query
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-
-    $merged_results = [];
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $merged_results[] = array(
-            "id" => $row['id'],
-            "page" => $row['page'],
-        );
-    }
-
-    if(count($merged_results) == 0){
-        $query = "INSERT INTO quotation_eng_page
-            SET
-                `quotation_id` = :quotation_id,
-    
-                `page` = 1,
-        
-                `status` = 0,
-                `create_id` = :create_id,
-                `created_at` = now()";
-
-            // prepare the query
-            $stmt = $db->prepare($query);
-
-            // bind the values
-            $stmt->bindParam(':quotation_id', $qid);
-
-            $stmt->bindParam(':create_id', $user_id);
-        
-
-            try {
-                // execute the query, also check if query was successful
-                if ($stmt->execute()) {
-                    //$page_id = $db->lastInsertId();
-                } else {
-                    $arr = $stmt->errorInfo();
-                    error_log($arr[2]);
-                    http_response_code(501);
-                    echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
-                    die();
-                }
-            } catch (Exception $e) {
-                error_log($e->getMessage());
-                http_response_code(501);
-                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-                die();
-            }
-
-    }
-}
-
-function GetPages($qid, $db){
-    // if not exist, create one
-    AddPageIfNotExist($qid, $db);
-
-
-    $query = "
-        SELECT id,
-            page
-        FROM   quotation_page
-        WHERE  quotation_id = " . $qid . "
-        AND page = 1
-        AND `status` <> -1 
-        ORDER BY id
-    ";
-
-    // prepare the query
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-
-    $merged_results = [];
-
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $id = $row['id'];
-        $page = $row['page'];
-        $type = GetTypes($id, $db);
-        $total = GetTotal($qid, $page, $db);
-        $term = GetTerm($qid, $page, $db);
-        $payment_term = GetPaymentTerm($qid, $page, $db);
-        $sig = GetSig($qid, $page, $db);
-  
-        $merged_results[] = array(
-            "id" => $id,
-            "page" => $page,
-            "types" => $type,
-            "total" => $total,
-            "term" => $term,
-            "payment_term" => $payment_term,
-            "sig" => $sig,
-        );
-    }
-
-    return $merged_results;
-}
-
-function GetTotal($qid, $page, $db){
-    $query = "
-        SELECT 
-        `page`,
-        discount,
-        vat,
-        show_vat,
-        valid,
-        total
-        FROM   quotation_total
-        WHERE  quotation_id = " . $qid . "
-
-        AND `status` <> -1 
-        ORDER BY id
-    ";
-
-    // prepare the query
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-
-    $merged_results = [];
-    
-    $discount = 0;
-
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $page = $row['page'];
-        $discount = $row['discount'];
-        $vat = $row['vat'];
-        $show_vat = $row['show_vat'];
-        $valid = $row['valid'];
-        $total = $row['total'];
-
-        $merged_results[] = array(
-            "page" => $page,
-            "discount" => $discount,
-            "vat" => $vat,
-            "show_vat" => $show_vat,
-            "valid" => $valid,
-            "total" => $total,
-            
-            
-        );
-    }
-
-    return $merged_results;
-}
-
-
-function GetTerm($qid, $page, $db){
-    $query = "
-        SELECT 
-        `page`,
-        title,
-        brief,
-        list 
-        FROM   quotation_term
-        WHERE  quotation_id = " . $qid . "
- 
-        AND `status` <> -1 
-        ORDER BY id
-    ";
-
-    // prepare the query
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-
-    $merged_results = [];
-    
-
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $page = $row['page'];
-        $title = $row['title'];
-        $brief = $row['brief'];
-        $list = $row['list'];
-    
-
-        $merged_results[] = array(
-            "page" => $page,
-            "title" => $title,
-            "brief" => $brief,
-            "list" => $list,
-          
-        );
-    }
-
-    return $merged_results;
-}
-
-
-function GetPaymentTerm($qid, $page, $db){
-    $query = "
-        SELECT 
-        `page`,
-        payment_method,
-        brief,
-        list 
-        FROM   quotation_payment_term
-        WHERE  quotation_id = " . $qid . "
-
-        AND `status` <> -1 
-        ORDER BY id
-    ";
-
-    // prepare the query
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-
-    $merged_results = [];
-    
-
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $page = $row['page'];
-        $payment = $row['payment_method'];
-        $brief = $row['brief'];
-        $list = $row['list'];
-    
-        $payment_method = explode (";", $payment);
-        $payment_method= array_filter($payment_method);
-        $payment_method = array_map('trim', $payment_method);
-        $item = json_decode($list, TRUE); 
-
-        $merged_results = array(
-            "page" => $page,
-            "payment_method" => $payment_method,
-            "brief" => $brief,
-            "list" => $item,
-          
-        );
-    }
-
-    return $merged_results;
-}
 
 
 function GetSigInfo($qid, $db)
@@ -856,12 +595,11 @@ function GetSigInfo($qid, $db)
 }
 
 
-function GetSig($qid, $page, $db)
+function GetSig($qid, $db)
 {
     $query = "
         SELECT 
         id,
-        `page`,
         `type`,
         `name`,
         `photo`,
@@ -885,7 +623,7 @@ function GetSig($qid, $page, $db)
     $merged_results = [];
     
     $id = 0;
-    $page = 0;
+
     $type = '';
     $name = '';
     $photo = '';
@@ -896,7 +634,7 @@ function GetSig($qid, $page, $db)
   
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id = $row['id'];
-        $page = $row['page'];
+
         $type = $row['type'];
         $name = $row['name'];
         $photo = $row['photo'];
@@ -933,7 +671,7 @@ function GetSig($qid, $page, $db)
     }
 
     $merged_results = array(
-        "page" => $page,
+
         "item_client" => $item_client,
         "item_company" => $item_company,
                
@@ -1017,7 +755,7 @@ function GetPaymentTermInfo($qid, $db)
     $merged_results = [];
     
     $id = 0;
-    $page = 0;
+ 
     $payment_method = 'Cash; Cheque; Credit Card; Bank Wiring;';
     $brief = '50% Downpayment & another 50% balance a day before the delivery';
     $list = '[{"id":"0", "bank_name": "BDO", "first_line":"Acct. Name: Feliix Inc. Acct no: 006910116614", "second_line":"Branch: V.A Rufino", "third_line":""}, {"id":"1", "bank_name": "SECURITY BANK", "first_line":"Acct. Name: Feliix Inc. Acct no: 0000018155245", "second_line":"Swift code: SETCPHMM", "third_line":"Address: 512 Edsa near Corner Urbano Plata St., Caloocan City"}]';
@@ -1049,14 +787,14 @@ function GetTotalInfo($qid, $db){
     $query = "
         SELECT 
         id,
-        `page`,
         discount,
         vat,
         show_vat,
         valid,
         total,
         pixa,
-        `show`
+        `show`,
+        show_word
         FROM   quotation_eng_total
         WHERE  quotation_id = " . $qid . "
         AND `status` <> -1 
@@ -1070,7 +808,6 @@ function GetTotalInfo($qid, $db){
     $merged_results = [];
     
     $id = 0;
-    $page = 0;
     $discount = 0;
     $vat = '';
     $show_vat = '';
@@ -1078,7 +815,10 @@ function GetTotalInfo($qid, $db){
     $total = '';
     $pixa = 0;
     $show = '';
+    $total_text = "";
+    $show_word = '';
 
+   
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id = $row['id'];
         $discount = $row['discount'];
@@ -1088,6 +828,7 @@ function GetTotalInfo($qid, $db){
         $total = $row['total'];
         $pixa = $row['pixa'];
         $show = $row['show'];
+        $show_word = $row['show_word'];
     }
 
     $merged_results = array(
@@ -1101,6 +842,11 @@ function GetTotalInfo($qid, $db){
         "show" => $show,
 
         "real_total" => 0,
+        "total_text" => $total_text,
+        "show_word" => $show_word,
+
+        "subtotal_info_not_show_a"  => 0,
+        "subtotal_info_not_show_b"  => 0,
 
         "back_total" => 0,
     );
@@ -1363,120 +1109,6 @@ function GetQuotationExport($q_id, $db)
 
 }
 
-function GetProductItems($pages, $q_id, $db)
-{
-    $merged_results = [];
-
-    $cache_results = GetQuotationExport($q_id, $db);
-
-    foreach($pages as $page)
-    {
-        foreach($page['types'] as $type)
-        {
-            foreach($type['blocks'] as $row)
-            {
-            
-                $id = $row['id'];
-                $type_id = $row['type_id'];
-                $type = $row['type'];
-                $code = $row['code'];
-                $photo = $row['photo'];
-                $qty = $row['qty'];
-                $notes = $row['notes'];
-                $price = $row['price'];
-                $num = $row['num'];
-                $pid = $row['pid'];
-                if($pid == 0)
-                {
-                   // search project_category for product_id 
-                     $pid = GetProductId($code, $db);
-                }
-                $discount = $row['discount'];
-                $amount = $row['amount'];
-                $description = $row['desc'];
-                $v1 = $row['v1'];
-                $v2 = $row['v2'];
-                $v3 = $row['v3'];
-                $listing = $row['list'];
-            
-                $type == "" ? "" : "image";
-                $url = $photo == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo;
-            
-                $merged_results[] = array(
-                    "id" => $id,
-                    "is_selected" => "",
-                    "type_id" => $type_id,
-                    "code" => $code,
-                    "type" => $type,
-                    "photo" => $photo,
-                    "type" => $type,
-                    "url" => $url,
-                    "qty" => $qty,
-                    "notes" => $notes,
-                    "num" => $num,
-                    "pid" => $pid,
-                    "price" => $price,
-                    "discount" => $discount,
-                    "amount" => $amount,
-                    "desc" => $description,
-                    "v1" => $v1,
-                    "v2" => $v2,
-                    "v3" => $v3,
-                    "list" => $listing,
-                );
-                
-            }
-        }
-    }
-
-    $return_result = array();
-    foreach ($cache_results as $result)
-    {
-        // if result[id] is in merged_results, then remove it from merged_results
-        $index = array_search($result['id'], array_column($merged_results, 'id'));
-        if($index !== false)
-        {
-            $return_result[] = $merged_results[$index];
-        }
-    }
-
-    foreach ($merged_results as $result)
-    {
-        $index = array_search($result['id'], array_column($cache_results, 'id'));
-        if($index === false)
-        {
-            $return_result[] = $result;
-        }
-     
-    }
-
-    return $return_result;
-}
-
-function GetProductId($code, $db)
-{
-    $pid = 0;
-
-    $query = "
-        SELECT id
-        FROM   product_category
-        WHERE  code = '" . $code . "'
-        AND `status` <> -1 
-        ORDER BY id
-    ";
-
-    // prepare the query
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if($row !== false)
-    {
-        $pid = $row['id'];
-    }
-
-    return $pid;
-}
 
 function GetGeneralRequirement($qid, $db, $show_r, $pixa_r)
 {
@@ -1526,7 +1158,7 @@ function GetGeneralRequirement($qid, $db, $show_r, $pixa_r)
     return $merged_results;
 }
 
-function GetConsumable($qid, $db)
+function GetConsumable($qid, $db, $show_c, $pixa_c)
 {
     $query = "
         SELECT 
@@ -1551,6 +1183,9 @@ function GetConsumable($qid, $db)
         {
             $item = json_decode($list, TRUE);
             $row['block'] = $item;
+
+            $row["show_c"] = $show_c;
+            $row["pixa_c"] = $pixa_c;
         }
 
         $merged_results = $row;
@@ -1562,9 +1197,57 @@ function GetConsumable($qid, $db)
             "id" => 0,
             "quotation_id" => $qid,
             "title" => "",
+            "show_c" => $show_c,
+            "pixa_c" => $pixa_c,
             "block" => [],
         );
     }
 
     return $merged_results;
+}
+
+function convertNumberToWord($num = false)
+{
+    $num = str_replace(array(',', ' '), '' , trim($num));
+    if(! $num) {
+        return false;
+    }
+    $num = (int) $num;
+    $words = array();
+
+    $list1 = array('', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven',
+        'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen');
+
+    $list2 = array('', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety', 'Hundred');
+
+    $list3 = array('', 'Thousand', 'Million', 'Billion', 'Trillion', 'Quadrillion', 'Quintillion', 'Sextillion', 'Septillion',
+        'Octillion', 'Nonillion', 'Decillion', 'Undecillion', 'Duodecillion', 'Tredecillion', 'Quattuordecillion',
+        'Quindecillion', 'Sexdecillion', 'Septendecillion', 'Octodecillion', 'Novemdecillion', 'Vigintillion');
+
+    $num_length = strlen($num);
+    $levels = (int) (($num_length + 2) / 3);
+    $max_length = $levels * 3;
+    $num = substr('00' . $num, -$max_length);
+    $num_levels = str_split($num, 3);
+    for ($i = 0; $i < count($num_levels); $i++) {
+        $levels--;
+        $hundreds = (int) ($num_levels[$i] / 100);
+        $hundreds = ($hundreds ? ' ' . $list1[$hundreds] . ' Hundred' . ' ' : '');
+        $tens = (int) ($num_levels[$i] % 100);
+        $singles = '';
+        if ( $tens < 20 ) {
+            $tens = ($tens ? ' ' . $list1[$tens] . ' ' : '' );
+        } else {
+            $tens = (int)($tens / 10);
+            $tens = ' ' . $list2[$tens] . ' ';
+            $singles = (int) ($num_levels[$i] % 10);
+            $singles = ' ' . $list1[$singles] . ' ';
+        }
+        $words[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? ' ' . $list3[$levels] . ' ' : '' );
+    } //end for loop
+    $commas = count($words);
+    if ($commas > 1) {
+        $commas = $commas - 1;
+    }
+    return implode(' ', $words);
 }
