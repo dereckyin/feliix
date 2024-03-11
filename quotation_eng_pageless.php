@@ -3310,11 +3310,11 @@ header( 'location:index' );
                                     </td>
 
                                     <!-- Total Labor Cost -->
-                                    <td v-if="bk.unit_cost == '0'">
+                                    <td v-if="bk.unit_cost == '0' || bk.unit_cost == ''">
                                         <span class="numbers">₱ {{ bk.total !== undefined ? Number(bk.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
                                     </td>
 
-                                    <template v-if="bk.unit_cost != '0' && bk.qty * bk.unit_cost * (100 - bk.discount) / 100 == bk.total">
+                                    <template v-if="bk.unit_cost != '0' && bk.unit_cost != '' && bk.qty * bk.unit_cost * (100 - bk.discount) / 100 == bk.total">
                                         <td v-if="bk.total != '0' && bk.total != '' && product_vat !== 'P'">
                                             <span class="numbers">₱ {{ bk.total !== undefined ? Number(bk.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
                                         </td>
@@ -3325,7 +3325,7 @@ header( 'location:index' );
                                         </td>
                                     </template>
 
-                                    <template v-if="bk.unit_cost != '0' && bk.qty * bk.unit_cost * (100 - bk.discount) / 100 != bk.total">
+                                    <template v-if="bk.unit_cost != '0' && bk.unit_cost != '' && bk.qty * bk.unit_cost * (100 - bk.discount) / 100 != bk.total">
                                         <td v-if="bk.total != '0' && bk.total != '' && product_vat !== 'P'">
                                         <span class="numbers deleted">₱ {{ (bk.qty * bk.unit_cost * (100 - bk.discount) / 100  !== undefined ? Number(bk.qty * bk.unit_cost * (100 - bk.discount) / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
                                             <span class="numbers">₱ {{ bk.total !== undefined ? Number(bk.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
@@ -3493,11 +3493,11 @@ header( 'location:index' );
                                     </td>
 
                                     <!-- Total Labor Cost -->
-                                    <td v-if="bk.unit_cost == '0'">
+                                    <td v-if="bk.unit_cost == '0' || bk.unit_cost == ''">
                                         <span class="numbers">₱ {{ bk.total !== undefined ? Number(bk.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
                                     </td>
 
-                                    <template v-if="bk.unit_cost != '0' && bk.qty * bk.unit_cost * (100 - bk.discount) / 100  * (bk.ratio == '' ? 1 : bk.ratio) == bk.total">
+                                    <template v-if="bk.unit_cost != '0' && bk.unit_cost != '' && bk.qty * bk.unit_cost * (100 - bk.discount) / 100  * (bk.ratio == '' ? 1 : bk.ratio) == bk.total">
                                         <td v-if="bk.total != '0' && bk.total != '' && product_vat !== 'P'">
                                             <span class="numbers">₱ {{ bk.total !== undefined ? Number(bk.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
                                         </td>
@@ -3508,7 +3508,7 @@ header( 'location:index' );
                                         </td>
                                     </template>
 
-                                    <template v-if="bk.unit_cost != '0' && bk.qty * bk.unit_cost * (100 - bk.discount) / 100  * (bk.ratio == '' ? 1 : bk.ratio) != bk.total">
+                                    <template v-if="bk.unit_cost != '0' && bk.unit_cost != '' && bk.qty * bk.unit_cost * (100 - bk.discount) / 100  * (bk.ratio == '' ? 1 : bk.ratio) != bk.total">
                                         <td v-if="bk.total != '0' && bk.total != '' && product_vat !== 'P'">
                                         <span class="numbers deleted">₱ {{ (bk.qty * bk.unit_cost * (100 - bk.discount) / 100  * (bk.ratio == '' ? 1 : bk.ratio)  !== undefined ? Number(bk.qty * bk.unit_cost * (100 - bk.discount) / 100  * (bk.ratio == '' ? 1 : bk.ratio)).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
                                             <span class="numbers">₱ {{ bk.total !== undefined ? Number(bk.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
