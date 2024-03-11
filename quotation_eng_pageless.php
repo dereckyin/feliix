@@ -3303,10 +3303,10 @@ header( 'location:index' );
                                     <!-- Unit Labor Cost -->
                                     <td>
                                         <span class="numbers" v-if="bk.discount == 0 || bk.discount == 100">₱ {{ bk.unit_cost !== undefined ? Number(bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers deleted" v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">₱ {{ (bk.unit_cost  !== undefined ? Number(bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}
-                                        <span v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">₱ {{ bk.unit_cost !== undefined ? Number(bk.unit_cost - (bk.unit_cost * (bk.discount / 100))).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount == 100 || bk.total == '0.00')">₱ {{ bk.unit_cost !== undefined ? Number(bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers deleted" v-if="bk.discount > 0 && bk.discount < 100">₱ {{ (bk.unit_cost  !== undefined ? Number(bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}
+                                        <span v-if="bk.discount > 0 && bk.discount < 100">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">
+                                        <span class="numbers" v-if="bk.discount > 0 && bk.discount < 100">₱ {{ bk.unit_cost !== undefined ? Number(bk.unit_cost - (bk.unit_cost * (bk.discount / 100))).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <!-- <span class="numbers" v-if="bk.discount != 0 && (bk.discount == 100 || bk.total == '0.00')">₱ {{ bk.unit_cost !== undefined ? Number(bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span> -->
                                     </td>
 
                                     <!-- Total Labor Cost -->
@@ -3486,10 +3486,10 @@ header( 'location:index' );
                                     <!-- Unit Labor Cost -->
                                     <td>
                                         <span class="numbers" v-if="bk.discount == 0 || bk.discount == 100">₱ {{ bk.unit_cost !== undefined ? Number(bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers deleted" v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">₱ {{ (bk.unit_cost  !== undefined ? Number(bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}
-                                        <span v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">₱ {{ bk.unit_cost !== undefined ? Number(bk.unit_cost - (bk.unit_cost * (bk.discount / 100))).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount == 100 || bk.total == '0.00')">₱ {{ bk.unit_cost !== undefined ? Number(bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers deleted" v-if="bk.discount > 0 && bk.discount < 100">₱ {{ (bk.unit_cost  !== undefined ? Number(bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}
+                                        <span v-if="bk.discount > 0 && bk.discount < 100">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0 && (bk.discount != 100 && bk.total != '0.00')">
+                                        <span class="numbers" v-if="bk.discount > 0 && bk.discount < 100">₱ {{ bk.unit_cost !== undefined ? Number(bk.unit_cost - (bk.unit_cost * (bk.discount / 100))).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <!-- <span class="numbers" v-if="bk.discount != 0 && (bk.discount == 100 || bk.total == '0.00')">₱ {{ bk.unit_cost !== undefined ? Number(bk.unit_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span> -->
                                     </td>
 
                                     <!-- Total Labor Cost -->
