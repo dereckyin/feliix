@@ -2426,7 +2426,7 @@ header( 'location:index' );
                                             <span>Unit Labor Cost:</span> <input type="number" v-model="block.unit_cost" disabled><br>
 
                                             <span>Discount:</span> <input type="number" v-model="block.discount" min="0" max="100" @change="chang_block_amount(block)" oninput="this.value|=0">
-                                            <span>Total Labor Cost:</span> <input type="number" v-model="block.total"><br>
+                                            <span>Total Labor Cost:</span> <input type="number" :value="block.total" @change="check_block_amount(block,$event)"><br>
 
                                             <input type="checkbox" class="alone" value="1" v-model="block.not_show" style="margin-left: 0;"> Not show this item
                                         </li>

@@ -2571,6 +2571,44 @@ var app = new Vue({
 
       },
 
+      check_block_amount: function(row, event) {
+
+        let old = row.total;
+
+        if(row.qty == '')
+          return;
+
+        if(row.unit_cost == '')
+          return;
+
+        row.qty = Math.floor(row.qty);
+        row.discount = Math.floor(row.discount);
+        if(row.discount > 100)
+          row.discount = 100;
+
+        
+        // let charge = this.payment_record.charge;
+        let charge = (Number(row.qty)) * Number(row.unit_cost) *  ((100 - Math.floor(row.discount)) / 100);
+
+        if(event.target.value < charge)
+        {
+          Swal.fire({
+            text: "It doesn't make sense that Total Labor Cost is greater than Qty x Unit Labor x (100-Discount)/100",
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+
+          row.total = old;
+          this.$forceUpdate();
+          return;
+        }
+        else
+        {
+          row.total = event.target.value;
+        }
+
+      },
+
       chang_amount_consumable: function(row) {
         ratio = 1;
 
