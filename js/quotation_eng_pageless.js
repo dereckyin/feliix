@@ -2233,8 +2233,8 @@ var app = new Vue({
       subtotal_save_consumable_changes: async function (id, rid) {
         if (this.submit == true) return;
 
-        if(this.check_block_value(this.temp_detail_block_consumable) == false)
-          return;
+        // if(this.check_block_value(this.temp_detail_block_consumable) == false)
+        //   return;
 
 
         this.submit = true;
