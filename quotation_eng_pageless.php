@@ -3467,7 +3467,7 @@ header( 'location:index' );
                                 <template v-for="(bk, index) in consumable.block">
                                 <!-- 表格內容物 -->
 
-                                <tr class="desc1">
+                                <tr class="desc1"  v-if="bk.not_show == ''">
 
                                     <td>{{ bk.no }}</td>
 
