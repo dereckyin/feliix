@@ -2625,7 +2625,7 @@ var app = new Vue({
         // let charge = this.payment_record.charge;
         let charge = (Number(row.qty)) * Number(row.unit_cost) *  ((100 - Math.floor(row.discount)) / 100);
 
-        if(event.target.value < charge)
+        if(event.target.value > charge)
         {
           Swal.fire({
             text: "It doesn't make sense that Total Labor Cost is greater than Qty x Unit Labor x (100-Discount)/100",
