@@ -2644,6 +2644,10 @@ var app = new Vue({
 
       },
 
+      isNumber: function(value) {
+        return typeof value === 'number';
+      },
+
       
       check_block_amount_consumable: function(row, event) {
 
@@ -2656,7 +2660,7 @@ var app = new Vue({
         if(row.unit_cost == '')
           return;
 
-        if(isNumber(row.ratio))
+        if(this.isNumber(row.ratio))
         ratio = row.ratio;
 
         row.qty = Math.floor(row.qty);
