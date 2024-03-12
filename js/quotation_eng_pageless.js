@@ -2645,7 +2645,8 @@ var app = new Vue({
       },
 
       isNumber: function(value) {
-        return typeof value === 'number';
+        let number = Number(value);
+        return typeof number === 'number';
       },
 
       
