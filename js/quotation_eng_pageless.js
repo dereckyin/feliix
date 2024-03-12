@@ -2671,7 +2671,7 @@ var app = new Vue({
 
         
         // let charge = this.payment_record.charge;
-        let charge = (Number(row.qty)) * Number(row.unit_cost) *  ((100 - Math.floor(row.discount)) / 100) * ratio;
+        let charge = (Number(row.qty)) * Number(row.unit_cost) *  ((100 - Math.floor(row.discount)) / 100) * Number(ratio);
 
         if(event.target.value > charge)
         {
