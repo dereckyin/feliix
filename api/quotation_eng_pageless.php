@@ -1196,7 +1196,7 @@ function GetConsumable($qid, $db, $show_c, $pixa_c)
         $merged_results = array(
             "id" => 0,
             "quotation_id" => $qid,
-            "title" => "",
+            "title" => "Consumables",
             "show_c" => $show_c,
             "pixa_c" => $pixa_c,
             "block" => [],
