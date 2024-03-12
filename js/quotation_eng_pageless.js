@@ -2198,9 +2198,44 @@ var app = new Vue({
 
       },
 
+      check_block_value: function(item) {
+        let block = item.block;
+        for(var i = 0; i < block.length; i++) {
+          if(block[i].qty < 1 || block[i].qty === '') {
+            Swal.fire({
+              text: "Qty must greater then 1.",
+              icon: "info",
+              confirmButtonText: "OK",
+            });
+
+            return false;
+          }
+        }
+        return true;
+      },
       
+      check_block_detail_value: function(block) {
+        for(var i = 0; i < block.details.length; i++) {
+          if(block.details[i].qty < 1 || block.details[i].qty === '') {
+            Swal.fire({
+              text: "Qty must greater then 1.",
+              icon: "info",
+              confirmButtonText: "OK",
+            });
+
+            return false;
+          }
+        }
+        return true;
+      },
+      
+
       subtotal_save_consumable_changes: async function (id, rid) {
         if (this.submit == true) return;
+
+        if(this.check_block_value(this.temp_detail_block_consumable) == false)
+          return;
+
 
         this.submit = true;
   
@@ -3711,6 +3746,9 @@ Installation:`;
         let _this = this;
         let empty = true;
 
+        if(this.check_block_value(this.temp_general_requirement) == false)
+        return;
+
         if(this.temp_general_requirement.block.length != 0)
           empty = false;
         
@@ -3838,6 +3876,9 @@ Installation:`;
       consumalbe_save_pre: async function() {
         let _this = this;
         let empty = true;
+
+        if(this.check_block_value(this.temp_consumable) == false)
+        return;
 
         if(this.temp_consumable.block.length != 0)
           empty = false;
