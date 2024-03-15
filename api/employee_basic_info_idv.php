@@ -81,7 +81,7 @@ else
                     LEFT JOIN user_title ON user.title_id = user_title.id 
                     LEFT JOIN employee_basic_info eds ON user.id = eds.user_id and eds.status <> -1
                     LEFT JOIN employee_data_sheet es on user.id = es.user_id and es.status = 0
-                    where user.status <> -1 ".($id ? " and eds.user_id=$id" : '');
+                    where user.status <> -1 ".($id ? " and user.id=$id" : '');
 
             if(!empty($_GET['page'])) {
                 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
