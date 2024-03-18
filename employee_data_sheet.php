@@ -269,7 +269,7 @@ $(function(){
     }
 
     #Modal_authorize .modal-content .authorize_dialog .employee_name::after {
-        content: "Employee Name";
+        content: "Employee Signature";
         position: absolute;
         bottom: -27px;
         left: 5px;

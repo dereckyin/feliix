@@ -266,7 +266,7 @@ $(function(){
         border-bottom: 1px solid black;
         margin: 30px 0 10px;
         padding: 10px 20px;
-        width: 55%;
+        width: 90%;
         min-width: 400px;
     }
 
@@ -275,7 +275,7 @@ $(function(){
     }
 
     #Modal_authorize .modal-content .authorize_dialog .employee_name::after {
-        content: "Employee Name";
+        content: "Employee Signature";
         position: absolute;
         bottom: -27px;
         left: 5px;
@@ -284,7 +284,6 @@ $(function(){
 
     #Modal_authorize .modal-content .authorize_dialog .employee_name #signature_name {
         width: 100%;
-        height: 80px;
     }
 
     #Modal_authorize .modal-content .authorize_dialog .employee_name img {
@@ -297,7 +296,7 @@ $(function(){
         border-bottom: 1px solid black;
         margin: 40px 0 60px;
         padding: 10px 20px;
-        width: 55%;
+        width: 90%;
         min-width: 400px;
     }
 
@@ -315,7 +314,6 @@ $(function(){
 
     #Modal_authorize .modal-content .authorize_dialog .date_signed #signature_date {
         width: 100%;
-        height: 80px;
     }
 
     #Modal_authorize .modal-content .authorize_dialog .date_signed img {
