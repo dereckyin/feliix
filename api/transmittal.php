@@ -77,7 +77,8 @@ if (!isset($jwt)) {
 
     $merged_results = array();
     
-    $prefix = "approval_form_";
+    // $prefix = "approval_form_";
+    $prefix = "transmittal_";
 
     $query = "SELECT id, 
                     first_line, 
@@ -312,7 +313,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
 
     $pages_array = $merged_results[0]['pages'];
 
-    $query = "INSERT INTO approval_form_quotation
+    $query = "INSERT INTO transmittal
         SET
             `q_id` = :qid,
             `title` = :title,
@@ -401,7 +402,7 @@ T: (+63) 2 8525-6288";
         {
             $pg = $i + 1;
             // insert quotation_page
-            $query = "INSERT INTO approval_form_quotation_page
+            $query = "INSERT INTO transmittal_page
             SET
                 `quotation_id` = :quotation_id,
     
@@ -445,7 +446,7 @@ T: (+63) 2 8525-6288";
             $types_array = $pages_array[$i]['types'];
             for($j=0; $j < count($types_array); $j++)
             {
-                $query = "INSERT INTO approval_form_quotation_page_type
+                $query = "INSERT INTO transmittal_page_type
                 SET
                     `quotation_id` = :quotation_id,
                     `page_id` = :page_id,
@@ -497,7 +498,7 @@ T: (+63) 2 8525-6288";
                 for($k=0 ; $k < count($block_array) ; $k++)
                 {
                     // insert quotation_page_type_block
-                    $query = "INSERT INTO approval_form_quotation_page_type_block
+                    $query = "INSERT INTO transmittal_page_type_block
                     SET
                         `quotation_id` = :quotation_id,
                         `type_id` = :type_id,
@@ -599,61 +600,61 @@ T: (+63) 2 8525-6288";
         }
 
         $quotation_id = $last_id;
-        $total = $merged_results[0]['total_info'];
+        // $total = $merged_results[0]['total_info'];
 
-        $query = "INSERT INTO approval_form_quotation_total
-            SET
-                `quotation_id` = :quotation_id,
-                `page` = :page,
-                `discount` = :discount,
-                `vat` = :vat,
-                `show_vat` = :show_vat,
-                `valid` = :valid,
-                `total` = :total,
+        // $query = "INSERT INTO transmittal_total
+        //     SET
+        //         `quotation_id` = :quotation_id,
+        //         `page` = :page,
+        //         `discount` = :discount,
+        //         `vat` = :vat,
+        //         `show_vat` = :show_vat,
+        //         `valid` = :valid,
+        //         `total` = :total,
             
-                `status` = 0,
-                `create_id` = :create_id,
-                `created_at` =  now() ";
+        //         `status` = 0,
+        //         `create_id` = :create_id,
+        //         `created_at` =  now() ";
 
-            // prepare the query
-            $stmt = $db->prepare($query);
+        //     // prepare the query
+        //     $stmt = $db->prepare($query);
 
-            $tt = $total["total"] == '' ? 0 : $total["total"];
-            // bind the values
-            $stmt->bindParam(':quotation_id', $quotation_id);
-            $stmt->bindParam(':page', $total["page"]);
-            $stmt->bindParam(':discount', $total["discount"]);
-            $stmt->bindParam(':vat', $total["vat"]);
-            $stmt->bindParam(':show_vat', $total["show_vat"]);
-            $stmt->bindParam(':valid', $total["valid"]);
-            $stmt->bindParam(':total', $tt);
+        //     $tt = $total["total"] == '' ? 0 : $total["total"];
+        //     // bind the values
+        //     $stmt->bindParam(':quotation_id', $quotation_id);
+        //     $stmt->bindParam(':page', $total["page"]);
+        //     $stmt->bindParam(':discount', $total["discount"]);
+        //     $stmt->bindParam(':vat', $total["vat"]);
+        //     $stmt->bindParam(':show_vat', $total["show_vat"]);
+        //     $stmt->bindParam(':valid', $total["valid"]);
+        //     $stmt->bindParam(':total', $tt);
 
-            $stmt->bindParam(':create_id', $user_id);
+        //     $stmt->bindParam(':create_id', $user_id);
         
-            $last_id = 0;
-            // execute the query, also check if query was successful
-            try {
-                // execute the query, also check if query was successful
-                if ($stmt->execute()) {
-                    $last_id = $db->lastInsertId();
-                } else {
-                    $arr = $stmt->errorInfo();
-                    error_log($arr[2]);
+        //     $last_id = 0;
+        //     // execute the query, also check if query was successful
+        //     try {
+        //         // execute the query, also check if query was successful
+        //         if ($stmt->execute()) {
+        //             $last_id = $db->lastInsertId();
+        //         } else {
+        //             $arr = $stmt->errorInfo();
+        //             error_log($arr[2]);
                     
-                    http_response_code(501);
-                    echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
-                    die();
-                }
-            } catch (Exception $e) {
-                error_log($e->getMessage());
+        //             http_response_code(501);
+        //             echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+        //             die();
+        //         }
+        //     } catch (Exception $e) {
+        //         error_log($e->getMessage());
                 
-                http_response_code(501);
-                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-                die();
-            }
+        //         http_response_code(501);
+        //         echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+        //         die();
+        //     }
 
             // term
-            $query = "INSERT INTO approval_form_quotation_term
+            $query = "INSERT INTO transmittal_term
                     (
                         quotation_id,
                         page,
@@ -692,89 +693,89 @@ T: (+63) 2 8525-6288";
                 die();
             }
 
-            // payment term
-            $query = "INSERT INTO approval_form_quotation_payment_term
-                    (
-                        quotation_id,
-                        page,
-                        payment_method,
-                        brief,
-                        list,
-                        `create_id`,
-                        created_at
-                    )
-                        select " . $quotation_id . ", page, payment_method, brief, list, :create_id, now() 
-                    from quotation_payment_term where quotation_id = :quotation_id";
-            // prepare the query
-            $stmt = $db->prepare($query);
+            // // payment term
+            // $query = "INSERT INTO transmittal_payment_term
+            //         (
+            //             quotation_id,
+            //             page,
+            //             payment_method,
+            //             brief,
+            //             list,
+            //             `create_id`,
+            //             created_at
+            //         )
+            //             select " . $quotation_id . ", page, payment_method, brief, list, :create_id, now() 
+            //         from quotation_payment_term where quotation_id = :quotation_id";
+            // // prepare the query
+            // $stmt = $db->prepare($query);
 
-            // bind the values
-            $stmt->bindParam(':quotation_id', $id);
-            $stmt->bindParam(':create_id', $user_id);
+            // // bind the values
+            // $stmt->bindParam(':quotation_id', $id);
+            // $stmt->bindParam(':create_id', $user_id);
               
-            try {
-                // execute the query, also check if query was successful
-                if ($stmt->execute()) {
-                    $last_id = $db->lastInsertId();
-                } else {
-                    $arr = $stmt->errorInfo();
-                    error_log($arr[2]);
+            // try {
+            //     // execute the query, also check if query was successful
+            //     if ($stmt->execute()) {
+            //         $last_id = $db->lastInsertId();
+            //     } else {
+            //         $arr = $stmt->errorInfo();
+            //         error_log($arr[2]);
                     
-                    http_response_code(501);
-                    echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
-                    die();
-                }
-            } catch (Exception $e) {
-                error_log($e->getMessage());
+            //         http_response_code(501);
+            //         echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+            //         die();
+            //     }
+            // } catch (Exception $e) {
+            //     error_log($e->getMessage());
                 
-                http_response_code(501);
-                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-                die();
-            }
+            //     http_response_code(501);
+            //     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            //     die();
+            // }
 
-            // signature
-            $query = "INSERT INTO approval_form_quotation_signature
-                    (
-                        quotation_id,
-                        page,
-                        type,
-                        photo,
-                        name,
-                        position,
-                        phone,
-                        email,
-                        `create_id`,
-                        created_at
-                    )
+            // // signature
+            // $query = "INSERT INTO approval_form_quotation_signature
+            //         (
+            //             quotation_id,
+            //             page,
+            //             type,
+            //             photo,
+            //             name,
+            //             position,
+            //             phone,
+            //             email,
+            //             `create_id`,
+            //             created_at
+            //         )
                     
-                        select " . $quotation_id . ", page, type, photo, name, position, phone, email, :create_id, now() 
-                    from quotation_signature where quotation_id = :quotation_id";
-            // prepare the query
-            $stmt = $db->prepare($query);
+            //             select " . $quotation_id . ", page, type, photo, name, position, phone, email, :create_id, now() 
+            //         from quotation_signature where quotation_id = :quotation_id";
+            // // prepare the query
+            // $stmt = $db->prepare($query);
 
-            // bind the values
-            $stmt->bindParam(':quotation_id', $id);
-            $stmt->bindParam(':create_id', $user_id);
+            // // bind the values
+            // $stmt->bindParam(':quotation_id', $id);
+            // $stmt->bindParam(':create_id', $user_id);
               
-            try {
-                // execute the query, also check if query was successful
-                if ($stmt->execute()) {
-                    $last_id = $db->lastInsertId();
-                } else {
-                    $arr = $stmt->errorInfo();
-                    error_log($arr[2]);
+            // try {
+            //     // execute the query, also check if query was successful
+            //     if ($stmt->execute()) {
+            //         $last_id = $db->lastInsertId();
+            //     } else {
+            //         $arr = $stmt->errorInfo();
+            //         error_log($arr[2]);
                     
-                    http_response_code(501);
-                    echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
-                    die();
-                }
-            } catch (Exception $e) {
-                error_log($e->getMessage());
+            //         http_response_code(501);
+            //         echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+            //         die();
+            //     }
+            // } catch (Exception $e) {
+            //     error_log($e->getMessage());
                 
-                http_response_code(501);
-                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-                die();
-            }
+            //     http_response_code(501);
+            //     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            //     die();
+            // }
 
             return $qid;
 }
@@ -1113,7 +1114,7 @@ function AddPageIfNotExist($qid, $db)
     $query = "
         SELECT id,
             page
-        FROM   approval_form_quotation_page
+        FROM   transmittal_page
         WHERE  quotation_id = " . $qid . "
         AND `status` <> -1 ";
 
@@ -1130,7 +1131,7 @@ function AddPageIfNotExist($qid, $db)
     }
 
     if(count($merged_results) == 0){
-        $query = "INSERT INTO approval_form_quotation_page
+        $query = "INSERT INTO transmittal_page
             SET
                 `quotation_id` = :quotation_id,
     
@@ -1794,7 +1795,7 @@ function GetBlocks($qid, $db, $prefix){
         listing,
         num,
         notes, ";
-if($prefix == 'approval_form_'){
+if($prefix == 'transmittal_'){
     $query .= "
         approval, ";
 }
@@ -1835,7 +1836,7 @@ $query .= "
         $v3 = $row['v3'];
         $listing = $row['listing'];
         $approval = [];
-if($prefix == 'approval_form_'){
+if($prefix == 'transmittal_'){
         // split by comma
         $approval = explode(",", $row['approval']);
 }

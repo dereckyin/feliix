@@ -1053,7 +1053,7 @@ function GetPages($qid, $db, $prefix){
             page
         FROM   " . $prefix . "quotation_page
         WHERE  quotation_id = " . $qid . "
-        AND `status` <> -1 
+        AND `status` <> -1 and create_id is not null
         ORDER BY id
     ";
 

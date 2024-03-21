@@ -47,7 +47,6 @@ $(function(){
     $('header').load('include/header.php');
 })
 
-
     </script>
 
     <style>
@@ -124,7 +123,6 @@ $(function(){
     .heading-and-btn ul li:nth-of-type(1) > button {
         margin: 0 8px;
         width: 220px;
-        border: none;
     }
 
     .heading-and-btn ul li:nth-of-type(2){
@@ -268,7 +266,7 @@ $(function(){
         border-bottom: 1px solid black;
         margin: 30px 0 10px;
         padding: 10px 20px;
-        width: 55%;
+        width: 90%;
         min-width: 400px;
     }
 
@@ -277,7 +275,7 @@ $(function(){
     }
 
     #Modal_authorize .modal-content .authorize_dialog .employee_name::after {
-        content: "Employee Name";
+        content: "Employee Signature";
         position: absolute;
         bottom: -27px;
         left: 5px;
@@ -286,7 +284,6 @@ $(function(){
 
     #Modal_authorize .modal-content .authorize_dialog .employee_name #signature_name {
         width: 100%;
-        height: 80px;
     }
 
     #Modal_authorize .modal-content .authorize_dialog .employee_name img {
@@ -299,7 +296,7 @@ $(function(){
         border-bottom: 1px solid black;
         margin: 40px 0 60px;
         padding: 10px 20px;
-        width: 55%;
+        width: 90%;
         min-width: 400px;
     }
 
@@ -317,34 +314,11 @@ $(function(){
 
     #Modal_authorize .modal-content .authorize_dialog .date_signed #signature_date {
         width: 100%;
-        height: 80px;
     }
 
     #Modal_authorize .modal-content .authorize_dialog .date_signed img {
         max-width: 80%;
         max-height: 80px;
-    }
-
-    .modal .box-content .info_sheet {
-        width: 100%;
-        margin: 0 6px;
-    }
-
-    .modal .box-content .info_sheet tr td {
-        width: 100%;
-        font-family: "M PLUS 1p", Arial, Helvetica, "LiHei Pro", 微軟正黑體, "Microsoft JhengHei", 新細明體, sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        padding: 4px 0;
-        height: 32px;
-    }
-
-    .modal .box-content .info_sheet tr td.underline {
-        border-bottom: 1px solid black;
-    }
-
-    .modal .box-content .info_sheet tr td span.caption {
-        font-weight: 700;
     }
 
     @media screen and (min-width: 0px) and (max-width: 767px) {
@@ -354,6 +328,7 @@ $(function(){
     @media screen and (min-width: 768px) and (max-width: 1024px) {
         #my-content { display: block; }   /* show it elsewhere */
     }
+
 
     </style>
 
@@ -376,7 +351,7 @@ $(function(){
 
             <ul>
                 <li>
-                    <h4>Employee Data Sheet and Employee Basic Info</h4>
+                    <h4>Employee Data Sheet</h4>
                 </li>
             </ul>
 
@@ -384,8 +359,7 @@ $(function(){
                 <li>
                     <button class="btn btn-primary" @click="authRecord()">View Authorization Form</button>
                     <button class="btn btn-primary" @click="viewRecord()" v-if="auth_date != ''">View Employee Data Sheet</button>
-                    <button class="btn btn-warning" @click="editRecord()" v-if="auth_date != ''">Edit Employee Data Sheet</button>
-                    <button class="btn btn-primary" @click="viewInfo()" v-if="auth_date != ''">View Employee Basic Info</button>
+                    <button class="btn btn-primary" @click="editRecord()" v-if="auth_date != ''">Edit Employee Data Sheet</button>
                 </li>
             </ul>
 
@@ -410,9 +384,7 @@ $(function(){
 
                     <ul>
                         <li><b>Position:</b></li>
-                        <li class="content">{{ record.department }} {{ record.department == ' ' ? '' : '>>' }} {{
-                            record.title }}
-                        </li>
+                        <li class="content">{{ record.department }} {{ record.department == '   ' ? '' : '>>' }} {{ record.title }}</li>
 
                         <li><b>Date:</b></li>
                         <li>
@@ -1026,6 +998,7 @@ $(function(){
         <!-- View Modal end -->
 
 
+
         <!-- Authorize Modal start -->
         <div id="Modal_authorize" class="modal">
 
@@ -1040,21 +1013,17 @@ $(function(){
                 <div class="box-content">
 
                     <div class="authorize_dialog">
-                        <p>I hereby give my consent to Feliix Inc. to collect, store, process, transfer and update
-                            personal data as necessary. Only authorized personnel are permitted and have access to the
-                            collected information and will treat under strict confidentiality.</p>
+                        <p>I hereby give my consent to Feliix Inc. to collect, store, process, transfer and update personal data as necessary. Only authorized personnel are permitted and have access to the collected information and will treat under strict confidentiality.</p>
                         <p>I certify that the information given above is true and correct.</p>
 
                         <div :class="['employee_name', (auth_date == '' ? 'bg_gray' : '')]">
                             <div id="signature_name" v-if="auth_date == ''"></div>
-                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_name"
-                                 v-if="record.sig_name">
+                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_name" v-if="record.sig_name">
                         </div>
 
                         <div :class="['date_signed', (auth_date == '' ? 'bg_gray' : '')]">
                             <div id="signature_date" v-if="auth_date == ''"></div>
-                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_date"
-                                 v-if="record.sig_date">
+                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_date" v-if="record.sig_date">
                         </div>
 
                     </div>
@@ -1072,222 +1041,6 @@ $(function(){
 
         </div>
         <!-- Authorize Modal end -->
-
-
-        <!-- View Modal start -->
-        <div id="Modal_basic_info_view" class="modal">
-
-            <!-- Modal content -->
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h6>Employee Basic Info</h6>
-                    <a href="javascript: void(0)" @click="close_viewinfo">
-                        <i class="fa fa-times fa-lg" aria-hidden="true"></i>
-                    </a>
-                </div>
-
-                <div class="box-content">
-
-                    <table class="info_sheet">
-
-                        <!-- 以下欄位載入值時，系統都需要把載入的值轉換成英文大寫，再放入欄位中  -->
-                        <tbody>
-                        <tr>
-                            <td>
-                                <span class="caption">Employee Number</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.emp_number }}</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="caption">First Name</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.first_name }}</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="caption">Middle Name</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.middle_name }}</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="caption">Surname</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.surname }}</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                        </tr>
-
-                        <!-- 日期載入值的格式為： 完整月份英文 日, 四位數西元年分，例如： DECEMBER 12, 2023  -->
-                        <tr>
-                            <td>
-                                <span class="caption">Date Hired</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.date_hired }}</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="caption">Regularization Date</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.regular_hired }}</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="caption">Employment Status</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.emp_status }}</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="caption">Company</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.company }}</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="caption">Department</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.department }}</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="caption">Position Title</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.title }}</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="caption">Employee Category</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.emp_category }}</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="caption">Next Level Manager/Superior</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="underline">
-                                <span class="content">{{ view_data.superior}} </span>
-                            </td>
-                        </tr>
-
-                        </tbody>
-
-                    </table>
-
-                    <div class="btnbox" style="margin-bottom: -20px;">
-                        <a class="btn red" @click="close_viewinfo">Close</a>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-        <!-- View Modal end -->
 
 
     </div>
