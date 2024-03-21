@@ -2564,17 +2564,17 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <dl>
-                                <dt class="head">Name of this sub block: <input type="text"></dt>
+                                <dt class="head">Name of this sub block: <input type="text" v-model="temp_installation.title"></dt>
 
                                 <dt class="head">Choose whether to show the block of lighting fixtures installation in this document:</dt>
                                 <dd>
-                                    <select v-model="show_i">
+                                    <select v-model="temp_installation.show_i">
                                         <option value="N">No</option>
                                         <option value="">Yes</option>
                                     </select>
                                 </dd>
 
-                                <dt class="head" v-if="show_i == ''">Distance from Next Block: <input type="number" v-model="pixa_i"> pixel</dt>
+                                <dt class="head" v-if="temp_installation.show_i == ''">Distance from Next Block: <input type="number" v-model="temp_installation.pixa_i"> pixel</dt>
                             </dl>
 
                         </div>
@@ -2583,30 +2583,30 @@ header( 'location:index' );
                         <div class="detailbox">
 
                             <div class="function_box">
-                                <a class="btn small green" @click="add_block_a()">Add Blank Detail</a>
+                                <a class="btn small green" @click="add_block_a_installation()">Add Blank Detail</a>
                                 <a class="btn small green" @click="product_catalog_a()">Product Catalog</a>
-                                <a class="btn small green" @click="">Import from Quotation</a>
+                                <a class="btn small green" @click="quotation_mgt()">Import from Quotation</a>
                             </div>
 
                             <div class="content_box">
 
-                                <ul v-for="(block, index) in temp_block_a">
+                                <ul v-for="(block, index) in temp_installation.block">
 
                                     <li>
-                                        <span>No:</span> <input style="width: 105px;" type="text" v-model="detail.num"><br>
-                                        <span>Description:</span> <input style="width: calc(100% - 157px);" type="text" v-model="detail.description"><br>
+                                        <span>No:</span> <input style="width: 105px;" type="text" v-model="block.no"><br>
+                                        <span>Description:</span> <input style="width: calc(100% - 157px);" type="text" v-model="block.desc"><br>
 
-                                        <span>Quantity:</span> <input type="number" min="1" step="1" v-model="detail.qty" @change="chang_amount(block)" oninput="this.value|=0">
-                                        <span>Unit:</span> <input style="width: 105px;" type="text" v-model="detail.unit">
-                                        <span>Duration (Days):</span> <input type="number" v-model="detail.duration"><br>
+                                        <span>Quantity:</span> <input type="number" min="1" step="1" v-model="block.qty" @change="chang_amount_installation(block)" oninput="this.value|=0">
+                                        <span>Unit:</span> <input style="width: 105px;" type="text" v-model="block.unit">
+                                        <span>Duration (Days):</span> <input type="number" v-model="block.duration"><br>
 
-                                        <span>Unit Material Cost:</span> <input type="number" v-model="detail.material_price" @change="chang_amount(block)">
-                                        <span>Multiplier(%):</span> <input type="number" v-model="detail.ratio" @change="chang_amount(block)">
-                                        <span>Unit Labor Cost:</span> <input type="number" v-model="detail.labor_price" @change="chang_amount(block)"><br>
+                                        <span>Unit Material Cost:</span> <input type="number" v-model="block.material_price" @change="chang_amount_installation_material(block)">
+                                        <span>Multiplier(%):</span> <input type="number" v-model="block.ratio" @change="chang_amount_installation_material(block)">
+                                        <span>Unit Labor Cost:</span> <input type="number" v-model="block.labor_price" @change="chang_amount_installation(block)"><br>
 
-                                        <span>Total:</span> <input type="number" v-model="detail.amount" @change="chang_my_amount(block)">
+                                        <span>Total:</span> <input type="number" v-model="block.total">
                                         <span>Grouping:</span>
-                                        <select>
+                                        <select v-model="block.group">
                                             <option value=""></option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
@@ -2622,9 +2622,9 @@ header( 'location:index' );
                                     </li>
 
                                     <li>
-                                        <i class="fas fa-arrow-alt-circle-up" @click="block_a_up(index, block.id)"></i>
-                                        <i class="fas fa-arrow-alt-circle-down" @click="block_a_down(index, block.id)"></i>
-                                        <i class="fas fa-trash-alt" @click="block_a_del(block.id)"></i>
+                                        <i class="fas fa-arrow-alt-circle-up" @click="block_a_up_installation(index, block.id)"></i>
+                                        <i class="fas fa-arrow-alt-circle-down" @click="block_a_down_installation(index, block.id)"></i>
+                                        <i class="fas fa-trash-alt" @click="block_a_del_installation(block.id)"></i>
                                     </li>
                                 </ul>
 
@@ -2633,8 +2633,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="subtotal_close()">Close</a>
-                                <a class="btn small green" @click="subtotal_save()" v-if="is_load">Save</a>
+                                <a class="btn small" @click="show_installation = false">Close</a>
+                                <a class="btn small green" @click="subtotal_save_installation()">Save</a>
                             </div>
                         </div>
 
@@ -3368,7 +3368,7 @@ header( 'location:index' );
 
                                 <!-- 表格標題列 -->
                                 <tr class="thead1">
-                                    <td class="title" colspan="6">{{ tp.name }}</td>
+                                    <td class="title" colspan="6">{{ installation.title }}</td>
                                 </tr>
 
                                 <tr class="thead2">
@@ -3380,16 +3380,16 @@ header( 'location:index' );
                                     <td>Total Labor Cost</td>
                                 </tr>
 
-                                <template v-for="(bk, index) in tp.blocks">
+                                <template v-for="(bk, index) in installation.block">
                                 <!-- 表格內容物 -->
 
                                 <tr class="desc1">
 
-                                    <td>{{ bk.num }}</td>
+                                    <td>{{ bk.no }}</td>
 
                                     <td>
-                                        <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }}</div>
-                                        <div class="description">{{ bk.description }}</div>
+                                        <div class="pid noPrint" v-if="bk.id != 0">{{ "ID: " + bk.group }}</div>
+                                        <div class="description">{{ bk.desc }}</div>
                                     </td>
 
                                     <td>
@@ -3402,22 +3402,20 @@ header( 'location:index' );
 
                                     <!-- Unit Labor Cost -->
                                     <!-- 這邊需要按照 Grouping，把同一群的商品的 Unit Labor Cost 加總起來，然後變成一欄 -->
-                                    <td rowspan="根據有多少商品在同一群">
-                                        <span class="numbers" v-if="bk.discount == 0">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers deleted" v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">₱ {{ (bk.price * bk.ratio  !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}<span
-                                                v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio - (bk.price * bk.ratio * (bk.discount / 100))).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount == 100 || bk.amount == '0.00')">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                    <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0">
+                                        <span class="numbers">₱ {{ bk.labor_price * bk.ratio !== undefined ? Number(bk.labor_price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers" v-if="(bk.total != '0.00')">₱ {{ bk.labor_price * bk.ratio !== undefined ? Number(bk.labor_price * bk.ratio - (bk.labor_price * bk.ratio)).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers" v-if="(bk.total == '0.00')">₱ {{ bk.labor_price * bk.ratio !== undefined ? Number(bk.labor_price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
                                     </td>
 
                                     <!-- Total Labor Cost -->
                                     <!-- 這邊需要按照 Grouping，把同一群的商品的 Total Labor Cost 加總起來，然後變成一欄 -->
-                                    <td rowspan="根據有多少商品在同一群" v-if="bk.amount != '0.00' && product_vat !== 'P'">
-                                        <span class="numbers">₱ {{ bk.amount !== undefined ? Number(bk.amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
+                                    <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0 && bk.total != '0.00' && product_vat !== 'P'">
+                                        <span class="numbers">₱ {{ bk.total !== undefined ? Number(bk.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
                                     </td>
 
-                                    <td rowspan="根據有多少商品在同一群" v-if="bk.amount == '0.00' && product_vat !== 'P'">
-                                        <span class="numbers deleted">₱ {{ (bk.qty * bk.ratio * bk.price  !== undefined ? Number(bk.qty * bk.ratio * bk.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
+                                    <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0 && bk.total == '0.00' && product_vat !== 'P'">
+                                        <span class="numbers deleted">₱ {{ (bk.qty * bk.ratio * bk.labor_price  !== undefined ? Number(bk.qty * bk.ratio * bk.labor_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
                                         <span class="numbers red">FREE AS PACKAGE!</span>
                                     </td>
                                 </tr>
@@ -4374,30 +4372,30 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out==''">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out==''">Add</button>
                                             <button class="btn btn-warning" @click="close_single()">Cancel</button>
                                         </li>
-                                        <li>
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                        <!-- <li>
+                                            這個按鈕需要被移除掉
                                             <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out==''">Add without Image
                                             </button>
-                                        </li>
+                                        </li> -->
                                     </ul>
-
+<!-- 
                                     <ul v-if="set.variation_mode == 1">
                                         <li v-if="toggle_type == 'A'">
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                             這個按鈕需要被移除掉
                                             <button class="btn btn-info" @click="add_with_image_set(set,'all')"  v-if="set.out == '' && (set.out=='' || set.variation_mode == 1)"> Add all spec. with
                                                 Image
                                             </button>
                                         </li>
                                         <li>
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                            這個按鈕需要被移除掉 
                                             <button class="btn btn-info" @click="add_without_image_set(set, 'all')" v-if="set.out == '' && (set.out=='' || set.variation_mode == 1)" > Add all spec.
                                                 without Image
                                             </button>
                                         </li>
-                                    </ul>
+                                    </ul> -->
 
                                 </div>
                             </div>
@@ -4580,30 +4578,30 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out==''">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out==''">Add</button>
                                         </li>
                                         <li>
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                            <!-- 這個按鈕需要被移除掉
                                             <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out==''">Add without Image
-                                            </button>
+                                            </button> -->
                                             <button class="btn btn-warning" @click="close_single()">Cancel</button>
                                         </li>
                                     </ul>
-
+<!-- 
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                            這個按鈕需要被移除掉 
                                             <button class="btn btn-info" @click="add_with_image_set(set, 'all')" v-if="set.out == '' && (set.out=='' || set.variation_mode == 1)">Add all spec. with
                                                 Image
                                             </button>
                                         </li>
                                         <li>
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                            這個按鈕需要被移除掉 
                                             <button class="btn btn-info" @click="add_without_image_set(set, 'all')" v-if="set.out == '' && (set.out=='' || set.variation_mode == 1)">Add all spec.
                                                 without Image
                                             </button>
                                         </li>
-                                    </ul>
+                                    </ul> -->
 
                                 </div>
 
@@ -4760,30 +4758,30 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <button class="btn btn-info" @click="add_with_image()" v-if="out==''">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image()" v-if="out==''">Add</button>
                                             <button class="btn btn-warning" @click="close_single()">Cancel</button>
                                         </li>
-                                        <li>
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                        <!-- <li>
+                                            這個按鈕需要被移除掉
                                             <button class="btn btn-info" @click="add_without_image()" v-if="out==''">Add without Image
                                             </button>
-                                        </li>
+                                        </li> -->
                                     </ul>
-
+<!-- 
                                     <ul v-if="product.variation_mode == 1">
                                         <li v-if="toggle_type == 'A'">
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                            這個按鈕需要被移除掉
                                             <button class="btn btn-info" @click="add_with_image('all')"  v-if="product.out == '' && (out=='' || product.variation_mode == 1)"> Add all spec. with
                                                 Image
                                             </button>
                                         </li>
                                         <li>
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                            這個按鈕需要被移除掉
                                             <button class="btn btn-info" @click="add_without_image('all')" v-if="product.out == '' && (out=='' || product.variation_mode == 1)" > Add all spec.
                                                 without Image
                                             </button>
                                         </li>
-                                    </ul>
+                                    </ul> -->
                                 </div>
                             </div>
                         </div>
@@ -4965,30 +4963,30 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <button class="btn btn-info" @click="add_with_image()" v-if="out==''">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image()" v-if="out==''">Add</button>
                                             <button class="btn btn-warning" @click="close_single()">Cancel</button>
                                         </li>
-                                        <li>
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                        <!-- <li>
+                                            這個按鈕需要被移除掉 
                                             <button class="btn btn-info" @click="add_without_image()" v-if="out==''">Add without Image
                                             </button>
-                                        </li>
+                                        </li> -->
                                     </ul>
-
+<!-- 
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                            這個按鈕需要被移除掉 
                                             <button class="btn btn-info" @click="add_with_image('all')" v-if="product.out == '' && (out=='' || product.variation_mode == 1)">Add all spec. with
                                                 Image
                                             </button>
                                         </li>
                                         <li>
-                                            <!-- 這個按鈕需要被移除掉 -->
+                                            這個按鈕需要被移除掉 
                                             <button class="btn btn-info" @click="add_without_image('all')" v-if="product.out == '' && (out=='' || product.variation_mode == 1)">Add all spec.
                                                 without Image
                                             </button>
                                         </li>
-                                    </ul>
+                                    </ul> -->
                                 </div>
 
                             </div>

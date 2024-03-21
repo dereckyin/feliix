@@ -347,7 +347,7 @@ switch ($method) {
 
 function IsExist($quotation_id, $db)
 {
-    $sql = "SELECT id from quotation where id = :quotation_id";
+    $sql = "SELECT id from quotation_eng where id = :quotation_id";
            
 
     $stmt = $db->prepare($sql);

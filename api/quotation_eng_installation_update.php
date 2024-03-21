@@ -75,17 +75,42 @@ switch ($method) {
         $footer_first_line = isset($_POST['footer_first_line']) ? $_POST['footer_first_line'] : '';
         $footer_second_line = isset($_POST['footer_second_line']) ? $_POST['footer_second_line'] : '';
 
-        $consumable = (isset($_POST['consumable']) ?  $_POST['consumable'] : '[]');
+        $consumable = (isset($_POST['block']) ?  $_POST['block'] : '[]');
         $consumable_ary = json_decode($consumable, true);
 
-        $show_c = (isset($consumable_ary['show_c']) ?  $consumable_ary['show_c'] : '');
-        $pixa_c = (isset($consumable_ary['pixa_c']) ?  $consumable_ary['pixa_c'] : 0);
+        $show_i = (isset($consumable_ary['show_i']) ?  $consumable_ary['show_i'] : '');
+        $pixa_i = (isset($consumable_ary['pixa_i']) ?  $consumable_ary['pixa_i'] : 0);
 
         if ($id == 0) {
             http_response_code(401);
             echo json_encode(array("message" => "Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . "Access denied."));
             die();
         }
+
+        
+        $new_consumable_ary = array();
+        $skip_group = array();
+        // re arange the consumable_ary by group
+        foreach($consumable_ary['block'] as $item)
+        {
+            if($item['group'] == '')
+                $new_consumable_ary[] = $item;
+            else if(array_key_exists($item['group'], $skip_group))
+            {
+                $dummy = 1;
+            }
+            else
+            {
+                $group_ary = GetSameGroupOfItem($consumable_ary['block'], $item['group']);
+                $skip_group[$item['group']] = 1;
+
+                foreach($group_ary as $itm)
+                    $new_consumable_ary[] = $itm;
+                
+            }
+        }
+
+        $consumable_ary['block'] = $new_consumable_ary;
 
         $_id = IsExist($id, $db);
 
@@ -107,8 +132,8 @@ switch ($method) {
                         `footer_first_line` = :footer_first_line,
                         `footer_second_line` = :footer_second_line,
 
-                        `show_c` = :show_c,
-                        `pixa_c` = :pixa_c,
+                        `show_i` = :show_i,
+                        `pixa_i` = :pixa_i,
 
                         `status` = 0,
                         `create_id` = :create_id,
@@ -131,8 +156,8 @@ switch ($method) {
                     $stmt->bindParam(':footer_first_line', $footer_first_line);
                     $stmt->bindParam(':footer_second_line', $footer_second_line);
 
-                    $stmt->bindParam(':show_c', $show_c);
-                    $stmt->bindParam(':pixa_c', $pixa_c);
+                    $stmt->bindParam(':show_i', $show_i);
+                    $stmt->bindParam(':pixa_i', $pixa_i);
 
                     $stmt->bindParam(':create_id', $user_id);
                 
@@ -176,8 +201,8 @@ switch ($method) {
                         `footer_first_line` = :footer_first_line,
                         `footer_second_line` = :footer_second_line,
 
-                        `show_c` = :show_c,
-                        `pixa_c` = :pixa_c,
+                        `show_i` = :show_i,
+                        `pixa_i` = :pixa_i,
 
                         `updated_id` = :updated_id,
                         `updated_at` = now()
@@ -200,8 +225,8 @@ switch ($method) {
                 $stmt->bindParam(':footer_first_line', $footer_first_line);
                 $stmt->bindParam(':footer_second_line', $footer_second_line);
 
-                $stmt->bindParam(':show_c', $show_c);
-                $stmt->bindParam(':pixa_c', $pixa_c);
+                $stmt->bindParam(':show_i', $show_i);
+                $stmt->bindParam(':pixa_i', $pixa_i);
                 
                 $stmt->bindParam(':updated_id', $user_id);
 
@@ -230,7 +255,7 @@ switch ($method) {
 
 
             // delete previous -1
-            $query = "delete from quotation_eng_consumable 
+            $query = "delete from quotation_eng_installation
             WHERE
             `quotation_id` = :quotation_id
             AND `status` = -1 ";
@@ -260,7 +285,7 @@ switch ($method) {
             }
 
             // quotation_page
-            $query = "update quotation_eng_consumable
+            $query = "update quotation_eng_installation
                         set `status` = -1
                       WHERE
                       `quotation_id` = :quotation_id";
@@ -290,7 +315,7 @@ switch ($method) {
             }
 
         // requirements
-        $query = "INSERT INTO quotation_eng_consumable
+        $query = "INSERT INTO quotation_eng_installation
         SET
             `quotation_id` = :quotation_id,
             `title` = :title,
@@ -395,4 +420,14 @@ function UpdateTypeBlock($org_id, $new_id, $db){
         echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
         die();
     }
+}
+
+function GetSameGroupOfItem($ary, $group) {
+    $result = array();
+    foreach($ary as $item)
+    {
+        if($item['group'] == $group)
+            $result[] = $item;
+    }
+    return $result;
 }

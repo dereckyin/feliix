@@ -120,17 +120,17 @@ if (!isset($jwt)) {
         $footer_first_line = $row['footer_first_line'];
         $footer_second_line = $row['footer_second_line'];
 
-        $pixa_s = $row['pixa_s'] == '' ? 0 : $row['pixa_s'];
+        $pixa_s = $row['pixa_s'] == '' ? 30 : $row['pixa_s'];
         $show_s = $row['show_s'];
-        $pixa_t = $row['pixa_t'] == '' ? 0 : $row['pixa_t'];
+        $pixa_t = $row['pixa_t'] == '' ? 30 : $row['pixa_t'];
         $show_t = $row['show_t'];
-        $pixa_p = $row['pixa_p'] == '' ? 0 : $row['pixa_p'];
+        $pixa_p = $row['pixa_p'] == '' ? 30 : $row['pixa_p'];
         $show_p = $row['show_p'];
-        $pixa_r = $row['pixa_r'] == '' ? 0 : $row['pixa_r'];
+        $pixa_r = $row['pixa_r'] == '' ? 30 : $row['pixa_r'];
         $show_r = $row['show_r'];
-        $pixa_i = $row['pixa_i'] == '' ? 0 : $row['pixa_i'];
+        $pixa_i = $row['pixa_i'] == '' ? 30 : $row['pixa_i'];
         $show_i = $row['show_i'];
-        $pixa_c = $row['pixa_c'] == '' ? 0 : $row['pixa_c'];
+        $pixa_c = $row['pixa_c'] == '' ? 30 : $row['pixa_c'];
         $show_c = $row['show_c'];
 
         $general_requirement = GetGeneralRequirement($row['id'], $db, $show_r, $pixa_r);
@@ -153,11 +153,44 @@ if (!isset($jwt)) {
 
         $consumable['consumable_total'] = $consumable_total;
 
+        
+        $installation = GetInstallation($row['id'], $db, $show_i, $pixa_i);
+        $installation_total = 0;
+        foreach($installation['block'] as $item)
+        {
+            if(is_numeric($item['total']))
+                $installation_total += $item['total'];
+        }
+
+        $new_consumable_ary = array();
+        $skip_group = array();
+        // count for row span
+        foreach($installation['block'] as $key => $value)
+        {
+            if($installation['block'][$key]['group'] == '')
+                $installation['block'][$key]['gp_cnt'] = 1;
+            else if(array_key_exists($installation['block'][$key]['group'], $skip_group))
+            {
+                $installation['block'][$key]['gp_cnt'] = 0;
+            }
+            else
+            {
+                $group_ary = GetSameGroupOfItem($installation['block'], $installation['block'][$key]['group']);
+                $skip_group[$installation['block'][$key]['group']] = 1;
+
+                $installation['block'][$key]['gp_cnt'] = count($group_ary);
+                
+            }
+        }
+
+        $installation['installation_total'] = $installation_total;
+
         $total_info = GetTotalInfo($row['id'], $db);
-        $total_info['real_total'] = $general_requirement_total + $consumable_total;
-        $total_info['back_total'] = $general_requirement_total + $consumable_total;
+        $total_info['real_total'] = $general_requirement_total + $consumable_total + $installation_total;
+        $total_info['back_total'] = $general_requirement_total + $consumable_total + $installation_total;
         $total_info['subtotal_info_not_show_a'] = $general_requirement_total;
         $total_info['subtotal_info_not_show_b'] = $consumable_total;
+        $total_info['subtotal_info_not_show_c'] = $installation_total;
 
         if(is_numeric($total_info['real_total']) && $total_info['total'] == '')
             $total_info['total'] = $total_info['real_total'];
@@ -180,6 +213,7 @@ if (!isset($jwt)) {
         $payment_term_info['payment_method_list'] = $payment_method;
 
         $sig_info = GetSigInfo($row['id'], $db);
+
 
         // $subtotal_info = GetSubTotalInfo($row['id'], $db);
         // $subtotal_novat_a = GetSubTotalNoVatA($row['id'], $db);
@@ -226,7 +260,7 @@ if (!isset($jwt)) {
             "show_c" => $show_c,
 
             "general_requirement" => $general_requirement,
-            
+            "installation" => $installation,
             "consumable" => $consumable,
 
             "total_info" => $total_info,
@@ -260,11 +294,11 @@ if (!isset($jwt)) {
         $pixa_p = 30;
         $show_p = '';
         $pixa_r = 30;
-        $show_r = 'N';
-        $pixa_i = 0;
+        $show_r = '';
+        $pixa_i = 30;
         $show_i = '';
         $pixa_c = 30;
-        $show_c = 'N';
+        $show_c = '';
 
         $general_requirement = GetGeneralRequirement(0, $db, $show_r, $pixa_r);
         $general_requirement['general_requirement_total'] = 0;
@@ -276,6 +310,11 @@ if (!isset($jwt)) {
         $term_info = GetTermInfo(0, $db);
         $payment_term_info = GetPaymentTermInfo(0, $db);
         $sig_info = GetSigInfo(0, $db);
+
+        $installation = GetInstallation(0, $db, $show_i, $pixa_i);
+        $installation['installation_total'] = 0;
+
+        //
         // empty 
         $merged_results[] = array(
             "id" => $id,
@@ -1206,6 +1245,61 @@ function GetConsumable($qid, $db, $show_c, $pixa_c)
     return $merged_results;
 }
 
+
+function GetInstallation($qid, $db, $show_i, $pixa_i)
+{
+    $query = "
+        SELECT 
+        *
+        FROM quotation_eng_installation
+        WHERE quotation_id = " . $qid . "
+        AND `status` <> -1 
+        ORDER BY id
+    ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $item = [];
+    $merged_results = [];
+  
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $list = $row['block'];
+
+        if($list != '')
+        {
+            $item = json_decode($list, TRUE);
+            // add gp_cnt field to each item
+            foreach($item as $key => $value)
+            {
+                $item[$key]['gp_cnt'] = 1;
+            }
+             
+            $row['block'] = $item;
+
+            $row["show_i"] = $show_i;
+            $row["pixa_i"] = $pixa_i;
+        }
+
+        $merged_results = $row;
+    }
+
+    if($merged_results == [])
+    {
+        $merged_results = array(
+            "id" => 0,
+            "quotation_id" => $qid,
+            "title" => "Lighting Fixtures Installation",
+            "show_i" => $show_i,
+            "pixa_i" => $pixa_i,
+            "block" => [],
+        );
+    }
+
+    return $merged_results;
+}
+
 function convertNumberToWord($num = false)
 {
     $num = str_replace(array(',', ' '), '' , trim($num));
@@ -1250,4 +1344,14 @@ function convertNumberToWord($num = false)
         $commas = $commas - 1;
     }
     return implode(' ', $words);
+}
+
+function GetSameGroupOfItem($ary, $group) {
+    $result = array();
+    foreach($ary as $item)
+    {
+        if($item['group'] == $group)
+            $result[] = $item;
+    }
+    return $result;
 }

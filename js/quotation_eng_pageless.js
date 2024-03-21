@@ -71,6 +71,9 @@ var app = new Vue({
         temp_consumable: [],
         temp_consumable_detail: [],
         temp_detail_block_consumable: [],
+
+        installation: [],
+        temp_installation: [],
       
 
       // block_names
@@ -204,7 +207,24 @@ var app = new Vue({
 
       // version II new parameters
 
+              // quotation information
+              receive_records_quo_master:[],
+              pg_quo:0,
+              page_quo:0,
+              pages_quo : [],
       
+              displayedQuoDetailPosts:[],
+
+              quotation_total : 0,
+      
+              // paging
+              product_page_quo: 1,
+        pg_quo:0,
+              //pg_quo:0,
+              //perPage: 10,
+              product_pages_quo: [],
+              product_pages_10_quo: [],
+              comment:'',
 
         // paging
         product_page: 1,
@@ -329,12 +349,11 @@ var app = new Vue({
 
         temp_pages_verify : [],
 
-        product_page_quo : [],
-        product_pages_10_quo : [],
+        product_pages_quo: [],
+        product_pages_10_quo: [],
 
         product_pages_quo : [],
 
-        displayedQuoMasterPosts : [],
         displayedQuoDetailPosts :[],
         
     },
@@ -370,9 +389,19 @@ var app = new Vue({
       this.get_brands();
       this.get_signature();
       this.getTagGroup();
+      this.getQuoMasterRecords();
     },
   
     computed: {
+      displayedQuoMasterPosts() {
+        //if(this.pg == 0)
+        //  this.filter_apply_new();
+
+        this.setPagesQuo();
+        return this.paginateQuo(this.receive_records_quo_master);
+
+      },
+
         displayedPosts() {
             //if(this.pg == 0)
             //  this.filter_apply_new();
@@ -728,6 +757,126 @@ var app = new Vue({
             $('#modal_specification_sheet').modal('toggle');
         },
 
+      
+        pre_page_quo: function(){
+          let tenPages = Math.floor((this.product_page_quo - 1) / 10) + 1;
+    
+            this.product_page_quo = parseInt(this.product_page_quo) - 10;
+            if(this.product_page_quo < 1)
+              this.product_page_quo = 1;
+     
+            this.product_pages_10_quo = [];
+    
+            let from = tenPages * 10;
+            let to = (tenPages + 1) * 10;
+    
+            this.product_pages_10_quo = this.product_pages_quo.slice(from, to);
+          
+        },
+    
+        nex_page_quo: function(){
+          let tenPages = Math.floor((this.product_page_quo - 1) / 10) + 1;
+    
+          this.product_page_quo = parseInt(this.product_page_quo) + 10;
+          if(this.product_page_quo > this.product_pages_quo.length)
+            this.product_page_quo = this.product_pages_quo.length;
+    
+          let from = tenPages * 10;
+          let to = (tenPages + 1) * 10;
+          let pages_10 = this.product_pages_quo.slice(from, to);
+    
+          if(pages_10.length > 0)
+            this.product_pages_10_quo = pages_10;
+    
+        },
+  
+        setPagesQuo () {
+          console.log('setPagesQuo');
+          this.product_pages_quo = [];
+          let numberOfPages = Math.ceil(this.quotation_total / this.perPage);
+  
+          if(numberOfPages == 1)
+            this.product_page_quo = 1;
+          for (let index = 1; index <= numberOfPages; index++) {
+            this.product_pages_quo.push(index);
+          }
+  
+          // this.setupChosen();
+        },
+  
+      paginateQuo: function (posts) {
+         
+        if (this.product_page_quo < 1) this.product_page_quo = 1;
+        if (this.product_page_quo > this.product_pages_quo.length) this.product_page_quo = this.product_pages_quo.length;
+  
+        let tenPages = Math.floor((this.product_page_quo - 1) / 10);
+        if(tenPages < 0)
+          tenPages = 0;
+        this.product_pages_10_quo = [];
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+        
+        this.product_pages_10_quo = this.product_pages_quo.slice(from, to);
+  
+        from = this.product_page_quo * this.perPage - this.perPage;
+        to = this.product_page_quo * this.perPage;
+  
+        return  this.receive_records_quo_master;
+          //return  this.receive_records_quo_master.slice(from, to);
+        },
+
+      getQuoMasterRecords: function(keyword) {
+        let _this = this;
+  
+        const params = {
+  
+                  fc : _this.fil_project_category,
+                  fpc: _this.fil_project_creator,
+                  fpt: _this.fil_creator,
+         
+                  key: _this.fil_keyword,
+                  kind: _this.fil_kind,
+                  g: _this.fil_category,
+  
+                  op1: _this.od_opt1,
+                  od1: _this.od_ord1,
+                  op2: _this.od_opt2,
+                  od2: _this.od_ord2,
+
+                  page: _this.product_page_quo,
+                  size: 10,
+
+                  all: 'all',
+              };
+  
+        
+      
+            let token = localStorage.getItem('accessToken');
+      
+            axios
+                .get('api/quotation_mgt', { params, headers: {"Authorization" : `Bearer ${token}`} })
+                .then(
+                (res) => {
+                    _this.receive_records_quo_master = res.data;
+
+                    if(_this.receive_records_quo_master.length > 0)
+                      _this.quotation_total = _this.receive_records_quo_master[0].cnt;
+  
+                    if(_this.pg_quo !== 0)
+                    { 
+                      _this.page_quo = _this.pg_quo;
+                      _this.setPagesQuo();
+                    }
+                },
+                (err) => {
+                    alert(err.response);
+                },
+                )
+                .finally(() => {
+                    
+                });
+        },
+
       add_with_image(all) {
 
         var photo = "";
@@ -831,13 +980,89 @@ var app = new Vue({
         if(srp == null)
           srp = 0;
 
-        var block_a_image = 'image';
-        var sn = 0;
-        if(this.toggle_type == 'A')
-          var items = this.temp_block_a;
+        // var block_a_image = 'image';
+        // var sn = 0;
+        // if(this.toggle_type == 'A')
+        //   var items = this.temp_block_a;
 
-        if(this.toggle_type == 'B')
-          var items = this.temp_block_b;
+        // if(this.toggle_type == 'B')
+        //   var items = this.temp_block_b;
+
+        // for (let i = 0; i < items.length; i++) {
+        //   if (items[i].id > sn) {
+        //     sn = items[i].id;
+        //   }
+        // }
+
+        // list.replace(/\n+$/, "");
+        // sn = sn + 1;
+
+        // if(this.toggle_type == 'A')
+        // {
+        //   item = {
+        //     id: sn,
+        //     url: photo !== '' ? this.img_url + photo  : '',
+        //     url2 : photo2 !== '' ? this.img_url + photo2 : '',
+        //     url3 : photo3 !== '' ? this.img_url + photo3 : '',
+
+        //     file: {
+        //       name: "",
+        //     },
+        //     type : block_a_image,
+        //     code: this.product.code,
+        //     photo: photo,
+        //     photo2: photo2,
+        //     photo3: photo3,
+        //     qty: "",
+        //     price: price,
+        //     srp: srp,
+        //     discount: "0",
+        //     amount: "",
+        //     desc: "",
+        //     list: list,
+        //     num:"",
+        //     ratio:1.0,
+        //     notes: "",
+        //     pid: this.product.id,
+        //     v1: all == 'all' ? '' : this.v1,
+        //     v2: all == 'all' ? '' : this.v2,
+        //     v3: all == 'all' ? '' : this.v3,
+        //   };
+        // }
+
+        // if(this.toggle_type == 'B')
+        // {
+        //   item = {
+        //     id: sn,
+            
+        //     url:  '',
+        //     url2 : '',
+        //     url3 : '',
+
+        //     code: "",
+        //     photo: photo,
+        //     qty: "1",
+        //     price: price,
+        //     srp: srp,
+        //     ratio:1.0,
+        //     discount: "0",
+        //     amount: "",
+        //     desc: "",
+        //     list: list,
+        //     num:"",
+        //     notes: "",
+        //     pid: this.product.id,
+        //     v1: all == 'all' ? '' : this.v1,
+        //     v2: all == 'all' ? '' : this.v2,
+        //     v3: all == 'all' ? '' : this.v3,
+        //   };
+        // }
+
+
+
+        var sn = 0;
+        var items = this.temp_installation.block;
+
 
         for (let i = 0; i < items.length; i++) {
           if (items[i].id > sn) {
@@ -845,71 +1070,25 @@ var app = new Vue({
           }
         }
 
-        list.replace(/\n+$/, "");
         sn = sn + 1;
 
-        if(this.toggle_type == 'A')
-        {
-          item = {
-            id: sn,
-            url: photo !== '' ? this.img_url + photo  : '',
-            url2 : photo2 !== '' ? this.img_url + photo2 : '',
-            url3 : photo3 !== '' ? this.img_url + photo3 : '',
+        item = {
+          id: sn,
+          no: "",
+          desc: this.product.code,
+          qty: 1,
+          unit: "",
+          duration: "",
+          material_price: (price == null || price == 0) ? srp : price,
+          labor_price: "",
+          ratio: "",
+          total: "",
+          group: "",
+          pid:  this.product.id,
 
-            file: {
-              name: "",
-            },
-            type : block_a_image,
-            code: this.product.code,
-            photo: photo,
-            photo2: photo2,
-            photo3: photo3,
-            qty: "",
-            price: price,
-            srp: srp,
-            discount: "0",
-            amount: "",
-            desc: "",
-            list: list,
-            num:"",
-            ratio:1.0,
-            notes: "",
-            pid: this.product.id,
-            v1: all == 'all' ? '' : this.v1,
-            v2: all == 'all' ? '' : this.v2,
-            v3: all == 'all' ? '' : this.v3,
-          };
-        }
+        };
 
-        if(this.toggle_type == 'B')
-        {
-          item = {
-            id: sn,
-            
-            url:  '',
-            url2 : '',
-            url3 : '',
-
-            code: "",
-            photo: photo,
-            qty: "1",
-            price: price,
-            srp: srp,
-            ratio:1.0,
-            discount: "0",
-            amount: "",
-            desc: "",
-            list: list,
-            num:"",
-            notes: "",
-            pid: this.product.id,
-            v1: all == 'all' ? '' : this.v1,
-            v2: all == 'all' ? '' : this.v2,
-            v3: all == 'all' ? '' : this.v3,
-          };
-        }
-
-        items.push(item);
+        this.temp_installation.block.push(item);
 
         alert('Add Successfully');
       },
@@ -1872,6 +2051,48 @@ var app = new Vue({
       },
 
       
+      quotation_import: async function(item) {
+        let _this = this;
+        var sn = 0;
+
+        for (let i = 0; i < this.temp_installation.block.length; i++) {
+            if (this.temp_installation.block[i].id * 1 > sn) {
+              sn = this.temp_installation.block[i].id * 1;
+            }
+        }
+        sn = sn * 1 + 1;
+        
+        let res = await axios({
+          method: 'get',
+          url: 'api/quotation_eng_import?qid=' + item.id,
+        });
+
+        for(var i = 0; i < res.data.length; i++)
+        {
+          item = {
+            id: sn,
+            no: "",
+            desc: res.data[i]['code'],
+            qty: res.data[i]['qty'],
+            unit: "",
+            duration: "",
+            material_price: res.data[i]['amount'],
+            labor_price: "",
+            ratio: "",
+            total: "",
+            group: "",
+            pid:  this.product.id,
+    
+          };
+    
+          this.temp_installation.block.push(item);
+
+          sn = sn + 1;
+        }
+
+        alert('Add Successfully');
+      },
+      
       payment_term_save: async function() {
         if (this.submit == true) return;
 
@@ -2297,6 +2518,118 @@ var app = new Vue({
 
         },
 
+      subtotal_save_installation_changes: async function (id) {
+        if (this.submit == true) return;
+
+        this.submit = true;
+  
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+        let _this = this;
+  
+        form_Data.append("jwt", token);
+ 
+        form_Data.append("id", this.id);
+
+        form_Data.append("first_line", this.first_line);
+        form_Data.append("second_line", this.second_line);
+        form_Data.append("project_category", this.project_category);
+        form_Data.append("quotation_no", this.quotation_no);
+        form_Data.append("quotation_date", this.quotation_date);
+        form_Data.append("prepare_for_first_line", this.prepare_for_first_line);
+        form_Data.append("prepare_for_second_line", this.prepare_for_second_line);
+        form_Data.append("prepare_for_third_line", this.prepare_for_third_line);
+        form_Data.append("prepare_by_first_line", this.prepare_by_first_line);
+        form_Data.append("prepare_by_second_line", this.prepare_by_second_line);
+
+        form_Data.append("footer_first_line", this.footer_first_line);
+        form_Data.append("footer_second_line", this.footer_second_line);
+
+        form_Data.append("block", JSON.stringify(this.temp_installation));
+
+        if(this.id == 0) {
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/quotation_eng_installation_insert",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              _this.id = response.data.id;
+              
+              Swal.fire({
+                html: response.data.message,
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            })
+            .catch(function(error) {
+              //handle error
+              Swal.fire({
+                text: JSON.stringify(error),
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            });
+        }
+
+        if(this.id != 0) {
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/quotation_eng_installation_update",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              Swal.fire({
+                html: response.data.message,
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            })
+            .catch(function(error) {
+              //handle error
+              Swal.fire({
+                text: JSON.stringify(error),
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            });
+        }
+
+        },
+
+        
+      async subtotal_save_installation() {
+
+        if(this.check_value_installation() == false)
+          return;
+
+        await this.subtotal_save_installation_changes(this.installation.id);
+            
+        this.close_installation();
+
+      },
+
+
       async subtotal_save_consumable() {
         if(this.requirement_id_consumable == 0)
           return;
@@ -2352,6 +2685,22 @@ var app = new Vue({
         return true;
       },
 
+      check_value_installation() {
+        for(var i = 0; i < this.temp_installation.block.length; i++) {
+          if(this.temp_installation.block[i].qty < 1 || this.temp_installation.block[i].qty === '') {
+            Swal.fire({
+              text: "Qty must greater then 1.",
+              icon: "info",
+              confirmButtonText: "OK",
+            });
+
+            return false;
+          }
+
+        }
+        return true;
+      },
+
       subtotal_close() {
         this.show_detail_requirements = false;
         this.edit_type_a = false;
@@ -2370,6 +2719,14 @@ var app = new Vue({
         this.requirement_id = 0;
 
         this.is_load = false;
+
+        this.$forceUpdate();
+      },
+
+      close_installation() {
+        this.show_installation = false;
+
+        this.temp_installation.block = [];
 
         this.$forceUpdate();
       },
@@ -2489,6 +2846,44 @@ var app = new Vue({
 
         this.$forceUpdate();
       },
+
+      
+      block_a_up_installation: function(fromIndex, eid) {
+        var toIndex = fromIndex - 1;
+  
+        if (toIndex < 0) 
+          return;
+
+        var element = this.temp_installation.block.find(({ id }) => id === eid);
+        this.temp_installation.block.splice(fromIndex, 1);
+        this.temp_installation.block.splice(toIndex, 0, element);
+
+        this.$forceUpdate();
+      },
+
+      block_a_down_installation: function(fromIndex, eid) {
+        var toIndex = fromIndex + 1;
+
+        if (toIndex > this.temp_installation.block.length - 1) 
+          return;
+  
+        var element = this.temp_installation.block.find(({ id }) => id === eid);
+        this.temp_installation.block.splice(fromIndex, 1);
+        this.temp_installation.block.splice(toIndex, 0, element);
+
+        this.$forceUpdate();
+      },
+
+      block_a_del_installation: function(eid) {
+
+        var index = this.temp_installation.block.findIndex(({ id }) => id === eid);
+        if (index > -1) {
+          this.temp_installation.block.splice(index, 1);
+        }
+
+        this.$forceUpdate();
+      },
+
 
       clear_photo(_id, num) {
         var item = this.temp_block_a.find(({ id }) => id === _id);
@@ -2721,6 +3116,49 @@ var app = new Vue({
 
       },
 
+
+      chang_amount_installation: function(row) {
+        ratio = 1;
+
+        if(row.qty == '')
+          return;
+
+        row.qty = Math.floor(row.qty);
+      
+        // let charge = this.payment_record.charge;
+        let charge = (Number(row.qty)) * Number(row.labor_price);
+
+        row.total = charge.toFixed(2);
+
+      },
+
+      chang_amount_installation_material: function(row) {
+        ratio = 1;
+
+
+          if(row.ratio != '')
+          ratio = Math.floor(row.ratio);
+
+        if(row.ratio > 100)
+          row.ratio = 100;
+
+        // let charge = this.payment_record.charge;
+        let charge = (Number(row.material_price)) * Number(ratio);
+
+        row.labor_price = charge.toFixed(2);
+
+        if(row.qty == '')
+          return;
+
+        row.qty = Math.floor(row.qty);
+      
+        // let charge = this.payment_record.charge;
+        charge = (Number(row.qty)) * Number(row.labor_price);
+
+        row.total = charge.toFixed(2);
+
+      },
+
       
       chang_detail_amount: function(row) {
         if(row.qty == '')
@@ -2822,6 +3260,42 @@ var app = new Vue({
         };
 
         this.temp_detail_block_consumable.details.push(item);
+
+        this.$forceUpdate();
+      },
+
+      
+      add_block_a_installation() {
+        
+        var sn = 0;
+        var items = this.temp_installation.block;
+
+
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].id > sn) {
+            sn = items[i].id;
+          }
+        }
+
+        sn = sn + 1;
+
+        item = {
+          id: sn,
+          no: "",
+          desc: "",
+          qty: "",
+          unit: "",
+          duration: "",
+          material_price: "",
+          labor_price: "",
+          ratio: "",
+          total: "",
+          group: "",
+          pid: 0,
+
+        };
+
+        this.temp_installation.block.push(item);
 
         this.$forceUpdate();
       },
@@ -3105,6 +3579,9 @@ Installation:`;
               _this.general_requirement = _this.receive_records[0].general_requirement;
               _this.temp_general_requirement = JSON.parse(JSON.stringify(_this.general_requirement));
               _this.temp_general_requirement_detail = JSON.parse(JSON.stringify(_this.general_requirement));
+
+              _this.installation = _this.receive_records[0].installation;
+              _this.temp_installation = JSON.parse(JSON.stringify(_this.installation));
 
               _this.consumable = _this.receive_records[0].consumable;
               _this.temp_consumable = JSON.parse(JSON.stringify(_this.consumable));
@@ -3450,6 +3927,12 @@ Installation:`;
         var element = page.types.find(({ id }) => id === eid);
         page.types.splice(fromIndex, 1);
         this.temp_pages[toIndex].types.splice(this.temp_pages[toIndex].types.length - 1, 0, element);
+      },
+
+      
+      quotation_mgt: function() {
+        $('#modal_quotation_list').modal('toggle');
+   
       },
   
       set_down: function(pid, fromIndex, eid) {
@@ -4733,85 +5216,118 @@ Installation:`;
     if(srp == null)
       srp = 0;
 
-    var block_a_image = 'image';
-    var sn = 0;
-    if(this.toggle_type == 'A')
-      var items = this.temp_block_a;
+      
 
-    if(this.toggle_type == 'B')
-      var items = this.temp_block_b;
+      var sn = 0;
+      var items = this.temp_installation.block;
 
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].id > sn) {
-        sn = items[i].id;
+
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].id > sn) {
+          sn = items[i].id;
+        }
       }
-    }
 
-    list.replace(/\n+$/, "");
-    sn = sn + 1;
+      sn = sn + 1;
 
-    if(this.toggle_type == 'A')
-    {
       item = {
         id: sn,
-        url: photo !== '' ? this.img_url + photo  : '',
-        url2 : photo2 !== '' ? this.img_url + photo2 : '',
-        url3 : photo3 !== '' ? this.img_url + photo3 : '',
+        no: "",
+        desc: this.product.code,
+        qty: 1,
+        unit: "",
+        duration: "",
+        material_price: (price == null || price == 0) ? srp : price,
+        labor_price: "",
+        ratio: "",
+        total: "",
+        group: "",
+        pid:  this.product.id,
 
-        file: {
-          name: "",
-        },
-        type : block_a_image,
-        code: set.code,
-        photo: photo,
-        photo2: photo2,
-        photo3: photo3,
-        qty: set.qty,
-        price: price,
-        srp: srp,
-        discount: "0",
-        amount: "",
-        desc: "",
-        list: list,
-        num:"",
-        ratio:1.0,
-        notes: "",
-        pid: set.id,
-        v1: all == 'all' ? '' : set.v1,
-        v2: all == 'all' ? '' : set.v2,
-        v3: all == 'all' ? '' : set.v3,
       };
-    }
 
-    if(this.toggle_type == 'B')
-    {
-      item = {
-        id: sn,
+      this.temp_installation.block.push(item);
+
+
+    // var block_a_image = 'image';
+    // var sn = 0;
+    // if(this.toggle_type == 'A')
+    //   var items = this.temp_block_a;
+
+    // if(this.toggle_type == 'B')
+    //   var items = this.temp_block_b;
+
+    // for (let i = 0; i < items.length; i++) {
+    //   if (items[i].id > sn) {
+    //     sn = items[i].id;
+    //   }
+    // }
+
+    // list.replace(/\n+$/, "");
+    // sn = sn + 1;
+
+    // if(this.toggle_type == 'A')
+    // {
+    //   item = {
+    //     id: sn,
+    //     url: photo !== '' ? this.img_url + photo  : '',
+    //     url2 : photo2 !== '' ? this.img_url + photo2 : '',
+    //     url3 : photo3 !== '' ? this.img_url + photo3 : '',
+
+    //     file: {
+    //       name: "",
+    //     },
+    //     type : block_a_image,
+    //     code: set.code,
+    //     photo: photo,
+    //     photo2: photo2,
+    //     photo3: photo3,
+    //     qty: set.qty,
+    //     price: price,
+    //     srp: srp,
+    //     discount: "0",
+    //     amount: "",
+    //     desc: "",
+    //     list: list,
+    //     num:"",
+    //     ratio:1.0,
+    //     notes: "",
+    //     pid: set.id,
+    //     v1: all == 'all' ? '' : set.v1,
+    //     v2: all == 'all' ? '' : set.v2,
+    //     v3: all == 'all' ? '' : set.v3,
+    //   };
+    // }
+
+    // if(this.toggle_type == 'B')
+    // {
+    //   item = {
+    //     id: sn,
         
-        url:  '',
-        url2 : '',
-        url3 : '',
+    //     url:  '',
+    //     url2 : '',
+    //     url3 : '',
 
-        code: "",
-        photo: photo,
-        qty: "1",
-        price: price,
-        srp: srp,
-        ratio:1.0,
-        discount: "0",
-        amount: "",
-        desc: "",
-        list: list,
-        num:"",
-        notes: "",
-        pid: set.id,
-        v1: all == 'all' ? '' : set.v1,
-        v2: all == 'all' ? '' : set.v2,
-        v3: all == 'all' ? '' : set.v3,
-      };
-    }
+    //     code: "",
+    //     photo: photo,
+    //     qty: "1",
+    //     price: price,
+    //     srp: srp,
+    //     ratio:1.0,
+    //     discount: "0",
+    //     amount: "",
+    //     desc: "",
+    //     list: list,
+    //     num:"",
+    //     notes: "",
+    //     pid: set.id,
+    //     v1: all == 'all' ? '' : set.v1,
+    //     v2: all == 'all' ? '' : set.v2,
+    //     v3: all == 'all' ? '' : set.v3,
+    //   };
+    // }
 
-    items.push(item);
+    // items.push(item);
 
     alert('Add Successfully');
   },

@@ -4828,3 +4828,16 @@ CREATE TABLE `quotation_eng_consumable` (
 
 ALTER TABLE quotation_eng_total
 ADD COLUMN `show_word` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+CREATE TABLE `quotation_eng_installation` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `quotation_id` bigint(20) unsigned NOT NULL,
+  `title` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `block` JSON,
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
