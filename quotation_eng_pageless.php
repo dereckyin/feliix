@@ -3403,9 +3403,9 @@ header( 'location:index' );
                                     <!-- Unit Labor Cost -->
                                     <!-- 這邊需要按照 Grouping，把同一群的商品的 Unit Labor Cost 加總起來，然後變成一欄 -->
                                     <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0">
-                                        <span class="numbers">₱ {{ bk.gp_cost * bk.ratio !== undefined ? Number(bk.gp_cost * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="(bk.total != '0.00')">₱ {{ bk.gp_cost * bk.ratio !== undefined ? Number(bk.gp_cost * bk.ratio - (bk.gp_cost * bk.ratio)).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="(bk.total == '0.00')">₱ {{ bk.gp_cost * bk.ratio !== undefined ? Number(bk.gp_cost * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers">₱ {{ bk.gp_cost  !== undefined ? Number(bk.gp_cost ).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers" v-if="(bk.gp_total != '0.00')">₱ {{ bk.gp_cost  !== undefined ? Number(bk.gp_cost ).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers" v-if="(bk.gp_total == '0.00')">₱ {{ bk.gp_cost  !== undefined ? Number(bk.gp_cost ).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
                                     </td>
 
                                     <!-- Total Labor Cost -->
@@ -3415,7 +3415,7 @@ header( 'location:index' );
                                     </td>
 
                                     <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0 && bk.gp_total == '0.00' && product_vat !== 'P'">
-                                        <span class="numbers deleted">₱ {{ (bk.qty * bk.ratio * bk.gp_cost  !== undefined ? Number(bk.qty * bk.ratio * bk.gp_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
+                                        <span class="numbers deleted">₱ {{ (bk.qty  * bk.gp_cost  !== undefined ? Number(bk.qty  * bk.gp_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
                                         <span class="numbers red">FREE AS PACKAGE!</span>
                                     </td>
                                 </tr>
@@ -3427,12 +3427,12 @@ header( 'location:index' );
                                 <tr class="tfoot1">
                                     <td colspan="4"></td>
                                     <td>SUBTOTAL</td>
-                                    <td v-if="tp.real_amount == 0">₱ {{ tp.subtotal !== undefined ?
-                                        Number(tp.subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
+                                    <td v-if="installation.installation_total == 0">₱ {{ installation.installation_total !== undefined ?
+                                        Number(installation.installation_total).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
                                         "$1,") : '0.00' }}
                                     </td>
-                                    <td v-if="tp.real_amount != 0">₱ {{ tp.real_amount !== undefined ?
-                                        Number(tp.real_amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
+                                    <td v-if="installation.installation_total != 0">₱ {{ installation.installation_total !== undefined ?
+                                        Number(installation.installation_total).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
                                         "$1,") : '0.00' }}
                                     </td>
                                 </tr>
