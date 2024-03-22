@@ -1080,9 +1080,9 @@ var app = new Vue({
           unit: "",
           duration: "",
           material_price: (price == null || price == 0) ? srp : price,
-          labor_price: "",
+          labor_price: (price == null || price == 0) ? srp : price,
           ratio: "",
-          total: "",
+          total: (price == null || price == 0) ? srp : price,
           group: "",
           pid:  this.product.id,
 
@@ -2069,6 +2069,11 @@ var app = new Vue({
 
         for(var i = 0; i < res.data.length; i++)
         {
+          qty = res.data[i]['qty'] * 1;
+          price = res.data[i]['amount'] * 1;
+
+          total = qty * price;
+
           item = {
             id: sn,
             no: "",
@@ -2077,9 +2082,9 @@ var app = new Vue({
             unit: "",
             duration: "",
             material_price: res.data[i]['amount'],
-            labor_price: "",
+            labor_price: res.data[i]['amount'],
             ratio: "",
-            total: "",
+            total: (total).toFixed(2),
             group: "",
             pid:  this.product.id,
     
@@ -5238,9 +5243,9 @@ Installation:`;
         unit: "",
         duration: "",
         material_price: (price == null || price == 0) ? srp : price,
-        labor_price: "",
+        labor_price: (price == null || price == 0) ? srp : price,
         ratio: "",
-        total: "",
+        total: (price == null || price == 0) ? srp : price,
         group: "",
         pid:  this.product.id,
 
