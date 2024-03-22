@@ -3404,8 +3404,8 @@ header( 'location:index' );
                                     <!-- 這邊需要按照 Grouping，把同一群的商品的 Unit Labor Cost 加總起來，然後變成一欄 -->
                                     <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0">
                                         <span class="numbers">₱ {{ bk.gp_cost  !== undefined ? Number(bk.gp_cost ).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="(bk.gp_total != '0.00')">₱ {{ bk.gp_cost  !== undefined ? Number(bk.gp_cost ).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="(bk.gp_total == '0.00')">₱ {{ bk.gp_cost  !== undefined ? Number(bk.gp_cost ).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <!-- <span class="numbers" v-if="(bk.gp_total != '0.00')">₱ {{ bk.gp_cost  !== undefined ? Number(bk.gp_cost ).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers" v-if="(bk.gp_total == '0.00')">₱ {{ bk.gp_cost  !== undefined ? Number(bk.gp_cost ).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span> -->
                                     </td>
 
                                     <!-- Total Labor Cost -->
