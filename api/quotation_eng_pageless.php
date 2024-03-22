@@ -168,7 +168,12 @@ if (!isset($jwt)) {
         foreach($installation['block'] as $key => $value)
         {
             if($installation['block'][$key]['group'] == '')
+            {
                 $installation['block'][$key]['gp_cnt'] = 1;
+                $installation['block'][$key]['gp_cost'] = $installation['block'][$key]['labor_price'];
+                $installation['block'][$key]['gp_total'] = $installation['block'][$key]['total'];
+
+            }
             else if(array_key_exists($installation['block'][$key]['group'], $skip_group))
             {
                 $installation['block'][$key]['gp_cnt'] = 0;
@@ -179,7 +184,17 @@ if (!isset($jwt)) {
                 $skip_group[$installation['block'][$key]['group']] = 1;
 
                 $installation['block'][$key]['gp_cnt'] = count($group_ary);
-                
+                $gp_cost = 0;
+                $gp_total = 0;
+                for($i = 0; $i < count($group_ary); $i++)
+                {
+                    if(is_numeric($group_ary[$i]['labor_price']))
+                        $gp_cost += $group_ary[$i]['labor_price'];
+                    if(is_numeric($group_ary[$i]['total']))
+                        $gp_total += $group_ary[$i]['total'];
+                }
+                $installation['block'][$key]['gp_cost'] = $gp_cost;
+                $installation['block'][$key]['gp_total'] = $gp_total;
             }
         }
 
@@ -1274,6 +1289,8 @@ function GetInstallation($qid, $db, $show_i, $pixa_i)
             foreach($item as $key => $value)
             {
                 $item[$key]['gp_cnt'] = 1;
+                $item[$key]['gp_cost'] = 0;
+                $item[$key]['gp_total'] = 0;
             }
              
             $row['block'] = $item;

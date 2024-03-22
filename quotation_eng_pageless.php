@@ -3403,19 +3403,19 @@ header( 'location:index' );
                                     <!-- Unit Labor Cost -->
                                     <!-- 這邊需要按照 Grouping，把同一群的商品的 Unit Labor Cost 加總起來，然後變成一欄 -->
                                     <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0">
-                                        <span class="numbers">₱ {{ bk.labor_price * bk.ratio !== undefined ? Number(bk.labor_price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="(bk.total != '0.00')">₱ {{ bk.labor_price * bk.ratio !== undefined ? Number(bk.labor_price * bk.ratio - (bk.labor_price * bk.ratio)).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="(bk.total == '0.00')">₱ {{ bk.labor_price * bk.ratio !== undefined ? Number(bk.labor_price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers">₱ {{ bk.gp_cost * bk.ratio !== undefined ? Number(bk.gp_cost * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers" v-if="(bk.total != '0.00')">₱ {{ bk.gp_cost * bk.ratio !== undefined ? Number(bk.gp_cost * bk.ratio - (bk.gp_cost * bk.ratio)).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                        <span class="numbers" v-if="(bk.total == '0.00')">₱ {{ bk.gp_cost * bk.ratio !== undefined ? Number(bk.gp_cost * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
                                     </td>
 
                                     <!-- Total Labor Cost -->
                                     <!-- 這邊需要按照 Grouping，把同一群的商品的 Total Labor Cost 加總起來，然後變成一欄 -->
-                                    <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0 && bk.total != '0.00' && product_vat !== 'P'">
-                                        <span class="numbers">₱ {{ bk.total !== undefined ? Number(bk.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
+                                    <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0 && bk.gp_total != '0.00' && product_vat !== 'P'">
+                                        <span class="numbers">₱ {{ bk.gp_total !== undefined ? Number(bk.gp_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
                                     </td>
 
-                                    <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0 && bk.total == '0.00' && product_vat !== 'P'">
-                                        <span class="numbers deleted">₱ {{ (bk.qty * bk.ratio * bk.labor_price  !== undefined ? Number(bk.qty * bk.ratio * bk.labor_price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
+                                    <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0 && bk.gp_total == '0.00' && product_vat !== 'P'">
+                                        <span class="numbers deleted">₱ {{ (bk.qty * bk.ratio * bk.gp_cost  !== undefined ? Number(bk.qty * bk.ratio * bk.gp_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
                                         <span class="numbers red">FREE AS PACKAGE!</span>
                                     </td>
                                 </tr>
