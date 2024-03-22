@@ -1150,7 +1150,7 @@ function GetPages($qid, $db, $prefix){
         WHERE  quotation_id = " . $qid . " ";
 
     if($prefix != "")
-        $query .= " and page = 1 ";
+        $query .= " and page = 1 and create_id is not null ";
 
     $query .= "
         AND `status` <> -1 
