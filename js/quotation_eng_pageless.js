@@ -2081,7 +2081,7 @@ var app = new Vue({
             qty: res.data[i]['qty'],
             unit: "",
             duration: "",
-            material_price: res.data[i]['amount'],
+            material_price: res.data[i]['price'],
             labor_price: res.data[i]['amount'],
             ratio: "",
             total: (total).toFixed(2),
