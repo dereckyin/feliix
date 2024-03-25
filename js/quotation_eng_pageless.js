@@ -391,6 +391,8 @@ var app = new Vue({
       this.get_signature();
       this.getTagGroup();
       this.getQuoMasterRecords();
+      this.getUsers();
+      this.getCreators();
     },
   
     computed: {
@@ -683,6 +685,50 @@ var app = new Vue({
 
         this.filter_apply_new();
       },
+
+      
+    getCreators () {
+
+      let _this = this;
+
+      let token = localStorage.getItem('accessToken');
+
+      axios
+          .get('api/admin/quotation_creators', { headers: {"Authorization" : `Bearer ${token}`} })
+          .then(
+          (res) => {
+              _this.creators = res.data;
+          },
+          (err) => {
+              alert(err.response);
+          },
+          )
+          .finally(() => {
+              
+          });
+  },
+
+      getUsers () {
+
+        let _this = this;
+  
+        let token = localStorage.getItem('accessToken');
+  
+        axios
+            .get('api/admin/quotation_project_creators', { headers: {"Authorization" : `Bearer ${token}`} })
+            .then(
+            (res) => {
+                _this.users = res.data;
+            },
+            (err) => {
+                alert(err.response);
+            },
+            )
+            .finally(() => {
+                
+            });
+    },
+
 
       selectall(){
         let stat = "";
@@ -3936,6 +3982,62 @@ Installation:`;
         this.temp_pages[toIndex].types.splice(this.temp_pages[toIndex].types.length - 1, 0, element);
       },
 
+      
+    filter_apply_new_quo: function() {
+      let _this = this;
+
+      this.product_page_quo = 1;
+
+      const params = {
+
+                fc : _this.fil_project_category,
+                fpc: _this.fil_project_creator,
+                fpt: _this.fil_creator,
+       
+                key: _this.fil_keyword,
+                kind: _this.fil_kind,
+                g: _this.fil_category,
+
+                op1: _this.od_opt1,
+                od1: _this.od_ord1,
+                op2: _this.od_opt2,
+                od2: _this.od_ord2,
+
+                page: _this.product_page_quo,
+                  size: 10,
+
+                all: 'all',
+            };
+
+      
+    
+          let token = localStorage.getItem('accessToken');
+    
+          axios
+              .get('api/quotation_mgt', { params, headers: {"Authorization" : `Bearer ${token}`} })
+              .then(
+              (res) => {
+                  _this.receive_records_quo_master = res.data;
+
+                  if(_this.receive_records_quo_master.length > 0)
+                    _this.quotation_total = _this.receive_records_quo_master[0].cnt;
+
+                  if(_this.pg_quo !== 0)
+                    { 
+                      _this.page_quo = _this.pg_quo;
+                      _this.setPagesQuo();
+                    }
+              },
+              (err) => {
+                  alert(err.response);
+              },
+              )
+              .finally(() => {
+                  
+              });
+  
+  
+      },
       
       quotation_mgt: function() {
         $('#modal_quotation_list').modal('toggle');
