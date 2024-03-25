@@ -213,7 +213,16 @@ if (!isset($jwt)) {
         if(is_numeric($total_info['total']))
         {
 
-            $total_info['total_text'] = convertNumberToWord($total_info['total']) ;
+            $words = convertNumberToWord($total_info['total']);
+
+            // if the total is not integer
+            if(strpos($total_info['total'], '.') !== false)
+            {
+                $total_info['total_text'] = $words . " and " . substr($total_info['total'], strpos($total_info['total'], '.') + 1) . "/100";
+            }
+            else
+                $total_info['total_text'] = convertNumberToWord($total_info['total']);
+            
             if($total_info['total_text'] != '')
                 $total_info['total_text'] .= " Pesos Only"; 
         }
@@ -1361,6 +1370,7 @@ function convertNumberToWord($num = false)
     if ($commas > 1) {
         $commas = $commas - 1;
     }
+
     return implode(' ', $words);
 }
 
