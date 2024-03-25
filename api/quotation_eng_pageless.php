@@ -901,6 +901,7 @@ function GetTotalInfo($qid, $db){
 
         "subtotal_info_not_show_a"  => 0,
         "subtotal_info_not_show_b"  => 0,
+        "subtotal_info_not_show_c"  => 0,
 
         "back_total" => 0,
     );

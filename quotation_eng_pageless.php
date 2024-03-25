@@ -3561,13 +3561,13 @@ header( 'location:index' );
                                         Math.floor(temp_total.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}%
                                         DISCOUNT
                                     </td>
-                                    <td><span class="numbers">₱ {{ (subtotal * temp_total.discount / 100) !== undefined ? (subtotal * temp_total.discount / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                                    <td><span class="numbers">₱ {{ (temp_total.real_total * 1) !== undefined ? (temp_total.real_total * 1).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
                                 </tr>
 
                                 <tr class="total_vat" v-if="temp_total.vat == 'Y'">
                                     <td>(12% VAT)</td>
-                                    <td><span class="numbers">₱ {{ ((subtotal_info_not_show_a * (100 - temp_total.discount) / 100) * 12 / 100) !== undefined ? ((subtotal_info_not_show_a * (100 - temp_total.discount) / 100) * 12 / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                                    <td><span class="numbers">₱ {{ (((subtotal_info_not_show_a + subtotal_info_not_show_b + subtotal_info_not_show_c) * (100 - temp_total.discount) / 100) * 12 / 100) !== undefined ? (((subtotal_info_not_show_a + subtotal_info_not_show_b + subtotal_info_not_show_c) * (100 - temp_total.discount) / 100) * 12 / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
                                 </tr>
                                 </tbody>

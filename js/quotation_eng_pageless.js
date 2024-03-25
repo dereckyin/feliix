@@ -185,6 +185,7 @@ var app = new Vue({
 
       subtotal_info_not_show_a:0,
       subtotal_info_not_show_b:0,
+      subtotal_info_not_show_c:0,
 
       show_title : true,
 
@@ -1727,18 +1728,18 @@ var app = new Vue({
 
         var total = 0;
 
-        total = ((this.subtotal_info_not_show_a * 1 + this.subtotal_info_not_show_b * 1) * (1 - row.discount * 0.01)).toFixed(2);
+        total = ((this.subtotal_info_not_show_a * 1 + this.subtotal_info_not_show_b * 1  + this.subtotal_info_not_show_c * 1) * (1 - row.discount * 0.01)).toFixed(2);
         
         if(row.vat == 'Y')
         {
-          total = ((this.subtotal_novat_a * 1 + this.subtotal_info_not_show_b * 1) * (1 - row.discount * 0.01)).toFixed(2);
-          total =  (total * 1) + (this.subtotal_novat_a * (1 - row.discount * 0.01) * 0.12);
+          total = ((this.subtotal_info_not_show_a * 1 + this.subtotal_info_not_show_b * 1  + this.subtotal_info_not_show_c * 1) * (1 - row.discount * 0.01)).toFixed(2);
+          total =  (total * 1) + (total * 0.12);
         }
 
-        if(row.vat == 'P')
+        if(row.vat == '')
         {
-          total = ((this.subtotal_novat_a * 1 + this.subtotal_info_not_show_b * 1) * (1 - row.discount * 0.01)).toFixed(2);
-          total =  (total * 1) + (this.subtotal_novat_a * (1 - row.discount * 0.01) * 0.12);
+          total = ((this.subtotal_info_not_show_a * 1 + this.subtotal_info_not_show_b * 1  + this.subtotal_info_not_show_c * 1) * (1 - row.discount * 0.01)).toFixed(2);
+
         }
 
         total = Number(total).toFixed(2);
@@ -2070,9 +2071,9 @@ var app = new Vue({
         for(var i = 0; i < res.data.length; i++)
         {
           qty = res.data[i]['qty'] * 1;
-          price = res.data[i]['amount'] * 1;
-
-          total = qty * price;
+          discount = (100 - res.data[i]['discount'] * 1) * 0.01;
+          price = res.data[i]['price'] * discount;
+          total = res.data[i]['amount'] * 1;
 
           item = {
             id: sn,
@@ -2081,8 +2082,8 @@ var app = new Vue({
             qty: res.data[i]['qty'],
             unit: "",
             duration: "",
-            material_price: res.data[i]['price'],
-            labor_price: res.data[i]['amount'],
+            material_price: price.toFixed(2),
+            labor_price: price.toFixed(2),
             ratio: "",
             total: (total).toFixed(2),
             group: "",
@@ -3140,9 +3141,8 @@ var app = new Vue({
       chang_amount_installation_material: function(row) {
         ratio = 1;
 
-
-          if(row.ratio != '')
-          ratio = Math.floor(row.ratio);
+        if(row.ratio != '')
+          ratio = Number(row.ratio).toFixed(2);
 
         if(row.ratio > 100)
           row.ratio = 100;
@@ -3608,6 +3608,8 @@ Installation:`;
 
               _this.subtotal_info_not_show_a = _this.receive_records[0].total_info.subtotal_info_not_show_a;
               _this.subtotal_info_not_show_b = _this.receive_records[0].total_info.subtotal_info_not_show_b;
+              _this.subtotal_info_not_show_c = _this.receive_records[0].total_info.subtotal_info_not_show_c;
+
               _this.count_subtotal();
               _this.temp_total = JSON.parse(JSON.stringify(_this.total));
 
@@ -3669,10 +3671,10 @@ Installation:`;
         else
           this.total.total = Number(this.total.total).toFixed(2);
 
-        this.total.real_total = ((this.total.subtotal_info_not_show_a * 1 + this.total.subtotal_info_not_show_b * 1)  * (1 - this.total.discount * 0.01));
+        this.total.real_total = ((this.total.subtotal_info_not_show_a * 1 + this.total.subtotal_info_not_show_b * 1 + this.total.subtotal_info_not_show_c * 1)  * (1 - this.total.discount * 0.01));
 
         if(this.total.vat == 'Y')
-          this.total.real_total = (this.total.real_total * 1) + (this.subtotal_info_not_show_a * (1 - this.total.discount * 0.01) * 0.12);
+          this.total.real_total = (this.total.real_total * 1) + (this.real_total * 0.12);
 
           this.total.real_total = Number(this.total.real_total).toFixed(2);
     
