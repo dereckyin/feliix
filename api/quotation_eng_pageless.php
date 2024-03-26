@@ -1209,13 +1209,65 @@ function GetGeneralRequirement($qid, $db, $show_r, $pixa_r)
 
     if($merged_results == [])
     {
+        $block[] = array(
+            "id" => 1,
+            "no" => "",
+            "desc" => "Mobilization/Demobilization",
+            "qty" => 1,
+            "unit" => "",
+            "unit_cost" => 0,
+            "discount" => 0,
+            "total" => "0.00",
+            "not_show" => "",
+            "details" => [],
+        );
+
+        $block[] = array(
+            "id" => 2,
+            "no" => "",
+            "desc" => "Project Supervision",
+            "qty" => 1,
+            "unit" => "",
+            "unit_cost" => 0,
+            "discount" => 0,
+            "total" => "0.00",
+            "not_show" => "",
+            "details" => [],
+        );
+
+        $block[] = array(
+            "id" => 3,
+            "no" => "",
+            "desc" => "Tools & Equipment",
+            "qty" => 1,
+            "unit" => "",
+            "unit_cost" => 0,
+            "discount" => 0,
+            "total" => "0.00",
+            "not_show" => "",
+            "details" => [],
+        );
+
+        $block[] = array(
+            "id" => 4,
+            "no" => "",
+            "desc" => "Functionality Test",
+            "qty" => 1,
+            "unit" => "",
+            "unit_cost" => 0,
+            "discount" => 0,
+            "total" => "0.00",
+            "not_show" => "",
+            "details" => [],
+        );
+
         $merged_results = array(
             "id" => 0,
             "quotation_id" => $qid,
             "title" => "",
             "show_r" => $show_r,
             "pixa_r" => $pixa_r,
-            "block" => [],
+            "block" => $block,
         );
     }
 
@@ -1257,13 +1309,27 @@ function GetConsumable($qid, $db, $show_c, $pixa_c)
 
     if($merged_results == [])
     {
+        $block[] = array(
+            "id" => 1,
+            "no" => "",
+            "desc" => "Consumables (Base on BOM)",
+            "qty" => 1,
+            "unit" => "",
+            "unit_cost" => 0,
+            "discount" => 0,
+            "ratio" => "",
+            "total" => "0.00",
+            "not_show" => "",
+            "details" => [],
+        );
+
         $merged_results = array(
             "id" => 0,
             "quotation_id" => $qid,
             "title" => "Consumables",
             "show_c" => $show_c,
             "pixa_c" => $pixa_c,
-            "block" => [],
+            "block" => $block,
         );
     }
 

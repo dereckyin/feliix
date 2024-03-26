@@ -832,7 +832,7 @@ var app = new Vue({
                         'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ${token}`
                     },
-                    url: 'api/quotation_insert',
+                    url: 'api/quotation_eng_insert',
                     data: form_Data
                 })
                 .then(function(response) {

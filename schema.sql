@@ -4841,3 +4841,46 @@ CREATE TABLE `quotation_eng_installation` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `electrical_materials` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `unit` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `particulars` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `price` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_id` int(11) DEFAULT 0,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('Pack', 'Thermal Paste 4Gram', '15', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('LM', 'AWG # 20 solid', '5', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'Connector', '10', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('BOXES', '2.0MM^2 THHN WIRE (RED) 150M', '3000', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('BOXES', '3.5MM^2 THHN WIRE (RED) 150M', '5500', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('BOXES', '3.5MM^2 THHN WIRE (BLACK) 150M', '5501', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('BOXES', '3.5MM^2 THHN WIRE (BLUE) 150M', '5502', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('BOXES', '3.5MM^2 THHN WIRE (YELLOW) 150M', '5503', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('METERS', 'FMC CONDUIT 1"', '50', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'FMC CONDUIT STRAIGHT CONNECTOR 1"', '50', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'PULL BOX 12X12X6', '950', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'SQUARE JUNCTION BOX 4x11x16 WITH COVER', '380', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'ELECTRICAL TAPE', '60', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', '20AT CIRCUIT BREAKER', '5000', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'EMT PIPE 1"x10''', '335', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'EMT CONNECTOR 1" ', '50', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'EMT COUPLING 1"', '50', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'EMT CONDUIT HANGAR 1" ', '25', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'FULL THREAD 3/8"', '90', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'ANCHOR BOLT 3/8"', '7', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'WASHER 3/8"', '10', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'TOKS AND SCREW', '8', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'HACKSAW WITH METAL BLADE', '600', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'STRUT CHANNEL 10''', '500', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'GRIP ANCHOR 3/8', '10', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'SDS DRILL BIT #8', '200', 0, now());
+

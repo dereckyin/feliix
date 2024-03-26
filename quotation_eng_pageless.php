@@ -979,6 +979,7 @@ header( 'location:index' );
             color: rgb(0, 117, 58);
             text-align: right;
             padding: 5px 30px 5px 15px;
+            width: 210px;
         }
 
         .tb_format3 tbody tr.tfoot1 td:nth-of-type(3) {
@@ -987,6 +988,7 @@ header( 'location:index' );
             font-weight: 800;
             color: rgb(0, 117, 58);
             padding: 5px 15px;
+            width: 210px;
         }
 
         .tb_format3 tbody tr.thead2 td:nth-of-type(1), .tb_format3 tbody tr.desc1 td:nth-of-type(1) {
@@ -994,31 +996,31 @@ header( 'location:index' );
             text-align: center;
         }
 
-        .tb_format3 tbody tr.thead2 td:nth-last-of-type(3), .tb_format3 tbody tr.thead2 td:nth-last-of-type(4) {
+        .tb_format3 tbody tr.thead2 td:nth-of-type(3), .tb_format3 tbody tr.thead2 td:nth-of-type(4) {
             width: 75px;
         }
 
-        .tb_format3 tbody tr.desc1 td:nth-last-of-type(3), .tb_format3 tbody tr.desc1 td:nth-last-of-type(4) {
+        .tb_format3 tbody tr.desc1 td:nth-of-type(3), .tb_format3 tbody tr.desc1 td:nth-of-type(4) {
             width: 75px;
             text-align: center;
             height: 50px;
         }
 
-        .tb_format3 tbody tr.thead2 td:nth-last-of-type(2) {
+        .tb_format3 tbody tr.thead2 td:nth-of-type(5) {
             width: 210px;
         }
 
-        .tb_format3 tbody tr.desc1 td:nth-last-of-type(2) {
+        .tb_format3 tbody tr.desc1 td:nth-of-type(5) {
             width: 210px;
             text-align: right;
             height: 50px;
         }
 
-        .tb_format3 tbody tr.thead2 td:nth-last-of-type(1) {
+        .tb_format3 tbody tr.thead2 td:nth-of-type(6) {
             width: 210px;
         }
 
-        .tb_format3 tbody tr.desc1 td:nth-last-of-type(1) {
+        .tb_format3 tbody tr.desc1 td:nth-of-type(6) {
             width: 210px;
             text-align: right;
             height: 50px;
@@ -2206,6 +2208,107 @@ header( 'location:index' );
             font-size: 14px;
         }
 
+        #tb_quotation_list {
+            width: 100%;
+        }
+
+        #tb_quotation_list thead th, #tb_quotation_list tbody td {
+            text-align: center;
+            padding: 10px;
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        #tb_quotation_list tbody td {
+            font-size: 13px;
+        }
+
+        #tb_quotation_list thead th {
+            background-color: #E0E0E0;
+            border: 1px solid #C9C9C9;
+        }
+
+        #tb_quotation_list tbody tr:nth-of-type(even) {
+            background-color: #F6F6F6;
+        }
+
+        #tb_quotation_list tbody tr td:nth-of-type(1) {
+            width: 350px;
+        }
+
+        #tb_quotation_list tbody tr td:nth-of-type(2) {
+            width: 350px;
+        }
+
+        #tb_quotation_list tbody tr td:nth-of-type(3) {
+            width: 100px;
+        }
+
+        #tb_quotation_list tbody tr td:nth-of-type(4) {
+            width: 200px;
+        }
+
+        #tb_quotation_list tbody tr td:nth-of-type(5) {
+            width: 200px;
+        }
+
+        #tb_quotation_list tbody tr td:nth-of-type(6) {
+            width: 110px;
+        }
+
+        #tb_quotation_list tbody tr td:nth-of-type(1) a, #tb_quotation_list tbody tr td:nth-of-type(2) a {
+            color: #0056b3;
+        }
+
+        #modal_electrical_catalog.modal .modal_function input[type='text'] {
+            width: 90%;
+            font-size: 14px;
+        }
+
+        #tb_electrical_catalog {
+            width: 100%;
+        }
+
+        #tb_electrical_catalog thead th, #tb_electrical_catalog tbody td {
+            text-align: center;
+            padding: 10px;
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        #tb_electrical_catalog tbody td {
+            font-size: 13px;
+        }
+
+        #tb_electrical_catalog thead th {
+            background-color: #E0E0E0;
+            border: 1px solid #C9C9C9;
+        }
+
+        #tb_electrical_catalog tbody tr:nth-of-type(even) {
+            background-color: #F6F6F6;
+        }
+
+        #tb_electrical_catalog tbody tr td:nth-of-type(1) {
+            width: 550px;
+        }
+
+        #tb_electrical_catalog tbody tr td:nth-of-type(2) {
+            width: 100px;
+        }
+
+        #tb_electrical_catalog tbody tr td:nth-of-type(3) {
+            width: 200px;
+        }
+
+        #tb_electrical_catalog tbody tr td:nth-of-type(4) {
+            width: 350px;
+        }
+
+        #tb_electrical_catalog tbody tr td:nth-of-type(5) {
+            width: 110px;
+        }
+
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
@@ -2774,6 +2877,7 @@ header( 'location:index' );
 
                             <div class="function_box" v-if="requirement_id_consumable != 0">
                                 <a class="btn small green" @click="add_block_a_consumable()">Add Blank Detail</a>
+                                <a class="btn small green">Electrical Materials Catalog</a>
                             </div>
 
                             <div class="content_box">
@@ -3589,8 +3693,9 @@ header( 'location:index' );
                                 </tr>
                                 </tfoot>
 
-                                <div class="amount_in_words" v-if="temp_total.show_word == 'Y'">Amount in Words : {{ total.total_text }}</div>
                             </table>
+
+                            <div class="amount_in_words" v-if="temp_total.show_word == 'Y'">Amount in Words : {{ total.total_text }}</div>
                         </div>
 
 
@@ -5440,6 +5545,102 @@ header( 'location:index' );
                             <td>{{receive_record.post[0].updated_at}}<br>{{receive_record.post[0].username}}</td>
                             <td>
                                 <a class="btn small yellow" @click="">Import</a>
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+
+
+    <!-- Modal for Electrical Materials Catalog -->
+    <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true" id="modal_electrical_catalog">
+
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+
+        <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="myLargeModalLabel">Electrical Materials Catalog</h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="modal_function" style="width: 100%; display: flex; align-items: center;">
+
+                    <div class="left_function" style="width: 81%;">
+                        <input type="text" v-model="fil_keyword" placeholder="Keyword">
+                    </div>
+
+                    <a class="btn small green" @click="filter_apply_new_quo()">Search</a>
+
+                </div>
+
+                <div class="list_function" style="margin: 7px 0;">
+                    <div class="pagenation">
+                        <a class="prev" :disabled="product_page_quo == 1" @click="pre_page_quo(); getQuoMasterRecords();">Prev
+                            10</a>
+                        <a class="page" v-for="pg_quo in product_pages_10_quo" @click="product_page_quo=pg_quo; getQuoMasterRecords();"
+                           v-bind:style="[pg_quo == product_page_quo ? { 'background':'#707071', 'color': 'white'} : { }]">{{
+                            pg_quo
+                            }}</a>
+                        <a class="next" :disabled="product_page_quo == product_pages_quo.length"
+                           @click="nex_page_quo(); getQuoMasterRecords();">Next
+                            10</a>
+                    </div>
+                </div>
+
+
+                <div>
+                    <table id="tb_electrical_catalog" class="table  table-sm table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Particulars</th>
+                            <th>Unit</th>
+                            <th>Price</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item, index) in displayedQuoMasterPosts">
+
+                            <td>
+                                {{ item.particular }}
+                            </td>
+
+                            <td>
+                                {{ item.unit }}
+                            </td>
+
+                            <td>
+                                {{ item.price }}
+                            </td>
+
+                            <td>
+                                {{ item.remarks }}
+                            </td>
+
+                            <td>
+                                <a class="btn small yellow" @click="">Add</a>
                             </td>
                         </tr>
 
