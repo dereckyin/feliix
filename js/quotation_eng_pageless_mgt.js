@@ -292,7 +292,7 @@ var app = new Vue({
       let token = localStorage.getItem('accessToken');
 
       axios
-          .get('api/admin/quotation_project_creators', { headers: {"Authorization" : `Bearer ${token}`} })
+          .get('api/admin/quotation_eng_project_creators', { headers: {"Authorization" : `Bearer ${token}`} })
           .then(
           (res) => {
               _this.users = res.data;
@@ -328,7 +328,7 @@ var app = new Vue({
       let token = localStorage.getItem('accessToken');
 
       axios
-          .get('api/admin/quotation_creators', { headers: {"Authorization" : `Bearer ${token}`} })
+          .get('api/admin/quotation_eng_creators', { headers: {"Authorization" : `Bearer ${token}`} })
           .then(
           (res) => {
               _this.creators = res.data;
