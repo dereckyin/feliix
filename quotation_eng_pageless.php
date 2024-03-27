@@ -5632,7 +5632,7 @@ header( 'location:index' );
                             </td>
 
                             <td>
-                                {{ item.price }}
+                            ₱ {{ item.price % 1 !== 0 ? Number(item.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : Number(item.price).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
                             </td>
 
                             <td>
