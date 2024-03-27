@@ -4234,7 +4234,7 @@ Installation:`;
           particulars: item.particulars,
 
           price: item.price,
-          total: item.price,
+          total: Number(item.price).toFixed(2),
           remark: item.remarks,
         };
 
