@@ -97,18 +97,40 @@ switch ($method) {
 
         $json = json_encode($block_array["block"]);
 
+
+            if(if_existed($db, "SELECT * FROM quotation_eng_general_requirement WHERE id = " . $rid))
+        {
             // quotation_page
             $query = "update quotation_eng_general_requirement
-                        set block = :block
+                        set block = :block, updated_id = :user_id, updated_at = now()
                       WHERE
                       `id` = :id";
 
-            // prepare the query
+                      // prepare the query
             $stmt = $db->prepare($query);
 
             // bind the values
             $stmt->bindParam(':id', $rid);
             $stmt->bindParam(':block', $json);
+            $stmt->bindParam(':user_id', $user_id);
+        }
+        else
+        {
+            // quotation_page
+            $query = "insert into quotation_eng_general_requirement
+                        (quotation_id, title, block, status, create_id, created_at)
+                        values
+                        (:quotation_id, 'Consumables (Base on BOM)',  :block, 0, :user_id, now())";
+
+                        // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':quotation_id', $quotation_id);
+            $stmt->bindParam(':block', $json);
+            $stmt->bindParam(':user_id', $user_id);
+        }
+
 
             try {
                 // execute the query, also check if query was successful
@@ -145,219 +167,14 @@ switch ($method) {
         break;
 }
 
-
-
-function SaveImage($type, $batch_id, $batch_type, $user_id, $db, $conf)
+function if_existed($db, $query)
 {
-    try {
-        if($_FILES[$type]['name'] == null)
-            return "";
-        // Loop through each file
-
-        if(isset($_FILES[$type]['name']))
-        {
-            $image_name = $_FILES[$type]['name'];
-            $valid_extensions = array("jpg","jpeg","png","gif","pdf","docx","doc","xls","xlsx","ppt","pptx","zip","rar","7z","txt","dwg","skp","psd","evo");
-            $extension = pathinfo($image_name, PATHINFO_EXTENSION);
-            if (in_array(strtolower($extension), $valid_extensions)) 
-            {
-                //$upload_path = 'img/' . time() . '.' . $extension;
-
-                $storage = new StorageClient([
-                    'projectId' => 'predictive-fx-284008',
-                    'keyFilePath' => $conf::$gcp_key
-                ]);
-
-                $bucket = $storage->bucket('feliiximg');
-
-                $upload_name = time() . '_' . pathinfo($image_name, PATHINFO_FILENAME) . '.' . $extension;
-
-                $file_size = filesize($_FILES[$type]['tmp_name']);
-                $size = 0;
-
-                $obj = $bucket->upload(
-                    fopen($_FILES[$type]['tmp_name'], 'r'),
-                    ['name' => $upload_name]);
-
-                $info = $obj->info();
-                $size = $info['size'];
-
-                if($size == $file_size && $file_size != 0 && $size != 0)
-                {
-                    $query = "INSERT INTO gcp_storage_file
-                    SET
-                        batch_id = :batch_id,
-                        batch_type = :batch_type,
-                        filename = :filename,
-                        gcp_name = :gcp_name,
-
-                        create_id = :create_id,
-                        created_at = now()";
-
-                    // prepare the query
-                    $stmt = $db->prepare($query);
-                
-                    // bind the values
-                    $stmt->bindParam(':batch_id', $batch_id);
-                    $stmt->bindParam(':batch_type', $batch_type);
-                    $stmt->bindParam(':filename', $image_name);
-                    $stmt->bindParam(':gcp_name', $upload_name);
-        
-                    $stmt->bindParam(':create_id', $user_id);
-
-                    try {
-                        // execute the query, also check if query was successful
-                        if ($stmt->execute()) {
-                            $last_id = $db->lastInsertId();
-                        }
-                        else
-                        {
-                            $arr = $stmt->errorInfo();
-                            error_log($arr[2]);
-                        }
-                    }
-                    catch (Exception $e)
-                    {
-                        error_log($e->getMessage());
-                        $db->rollback();
-                        http_response_code(501);
-                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-                        die();
-                    }
-
-                    return $upload_name;
-                }
-                else
-                {
-                    $message = 'There is an error while uploading file';
-                    $db->rollback();
-                    http_response_code(501);
-                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
-                    die();
-                    
-                }
-            }
-            else
-            {
-                $message = 'Only Images or Office files allowed to upload';
-                $db->rollback();
-                http_response_code(501);
-                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
-                die();
-            }
-        }
-
-        
-    } catch (Exception $e) {
-        $db->rollback();
-        http_response_code(501);
-        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " Error uploading, Please use laptop to upload again."));
-        die();
-    }
-}
-
-
-function UpdateImageNameVariation($upload_name, $batch_id, $db){
-    
-    $query = "update quotation_page_type_block
-    SET photo = :gcp_name where id=:id";
-
-    // prepare the query
     $stmt = $db->prepare($query);
-
-    // bind the values
-    $stmt->bindParam(':id', $batch_id);
-
-    $stmt->bindParam(':gcp_name', $upload_name);
-
-
-    try {
-        // execute the query, also check if query was successful
-        if ($stmt->execute()) {
-            $last_id = $db->lastInsertId();
-        }
-        else
-        {
-            $arr = $stmt->errorInfo();
-            error_log($arr[2]);
-        }
-    }
-    catch (Exception $e)
-    {
-        error_log($e->getMessage());
-        $db->rollback();
-        http_response_code(501);
-        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-        die();
-    }
-}
-
-function UpdateImageNameVariation2($upload_name, $batch_id, $db){
-    
-    $query = "update quotation_page_type_block
-    SET photo2 = :gcp_name where id=:id";
-
-    // prepare the query
-    $stmt = $db->prepare($query);
-
-    // bind the values
-    $stmt->bindParam(':id', $batch_id);
-
-    $stmt->bindParam(':gcp_name', $upload_name);
-
-
-    try {
-        // execute the query, also check if query was successful
-        if ($stmt->execute()) {
-            $last_id = $db->lastInsertId();
-        }
-        else
-        {
-            $arr = $stmt->errorInfo();
-            error_log($arr[2]);
-        }
-    }
-    catch (Exception $e)
-    {
-        error_log($e->getMessage());
-        $db->rollback();
-        http_response_code(501);
-        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-        die();
-    }
-}
-
-function UpdateImageNameVariation3($upload_name, $batch_id, $db){
-    
-    $query = "update quotation_page_type_block
-    SET photo3 = :gcp_name where id=:id";
-
-    // prepare the query
-    $stmt = $db->prepare($query);
-
-    // bind the values
-    $stmt->bindParam(':id', $batch_id);
-
-    $stmt->bindParam(':gcp_name', $upload_name);
-
-
-    try {
-        // execute the query, also check if query was successful
-        if ($stmt->execute()) {
-            $last_id = $db->lastInsertId();
-        }
-        else
-        {
-            $arr = $stmt->errorInfo();
-            error_log($arr[2]);
-        }
-    }
-    catch (Exception $e)
-    {
-        error_log($e->getMessage());
-        $db->rollback();
-        http_response_code(501);
-        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-        die();
+    $stmt->execute();
+    $num = $stmt->rowCount();
+    if ($num > 0) {
+        return true;
+    } else {
+        return false;
     }
 }
