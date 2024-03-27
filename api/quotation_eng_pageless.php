@@ -1264,7 +1264,7 @@ function GetGeneralRequirement($qid, $db, $show_r, $pixa_r)
         $merged_results = array(
             "id" => 0,
             "quotation_id" => $qid,
-            "title" => "",
+            "title" => "General Requirements",
             "show_r" => $show_r,
             "pixa_r" => $pixa_r,
             "block" => $block,
