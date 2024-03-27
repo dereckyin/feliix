@@ -4240,6 +4240,8 @@ Installation:`;
 
         this.temp_detail_block_consumable.details.push(item);
 
+        alert('Add Successfully');
+
         this.$forceUpdate();
       },
       
