@@ -4884,3 +4884,5 @@ insert into electrical_materials(unit, particulars, price, create_id, created_at
 insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'GRIP ANCHOR 3/8', '10', 0, now());
 insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'SDS DRILL BIT #8', '200', 0, now());
 
+ALTER TABLE electrical_materials
+ADD COLUMN `remarks` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '';

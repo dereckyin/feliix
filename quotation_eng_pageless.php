@@ -2869,7 +2869,7 @@ header( 'location:index' );
                         </div>
 
 
-                        <div class="detailbox">
+                        <div class="detailbox"> 
 
                             <div class="title_box" v-if="requirement_id_consumable != 0">
                                 {{block_value_consumable.desc}}
@@ -2877,7 +2877,7 @@ header( 'location:index' );
 
                             <div class="function_box" v-if="requirement_id_consumable != 0">
                                 <a class="btn small green" @click="add_block_a_consumable()">Add Blank Detail</a>
-                                <a class="btn small green">Electrical Materials Catalog</a>
+                                <a class="btn small green" @click="electrical_catalog()">Electrical Materials Catalog</a>
                             </div>
 
                             <div class="content_box">
@@ -5590,20 +5590,20 @@ header( 'location:index' );
                         <input type="text" v-model="fil_keyword" placeholder="Keyword">
                     </div>
 
-                    <a class="btn small green" @click="filter_apply_new_quo()">Search</a>
+                    <a class="btn small green" @click="filter_apply_new_bom()">Search</a>
 
                 </div>
 
                 <div class="list_function" style="margin: 7px 0;">
                     <div class="pagenation">
-                        <a class="prev" :disabled="product_page_quo == 1" @click="pre_page_quo(); getQuoMasterRecords();">Prev
+                        <a class="prev" :disabled="product_page_bom == 1" @click="pre_page_bom(); getBomRecords();">Prev
                             10</a>
-                        <a class="page" v-for="pg_quo in product_pages_10_quo" @click="product_page_quo=pg_quo; getQuoMasterRecords();"
-                           v-bind:style="[pg_quo == product_page_quo ? { 'background':'#707071', 'color': 'white'} : { }]">{{
-                            pg_quo
+                        <a class="page" v-for="pg_bom in product_pages_10_bom" @click="product_page_bom=pg_bom; getBomRecords();"
+                           v-bind:style="[pg_bom == product_page_bom ? { 'background':'#707071', 'color': 'white'} : { }]">{{
+                            pg_bom
                             }}</a>
-                        <a class="next" :disabled="product_page_quo == product_pages_quo.length"
-                           @click="nex_page_quo(); getQuoMasterRecords();">Next
+                        <a class="next" :disabled="product_page_bom == product_pages_bom.length"
+                           @click="nex_page_bom(); getBomRecords();">Next
                             10</a>
                     </div>
                 </div>
@@ -5621,10 +5621,10 @@ header( 'location:index' );
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(item, index) in displayedQuoMasterPosts">
+                        <tr v-for="(item, index) in displayedBomMasterPosts">
 
                             <td>
-                                {{ item.particular }}
+                                {{ item.particulars }}
                             </td>
 
                             <td>
@@ -5640,7 +5640,7 @@ header( 'location:index' );
                             </td>
 
                             <td>
-                                <a class="btn small yellow" @click="">Add</a>
+                                <a class="btn small yellow" @click="add_consumable(item)">Add</a>
                             </td>
                         </tr>
 

@@ -353,9 +353,18 @@ var app = new Vue({
         product_pages_quo: [],
         product_pages_10_quo: [],
 
-        product_pages_quo : [],
-
         displayedQuoDetailPosts :[],
+
+         // bom information
+         receive_records_bom_master:[],
+         pg_bom:0,
+         page_bom:0,
+         pages_bom : [],
+         bom_total : 0,
+
+         product_pages_bom: [],
+         product_pages_10_bom: [],
+         product_page_bom: 1,
         
     },
   
@@ -391,6 +400,7 @@ var app = new Vue({
       this.get_signature();
       this.getTagGroup();
       this.getQuoMasterRecords();
+      this.getBomRecords();
       this.getUsers();
       this.getCreators();
     },
@@ -402,6 +412,15 @@ var app = new Vue({
 
         this.setPagesQuo();
         return this.paginateQuo(this.receive_records_quo_master);
+
+      },
+
+      displayedBomMasterPosts() {
+        //if(this.pg == 0)
+        //  this.filter_apply_new();
+
+        this.setPagesBom();
+        return this.paginateBom(this.receive_records_bom_master);
 
       },
 
@@ -836,6 +855,39 @@ var app = new Vue({
             this.product_pages_10_quo = pages_10;
     
         },
+
+        
+        pre_page_bom: function(){
+          let tenPages = Math.floor((this.product_page_bom - 1) / 10) + 1;
+    
+            this.product_page_bom = parseInt(this.product_page_bom) - 10;
+            if(this.product_page_bom < 1)
+              this.product_page_bom = 1;
+     
+            this.product_pages_10_bom = [];
+    
+            let from = tenPages * 10;
+            let to = (tenPages + 1) * 10;
+    
+            this.product_pages_10_bom = this.product_pages_bom.slice(from, to);
+          
+        },
+    
+        nex_page_bom: function(){
+          let tenPages = Math.floor((this.product_page_bom - 1) / 10) + 1;
+    
+          this.product_page_bom = parseInt(this.product_page_bom) + 10;
+          if(this.product_page_bom > this.product_pages_bom.length)
+            this.product_page_bom = this.product_pages_bom.length;
+    
+          let from = tenPages * 10;
+          let to = (tenPages + 1) * 10;
+          let pages_10 = this.product_pages_bom.slice(from, to);
+    
+          if(pages_10.length > 0)
+            this.product_pages_10_bom = pages_10;
+    
+        },
   
         setPagesQuo () {
           console.log('setPagesQuo');
@@ -849,6 +901,42 @@ var app = new Vue({
           }
   
           // this.setupChosen();
+        },
+
+        setPagesBom () {
+          console.log('setPagesBom');
+          this.product_pages_bom = [];
+          let numberOfPages = Math.ceil(this.bom_total / this.perPage);
+  
+          if(numberOfPages == 1)
+            this.product_page_bom = 1;
+          for (let index = 1; index <= numberOfPages; index++) {
+            this.product_pages_bom.push(index);
+          }
+  
+          // this.setupChosen();
+        },
+
+        
+      paginateBom: function (posts) {
+         
+        if (this.product_page_bom < 1) this.product_page_bom = 1;
+        if (this.product_page_bom > this.product_pages_bom.length) this.product_page_bom = this.product_pages_bom.length;
+  
+        let tenPages = Math.floor((this.product_page_bom - 1) / 10);
+        if(tenPages < 0)
+          tenPages = 0;
+        this.product_pages_10_bom = [];
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+        
+        this.product_pages_10_bom = this.product_pages_bom.slice(from, to);
+  
+        from = this.product_page_bom * this.perPage - this.perPage;
+        to = this.product_page_bom * this.perPage;
+  
+        return  this.receive_records_bom_master;
+          //return  this.receive_records_bom_master.slice(from, to);
         },
   
       paginateQuo: function (posts) {
@@ -872,25 +960,15 @@ var app = new Vue({
           //return  this.receive_records_quo_master.slice(from, to);
         },
 
-      getQuoMasterRecords: function(keyword) {
+        
+      getBomRecords: function(keyword) {
         let _this = this;
   
         const params = {
   
-                  fc : _this.fil_project_category,
-                  fpc: _this.fil_project_creator,
-                  fpt: _this.fil_creator,
-         
                   key: _this.fil_keyword,
-                  kind: _this.fil_kind,
-                  g: _this.fil_category,
-  
-                  op1: _this.od_opt1,
-                  od1: _this.od_ord1,
-                  op2: _this.od_opt2,
-                  od2: _this.od_ord2,
 
-                  page: _this.product_page_quo,
+                  page: _this.product_page_bom,
                   size: 10,
 
                   all: 'all',
@@ -901,18 +979,18 @@ var app = new Vue({
             let token = localStorage.getItem('accessToken');
       
             axios
-                .get('api/quotation_mgt', { params, headers: {"Authorization" : `Bearer ${token}`} })
+                .get('api/electrical_materials_bom', { params, headers: {"Authorization" : `Bearer ${token}`} })
                 .then(
                 (res) => {
-                    _this.receive_records_quo_master = res.data;
+                    _this.receive_records_bom_master = res.data;
 
-                    if(_this.receive_records_quo_master.length > 0)
-                      _this.quotation_total = _this.receive_records_quo_master[0].cnt;
+                    if(_this.receive_records_bom_master.length > 0)
+                      _this.bom_total = _this.receive_records_bom_master[0].cnt;
   
-                    if(_this.pg_quo !== 0)
+                    if(_this.pg_bom !== 0)
                     { 
-                      _this.page_quo = _this.pg_quo;
-                      _this.setPagesQuo();
+                      _this.page_bom = _this.pg_bom;
+                      _this.setPagesBom();
                     }
                 },
                 (err) => {
@@ -923,6 +1001,59 @@ var app = new Vue({
                     
                 });
         },
+
+      
+        getQuoMasterRecords: function(keyword) {
+          let _this = this;
+    
+          const params = {
+    
+                    fc : _this.fil_project_category,
+                    fpc: _this.fil_project_creator,
+                    fpt: _this.fil_creator,
+           
+                    key: _this.fil_keyword,
+                    kind: _this.fil_kind,
+                    g: _this.fil_category,
+    
+                    op1: _this.od_opt1,
+                    od1: _this.od_ord1,
+                    op2: _this.od_opt2,
+                    od2: _this.od_ord2,
+  
+                    page: _this.product_page_quo,
+                    size: 10,
+  
+                    all: 'all',
+                };
+    
+          
+        
+              let token = localStorage.getItem('accessToken');
+        
+              axios
+                  .get('api/quotation_mgt', { params, headers: {"Authorization" : `Bearer ${token}`} })
+                  .then(
+                  (res) => {
+                      _this.receive_records_quo_master = res.data;
+  
+                      if(_this.receive_records_quo_master.length > 0)
+                        _this.quotation_total = _this.receive_records_quo_master[0].cnt;
+    
+                      if(_this.pg_quo !== 0)
+                      { 
+                        _this.page_quo = _this.pg_quo;
+                        _this.setPagesQuo();
+                      }
+                  },
+                  (err) => {
+                      alert(err.response);
+                  },
+                  )
+                  .finally(() => {
+                      
+                  });
+          },
 
       add_with_image(all) {
 
@@ -3983,6 +4114,49 @@ Installation:`;
       },
 
       
+    filter_apply_new_bom: function() {
+      let _this = this;
+
+      this.product_page_bom = 1;
+
+      const params = {
+                key: _this.fil_keyword,
+                page: _this.product_page_bom,
+                size: 10,
+
+                all: 'all',
+            };
+
+      
+    
+          let token = localStorage.getItem('accessToken');
+    
+          axios
+              .get('api/electrical_materials_bom', { params, headers: {"Authorization" : `Bearer ${token}`} })
+              .then(
+              (res) => {
+                  _this.receive_records_bom_master = res.data;
+
+                  if(_this.receive_records_bom_master.length > 0)
+                    _this.bom_total = _this.receive_records_bom_master[0].cnt;
+
+                  if(_this.pg_bom !== 0)
+                    { 
+                      _this.page_bom = _this.pg_bom;
+                      _this.setPagesBom();
+                    }
+              },
+              (err) => {
+                  alert(err.response);
+              },
+              )
+              .finally(() => {
+                  
+              });
+  
+  
+      },
+      
     filter_apply_new_quo: function() {
       let _this = this;
 
@@ -4037,6 +4211,36 @@ Installation:`;
               });
   
   
+      },
+
+      add_consumable: function(item) {
+        var sn = 0;
+        var items = this.temp_detail_block_consumable.details;
+
+
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].id > sn) {
+            sn = items[i].id;
+          }
+        }
+
+        sn = sn + 1;
+
+        item = {
+          id: sn,
+
+          qty: 1,
+          unit: item.unit,
+          particulars: item.particulars,
+
+          price: item.price,
+          total: item.price,
+          remark: item.remarks,
+        };
+
+        this.temp_detail_block_consumable.details.push(item);
+
+        this.$forceUpdate();
       },
       
       quotation_mgt: function() {
@@ -4658,6 +4862,10 @@ Installation:`;
         }
         else
           this.getRecord();
+      },
+
+      electrical_catalog() {
+        $('#modal_electrical_catalog').modal('toggle');
       },
 
       product_catalog_a() {
