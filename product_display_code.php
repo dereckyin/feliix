@@ -417,18 +417,23 @@
             padding: 5px 10px;
         }
 
-        button.btn_switch{
+        button.btn_switch, button.btn_switch_sales {
             position: fixed;
             right: 10px;
             top: 10px;
             width: 50px;
             height: 50px;
-            border: 1px solid rgb(153,153,153);
+            border: none;
             border-radius: 25px;
             font-size: 15px;
             font-weight: 700;
             background-color: rgba(7, 220, 237, 0.8);
             z-index: 999;
+        }
+
+        button.btn_switch_sales {
+            right: 70px;
+            background-color: rgba(255, 0, 0, 0.5);
         }
 
         .carousel-control-next, .carousel-control-prev {
@@ -481,6 +486,7 @@
     <!-- header end -->
 
     <button @click="toggle_price()" class="btn_switch" v-show="show_ntd === true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" class="bi bi-toggles"><path d="M4.5 9a3.5 3.5 0 1 0 0 7h7a3.5 3.5 0 1 0 0-7h-7zm7 6a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm-7-14a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm2.45 0A3.49 3.49 0 0 1 8 3.5 3.49 3.49 0 0 1 6.95 6h4.55a2.5 2.5 0 0 0 0-5H6.95zM4.5 0h7a3.5 3.5 0 1 1 0 7h-7a3.5 3.5 0 1 1 0-7z"></path></svg></button>
+    <button @click="toggle_price_sales()" class="btn_switch_sales"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" class="bi bi-toggles"><path d="M4.5 9a3.5 3.5 0 1 0 0 7h7a3.5 3.5 0 1 0 0-7h-7zm7 6a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm-7-14a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm2.45 0A3.49 3.49 0 0 1 8 3.5 3.49 3.49 0 0 1 6.95 6h4.55a2.5 2.5 0 0 0 0-5H6.95zM4.5 0h7a3.5 3.5 0 1 1 0 7h-7a3.5 3.5 0 1 1 0-7z"></path></svg></button>
 
     <div class="mainContent">
 
@@ -501,7 +507,7 @@
             <div class="infobox">
                 <ul class="price_stock">
 
-                    <li id="print_srp" :class="print_option.srp == 'true' ? '' : 'noPrint'">
+                    <li id="print_srp" :class="print_option.srp == 'true' ? '' : 'noPrint'" v-if="show_srp == true">
                         Standard Retail Price: <span>{{price}}</span>
                     </li>
 
@@ -767,7 +773,7 @@
                         Cost Price: <span>{{ price_ntd }}</span><span>{{ str_price_ntd_change }}</span>
                     </li>
 
-                    <li id="print_srp">
+                    <li id="print_srp" v-if="show_srp == true">
                         Standard Retail Price: <span>{{price}}</span><span>{{ str_price_change }}</span>
                     </li>
 
