@@ -2309,6 +2309,22 @@ header( 'location:index' );
             width: 110px;
         }
 
+        .dialog.reverse {
+            left: unset;
+        }
+
+        .dialog.reverse::before {
+            border-color: transparent var(--fth04) transparent transparent;
+            right: -5px;
+            left: unset;
+        }
+
+        .dialog.reverse::after {
+            border-color: transparent #fff transparent transparent;
+            right: 0;
+            left: unset;
+        }
+
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
@@ -3033,7 +3049,7 @@ header( 'location:index' );
                     <?php
                     }
                     ?>
-                    <div id="terms_dialog" class="dialog fn2 show" :ref="'dlg_fn2'" v-show="show_term">
+                    <div id="terms_dialog" class="dialog fn2 show reverse" :ref="'dlg_fn2'" v-show="show_term" style="right: 160px;">
                         <h6>Terms and Condition</h6>
 
                         <div class="formbox">
@@ -3101,7 +3117,7 @@ header( 'location:index' );
                     <?php
                     }
                     ?>
-                    <div id="payment_dialog" class="dialog fn2 show" :ref="'dlg_fn2'" v-show="show_payment_term">
+                    <div id="payment_dialog" class="dialog fn2 show reverse" :ref="'dlg_fn2'" v-show="show_payment_term" style="right: 120px;">
                         <h6>Payment Terms</h6>
 
                         <div class="formbox">
@@ -3183,7 +3199,7 @@ header( 'location:index' );
                     <?php
                     }
                     ?>
-                    <div id="signature_dialog" class="dialog fn2 show" :ref="'dlg_fn2'" v-show="show_signature">
+                    <div id="signature_dialog" class="dialog fn2 show reverse" :ref="'dlg_fn2'" v-show="show_signature" style="right: 80px;">
                         <h6>Signature</h6>
 
                         <div class="formbox">
