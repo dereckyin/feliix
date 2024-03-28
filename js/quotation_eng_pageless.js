@@ -2538,6 +2538,13 @@ var app = new Vue({
         for(var i = 0; i < this.temp_general_requirement_detail.block.length; i++) {
           if(this.temp_general_requirement_detail.block[i].id == id) {
             this.temp_general_requirement_detail.block[i] = this.temp_detail_block;
+
+            var total = 0;
+            for(var j = 0; j < this.temp_detail_block.details.length; j++) {
+              total += this.temp_detail_block.details[j].total * (100 - (this.temp_general_requirement_detail.block[i].discount == '' ? 0 : this.temp_general_requirement_detail.block[i].discount)) * 0.01 * (this.temp_general_requirement_detail.block[i].qty == '' ? 0 : this.temp_general_requirement_detail.block[i].qty);
+            }
+
+            this.temp_general_requirement_detail.block[i].total  = total.toFixed(2);
           
           }
         }
@@ -2650,6 +2657,13 @@ var app = new Vue({
         for(var i = 0; i < this.temp_consumable_detail.block.length; i++) {
           if(this.temp_consumable_detail.block[i].id == id) {
             this.temp_consumable_detail.block[i] = this.temp_detail_block_consumable;
+
+            var total = 0;
+            for(var j = 0; j < this.temp_detail_block_consumable.details.length; j++) {
+              total += this.temp_detail_block_consumable.details[j].total * (this.temp_consumable_detail.block[i].ratio == '' ? 0 : this.temp_consumable_detail.block[i].ratio) * (this.temp_consumable_detail.block[i].qty == '' ? 0 : this.temp_consumable_detail.block[i].qty);
+            }
+
+            this.temp_consumable_detail.block[i].total  = total.toFixed(2);
           
           }
         }
