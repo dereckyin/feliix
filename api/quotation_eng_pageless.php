@@ -1317,7 +1317,7 @@ function GetConsumable($qid, $db, $show_c, $pixa_c)
             "unit" => "",
             "unit_cost" => 0,
             "discount" => 0,
-            "ratio" => "1",
+            "ratio" => "1.00",
             "total" => "0.00",
             "not_show" => "",
             "details" => [],
