@@ -1259,7 +1259,7 @@ var app = new Vue({
           duration: "",
           material_price: (price == null || price == 0) ? srp : price,
           labor_price: (price == null || price == 0) ? srp : price,
-          ratio: "",
+          ratio: "1.00",
           total: (price == null || price == 0) ? srp : price,
           group: "",
           pid:  this.product.id,
@@ -2261,7 +2261,7 @@ var app = new Vue({
             duration: "",
             material_price: price.toFixed(2),
             labor_price: price.toFixed(2),
-            ratio: "",
+            ratio: "1.00",
             total: (total).toFixed(2),
             group: "",
             pid:  this.product.id,
@@ -3254,7 +3254,10 @@ var app = new Vue({
           return;
 
         if(this.isNumber(row.ratio))
-        ratio = row.ratio;
+        {
+          row.ratio = Number(row.ratio).toFixed(2);
+          ratio = Number(row.ratio).toFixed(2);
+        }
 
         row.qty = Math.floor(row.qty);
         row.discount = Math.floor(row.discount);
@@ -3263,7 +3266,7 @@ var app = new Vue({
 
         
         // let charge = this.payment_record.charge;
-        let charge = (Number(row.qty)) * Number(row.unit_cost) *  ((100 - Math.floor(row.discount)) / 100) * Number(ratio);
+        let charge = (Number(row.qty)) * Number(row.unit_cost) *  ((100 - Math.floor(row.discount)) / 100) * Number(ratio).toFixed(2);
 
         if(event.target.value > charge)
         {
@@ -3294,11 +3297,6 @@ var app = new Vue({
         if(row.unit_cost == '')
           return;
 
-          if(row.ratio != '')
-          ratio = Math.floor(row.ratio);
-
-        row.qty = Math.floor(row.qty);
-        row.discount = Math.floor(row.discount);
         
         if(row.ratio > 100)
           row.ratio = 100;
@@ -3306,8 +3304,17 @@ var app = new Vue({
         if(row.discount > 100)
           row.discount = 100;
 
+        if(row.ratio != '')
+        {
+          row.ratio = Number(row.ratio).toFixed(2);
+          ratio = Number(row.ratio).toFixed(2);
+        }
+
+        row.qty = Math.floor(row.qty);
+        row.discount = Math.floor(row.discount);
+
         // let charge = this.payment_record.charge;
-        let charge = (Number(row.qty)) * Number(row.unit_cost) *  ((100 - Math.floor(row.discount)) / 100) * Number(ratio);
+        let charge = (Number(row.qty)) * Number(row.unit_cost) *  ((100 - Math.floor(row.discount)) / 100) * Number(ratio).toFixed(2);
 
         row.total = charge.toFixed(2);
 
@@ -3333,7 +3340,10 @@ var app = new Vue({
         ratio = 1;
 
         if(row.ratio != '')
+        {
+          row.ratio = Number(row.ratio).toFixed(2);
           ratio = Number(row.ratio).toFixed(2);
+        }
 
         if(row.ratio > 100)
           row.ratio = 100;
@@ -3367,10 +3377,10 @@ var app = new Vue({
           return;
 
         row.qty = Math.floor(row.qty);
-        row.ratio = Math.floor(row.ratio);
+        row.ratio = Number(row.ratio).toFixed(2);
         
         // let charge = this.payment_record.charge;
-        let charge = (Number(row.qty)) * Number(row.price) *  Math.floor(row.ratio);
+        let charge = (Number(row.qty)) * Number(row.price) *  Number(row.ratio).toFixed(2);
 
         row.total = charge.toFixed(2);
 
@@ -3416,11 +3426,11 @@ var app = new Vue({
           cost_type: cost_type,
           legend: "",
           desc: "",
-          qty: "",
+          qty: "1",
           unit: "",
           duration: "",
           price: "",
-          ratio: "",
+          ratio: "1.00",
           total: "",
         };
 
@@ -3446,7 +3456,7 @@ var app = new Vue({
         item = {
           id: sn,
 
-          qty: "",
+          qty: "1",
           unit: "",
           particulars: "",
 
@@ -3479,12 +3489,12 @@ var app = new Vue({
           id: sn,
           no: "",
           desc: "",
-          qty: "",
+          qty: "1",
           unit: "",
           duration: "",
           material_price: "",
           labor_price: "",
-          ratio: "",
+          ratio: "1.00",
           total: "",
           group: "",
           pid: 0,
@@ -5572,7 +5582,7 @@ Installation:`;
         duration: "",
         material_price: (price == null || price == 0) ? srp : price,
         labor_price: (price == null || price == 0) ? srp : price,
-        ratio: "",
+        ratio: "1.00",
         total: (price == null || price == 0) ? srp : price,
         group: "",
         pid:  this.product.id,
