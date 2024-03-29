@@ -3508,7 +3508,7 @@ header( 'location:index' );
                                     <td>{{ bk.no }}</td>
 
                                     <td>
-                                        <div class="pid noPrint" v-if="bk.id != 0">{{ "ID: " + bk.group }}</div>
+                                        <div class="pid noPrint" v-if="bk.id != 0">{{ "ID: " + bk.id }}</div>
                                         <div class="description">{{ bk.desc }}</div>
                                     </td>
 
@@ -3681,7 +3681,7 @@ header( 'location:index' );
                                         Math.floor(temp_total.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}%
                                         DISCOUNT
                                     </td>
-                                    <td><span class="numbers">₱ {{ (temp_total.real_total * 1) !== undefined ? (temp_total.real_total * 1).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                                    <td><span class="numbers">₱ {{ ( total.back_total * 1 - temp_total.real_total * 1) !== undefined ? (total.back_total * 1 - temp_total.real_total * 1).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
                                 </tr>
 
@@ -3699,9 +3699,9 @@ header( 'location:index' );
                                     </td>
                                     <td>GRAND TOTAL</td>
                                     <td v-if="temp_total.total != '0.00'">
-                                        <span class="numbers deleted" v-if="temp_total.total != total.back_total">₱ {{ total.back_total !== "" ? Number(total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span><br
-                                            v-if="temp_total.total != total.back_total">
-                                        <span class="numbers">₱ {{ temp_total.total !== "" ? Number(temp_total.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                                        <span class="numbers deleted" v-if="temp_total.total != total.real_total">₱ {{ total.real_total !== "" ? Number(total.real_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span><br
+                                            v-if="temp_total.total != total.real_total">
+                                        <span class="numbers">₱ {{ temp_total.back_total !== "" ? Number(temp_total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
                                     <td v-if="temp_total.total == '0.00'">
                                         <span class="numbers">₱ {{ total.back_total !== "" ? Number(total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
@@ -4223,7 +4223,7 @@ header( 'location:index' );
                                     </ul>
                                 </td>
                                 <td>
-                                    <span v-show="show_ntd === true">CP: {{ item.price_ntd }} <br v-if="item.str_price_ntd_change"> {{ item.str_price_ntd_change ?  item.str_price_ntd_change : '' }}<br></span>
+                                    <span v-show="show_ntd == true">CP: {{ item.price_ntd }} <br v-if="item.str_price_ntd_change"> {{ item.str_price_ntd_change ?  item.str_price_ntd_change : '' }}<br></span>
                                     <span>SRP: {{ item.price }}<br v-if="item.str_price_change"> {{ item.str_price_change ?  item.str_price_change : '' }}<br></span>
                                     <span>QP: {{ item.quoted_price }} <br v-if="item.str_quoted_price_change"> {{ item.str_quoted_price_change ? item.str_quoted_price_change : '' }}<br></span>
                                 </td>
