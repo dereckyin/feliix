@@ -3672,7 +3672,7 @@ header( 'location:index' );
                                         <div></div>
                                     </td>
                                     <td>SUBTOTAL</td>
-                                    <td><span class="numbers">₱ {{ total.back_total !== undefined ? Number(total.back_total).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
+                                    <td><span class="numbers">₱ {{ temp_total.back_total !== undefined ? Number(temp_total.back_total).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
                                     </td>
                                 </tr>
 
@@ -3681,7 +3681,7 @@ header( 'location:index' );
                                         Math.floor(temp_total.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}%
                                         DISCOUNT
                                     </td>
-                                    <td><span class="numbers">₱ {{ ( total.back_total * 1 - temp_total.real_total * 1) !== undefined ? (total.back_total * 1 - temp_total.real_total * 1).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                                    <td><span class="numbers">₱ {{ temp_total.back_total !== undefined ? (temp_total.back_total * (temp_total.discount) / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
                                 </tr>
 
@@ -3698,20 +3698,20 @@ header( 'location:index' );
                                         <span class="total_discount" v-if="temp_total.show_vat == 'Y'">*price inclusive of VAT</span>
                                     </td>
                                     <td>GRAND TOTAL</td>
-                                    <td v-if="temp_total.total != '0.00'">
-                                        <span class="numbers deleted" v-if="temp_total.total != total.real_total">₱ {{ total.real_total !== "" ? Number(total.real_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span><br
-                                            v-if="temp_total.total != total.real_total">
-                                        <span class="numbers">₱ {{ temp_total.back_total !== "" ? Number(temp_total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                                    <td v-if="temp_total.total != ''">
+                                        <span class="numbers deleted" v-if="temp_total.total != temp_total.real_total">₱ {{ temp_total.real_total !== "" ? Number(temp_total.real_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span><br
+                                            v-if="temp_total.total != temp_total.real_total">
+                                        <span class="numbers">₱ {{ temp_total.total !== "" ? Number(temp_total.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
-                                    <td v-if="temp_total.total == '0.00'">
-                                        <span class="numbers">₱ {{ total.back_total !== "" ? Number(total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                                    <td v-if="temp_total.total == ''">
+                                        <span class="numbers">₱ {{ temp_total.real_total !== "" ? Number(temp_total.real_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
                                 </tr>
                                 </tfoot>
 
                             </table>
 
-                            <div class="amount_in_words" v-if="temp_total.show_word == 'Y'">Amount in Words : {{ total.total_text }}</div>
+                            <div class="amount_in_words" v-if="temp_total.show_word == 'Y'">Amount in Words : {{ temp_total.total_text }}</div>
                         </div>
 
 

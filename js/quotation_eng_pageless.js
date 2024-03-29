@@ -2251,6 +2251,7 @@ var app = new Vue({
           discount = (100 - res.data[i]['discount'] * 1) * 0.01;
           price = res.data[i]['price'] * discount;
           total = res.data[i]['amount'] * 1;
+          pid = res.data[i]['pid'];
 
           item = {
             id: sn,
@@ -2264,7 +2265,7 @@ var app = new Vue({
             ratio: "1.00",
             total: (total).toFixed(2),
             group: "",
-            pid:  this.product.id,
+            pid:  pid,
     
           };
     
@@ -3875,7 +3876,7 @@ Installation:`;
         this.total.real_total = ((this.total.subtotal_info_not_show_a * 1 + this.total.subtotal_info_not_show_b * 1 + this.total.subtotal_info_not_show_c * 1)  * (1 - this.total.discount * 0.01));
 
         if(this.total.vat == 'Y')
-          this.total.real_total = (this.total.real_total * 1) + (this.real_total * 0.12);
+          this.total.real_total = (this.total.real_total * 1) + (this.total.real_total * 0.12);
 
           this.total.real_total = Number(this.total.real_total).toFixed(2);
     
