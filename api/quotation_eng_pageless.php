@@ -901,7 +901,7 @@ function GetTotalInfo($qid, $db){
         "show_vat" => $show_vat,
         "valid" => $valid,
         "total" => $total,
-        "pixa" => $pixa == '' ? 0 : $pixa,
+        "pixa" => $pixa == '' ? 30 : $pixa,
         "show" => $show,
 
         "real_total" => 0,

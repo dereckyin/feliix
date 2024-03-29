@@ -2440,20 +2440,20 @@ var app = new Vue({
       close_total() {
         this.show_total = false;
 
-        if(this.total.id == 0)
-        {
-          this.total = {
-            id:0,
-            page: 0,
-            discount:'',
-            vat : '',
-            show_vat : '',
-            valid : '',
-            total : '',
-            pixa: 0,
-            show: '',
-          };
-        }
+        // if(this.total.id == 0)
+        // {
+        //   this.total = {
+        //     id:0,
+        //     page: 0,
+        //     discount:'',
+        //     vat : '',
+        //     show_vat : '',
+        //     valid : '',
+        //     total : '',
+        //     pixa: 0,
+        //     show: '',
+        //   };
+        // }
       },
 
       save_total: async function() {
