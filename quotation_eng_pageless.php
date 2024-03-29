@@ -3676,7 +3676,7 @@ header( 'location:index' );
                                     </td>
                                 </tr>
 
-                                <tr class="total_discount" v-if="temp_total.discount !== '0'">
+                                <tr class="total_discount" v-if="temp_total.discount != '0'">
                                     <td>{{ temp_total.discount !== undefined ?
                                         Math.floor(temp_total.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}%
                                         DISCOUNT
