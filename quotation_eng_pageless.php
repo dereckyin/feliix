@@ -3508,7 +3508,7 @@ header( 'location:index' );
                                     <td>{{ bk.no }}</td>
 
                                     <td>
-                                        <div class="pid noPrint" v-if="bk.id != 0">{{ "ID: " + bk.id }}</div>
+                                        <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }}</div>
                                         <div class="description">{{ bk.desc }}</div>
                                     </td>
 
