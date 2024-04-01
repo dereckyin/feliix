@@ -132,6 +132,10 @@ if($jwt){
             $sheet->setTitle("Sheet 1");
             $sheet->getMergeCells();
 
+            $sheet->getColumnDimension('C')->setWidth(60);
+            $sheet->getColumnDimension('F')->setWidth(20);
+            $sheet->getColumnDimension('G')->setWidth(20);
+
             $i = 1;
 
             // general requirement
@@ -162,10 +166,10 @@ if($jwt){
                 $sheet->setCellValue('A'. $i, $item);
                 $sheet->setCellValue('B'. $i, $block['no']);
                 $sheet->setCellValue('C'. $i, $block['desc']);
-                $sheet->setCellValue('D'. $i, $block['qty']);
+                $sheet->setCellValue('D'. $i, number_format($block['qty']));
                 $sheet->setCellValue('E'. $i, $block['unit']);
-                $sheet->setCellValue('F'. $i, $block['unit_cost']);
-                $sheet->setCellValue('G'. $i, $block['total']);
+                $sheet->setCellValue('F'. $i, number_format($block['unit_cost']));
+                $sheet->setCellValue('G'. $i, number_format($block['total']));
                 
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
@@ -207,7 +211,7 @@ if($jwt){
                 $sheet->setCellValue('A'. $i, $item);
                 $sheet->setCellValue('B'. $i, $block['no']);
                 $sheet->setCellValue('C'. $i, $block['desc']);
-                $sheet->setCellValue('D'. $i, $block['qty']);
+                $sheet->setCellValue('D'. $i, number_format($block['qty']));
                 $sheet->setCellValue('E'. $i, $block['unit']);
                 if($block["gp_cnt"] != 0)
                 {
@@ -223,8 +227,8 @@ if($jwt){
                     
                 }
                 
-                $sheet->setCellValue('F'. $i, $block['gp_cost']);
-                $sheet->setCellValue('G'. $i, $block['gp_total']);
+                $sheet->setCellValue('F'. $i, number_format($block['gp_cost']));
+                $sheet->setCellValue('G'. $i, number_format($block['gp_total']));
                 
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
@@ -275,10 +279,10 @@ if($jwt){
                 $sheet->setCellValue('A'. $i, $item);
                 $sheet->setCellValue('B'. $i, $block['no']);
                 $sheet->setCellValue('C'. $i, $block['desc']);
-                $sheet->setCellValue('D'. $i, $block['qty']);
+                $sheet->setCellValue('D'. $i, number_format($block['qty']));
                 $sheet->setCellValue('E'. $i, $block['unit']);
-                $sheet->setCellValue('F'. $i, $block['unit_cost']);
-                $sheet->setCellValue('G'. $i, $block['total']);
+                $sheet->setCellValue('F'. $i, number_format($block['unit_cost']));
+                $sheet->setCellValue('G'. $i, number_format($block['total']));
                 
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
