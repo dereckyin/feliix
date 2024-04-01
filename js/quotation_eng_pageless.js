@@ -3863,15 +3863,15 @@ Installation:`;
       },
 
       count_subtotal() {
-        if(this.total.total == '0.00')
-        {
-          //this.total.total = (this.subtotal * (1 - this.total.discount * 0.01));
-          //if(this.total.vat == 'Y')
-          //  this.total.total = (this.total.total * 1) + (this.subtotal_novat_a * 0.12);
-          //this.total.total = "";
-        }
-        else
-          this.total.total = Number(this.total.total).toFixed(2);
+        // if(this.total.total == '0.00')
+        // {
+        //   //this.total.total = (this.subtotal * (1 - this.total.discount * 0.01));
+        //   //if(this.total.vat == 'Y')
+        //   //  this.total.total = (this.total.total * 1) + (this.subtotal_novat_a * 0.12);
+        //   //this.total.total = "";
+        // }
+        // else
+        //   this.total.total = Number(this.total.total).toFixed(2);
 
         this.total.real_total = ((this.total.subtotal_info_not_show_a * 1 + this.total.subtotal_info_not_show_b * 1 + this.total.subtotal_info_not_show_c * 1)  * (1 - this.total.discount * 0.01));
 
