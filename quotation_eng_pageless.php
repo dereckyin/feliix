@@ -2380,11 +2380,11 @@ header( 'location:index' );
                     <a id="" class="print" title="Export Whole Quotation into PDF" @click="print_page()"></a>
                 </div>
 
-            <!-- 以下三個功能需要提供，但因為這個報價單的格式改變很多，所以下面三個功能需要大修改
+            <!-- 以下三個功能需要提供，但因為這個報價單的格式改變很多，所以下面三個功能需要大修改 -->
                 <div class="popupblock">
                     <a id="" class="export_excel" title="Export Simple Item List into Excel" @click="export_excel()"></a>
                 </div>
-
+<!--
                 <div class="popupblock">
                     <a id="" class="approvalform" title="Generate Corresponding Approval Form" @click="approval_form_post()"></a>
                 </div>
@@ -3698,12 +3698,12 @@ header( 'location:index' );
                                         <span class="total_discount" v-if="temp_total.show_vat == 'Y'">*price inclusive of VAT</span>
                                     </td>
                                     <td>GRAND TOTAL</td>
-                                    <td v-if="temp_total.total != ''">
+                                    <td v-if="temp_total.total != '' && temp_total.total != '0.00'">
                                         <span class="numbers deleted" v-if="temp_total.total != temp_total.real_total">₱ {{ temp_total.real_total !== "" ? Number(temp_total.real_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span><br
                                             v-if="temp_total.total != temp_total.real_total">
                                         <span class="numbers">₱ {{ temp_total.total !== "" ? Number(temp_total.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
-                                    <td v-if="temp_total.total == ''">
+                                    <td v-if="temp_total.total == '' || temp_total.total == '0.00'">
                                         <span class="numbers">₱ {{ temp_total.real_total !== "" ? Number(temp_total.real_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
                                     </td>
                                 </tr>

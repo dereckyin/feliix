@@ -207,8 +207,8 @@ if (!isset($jwt)) {
         $total_info['subtotal_info_not_show_b'] = $consumable_total;
         $total_info['subtotal_info_not_show_c'] = $installation_total;
 
-        if(is_numeric($total_info['real_total']) && $total_info['total'] == '')
-            $total_info['total'] = $total_info['real_total'];
+        // if(is_numeric($total_info['real_total']) && $total_info['total'] == '')
+        //     $total_info['total'] = $total_info['real_total'];
 
         if(is_numeric($total_info['total']))
         {

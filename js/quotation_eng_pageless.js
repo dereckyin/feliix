@@ -3158,7 +3158,7 @@ var app = new Vue({
   
         axios({
           method: "post",
-          url: "api/quotation_export_excel",
+          url: "api/quotation_eng_export_excel",
           data: form_Data,
           responseType: "blob",
         })
@@ -3167,7 +3167,7 @@ var app = new Vue({
                   const link = document.createElement('a');
                   link.href = url;
                  
-                  link.setAttribute('download', 'Quotation Export_' + _this.quotation_no + '.xlsx');
+                  link.setAttribute('download', 'Quotation Eng Export_' + _this.quotation_no + '.xlsx');
                  
                   document.body.appendChild(link);
                   link.click();
