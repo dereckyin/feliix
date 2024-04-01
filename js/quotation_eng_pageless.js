@@ -3865,7 +3865,7 @@ Installation:`;
       count_subtotal() {
         if(this.total.total == '0.00' || this.total.total == '')
         {
-          dummy = 1;
+          this.total.total = "";
         }
         else
           this.total.total = Number(this.total.total).toFixed(2);
