@@ -207,25 +207,29 @@ if (!isset($jwt)) {
         $total_info['subtotal_info_not_show_b'] = $consumable_total;
         $total_info['subtotal_info_not_show_c'] = $installation_total;
 
-        // if(is_numeric($total_info['real_total']) && $total_info['total'] == '')
-        //     $total_info['total'] = $total_info['real_total'];
+        $amount_to_word = "";
+        if(is_numeric($total_info['real_total']) && $total_info['total'] == '')
+            $amount_to_word = $total_info['real_total'];
+        else if($total_info['total'] > 0)
+            $amount_to_word = $total_info['total'];
 
-        if(is_numeric($total_info['total']))
+        if($amount_to_word != '')
         {
 
-            $words = convertNumberToWord($total_info['total']);
+            $words = convertNumberToWord($amount_to_word);
 
             // if the total is not integer
-            if(substr($total_info['total'], strpos($total_info['total'], '.') + 1) != "00")
+            if(substr($amount_to_word, strpos($amount_to_word, '.') + 1) != "00")
             {
-                $total_info['total_text'] = $words . " and " . substr($total_info['total'], strpos($total_info['total'], '.') + 1) . "/100";
+                $total_info['total_text'] = $words . " and " . substr($amount_to_word, strpos($amount_to_word, '.') + 1) . "/100";
             }
             else
-                $total_info['total_text'] = convertNumberToWord($total_info['total']);
+                $total_info['total_text'] = $words;
 
             if($total_info['total_text'] != '')
                 $total_info['total_text'] .= " Pesos Only"; 
         }
+        
         
         $term_info = GetTermInfo($row['id'], $db);
         $payment_term_info = GetPaymentTermInfo($row['id'], $db);
