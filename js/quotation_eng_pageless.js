@@ -3868,7 +3868,7 @@ Installation:`;
           //this.total.total = (this.subtotal * (1 - this.total.discount * 0.01));
           //if(this.total.vat == 'Y')
           //  this.total.total = (this.total.total * 1) + (this.subtotal_novat_a * 0.12);
-          this.total.total = "";
+          //this.total.total = "";
         }
         else
           this.total.total = Number(this.total.total).toFixed(2);
