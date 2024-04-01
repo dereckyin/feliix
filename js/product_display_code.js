@@ -136,6 +136,8 @@ var app = new Vue({
 
     product_set : [],
     print_option: {},
+
+    show_srp: true,
   },
 
   created() {
@@ -211,6 +213,10 @@ var app = new Vue({
   methods: {
     toggle_price : function() {
       this.toggle = !this.toggle;
+    },
+
+    toggle_price_sales : function() {
+      this.show_srp = !this.show_srp;
     },
 
     chunk: function(arr, size) {
