@@ -163,13 +163,20 @@ if($jwt){
             $item = 1;
             foreach($gneral_requirement['block'] as $block)
             {
+                if($block['not_show'] != "")
+                    continue;
+
                 $sheet->setCellValue('A'. $i, $item);
                 $sheet->setCellValue('B'. $i, $block['no']);
                 $sheet->setCellValue('C'. $i, $block['desc']);
                 $sheet->setCellValue('D'. $i, number_format($block['qty']));
                 $sheet->setCellValue('E'. $i, $block['unit']);
-                $sheet->setCellValue('F'. $i, number_format($block['unit_cost']));
-                $sheet->setCellValue('G'. $i, number_format($block['total']));
+                $sheet->setCellValue('F'. $i, number_format($block['unit_cost'] * (100 - ($block['discount'] != '' ? $block['discount'] : 0)) / 100, 2, '.', ''));
+
+                if($block['unit_cost'] * (100 - ($block['discount'] != '' ? $block['discount'] : 0)) / 100 * $block['qty'] != 0 && ($block['total'] == 0 || $block['total'] == ''))
+                    $sheet->setCellValue('G'. $i, 'FREE AS PACKAGE!');
+                else
+                    $sheet->setCellValue('G'. $i, number_format($block['total'], 2, '.', ''));
                 
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
@@ -227,8 +234,8 @@ if($jwt){
                     
                 }
                 
-                $sheet->setCellValue('F'. $i, number_format($block['gp_cost']));
-                $sheet->setCellValue('G'. $i, number_format($block['gp_total']));
+                $sheet->setCellValue('F'. $i, number_format($block['gp_cost'], 2, '.', ''));
+                $sheet->setCellValue('G'. $i, number_format($block['gp_total'], 2, '.', ''));
                 
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
@@ -276,13 +283,21 @@ if($jwt){
             $item = 1;
             foreach($consumable['block'] as $block)
             {
+                if($block['not_show'] != "")
+                    continue;
+
                 $sheet->setCellValue('A'. $i, $item);
                 $sheet->setCellValue('B'. $i, $block['no']);
                 $sheet->setCellValue('C'. $i, $block['desc']);
                 $sheet->setCellValue('D'. $i, number_format($block['qty']));
                 $sheet->setCellValue('E'. $i, $block['unit']);
-                $sheet->setCellValue('F'. $i, number_format($block['unit_cost']));
-                $sheet->setCellValue('G'. $i, number_format($block['total']));
+                $sheet->setCellValue('F'. $i, number_format($block['unit_cost'] * $block['ratio'] * (100 - $block['discount']) / 100, 2, '.', ''));
+
+                if($block['unit_cost'] * $block['ratio'] * (100 - ($block['discount'] != '' ? $block['discount'] : 0)) / 100 * $block['qty'] != 0 && ($block['total'] == 0 || $block['total'] == ''))
+                    $sheet->setCellValue('G'. $i, 'FREE AS PACKAGE!');
+                else
+                    $sheet->setCellValue('G'. $i, number_format($block['total'], 2, '.', ''));
+                
                 
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
