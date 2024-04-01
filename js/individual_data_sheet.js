@@ -34,6 +34,8 @@ let mainState = {
     user_records: [],
     user_records_1 : [],
 
+    view_data : [],
+
     record: {},
 
     error_username: '',
@@ -88,6 +90,26 @@ var app = new Vue({
                 .catch(function(error) {
                     console.log(error);
                 });
+        },
+
+        viewInfo : function() {
+            let _this = this;
+
+            axios.get('api/employee_basic_info_idv')
+                .then(function(response) {
+                    console.log(response.data);
+                    if(response.data.length > 0)
+                        _this.view_data = response.data[0];
+
+                    console.log("getReceiveRecords");
+
+                    _this.toggle_viewinfo();
+
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+
         },
 
 		getReceiveRecords_1: function() {
@@ -271,6 +293,11 @@ var app = new Vue({
             this.resetForm();
         },
 
+        close_viewinfo: function() {
+            this.toggle_viewinfo();
+            this.resetForm();
+        },
+
         close_auth: function() {
             this.toggle_auth();
             this.resetForm();
@@ -339,6 +366,11 @@ var app = new Vue({
         toggle_view: function() {
             window.jQuery(".mask").toggle();
             window.jQuery("#Modal_view").toggle();
+        },
+
+        toggle_viewinfo: function() {
+            window.jQuery(".mask").toggle();
+            window.jQuery("#Modal_basic_info_view").toggle();
         },
 
         resetRecord: function() {
