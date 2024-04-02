@@ -63,6 +63,9 @@ if($jwt){
             $installation['block'][$key]['gp_cost'] = $installation['block'][$key]['labor_price'];
             $installation['block'][$key]['gp_total'] = $installation['block'][$key]['total'];
 
+            if($installation['block'][$key]['total'] == '' || $installation['block'][$key]['total'] == 0)
+                $installation['block'][$key]['gp_total'] = '';
+
         }
         else if(array_key_exists($installation['block'][$key]['group'], $skip_group))
         {
@@ -113,6 +116,12 @@ if($jwt){
                 'alignment' => array(
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
                     'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                )
+            );
+
+            $numeric_style = array(
+                'numberFormat' => array(
+                    'formatCode' => '###,###,###,##0.00'
                 )
             );
 
@@ -181,6 +190,8 @@ if($jwt){
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
 
+                $sheet->getStyle('F'. $i. ':' . 'G' . $i)->applyFromArray($numeric_style);
+
                 $i = $i + 1;
                 $item += 1;
             }
@@ -235,10 +246,15 @@ if($jwt){
                 }
                 
                 $sheet->setCellValue('F'. $i, number_format((float)$block['gp_cost'], 2, '.', ''));
-                $sheet->setCellValue('G'. $i, number_format((float)$block['gp_total'], 2, '.', ''));
+                if($block['gp_total'] == '' || $block['gp_total'] == 0)
+                    $sheet->setCellValue('G'. $i, 'FREE AS PACKAGE!');
+                else
+                    $sheet->setCellValue('G'. $i, number_format((float)$block['gp_total'], 2, '.', ''));
                 
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
+
+                $sheet->getStyle('F'. $i. ':' . 'G' . $i)->applyFromArray($numeric_style);
 
                 $i = $i + 1;
                 $item += 1;
@@ -253,6 +269,8 @@ if($jwt){
 
                     $sheet->mergeCells('G' . $a . ':G' . ($i -1));
                     $sheet->getStyle('G' . $a . ':G' . ($i -1))->applyFromArray($center_style);
+
+                    $sheet->getStyle('F'. $i. ':' . 'G' . $i)->applyFromArray($numeric_style);
                 }
             }
 
@@ -264,6 +282,7 @@ if($jwt){
 
             $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
             $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
+            
 
             $i = $i + 1;
             
@@ -277,6 +296,7 @@ if($jwt){
 
             $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
             $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
+            
 
             $i = $i + 1;
 
@@ -301,6 +321,8 @@ if($jwt){
                 
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
+
+                $sheet->getStyle('F'. $i. ':' . 'G' . $i)->applyFromArray($numeric_style);
 
                 $i = $i + 1;
                 $item += 1;

@@ -3530,11 +3530,11 @@ header( 'location:index' );
 
                                     <!-- Total Labor Cost -->
                                     <!-- 這邊需要按照 Grouping，把同一群的商品的 Total Labor Cost 加總起來，然後變成一欄 -->
-                                    <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0 && bk.gp_total != '0.00' && product_vat !== 'P'">
+                                    <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0 && (bk.gp_total != 0 && bk.gp_total != '') && product_vat !== 'P'">
                                         <span class="numbers">₱ {{ bk.gp_total !== undefined ? Number(bk.gp_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
                                     </td>
 
-                                    <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0 && bk.gp_total == '0.00' && product_vat !== 'P'">
+                                    <td :rowspan="bk.gp_cnt" v-if="bk.gp_cnt != 0 && (bk.gp_total == '0' || bk.gp_total == '') && product_vat !== 'P'">
                                         <span class="numbers deleted">₱ {{ (bk.qty  * bk.gp_cost  !== undefined ? Number(bk.qty  * bk.gp_cost).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
                                         <span class="numbers red">FREE AS PACKAGE!</span>
                                     </td>
