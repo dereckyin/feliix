@@ -2997,7 +2997,7 @@ CREATE TABLE `price_comparison` (
   `footer_second_line` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `status` int(11) DEFAULT 0,
   `create_id` int(11) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_id` int(11) DEFAULT 0,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -3011,7 +3011,7 @@ CREATE TABLE `price_comparison_option` (
   `color` varchar(24) default '',
   `status` int(11) DEFAULT 0,
   `create_id` int(11) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_id` int(11) DEFAULT 0,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -4695,3 +4695,194 @@ ADD COLUMN `sig_date` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
 -- 20240227 access
 ALTER TABLE access_control
 ADD COLUMN `edit_basic` text COLLATE utf8mb4_unicode_ci;
+
+-- 20240229 quotation_eng_pageless
+CREATE TABLE `quotation_eng` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `kind` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `project_id` bigint(20) DEFAULT 0,
+  `first_line` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `second_line` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `project_category` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `quotation_no` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `quotation_date` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `prepare_for_first_line` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `prepare_for_second_line` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `prepare_for_third_line` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `prepare_by_first_line` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `prepare_by_second_line` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `footer_first_line` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `footer_second_line` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `pixa_s` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `show_s` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pixa_t` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `show_t` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pixa_p` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `show_p` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pixa_r` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `show_r` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pixa_i` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `show_i` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pixa_c` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `show_c` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE `quotation_eng_payment_term` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `quotation_id` bigint(20) unsigned NOT NULL,
+  `payment_method` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `brief` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `list` JSON,
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE `quotation_eng_signature` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `quotation_id` bigint(20) unsigned NOT NULL,
+  `type` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `photo` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `position` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `phone` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `email` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE `quotation_eng_term` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `quotation_id` bigint(20) unsigned NOT NULL,
+  `title` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `brief` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `list` varchar(4096) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `quotation_eng_total` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `quotation_id` bigint(20) unsigned NOT NULL,
+  `discount` int(11) DEFAULT 0,
+  `vat` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `show_vat` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `valid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `total` decimal(12,2) DEFAULT 0.00,
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `pixa` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `show` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `quotation_eng_general_requirement` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `quotation_id` bigint(20) unsigned NOT NULL,
+  `title` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `block` JSON,
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `quotation_eng_consumable` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `quotation_id` bigint(20) unsigned NOT NULL,
+  `title` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `block` JSON,
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE quotation_eng_total
+ADD COLUMN `show_word` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+CREATE TABLE `quotation_eng_installation` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `quotation_id` bigint(20) unsigned NOT NULL,
+  `title` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `block` JSON,
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `electrical_materials` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `unit` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `particulars` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `price` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_id` int(11) DEFAULT 0,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('Pack', 'Thermal Paste 4Gram', '15', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('LM', 'AWG # 20 solid', '5', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'Connector', '10', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('BOXES', '2.0MM^2 THHN WIRE (RED) 150M', '3000', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('BOXES', '3.5MM^2 THHN WIRE (RED) 150M', '5500', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('BOXES', '3.5MM^2 THHN WIRE (BLACK) 150M', '5501', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('BOXES', '3.5MM^2 THHN WIRE (BLUE) 150M', '5502', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('BOXES', '3.5MM^2 THHN WIRE (YELLOW) 150M', '5503', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('METERS', 'FMC CONDUIT 1"', '50', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'FMC CONDUIT STRAIGHT CONNECTOR 1"', '50', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'PULL BOX 12X12X6', '950', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'SQUARE JUNCTION BOX 4x11x16 WITH COVER', '380', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'ELECTRICAL TAPE', '60', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', '20AT CIRCUIT BREAKER', '5000', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'EMT PIPE 1"x10''', '335', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'EMT CONNECTOR 1" ', '50', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'EMT COUPLING 1"', '50', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'EMT CONDUIT HANGAR 1" ', '25', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'FULL THREAD 3/8"', '90', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'ANCHOR BOLT 3/8"', '7', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'WASHER 3/8"', '10', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'TOKS AND SCREW', '8', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'HACKSAW WITH METAL BLADE', '600', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'STRUT CHANNEL 10''', '500', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'GRIP ANCHOR 3/8', '10', 0, now());
+insert into electrical_materials(unit, particulars, price, create_id, created_at) values('PCS', 'SDS DRILL BIT #8', '200', 0, now());
+
+ALTER TABLE electrical_materials
+ADD COLUMN `remarks` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '';
