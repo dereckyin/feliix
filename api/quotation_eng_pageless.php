@@ -213,10 +213,13 @@ if (!isset($jwt)) {
         else if($total_info['total'] > 0)
             $amount_to_word = $total_info['total'];
 
-            $amount_to_word = (100 - ($total_info['discount'] != "" ? $total_info['discount'] : 0 )) / 100 * $amount_to_word;
+        $amount_to_word = (100 - ($total_info['discount'] != "" ? $total_info['discount'] : 0 )) / 100 * $amount_to_word;
 
-            if($total_info['vat'] == 'Y')
-                $amount_to_word += $amount_to_word * 0.12;
+        if($total_info['vat'] == 'Y')
+            $amount_to_word += $amount_to_word * 0.12;
+
+        if($amount_to_word != '')
+            $amount_to_word = number_format($amount_to_word, 2, '.', '');
 
         if($amount_to_word != '')
         {
