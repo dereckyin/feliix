@@ -234,8 +234,8 @@ if($jwt){
                     
                 }
                 
-                $sheet->setCellValue('F'. $i, number_format($block['gp_cost'], 2, '.', ''));
-                $sheet->setCellValue('G'. $i, number_format($block['gp_total'], 2, '.', ''));
+                $sheet->setCellValue('F'. $i, number_format((float)$block['gp_cost'], 2, '.', ''));
+                $sheet->setCellValue('G'. $i, number_format((float)$block['gp_total'], 2, '.', ''));
                 
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                 $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($center_style);
@@ -291,9 +291,9 @@ if($jwt){
                 $sheet->setCellValue('C'. $i, $block['desc']);
                 $sheet->setCellValue('D'. $i, number_format($block['qty']));
                 $sheet->setCellValue('E'. $i, $block['unit']);
-                $sheet->setCellValue('F'. $i, number_format($block['unit_cost'] * $block['ratio'] * (100 - $block['discount']) / 100, 2, '.', ''));
+                $sheet->setCellValue('F'. $i, number_format($block['unit_cost'] * ($block['ratio'] != '' ? $block['ratio'] : 1) * (100 - $block['discount']) / 100, 2, '.', ''));
 
-                if($block['unit_cost'] * $block['ratio'] * (100 - ($block['discount'] != '' ? $block['discount'] : 0)) / 100 * $block['qty'] != 0 && ($block['total'] == 0 || $block['total'] == ''))
+                if($block['unit_cost'] * ($block['ratio'] != '' ? $block['ratio'] : 1) * (100 - ($block['discount'] != '' ? $block['discount'] : 0)) / 100 * $block['qty'] != 0 && ($block['total'] == 0 || $block['total'] == ''))
                     $sheet->setCellValue('G'. $i, 'FREE AS PACKAGE!');
                 else
                     $sheet->setCellValue('G'. $i, number_format($block['total'], 2, '.', ''));

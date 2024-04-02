@@ -208,10 +208,15 @@ if (!isset($jwt)) {
         $total_info['subtotal_info_not_show_c'] = $installation_total;
 
         $amount_to_word = "";
-        if(is_numeric($total_info['real_total']) && $total_info['total'] == '')
+        if(is_numeric($total_info['real_total']) && ($total_info['total'] == '' || $total_info['total'] == 0))
             $amount_to_word = $total_info['real_total'];
         else if($total_info['total'] > 0)
             $amount_to_word = $total_info['total'];
+
+            $amount_to_word = (100 - ($total_info['discount'] != "" ? $total_info['discount'] : 0 )) / 100 * $amount_to_word;
+
+            if($total_info['vat'] == 'Y')
+                $amount_to_word += $amount_to_word * 0.12;
 
         if($amount_to_word != '')
         {
