@@ -63,6 +63,24 @@ $action = 'approved';
 
 $items_array = json_decode($items,true);
 
+// seperate the items from 'C' and 'J'
+$c_items = array();
+$w_items = array();
+
+for($i=0; $i<count($items_array); $i++) 
+{
+    $item_id = $items_array[$i]['id'];
+    $item_status = $items_array[$i]['confirm'];
+
+    if($item_status == 'C')
+    {
+        array_push($c_items, $items_array[$i]);
+    }
+    else if($item_status == 'J')
+    {
+        array_push($w_items, $items_array[$i]);
+    }
+}
 
 // update main table
 $query = "UPDATE od_main SET `updated_id` = :updated_id,  `updated_at` = now() WHERE id = :id";
@@ -90,9 +108,9 @@ try {
 
 try{
 
-    for($i=0; $i<count($items_array); $i++) 
+    for($i=0; $i<count($c_items); $i++) 
     {
-        $item_id = $items_array[$i]['id'];
+        $item_id = $c_items[$i]['id'];
 
         if($item_id != 0)
         {
@@ -100,6 +118,39 @@ try{
             SET
                 `status_at` = now(),
                 `confirm` = 'A',
+                `status` = 3
+            where id = :id  ";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            $stmt->bindParam(':id', $item_id);
+        }
+    
+        $jsonEncodedReturnArray = "";
+        if ($stmt->execute()) {
+            $returnArray = array('ret' => $item_id);
+            $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+
+        }
+        else
+        {
+            $arr = $stmt->errorInfo();
+            error_log($arr[2]);
+        }
+
+    }
+
+    for($i=0; $i<count($w_items); $i++) 
+    {
+        $item_id = $w_items[$i]['id'];
+
+        if($item_id != 0)
+        {
+            $query = "update od_item
+            SET
+                `status_at` = now(),
+                `confirm` = 'J',
                 `status` = 3
             where id = :id  ";
 
@@ -166,8 +217,11 @@ try{
         die();
     }
 
-    if($page != 3)
-        mockup_notification($user_name, 'access2', 'access1, access3', $project_name, $serial_name, $od_name, 'Order - Mockup', $comment, $action, $items_array, $od_id);
+    if($page != 3 && count($c_items) > 0)
+        mockup_notification($user_name, 'access2', 'access1, access3', $project_name, $serial_name, $od_name, 'Order - Mockup', $comment, $action, $c_items, $od_id);
+    
+    if($page != 3 && count($w_items) > 0)
+    mockup_notification_warehouse($user_name, 'access1, access3, access4, access5, access7', 'access2', $project_name, $serial_name, $od_name, 'Order - Mockup', $comment, $action, $w_items, $od_id);
 
     echo $jsonEncodedReturnArray;
 }

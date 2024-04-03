@@ -8902,6 +8902,18 @@ function order_notification_warehouse($name, $access,  $access_cc, $project_name
         $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
     }
 
+    if($action == 'approved')
+    {
+        $receiver = "all";
+
+        $mail->Subject = 'Some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
+        $header = 'Please note that some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
+        $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $od_id;
+
+        $cc .= "Manilynne Nicol" . ", ";
+        $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
+    }
+
 
     $content = '<!DOCTYPE html>
     <html lang="en">
@@ -9376,6 +9388,15 @@ function mockup_notification_warehouse($name, $access,  $access_cc, $project_nam
     $url = "";
 
     if($action == 'approval')
+    {
+        $receiver = "all";
+
+        $mail->Subject = 'Some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
+        $header = 'Please note that some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
+        $url = "https://feliix.myvnc.com/order_taiwan_mockup_p3?id=" . $od_id;
+    }
+
+    if($action == 'approved')
     {
         $receiver = "all";
 
