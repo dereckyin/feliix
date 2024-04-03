@@ -739,9 +739,9 @@ var app = new Vue({
 
         for (let i = 0; i < this.items.length; i++) {
             if (this.items[i].is_checked == 1) {
-              if(this.items[i].confirm != "C")
+              if(this.items[i].confirm != "C" && this.items[i].confirm != "J")
               {
-                alert("Only confirmed item is allowed to send for approval.");
+                alert("Only “Confirmed” item or “From Warehouse” item is allowed to send for approval.");
                 return;
               }
               else

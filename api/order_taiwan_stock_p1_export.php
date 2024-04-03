@@ -930,6 +930,9 @@ function GetConfirmText($loc)
         case "N":
             $location = "Not Yet Confirmed";
             break;
+        case "J":
+            $location = "From Warehouse";
+            break;
         case "D":
             $location = "Deleted";
             break;

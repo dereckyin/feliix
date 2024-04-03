@@ -1580,6 +1580,7 @@ try {
                                 <select v-model="item.confirm">
                                     <option value="N">Not Yet Confirmed</option>
                                     <option value="C">Confirmed</option>
+                                    <option value="J">From Warehouse</option>
                                     <option value="D">Deleted</option>
                                 </select>
                             </div>
