@@ -139,8 +139,15 @@ if($block_array[$i]['photo3'] == '')
                     `backup_qty` = :backup_qty,
                     `srp` = :srp,
                     `date_needed` = :date_needed,
-                    `shipping_way` = :shipping_way,
-                    `shipping_number` = :shipping_number,
+                    ";
+
+                if(isset($block_array[$i]['shipping_way']))
+                    $query .= " `shipping_way` = :shipping_way, ";
+
+                if(isset($block_array[$i]['shipping_number']))
+                    $query .= " `shipping_number` = :shipping_number, ";
+
+                $query .= "
                     `pid` = :pid,
                     `v1` = :v1,
                     `v2` = :v2,
@@ -194,8 +201,11 @@ if($block_array[$i]['photo3'] == '')
                 $stmt->bindParam(':srp', $srp);
                 $stmt->bindParam(':date_needed', $date_needed);
 
-                $stmt->bindParam(':shipping_way', $shipping_way);
-                $stmt->bindParam(':shipping_number', $shipping_number);
+                if(isset($block_array[$i]['shipping_way']))
+                    $stmt->bindParam(':shipping_way', $shipping_way);
+
+                if(isset($block_array[$i]['shipping_number']))
+                    $stmt->bindParam(':shipping_number', $shipping_number);
 
                 $stmt->bindParam(':pid', $pid);
 
