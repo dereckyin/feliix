@@ -8821,11 +8821,16 @@ function order_notification_warehouse($name, $access,  $access_cc, $project_name
 
     if($access7 != '')
     {
-        $notifior = GetAccessNotifiersByName($access7, $serial_name);
-        foreach($notifior as &$list)
+        $_list = explode(",", $access7);
+        foreach($_list as &$c_list)
         {
-            $receiver = $list["username"];
-            $mail->AddAddress($list["email"], $list["username"]);
+            $c_list = trim($c_list);
+            $notifior = GetAccessNotifiersByName($c_list, $serial_name);
+            foreach($notifior as &$list)
+            {
+                $receiver = $list["username"];
+                $mail->AddAddress($list["email"], $list["username"]);
+            }
         }
     }
 
@@ -9376,11 +9381,16 @@ function mockup_notification_warehouse($name, $access,  $access_cc, $project_nam
 
     if($access7 != '')
     {
-        $notifior = GetAccessNotifiersByName($access7, $serial_name);
-        foreach($notifior as &$list)
+        $_list = explode(",", $access7);
+        foreach($_list as &$c_list)
         {
-            $receiver = $list["username"];
-            $mail->AddAddress($list["email"], $list["username"]);
+            $c_list = trim($c_list);
+            $notifior = GetAccessNotifiersByName($c_list, $serial_name);
+            foreach($notifior as &$list)
+            {
+                $receiver = $list["username"];
+                $mail->AddAddress($list["email"], $list["username"]);
+            }
         }
     }
 
@@ -10457,11 +10467,16 @@ function order_type_notification_warehouse($name, $access,  $access_cc, $project
 
     if($access7 != '')
     {
-        $notifior = GetAccessNotifiersByName($access7, $serial_name);
-        foreach($notifior as &$list)
+        $_list = explode(",", $access7);
+        foreach($_list as &$c_list)
         {
-            $receiver = $list["username"];
-            $mail->AddAddress($list["email"], $list["username"]);
+            $c_list = trim($c_list);
+            $notifior = GetAccessNotifiersByName($c_list, $serial_name);
+            foreach($notifior as &$list)
+            {
+                $receiver = $list["username"];
+                $mail->AddAddress($list["email"], $list["username"]);
+            }
         }
     }
 
