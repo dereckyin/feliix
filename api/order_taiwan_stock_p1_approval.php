@@ -214,15 +214,28 @@ try{
         die();
     }
 
+    $access7 = GetAccess7($db, $od_id);
+    $access7 = ltrim($access7, ',');
+
     if(count($c_items) > 0)
         order_type_notification($user_name, 'access3', 'access1, access2', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $action, $c_items, $od_id, "stock");
 
     if(count($w_items) > 0)
-        order_type_notification_warehouse($user_name, 'access1, access3, access4, access5, access7', 'access2', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $action, $w_items, $od_id, "stock");
+        order_type_notification_warehouse($user_name, 'access1, access3, access4, access5', 'access2', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $action, $w_items, $od_id, "stock", $access7);
 
     echo $jsonEncodedReturnArray;
 }
 catch (Exception $e)
 {
     error_log($e->getMessage());
+}
+
+function GetAccess7($db, $uid)
+{
+    $query = "SELECT access7 FROM od_main WHERE id = :id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $uid);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['access7'];
 }

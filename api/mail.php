@@ -8733,7 +8733,7 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
 
 
 
-function order_notification_warehouse($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id)
+function order_notification_warehouse($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id, $access7)
 {
     $conf = new Conf();
 
@@ -8819,6 +8819,16 @@ function order_notification_warehouse($name, $access,  $access_cc, $project_name
         }
     }
 
+    if($access7 != '')
+    {
+        $notifior = GetAccessNotifiersByName($access7, $serial_name);
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddAddress($list["email"], $list["username"]);
+        }
+    }
+
     $receiver = rtrim($receiver, ", ");
 
     // explore cc into array
@@ -8894,8 +8904,8 @@ function order_notification_warehouse($name, $access,  $access_cc, $project_name
     {
         $receiver = "all";
 
-        $mail->Subject = 'Some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
-        $header = 'Please note that some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
+        $mail->Subject = 'Some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
+        $header = 'Please note that some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $od_id;
 
         $cc .= "Manilynne Nicol" . ", ";
@@ -8906,8 +8916,8 @@ function order_notification_warehouse($name, $access,  $access_cc, $project_name
     {
         $receiver = "all";
 
-        $mail->Subject = 'Some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
-        $header = 'Please note that some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
+        $mail->Subject = 'Some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
+        $header = 'Please note that some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $od_id;
 
         $cc .= "Manilynne Nicol" . ", ";
@@ -9326,7 +9336,7 @@ function mockup_notification($name, $access,  $access_cc, $project_name, $serial
 
 
 
-function mockup_notification_warehouse($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id)
+function mockup_notification_warehouse($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id, $access7)
 {
     $conf = new Conf();
 
@@ -9364,6 +9374,16 @@ function mockup_notification_warehouse($name, $access,  $access_cc, $project_nam
         }
     }
 
+    if($access7 != '')
+    {
+        $notifior = GetAccessNotifiersByName($access7, $serial_name);
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddAddress($list["email"], $list["username"]);
+        }
+    }
+
     $receiver = rtrim($receiver, ", ");
 
     // explore cc into array
@@ -9391,8 +9411,8 @@ function mockup_notification_warehouse($name, $access,  $access_cc, $project_nam
     {
         $receiver = "all";
 
-        $mail->Subject = 'Some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
-        $header = 'Please note that some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
+        $mail->Subject = 'Some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
+        $header = 'Please note that some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_mockup_p3?id=" . $od_id;
     }
 
@@ -9400,8 +9420,8 @@ function mockup_notification_warehouse($name, $access,  $access_cc, $project_nam
     {
         $receiver = "all";
 
-        $mail->Subject = 'Some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
-        $header = 'Please note that some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
+        $mail->Subject = 'Some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
+        $header = 'Please note that some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_mockup_p3?id=" . $od_id;
     }
 
@@ -10397,7 +10417,7 @@ function order_type_notification($name, $access,  $access_cc, $project_name, $se
 }
 
 
-function order_type_notification_warehouse($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id, $type)
+function order_type_notification_warehouse($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id, $type, $access7)
 {
     $conf = new Conf();
 
@@ -10435,6 +10455,16 @@ function order_type_notification_warehouse($name, $access,  $access_cc, $project
         }
     }
 
+    if($access7 != '')
+    {
+        $notifior = GetAccessNotifiersByName($access7, $serial_name);
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddAddress($list["email"], $list["username"]);
+        }
+    }
+
     $receiver = rtrim($receiver, ", ");
 
     // explore cc into array
@@ -10463,8 +10493,8 @@ function order_type_notification_warehouse($name, $access,  $access_cc, $project
     {
         $receiver = "all";
 
-        $mail->Subject = 'Some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
-        $header = 'Please note that some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
+        $mail->Subject = 'Some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
+        $header = 'Please note that some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
 
         $url = "https://feliix.myvnc.com/order_taiwan_" . $type . "_p3?id=" . $od_id;
     }
@@ -10474,8 +10504,8 @@ function order_type_notification_warehouse($name, $access,  $access_cc, $project
     {
         $receiver = "all";
 
-        $mail->Subject = 'Some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
-        $header = 'Please note that some items of "Order - ' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
+        $mail->Subject = 'Some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse';
+        $header = 'Please note that some items of "' . $order_type . ': ' . $serial_name . '" will come from Warehouse. Please check details below:';
 
         $url = "https://feliix.myvnc.com/order_taiwan_" . $type . "_p3?id=" . $od_id;
     }
