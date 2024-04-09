@@ -562,6 +562,10 @@ header( 'location:index' );
             height: 33.6px;
         }
 
+        .qn_header .left_block .project_category > .line1 {
+            height: 16.8px;
+        }
+
         .qn_header .right_block {
             width: 29%;
             float: right;
