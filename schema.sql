@@ -4886,3 +4886,9 @@ insert into electrical_materials(unit, particulars, price, create_id, created_at
 
 ALTER TABLE electrical_materials
 ADD COLUMN `remarks` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20240409 
+CREATE INDEX product_category_code_idx ON product_category (code);
+CREATE INDEX product_related_code_product_id_idx ON product_related (product_id);
+-- ALTER TABLE product_category drop index product_category_code_idx;
+-- ALTER TABLE product_related drop index product_related_code_product_id_idx;
