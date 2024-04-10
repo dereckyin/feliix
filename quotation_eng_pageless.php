@@ -562,6 +562,10 @@ header( 'location:index' );
             height: 33.6px;
         }
 
+        .qn_header .left_block .project_category > .line1 {
+            height: 16.8px;
+        }
+
         .qn_header .right_block {
             width: 29%;
             float: right;
@@ -2419,13 +2423,13 @@ header( 'location:index' );
                                     <input type="text" placeholder="First Line" v-model="temp_first_line">
                                     <input type="text" placeholder="Second Line" v-model="temp_second_line">
                                 </dd>
-                                <dt>Project Category:</dt>
+                                <!-- <dt>Project Category:</dt>
                                 <dd>
                                     <select v-model="temp_project_category">
                                         <option value="Lighting">Lighting</option>
                                         <option value="Office Systems">Office Systems</option>
                                     </select>
-                                </dd>
+                                </dd> -->
                                 <dt>Quotation Number:</dt>
                                 <dd>
                                     <input type="text" v-model="temp_quotation_no">
@@ -3340,8 +3344,8 @@ header( 'location:index' );
                             </div>
 
                             <div class="project_category">
-                                <div class="line1">Architectural</div>
-                                <div class="line2">{{ project_category }} Quotation</div>
+                                <div class="line1"></div>
+                                <div class="line2">Installation Quotation</div>
                             </div>
 
                         </div>

@@ -327,6 +327,19 @@
 
         #tb_product_list tbody tr.set_format1 > td:nth-of-type(2) ul {
             margin-bottom: 0;
+            break-inside: avoid-column;
+        }
+
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(2) > div.product_set_desc {
+            padding: 1px 7px 1px 5px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(2) > div.product_set_desc > div {
+            font-weight: 400;
+            white-space: pre-line;
+            padding-left: 10px;
         }
 
         #tb_product_list tbody tr.set_format1 > td:nth-of-type(3) {
@@ -812,15 +825,10 @@
 
                             </ul>
 
-                            <ul>
-                                <li>
-                                    Description:
-                                </li>
-                                <li>
-                                    {{ item.description }}
-                                </li>
-
-                            </ul>
+                            <div class="product_set_desc">
+                                Description:
+                                <div>{{ item.description }}</div>
+                            </div>
 
                         </td>
 
