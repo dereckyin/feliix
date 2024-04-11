@@ -507,7 +507,7 @@
             <div class="infobox">
                 <ul class="price_stock">
 
-                    <li id="print_srp" :class="[print_option.srp == 'true' ? '' : 'noPrint']"  :style="[show_srp == true ? {'display':'block'} : {'display':'none'}]">
+                    <li id="print_srp" :class="[print_option.srp == 'true' ? '' : 'noPrint']"  :style="[show_srp == true ? {} : {'display':'none'}]">
                         Standard Retail Price: <span>{{price}}</span>
                     </li>
 
@@ -572,7 +572,7 @@
 
                     <ul class="price_stock">
 
-                        <li class="NTD_price" :style="[show_ntd == true && toggle == true ? {'display':'block'} : {'display':'none'}]">
+                        <li class="NTD_price" :style="[show_ntd == true && toggle == true ? {} : {'display':'none'}]">
                             Cost Price: <span>{{ set.price_ntd }}</span><span>{{ set.str_price_ntd_change }}</span>
                         </li>
 
@@ -769,11 +769,11 @@
 
                 <ul class="price_stock">
 
-                    <li class="NTD_price" :style="[show_ntd == true && toggle == true ? {'display':'block'} : {'display':'none'}]">
+                    <li class="NTD_price" :style="[show_ntd == true && toggle == true ? {} : {'display':'none'}]">
                         Cost Price: <span>{{ price_ntd }}</span><span>{{ str_price_ntd_change }}</span>
                     </li>
 
-                    <li id="print_srp" :style="[show_srp == true ? {'display':'block'} : {'display':'none'}]" :class="[print_option.srp == 'true' ? '' : 'noPrint']">
+                    <li id="print_srp" :style="[show_srp == true ? {} : {'display':'none'}]" :class="[print_option.srp == 'true' ? '' : 'noPrint']">
                         Standard Retail Price: <span>{{price}}</span><span>{{ str_price_change }}</span>
                     </li>
 
