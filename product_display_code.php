@@ -572,7 +572,7 @@
 
                     <ul class="price_stock">
 
-                        <li class="NTD_price" :style="[show_ntd == true && toggle == true ? {} : {'display':'none'}]">
+                        <li class="NTD_price" v-if="show_ntd == true && toggle == true">
                             Cost Price: <span>{{ set.price_ntd }}</span><span>{{ set.str_price_ntd_change }}</span>
                         </li>
 
@@ -769,7 +769,7 @@
 
                 <ul class="price_stock">
 
-                    <li class="NTD_price" :style="[show_ntd == true && toggle == true ? {} : {'display':'none'}]">
+                    <li class="NTD_price" v-if="show_ntd == true && toggle == true">
                         Cost Price: <span>{{ price_ntd }}</span><span>{{ str_price_ntd_change }}</span>
                     </li>
 
