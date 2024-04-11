@@ -363,6 +363,8 @@ var app = new Vue({
        let v1 = '';
        let v2 = '';
 
+       this.specification = [];
+
       for(var i=0; i < this.special_infomation.length; i++)
       {
         if(this.special_infomation[i].value != "")
