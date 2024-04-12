@@ -48,7 +48,7 @@ $merged_results = array();
 
 $query = "SELECT *
           FROM electrical_materials
-                where status <> -1  ";
+                where status <> -1 ";
 
 $query_cnt = "SELECT count(*) cnt 
                 FROM electrical_materials 
@@ -61,7 +61,7 @@ if($key != "")
 }
 
 
-$query = $query . " order by particulars ";
+$query = $query . " order by sn ";
 
 
 if(!empty($_GET['page'])) {
