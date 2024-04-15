@@ -72,12 +72,12 @@ if (!isset($jwt)) {
                 //$diff = show_diff($pre_array, $petty_array);
 
                 // delete previous data
-                $query = "delete from item_category where status = -1 and level = 1";
+                $query = "delete from office_items_main_category where status = -1 and level = 1";
                 $stmt = $db->prepare($query);
                 $stmt->execute();
 
                 // petty_list
-                $query = "update item_category
+                $query = "update office_items_main_category
                 set status = -1 where level = 1";
                 
                 
@@ -106,7 +106,7 @@ if (!isset($jwt)) {
 
                     $sn = $i+1;
 
-                    $query = "INSERT INTO item_category
+                    $query = "INSERT INTO office_items_main_category
                     SET
                     `sn` = :sn,
                     `code` = :code,

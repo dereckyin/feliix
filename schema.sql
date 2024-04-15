@@ -4927,7 +4927,7 @@ insert into electrical_materials(unit, particulars, price, create_id, created_at
 insert into electrical_materials(unit, particulars, price, create_id, created_at, sn) values('PCS', 'SDS DRILL BIT #8', '200', 0, now(), 21);
 
 -- 20240412 item_category
-CREATE TABLE IF NOT EXISTS `item_category` (
+CREATE TABLE IF NOT EXISTS `office_items_main_category` (
   `id` bigint(20)  NOT NULL AUTO_INCREMENT,
   `sn` int(11) DEFAULT 0,
   `parent_code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',

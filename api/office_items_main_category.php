@@ -47,11 +47,11 @@ $key = urldecode($key);
 $merged_results = array();
 
 $query = "SELECT *
-          FROM item_category
+          FROM office_items_main_category
                 where status <> -1 and level = 1";
 
 $query_cnt = "SELECT count(*) cnt 
-                FROM item_category 
+                FROM office_items_main_category 
                 where status <> -1 and level = 1 ";
 
 if($key != "")
