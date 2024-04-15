@@ -408,7 +408,7 @@ header('location:index');
                 <div class="heading-and-btn" :ref="'porto'">
                     <ul>
                         <li>
-                            <input type="text" class="form-control" v-model="code" placeholder="Code">
+                            <input type="number" class="form-control" v-model="code" placeholder="Code" v-on:change="setTwoNumberDecimal()" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==2) return false;">
                             <input type="text" class="form-control" v-model="category" placeholder="Main Category">
                         </li>
 

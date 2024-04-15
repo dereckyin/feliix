@@ -176,6 +176,10 @@ var app = new Vue({
       this.clear_edit();
     },
 
+    setTwoNumberDecimal: function() {
+        this.code = this.code.toString().padStart(2, '0')
+        },
+
     _update_criterion: function() {
       if (this.code.trim() == "" || this.category.trim() == "" ) {
         Swal.fire({
