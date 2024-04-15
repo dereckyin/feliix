@@ -4925,3 +4925,19 @@ insert into electrical_materials(unit, particulars, price, create_id, created_at
 insert into electrical_materials(unit, particulars, price, create_id, created_at, sn) values('PCS', 'STRUT CHANNEL 10''', '500', 0, now(), 23);
 insert into electrical_materials(unit, particulars, price, create_id, created_at, sn) values('PCS', 'GRIP ANCHOR 3/8', '10', 0, now(), 18);
 insert into electrical_materials(unit, particulars, price, create_id, created_at, sn) values('PCS', 'SDS DRILL BIT #8', '200', 0, now(), 21);
+
+-- 20240412 item_category
+CREATE TABLE IF NOT EXISTS `item_category` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `sn` int(11) DEFAULT 0,
+  `parent_code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `level` int(11) DEFAULT 0,
+  `status` int(11) DEFAULT 0,
+  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `category` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';

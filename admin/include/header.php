@@ -434,6 +434,7 @@ try {
                 <a class="list" href="../spec_sheet_mgt">Specification Sheet Management</a>
                 <a class="list" href="../frequently_used_options">Attribute’s Frequently Used Options</a>
                 <a class="list" href="../electrical_materials_catalog">Electrical Materials Catalog</a>
+                <a class="list" href="../office_items_main_category">Office Items Catalog</a>
             </li>
             <li class="sec02">
                 <a class="uni">Let's Vote</a>
