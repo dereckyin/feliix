@@ -53,7 +53,7 @@ header('location:index');
     <link rel="apple-touch-icon" href="images/iosicon.png"/>
 
     <!-- SEO -->
-    <title>Brand - Office Items Catalog</title>
+    <title>Description - Office Items Catalog</title>
     <meta name="keywords" content="FELIIX">
     <meta name="Description" content="FELIIX">
     <meta name="robots" content="all"/>
@@ -400,38 +400,42 @@ header('location:index');
         <div class="tags">
             <a class="tag A" href="office_items_main_category">Main Category</a>
             <a class="tag B" href="office_items_sub_category">Sub Category</a>
-            <a class="tag C focus">Brand</a>
-            <a class="tag D" href="office_items_description">Description</a>
+            <a class="tag C" href="office_items_brand">Brand</a>
+            <a class="tag D focus">Description</a>
         </div>
 
         <!-- Blocks -->
-        <div class="block C focus">
+        <div class="block D focus">
 
-            <!-- 新增和修改 Brand 的 Step1 -->
+            <!-- 新增和修改 Description 的 Step1 -->
             <div class="heading-and-btn" style="padding-top: 15px;">
 
                 <ul>
                     <li>
-                        <h4>Add/Edit Brand</h4>
+                        <h4>Add/Edit Description</h4>
                     </li>
                 </ul>
 
                 <ul>
                     <li>
-                        Choose Main Category and Sub Category:
+                        Choose Main Category, Sub Category and Brand:
 
                         <select class="form-control" v-model='lv1' v-on:change="getLevel2()">
                             <option value="">--- Choose Main Category ---</option>
                             <!-- Main Category 的選項內容格式為：Main Category(Code)，例如像是：OFFICE SUPPLIES(01) -->
                             <option :value="item.code" v-for="(item, index) in level1">{{ item.category }}({{ item.code }})</option>
-
                         </select>
 
-                        <select class="form-control" v-model='lv2'>
+                        <select class="form-control" v-model='lv2' v-on:change="getLevel3()">
                             <option value="">--- Choose Sub Category ---</option>
-                            <!-- Sub Category 的選項內容格式為：Sub Category(Code)，例如像是：BALLPEN(02)。當使用者選擇不同的 Main Category 時，Sub Category 的 select 只會載入特定 Main Category 底下的 Sub Category 到 select 裡面 -->
+                            <!-- Sub Category 的選項內容格式為：Sub Category(Code)，例如像是：BALLPEN(01)。當使用者選擇不同的 Main Category 時，Sub Category 的 select 只會載入特定 Main Category 底下的 Sub Category 到 select 裡面 -->
                             <option :value="item.code" v-for="(item, index) in level2">{{ item.category }}({{ item.code }})</option>
+                        </select>
 
+                        <select class="form-control" v-model='lv3'>
+                            <option value="">--- Choose Brand ---</option>
+                            <!-- Brand 的選項內容格式為：Brand(Code)，例如像是：HP(01)。當使用者在某一層的的 select 選擇了某一個值之後，下一層的 select 只會載入階層架構下該節點的子節點 到 select 裡面 -->
+                            <option :value="item.code" v-for="(item, index) in level3">{{ item.category }}({{ item.code }})</option>
                         </select>
 
                         <button class="btn btn-primary" @click="detail()" style="margin-left: 30px;">Start</button>
@@ -443,17 +447,17 @@ header('location:index');
             </div>
 
 
-            <!-- 新增和修改 Brand 的 Step2 -->
-            <div class="region" v-if="lv2_item.code != undefined">
-                <!-- 下面的 span 裡面需要放入被選取到的 Main Category 名字 和 Code 以及 Sub Category 名字 和 Code，例如： OFFICE SUPPLIES(01) > BALLPEN(02) -->
+            <!-- 新增和修改 Description 的 Step2 -->
+            <div class="region" v-if="lv3_item.code != undefined">
+                <!-- 下面的 span 裡面需要放入被選取到的 Main Category 名字 和 Code 、 Sub Category 名字 和 Code 、 Brand 名字 和 Code，例如： OFFICE SUPPLIES(01) > LAPTOP(02) > HP(1) -->
                 <!-- <span class="heading">{{ (attribute_name !== "") ? attribute_name : "Tag Name" }}</span> -->
-                <span class="heading">{{ lv1_item.category }}{{ lv1_item.code == undefined ? '' : '(' + lv1_item.code + ')' }} > {{ lv2_item.category }}{{ lv2_item.code == undefined ? '' : '(' + lv2_item.code + ')' }}</span>
+                <span class="heading">{{ lv1_item.category }}{{ lv1_item.code == undefined ? '' : '(' + lv1_item.code + ')' }} > {{ lv2_item.category }}{{ lv2_item.code == undefined ? '' : '(' + lv2_item.code + ')' }} > {{ lv3_item.category }}{{ lv3_item.code == undefined ? '' : '(' + lv3_item.code + ')' }}</span>
 
                 <div class="heading-and-btn" :ref="'porto'">
                     <ul>
                         <li>
                         <input type="number" class="form-control" v-model="code" placeholder="Code" v-on:change="setTwoNumberDecimal()" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==2) return false;">
-                            <input type="text" class="form-control" v-model="category" placeholder="Brand">
+                            <input type="text" class="form-control" v-model="category" placeholder="Description">
                         </li>
 
                         <li>
@@ -471,13 +475,13 @@ header('location:index');
                         <thead>
                         <tr>
                             <th>Code</th>
-                            <th>Brand</th>
+                            <th>Description</th>
                             <th>Action</th>
                         </tr>
                         </thead>
 
                         <tbody>
-                        <tr v-for="(item,index) in level3" :key="index">
+                        <tr v-for="(item,index) in level4" :key="index">
                         <!-- <tr> -->
                             <td>{{ item.code }}</td>
                             <td>{{ item.category }}</td>
@@ -490,7 +494,6 @@ header('location:index');
                                 <i aria-hidden="true" class="fas fa-trash-alt" @click="_del(item.sn)"></i>
                             </td>
                         </tr>
-                        
                         </tbody>
 
                     </table>
@@ -520,6 +523,6 @@ header('location:index');
 <script src="js/vue-i18n/vue-i18n.global.min.js"></script>
 <script src="js/element-ui@2.15.14/index.js"></script>
 <script src="js/element-ui@2.15.14/en.js"></script>
-<script defer src="js/office_items_brand.js"></script>
+<script defer src="js/office_items_description.js"></script>
 
 </html>

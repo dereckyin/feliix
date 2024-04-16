@@ -4941,3 +4941,48 @@ CREATE TABLE IF NOT EXISTS `office_items_main_category` (
   `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `office_items_sub_category` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `sn` int(11) DEFAULT 0,
+  `parent_code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `level` int(11) DEFAULT 0,
+  `status` int(11) DEFAULT 0,
+  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `category` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `office_items_brand` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `sn` int(11) DEFAULT 0,
+  `parent_code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `level` int(11) DEFAULT 0,
+  `status` int(11) DEFAULT 0,
+  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `category` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `office_items_description` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `sn` int(11) DEFAULT 0,
+  `parent_code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `level` int(11) DEFAULT 0,
+  `status` int(11) DEFAULT 0,
+  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `category` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';

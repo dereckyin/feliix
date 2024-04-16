@@ -7,6 +7,7 @@ var app = new Vue({
     level1: [],
     level2: [],
     level3: [],
+    level4: [],
 
     org_level3: [],
     
@@ -25,6 +26,9 @@ var app = new Vue({
 
     lv2:"",
     lv2_item : {},
+
+    lv3:"",
+    lv3_item : {},
     
     view_detail: false,
   },
@@ -76,6 +80,10 @@ var app = new Vue({
 
             _this.org_level1 = JSON.parse(JSON.stringify(_this.level1));
 
+            _this.level2 = [];
+            _this.level3 = [];
+            _this.level4 = [];
+
           },
           (err) => {
             alert(err.response);
@@ -98,16 +106,45 @@ var app = new Vue({
         {
 
          
-        this.lv2_item = this.level2.find(({ code }) => code === this.lv2);
+        this.lv3_item = this.level3.find(({ code }) => code === this.lv3);
 
-          this.getLevel3(this.lv1 + this.lv2);
+          this.getLevel4(this.lv1 + this.lv2 + this.lv3);
 
           this.view_detail = true;
   
         }
       },
 
-      async getLevel3 (cat_id) {
+      
+      async getLevel4 (cat_id) {
+        if(cat_id == "") 
+          return;
+  
+        let _this = this;
+  
+        let token = localStorage.getItem("accessToken");
+  
+        const params = {
+          key: cat_id,
+        };
+  
+        try {
+          let res = await axios.get("api/office_items_description", {
+            params,
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          
+          _this.level4 = res.data;
+          _this.org_level4 = JSON.parse(JSON.stringify(_this.level4));
+  
+        } catch (err) {
+          console.log(err)
+          alert('error')
+        }
+    },
+
+      async getLevel3 () {
+        let cat_id = this.lv1 + this.lv2;
         if(cat_id == "") 
           return;
   
@@ -125,8 +162,11 @@ var app = new Vue({
             headers: { Authorization: `Bearer ${token}` },
           });
           
+          this.lv2_item = this.level2.find(({ code }) => code === this.lv2);
           _this.level3 = res.data;
           _this.org_level3 = JSON.parse(JSON.stringify(_this.level3));
+
+          _this.level4 = [];
   
         } catch (err) {
           console.log(err)
@@ -156,6 +196,9 @@ var app = new Vue({
           this.lv1_item = this.level1.find(({ code }) => code === this.lv1);
           _this.level2 = res.data;
           _this.org_level2 = JSON.parse(JSON.stringify(_this.level2));
+
+          _this.level3 = [];
+          _this.level4 = [];
   
         } catch (err) {
           console.log(err)
@@ -175,14 +218,14 @@ var app = new Vue({
 
       form_Data.append("jwt", token);
       form_Data.append("code", this.lv1 + this.lv2);
-      form_Data.append("level1", JSON.stringify(this.level3));
+      form_Data.append("level1", JSON.stringify(this.level4));
 
       axios({
         method: "post",
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/office_items_brand_update",
+        url: "api/office_items_description_update",
         data: form_Data,
       })
         .then(function(response) {
@@ -219,8 +262,11 @@ var app = new Vue({
       this.lv1_item = {};
       this.lv2 = "";
       this.lv2_item = {};
+      this.lv3 = "";
+      this.lv3_item = {};
       this.level3 = [];
       this.level2 = [];
+      this.level4 = [];
       this.editing = false;
 
     },
@@ -249,7 +295,7 @@ var app = new Vue({
 
       // get the largest sn from level1
       var max_sn = 0;
-      this.level3.forEach(function(item, index, array) {
+      this.level4.forEach(function(item, index, array) {
         if (item.sn > max_sn) max_sn = item.sn;
       });
 
@@ -260,7 +306,7 @@ var app = new Vue({
           category: this.category,
           status : 0,
         };
-        this.level3.push(ad);
+        this.level4.push(ad);
       
         this.clear_edit();
     },
@@ -285,7 +331,7 @@ var app = new Vue({
         return;
       }
 
-      var element = this.level3.find(({ sn }) => sn === this.org_id);
+      var element = this.level4.find(({ sn }) => sn === this.org_id);
 
       element.code = this.code;
       element.category = this.category;
@@ -308,25 +354,25 @@ var app = new Vue({
 
       if (toIndex < 0) toIndex = 0;
 
-      var element = this.level3.find(({ sn }) => sn === eid);
-      this.level3.splice(fromIndex, 1);
-      this.level3.splice(toIndex, 0, element);
+      var element = this.level4.find(({ sn }) => sn === eid);
+      this.level4.splice(fromIndex, 1);
+      this.level4.splice(toIndex, 0, element);
     },
 
     _set_down: function(fromIndex, eid) {
       var toIndex = fromIndex + 1;
 
-      if (toIndex > this.level3.length - 1)
-        toIndex = this.level3.length - 1;
+      if (toIndex > this.level4.length - 1)
+        toIndex = this.level4.length - 1;
 
-      var element = this.level3.find(({ sn }) => sn === eid);
-      this.level3.splice(fromIndex, 1);
-      this.level3.splice(toIndex, 0, element);
+      var element = this.level4.find(({ sn }) => sn === eid);
+      this.level4.splice(fromIndex, 1);
+      this.level4.splice(toIndex, 0, element);
     },
 
     _edit: function(eid) {
  
-      var element = this.level3.find(({ sn }) => sn === eid);
+      var element = this.level4.find(({ sn }) => sn === eid);
 
       this.org_id = eid;
       this.code = element.code;
@@ -338,10 +384,10 @@ var app = new Vue({
 
     _del: function(eid) {
         let _this = this;
-      var index = this.level3.findIndex(({ sn }) => sn === eid);
+      var index = this.level4.findIndex(({ sn }) => sn === eid);
       if (index > -1) {
 
-        // var element = this.level3.find(({ sn }) => sn === eid);
+        // var element = this.level4.find(({ sn }) => sn === eid);
         // if(element.items.length > 0) {
         // CHOOSE TO DELETE OR NOT
 
@@ -354,7 +400,7 @@ var app = new Vue({
             cancelButtonText: "No",
           }).then((result) => {
             if (result.value) {
-                _this.level3.splice(index, 1);
+                _this.level4.splice(index, 1);
             }
           });
 
@@ -362,7 +408,7 @@ var app = new Vue({
         //   return;
         // }
 
-        //this.level3.splice(index, 1);
+        //this.level4.splice(index, 1);
       }
     },
 
