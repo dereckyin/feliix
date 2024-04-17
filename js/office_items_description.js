@@ -80,6 +80,13 @@ var app = new Vue({
 
             _this.org_level1 = JSON.parse(JSON.stringify(_this.level1));
 
+            _this.lv1 = "";
+            _this.lv1_item = {};
+            _this.lv2 = "";
+            _this.lv2_item = {};
+            _this.lv3 = "";
+            _this.lv3_item = {};
+
             _this.level2 = [];
             _this.level3 = [];
             _this.level4 = [];
@@ -182,6 +189,9 @@ var app = new Vue({
           _this.level3 = res.data;
           _this.org_level3 = JSON.parse(JSON.stringify(_this.level3));
 
+            _this.lv3 = "";
+            _this.lv3_item = {};
+
           _this.level4 = [];
   
         } catch (err) {
@@ -212,6 +222,12 @@ var app = new Vue({
           this.lv1_item = this.level1.find(({ code }) => code === this.lv1);
           _this.level2 = res.data;
           _this.org_level2 = JSON.parse(JSON.stringify(_this.level2));
+
+
+            _this.lv2 = "";
+            _this.lv2_item = {};
+            _this.lv3 = "";
+            _this.lv3_item = {};
 
           _this.level3 = [];
           _this.level4 = [];

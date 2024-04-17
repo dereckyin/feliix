@@ -143,6 +143,7 @@ var app = new Vue({
     },
     
     async getLevel2 () {
+
         let cat_id = this.lv1;
         if(cat_id == "") 
           return;
@@ -160,6 +161,9 @@ var app = new Vue({
             params,
             headers: { Authorization: `Bearer ${token}` },
           });
+
+          _this.lv2 = "";
+          _this.lv2_item = {};
           
           this.lv1_item = this.level1.find(({ code }) => code === this.lv1);
           _this.level2 = res.data;
