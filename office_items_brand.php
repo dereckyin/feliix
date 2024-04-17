@@ -497,7 +497,7 @@ header('location:index');
                 </div>
 
                 <div class="btnbox" v-if="editing == false">
-                    <button class="btn btn-secondary" @click="reset">Cancel</button>
+                    <button class="btn btn-secondary" @click="reset_org">Cancel</button>
                     <button class="btn btn-primary" :disabled="submit == true" @click="apply">Save</button>
 
                 </div>

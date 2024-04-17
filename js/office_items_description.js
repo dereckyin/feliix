@@ -286,6 +286,9 @@ var app = new Vue({
 
     },
 
+    reset_org: function() {
+      this.level4 = JSON.parse(JSON.stringify(this.org_level4));
+    },
 
     reset: function() {
       this.submit = false;
