@@ -142,6 +142,8 @@ header('location:index');
         body.gray .mainContent > .tags a {
             background-color: #E0E0E0;
             border-color: #707071;
+            font-family: "M PLUS 1p", Arial, Helvetica, "LiHei Pro", 微軟正黑體, "Microsoft JhengHei", 新細明體, sans-serif;
+            color: #000000;
         }
 
         body.gray .mainContent > .block {
@@ -153,6 +155,7 @@ header('location:index');
 
         body.gray .mainContent > .tags a.focus {
             background-color: #707071;
+            color: #FFFFFF;
         }
 
         .region {
@@ -421,7 +424,7 @@ header('location:index');
                         Choose Main Category:
 
                         <select class="form-control" v-model='lv1'>
-                            <option value="">--- Choose Main Category ---</option>
+                            <option value="">----- Main Category -----</option>
                             <!-- Main Category 的選項內容格式為：Main Category(Code)，例如像是：OFFICE SUPPLIES(01) -->
                             <option :value="item.code" v-for="(item, index) in level1">{{ item.category }}({{ item.code }})</option>
 

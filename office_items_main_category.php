@@ -141,6 +141,8 @@ header('location:index');
         body.gray .mainContent > .tags a {
             background-color: #E0E0E0;
             border-color: #707071;
+            font-family: "M PLUS 1p", Arial, Helvetica, "LiHei Pro", 微軟正黑體, "Microsoft JhengHei", 新細明體, sans-serif;
+            color: #000000;
         }
 
         body.gray .mainContent > .block {
@@ -152,6 +154,7 @@ header('location:index');
 
         body.gray .mainContent > .tags a.focus {
             background-color: #707071;
+            color: #FFFFFF;
         }
 
         .region {

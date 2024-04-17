@@ -142,6 +142,8 @@ header('location:index');
         body.gray .mainContent > .tags a {
             background-color: #E0E0E0;
             border-color: #707071;
+            font-family: "M PLUS 1p", Arial, Helvetica, "LiHei Pro", 微軟正黑體, "Microsoft JhengHei", 新細明體, sans-serif;
+            color: #000000;
         }
 
         body.gray .mainContent > .block {
@@ -153,6 +155,7 @@ header('location:index');
 
         body.gray .mainContent > .tags a.focus {
             background-color: #707071;
+            color: #FFFFFF;
         }
 
         .region {
@@ -421,14 +424,14 @@ header('location:index');
                         Choose Main Category and Sub Category:
 
                         <select class="form-control" v-model='lv1' v-on:change="getLevel2()">
-                            <option value="">--- Choose Main Category ---</option>
+                            <option value="">----- Main Category -----</option>
                             <!-- Main Category 的選項內容格式為：Main Category(Code)，例如像是：OFFICE SUPPLIES(01) -->
                             <option :value="item.code" v-for="(item, index) in level1">{{ item.category }}({{ item.code }})</option>
 
                         </select>
 
                         <select class="form-control" v-model='lv2'>
-                            <option value="">--- Choose Sub Category ---</option>
+                            <option value="">----- Sub Category -----</option>
                             <!-- Sub Category 的選項內容格式為：Sub Category(Code)，例如像是：BALLPEN(02)。當使用者選擇不同的 Main Category 時，Sub Category 的 select 只會載入特定 Main Category 底下的 Sub Category 到 select 裡面 -->
                             <option :value="item.code" v-for="(item, index) in level2">{{ item.category }}({{ item.code }})</option>
 
