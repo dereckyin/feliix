@@ -31,6 +31,8 @@ var app = new Vue({
     lv3_item : {},
     
     view_detail: false,
+
+    lv4: "",
   },
 
   created() {
@@ -46,7 +48,6 @@ var app = new Vue({
   mounted() {},
 
   watch: {
-    
     
     department() {
       this.title = this.shallowCopy(
@@ -128,7 +129,8 @@ var app = new Vue({
         else
         {
 
-         
+         this.lv4 = this.lv1 + this.lv2 + this.lv3;
+
         this.lv3_item = this.level3.find(({ code }) => code === this.lv3);
 
           this.getLevel4(this.lv1 + this.lv2 + this.lv3);
@@ -249,7 +251,7 @@ var app = new Vue({
       let _this = this;
 
       form_Data.append("jwt", token);
-      form_Data.append("code", this.lv1 + this.lv2);
+      form_Data.append("code", this.lv4);
       form_Data.append("level1", JSON.stringify(this.level4));
 
       axios({

@@ -23,6 +23,8 @@ var app = new Vue({
     lv1_item : {},
     
     view_detail: false,
+
+    lv2:"",
   },
 
   created() {
