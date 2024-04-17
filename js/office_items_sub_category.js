@@ -97,6 +97,8 @@ var app = new Vue({
 
           this.lv1_item = this.level1.find(({ code }) => code === this.lv1);
 
+          this.lv2 = this.lv1;
+          
           this.getLevel2(this.lv1);
 
           this.view_detail = true;
@@ -142,7 +144,7 @@ var app = new Vue({
       let _this = this;
 
       form_Data.append("jwt", token);
-      form_Data.append("code", this.lv1);
+      form_Data.append("code", this.lv2);
       form_Data.append("level1", JSON.stringify(this.level2));
 
       axios({
