@@ -208,7 +208,8 @@ var app = new Vue({
             confirmButtonText: "OK",
           });
           
-          _this.reset();
+          //_this.reset();
+          _this.detail();
           
         })
         .catch(function(error) {
@@ -219,7 +220,8 @@ var app = new Vue({
             confirmButtonText: "OK",
           });
 
-          _this.reset();
+          _this.detail();
+          //_this.reset();
         });
 
     },
