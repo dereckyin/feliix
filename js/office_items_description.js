@@ -430,7 +430,7 @@ var app = new Vue({
 
           Swal.fire({
             title: "Delete",
-            text: "Are you sure to delete this sub category? It will cause the deletion of all the data attached under this sub category.",
+            text: "Are you sure to delete this description?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Yes",
