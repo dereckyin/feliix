@@ -84,7 +84,7 @@ var app = new Vue({
 
         if (this.lv1 == "") {
           Swal.fire({
-              text: "Please choose a main category to view its sub categories",
+              text: "Please choose a main category",
               icon: "warning",
               confirmButtonText: "OK",
             });

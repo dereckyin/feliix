@@ -96,12 +96,28 @@ var app = new Vue({
 
         if (this.lv1 == "") {
           Swal.fire({
-              text: "Please choose a main category to view its sub categories",
+              text: "Please choose a main category",
               icon: "warning",
               confirmButtonText: "OK",
             });
           return;
         }
+        else if(this.lv2 == "") {
+          Swal.fire({
+              text: "Please choose a sub category",
+              icon: "warning",
+              confirmButtonText: "OK",
+            });
+          return;
+        }
+        else if(this.lv3 == "") {
+          Swal.fire({
+            text: "Please choose a brand",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+        return;
+      }
         else
         {
 
