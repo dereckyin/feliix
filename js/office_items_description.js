@@ -322,7 +322,7 @@ var app = new Vue({
         this.code.trim() == "" || this.category.trim() == ""
       ) {
         Swal.fire({
-          text: "Code and Brand are required.",
+          text: "Code and Description are required.",
           icon: "warning",
           confirmButtonText: "OK",
         });
@@ -360,7 +360,7 @@ var app = new Vue({
     _update_criterion: function() {
       if (this.code.trim() == "" || this.category.trim() == "" ) {
         Swal.fire({
-            text: "Code and Brand are required.",
+            text: "Code and Description are required.",
           icon: "warning",
           confirmButtonText: "OK",
         });
