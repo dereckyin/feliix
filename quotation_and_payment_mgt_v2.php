@@ -1067,8 +1067,8 @@ f
                       <li>{{ isNaN(parseInt(receive_record.ar)) ? "" : Number(receive_record.ar).toLocaleString() }}</li>
                       <li v-if="receive_record.date_data_submission != ''">{{ receive_record.date_data_submission }}<br>{{ receive_record.aging }} days</li>
                       <li v-if="receive_record.date_data_submission == ''"></li>
-                      <li></li>
-                      <li></li>
+                      <li>{{ receive_record.apply_for_petty_commission }}</li>
+                      <li>{{ receive_record.apply_for_petty - receive_record.apply_for_petty_commission }}</li>
                       <li class="display_file">
                         <span v-for="(item,index) in receive_record.client_po_file">
                             <a :href="baseURL + item.bucket + '\\' + item.gcp_name" target="_blank" class="attch">•{{item.filename}}</a>
