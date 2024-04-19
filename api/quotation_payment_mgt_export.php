@@ -65,6 +65,15 @@ $fpu = (isset($_GET['fpu']) ?  $_GET['fpu'] : '');
 $frl = (isset($_GET['frl']) ?  $_GET['frl'] : '');
 $fru = (isset($_GET['fru']) ?  $_GET['fru'] : '');
 
+$fal_eq = (isset($_GET['fal_eq']) ?  $_GET['fal_eq'] : '');
+$fau_eq = (isset($_GET['fau_eq']) ?  $_GET['fau_eq'] : '');
+$fpl_eq = (isset($_GET['fpl_eq']) ?  $_GET['fpl_eq'] : '');
+$fpu_eq = (isset($_GET['fpu_eq']) ?  $_GET['fpu_eq'] : '');
+$frl_eq = (isset($_GET['frl_eq']) ?  $_GET['frl_eq'] : '');
+$fru_eq = (isset($_GET['fru_eq']) ?  $_GET['fru_eq'] : '');
+
+$aging = (isset($_GET['aging']) ?  $_GET['aging'] : '');
+
 $fk = (isset($_GET['fk']) ?  $_GET['fk'] : '');
 $fk = urldecode($fk);
 
@@ -187,40 +196,88 @@ if($id != "" && $id != "0")
  
 }
 
-if($fal != "" && $fal != "0")
+if($fal != "" && $fal != "0" && $fal_eq == "s")
+{
+    $query = $query . " and pm.final_amount > " . $fal . " ";
+}
+
+if($fal != "" && $fal != "0" && $fal_eq == "se")
 {
     $query = $query . " and pm.final_amount >= " . $fal . " ";
-  
 }
 
-if($fau != "" && $fau != "0")
+if($fau != "" && $fau != "0" && $fau_eq == "s")
+{
+    $query = $query . " and pm.final_amount < " . $fau . " ";
+}
+
+if($fau != "" && $fau != "0" && $fau_eq == "se")
 {
     $query = $query . " and pm.final_amount <= " . $fau . " ";
-  
 }
 
-if($fpl != "" && $fpl != "0")
+if($fpl != "" && $fpl != "0" && $fpl_eq == "s")
+{
+    $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) > " . $fpl . " ";
+}
+
+if($fpl != "" && $fpl != "0" && $fpl_eq == "se")
 {
     $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) >= " . $fpl . " ";
- 
 }
 
-if($fpu != "" && $fpu != "0")
+if($fpu != "" && $fpu != "0" && $fpu_eq == "s")
+{
+    $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) < " . $fpu . " ";
+}
+
+if($fpu != "" && $fpu != "0" && $fpu_eq == "se")
 {
     $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) <= " . $fpu . " ";
-    
 }
 
-if($frl != "" && $frl != "0")
+if($frl != "" && $frl != "0" && $frl_eq == "s")
+{
+    $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) > " . $frl . " ";
+}
+
+if($frl != "" && $frl != "0" && $frl_eq == "se")
 {
     $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) >= " . $frl . " ";
- 
 }
 
-if($fru != "" && $fru != "0")
+if($fru != "" && $fru != "0" && $fru_eq == "s")
+{
+    $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) < " . $fru . " ";
+}
+
+if($fru != "" && $fru != "0" && $fru_eq == "se")
 {
     $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) <= " . $fru . " ";
-    
+}
+
+if($aging != "")
+{
+    if($aging == "0")
+    {
+        $query = $query . " and DATEDIFF(CURRENT_DATE, pm.date_data_submission) < 30 ";
+    }
+    else if($aging == "30")
+    {
+        $query = $query . " and DATEDIFF(CURRENT_DATE, pm.date_data_submission) >= 30 and DATEDIFF(CURRENT_DATE, pm.date_data_submission) < 60 ";
+    }
+    else if($aging == "60")
+    {
+        $query = $query . " and DATEDIFF(CURRENT_DATE, pm.date_data_submission) >= 60 and DATEDIFF(CURRENT_DATE, pm.date_data_submission) < 90 ";
+    }
+    else if($aging == "90")
+    {
+        $query = $query . " and DATEDIFF(CURRENT_DATE, pm.date_data_submission) >= 90 and DATEDIFF(CURRENT_DATE, pm.date_data_submission) < 120 ";
+    }
+    else if($aging == "120")
+    {
+        $query = $query . " and DATEDIFF(CURRENT_DATE, pm.date_data_submission) >= 120 ";
+    }
 }
 
 if($fkp != "")
@@ -433,7 +490,19 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $full_pay_date = RetrivePaymentDate($payment);
 
     $invoice = RetrieveInvoice($payment);
+    
+    // client_other's Dte of sub
+    $date_data_submission = "";
+    $aging = "";
 
+    foreach($client_other as $value)
+    {
+        if($value['kind'] == 4)
+        {
+            $date_data_submission = $value['date_data_submission'];
+            $aging = $value['aging'];
+        }
+    }
 
     $merged_results[] = array(
         "id" => $id,
@@ -473,7 +542,8 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "expense" => $expense,
         "apply_for_petty" => $apply_for_petty,
         "quote_file_string" => $quote_file_string,
-        
+        "date_data_submission" => $date_data_submission,
+        "aging" => $aging
     );
 }
 
@@ -534,10 +604,11 @@ $sheet->setCellValue('G'. $i, 'Tax Withheld');
 $sheet->setCellValue('H'. $i, 'Down Payment');
 $sheet->setCellValue('I'. $i, 'Payment');
 $sheet->setCellValue('J'. $i, 'A/R');
-$sheet->setCellValue('K'. $i, 'Expense');
-$sheet->setCellValue('L'. $i, 'File');
+$sheet->setCellValue('K'. $i, 'Date of Data Submission\nAging');
+$sheet->setCellValue('L'. $i, 'Expense');
+$sheet->setCellValue('M'. $i, 'File');
 
-$sheet->getStyle('A' . $i . ':' . 'K' . $i)->getFont()->setBold(true);
+$sheet->getStyle('A' . $i . ':' . 'M' . $i)->getFont()->setBold(true);
 
 
 foreach($return_result as $row)
@@ -553,7 +624,8 @@ foreach($return_result as $row)
     $sheet->setCellValue('H' . $i, $row['down_payment_amount'] === null ? '' : number_format((float)$row['down_payment_amount'], 2, '.', ''));
     $sheet->setCellValue('I' . $i, $row['payment_amount'] === null ? '' : number_format((float)$row['payment_amount'], 2, '.', ''));
     $sheet->setCellValue('J' . $i, $row['ar'] === null ? '' : number_format((float)$row['ar'], 2, '.', ''));
-    $sheet->setCellValue('K' . $i, $row['apply_for_petty'] == 0 ? '' : number_format((float)$row['apply_for_petty'], 2, '.', ''));
+    $sheet->setCellValue('K' . $i, $row["kind"] == 4 ? $row['date_data_submission'] . "\n" . $row['aging'] : "");
+    $sheet->setCellValue('L' . $i, $row['apply_for_petty'] == 0 ? '' : number_format((float)$row['apply_for_petty'], 2, '.', ''));
 
     $files = $row['payment'];
 
@@ -574,13 +646,13 @@ foreach($return_result as $row)
                 if($file_url != '')
                 {
                     $link = $baseURL . $file_url;
-                    $sheet->setCellValue(chr(76+$j) . $i, $file_name);
+                    $sheet->setCellValue(chr(77+$j) . $i, $file_name);
                     $sheet->getCellByColumnAndRow($j + 11, $i)->getHyperlink()->setUrl($link);
 
                     $j++;
                 }
                 else
-                    $sheet->setCellValue(chr(76+$j) . $i, '');
+                    $sheet->setCellValue(chr(77+$j) . $i, '');
 
                 
             }

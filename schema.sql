@@ -4986,3 +4986,10 @@ CREATE TABLE IF NOT EXISTS `office_items_description` (
   `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20240417 
+ALTER TABLE project_client_po
+ADD COLUMN  `date_data_submission` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE project_main
+ADD COLUMN  `date_data_submission` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';

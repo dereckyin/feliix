@@ -82,6 +82,7 @@ var app = new Vue({
 
     other_type: "2",
     other_remark: "",
+    date_data_submission: "",
     other_canSub: true,
     other_fileArray: [],
 
@@ -102,6 +103,16 @@ var app = new Vue({
     fil_payment_lower: "",
     fil_ar_upper: "",
     fil_ar_lower: "",
+
+    fil_amount_upper_eq: "",
+    fil_amount_lower_eq: "",
+    fil_payment_upper_eq: "",
+    fil_payment_lower_eq: "",
+    fil_ar_upper_eq: "",
+    fil_ar_lower_eq: "",
+
+    fil_aging: "",
+
     fil_keyowrd: "",
     fil_keyowrd_p: "",
 
@@ -167,6 +178,27 @@ var app = new Vue({
               break;
             case "fru":
               _this.fil_ar_upper = tmp[1];
+              break;
+            case "fal_eq":
+              _this.fil_amount_lower_eq = tmp[1];
+              break;
+            case "fau_eq":
+              _this.fil_amount_upper_eq = tmp[1];
+              break;
+            case "fpl_eq":
+              _this.fil_payment_lower_eq = tmp[1];
+              break;
+            case "fpu_eq":
+              _this.fil_payment_upper_eq = tmp[1];
+              break;
+            case "frl_eq":
+              _this.fil_ar_lower_eq = tmp[1];
+              break;
+            case "fru_eq":
+              _this.fil_ar_upper_eq = tmp[1];
+              break;
+            case "aging":
+              _this.fil_aging = tmp[1];
               break;
             case "fk":
               _this.fil_keyowrd = decodeURI(tmp[1]);
@@ -548,6 +580,20 @@ var app = new Vue({
         _this.fil_ar_lower +
         "&fru=" +
         _this.fil_ar_upper +
+        "&fal_eq=" +
+        _this.fil_amount_lower_eq +
+        "&fau_eq=" +
+        _this.fil_amount_upper_eq +
+        "&fpl_eq=" +
+        _this.fil_payment_lower_eq +
+        "&fpu_eq=" +
+        _this.fil_payment_upper_eq +
+        "&frl_eq=" +
+        _this.fil_ar_lower_eq +
+        "&fru_eq=" +
+        _this.fil_ar_upper_eq +
+        "&aging=" +
+        _this.fil_aging +
         "&fk=" +
         _this.fil_keyowrd +
         "&fkp=" +
@@ -596,6 +642,20 @@ var app = new Vue({
         _this.fil_ar_lower +
         "&fru=" +
         _this.fil_ar_upper +
+        "&fal_eq=" +
+        _this.fil_amount_lower_eq +
+        "&fau_eq=" +
+        _this.fil_amount_upper_eq +
+        "&fpl_eq=" +
+        _this.fil_payment_lower_eq +
+        "&fpu_eq=" +
+        _this.fil_payment_upper_eq +
+        "&frl_eq=" +
+        _this.fil_ar_lower_eq +
+        "&fru_eq=" +
+        _this.fil_ar_upper_eq +
+        "&aging=" +
+        _this.fil_aging +
         "&fk=" +
         _this.fil_keyowrd +
         "&fkp=" +
@@ -631,6 +691,13 @@ var app = new Vue({
         fpu: _this.fil_payment_upper,
         frl: _this.fil_ar_lower,
         fru: _this.fil_ar_upper,
+        fal_eq: _this.fil_amount_lower_eq,
+        fau_eq: _this.fil_amount_upper_eq,
+        fpl_eq: _this.fil_payment_lower_eq,
+        fpu_eq: _this.fil_payment_upper_eq,
+        frl_eq: _this.fil_ar_lower_eq,
+        fru_eq: _this.fil_ar_upper_eq,
+        aging: _this.fil_aging,
         fk: _this.fil_keyowrd,
         fkp: _this.fil_keyowrd_p,
         of1: _this.od_factor1,
@@ -1002,6 +1069,16 @@ var app = new Vue({
       this.fil_payment_lower = '';
       this.fil_ar_upper = '';
       this.fil_ar_lower = '';
+
+      this.fil_amount_upper_eq = '';
+      this.fil_amount_lower_eq = '';
+      this.fil_payment_upper_eq = '';
+      this.fil_payment_lower_eq = '';
+      this.fil_ar_upper_eq = '';
+      this.fil_ar_lower_eq = '';
+
+      this.aging = '';
+
       this.fil_keyowrd = '';
       this.fil_keyowrd_p = '';
       
@@ -2047,6 +2124,7 @@ var app = new Vue({
 
     other_clear() {
       this.other_remark = "";
+      this.date_data_submission = "";
       
       this.other_fileArray = [];
       if(this.other_type == "2") 
@@ -2070,6 +2148,17 @@ var app = new Vue({
         return;
       }
 
+      if (this.date_data_submission == "" && this.other_type == "4") {
+        Swal.fire({
+          text: "Column “Date” is required.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+
+        //$(window).scrollTop(0);
+        return;
+      }
+
       _this.submit = true;
 
       var form_Data = new FormData();
@@ -2079,6 +2168,7 @@ var app = new Vue({
       form_Data.append("pid", this.proof_id);
       form_Data.append("remark", this.other_remark.trim());
       form_Data.append("kind", this.other_type.trim());
+      form_Data.append("date_data_submission", this.date_data_submission);
 
       for (var i = 0; i < this.other_fileArray.length; i++) {
         let file = this.other_fileArray[i];
@@ -2221,6 +2311,15 @@ var app = new Vue({
         fpu: _this.fil_payment_upper,
         frl: _this.fil_ar_lower,
         fru: _this.fil_ar_upper,
+        fal_eq: _this.fil_amount_lower_eq,
+        fau_eq: _this.fil_amount_upper_eq,
+        fpl_eq: _this.fil_payment_lower_eq,
+        fpu_eq: _this.fil_payment_upper_eq,
+        frl_eq: _this.fil_ar_lower_eq,
+        fru_eq: _this.fil_ar_upper_eq,
+
+        aging: _this.fil_aging,
+
         fk: _this.fil_keyowrd,
         fkp: _this.fil_keyowrd_p,
         of1: _this.od_factor1,
