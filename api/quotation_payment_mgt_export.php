@@ -604,11 +604,14 @@ $sheet->setCellValue('G'. $i, 'Tax Withheld');
 $sheet->setCellValue('H'. $i, 'Down Payment');
 $sheet->setCellValue('I'. $i, 'Payment');
 $sheet->setCellValue('J'. $i, 'A/R');
-$sheet->setCellValue('K'. $i, 'Date of Data Submission\nAging');
+$sheet->setCellValue('K'. $i, 'Date of Data Submission' . PHP_EOL . 'Aging');
+$sheet->getStyle('K'. $i)->getAlignment()->setWrapText(true);
 $sheet->setCellValue('L'. $i, 'Expense');
 $sheet->setCellValue('M'. $i, 'File');
 
 $sheet->getStyle('A' . $i . ':' . 'M' . $i)->getFont()->setBold(true);
+
+$sheet->getColumnDimension('K')->setWidth(20);
 
 
 foreach($return_result as $row)
@@ -624,7 +627,8 @@ foreach($return_result as $row)
     $sheet->setCellValue('H' . $i, $row['down_payment_amount'] === null ? '' : number_format((float)$row['down_payment_amount'], 2, '.', ''));
     $sheet->setCellValue('I' . $i, $row['payment_amount'] === null ? '' : number_format((float)$row['payment_amount'], 2, '.', ''));
     $sheet->setCellValue('J' . $i, $row['ar'] === null ? '' : number_format((float)$row['ar'], 2, '.', ''));
-    $sheet->setCellValue('K' . $i, $row["kind"] == 4 ? $row['date_data_submission'] . "\n" . $row['aging'] : "");
+    $sheet->setCellValue('K' . $i, $row["date_data_submission"] != "" ? $row['date_data_submission'] . PHP_EOL . " " . $row['aging'] . " days" : "");
+    $sheet->getStyle('K'. $i)->getAlignment()->setWrapText(true);
     $sheet->setCellValue('L' . $i, $row['apply_for_petty'] == 0 ? '' : number_format((float)$row['apply_for_petty'], 2, '.', ''));
 
     $files = $row['payment'];
@@ -902,7 +906,9 @@ function GetClientPO($project_id, $db){
             pm.remark,
             u.username,
             pm.created_at,
-            pm.kind
+            pm.kind,
+            pm.date_data_submission,
+            DATEDIFF(CURRENT_DATE, pm.date_data_submission) aging
         FROM   project_client_po pm
             LEFT JOIN user u
                 ON u.id = pm.create_id
@@ -922,6 +928,8 @@ function GetClientPO($project_id, $db){
         $username = $row['username'];
         $created_at = $row['created_at'];
         $kind = $row['kind'];
+        $date_data_submission = $row['date_data_submission'];
+        $aging = $row['aging'];
      
         $items = GetItem($row['id'], $db, 'client_po');
 
@@ -937,6 +945,8 @@ function GetClientPO($project_id, $db){
             "items" => $items,
             "create" => $create,
             "searchstr" => strtolower($searchstr),
+            "date_data_submission" => $date_data_submission,
+            "aging" => $aging,
         );
     }
 
@@ -949,7 +959,9 @@ function GetClientRemarks($project_id, $db){
             pm.remark,
             u.username,
             pm.created_at,
-            pm.kind
+            pm.kind,
+            pm.date_data_submission,
+            DATEDIFF(CURRENT_DATE, pm.date_data_submission) aging
         FROM   project_client_po pm
             LEFT JOIN user u
                 ON u.id = pm.create_id
@@ -969,6 +981,8 @@ function GetClientRemarks($project_id, $db){
         $username = $row['username'];
         $created_at = $row['created_at'];
         $kind = $row['kind'];
+        $date_data_submission = $row['date_data_submission'];
+        $aging = $row['aging'];
      
         $items = GetItem($row['id'], $db, 'client_other');
 
@@ -984,6 +998,8 @@ function GetClientRemarks($project_id, $db){
             "items" => $items,
             "create" => $create,
             "searchstr" => strtolower($searchstr),
+            "date_data_submission" => $date_data_submission,
+            "aging" => $aging,
         );
     }
 
@@ -996,7 +1012,9 @@ function GetClientOther($project_id, $db){
             pm.remark,
             u.username,
             pm.created_at,
-            pm.kind
+            pm.kind,
+            pm.date_data_submission,
+            DATEDIFF(CURRENT_DATE, pm.date_data_submission) aging
         FROM   project_client_po pm
             LEFT JOIN user u
                 ON u.id = pm.create_id
@@ -1016,6 +1034,8 @@ function GetClientOther($project_id, $db){
         $username = $row['username'];
         $created_at = $row['created_at'];
         $kind = $row['kind'];
+        $date_data_submission = $row['date_data_submission'];
+        $aging = $row['aging'];
      
         $items = GetItem($row['id'], $db, 'client_other');
 
@@ -1031,6 +1051,8 @@ function GetClientOther($project_id, $db){
             "items" => $items,
             "create" => $create,
             "searchstr" => strtolower($searchstr),
+            "date_data_submission" => $date_data_submission,
+            "aging" => $aging,
         );
     }
 
