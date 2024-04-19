@@ -1482,7 +1482,7 @@ f
                                     <input type="date" v-if="other_type == 4" v-model="date_data_submission">
                                     <textarea name="" id="" v-model="other_remark"></textarea>
                                 </dd>
-                                <dd style="display: flex; justify-content: flex_start;" v-if="other_type == '2'">
+                                <dd style="display: flex; justify-content: flex_start;" v-if="other_type == '2' || other_type == '4' ">
                                     <span style="color: #000000; font-size: 16px; font-weight: 700; padding-bottom: 5px; margin-right: 10px;">Files: </span>
                                     <div class="pub-con" ref="bg">
                                         <div class="input-zone">
@@ -1501,7 +1501,7 @@ f
                                         </div>
                                 </dd>
 
-                                <div class="file-list"  v-if="other_type == '2'">
+                                <div class="file-list"  v-if="other_type == '2' || other_type == '4' ">
                                     <div class="file-item" v-for="(item,index) in other_fileArray" :key="index">
                                         <p>
                                             {{item.name}}
