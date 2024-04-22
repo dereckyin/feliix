@@ -204,73 +204,73 @@ if($id != "" && $id != "0")
     $query_cnt = $query_cnt . " and pm.id = " . $id . " ";
 }
 
-if($fal != "" && $fal != "0" && $fal_eq == "s")
+if($fal != "" && $fal_eq == "s")
 {
     $query = $query . " and pm.final_amount > " . $fal . " ";
     $query_cnt = $query_cnt . " and pm.final_amount > " . $fal . " ";
 }
 
-if($fal != "" && $fal != "0" && $fal_eq == "se")
+if($fal != "" && $fal_eq == "se")
 {
     $query = $query . " and pm.final_amount >= " . $fal . " ";
     $query_cnt = $query_cnt . " and pm.final_amount >= " . $fal . " ";
 }
 
-if($fau != "" && $fau != "0" && $fau_eq == "s")
+if($fau != "" && $fau_eq == "s")
 {
     $query = $query . " and pm.final_amount < " . $fau . " ";
     $query_cnt = $query_cnt . " and pm.final_amount < " . $fau . " ";
 }
 
-if($fau != "" && $fau != "0" && $fau_eq == "se")
+if($fau != "" && $fau_eq == "se")
 {
     $query = $query . " and pm.final_amount <= " . $fau . " ";
     $query_cnt = $query_cnt . " and pm.final_amount <= " . $fau . " ";
 }
 
-if($fpl != "" && $fpl != "0" && $fpl_eq == "s")
+if($fpl != "" && $fpl_eq == "s")
 {
     $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) > " . $fpl . " ";
     $query_cnt = $query_cnt . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) > " . $fpl . " ";
 }
 
-if($fpl != "" && $fpl != "0" && $fpl_eq == "se")
+if($fpl != "" && $fpl_eq == "se")
 {
     $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) >= " . $fpl . " ";
     $query_cnt = $query_cnt . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) >= " . $fpl . " ";
 }
 
-if($fpu != "" && $fpu != "0" && $fpu_eq == "s")
+if($fpu != "" && $fpu_eq == "s")
 {
     $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) < " . $fpu . " ";
     $query_cnt = $query_cnt . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) < " . $fpu . " ";
 }
 
-if($fpu != "" && $fpu != "0" && $fpu_eq == "se")
+if($fpu != "" && $fpu_eq == "se")
 {
     $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) <= " . $fpu . " ";
     $query_cnt = $query_cnt . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) <= " . $fpu . " ";
 }
 
-if($frl != "" && $frl != "0" && $frl_eq == "s")
+if($frl != "" && $frl_eq == "s")
 {
     $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) > " . $frl . " ";
     $query_cnt = $query_cnt . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) > " . $frl . " ";
 }
 
-if($frl != "" && $frl != "0" && $frl_eq == "se")
+if($frl != "" && $frl_eq == "se")
 {
     $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) >= " . $frl . " ";
     $query_cnt = $query_cnt . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) >= " . $frl . " ";
 }
 
-if($fru != "" && $fru != "0" && $fru_eq == "s")
+if($fru != "" && $fru_eq == "s")
 {
     $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) < " . $fru . " ";
     $query_cnt = $query_cnt . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) < " . $fru . " ";
 }
 
-if($fru != "" && $fru != "0" && $fru_eq == "se")
+if($fru != "" && $fru_eq == "se")
 {
     $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) <= " . $fru . " ";
     $query_cnt = $query_cnt . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) <= " . $fru . " ";

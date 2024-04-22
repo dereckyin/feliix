@@ -1077,7 +1077,7 @@ var app = new Vue({
       this.fil_ar_upper_eq = '';
       this.fil_ar_lower_eq = '';
 
-      this.aging = '';
+      this.fil_aging = '';
 
       this.fil_keyowrd = '';
       this.fil_keyowrd_p = '';

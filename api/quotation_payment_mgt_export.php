@@ -111,6 +111,7 @@ $query = "SELECT pm.id,
                     ORDER  BY created_at DESC
                     LIMIT  1), pm.estimate_close_prob) estimate_close_prob,
             user.username,
+            pm.special,
             Date_format(pm.created_at, '%Y-%m-%d')       created_at,
             Date_format(pm.updated_at, '%Y-%m-%d')       updated_at,
             Coalesce((SELECT project_stage.stage
@@ -196,62 +197,62 @@ if($id != "" && $id != "0")
  
 }
 
-if($fal != "" && $fal != "0" && $fal_eq == "s")
+if($fal != "" && $fal_eq == "s")
 {
     $query = $query . " and pm.final_amount > " . $fal . " ";
 }
 
-if($fal != "" && $fal != "0" && $fal_eq == "se")
+if($fal != "" && $fal_eq == "se")
 {
     $query = $query . " and pm.final_amount >= " . $fal . " ";
 }
 
-if($fau != "" && $fau != "0" && $fau_eq == "s")
+if($fau != "" && $fau_eq == "s")
 {
     $query = $query . " and pm.final_amount < " . $fau . " ";
 }
 
-if($fau != "" && $fau != "0" && $fau_eq == "se")
+if($fau != "" && $fau_eq == "se")
 {
     $query = $query . " and pm.final_amount <= " . $fau . " ";
 }
 
-if($fpl != "" && $fpl != "0" && $fpl_eq == "s")
+if($fpl != "" && $fpl_eq == "s")
 {
     $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) > " . $fpl . " ";
 }
 
-if($fpl != "" && $fpl != "0" && $fpl_eq == "se")
+if($fpl != "" && $fpl_eq == "se")
 {
     $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) >= " . $fpl . " ";
 }
 
-if($fpu != "" && $fpu != "0" && $fpu_eq == "s")
+if($fpu != "" && $fpu_eq == "s")
 {
     $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) < " . $fpu . " ";
 }
 
-if($fpu != "" && $fpu != "0" && $fpu_eq == "se")
+if($fpu != "" && $fpu_eq == "se")
 {
     $query = $query . " and Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) <= " . $fpu . " ";
 }
 
-if($frl != "" && $frl != "0" && $frl_eq == "s")
+if($frl != "" && $frl_eq == "s")
 {
     $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) > " . $frl . " ";
 }
 
-if($frl != "" && $frl != "0" && $frl_eq == "se")
+if($frl != "" && $frl_eq == "se")
 {
     $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) >= " . $frl . " ";
 }
 
-if($fru != "" && $fru != "0" && $fru_eq == "s")
+if($fru != "" && $fru_eq == "s")
 {
     $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) < " . $fru . " ";
 }
 
-if($fru != "" && $fru != "0" && $fru_eq == "se")
+if($fru != "" && $fru_eq == "se")
 {
     $query = $query . " and Coalesce(final_amount, 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 1), 0) - Coalesce((SELECT sum(pp.amount) FROM  project_proof pp  WHERE  pp.project_id = pm.id  AND pp.status = 1  AND pp.kind = 0), 0) - Coalesce(tax_withheld, 0) <= " . $fru . " ";
 }
@@ -439,6 +440,8 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $project_name = $row['project_name'];
     $project_status = $row['project_status'];
     $estimate_close_prob = $row['estimate_close_prob'];
+
+    $special = $row['special'];
     $username = $row['username'];
 
     $pm = $row['payment'];
@@ -453,6 +456,9 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
     $payment_amount = GetPaymentAmount($row['id'], $db);
     $down_payment_amount = GetDownPaymentAmount($row['id'], $db);
+
+    $apply_for_petty = GetApplyForPetty($row['id'], $db);
+    $apply_for_petty_commission = GetApplyForPettyCommition($row['id'], $db);
 
     $ar = null;
     if($final_amount != null)
@@ -518,6 +524,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "down_payment_amount" => $down_payment_amount,
         "ar" => $ar,
         "final_quotation" => $final_quotation,
+        "special" => $special,
         "username" => $username,
         "created_at" => $created_at,
         "updated_at" => $updated_at,
@@ -541,6 +548,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "dpm" => $dpm,
         "expense" => $expense,
         "apply_for_petty" => $apply_for_petty,
+        "apply_for_petty_commission" => $apply_for_petty_commission,
         "quote_file_string" => $quote_file_string,
         "date_data_submission" => $date_data_submission,
         "aging" => $aging
@@ -606,12 +614,15 @@ $sheet->setCellValue('I'. $i, 'Payment');
 $sheet->setCellValue('J'. $i, 'A/R');
 $sheet->setCellValue('K'. $i, 'Date of Data Submission' . PHP_EOL . 'Aging');
 $sheet->getStyle('K'. $i)->getAlignment()->setWrapText(true);
-$sheet->setCellValue('L'. $i, 'Expense');
-$sheet->setCellValue('M'. $i, 'File');
+$sheet->setCellValue('L'. $i, 'Expense (Commission)');
+$sheet->setCellValue('M'. $i, 'Expense (Others)');
+$sheet->setCellValue('N'. $i, 'File');
 
-$sheet->getStyle('A' . $i . ':' . 'M' . $i)->getFont()->setBold(true);
+$sheet->getStyle('A' . $i . ':' . 'N' . $i)->getFont()->setBold(true);
 
 $sheet->getColumnDimension('K')->setWidth(20);
+$sheet->getColumnDimension('L')->setWidth(20);
+$sheet->getColumnDimension('M')->setWidth(20);
 
 
 foreach($return_result as $row)
@@ -629,7 +640,8 @@ foreach($return_result as $row)
     $sheet->setCellValue('J' . $i, $row['ar'] === null ? '' : number_format((float)$row['ar'], 2, '.', ''));
     $sheet->setCellValue('K' . $i, $row["date_data_submission"] != "" ? $row['date_data_submission'] . PHP_EOL . " " . $row['aging'] . " days" : "");
     $sheet->getStyle('K'. $i)->getAlignment()->setWrapText(true);
-    $sheet->setCellValue('L' . $i, $row['apply_for_petty'] == 0 ? '' : number_format((float)$row['apply_for_petty'], 2, '.', ''));
+    $sheet->setCellValue('L' . $i, $row['apply_for_petty_commission'] == 0 ? '' : number_format((float)$row['apply_for_petty_commission'], 2, '.', ''));
+    $sheet->setCellValue('M' . $i, (float)$row['apply_for_petty'] - (float)$row['apply_for_petty_commission'] == 0 ? '' : number_format((float)$row['apply_for_petty'] - (float)$row['apply_for_petty_commission'], 2, '.', ''));
 
     $files = $row['payment'];
 
@@ -650,17 +662,39 @@ foreach($return_result as $row)
                 if($file_url != '')
                 {
                     $link = $baseURL . $file_url;
-                    $sheet->setCellValue(chr(77+$j) . $i, $file_name);
+                    $sheet->setCellValue(chr(78+$j) . $i, $file_name);
                     $sheet->getCellByColumnAndRow($j + 11, $i)->getHyperlink()->setUrl($link);
 
                     $j++;
                 }
                 else
-                    $sheet->setCellValue(chr(77+$j) . $i, '');
+                    $sheet->setCellValue(chr(78+$j) . $i, '');
 
                 
             }
         }
+    }
+
+    if($row["special"] == "s")
+    {
+        $spreadsheet
+        ->getActiveSheet()
+        ->getStyle('A' . $i . ':' . 'M' . $i)
+        ->getFill()
+        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+        ->getStartColor()
+        ->setARGB('E5F7EB');
+    }
+
+    if($row["special"] == "sn")
+    {
+        $spreadsheet
+        ->getActiveSheet()
+        ->getStyle('A' . $i . ':' . 'M' . $i)
+        ->getFill()
+        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+        ->getStartColor()
+        ->setARGB('E7D1E5');
     }
 }
 
@@ -725,6 +759,36 @@ function GetApplyForPetty($project_id, $db)
                         Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = ap.id AND pl.`status` <> -1), 0) amount_applied
                     FROM apply_for_petty ap 
                     where project_name1 = (SELECT project_name FROM project_main WHERE id = " . $project_id . ") 
+                    and ap.status = 9";
+
+    $merged_results = array();
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = $row;
+    }
+
+    $amount_verified = 0;
+
+    foreach ($merged_results as &$value) {
+        if($value['request_type'] == "1")
+        $amount_verified += $value['amount_verified'];
+        if($value['request_type'] == "2")
+        $amount_verified += $value['amount_applied'];
+    }
+
+    return $amount_verified;
+}
+
+
+function GetApplyForPettyCommition($project_id, $db)
+{
+    $sql = "SELECT  Coalesce(ap.amount_verified, 0) amount_verified, ap.request_type,
+                        Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = ap.id AND pl.`status` <> -1), 0) amount_applied
+                    FROM apply_for_petty ap 
+                    where project_name1 = (SELECT project_name FROM project_main WHERE id = " . $project_id . ") and info_category = 'Projects' and info_sub_category = 'Commission'
                     and ap.status = 9";
 
     $merged_results = array();
