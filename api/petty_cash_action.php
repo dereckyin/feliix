@@ -22,6 +22,13 @@ $info_remark_other = (isset($_POST['info_remark_other']) ?  $_POST['info_remark_
 $items_to_delete = (isset($_POST['items_to_delete']) ?  $_POST['items_to_delete'] : "[]");
 $items_array = json_decode($items_to_delete,true);
 
+$amount_of_return = (isset($_POST['amount_of_return']) ?  $_POST['amount_of_return'] : "");
+$total_amount_liquidate = (isset($_POST['total_amount_liquidate']) ?  $_POST['total_amount_liquidate'] : "");
+$petty = (isset($_POST['items']) ?  $_POST['items'] : "[]");
+$petty_array = json_decode($petty,true);
+
+
+
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
 include_once 'libs/php-jwt-master/src/ExpiredException.php';
@@ -180,12 +187,21 @@ if (!isset($jwt)) {
                 $info_remark_other = trim($info_remark_other);
             $stmt->bindParam(':info_remark_other', $info_remark_other);
         } elseif ($crud == "Liquidated") {
+
+            if(count($petty_array) > 0)
+                update_apply_for_petty_liquidate($petty_array, $db, $id, $user_id);
+
+
             $query = "update apply_for_petty
                    SET
                   `status` =  :status,
                   `updated_at` = now(),
                   `amount_liquidated` =  :amount_liquidated,
-                  `remark_liquidated` =  :remark_liquidated
+                  `remark_liquidated` =  :remark_liquidated,
+
+                    `total_amount_liquidate` =  :total_amount_liquidate,
+                    `amount_of_return` =  :amount_of_return
+
                    where id = :id ";
 
             // prepare the query
@@ -198,6 +214,9 @@ if (!isset($jwt)) {
             $stmt->bindParam(':status', GetAction($crud));
             $stmt->bindParam(':amount_liquidated', $amount);
             $stmt->bindParam(':remark_liquidated', $remark_liquidated);
+
+            $stmt->bindParam(':total_amount_liquidate', $total_amount_liquidate);
+            $stmt->bindParam(':amount_of_return', $amount_of_return);
 
             $remark = '';
         } elseif ($crud == "Verifier Verified") {
@@ -1389,4 +1408,84 @@ function GetDepartment($dept_name)
         $department = 'Sales Department';
 
     return $department;
+}
+
+function update_apply_for_petty_liquidate($petty_array, $db, $id, $user_id)
+{
+    // delete previous -1 records
+    $query = "DELETE FROM apply_for_petty_liquidate WHERE petty_id = :id AND `status` = -1";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+
+    // bind the values
+    $stmt->bindParam(':id', $id);
+
+    // execute the query, also check if query was successful
+    if (!$stmt->execute()) {
+        $arr = $stmt->errorInfo();
+        error_log($arr[2]);
+        $db->rollback();
+        http_response_code(501);
+        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+        die();
+    }
+
+    // update previous records to status -1
+    $query = "update apply_for_petty_liquidate set `status` = -1 where petty_id = :id  ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+
+    // bind the values
+    $stmt->bindParam(':id', $id);
+
+    // execute the query, also check if query was successful
+    if (!$stmt->execute()) {
+        $arr = $stmt->errorInfo();
+        error_log($arr[2]);
+        $db->rollback();
+        http_response_code(501);
+        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+        die();
+    }
+
+    // insert new record
+    for($i = 0; $i < count($petty_array); $i++)
+    {
+        $query = "INSERT INTO apply_for_petty_liquidate
+        SET
+            `petty_id` = :id,
+            `sn` = :sn,
+            `vendor` = :payee,
+            `particulars` = :particulars,
+            `price` = :price,
+            `qty` = :qty,
+            `status` = 1,
+            `created_at` = now(),
+            `create_id` = :created_by";
+
+        // prepare the query
+        $stmt = $db->prepare($query);
+
+        // bind the values
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':sn', $i);
+        $stmt->bindParam(':payee', $petty_array[$i]["payee"]);
+        $stmt->bindParam(':particulars', $petty_array[$i]["particulars"]);
+        $stmt->bindParam(':price', $petty_array[$i]["price"]);
+        $stmt->bindParam(':qty', $petty_array[$i]["qty"]);
+        $stmt->bindParam(':created_by', $user_id);
+
+        // execute the query, also check if query was successful
+        if (!$stmt->execute()) {
+            $arr = $stmt->errorInfo();
+            error_log($arr[2]);
+            $db->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+            die();
+        }
+    }
+
 }

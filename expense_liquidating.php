@@ -47,7 +47,14 @@
 $(function(){
     $('header').load('include/header.php');
 })
+
+function EditListing() {
+        $(".mask").toggle();
+        $("#modal_EditListing").toggle();
+           $(window).scrollTop(0);
+    }
 </script>
+
 
 
      <!-- CSS for current webpage -->
@@ -156,6 +163,7 @@ $(function(){
             left: 0;
             right: 0;
             margin: auto;
+            z-index: 2;
         }
 
         #modal_EditListing > .modal-content {
@@ -250,6 +258,16 @@ $(function(){
         body input.alone.green[type=radio]::before{
             font-size: 25px; color: #2F9A57;}
 
+        .bodybox .mask {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.5);
+        width: 100%;
+        height: 100%;
+        top: 0;
+        z-index: 1;
+        display: none;
+    }
+
     </style>
 
 
@@ -259,6 +277,7 @@ $(function(){
 <body class="green">
 
 <div class="bodybox">
+    <div class="mask" :ref="'mask'" style="display:none"></div>
     <!-- header -->
     <header>header</header>
     <!-- header end -->
@@ -405,8 +424,16 @@ $(function(){
                             <li>{{record.liquidate_date}}</li>
                         </ul>
                         <ul>
+                            <li class="head">Total Amount in Liquidation Listing</li>
+                            <li>{{record.total_amount_liquidate}}</li>
+                        </ul>
+                        <ul>
                             <li class="head">Amount Liquidated</li>
                             <li>{{ (!record.amount_liquidated) ? "" : Number(record.amount_liquidated).toLocaleString() }}</li>
+                        </ul>
+                        <ul>
+                            <li class="head">Amount of Return Money</li>
+                            <li>{{ (!record.amount_of_return) ? "" : Number(record.amount_of_return).toLocaleString() }}</li>
                         </ul>
                         <ul>
                             <li class="head">Liquidation Files</li>
@@ -420,10 +447,47 @@ $(function(){
                     </div>
 
 
+
+
+
                     <form>
                         <ul>
-                            <li><b>Amount Liquidated</b></li>
-                            <li><input type="text" style="width:100%"  v-model="amount_liquidated"></li>
+                            <li><b>Liquidation Listing</b>
+                                <a style="background-image: url('images/ui/btn_edit_green.svg'); width: 16px; height: 16px; display: inline-block; margin-left: 10px;"
+                                    href="javascript: void(0)" onclick="EditListing()"></a>
+                            </li>
+                            <li>
+                                <!--- 報帳核銷的清單裡面不需要有 remarks 欄位和 pid !=0，記得把這部分移除掉 -->
+                                <div class="tablebox">
+                                    <ul class="head">
+                                        <li>Vendor</li>
+                                        <li>Particulars</li>
+                                        <li>Price</li>
+                                        <li>Qty</li>
+                                        <li>Amount</li>
+                                        <li v-if="pid != 0">Remarks</li>
+                                    </ul>
+                                    <ul v-for="(item,index) in petty_list" :key="index">
+                                        <li>{{ item.payee }}</li>
+                                        <li>{{ item.particulars }}</li>
+                                        <li>{{ Number(item.price).toLocaleString() }}</li>
+                                        <li>{{ Number(item.qty).toLocaleString() }}</li>
+                                        <li>{{ Number(item.price * item.qty).toLocaleString() }}</li>
+                                        <li v-if="pid != 0" class="style_Remarks">{{ item.check_remark }}</li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li style="margin-top: 15px;"><b>Total Amount in Liquidation Listing</b></li>
+                            <li><input type="text" style="width:100%" readonly
+                                    v-model="Number(sum_amonut).toLocaleString()" placeholder="Auto Calculation"></li>
+
+                            <li style="margin-top: 15px;"><b>Amount Liquidated</b></li>
+                            <li><input type="text" style="width:100%"  v-model="amount_liquidated" @change="caculate_total()"></li>
+
+                            <li style="margin-top: 15px;"><b>Amount of Return Money</b></li>
+                            <li><input type="text" style="width:100%" readonly
+                                    v-model="Number(amount_of_return).toLocaleString()" placeholder="Auto Calculation"></li>
 
                             <li style="margin-top: 15px;"><b>Upload Liquidation Files</b></li>
                             <li>
@@ -448,6 +512,102 @@ $(function(){
                 </div>
 
             </div>
+
+
+            <div id="modal_EditListing" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+
+                        <div class="modal-heading">
+                            <h6>Edit Listing</h6>
+                            <a href="javascript: void(0)" onclick="EditListing()"><i class="fa fa-times fa-lg"
+                                    aria-hidden="true"></i></a>
+                        </div>
+
+
+                        <div class="box-content" :ref="'porto'">
+
+                            <ul>
+                                <li><b>Vendor</b></li>
+                                <li><input type="text" required style="width:100%" v-model="list_payee"></li>
+
+                                <li><b>Particulars</b></li>
+                                <li><input type="text" required style="width:100%" v-model="list_particulars"></li>
+
+                                <li><b>Price</b></li>
+                                <li><input type="text" required style="width:100%" v-model="list_price"
+                                        onClick="this.setSelectionRange(0, this.value.length)"></li>
+
+                                <li><b>Qty</b></li>
+                                <li><input type="text" required style="width:100%" v-model="list_qty"
+                                        onClick="this.setSelectionRange(0, this.value.length)"></li>
+
+                                <li><b>Amount</b></li>
+                                <li><input type="text" required style="width:100%" readonly
+                                        v-model="Number(list_amonut).toLocaleString()" placeholder="Auto calculation">
+                                </li>
+
+                            </ul>
+
+                            <div class="btnbox" v-if="pid != 0">
+                                <a class="btn green" @click="e_add_criterion" v-if="!e_editing">Add</a>
+                                <a class="btn" v-if="e_editing" @click="e_cancel_criterion">Cancel</a>
+                                <a class="btn green" v-if="e_editing" @click="e_update_criterion">Update</a>
+                            </div>
+
+                            <div class="btnbox" v-if="pid == 0">
+                                <a class="btn green" @click="_add_criterion" v-if="!e_editing">Add</a>
+                                <a class="btn" v-if="e_editing" @click="_cancel_criterion">Cancel</a>
+                                <a class="btn green" v-if="e_editing" @click="_update_criterion">Update</a>
+                            </div>
+
+                            <div class="tablebox">
+                                <ul class="head">
+                                    <li>Vendor</li>
+                                    <li>Particulars</li>
+                                    <li>Price</li>
+                                    <li>Qty</li>
+                                    <li>Amount</li>
+                                    <li v-if="pid != 0">Remarks</li>
+                                    <li v-if="pid != 0">Actions</li>
+                                    <li v-if="pid == 0">Actions</li>
+                                </ul>
+                                <ul v-for="(item,index) in petty_list" :key="index">
+                                    <li>{{ item.payee }}</li>
+                                    <li>{{ item.particulars }}</li>
+                                    <li>{{ Number(item.price).toLocaleString() }}</li>
+                                    <li>{{ Number(item.qty).toLocaleString() }}</li>
+                                    <li>{{ Number(item.price * item.qty).toLocaleString() }}</li>
+                                    <li v-if="pid != 0">{{ item.check_remark }}</li>
+                                    <li class="style_Icons" v-if="pid != 0">
+                                        <i aria-hidden="true" class="fas fa-arrow-alt-circle-up"
+                                            @click="e_set_up(index, item.id)"></i>
+                                        <i aria-hidden="true" class="fas fa-arrow-alt-circle-down"
+                                            @click="e_set_down(index, item.id)"></i>
+                                        <br>
+                                        <i aria-hidden="true" class="fas fa-edit" @click="e_edit(item.id)"></i>
+                                        <i aria-hidden="true" class="fas fa-trash-alt" @click="e_del(item.id)"></i>
+                                    </li>
+
+                                    <li class="style_Icons" v-if="pid == 0">
+                                        <i aria-hidden="true" class="fas fa-arrow-alt-circle-up"
+                                            @click="_set_up(index, item.id)"></i>
+                                        <i aria-hidden="true" class="fas fa-arrow-alt-circle-down"
+                                            @click="_set_down(index, item.id)"></i>
+                                        <br>
+                                        <i aria-hidden="true" class="fas fa-edit" @click="_edit(item.id)"></i>
+                                        <i aria-hidden="true" class="fas fa-trash-alt" @click="_del(item.id)"></i>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
         </div>
     </div>
 </body>
