@@ -215,10 +215,10 @@ var app = new Vue({
       form_Data.append("crud", "Liquidated");
       form_Data.append("id", id);
       form_Data.append("remark", this.reject_reason);
-      form_Data.append("amount", this.amount_liquidated.replaceAll(',', ''));
+      form_Data.append("amount", this.amount_liquidated.replace(/\,/g,''));
 
-      form_Data.append("amount_of_return", this.amount_of_return);
-      form_Data.append("total_amount_liquidate", this.total_amount_liquidate);
+      form_Data.append("amount_of_return", this.amount_of_return.replace(/\,/g,''));
+      form_Data.append("total_amount_liquidate", this.total_amount_liquidate.replace(/\,/g,''));
       form_Data.append("items", JSON.stringify(this.petty_list));
 
       if(this.record.status == 7)
@@ -530,7 +530,7 @@ var app = new Vue({
         return false;
       }
 
-      if(isNaN(this.amount_liquidated))
+      if(isNaN(this.amount_liquidated.replace(/\,/g,'')))
       {
         Swal.fire({
           text: 'Amount format invalid',
