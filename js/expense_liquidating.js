@@ -530,7 +530,7 @@ var app = new Vue({
         return false;
       }
 
-      if(isNaN(this.amount_liquidated.replaceAll(',', '')))
+      if(isNaN(this.amount_liquidated))
       {
         Swal.fire({
           text: 'Amount format invalid',
