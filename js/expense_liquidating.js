@@ -440,9 +440,9 @@ var app = new Vue({
     },
 
     caculate_total: function() {
-      var total = Math.min(parseFloat(this.record.total), parseFloat(this.sum_amonut));
+      var total = Math.min(this.parsenumber(this.record.total), this.parsenumber(this.sum_amonut));
 
-      if(parseFloat(this.amount_liquidated) > total)
+      if(this.parsenumber(this.amount_liquidated) > total)
       {
         Swal.fire({
           text: 'User is not allowed to liquidate the amount more than the minimal of “Total Amount Requested” and “Amount in Liquidation Listing”.',
@@ -451,13 +451,13 @@ var app = new Vue({
         });
 
         this.amount_liquidated = total;
-        this.amount_of_return = parseFloat(this.record.total) - parseFloat(this.amount_liquidated);
+        this.amount_of_return = this.parsenumber(this.record.total) - this.parsenumber(this.amount_liquidated);
 
         return false;
       }
       else
       {
-        this.amount_of_return = parseFloat(this.record.total) - parseFloat(this.amount_liquidated);
+        this.amount_of_return = this.parsenumber(this.record.total) - this.parsenumber(this.amount_liquidated);
 
         return true;
       }
@@ -534,7 +534,7 @@ var app = new Vue({
         return false;
       }
 
-      if(isNaN(parseFloat(this.amount_liquidated)))
+      if(isNaN(this.parsenumber(this.amount_liquidated)))
       {
         Swal.fire({
           text: 'Amount format invalid',
@@ -784,6 +784,14 @@ var app = new Vue({
       }
     },
 
+    // parse if string, then remove comma and return as number
+    // if number, return as number
+    parsenumber: function(number) {
+      if (isNaN(parseFloat(number))) {
+        return parseFloat(number.replace(/,/g, ""));
+      }
+      return parseFloat(number);
+    },
     
     validateNumber: function(obj) {
       var number = obj;
