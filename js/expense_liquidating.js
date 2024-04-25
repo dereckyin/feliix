@@ -534,7 +534,7 @@ var app = new Vue({
         return false;
       }
 
-      if(isNaN(this.amount_liquidated))
+      if(isNaN(parseFloat(this.amount_liquidated)))
       {
         Swal.fire({
           text: 'Amount format invalid',
@@ -788,7 +788,7 @@ var app = new Vue({
     validateNumber: function(obj) {
       var number = obj;
 
-      if (isNaN(number)) {
+      if (isNaN(parseFloat(number))) {
         return false;
       }
       return true;
