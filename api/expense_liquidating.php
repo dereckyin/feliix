@@ -214,7 +214,7 @@ switch ($method) {
             $created_at = $row['created_at'];
 
             $combine_liquidate = [];
-            if(count($apply_for_petty_liquidate) == 0)
+            if($amount_liquidated == null)
             {
                 $total_amount_liquidate = 0;
                 foreach ($list as &$value) {

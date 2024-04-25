@@ -452,10 +452,14 @@ var app = new Vue({
 
         this.amount_liquidated = total;
         this.amount_of_return = this.record.total - this.amount_liquidated;
+
+        return false;
       }
       else
       {
         this.amount_of_return = this.record.total - this.amount_liquidated;
+
+        return true;
       }
 
     },
@@ -564,6 +568,9 @@ var app = new Vue({
             //$(window).scrollTop(0);
             return false;
           }
+
+      if(!this.caculate_total())
+        return;
 
       Swal.fire({
         title: "Are you sure to proceed this action?",
