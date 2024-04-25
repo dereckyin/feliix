@@ -793,7 +793,7 @@ var app = new Vue({
       if(typeof nu === 'string')
         return parseFloat(nu.replace(/,/g, ""));
       else
-        return parseFloat(number);
+        return parseFloat(nu);
     },
     
     validateNumber: function(obj) {
