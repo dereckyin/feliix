@@ -451,13 +451,13 @@ var app = new Vue({
         });
 
         this.amount_liquidated = total;
-        this.amount_of_return = this.record.total - this.amount_liquidated;
+        this.amount_of_return = parseFloat(this.record.total) - parseFloat(this.amount_liquidated);
 
         return false;
       }
       else
       {
-        this.amount_of_return = this.record.total - this.amount_liquidated;
+        this.amount_of_return = parseFloat(this.record.total) - parseFloat(this.amount_liquidated);
 
         return true;
       }
