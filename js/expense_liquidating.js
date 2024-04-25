@@ -786,11 +786,14 @@ var app = new Vue({
 
     // parse if string, then remove comma and return as number
     // if number, return as number
-    parsenumber: function(number) {
-      if (isNaN(parseFloat(number))) {
-        return parseFloat(number.replace(/,/g, ""));
-      }
-      return parseFloat(number);
+    parsenumber: function(nu) {
+      if(nu === null || nu === undefined || nu === '')
+        return 0;
+
+      if(typeof nu === 'string')
+        return parseFloat(nu.replace(/,/g, ""));
+      else
+        return parseFloat(number);
     },
     
     validateNumber: function(obj) {
