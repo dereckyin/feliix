@@ -440,9 +440,9 @@ var app = new Vue({
     },
 
     caculate_total: function() {
-      var total = Math.min(this.record.total, this.sum_amonut);
+      var total = Math.min(parseFloat(this.record.total), parseFloat(this.sum_amonut));
 
-      if(this.amount_liquidated > total)
+      if(parseFloat(this.amount_liquidated) > total)
       {
         Swal.fire({
           text: 'User is not allowed to liquidate the amount more than the minimal of “Total Amount Requested” and “Amount in Liquidation Listing”.',
