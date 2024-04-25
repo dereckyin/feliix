@@ -278,17 +278,23 @@ try {
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;"v-model="sub_category">
+                                    <option>Accommodation</option>
                                     <option>Allowance</option>
                                     <option>Commission</option>
                                     <option>Delivery</option>
+                                    <option>Delivery and Installation</option>
+                                    <option>Installation</option>
                                     <option>Maintenance</option>
                                     <option>Meals</option>
                                     <option>Misc</option>
+                                    <option>Mock-up</option>
                                     <option>Others</option>
                                     <option>Outsource</option>
                                     <option>Petty cash</option>
                                     <option>Products</option>
+                                    <option>Site Visit</option>
                                     <option>Supplies</option>
+                                    <option>Team Building</option>
                                     <option>Tools and Materials</option>
                                     <option>Transportation</option>
                                 </select>
@@ -502,17 +508,23 @@ try {
         </select>
 
         <select style="width:10vw; margin-left:1vw;" v-if="category == 'Marketing' || category == 'Office Needs' || category == 'Others' || category ==  'Projects' || category == 'Store'" v-model="sub_category">
+            <option>Accommodation</option>
             <option>Allowance</option>
             <option>Commission</option>
             <option>Delivery</option>
+            <option>Delivery and Installation</option>
+            <option>Installation</option>
             <option>Maintenance</option>
             <option>Meals</option>
             <option>Misc</option>
+            <option>Mock-up</option>
             <option>Others</option>
             <option>Outsource</option>
             <option>Petty cash</option>
             <option>Products</option>
+            <option>Site Visit</option>
             <option>Supplies</option>
+            <option>Team Building</option>
             <option>Tools and Materials</option>
             <option>Transportation</option>
         </select>
@@ -1116,19 +1128,25 @@ try {
 
                         <td style="text-align: left;">
                             <select class="form-control" style="width:25vw;"v-model="split1.sub_category">
-                                <option>Allowance</option>
-                                <option>Commission</option>
-                                <option>Delivery</option>
-                                <option>Maintenance</option>
-                                <option>Meals</option>
-                                <option>Misc</option>
-                                <option>Others</option>
-                                <option>Outsource</option>
-                                <option>Petty cash</option>
-                                <option>Products</option>
-                                <option>Supplies</option>
-                                <option>Tools and Materials</option>
-                                <option>Transportation</option>
+                            <option>Accommodation</option>
+                                    <option>Allowance</option>
+                                    <option>Commission</option>
+                                    <option>Delivery</option>
+                                    <option>Delivery and Installation</option>
+                                    <option>Installation</option>
+                                    <option>Maintenance</option>
+                                    <option>Meals</option>
+                                    <option>Misc</option>
+                                    <option>Mock-up</option>
+                                    <option>Others</option>
+                                    <option>Outsource</option>
+                                    <option>Petty cash</option>
+                                    <option>Products</option>
+                                    <option>Site Visit</option>
+                                    <option>Supplies</option>
+                                    <option>Team Building</option>
+                                    <option>Tools and Materials</option>
+                                    <option>Transportation</option>
                             </select>
                         </td>
 
@@ -1288,22 +1306,28 @@ try {
 
                         <tr v-if="split2.category == 'Marketing' ||  split2.category == 'Office Needs' || split2.category == 'Others' || split2.category ==  'Projects' || split2.category == 'Store'">
                             <td>
-                                <label >Sub Category</label>
+                                <label>Sub Category</label>
                             </td>
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;"v-model="split2.sub_category">
+                                <option>Accommodation</option>
                                     <option>Allowance</option>
                                     <option>Commission</option>
                                     <option>Delivery</option>
+                                    <option>Delivery and Installation</option>
+                                    <option>Installation</option>
                                     <option>Maintenance</option>
                                     <option>Meals</option>
                                     <option>Misc</option>
+                                    <option>Mock-up</option>
                                     <option>Others</option>
                                     <option>Outsource</option>
                                     <option>Petty cash</option>
                                     <option>Products</option>
+                                    <option>Site Visit</option>
                                     <option>Supplies</option>
+                                    <option>Team Building</option>
                                     <option>Tools and Materials</option>
                                     <option>Transportation</option>
                                 </select>
@@ -1470,17 +1494,23 @@ try {
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;"v-model="split3.sub_category">
+                                <option>Accommodation</option>
                                     <option>Allowance</option>
                                     <option>Commission</option>
                                     <option>Delivery</option>
+                                    <option>Delivery and Installation</option>
+                                    <option>Installation</option>
                                     <option>Maintenance</option>
                                     <option>Meals</option>
                                     <option>Misc</option>
+                                    <option>Mock-up</option>
                                     <option>Others</option>
                                     <option>Outsource</option>
                                     <option>Petty cash</option>
                                     <option>Products</option>
+                                    <option>Site Visit</option>
                                     <option>Supplies</option>
+                                    <option>Team Building</option>
                                     <option>Tools and Materials</option>
                                     <option>Transportation</option>
                                 </select>
@@ -1647,17 +1677,23 @@ try {
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;"v-model="split4.sub_category">
+                                <option>Accommodation</option>
                                     <option>Allowance</option>
                                     <option>Commission</option>
                                     <option>Delivery</option>
+                                    <option>Delivery and Installation</option>
+                                    <option>Installation</option>
                                     <option>Maintenance</option>
                                     <option>Meals</option>
                                     <option>Misc</option>
+                                    <option>Mock-up</option>
                                     <option>Others</option>
                                     <option>Outsource</option>
                                     <option>Petty cash</option>
                                     <option>Products</option>
+                                    <option>Site Visit</option>
                                     <option>Supplies</option>
+                                    <option>Team Building</option>
                                     <option>Tools and Materials</option>
                                     <option>Transportation</option>
                                 </select>
@@ -1824,17 +1860,23 @@ try {
 
                             <td style="text-align: left;">
                                 <select class="form-control" style="width:25vw;"v-model="split5.sub_category">
+                                <option>Accommodation</option>
                                     <option>Allowance</option>
                                     <option>Commission</option>
                                     <option>Delivery</option>
+                                    <option>Delivery and Installation</option>
+                                    <option>Installation</option>
                                     <option>Maintenance</option>
                                     <option>Meals</option>
                                     <option>Misc</option>
+                                    <option>Mock-up</option>
                                     <option>Others</option>
                                     <option>Outsource</option>
                                     <option>Petty cash</option>
                                     <option>Products</option>
+                                    <option>Site Visit</option>
                                     <option>Supplies</option>
+                                    <option>Team Building</option>
                                     <option>Tools and Materials</option>
                                     <option>Transportation</option>
                                 </select>
