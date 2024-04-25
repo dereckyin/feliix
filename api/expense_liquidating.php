@@ -213,6 +213,30 @@ switch ($method) {
             $list = GetList($row['id'], $db);
             $created_at = $row['created_at'];
 
+            $combine_liquidate = [];
+            if(count($apply_for_petty_liquidate) == 0)
+            {
+                $total_amount_liquidate = 0;
+                foreach ($list as &$value) {
+                    $obj = array(
+                        "id" => $value['id'],
+                        "sn" => $value['sn'],
+                        "vendor" => $value['payee'],
+                        "particulars" => $value['particulars'],
+                        "price" => $value['price'],
+                        "qty" => $value['qty'],
+                        "status" => $value['status']
+                    );
+
+                    $total_amount_liquidate += $value['price'] * $value['qty'];
+                    $combine_liquidate[] = $obj;
+                }
+            }
+            else
+            {
+                $combine_liquidate = $apply_for_petty_liquidate;
+            }
+
             $info_account = $row['info_account'];
             $info_category = $row['info_category'];
             $info_sub_category = $row['info_sub_category'];
@@ -254,7 +278,7 @@ switch ($method) {
 
                 "total_amount_liquidate" => $total_amount_liquidate,
                 "amount_of_return" => $amount_of_return,
-                "apply_for_petty_liquidate" => $apply_for_petty_liquidate,
+                "apply_for_petty_liquidate" => $combine_liquidate,
 
                 "release_date" => $release_date,
                 "release_items" => $release_items,
