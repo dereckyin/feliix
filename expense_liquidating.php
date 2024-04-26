@@ -480,14 +480,14 @@ function EditListing() {
 
                             <li style="margin-top: 15px;"><b>Total Amount in Liquidation Listing</b></li>
                             <li><input type="text" style="width:100%" readonly
-                                    v-model="Number(sum_amonut).toLocaleString()" placeholder="Auto Calculation"></li>
+                                    v-model="Number(caculate_total(sum_amonut)).toLocaleString()" placeholder="Auto Calculation"></li>
 
                             <li style="margin-top: 15px;"><b>Amount Liquidated</b></li>
                             <li><input type="text" style="width:100%"  v-model="amount_liquidated" @change="caculate_total()"></li>
 
                             <li style="margin-top: 15px;"><b>Amount of Return Money</b></li>
                             <li><input type="text" style="width:100%" readonly
-                                    v-model="Number(amount_of_return).toLocaleString()" placeholder="Auto Calculation"></li>
+                                    v-model="Number(caculate_total(amount_of_return)).toLocaleString()" placeholder="Auto Calculation"></li>
 
                             <li style="margin-top: 15px;"><b>Upload Liquidation Files</b></li>
                             <li>

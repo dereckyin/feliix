@@ -216,7 +216,7 @@ switch ($method) {
             $combine_liquidate = [];
             if($amount_liquidated == null)
             {
-                $total_amount_liquidate = 0;
+                //$total_amount_liquidate = 0;
                 foreach ($list as &$value) {
                     $obj = array(
                         "id" => $value['id'],
@@ -228,7 +228,7 @@ switch ($method) {
                         "status" => $value['status']
                     );
 
-                    $total_amount_liquidate += $value['price'] * $value['qty'];
+                    //$total_amount_liquidate += $value['price'] * $value['qty'];
                     $combine_liquidate[] = $obj;
                 }
             }
