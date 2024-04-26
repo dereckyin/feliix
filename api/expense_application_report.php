@@ -128,6 +128,8 @@ switch ($method) {
                         pm.amount_liquidated,
                         pm.remark_liquidated,
                         pm.amount_verified,
+                        pm.total_amount_liquidate,
+                        pm.amount_of_return,
                         pm.rtype,
                         pm.dept_name
                 from apply_for_petty pm 
@@ -671,6 +673,10 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
         $liquidate_date = "";
         $liquidate_items = [];
 
+        $total_amount_liquidate = "";
+        $amount_of_return = "";
+        $apply_for_petty_liquidate = [];
+
         $amount_liquidated = 0;
         $amount_verified = 0;
         $remark_liquidated = '';
@@ -726,6 +732,35 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $approve1_date = GetApprove1History($row['id'], $db);
             $approve2_date = GetApprove2History($row['id'], $db);
 
+            $apply_for_petty_liquidate = GetAmountPettyLiquidate($row['id'], $db);
+
+            $total_amount_liquidate = $row['total_amount_liquidate'];
+            $amount_of_return = $row['amount_of_return'];
+
+            $combine_liquidate = [];
+            if($amount_liquidated == null)
+            {
+                //$total_amount_liquidate = 0;
+                foreach ($list as &$value) {
+                    $obj = array(
+                        "id" => $value['id'],
+                        "sn" => $value['sn'],
+                        "vendor" => $value['payee'],
+                        "particulars" => $value['particulars'],
+                        "price" => $value['price'],
+                        "qty" => $value['qty'],
+                        "status" => $value['status']
+                    );
+
+                    //$total_amount_liquidate += $value['price'] * $value['qty'];
+                    $combine_liquidate[] = $obj;
+                }
+            }
+            else
+            {
+                $combine_liquidate = $apply_for_petty_liquidate;
+            }
+
             $rtype = $row['rtype'];
             $dept_name = $row['dept_name'];
             $department = GetDepartment($row['dept_name']);
@@ -770,6 +805,10 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 "amount_liquidated" => $amount_liquidated,
                 "remark_liquidated" => $remark_liquidated,
                 "amount_verified" => $amount_verified,
+
+                "total_amount_liquidate" => $total_amount_liquidate,
+                "amount_of_return" => $amount_of_return,
+                "apply_for_petty_liquidate" => $combine_liquidate,
 
                 "checked_date" => $checked_date,
                 "approve1_date" => $approve1_date,
@@ -1109,6 +1148,24 @@ function GetVerifiedHistory($_id, $db)
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $merged_results = $row['created_at'];
+    }
+
+    return $merged_results;
+}
+
+function GetAmountPettyLiquidate($_id, $db)
+{
+    $sql = "select pm.id, sn, vendor payee, particulars, price, qty, `status`
+    from apply_for_petty_liquidate pm 
+    where `status` <> -1 and petty_id = " . $_id . " order by sn ";
+
+    $merged_results = array();
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = $row;
     }
 
     return $merged_results;

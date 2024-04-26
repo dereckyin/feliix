@@ -276,8 +276,16 @@ $(function(){
                             <li>{{record.liquidate_date}}</li>
                         </ul>
                         <ul>
+                            <li class="head">Total Amount in Liquidation Listing</li>
+                            <li>{{record.total_amount_liquidate}}</li>
+                        </ul>
+                        <ul>
                             <li class="head">Amount Liquidated</li>
                             <li>{{ isNaN(record.amount_liquidated) ? "" : Number(record.amount_liquidated).toLocaleString() }}</li>
+                        </ul>
+                        <ul>
+                            <li class="head">Amount of Return Money</li>
+                            <li>{{record.amount_of_return}}</li>
                         </ul>
                         <ul>
                             <li class="head">Liquidation Files</li>
@@ -287,6 +295,26 @@ $(function(){
                         <ul>
                             <li class="head">Remarks</li>
                             <li>{{ (record.request_type == 'New') ? record.remark_liquidated  : "---"}}</li>
+                        </ul>
+                    </div>
+
+
+                    <span>Liquidation Listing</span>
+
+                    <div class="tablebox listing" style="margin-top: 2px;">
+                        <ul class="head">
+                            <li>Vendor</li>
+                            <li>Particulars</li>
+                            <li>Price</li>
+                            <li>Qty</li>
+                            <li>Amount</li>
+                        </ul>
+                        <ul v-for='(item, index) in record.apply_for_petty_liquidate' :key="index" >
+                            <li>{{ item.vendor }}</li>
+                            <li>{{ item.particulars }}</li>
+                            <li>{{ Number(item.price).toLocaleString() }}</li>
+                            <li>{{ Number(item.qty).toLocaleString() }}</li>
+                            <li>{{ Number(item.price * item.qty).toLocaleString() }}</li>
                         </ul>
                     </div>
 
