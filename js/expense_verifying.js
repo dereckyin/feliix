@@ -649,5 +649,15 @@ var app = new Vue({
       }
       return result;
     },
+
+    parsenumber: function(nu) {
+      if(nu === null || nu === undefined || nu === '')
+        return 0;
+
+      if(typeof nu === 'string')
+        return parseFloat(nu.replace(/,/g, ""));
+      else
+        return parseFloat(nu);
+    },
   },
 });
