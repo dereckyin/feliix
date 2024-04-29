@@ -310,7 +310,7 @@ $(function(){
                             <li>Amount</li>
                         </ul>
                         <ul v-for='(item, index) in record.apply_for_petty_liquidate' :key="index" >
-                            <li>{{ item.vendor }}</li>
+                            <li>{{ item.payee }}</li>
                             <li>{{ item.particulars }}</li>
                             <li>{{ Number(item.price).toLocaleString() }}</li>
                             <li>{{ Number(item.qty).toLocaleString() }}</li>
