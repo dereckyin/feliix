@@ -207,7 +207,7 @@ $(function(){
                     min-width: 130px;
                 }
 
-        .tableframe .tablebox.lv1 li:nth-of-type(3), .tableframe .tablebox.lv1 li:nth-of-type(4), .tableframe .tablebox.lv1 li:nth-of-type(16), .tableframe .tablebox.lv1 li:nth-of-type(18), .tableframe .tablebox.lv1 li:nth-of-type(19){
+        .tableframe .tablebox.lv1 li:nth-of-type(3), .tableframe .tablebox.lv1 li:nth-of-type(4), .tableframe .tablebox.lv1 li:nth-of-type(16), .tablebox.lv1 li:nth-of-type(17), .tableframe .tablebox.lv1 li:nth-of-type(19), .tableframe .tablebox.lv1 li:nth-of-type(20){
                     min-width: 280px;
                 }
 
@@ -223,13 +223,13 @@ $(function(){
                     min-width: 200px;
                 }
 
-        .tableframe .tablebox.lv1 li:nth-of-type(19) {
+        .tableframe .tablebox.lv1 li:nth-of-type(20) {
                     padding-left: 10px;
                     padding-right: 10px;
                     text-align: left;
                 }
 
-        .tableframe .tablebox.lv1 li:nth-of-type(11) span, .tableframe .tablebox.lv1 li:nth-of-type(12) span, .tableframe .tablebox.lv1 li:nth-of-type(13) span, .tableframe .tablebox.lv1 li:nth-of-type(14) span, .tableframe .tablebox.lv1 li:nth-of-type(17) span {
+        .tableframe .tablebox.lv1 li:nth-of-type(11) span, .tableframe .tablebox.lv1 li:nth-of-type(12) span, .tableframe .tablebox.lv1 li:nth-of-type(13) span, .tableframe .tablebox.lv1 li:nth-of-type(14) span, .tableframe .tablebox.lv1 li:nth-of-type(18) span {
                     display: block;
                 }
 
@@ -237,7 +237,7 @@ $(function(){
                     min-width: auto;
                 }
 
-        .tableframe .tablebox.lv1 ul.head li:nth-of-type(19) {
+        .tableframe .tablebox.lv1 ul.head li:nth-of-type(20) {
             text-align: center;
         }
 
@@ -333,6 +333,15 @@ $(function(){
             padding: 1px 3px;
             font-size: 14px;
             height: 30px;
+        }
+
+        .modal-content .block .formbox dd input[type="date"] {
+            border: 1px solid #707070;
+            padding: 1px 3px;
+            font-size: 14px;
+            height: 30px;
+            margin-bottom: 10px;
+            width: 200px;
         }
 
         .modal-content .block .formbox dd textarea {
@@ -616,6 +625,39 @@ $(function(){
         .block .tablebox > ul > li.display_file span{
             display: block;
         }
+
+        .block .tablebox.lv1 ul.x_deal li {
+            background: #E5F7EB !important;
+        }
+
+        .block .tablebox.lv1 ul.no_dp li {
+            background: #EF88BE4D !important;
+        }
+
+        div.formbox dd.range {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        div.formbox dd.range input {
+            display: inline-block;
+            width: 110px;
+        }
+
+        div.formbox dd.range select {
+            display: inline-block;
+            width: 60px;
+            padding-left: 15px;
+        }
+
+        div.formbox dd.range span {
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--fth04);
+        }
+
+f
     </style>
 
 
@@ -745,7 +787,83 @@ $(function(){
                                     </select>
                                 </dd>
 
-                                <dt style="margin-bottom:-18px;">Amount</dt>
+                                <dt>Range of Amount</dt>
+                                <dd class="range">
+                                    <input type="number" v-model="fil_amount_lower">
+
+                                    <select v-model="fil_amount_lower_eq">
+                                        <option value=""></option>
+                                        <option value="s"><</option>
+                                        <option value="se">≤</option>
+                                    </select>
+
+                                    <span>Amount</span>
+
+                                    <select v-model="fil_amount_upper_eq">
+                                        <option value=""></option>
+                                        <option value="s"><</option>
+                                        <option value="se">≤</option>
+                                    </select>
+
+                                    <input type="number" style="margin-right: 0;"  v-model="fil_amount_upper">
+                                </dd>
+
+                                <dt>Range of Down Payment</dt>
+                                <dd class="range">
+                                    <input type="number" v-model="fil_payment_lower">
+
+                                    <select v-model="fil_payment_lower_eq">
+                                        <option value=""></option>
+                                        <option value="s"><</option>
+                                        <option value="se">≤</option>
+                                    </select>
+
+                                    <span>Down Payment</span>
+
+                                    <select v-model="fil_payment_upper_eq">
+                                        <option value=""></option>
+                                        <option value="s"><</option>
+                                        <option value="se">≤</option>
+                                    </select>
+
+                                    <input type="number" style="margin-right: 0;" v-model="fil_payment_upper">
+                                </dd>
+
+                                <dt>Range of A/R</dt>
+                                <dd class="range">
+                                    <input type="number" v-model="fil_ar_lower">
+
+                                    <select v-model="fil_ar_lower_eq">
+                                        <option value=""></option>
+                                        <option value="s"><</option>
+                                        <option value="se">≤</option>
+                                    </select>
+
+                                    <span>A/R</span>
+
+                                    <select v-model="fil_ar_upper_eq">
+                                        <option value=""></option>
+                                        <option value="s"><</option>
+                                        <option value="se">≤</option>
+                                    </select>
+
+                                    <input type="number" style="margin-right: 0;" v-model="fil_ar_upper">
+                                </dd>
+
+                                <dt>Aging</dt>
+                                <dd>
+                                    <select v-model="fil_aging">
+                                        <option value=""></option>
+                                        <option value="0">Aging < 30 days</option>
+                                        <option value="30">30 days ≤ Aging < 60 days</option>
+                                        <option value="60">60 days ≤ Aging < 90 days</option>
+                                        <option value="90">90 days ≤ Aging < 120 days</option>
+                                        <option value="120">120 days ≤ Aging</option>
+                                    </select>
+                                </dd>
+
+
+                   <!--         <dt style="margin-bottom:-18px;">Amount</dt>
                                 <div class="half">
                                     <dt>lower bound</dt>
                                     <dd><input type="number" v-model="fil_amount_lower"></dd>
@@ -780,6 +898,7 @@ $(function(){
                                     <dd><input type="number" v-model="fil_ar_upper"></dd>
 
                                 </div>
+                      -->
 
                                 <dt>Keyword (only for project name)</dt>
                                 <dd><input type="text" v-model="fil_keyowrd_p"></dd>
@@ -921,12 +1040,15 @@ $(function(){
                      <li>Full Payment</li>
                      <li>FP Date</li>
                      <li>A/R</li>
+                     <li>Date of Data Submission<br>Aging</li>
+                     <li>Expense (Commission)</li>
+                     <li>Expense (Others)</li>
                      <li>PO from Client</li>
                      <li>Inv. Numbers</li>
                      <li>Other Files</li>
                      <li>Remarks/Status</li>
                  </ul>
-                  <ul v-for='(receive_record, index) in displayedPosts'>
+                  <ul v-for='(receive_record, index) in displayedPosts' :class="[(receive_record.special == 's' ? 'x_deal' : ( receive_record.special == 'sn' ? 'no_dp' : ''))]">
                       <li><input type="radio" name="project_id" class="alone black"
                             @click="show_detail(receive_record.id)"></li>
                       <li>{{ receive_record.category }}</li>
@@ -943,6 +1065,10 @@ $(function(){
                       <li>{{ isNaN(parseInt(receive_record.payment_amount)) ? "" : Number(receive_record.payment_amount).toLocaleString() }}</li>
                       <li><span v-for="(item,index) in receive_record.full_pay_date">{{ item }}</span></li>
                       <li>{{ isNaN(parseInt(receive_record.ar)) ? "" : Number(receive_record.ar).toLocaleString() }}</li>
+                      <li v-if="receive_record.date_data_submission != ''">{{ receive_record.date_data_submission }}<br>{{ receive_record.aging }} days</li>
+                      <li v-if="receive_record.date_data_submission == ''"></li>
+                      <li>{{ parseInt(receive_record.apply_for_petty_commission) == 0 ? "" : Number(receive_record.apply_for_petty_commission).toLocaleString() }}</li>
+                      <li>{{ parseInt(receive_record.apply_for_petty - receive_record.apply_for_petty_commission) == 0 ? "" : Number(receive_record.apply_for_petty - receive_record.apply_for_petty_commission).toLocaleString()  }}</li>
                       <li class="display_file">
                         <span v-for="(item,index) in receive_record.client_po_file">
                             <a :href="baseURL + item.bucket + '\\' + item.gcp_name" target="_blank" class="attch">•{{item.filename}}</a>
@@ -1219,7 +1345,7 @@ $(function(){
                                         </span>
                                     </li>
                                     <li>{{ receive_record.username }} at {{ receive_record.created_at }}</li>
-                                    <li>{{ (receive_record.checked == 0) ? "Under Checking" : ((receive_record.checked == 1) ? "Checked: True" : ((receive_record.checked == -1) ? "Checked: False" : 'Under Checking')) }}</li>
+                                    <li>{{ (receive_record.checked == 0) ? "Under Checking" : ((receive_record.checked == 1) ? "Checked: True" : ((receive_record.checked == -1) ? "Checked: False" : "Under Checking")) }}</li>
                                     <li>{{ isNaN(parseInt(receive_record.amount)) ? "" : Number(receive_record.amount).toLocaleString() }}</li>
                                 </ul>
                             
@@ -1348,11 +1474,15 @@ $(function(){
                                     <select v-model="other_type">
                                         <option value="2">Other Files</option>
                                         <option value="3">Remarks/Status</option>
+                                        <option value="4">Date of Data Submission</option>
                                     </select>
                                 </dd>
                                 <dt class="head">Description:</dt>
-                                <dd><textarea name="" id="" v-model="other_remark"></textarea></dd>
-                                <dd style="display: flex; justify-content: flex_start;" v-if="other_type == '2'">
+                                <dd>
+                                    <input type="date" v-if="other_type == 4" v-model="date_data_submission">
+                                    <textarea name="" id="" v-model="other_remark"></textarea>
+                                </dd>
+                                <dd style="display: flex; justify-content: flex_start;" v-if="other_type == '2' || other_type == '4' ">
                                     <span style="color: #000000; font-size: 16px; font-weight: 700; padding-bottom: 5px; margin-right: 10px;">Files: </span>
                                     <div class="pub-con" ref="bg">
                                         <div class="input-zone">
@@ -1371,7 +1501,7 @@ $(function(){
                                         </div>
                                 </dd>
 
-                                <div class="file-list"  v-if="other_type == '2'">
+                                <div class="file-list"  v-if="other_type == '2' || other_type == '4' ">
                                     <div class="file-item" v-for="(item,index) in other_fileArray" :key="index">
                                         <p>
                                             {{item.name}}
@@ -1432,7 +1562,7 @@ $(function(){
                                 </ul>
                                 <ul v-for='(receive_record, index) in displayedOther'>
                                     <li><input type="checkbox" name="other_id" class="alone black" :value="receive_record.id"></li>
-                                    <li>{{ (receive_record.kind == 2) ? "Other Files" : "Remarks/Status" }}</li>
+                                    <li>{{ (receive_record.kind == 2) ? "Other Files" : (receive_record.kind == 3) ? "Remarks/Status" : "Date of Data Submission" }}</li>
                                     <li class="display_file">
                                         <span v-for="item in receive_record.items" style="display:block;">
                                             <a :href="baseURL + item.bucket + '\\' + item.gcp_name" target="_blank" class="attch">•{{item.filename}}</a>

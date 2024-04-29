@@ -781,10 +781,18 @@
                                     <li>{{(record.request_type == "New") ? record.liquidate_date : "---"}}</li>
                                 </ul>
                                 <ul>
+                                <li class="head">Total Amount in Liquidation Listing</li>
+                                    <li>{{ (record.request_type == "New") ?  (!record.total_amount_liquidate ? "" : Number(record.total_amount_liquidate).toLocaleString()) : "---" }}</li>
+                                </ul>
+                                
+                                <ul>
                                     <li class="head">Amount Liquidated</li>
                                     <li>{{ (record.request_type == "New") ?  (!record.amount_liquidated ? "" : Number(record.amount_liquidated).toLocaleString()) : "---" }}</li>
                                 </ul>
-
+                                <ul>
+                                    <li class="head">Amount of Return Money</li>
+                                    <li>{{ (record.request_type == "New") ?  (!record.amount_of_return ? "" : Number(record.amount_of_return).toLocaleString()) : "---" }}</li>
+                                </ul>
                                 <ul>
                                     <li class="head">Liquidation Files</li>
                                     <li><a v-if="record.request_type == 'New'" v-for='(item, index) in record.liquidate_items' :key="index" :href="baseURL + item.gcp_name" target="_blank">{{item.filename}}</a>
@@ -810,6 +818,27 @@
                                     </li>
                                 </ul>
                             </div>
+                            
+                            <span>Liquidation Listing</span>
+                            <div class="tablebox listing">
+                                <ul class="head">
+                                    <li>Vendor</li>
+                                    <li>Particulars</li>
+                                    <li>Price</li>
+                                    <li>Qty</li>
+                                    <li>Amount</li>
+                                </ul>
+                                <ul v-for='(item, index) in record.apply_for_petty_liquidate' :key="index">
+                                    <li>{{ item.payee }}</li>
+                                    <li>{{ item.particulars }}</li>
+                                    <li>{{ Number(item.price).toLocaleString() }}</li>
+                                    <li>{{ Number(item.qty).toLocaleString() }}</li>
+                                    <li>{{ Number(item.price * item.qty).toLocaleString() }}</li>
+                                </ul>
+
+                            </div>
+
+
 
                             <div class="btnbox"><a class="btn" @click="export_petty">Export Voucher</a></div>
 

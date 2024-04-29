@@ -450,6 +450,19 @@ var app = new Vue({
         return false;
       }
 
+      var total = Math.max(this.parsenumber(this.record.total), this.parsenumber(this.record.amount_liquidated));
+      if(this.actual_amount > total)
+      {
+        Swal.fire({
+          text: 'Verifier is not allowed to encode the amount more than the maximal of “Total Amount Requested” and “Amount Liquidated”.',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        })
+        //this.err_msg = 'Location Photo required';
+        //$(window).scrollTop(0);
+        return false;
+      }
+
       if(isNaN(this.actual_amount.replaceAll(',', '')))
       {
         Swal.fire({
@@ -635,6 +648,16 @@ var app = new Vue({
         result[i] = obj[i];
       }
       return result;
+    },
+
+    parsenumber: function(nu) {
+      if(nu === null || nu === undefined || nu === '')
+        return 0;
+
+      if(typeof nu === 'string')
+        return parseFloat(nu.replace(/,/g, ""));
+      else
+        return parseFloat(nu);
     },
   },
 });

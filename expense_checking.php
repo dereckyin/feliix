@@ -429,7 +429,7 @@ function EditListing() {
                             <li v-if="record.info_category == 'Marketing' || record.info_category == 'Office Needs' || record.info_category == 'Others' || record.info_category == 'Projects' || record.info_category == 'Store'" >
                                 <select style="width:100%" v-model="record.sub_category">
                                     <option value=""></option>
-                                    
+                                    <option value="Accommodation">Accommodation</option>
                                     <option value="Allowance">Allowance</option>
                                     <option value="Commission">Commission</option>
                                     <option value="Delivery">Delivery</option>
@@ -445,6 +445,7 @@ function EditListing() {
                                     <option value="Products">Products</option>
                                     <option value="Site Visit">Site Visit</option>
                                     <option value="Supplies">Supplies</option>
+                                    <option value="Team Building">Team Building</option>
                                     <option value="Tools and Materials">Tools and Materials</option>
                                     <option value="Transportation">Transportation</option>
                                 </select>

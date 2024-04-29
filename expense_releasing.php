@@ -298,7 +298,7 @@ $(function(){
                             <li v-if="new_info_category == 'Marketing' || new_info_category == 'Office Needs' || new_info_category == 'Others' || new_info_category == 'Projects' || new_info_category == 'Store'" >
                                 <select style="width:100%" v-model="new_info_sub_category">
                                     <option value=""></option>
-
+                                    <option value="Accommodation">Accommodation</option>
                                     <option value="Allowance">Allowance</option>
                                     <option value="Commission">Commission</option>
                                     <option value="Delivery">Delivery</option>
@@ -314,6 +314,7 @@ $(function(){
                                     <option value="Products">Products</option>
                                     <option value="Site Visit">Site Visit</option>
                                     <option value="Supplies">Supplies</option>
+                                    <option value="Team Building">Team Building</option>
                                     <option value="Tools and Materials">Tools and Materials</option>
                                     <option value="Transportation">Transportation</option>
                                 </select>
