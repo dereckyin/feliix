@@ -277,7 +277,7 @@ $(function(){
                         </ul>
                         <ul>
                             <li class="head">Total Amount in Liquidation Listing</li>
-                            <li>{{record.total_amount_liquidate}}</li>
+                            <li>{{ isNaN(record.total_amount_liquidate) ? "" : Number(record.total_amount_liquidate).toLocaleString() }}</li>
                         </ul>
                         <ul>
                             <li class="head">Amount Liquidated</li>
@@ -285,7 +285,7 @@ $(function(){
                         </ul>
                         <ul>
                             <li class="head">Amount of Return Money</li>
-                            <li>{{record.amount_of_return}}</li>
+                            <li>{{ isNaN(record.amount_of_return) ? "" : Number(record.amount_of_return).toLocaleString() }}</li>
                         </ul>
                         <ul>
                             <li class="head">Liquidation Files</li>
