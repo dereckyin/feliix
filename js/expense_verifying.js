@@ -450,7 +450,7 @@ var app = new Vue({
         return false;
       }
 
-      var total = Math.max(this.parsenumber(this.record.total), this.parsenumber(this.amount_liquidated));
+      var total = Math.max(this.parsenumber(this.record.total), this.parsenumber(this.record.amount_liquidated));
       if(this.actual_amount > total)
       {
         Swal.fire({
