@@ -165,7 +165,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $obj = array(
                 "id" => $value['id'],
                 "sn" => $value['sn'],
-                "vendor" => $value['payee'],
+                "payee" => $value['payee'],
                 "particulars" => $value['particulars'],
                 "price" => $value['price'],
                 "qty" => $value['qty'],
@@ -415,7 +415,7 @@ $table6->addCell(1000, ['borderSize' => 6, 'bgColor' => 'EFEFEF'])->addText("Amo
 
 foreach ($combine_liquidate as &$value) {
     $table6->addRow();
-    $table6->addCell(2600, ['borderSize' => 6])->addText($value['vendor'], [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table6->addCell(2600, ['borderSize' => 6])->addText($value['payee'], [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
     $table6->addCell(6100, ['borderSize' => 6])->addText($value['particulars'], [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
     $table6->addCell(600, ['borderSize' => 6])->addText(number_format($value['price'], 2), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
     $table6->addCell(600, ['borderSize' => 6])->addText(number_format($value['qty']), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
