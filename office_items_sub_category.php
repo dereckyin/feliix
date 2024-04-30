@@ -401,6 +401,7 @@ header('location:index');
     <div class="mainContent" id="app">
 
         <div class="tags">
+            <a class="tag E" href="office_items_catalog">Catalog</a>
             <a class="tag A" href="office_items_main_category">Main Category</a>
             <a class="tag B focus">Sub Category</a>
             <a class="tag C" href="office_items_brand">Brand</a>
