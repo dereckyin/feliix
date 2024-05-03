@@ -5018,3 +5018,4 @@ CREATE TABLE IF NOT EXISTS `apply_for_petty_liquidate` (
   `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
