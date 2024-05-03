@@ -547,7 +547,7 @@
 
                 <div class="box-content">
                     <ul>
-                        <li><b>Management of Office Items</b></li>
+                        <li><b>Coding System of Office Items Catalog</b></li>
                         <br>
                         <li>
                             <div>
