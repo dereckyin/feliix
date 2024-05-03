@@ -35,10 +35,40 @@ var app = new Vue({
     lv4: "",
     lv4_item : {},
 
+    page: 1,
+    perPage: 20,
+    pages: [],
+    pages_10: [],
+
     items: [],
+    total : 0,
   },
 
   created() {
+
+    let _this = this;
+    let uri = window.location.href.split("?");
+    if (uri.length >= 2) {
+      let vars = uri[1].split("&");
+
+      let tmp = "";
+      vars.forEach(async function(v) {
+        tmp = v.split("=");
+        if (tmp.length == 2) {
+          switch (tmp[0]) {
+
+            case "page":
+              _this.page = tmp[1];
+              break;
+            case "size":
+              _this.perPage = tmp[1];
+              break;
+            default:
+              console.log(`Too many args`);
+          }
+        }
+      });
+    }
 
     this.getLevel1();
     this.getItems();
@@ -63,6 +93,78 @@ var app = new Vue({
 
   methods: {
 
+    setPages () {
+      console.log('setPages');
+      this.pages = [];
+
+      let numberOfPages = Math.ceil(this.total / this.perPage);
+
+      // if(this.fil_keyword != '')
+      //   numberOfPages = Math.ceil(this.receive_records.length / this.perPage);
+
+      if(numberOfPages == 1)
+        this.page = 1;
+      for (let index = 1; index <= numberOfPages; index++) {
+        this.pages.push(index);
+      }
+
+      this.paginate(this.receive_records);
+    },
+
+    paginate: function (posts) {
+      console.log('paginate');
+      if(this.page < 1)
+        this.page = 1;
+      if(this.page > this.pages.length)
+        this.page = this.pages.length;
+
+        let tenPages = Math.floor((this.page - 1) / 10);
+        if(tenPages < 0)
+          tenPages = 0;
+        this.pages_10 = [];
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+
+        this.pages_10 = this.pages.slice(from, to);
+
+      // if(this.fil_keyword != '')
+      //   return this.receive_records.slice(from, to);
+      // else
+        return  this.receive_records;
+    },
+
+    pre_page: function(){
+      let tenPages = Math.floor((this.page - 1) / 10) + 1;
+
+        this.page = parseInt(this.page) - 10;
+        if(this.page < 1)
+          this.page = 1;
+ 
+        this.pages_10 = [];
+
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+
+        this.pages_10 = this.pages.slice(from, to);
+      
+    },
+
+    nex_page: function(){
+      let tenPages = Math.floor((this.page - 1) / 10) + 1;
+
+      this.page = parseInt(this.page) + 10;
+      if(this.page > this.pages.length)
+        this.page = this.pages.length;
+
+      let from = tenPages * 10;
+      let to = (tenPages + 1) * 10;
+      let pages_10 = this.pages.slice(from, to);
+
+      if(pages_10.length > 0)
+        this.pages_10 = pages_10;
+
+    },
+
     getItems: function() {
         let _this = this;
 
@@ -71,6 +173,9 @@ var app = new Vue({
       const params = {
         level: 1,
         parent: '',
+        
+        page: _this.page,
+        size: _this.perPage,
       };
 
       axios
@@ -82,6 +187,14 @@ var app = new Vue({
           (res) => {
             _this.items = res.data;
 
+            if(_this.items.length > 0)
+            {
+              _this.total = _this.items[0].cnt;
+              _this.setPages();
+            }
+            else
+              _this.total = 0;
+
           },
           (err) => {
             alert(err.response);
@@ -89,6 +202,90 @@ var app = new Vue({
         )
         .finally(() => {});
     },
+
+    print: function() {
+      var token = localStorage.getItem("token");
+      var form_Data = new FormData();
+      let _this = this;
+      form_Data.append("jwt", token);
+      form_Data.append("parent", this.lv1 + this.lv2 + this.lv3 + this.lv4);
+
+      axios({
+        method: "post",
+        url: "api/office_items_catalog_print",
+        data: form_Data,
+        responseType: "blob",
+      })
+        .then(function(response) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+
+          link.setAttribute("download", "office_items_catalog.xlsx");
+
+          document.body.appendChild(link);
+          link.click();
+        })
+        .catch(function(response) {
+          console.log(response);
+        });
+    },
+
+    clear: function() {
+      this.lv1 = "";
+      this.lv1_item = {};
+      this.lv2 = "";
+      this.lv2_item = {};
+      this.lv3 = "";
+      this.lv3_item = {};
+      this.lv4 = "";
+      this.lv4_item = {};
+
+      this.level2 = [];
+      this.level3 = [];
+      this.level4 = [];
+
+      this.view_detail = false;
+      this.filter_apply_new();
+    },
+
+    filter_apply_new: function() {
+      let _this = this;
+
+      let token = localStorage.getItem("accessToken");
+
+    const params = {
+      level: 1,
+      parent: this.lv1 + this.lv2 + this.lv3 + this.lv4,
+      
+      page: _this.page,
+      size: _this.perPage,
+    };
+
+    axios
+      .get("api/office_items_catalog", {
+        params,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(
+        (res) => {
+          _this.items = res.data;
+
+          if(_this.items.length > 0)
+          {
+            _this.total = _this.items[0].cnt;
+            _this.setPages();
+          }
+          else
+            _this.total = 0;
+
+        },
+        (err) => {
+          alert(err.response);
+        }
+      )
+      .finally(() => {});
+  },
 
     getLevel1: function() {
       let _this = this;

@@ -30,6 +30,22 @@ $username = $decoded->data->username;
 $position = $decoded->data->position;
 $department = $decoded->data->department;
 
+$database = new Database();
+$db = $database->getConnection();
+
+
+$access6 = false;
+
+$query = "SELECT * FROM access_control WHERE office_items LIKE '%" . $username . "%' ";
+    $stmt = $db->prepare( $query );
+    $stmt->execute();
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $access6 = true;
+    }
+
+
+    if ($access6 == false)
+        header('location:index');
 
 }
 // if decode fails, it means jwt is invalid
@@ -561,22 +577,22 @@ header('location:index');
                         <option :value="item.code" v-for="(item, index) in level4">{{ item.category }}({{ item.code }})</option>
                     </select>
 
-                    <button style="margin-left: 20px;" @click="query('')"><i aria-hidden="true" class="fas fa-filter"></i></button>
+                    <button style="margin-left: 20px;" @click="filter_apply_new()"><i aria-hidden="true" class="fas fa-filter"></i></button>
                     <button @click="print()"><i aria-hidden="true" class="fas fa-file-export"></i></button>
-                    <button @click="" style="width: 50px;">Clear</button>
+                    <button @click="clear()" style="width: 50px;">Clear</button>
 
                 </div>
 
                 <!-- 分頁功能 -->
-                <!-- 這個頁面需要做分頁，每一頁 20 筆資料
+                <!-- 這個頁面需要做分頁，每一頁 20 筆資料  -->
                 <div class="pagenation">
-                    <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+                    <a class="prev" style="color:#707071;" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
 
                     <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                    <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                    <a class="next" style="color:#707071;" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
                 </div>
-                -->
+               
 
             </div>
 

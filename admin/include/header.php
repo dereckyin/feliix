@@ -27,6 +27,8 @@ use \Firebase\JWT\JWT;
     $access12 = false;
     $access13 = false;
 
+    $access_office_item = false;
+    
 
 $pic_url = "man6.jpg";
 
@@ -248,6 +250,13 @@ try {
             $access13 = true;
         }
 
+        $query = "SELECT * FROM access_control WHERE office_items LIKE '%" . $username . "%' ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $access_office_item = true;
+        }
+
 
         //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
         //    header( 'location:index.php' );
@@ -434,7 +443,14 @@ try {
                 <a class="list" href="../spec_sheet_mgt">Specification Sheet Management</a>
                 <a class="list" href="../frequently_used_options">Attribute’s Frequently Used Options</a>
                 <a class="list" href="../electrical_materials_catalog">Electrical Materials Catalog</a>
-                <a class="list" href="../office_items_main_category">Office Items Catalog</a>
+                <?php
+                    if($access_office_item == true)
+                    {
+                ?>
+                <a class="list" href="../office_items_catalog">Office Items Catalog</a>
+                <?php
+                    }
+                ?>
             </li>
             <li class="sec02">
                 <a class="uni">Let's Vote</a>

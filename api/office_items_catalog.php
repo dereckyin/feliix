@@ -41,32 +41,85 @@ include_once 'config/database.php';
 $database = new Database();
 $db = $database->getConnection();
 
-$key = (isset($_GET['key']) ?  $_GET['key'] : '');
-$key = urldecode($key);
+// $key = (isset($_GET['key']) ?  $_GET['key'] : '');
+// $key = urldecode($key);
+
+$parent = (isset($_GET['parent']) ?  $_GET['parent'] : '');
+
+$page = (isset($_GET['page']) ?  $_GET['page'] : "1");
+$size = (isset($_GET['size']) ?  $_GET['size'] : "20");
 
 $merged_results = array();
 
+$lv1 = "";
+$lv2 = "";
+$lv3 = "";
+$lv4 = "";
+
+// seperate parent into 4 levels
+if($parent != "")
+{
+    $lv1 = substr($parent, 0, 2);
+    $lv2 = substr($parent, 2, 2);
+    $lv3 = substr($parent, 4, 2);
+    $lv4 = substr($parent, 6, 2);
+}
+
 $query = "SELECT m.code code1, m.category cat1, s.code code2, s.category cat2, b.code code3, b.category cat3, d.code code4, d.category cat4, '' qty
             FROM office_items_main_category m
-            left join office_items_sub_category s on m.code = s.parent_code
-            left join office_items_brand b on CONCAT(m.code, s.code) = b.parent_code
-            left join office_items_description d on CONCAT(m.code,s.code,b.code) = d.parent_code 
-                where m.status <> -1 and s.status <> -1 and b.status <> -1 and d.status <> -1
-                ";
+            left join office_items_sub_category s on m.code = s.parent_code ";
+if($lv1 != "")
+{
+    $query = $query . " and m.code = '" . $lv1 . "' ";
+}
+$query = $query . " left join office_items_brand b on CONCAT(m.code, s.code) = b.parent_code ";
+if($lv2 != "")
+{
+    $query = $query . " and s.code = '" . $lv2 . "' ";
+}
+$query = $query . " left join office_items_description d on CONCAT(m.code,s.code,b.code) = d.parent_code ";
+if($lv3 != "")
+{
+    $query = $query . " and b.code = '" . $lv3 . "' ";
+}
+$query = $query . "   where m.status <> -1 and s.status <> -1 and b.status <> -1 and d.status <> -1 ";
+
+if($lv4 != "")
+{
+    $query = $query . " and d.code = '" . $lv4 . "' ";
+}
+
+
 
 $query_cnt = "SELECT count(*) cnt
                 FROM office_items_main_category m
-                left join office_items_sub_category s on m.code = s.parent_code
-                left join office_items_brand b on CONCAT(m.code, s.code) = b.parent_code
-                left join office_items_description d on CONCAT(m.code,s.code,b.code) = d.parent_code 
-                    where m.status <> -1 and s.status <> -1 and b.status <> -1 and d.status <> -1
-                     ";
-
-if($key != "")
+                left join office_items_sub_category s on m.code = s.parent_code ";
+if($lv1 != "")
 {
-    $query = $query . " and parent_code = '" . $key . "' ";
-    $query_cnt = $query_cnt . " and parent_code = '" . $key . "' ";
+    $query_cnt = $query_cnt . " and m.code = '" . $lv1 . "' ";
 }
+$query_cnt = $query_cnt . " left join office_items_brand b on CONCAT(m.code, s.code) = b.parent_code ";
+if($lv2 != "")
+{
+    $query_cnt = $query_cnt . " and s.code = '" . $lv2 . "' ";
+}
+$query_cnt = $query_cnt . " left join office_items_description d on CONCAT(m.code,s.code,b.code) = d.parent_code ";
+if($lv3 != "")
+{
+    $query_cnt = $query_cnt . " and b.code = '" . $lv3 . "' ";
+}
+$query_cnt = $query_cnt . "   where m.status <> -1 and s.status <> -1 and b.status <> -1 and d.status <> -1 ";
+
+if($lv4 != "")
+{
+    $query_cnt = $query_cnt . " and d.code = '" . $lv4 . "' ";
+}
+
+// if($key != "")
+// {
+//     $query = $query . " and parent_code = '" . $key . "' ";
+//     $query_cnt = $query_cnt . " and parent_code = '" . $key . "' ";
+// }
 
 
 $query = $query . " order by m.sn, s.sn, b.sn, d.sn ";

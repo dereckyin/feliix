@@ -30,6 +30,22 @@ $username = $decoded->data->username;
 $position = $decoded->data->position;
 $department = $decoded->data->department;
 
+$database = new Database();
+$db = $database->getConnection();
+
+
+$access6 = false;
+
+$query = "SELECT * FROM access_control WHERE office_items LIKE '%" . $username . "%' ";
+    $stmt = $db->prepare( $query );
+    $stmt->execute();
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $access6 = true;
+    }
+
+
+    if ($access6 == false)
+        header('location:index');
 
 }
 // if decode fails, it means jwt is invalid
