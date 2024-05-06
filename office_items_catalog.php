@@ -44,8 +44,8 @@ $query = "SELECT * FROM access_control WHERE office_items LIKE '%" . $username .
     }
 
 
-    if ($access6 == false)
-        header('location:index');
+    // if ($access6 == false)
+    //     header('location:index');
 
 }
 // if decode fails, it means jwt is invalid
@@ -532,10 +532,12 @@ header('location:index');
 
         <div class="tags">
             <a class="tag E focus">Catalog</a>
+<?php if($access6 == true) { ?>
             <a class="tag A" href="office_items_main_category">Main Category</a>
             <a class="tag B" href="office_items_sub_category">Sub Category</a>
             <a class="tag C" href="office_items_brand">Brand</a>
             <a class="tag D" href="office_items_description">Description</a>
+<?php } ?>
         </div>
 
         <!-- Blocks -->
