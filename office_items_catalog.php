@@ -44,9 +44,9 @@ $query = "SELECT * FROM access_control WHERE office_items LIKE '%" . $username .
     }
 
 
-    if ($access6 == false)
-        header('location:index');
-    
+    // if ($access6 == false)
+    //     header('location:index');
+
 }
 // if decode fails, it means jwt is invalid
 catch (Exception $e) {
@@ -69,7 +69,7 @@ header('location:index');
     <link rel="apple-touch-icon" href="images/iosicon.png"/>
 
     <!-- SEO -->
-    <title>Sub Category - Office Items Catalog</title>
+    <title>Office Items Catalog</title>
     <meta name="keywords" content="FELIIX">
     <meta name="Description" content="FELIIX">
     <meta name="robots" content="all"/>
@@ -112,6 +112,7 @@ header('location:index');
         $(function () {
             $('header').load('include/header.php');
         })
+
 
 
     </script>
@@ -362,7 +363,7 @@ header('location:index');
         }
 
         .heading-and-btn {
-            padding: 0 20px 10px;
+            padding: 0 0 10px;
             border-bottom: none;
         }
 
@@ -401,6 +402,119 @@ header('location:index');
             display: none;
         }
 
+
+        .list_function {
+            width: 100%;
+            padding: 0 10px 10px;
+        }
+
+        .list_function > .left_function {
+            float: left;
+            margin: 3px 20px 0 0;
+            display: flex;
+            align-items: center;
+        }
+
+
+        .list_function > .left_function > select {
+            font-size: 14px;
+            font-weight: 500;
+            padding: 3px 25px 3px 10px;
+            border-radius: 3px;
+            width: 200px;
+            height: 29px;
+            border: 1px solid #999;
+            background-image: url(../images/ui/icon_form_select_arrow_gray.svg);
+            margin-left: 10px;
+        }
+
+        .list_function > .left_function > select:nth-of-type(1) {
+            margin-left: 0;
+        }
+
+        .list_function > .left_function > select:nth-of-type(4) {
+            width: 320px;
+        }
+
+        .list_function > .left_function > button {
+            height: 29px;
+            width: 29px;
+            padding: 2px;
+            margin: 0 5px;
+            cursor: pointer;
+            vertical-align: middle;
+            border: 1px solid #999;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .block .tablebox {
+            width: 100%;
+            padding: 5px 10px 10px;
+            border: none;
+        }
+
+        div.tablebox table {
+            width: 100%;
+        }
+
+        div.tablebox thead tr th {
+            background-color: #BBB;
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            min-width: 50px;
+            border: 1px solid #999999;
+            border-left: none;
+        }
+
+        div.tablebox thead tr th:first-of-type {
+            border-left: 1px solid #999999;
+        }
+
+        div.tablebox tbody tr:nth-of-type(2n) td {
+            background-color: #DDD;
+        }
+
+        div.tablebox tbody tr:hover:nth-of-type(2n) td {
+            background-color: var(--orange01);
+        }
+
+        div.tablebox tbody tr td {
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 16px;
+            font-weight: 300;
+            color: #333333;
+            min-width: 50px;
+            border-right: 1px solid #AAB3C1;
+            border-bottom: 1px solid #AAB3C1;
+        }
+
+        div.tablebox tbody tr td:first-of-type {
+            border-left: 1px solid #AAB3C1;
+        }
+
+        div.tablebox tbody tr td:nth-of-type(1), div.tablebox tbody tr td:nth-of-type(3), div.tablebox tbody tr td:nth-of-type(5), div.tablebox tbody tr td:nth-of-type(7) {
+            width: 70px;
+        }
+
+        div.tablebox tbody tr td:nth-of-type(2), div.tablebox tbody tr td:nth-of-type(4), div.tablebox tbody tr td:nth-of-type(6), div.tablebox tbody tr td:nth-of-type(9) {
+            width: 250px;
+        }
+
+        div.tablebox tbody tr td:nth-of-type(8) {
+            width: 400px;
+        }
+
+        div.tablebox tbody tr td:nth-of-type(10) {
+            width: 100px;
+        }
+
     </style>
 
 </head>
@@ -417,108 +531,128 @@ header('location:index');
     <div class="mainContent" id="app">
 
         <div class="tags">
-            <a class="tag E" href="office_items_catalog">Catalog</a>
+            <a class="tag E focus">Catalog</a>
+<?php if($access6 == true) { ?>
             <a class="tag A" href="office_items_main_category">Main Category</a>
-            <a class="tag B focus">Sub Category</a>
+            <a class="tag B" href="office_items_sub_category">Sub Category</a>
             <a class="tag C" href="office_items_brand">Brand</a>
             <a class="tag D" href="office_items_description">Description</a>
+<?php } ?>
         </div>
 
         <!-- Blocks -->
-        <div class="block B focus">
+        <div class="block E focus">
 
-            <!-- 新增和修改 Sub Category Step1 -->
             <div class="heading-and-btn" style="padding-top: 15px;">
 
                 <ul>
                     <li>
-                        <h4>Add/Edit Sub Category</h4>
+                        <h4>Office Items Catalog</h4>
                     </li>
-                </ul>
-
-                <ul>
-                    <li>
-                        Choose Main Category:
-
-                        <select class="form-control" v-model='lv1'>
-                            <option value="">----- Main Category -----</option>
-                            <!-- Main Category 的選項內容格式為：Main Category(Code)，例如像是：OFFICE SUPPLIES(01) -->
-                            <option :value="item.code" v-for="(item, index) in level1">{{ item.category }}({{ item.code }})</option>
-
-                        </select>
-
-                        <button class="btn btn-primary" @click="detail()" style="margin-left: 30px;">Start</button>
-
-                    </li>
-
                 </ul>
 
             </div>
 
+            <div class="list_function">
 
-            <!-- 新增和修改 Sub Category Step2 -->
-            <div class="region" v-if="lv1_item.code != undefined">
-                <!-- 下面的 span 裡面需要放入被選取到的 Main Category 名字 和 Code，例如： OFFICE SUPPLIES(01) -->
-                <!-- <span class="heading">{{ (attribute_name !== "") ? attribute_name : "Tag Name" }}</span> -->
-                <span class="heading">{{ lv1_item.category }}{{ lv1_item.code == undefined ? '' : '(' + lv1_item.code + ')' }}</span>
+                <div class="left_function">
+                    <select v-model='lv1' v-on:change="getLevel2()">
+                        <option value="">----- Main Category -----</option>
+                        <!-- Main Category 的選項內容格式為：Main Category(Code)，例如像是：OFFICE SUPPLIES(01) -->
+                        <option :value="item.code" v-for="(item, index) in level1">{{ item.category }}({{ item.code }})</option>
+                    </select>
 
-                <div class="heading-and-btn" :ref="'porto'">
-                    <ul>
-                        <li>
-                        <input type="number" class="form-control" v-model="code" placeholder="Code" v-on:change="setTwoNumberDecimal()" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==2) return false;">
-                            <input type="text" class="form-control" v-model="category" placeholder="Sub Category">
-                        </li>
+                    <select v-model='lv2' v-on:change="getLevel3()">
+                        <option value="">----- Sub Category -----</option>
+                        <!-- Sub Category 的選項內容格式為：Sub Category(Code)，例如像是：BALLPEN(01)。當使用者選擇不同的 Main Category 時，Sub Category 的 select 只會載入特定 Main Category 底下的 Sub Category 到 select 裡面 -->
+                        <option :value="item.code" v-for="(item, index) in level2">{{ item.category }}({{ item.code }})</option>
+                    </select>
 
-                        <li>
-                            <button class="btn btn-info" @click="_add_criterion" v-if="!editing">Add</button>
-                            <button class="btn btn-secondary" v-if="editing" @click="_cancel_criterion">Cancel</button>
-                            <button class="btn btn-info" v-if="editing" @click="_update_criterion">Update</button>
-                        </li>
-                    </ul>
+                    <select v-model='lv3' v-on:change="getLevel4()">
+                        <option value="">----- Brand -----</option>
+                        <!-- Brand 的選項內容格式為：Brand(Code)，例如像是：HP(01)。當使用者在某一層的的 select 選擇了某一個值之後，下一層的 select 只會載入階層架構下該節點的子節點 到 select 裡面 -->
+                        <option :value="item.code" v-for="(item, index) in level3">{{ item.category }}({{ item.code }})</option>
+                    </select>
 
-                </div>
+                    <select v-model='lv4'>
+                        <option value="">----- Description -----</option>
+                        <option :value="item.code" v-for="(item, index) in level4">{{ item.category }}({{ item.code }})</option>
+                    </select>
 
-
-                <div style="width: 100%; overflow-x: auto; margin-top: 5px;">
-                    <table id="tb_main_category" class="table_template">
-                        <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th>Sub Category</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <tr v-for="(item,index) in level2" :key="index">
-                        <!-- <tr> -->
-                            <td>{{ item.code }}</td>
-                            <td>{{ item.category }}</td>
-                            <td>
-                                <i aria-hidden="true" class="fas fa-arrow-alt-circle-up"
-                                   @click="_set_up(index, item.sn)"></i>
-                                <i aria-hidden="true" class="fas fa-arrow-alt-circle-down"
-                                   @click="_set_down(index, item.sn)"></i>
-                                <i aria-hidden="true" class="fas fa-edit" @click="_edit(item.sn)"></i>
-                                <i aria-hidden="true" class="fas fa-trash-alt" @click="_del(item.sn)"></i>
-                            </td>
-                        </tr>
-                        </tbody>
-
-                    </table>
-                </div>
-
-                <div class="btnbox" v-if="editing == false">
-                    <button class="btn btn-secondary" @click="reset_org">Cancel</button>
-                    <button class="btn btn-primary" :disabled="submit == true" @click="apply">Save</button>
+                    <button style="margin-left: 20px;" @click="filter_apply_new()"><i aria-hidden="true" class="fas fa-filter"></i></button>
+                    <button @click="print()"><i aria-hidden="true" class="fas fa-file-export"></i></button>
+                    <button @click="clear()" style="width: 50px;">Clear</button>
 
                 </div>
+
+                <!-- 分頁功能 -->
+                <!-- 這個頁面需要做分頁，每一頁 20 筆資料  -->
+                <div class="pagenation">
+                    <a class="prev" style="color:#707071;" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+
+                    <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
+
+                    <a class="next" style="color:#707071;" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                </div>
+               
 
             </div>
 
+
+            <div class="tablebox">
+                <table id="showUser1">
+                    <thead>
+                    <tr>
+                        <th colspan="2">
+                            MAIN CATEGORY
+                        </th>
+                        <th colspan="2">
+                            SUB CATEGORY
+                        </th>
+                        <th colspan="2">
+                            BRAND
+                        </th>
+                        <th colspan="2">
+                            DESCRIPTION
+                        </th>
+                        <th>
+                            CODE
+                        </th>
+                        <th>
+                            QTY
+                        </th>
+                    </tr>
+                    </thaed>
+
+                    <tbody>
+
+                    <tr v-for="(item, index) in items">
+                        <td>{{ item.code1 }}</td>
+                        <td>{{ item.cat1 }}</td>
+                        <td>{{ item.code2 }}</td>
+                        <td>{{ item.cat2 }}</td>
+                        <td>{{ item.code3 }}</td>
+                        <td>{{ item.cat3 }}</td>
+                        <td>{{ item.code4 }}</td>
+                        <td>{{ item.cat4 }}</td>
+                        <td>{{ item.code1 + item.code2 + item.code3 + item.code4 }}</td>
+                        <td>{{ item.qty }}</td>
+                    </tr>
+
+
+                    </tbody>
+
+                </table>
+
+
+            </div>
         </div>
 
+
     </div>
+
+
+</div>
 </div>
 
 </body>
@@ -532,6 +666,6 @@ header('location:index');
 <script src="js/vue-i18n/vue-i18n.global.min.js"></script>
 <script src="js/element-ui@2.15.14/index.js"></script>
 <script src="js/element-ui@2.15.14/en.js"></script>
-<script defer src="js/office_items_sub_category.js"></script>
+<script defer src="js/office_items_catalog.js"></script>
 
 </html>

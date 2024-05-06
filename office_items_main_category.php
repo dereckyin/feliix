@@ -30,7 +30,23 @@ $username = $decoded->data->username;
 $position = $decoded->data->position;
 $department = $decoded->data->department;
 
+$database = new Database();
+$db = $database->getConnection();
 
+
+$access6 = false;
+
+$query = "SELECT * FROM access_control WHERE office_items LIKE '%" . $username . "%' ";
+    $stmt = $db->prepare( $query );
+    $stmt->execute();
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $access6 = true;
+    }
+
+
+    if ($access6 == false)
+        header('location:index');
+    
 }
 // if decode fails, it means jwt is invalid
 catch (Exception $e) {
@@ -395,6 +411,7 @@ header('location:index');
     <div class="mainContent" id="app">
 
         <div class="tags">
+            <a class="tag E" href="office_items_catalog">Catalog</a>
             <a class="tag A focus">Main Category</a>
             <a class="tag B" href="office_items_sub_category">Sub Category</a>
             <a class="tag C" href="office_items_brand">Brand</a>

@@ -5019,3 +5019,6 @@ CREATE TABLE IF NOT EXISTS `apply_for_petty_liquidate` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
+-- 20240430
+ALTER TABLE access_control
+ADD COLUMN `office_items` text COLLATE utf8mb4_unicode_ci;

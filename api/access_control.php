@@ -36,6 +36,7 @@ $soa = (isset($_POST['soa']) ?  $_POST['soa'] : '');
 $transmittal = (isset($_POST['transmittal']) ?  $_POST['transmittal'] : '');
 $edit_emp = (isset($_POST['edit_emp']) ?  $_POST['edit_emp'] : '');
 $edit_basic = (isset($_POST['edit_basic']) ?  $_POST['edit_basic'] : '');
+$office_items = (isset($_POST['office_items']) ?  $_POST['office_items'] : '');
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -61,7 +62,7 @@ if (!isset($jwt)) {
     if ($action == 1) {
         //select all
         try {
-            $query = "SELECT payess1, payess2, payess3, salary payess4, salary_mgt payess5, salary_slip_mgt payess6, payess7, payess8, access1, access2, access3, access4, access5, access6, access7, knowledge, vote1, vote2, schedule_confirm, halfday, tag_management, soa, transmittal, edit_emp, edit_basic from access_control where id = 1";
+            $query = "SELECT payess1, payess2, payess3, salary payess4, salary_mgt payess5, salary_slip_mgt payess6, payess7, payess8, access1, access2, access3, access4, access5, access6, access7, knowledge, vote1, vote2, schedule_confirm, halfday, tag_management, soa, transmittal, edit_emp, edit_basic, office_items from access_control where id = 1";
 
             $stmt = $db->prepare($query);
             $stmt->execute();
@@ -103,7 +104,8 @@ if (!isset($jwt)) {
                             soa = :soa,
                             transmittal = :transmittal,
                             edit_emp = :edit_emp,
-                            edit_basic = :edit_basic
+                            edit_basic = :edit_basic,
+                            office_items = :office_items
                         where id = :id";
 
             // prepare the query
@@ -137,6 +139,7 @@ if (!isset($jwt)) {
             $transmittal = htmlspecialchars(strip_tags($transmittal));
             $edit_emp = htmlspecialchars(strip_tags($edit_emp));
             $edit_basic = htmlspecialchars(strip_tags($edit_basic));
+            $office_items = htmlspecialchars(strip_tags($office_items));
             
             // bind the values
             $stmt->bindParam(':id', $id);
@@ -165,6 +168,7 @@ if (!isset($jwt)) {
             $stmt->bindParam(':transmittal', $transmittal);
             $stmt->bindParam(':edit_emp', $edit_emp);
             $stmt->bindParam(':edit_basic', $edit_basic);
+            $stmt->bindParam(':office_items', $office_items);
 
             try {
                 // execute the query, also check if query was successful
