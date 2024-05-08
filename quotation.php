@@ -23,6 +23,7 @@ try {
             // decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
+            $username = $decoded->data->username;
 
 $GLOBALS['position'] = $decoded->data->position;
 $GLOBALS['department'] = $decoded->data->department;
@@ -1869,7 +1870,12 @@ header( 'location:index' );
             border-bottom-color: rgb(230, 230, 230);
         }
 
-        .list_function.main a.print, .list_function.main a.specification, .list_function.main a.approvalform, .list_function.main a.export_excel, .list_function.main a.export_soa {
+        .list_function.main a.print,
+        .list_function.main a.specification,
+        .list_function.main a.export_excel,
+        .list_function.main a.approvalform,
+        .list_function.main a.export_soa,
+        .list_function.main a.cost_analysis {
             width: 30px;
             height: 30px;
             background-color: #00811e;
@@ -1936,8 +1942,24 @@ header( 'location:index' );
             left: 4px;
         }
 
+        .list_function.main a.cost_analysis::after {
+            content: " ";
+            background: url(images/ui/btn_calculator.svg);
+            background-size: 22px 22px;
+            background-repeat: no-repeat;
+            width: 45px;
+            height: 45px;
+            position: absolute;
+            top: 3px;
+            left: 4px;
+        }
 
-        .list_function.main a.print:hover, .list_function.main a.specification:hover, .list_function.main a.approvalform:hover, .list_function.main a.export_excel:hover, .list_function.main a.approvalform:hover {
+        .list_function.main a.print:hover,
+        .list_function.main a.specification:hover,
+        .list_function.main a.export_excel:hover,
+        .list_function.main a.approvalform:hover,
+        .list_function.main a.export_soa:hover,
+        .list_function.main a.cost_analysis:hover {
             background-color: #707071;
         }
 
@@ -2400,6 +2422,19 @@ header( 'location:index' );
                 <div class="popupblock">
                     <a id="" class="export_soa" title="Generate Corresponding Statement of Account" @click="soa_post()"></a>
                 </div>
+
+                <!-- 只有當使用者是 Dennis Lin 或 Ariel Lin 或 testmanager 時，下方這個 <div> 才會被建立出來，不要使用 display: none; 的方式 -->
+                <?php
+                if($username == 'Dennis Lin' || $username == 'Ariel Lin' || $username == 'testmanager')
+                {
+                ?>
+                <div class="popupblock">
+                    <a id="" class="cost_analysis" @click="cost_analysis()"></a>
+                </div>
+                <?php
+                }
+                ?>
+
             </div>
 
             <div class="block fn">
