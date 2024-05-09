@@ -1,4 +1,6 @@
 <?php
+ob_start();
+
 error_reporting(0);
 //header("Access-Control-Allow-Origin: https://feliix.myvnc.com");
 header("Access-Control-Allow-Origin: *");
@@ -7,7 +9,7 @@ header("Access-Control-Allow-Methods: *");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$id = (isset($_GET['id']) ?  $_GET['id'] : 0);
+$id = (isset($_POST['id']) ?  $_POST['id'] : 0);
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 
 include_once 'api/config/core.php';
