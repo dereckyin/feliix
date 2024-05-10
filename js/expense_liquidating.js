@@ -215,7 +215,7 @@ var app = new Vue({
       form_Data.append("crud", "Liquidated");
       form_Data.append("id", id);
       form_Data.append("remark", this.reject_reason);
-      form_Data.append("amount", this.amount_liquidated);
+      form_Data.append("amount", this.parsenumber(this.amount_liquidated));
 
       form_Data.append("amount_of_return", this.amount_of_return);
       form_Data.append("total_amount_liquidate", this.total_amount_liquidate);
