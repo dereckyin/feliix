@@ -573,7 +573,7 @@ header( 'location:index' );
                                v-bind:href="'project03_other?sid='+ receive_record.stage_id">Project: {{ receive_record.project_name }}
                             </a>
                             <a v-if="receive_record.task_type != ''" v-show="receive_record.is_edited == 1"
-                               v-bind:href="'task_management_' + receive_record.task_type + '?sid='+ receive_record.stage_id">{{ (receive_record.task_type == 'LT' ? 'Lighting' : (receive_record.task_type == 'OS' ? 'Office Systems' : (receive_record.task_type == 'SLS' ? 'Sales' : ''))) }} Department Task Management : {{ receive_record.project_name }}
+                               v-bind:href="'task_management_' + receive_record.task_type + '?sid='+ receive_record.stage_id">{{ (receive_record.task_type == 'LT' ? 'Lighting' : (receive_record.task_type == 'OS' ? 'Office Systems' : (receive_record.task_type == 'SLS' ? 'Sales' : (receive_record.task_type == 'SVC' ? 'Engineering' : '')))) }} Department Task Management : {{ receive_record.project_name }}
                             </a>
                             <!--
                             <select name="project_name" v-show="receive_record.is_edited == 0"
