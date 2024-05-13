@@ -4455,7 +4455,7 @@ function batch_date_start_company_notify_mail($user_array)
         $content = $content . "<p>Seniority Change: " . $user["seniority_old"] . " -> " . $user["seniority_new"] . " </p>";
         $content = $content . "<p> </p>";
     }
-    
+    $content = $content . "<p> </p>";
     $content = $content . "<p>Please log on to Feliix >> System Section >> User to adjust yearly leave credits.";
     $content = $content . "<p>URL: " . $conf::$mail_ip . "</p>";
 
@@ -16533,24 +16533,24 @@ function _rawurlencode($string) {
 
 function SetupMail($mail, $conf)
 {
-    $mail->SMTPDebug  = 0;
-    $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = "ssl";
-    $mail->Port       = 465;
-    $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf::$mail_host;
-    $mail->Username   = $conf::$mail_username;
-    $mail->Password   = $conf::$mail_password;
-
-
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "tls";
-    // $mail->Port       = 587;
+    // $mail->SMTPSecure = "ssl";
+    // $mail->Port       = 465;
     // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = 'smtp.ethereal.email';
-    // $mail->Username   = 'jermey.wilkinson@ethereal.email';
-    // $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
+    // $mail->Host       = $conf::$mail_host;
+    // $mail->Username   = $conf::$mail_username;
+    // $mail->Password   = $conf::$mail_password;
+
+
+    $mail->SMTPDebug  = 0;
+    $mail->SMTPAuth   = true;
+    $mail->SMTPSecure = "tls";
+    $mail->Port       = 587;
+    $mail->SMTPKeepAlive = true;
+    $mail->Host       = 'smtp.ethereal.email';
+    $mail->Username   = 'jermey.wilkinson@ethereal.email';
+    $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
 
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
