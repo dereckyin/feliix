@@ -42,7 +42,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $seniority_new = round(((date_diff(date_create($date_start_company), date_create($yesterday))->y * 12) + date_diff(date_create($date_start_company), date_create($yesterday))->format('%m')) / 12, 1);
 
     // if one year, send email
-    if ($seniority != $seniority_new)
+    if ($seniority != $seniority_new && ($seniority_new == 0.5 || $seniority_new == 1.0 || ($seniority_new > 1.0 && filter_var($seniority_new, FILTER_VALIDATE_INT))))
     {
         $user_array[] = [
             'id' => $id,
@@ -54,7 +54,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         ];
     }
 
-    if(count($user_array) > 0 && $seniority_new == 0.5)
+    if($seniority != $seniority_new && $seniority_new == 0.5)
     {
         $sql = "update `user` set seniority = $seniority_new where id = $id;";
             $stmt2 = $db->prepare($sql);
@@ -64,10 +64,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $stmt2 = $db->prepare($sql);
             $stmt2->execute();
     
-        batch_date_start_company_notify_mail($user_array);
     }
 
-    if(count($user_array) > 0 && $seniority_new == 1.0)
+    if($seniority != $seniority_new && $seniority_new == 1.0)
     {
         $sql = "update `user` set seniority = $seniority_new where id = $id;";
             $stmt2 = $db->prepare($sql);
@@ -77,10 +76,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $stmt2 = $db->prepare($sql);
             $stmt2->execute();
 
-        batch_date_start_company_notify_mail($user_array);
     }
 
-    if(count($user_array) > 0 && $seniority_new > 1.0 && filter_var($seniority_new, FILTER_VALIDATE_INT))
+    if($seniority != $seniority_new && $seniority_new > 1 && filter_var($seniority_new, FILTER_VALIDATE_INT))
     {
         $sql = "update `user` set seniority = $seniority_new where id = $id;";
             $stmt2 = $db->prepare($sql);
@@ -90,11 +88,15 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $stmt2 = $db->prepare($sql);
             $stmt2->execute();
 
-        batch_date_start_company_notify_mail($user_array);
+       
     }
 
 }
 
+if(count($user_array) > 0)
+    {
+        batch_date_start_company_notify_mail($user_array);
+    }
 
 
 
