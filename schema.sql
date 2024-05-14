@@ -5022,3 +5022,6 @@ CREATE TABLE IF NOT EXISTS `apply_for_petty_liquidate` (
 -- 20240430
 ALTER TABLE access_control
 ADD COLUMN `office_items` text COLLATE utf8mb4_unicode_ci;
+
+-- 20240513
+ALTER TABLE `user` CHANGE `seniority` `seniority` DECIMAL (10,1);
