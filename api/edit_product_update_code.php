@@ -815,12 +815,12 @@ else
             die();
         }
 
+        $db->commit();
+
         // update product_category srp_max 
         if($sub_category != "10020000")
-            check_code_exist_in_product($product_id, $srp_max, $srp_min, $qp_max, $qp_min, $db);
+            check_code_exist_in_product($product_id);
 
-            
-        $db->commit();
 
         if($user_id != 1 && $user_id != 2)
             EmailNotify($product_id, $db);
@@ -1845,7 +1845,16 @@ function get_product_info_from_code($code, $db) {
 }
 
 // check if code exist in p1_id or p2_id or p3_id
-function check_code_exist_in_product($pid, $p_srp_max, $p_srp_min, $p_qp_max, $p_qp_min, $db) {
+function check_code_exist_in_product($pid) {
+    $database = new Database();
+    $db = $database->getConnection();
+
+    if(file_exists('set_cache' . $pid . '.txt'))
+    {
+        // delete file
+        unlink('set_cache' . $pid . '.txt');
+    }
+
     $query = "SELECT id, p1_code, p2_code, p3_code, p1_qty, p2_qty, p3_qty FROM product_category WHERE p1_id = " . $pid . " or p2_id = " . $pid . " or p3_id = " . $pid . " ";
     $stmt = $db->prepare($query);
 
@@ -1913,16 +1922,24 @@ function check_code_exist_in_product($pid, $p_srp_max, $p_srp_min, $p_qp_max, $p
         if($qmin != 0)  
             $qp_min = $qmin;
 
-        $query = "update product_category set srp_max = :srp_max, srp_min = :srp_min, qp_max = :qp_max, qp_min = :qp_min where id = :id";
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':srp_max', $srp_max);
-        $stmt->bindParam(':srp_min', $srp_min);
-        $stmt->bindParam(':qp_max', $qp_max);
-        $stmt->bindParam(':qp_min', $qp_min);
-        $stmt->bindParam(':id', $row['id']);
+            try{
+                $query = "update product_category set srp_max = :srp_max, srp_min = :srp_min, qp_max = :qp_max, qp_min = :qp_min where id = :id";
+                $stmt1 = $db->prepare($query);
+                $stmt1->bindParam(':srp_max', $srp_max);
+                $stmt1->bindParam(':srp_min', $srp_min);
+                $stmt1->bindParam(':qp_max', $qp_max);
+                $stmt1->bindParam(':qp_min', $qp_min);
+                $stmt1->bindParam(':id', $row['id']);
+        
+                $stmt1->execute();
 
-        $stmt->execute();
+            }
+            catch (Exception $e) {
+                error_log($e->getMessage());
+            }
     }
+
+    
 
     return false;
 }
