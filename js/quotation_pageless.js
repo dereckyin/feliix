@@ -3887,6 +3887,187 @@ Installation:`;
         this.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
       }
     },
+
+    add_with_image_set_select(all) {
+      let change = true;
+      let price_ntd = 0;
+      let price = 0;
+      let quoted_price = 0;
+      let qty = 0;
+
+      let list = "";
+    
+      for(var i=0; i < this.product_set.length; i++){
+        let item_product = this.shallowCopy(
+          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+        )
+    
+        if(item_product.id != undefined)
+        {
+          price_ntd += item_product.price_ntd * 1;
+          price += item_product.price * 1;
+          quoted_price += item_product.quoted_price * 1;
+          qty += this.product_set[i].qty * 1;
+
+          if(item_product.v1 != "")
+            list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+          if(item_product.v2 != "")
+            list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+          if(item_product.v3 != "")
+            list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+
+          list += item_product.list + "\n";
+        }
+        else
+          change = false;
+      }
+    
+      if(change)
+      {
+        list.replace(/\n+$/, "");
+
+        var block_a_image = 'image';
+        var sn = 0;
+        if(this.toggle_type == 'A')
+          var items = this.temp_block_a;
+
+        if(this.toggle_type == 'B')
+          var items = this.temp_block_b;
+
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].id > sn) {
+            sn = items[i].id;
+          }
+        }
+
+        sn = sn + 1;
+
+        item = {
+          id: sn,
+          url: product_set[0] != undefined ? product_set[0].url : "",
+          url2: product_set[1] != undefined ? product_set[1].url : "",
+          url3: product_set[2] != undefined ? product_set[2].url : "",
+          file: {
+            name: "",
+          },
+          type : block_a_image,
+          code: this.code,
+          photo: product_set[0] != undefined ? product_set[0].url : "",
+          qty: qty,
+          price: price,
+          srp: quoted_price,
+          discount: "0",
+          amount: qty * quoted_price,
+          desc: "",
+          list: list,
+          num:"",
+          notes: "",
+          ratio:1.0,
+          pid: this.id,
+          v1: all == 'all' ? '' : set.v1,
+          v2: all == 'all' ? '' : set.v2,
+          v3: all == 'all' ? '' : set.v3,
+        };
+
+      }
+      else{
+        alert('Please choose option for each attribute of every sub-product');
+        return;
+      }
+    
+    },
+
+    
+    add_without_image_set_select(all) {
+      let change = true;
+      let price_ntd = 0;
+      let price = 0;
+      let quoted_price = 0;
+      let qty = 0;
+
+      let list = "";
+    
+      for(var i=0; i < this.product_set.length; i++){
+        let item_product = this.shallowCopy(
+          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+        )
+    
+        if(item_product.id != undefined)
+        {
+          price_ntd += item_product.price_ntd * 1;
+          price += item_product.price * 1;
+          quoted_price += item_product.quoted_price * 1;
+          qty += this.product_set[i].qty * 1;
+
+          if(item_product.v1 != "")
+            list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+          if(item_product.v2 != "")
+            list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+          if(item_product.v3 != "")
+            list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+
+          list += item_product.list + "\n";
+        }
+        else
+          change = false;
+      }
+    
+      if(change)
+      {
+
+        list.replace(/\n+$/, "");
+
+        var block_a_image = 'noimage';
+        var sn = 0;
+        if(this.toggle_type == 'A')
+          var items = this.temp_block_a;
+
+        if(this.toggle_type == 'B')
+          var items = this.temp_block_b;
+
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].id > sn) {
+            sn = items[i].id;
+          }
+        }
+
+        sn = sn + 1;
+
+        item = {
+          id: sn,
+          url: "",
+          url2: "",
+          url3: "",
+          file: {
+            name: "",
+          },
+          type : block_a_image,
+          code: this.code,
+          photo: "",
+          qty: qty,
+          price: price,
+          srp: quoted_price,
+          discount: "0",
+          amount: qty * quoted_price,
+          desc: "",
+          list: list,
+          num:"",
+          notes: "",
+          ratio:1.0,
+          pid: this.id,
+          v1: all == 'all' ? '' : set.v1,
+          v2: all == 'all' ? '' : set.v2,
+          v3: all == 'all' ? '' : set.v3,
+        };
+
+      }
+      else{
+        alert('Please choose option for each attribute of every sub-product');
+        return;
+      }
+    
+    },
+  
   
     
     set_up_specification_set(set) {
