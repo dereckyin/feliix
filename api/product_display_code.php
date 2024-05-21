@@ -1251,6 +1251,13 @@ function GetProductSet($id, $qty, $db){
                 $srp = 0;
                 $srp_quoted = 0;
 
+                if($row['price'] != null)
+                    array_push($pro_price,$row['price']);
+                if($row['price_ntd'] != null)
+                    array_push($pro_price_ntd,$row['price_ntd']);
+                if($row['quoted_price'] != null)
+                    array_push($pro_price_quoted,$row['quoted_price']);
+
                 if(count($product) > 0)
                 {
                     $variation1_text = $product[0]['k1'];
@@ -1300,6 +1307,10 @@ function GetProductSet($id, $qty, $db){
                     }
 
                 }
+
+                $pro_price = array_unique($pro_price);
+                $pro_price_ntd = array_unique($pro_price_ntd);
+                $pro_price_quoted = array_unique($pro_price_quoted);
 
                 sort($pro_price);
                 sort($pro_price_ntd);
