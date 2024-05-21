@@ -3568,9 +3568,9 @@ Installation:`;
   
     change_v_set(set){
       let item_product = this.shallowCopy(
-        set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == this.v3)
+        set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
       )
-  
+    
       if(item_product.id != undefined)
       {
         if(item_product.photo != "")
@@ -3580,18 +3580,18 @@ Installation:`;
         set.price_ntd = item_product.currency + " " + Number(item_product.price_ntd).toLocaleString();
         set.price = "PHP " + Number(item_product.price).toLocaleString();
         set.quoted_price = "PHP " + Number(item_product.quoted_price).toLocaleString();
-  
+    
         set.str_price_ntd_change = (item_product.price_ntd_change != "" ? "(" + item_product.price_ntd_change + ")" : "");
         set.str_price_change = (item_product.price_change != "" ? "(" + item_product.price_change + ")" : "");
         set.str_quoted_price_change = (item_product.quoted_price_change != "" ? "(" + item_product.quoted_price_change + ")" : "");
-  
+    
         set.phased_out = (item_product.enabled == 0 ? "F" : "");
-  
+    
         set.sheet_url = 'product_spec_sheet?sd=' + set.pid + '&d=' + item_product.id;
-  
+    
         set.out = item_product.enabled == 1 ? "" : "Y";
         set.out_cnt = 0;
-  
+    
         if(set.record[0]['out'] == 'Y')
         {
           set.out = "Y";
@@ -3604,19 +3604,50 @@ Installation:`;
         set.price_ntd = set.record[0]['price_ntd'];
         set.price = set.record[0]['price'];
         set.quoted_price = set.record[0]['quoted_price'];
-  
+    
         set.str_price_ntd_change = set.record[0]['str_price_ntd_change'];
         set.str_price_change = set.record[0]['str_price_change'];
         set.str_quoted_price_change = set.record[0]['str_quoted_price_change'];
-  
+    
         set.phased_out = "";
-  
+    
         set.sheet_url = 'product_spec_sheet?sd=' + set.pid;
-  
+    
         set.out = set.record[0]['out'];
         set.out_cnt = set.record[0]['phased_out_cnt'];
       }
-  
+    
+      this.check_all_set();
+    
+    },
+    
+    check_all_set(){
+      let change = true;
+      let price_ntd = 0;
+      let price = 0;
+      let quoted_price = 0;
+    
+      for(var i=0; i < this.product_set.length; i++){
+        let item_product = this.shallowCopy(
+          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+        )
+    
+        if(item_product.id != undefined)
+        {
+          price_ntd += item_product.price_ntd * 1;
+          price += item_product.price * 1;
+          quoted_price += item_product.quoted_price * 1;
+        }
+        else
+          change = false;
+      }
+    
+      if(change)
+      {
+        //this.price_ntd = price_ntd;
+        this.price = "PHP " + Number(price).toLocaleString();;
+        this.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
+      }
     },
   
     

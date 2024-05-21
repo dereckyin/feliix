@@ -3546,7 +3546,7 @@ PhaseOutAlert_set(phased_out_text){
 
 change_v_set(set){
   let item_product = this.shallowCopy(
-    set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == this.v3)
+    set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
   )
 
   if(item_product.id != undefined)
@@ -3595,6 +3595,37 @@ change_v_set(set){
     set.out_cnt = set.record[0]['phased_out_cnt'];
   }
 
+  this.check_all_set();
+
+},
+
+check_all_set(){
+  let change = true;
+  let price_ntd = 0;
+  let price = 0;
+  let quoted_price = 0;
+
+  for(var i=0; i < this.product_set.length; i++){
+    let item_product = this.shallowCopy(
+      this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+    )
+
+    if(item_product.id != undefined)
+    {
+      price_ntd += item_product.price_ntd * 1;
+      price += item_product.price * 1;
+      quoted_price += item_product.quoted_price * 1;
+    }
+    else
+      change = false;
+  }
+
+  if(change)
+  {
+    //this.price_ntd = price_ntd;
+    this.price = "PHP " + Number(price).toLocaleString();;
+    this.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
+  }
 },
 
 
