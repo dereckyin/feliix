@@ -3883,8 +3883,8 @@ Installation:`;
       if(change)
       {
         //this.price_ntd = price_ntd;
-        this.price = "PHP " + Number(price).toLocaleString();;
-        this.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
+        this.product.price = "PHP " + Number(price).toLocaleString();;
+        this.product.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
       }
     },
 
@@ -3896,6 +3896,8 @@ Installation:`;
       let qty = 0;
 
       let list = "";
+
+      let sets = [];
     
       for(var i=0; i < this.product_set.length; i++){
         let item_product = this.shallowCopy(
@@ -3916,7 +3918,9 @@ Installation:`;
           if(item_product.v3 != "")
             list += (item_product.k3 + ': ' + item_product.v3) + "\n";
 
-          list += item_product.list + "\n";
+          list += "\n";
+
+          sets.push(item_product);
         }
         else
           change = false;
@@ -3944,29 +3948,33 @@ Installation:`;
 
         item = {
           id: sn,
-          url: product_set[0] != undefined ? product_set[0].url : "",
-          url2: product_set[1] != undefined ? product_set[1].url : "",
-          url3: product_set[2] != undefined ? product_set[2].url : "",
+          url: this.product_set[0] != undefined ? this.product_set[0].url : "",
+          url2: this.product_set[1] != undefined ? this.product_set[1].url : "",
+          url3: this.product_set[2] != undefined ? this.product_set[2].url : "",
           file: {
             name: "",
           },
           type : block_a_image,
-          code: this.code,
-          photo: product_set[0] != undefined ? product_set[0].url : "",
-          qty: qty,
+          code: this.product.code,
+          photo: this.product_set[0] != undefined ? this.product_set[0].photo1 : "",
+          photo2: this.product_set[1] != undefined ? this.product_set[1].photo1 : "",
+          photo3: this.product_set[2] != undefined ? this.product_set[2].photo1 : "",
+          qty: 1,
           price: price,
           srp: quoted_price,
           discount: "0",
-          amount: qty * quoted_price,
+          amount: price,
           desc: "",
           list: list,
           num:"",
           notes: "",
           ratio:1.0,
-          pid: this.id,
-          v1: all == 'all' ? '' : set.v1,
-          v2: all == 'all' ? '' : set.v2,
-          v3: all == 'all' ? '' : set.v3,
+          pid: this.product.id,
+          v1: "",
+          v2: "",
+          v3: "",
+
+          ps_var : sets,
         };
 
       }
@@ -3975,6 +3983,8 @@ Installation:`;
         return;
       }
     
+      items.push(item);
+      alert('Add Successfully');
     },
 
     
@@ -3986,6 +3996,8 @@ Installation:`;
       let qty = 0;
 
       let list = "";
+
+      let sets = [];
     
       for(var i=0; i < this.product_set.length; i++){
         let item_product = this.shallowCopy(
@@ -4006,7 +4018,9 @@ Installation:`;
           if(item_product.v3 != "")
             list += (item_product.k3 + ': ' + item_product.v3) + "\n";
 
-          list += item_product.list + "\n";
+          list += "\n";
+
+          sets.push(item_product);
         }
         else
           change = false;
@@ -4042,22 +4056,24 @@ Installation:`;
             name: "",
           },
           type : block_a_image,
-          code: this.code,
+          code: this.product.code,
           photo: "",
-          qty: qty,
+          qty: 1,
           price: price,
           srp: quoted_price,
           discount: "0",
-          amount: qty * quoted_price,
+          amount: price,
           desc: "",
           list: list,
           num:"",
           notes: "",
           ratio:1.0,
-          pid: this.id,
-          v1: all == 'all' ? '' : set.v1,
-          v2: all == 'all' ? '' : set.v2,
-          v3: all == 'all' ? '' : set.v3,
+          pid: this.product.id,
+          v1: "",
+          v2: "",
+          v3: "",
+
+          ps_var : sets,
         };
 
       }
@@ -4065,6 +4081,9 @@ Installation:`;
         alert('Please choose option for each attribute of every sub-product');
         return;
       }
+
+      items.push(item);
+      alert('Add Successfully');
     
     },
   

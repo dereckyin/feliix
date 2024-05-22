@@ -1216,8 +1216,8 @@ var app = new Vue({
     if(change)
     {
       //this.price_ntd = price_ntd;
-      this.price = "PHP " + Number(price).toLocaleString();;
-      this.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
+      this.product.price = "PHP " + Number(price).toLocaleString();;
+        this.product.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
     }
   },
 

@@ -5025,3 +5025,7 @@ ADD COLUMN `office_items` text COLLATE utf8mb4_unicode_ci;
 
 -- 20240513
 ALTER TABLE `user` CHANGE `seniority` `seniority` DECIMAL (10,1);
+
+-- 20240520
+ALTER TABLE quotation_page_type_block
+ADD COLUMN `ps_var` JSON;
