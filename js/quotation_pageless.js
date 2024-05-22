@@ -3886,6 +3886,11 @@ Installation:`;
         this.product.price = "PHP " + Number(price).toLocaleString();;
         this.product.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
       }
+      else
+      {
+        this.product.price = this.price;
+          this.product.quoted_price = this.quoted_price;
+      }
     },
 
     add_with_image_set_select(all) {
@@ -3903,6 +3908,38 @@ Installation:`;
         let item_product = this.shallowCopy(
           this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
         )
+
+        var list_g = "";
+
+        var k1, k2, k3;
+        k1 = this.product_set[i].variation1 === "custom" ? this.product_set[i].variation1_custom : this.product_set[i].variation1;
+        k2 = this.product_set[i].variation2 === "custom" ? this.product_set[i].variation2_custom : this.product_set[i].variation2;
+        k3 = this.product_set[i].variation3 === "custom" ? this.product_set[i].variation3_custom : this.product_set[i].variation3;
+
+        if(k1 !== '')
+          list_g += this.product_set[i].variation1 === "custom" ? this.product_set[i].variation1_custom : this.product_set[i].variation1 + ': ' + this.product_set[i].variation1_value.join(', ') + "\n";
+        if(k2 !== '')
+          list_g += this.product_set[i].variation2 === "custom" ? this.product_set[i].variation2_custom : this.product_set[i].variation2 + ': ' + this.product_set[i].variation2_value.join(', ') + "\n";
+        if(k3 !== '')
+          list_g += this.product_set[i].variation3 === "custom" ? this.product_set[i].variation3_custom : this.product_set[i].variation3 + ': ' + this.product_set[i].variation3_value.join(', ') + "\n";
+
+
+        for(var j=0; j<this.product_set[i].specification.length; j++)
+        {
+            if(this.product_set[i].specification[j].k1 !== '')
+              list_g += this.product_set[i].specification[j].k1 + ': ' + this.product_set[i].specification[j].v1 + "\n";
+            if(this.product_set[i].specification[j].k2 !== '')
+              list_g += this.product_set[i].specification[j].k2 + ': ' + this.product_set[i].specification[j].v2 + "\n";
+        }
+
+        // add phased out information
+        if((this.product_set[i].phased_out_cnt > 0 && this.phased == 1) || (this.product_set[i].phased_out_cnt > 0 && all == 'all'))
+        {
+          list_g += "\n";
+          list_g += "Phased-out Variants:\n";
+          list_g += this.product_set[i].phased_out_text.split("<br/>").join("\n");
+        }
+        
     
         if(item_product.id != undefined)
         {
@@ -3918,7 +3955,11 @@ Installation:`;
           if(item_product.v3 != "")
             list += (item_product.k3 + ': ' + item_product.v3) + "\n";
 
+          list += list_g;
+
           list += "\n";
+
+          
 
           sets.push(item_product);
         }

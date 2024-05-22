@@ -3278,6 +3278,11 @@ check_all_set(){
     this.product.price = "PHP " + Number(price).toLocaleString();;
         this.product.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
   }
+  else
+      {
+        this.product.price = this.price;
+          this.product.quoted_price = this.quoted_price;
+      }
 },
 
 
