@@ -3699,46 +3699,41 @@ add_with_image_set_select(all) {
   {
     list.replace(/\n+$/, "");
 
-    var block_a_image = 'image';
     var sn = 0;
-    if(this.toggle_type == 'A')
-      var items = this.temp_block_a;
 
-    if(this.toggle_type == 'B')
-      var items = this.temp_block_b;
-
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].id > sn) {
-        sn = items[i].id;
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].id * 1 > sn) {
+        sn = this.items[i].id * 1;
       }
     }
 
-    sn = sn + 1;
+    sn = sn * 1 + 1;
+
+    items = [];
 
     item = {
+      is_checked:false,
+      is_edit: false,
       id: sn,
-      url: this.product_set[0] != undefined ? this.product_set[0].url : "",
-      url2: this.product_set[1] != undefined ? this.product_set[1].url : "",
-      url3: this.product_set[2] != undefined ? this.product_set[2].url : "",
-      file: {
-        name: "",
-      },
-      type : block_a_image,
-      code: this.product.code,
-      photo: this.product_set[0] != undefined ? this.product_set[0].photo1 : "",
+      sn: sn,
+      confirm: "A",
+      confirm_text: "Approved",
+      brand:"",
+      brand_other:"",
+      photo1: this.product_set[0] != undefined ? this.product_set[0].photo1 : "",
       photo2: this.product_set[1] != undefined ? this.product_set[1].photo1 : "",
       photo3: this.product_set[2] != undefined ? this.product_set[2].photo1 : "",
-      qty: 1,
-      price: srp,
-      srp: quoted_price,
-      discount: "0",
-      amount: srp,
-      desc: "",
-      list: list,
-      num:"",
-      notes: "",
-      ratio:1.0,
+      code: this.product.code,
+      brief:list,
+      listing:"",
+      qty:1,
+      backup_qty:"",
+      srp:srp,
+      date_needed:"",
       pid: this.product.id,
+      status:"3",
+      btn2:"1",
+      notes:[],
       v1: "",
       v2: "",
       v3: "",
@@ -3753,7 +3748,35 @@ add_with_image_set_select(all) {
   }
 
   items.push(item);
-  alert('Add Successfully');
+
+  var token = localStorage.getItem("token");
+  var form_Data = new FormData();
+
+  form_Data.append("jwt", token);
+  form_Data.append("od_id", this.id);
+  form_Data.append("block", JSON.stringify(items));
+
+  form_Data.append("access7", this.access7);
+
+  axios({
+    method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    url: "api/order_taiwan_p1_item_insert",
+    data: form_Data,
+  })
+    .then(function(response) {
+      //handle success
+
+      _this.getRecord();
+      alert('Add Successfully');
+
+    })
+    .catch(function(error) {
+      alert(error);
+
+    });
 },
 
 
@@ -3833,47 +3856,46 @@ add_without_image_set_select(all) {
 
     list.replace(/\n+$/, "");
 
-    var block_a_image = 'noimage';
     var sn = 0;
-    if(this.toggle_type == 'A')
-      var items = this.temp_block_a;
 
-    if(this.toggle_type == 'B')
-      var items = this.temp_block_b;
-
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].id > sn) {
-        sn = items[i].id;
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.items[i].id * 1 > sn) {
+        sn = this.items[i].id * 1;
       }
     }
 
-    sn = sn + 1;
+    sn = sn * 1 + 1;
+
+    items = [];
 
     item = {
+      is_checked:false,
+      is_edit: false,
       id: sn,
-      url: "",
-      url2: "",
-      url3: "",
-      file: {
-        name: "",
-      },
-      type : block_a_image,
+      sn: sn,
+      confirm: "A",
+      confirm_text: "Approved",
+      brand:"",
+      brand_other:"",
+      photo1:'',
+      photo2:'',
+      photo3:'',
       code: this.product.code,
-      photo: "",
-      qty: 1,
-      price: srp,
-      srp: quoted_price,
-      discount: "0",
-      amount: srp,
-      desc: "",
-      list: list,
-      num:"",
-      notes: "",
-      ratio:1.0,
+      brief:list,
+      listing:"",
+      qty:1,
+      backup_qty:"",
+      srp:srp,
+      date_needed:"",
       pid: this.product.id,
       v1: "",
       v2: "",
       v3: "",
+      shipping_way:"",
+      shipping_number:"",
+      status:"3",
+      notes:[],
+      btn2:"1",
 
       ps_var : sets,
     };
@@ -3885,7 +3907,34 @@ add_without_image_set_select(all) {
   }
 
   items.push(item);
-  alert('Add Successfully');
+  var token = localStorage.getItem("token");
+  var form_Data = new FormData();
+
+  form_Data.append("jwt", token);
+  form_Data.append("od_id", this.id);
+  form_Data.append("block", JSON.stringify(items));
+
+  form_Data.append("access7", this.access7);
+
+  axios({
+    method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    url: "api/order_taiwan_p1_item_insert",
+    data: form_Data,
+  })
+    .then(function(response) {
+      //handle success
+
+      _this.getRecord();
+      alert('Add Successfully');
+
+    })
+    .catch(function(error) {
+  
+
+    });
 
 },
 
@@ -4324,7 +4373,7 @@ item = {
     v3: all == 'all' ? '' : set.v3,
     shipping_way:"",
       shipping_number:"",
-      tatus:"3",
+      status:"3",
     notes:[],
     btn2:"1"
   };

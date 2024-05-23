@@ -209,6 +209,7 @@ switch ($method) {
                     `v1` = :v1,
                     `v2` = :v2,
                     `v3` = :v3,
+                    `ps_var` = :ps_var,
                     `pid` = :pid,
                     `status` = 0,
                     `create_id` = :create_id,
@@ -247,8 +248,11 @@ switch ($method) {
                 $v1 = $temp_block_a['v1'];
                 $v2 = $temp_block_a['v2'];
                 $v3 = $temp_block_a['v3'];
-                $pid = $temp_block_a['pid'];
 
+                $ps_var = isset($block_array[$i]['ps_var']) ? $block_array[$i]['ps_var'] : [];
+                $json_ps_var = json_encode($ps_var);
+
+                $pid = $temp_block_a['pid'];
 
                 $qty == '' ? $qty = 0 : $qty = $qty;
                 $ratio == '' ? $ratio = 1.0 : $ratio = $ratio;
@@ -278,6 +282,7 @@ switch ($method) {
                 $stmt->bindParam(':v1', $v1);
                 $stmt->bindParam(':v2', $v2);
                 $stmt->bindParam(':v3', $v3);
+                $stmt->bindParam(':ps_var', $json_ps_var);
                 $stmt->bindParam(':pid', $pid);
 
                 

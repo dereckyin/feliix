@@ -5029,3 +5029,15 @@ ALTER TABLE `user` CHANGE `seniority` `seniority` DECIMAL (10,1);
 -- 20240520
 ALTER TABLE quotation_page_type_block
 ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE approval_form_quotation_page_type_block
+ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE iq_item
+ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE od_item
+ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE price_comparison_item
+ADD COLUMN `ps_var` JSON;

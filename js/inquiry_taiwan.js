@@ -3064,21 +3064,17 @@ out : "",
       {
         list.replace(/\n+$/, "");
 
-        var block_a_image = 'image';
         var sn = 0;
-        if(this.toggle_type == 'A')
-          var items = this.temp_block_a;
 
-        if(this.toggle_type == 'B')
-          var items = this.temp_block_b;
-
-        for (let i = 0; i < items.length; i++) {
-          if (items[i].id > sn) {
-            sn = items[i].id;
+        for (let i = 0; i < this.items.length; i++) {
+          if (this.items[i].id * 1 > sn) {
+            sn = this.items[i].id * 1;
           }
         }
 
-        sn = sn + 1;
+        sn = sn * 1 + 1;
+
+        items = [];
 
         item = {
           id: sn,
@@ -3118,7 +3114,35 @@ out : "",
       }
     
       items.push(item);
-      alert('Add Successfully');
+      
+      var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+
+        form_Data.append("jwt", token);
+        form_Data.append("iq_id", this.id);
+        form_Data.append("block", JSON.stringify(items));
+
+        form_Data.append("access7", this.access7);
+
+        axios({
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          url: "api/inquiry_taiwan_p1_item_insert",
+          data: form_Data,
+        })
+          .then(function(response) {
+            //handle success
+
+            _this.getRecord();
+            alert('Add Successfully');
+
+          })
+          .catch(function(error) {
+        
+
+          });
     },
 
     
@@ -3198,21 +3222,17 @@ out : "",
 
         list.replace(/\n+$/, "");
 
-        var block_a_image = 'noimage';
         var sn = 0;
-        if(this.toggle_type == 'A')
-          var items = this.temp_block_a;
 
-        if(this.toggle_type == 'B')
-          var items = this.temp_block_b;
-
-        for (let i = 0; i < items.length; i++) {
-          if (items[i].id > sn) {
-            sn = items[i].id;
+        for (let i = 0; i < this.items.length; i++) {
+          if (this.items[i].id * 1 > sn) {
+            sn = this.items[i].id * 1;
           }
         }
 
-        sn = sn + 1;
+        sn = sn * 1 + 1;
+
+        items = [];
 
         item = {
           id: sn,
@@ -3250,7 +3270,35 @@ out : "",
       }
 
       items.push(item);
-      alert('Add Successfully');
+
+      var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+
+        form_Data.append("jwt", token);
+        form_Data.append("iq_id", this.id);
+        form_Data.append("block", JSON.stringify(items));
+
+        form_Data.append("access7", this.access7);
+
+        axios({
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          url: "api/inquiry_taiwan_p1_item_insert",
+          data: form_Data,
+        })
+          .then(function(response) {
+            //handle success
+
+            _this.getRecord();
+            alert('Add Successfully');
+
+          })
+          .catch(function(error) {
+        
+
+          });
     
     },
   
