@@ -3899,8 +3899,10 @@ Installation:`;
       let price = 0;
       let quoted_price = 0;
       let qty = 0;
+      let srp = 0;
 
       let list = "";
+      let ps_var = "";
 
       let sets = [];
     
@@ -3910,19 +3912,6 @@ Installation:`;
         )
 
         var list_g = "";
-
-        var k1, k2, k3;
-        k1 = this.product_set[i].variation1 === "custom" ? this.product_set[i].variation1_custom : this.product_set[i].variation1;
-        k2 = this.product_set[i].variation2 === "custom" ? this.product_set[i].variation2_custom : this.product_set[i].variation2;
-        k3 = this.product_set[i].variation3 === "custom" ? this.product_set[i].variation3_custom : this.product_set[i].variation3;
-
-        if(k1 !== '')
-          list_g += this.product_set[i].variation1 === "custom" ? this.product_set[i].variation1_custom : this.product_set[i].variation1 + ': ' + this.product_set[i].variation1_value.join(', ') + "\n";
-        if(k2 !== '')
-          list_g += this.product_set[i].variation2 === "custom" ? this.product_set[i].variation2_custom : this.product_set[i].variation2 + ': ' + this.product_set[i].variation2_value.join(', ') + "\n";
-        if(k3 !== '')
-          list_g += this.product_set[i].variation3 === "custom" ? this.product_set[i].variation3_custom : this.product_set[i].variation3 + ': ' + this.product_set[i].variation3_value.join(', ') + "\n";
-
 
         for(var j=0; j<this.product_set[i].specification.length; j++)
         {
@@ -3948,20 +3937,29 @@ Installation:`;
           quoted_price += item_product.quoted_price * 1;
           qty += this.product_set[i].qty * 1;
 
-          if(item_product.v1 != "")
+          srp = quoted_price != 0 ? quoted_price : price;
+
+          ps_var = ('id: ' + this.product_set[i].id) + "\n";
+
+          if(item_product.v1 != ""){
             list += (item_product.k1 + ': ' + item_product.v1) + "\n";
-          if(item_product.v2 != "")
+            ps_var += (item_product.k1 + ': ' + item_product.v1) + "\n";
+          }
+          if(item_product.v2 != ""){
             list += (item_product.k2 + ': ' + item_product.v2) + "\n";
-          if(item_product.v3 != "")
+            ps_var += (item_product.k2 + ': ' + item_product.v2) + "\n";
+          }
+          if(item_product.v3 != ""){
             list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+            ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+          }
+
+          sets.push(ps_var);
 
           list += list_g;
 
           list += "\n";
 
-          
-
-          sets.push(item_product);
         }
         else
           change = false;
@@ -4001,10 +3999,10 @@ Installation:`;
           photo2: this.product_set[1] != undefined ? this.product_set[1].photo1 : "",
           photo3: this.product_set[2] != undefined ? this.product_set[2].photo1 : "",
           qty: 1,
-          price: price,
+          price: srp,
           srp: quoted_price,
           discount: "0",
-          amount: price,
+          amount: srp,
           desc: "",
           list: list,
           num:"",
@@ -4035,8 +4033,10 @@ Installation:`;
       let price = 0;
       let quoted_price = 0;
       let qty = 0;
+      let srp = 0;
 
       let list = "";
+      let ps_var = "";
 
       let sets = [];
     
@@ -4044,6 +4044,24 @@ Installation:`;
         let item_product = this.shallowCopy(
           this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
         )
+
+        var list_g = "";
+ 
+        for(var j=0; j<this.product_set[i].specification.length; j++)
+        {
+            if(this.product_set[i].specification[j].k1 !== '')
+              list_g += this.product_set[i].specification[j].k1 + ': ' + this.product_set[i].specification[j].v1 + "\n";
+            if(this.product_set[i].specification[j].k2 !== '')
+              list_g += this.product_set[i].specification[j].k2 + ': ' + this.product_set[i].specification[j].v2 + "\n";
+        }
+
+        // add phased out information
+        if((this.product_set[i].phased_out_cnt > 0 && this.phased == 1) || (this.product_set[i].phased_out_cnt > 0 && all == 'all'))
+        {
+          list_g += "\n";
+          list_g += "Phased-out Variants:\n";
+          list_g += this.product_set[i].phased_out_text.split("<br/>").join("\n");
+        }
     
         if(item_product.id != undefined)
         {
@@ -4052,16 +4070,29 @@ Installation:`;
           quoted_price += item_product.quoted_price * 1;
           qty += this.product_set[i].qty * 1;
 
-          if(item_product.v1 != "")
+          srp = quoted_price != 0 ? quoted_price : price;
+
+          ps_var = ('id: ' + this.product_set[i].id) + "\n";
+
+          if(item_product.v1 != ""){
             list += (item_product.k1 + ': ' + item_product.v1) + "\n";
-          if(item_product.v2 != "")
+            ps_var += (item_product.k1 + ': ' + item_product.v1) + "\n";
+          }
+          if(item_product.v2 != ""){
             list += (item_product.k2 + ': ' + item_product.v2) + "\n";
-          if(item_product.v3 != "")
+            ps_var += (item_product.k2 + ': ' + item_product.v2) + "\n";
+          }
+          if(item_product.v3 != ""){
             list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+            ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+          }
+
+          sets.push(ps_var);
+
+          list += list_g;
 
           list += "\n";
 
-          sets.push(item_product);
         }
         else
           change = false;
@@ -4100,10 +4131,10 @@ Installation:`;
           code: this.product.code,
           photo: "",
           qty: 1,
-          price: price,
+          price: srp,
           srp: quoted_price,
           discount: "0",
-          amount: price,
+          amount: srp,
           desc: "",
           list: list,
           num:"",
