@@ -2414,6 +2414,25 @@ try {
                             <span>Description: </span> {{ product.description }}
                         </div>
 
+                        <!-- 針對 Product Set 產品的新加入方法 -->
+                        <div class="btnbox">
+                            <ul>
+                                <li v-if="toggle_type == 'A'">
+                                    <button class="btn btn-info" @click="add_with_image_set_select()" v-if="out==''">Add with Image</button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-info" @click="add_without_image_set_select()" v-if="out==''">Add without Image</button>
+                                </li>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                    <button class="btn btn-warning" @click="close_single()">Cancel</button>
+                                </li>
+
+                            </ul>
+                        </div>
+
                     </div>
 
                 </div>
