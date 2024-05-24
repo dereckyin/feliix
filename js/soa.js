@@ -4268,36 +4268,70 @@ Installation:`;
 
         sn = sn + 1;
 
-        item = {
-          id: sn,
-          url: this.product_set[0] != undefined ? this.product_set[0].url : "",
-          url2: this.product_set[1] != undefined ? this.product_set[1].url : "",
-          url3: this.product_set[2] != undefined ? this.product_set[2].url : "",
-          file: {
-            name: "",
-          },
-          type : block_a_image,
-          code: this.product.code,
-          photo: this.product_set[0] != undefined ? this.product_set[0].photo1 : "",
-          photo2: this.product_set[1] != undefined ? this.product_set[1].photo1 : "",
-          photo3: this.product_set[2] != undefined ? this.product_set[2].photo1 : "",
-          qty: 1,
-          price: srp,
-          srp: quoted_price,
-          discount: "0",
-          amount: srp,
-          desc: "",
-          list: list,
-          num:"",
-          notes: "",
-          ratio:1.0,
-          pid: this.product.id,
-          v1: "",
-          v2: "",
-          v3: "",
+        if(this.toggle_type == 'A')
+          {
+            item = {
+              id: sn,
+              url: this.product_set[0] != undefined ? this.product_set[0].url : "",
+              url2: this.product_set[1] != undefined ? this.product_set[1].url : "",
+              url3: this.product_set[2] != undefined ? this.product_set[2].url : "",
+      
+              file: {
+                name: "",
+              },
+              type : block_a_image,
+              code: this.product.code,
+              photo: this.product_set[0] != undefined ? this.product_set[0].photo1 : "",
+              photo2: this.product_set[1] != undefined ? this.product_set[1].photo1 : "",
+              photo3: this.product_set[2] != undefined ? this.product_set[2].photo1 : "",
+              qty: 1,
+              price: srp,
+              srp: srp,
+              discount: "0",
+              amount: "",
+              desc: "",
+              list: list,
+              num:"",
+              ratio:1.0,
+              notes: "",
+              pid: this.product.id,
+              v1: "",
+              v2: "",
+              v3: "",
 
-          ps_var : sets,
-        };
+              ps_var : sets,
+            };
+          }
+      
+          if(this.toggle_type == 'B')
+          {
+            item = {
+              id: sn,
+              
+              url:  '',
+              url2 : '',
+              url3 : '',
+      
+              code: "",
+              photo: photo,
+              qty: "1",
+              price: srp,
+              srp: srp,
+              ratio:1.0,
+              discount: "0",
+              amount: "",
+              desc: "",
+              list: list,
+              num:"",
+              notes: "",
+              pid: this.product.id,
+              v1: "",
+              v2: "",
+              v3: "",
+
+              ps_var : sets,
+            };
+          }
 
       }
       else{
@@ -4402,34 +4436,68 @@ Installation:`;
 
         sn = sn + 1;
 
-        item = {
-          id: sn,
-          url: "",
-          url2: "",
-          url3: "",
-          file: {
-            name: "",
-          },
-          type : block_a_image,
-          code: this.product.code,
-          photo: "",
-          qty: 1,
-          price: srp,
-          srp: quoted_price,
-          discount: "0",
-          amount: srp,
-          desc: "",
-          list: list,
-          num:"",
-          notes: "",
-          ratio:1.0,
-          pid: this.product.id,
-          v1: "",
-          v2: "",
-          v3: "",
 
-          ps_var : sets,
-        };
+        if(this.toggle_type == 'A')
+          {
+            item = {
+              id: sn,
+              url: "",
+              url2: "",
+              url3: "",
+              file: {
+                name: "",
+              },
+              type : block_a_image,
+              code: this.product.code,
+              photo: "",
+              qty: 1,
+              price: srp,
+              srp: srp,
+              discount: "0",
+              amount: "",
+              desc: "",
+              list: list,
+              num:"",
+              notes: "",
+              ratio:1.0,
+              pid: this.product.id,
+              v1: "",
+              v2: "",
+              v3: "",
+
+              ps_var : sets,
+            };
+          }
+      
+          if(this.toggle_type == 'B')
+          {
+            item = {
+              id: sn,
+              
+              url: '',
+              url2 : '',
+              url3 : '',
+      
+              code: this.product.code,
+              photo: "",
+              qty: "1",
+              price: srp,
+              srp: srp,
+              ratio:1.0,
+              discount: "0",
+              amount: "",
+              desc: "",
+              list: list,
+              num:"",
+              notes: "",
+              pid: this.product.id,
+              v1: "",
+              v2: "",
+              v3: "",
+
+              ps_var : sets,
+            };
+          }
 
       }
       else{

@@ -5041,3 +5041,9 @@ ADD COLUMN `ps_var` JSON;
 
 ALTER TABLE price_comparison_item
 ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE soa_quotation_page_type_block
+ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE transmittal_page_type_block
+ADD COLUMN `ps_var` JSON;

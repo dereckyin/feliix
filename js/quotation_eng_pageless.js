@@ -5471,13 +5471,8 @@ Installation:`;
       {
         list.replace(/\n+$/, "");
 
-        var block_a_image = 'image';
         var sn = 0;
-        if(this.toggle_type == 'A')
-          var items = this.temp_block_a;
-
-        if(this.toggle_type == 'B')
-          var items = this.temp_block_b;
+        var items = this.temp_installation.block;
 
         for (let i = 0; i < items.length; i++) {
           if (items[i].id > sn) {
@@ -5488,32 +5483,19 @@ Installation:`;
         sn = sn + 1;
 
         item = {
+
           id: sn,
-          url: this.product_set[0] != undefined ? this.product_set[0].url : "",
-          url2: this.product_set[1] != undefined ? this.product_set[1].url : "",
-          url3: this.product_set[2] != undefined ? this.product_set[2].url : "",
-          file: {
-            name: "",
-          },
-          type : block_a_image,
-          code: this.product.code,
-          photo: this.product_set[0] != undefined ? this.product_set[0].photo1 : "",
-          photo2: this.product_set[1] != undefined ? this.product_set[1].photo1 : "",
-          photo3: this.product_set[2] != undefined ? this.product_set[2].photo1 : "",
+          no: "",
+          desc: this.product.code,
           qty: 1,
-          price: srp,
-          srp: quoted_price,
-          discount: "0",
-          amount: srp,
-          desc: "",
-          list: list,
-          num:"",
-          notes: "",
-          ratio:1.0,
-          pid: this.product.id,
-          v1: "",
-          v2: "",
-          v3: "",
+          unit: "",
+          duration: "",
+          material_price: (price == null || price == 0) ? srp : price,
+          labor_price: (price == null || price == 0) ? srp : price,
+          ratio: "1.00",
+          total: (price == null || price == 0) ? srp : price,
+          group: "",
+          pid:  this.product.id,
 
           ps_var : sets,
         };
