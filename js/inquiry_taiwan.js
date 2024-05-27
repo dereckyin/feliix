@@ -3000,6 +3000,8 @@ out : "",
       let ps_var = "";
 
       let sets = [];
+
+      let _this = this;
     
       for(var i=0; i < this.product_set.length; i++){
         let item_product = this.shallowCopy(
@@ -3115,6 +3117,7 @@ out : "",
       }
     
       items.push(item);
+
       
       var token = localStorage.getItem("token");
         var form_Data = new FormData();
@@ -3159,6 +3162,8 @@ out : "",
       let ps_var = "";
 
       let sets = [];
+
+      let _this = this;
     
       for(var i=0; i < this.product_set.length; i++){
         let item_product = this.shallowCopy(
