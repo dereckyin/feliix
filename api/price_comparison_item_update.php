@@ -249,7 +249,7 @@ switch ($method) {
                 $v2 = $temp_block_a['v2'];
                 $v3 = $temp_block_a['v3'];
 
-                $ps_var = isset($block_array[$i]['ps_var']) ? $block_array[$i]['ps_var'] : [];
+                $ps_var = isset($temp_block_a['ps_var']) ? $temp_block_a['ps_var'] : [];
                 $json_ps_var = json_encode($ps_var);
 
                 $pid = $temp_block_a['pid'];

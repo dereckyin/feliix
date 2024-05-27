@@ -104,6 +104,7 @@ switch ($method) {
                     `v1` = :v1,
                     `v2` = :v2,
                     `v3` = :v3,
+                    `ps_var` = :ps_var,
                     `status` = 0,
                     `status_at` = now(),
                     `normal` = :normal,
@@ -140,6 +141,9 @@ switch ($method) {
                 $v2 = isset($block_array[$i]['v2']) ? $block_array[$i]['v2'] : '';
                 $v3 = isset($block_array[$i]['v3']) ? $block_array[$i]['v3'] : '';
 
+                $ps_var = isset($block_array[$i]['ps_var']) ? $block_array[$i]['ps_var'] : [];
+                $json_ps_var = json_encode($ps_var);
+
                 // check if normal product
                 $is_normal = IsNormalProduct($pid, $v1, $v2, $v3, $db);
 
@@ -164,6 +168,8 @@ switch ($method) {
                 $stmt->bindParam(':v1', $v1);
                 $stmt->bindParam(':v2', $v2);
                 $stmt->bindParam(':v3', $v3);
+
+                $stmt->bindParam(':ps_var', $json_ps_var);
 
                 $stmt->bindParam(':normal', $is_normal);
               
@@ -323,6 +329,7 @@ function GetBlocks($qid, $db){
         v1,
         v2,
         v3,
+        ps_var,
         listing,
         num,
         pid
@@ -354,6 +361,9 @@ function GetBlocks($qid, $db){
         $v1 = $row['v1'];
         $v2 = $row['v2'];
         $v3 = $row['v3'];
+
+        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_val'], true);
+
         $listing = $row['listing'];
     
         $type == "" ? "" : "image";
@@ -377,6 +387,7 @@ function GetBlocks($qid, $db){
             "v1" => $v1,
             "v2" => $v2,
             "v3" => $v3,
+            "ps_var" => $ps_var,
             "list" => $listing,
           
         );
@@ -446,6 +457,8 @@ function GetQuotationItems($qid, $db){
                 $v1 = $row['v1'];
                 $v2 = $row['v2'];
                 $v3 = $row['v3'];
+                $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_val'], true);
+
                 $listing = $row['list'];
             
                 $type == "" ? "" : "image";
@@ -469,6 +482,7 @@ function GetQuotationItems($qid, $db){
                     "v1" => $v1,
                     "v2" => $v2,
                     "v3" => $v3,
+                    "ps_var" => $ps_var,
                     "list" => $listing,
                     
                 );

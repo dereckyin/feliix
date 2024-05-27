@@ -690,7 +690,8 @@ function GetItems($option_id, $legend_id, $db){
         pid,
         v1,
         v2,
-        v3
+        v3,
+        ps_var
         FROM   price_comparison_item
         WHERE  option_id = " . $option_id . "
         AND  legend_id = " . $legend_id . "
@@ -735,6 +736,8 @@ function GetItems($option_id, $legend_id, $db){
         $v1 = $row['v1'];
         $v2 = $row['v2'];
         $v3 = $row['v3'];
+
+        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_val'], true);
        
         $url1 = $photo1 == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo1;
         $url2 = $photo2 == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo2;
@@ -764,6 +767,7 @@ function GetItems($option_id, $legend_id, $db){
             'v1' => $v1,
             'v2' => $v2,
             'v3' => $v3,
+            'ps_var' => $ps_var,    
             'url1' => $url1,
             'url2' => $url2,
             'url3' => $url3,

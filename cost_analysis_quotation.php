@@ -843,6 +843,7 @@ function GetBlocks($qid, $db){
         v1,
         v2,
         v3,
+        ps_var,
         listing,
         num,
         notes,
@@ -879,6 +880,8 @@ function GetBlocks($qid, $db){
         $v1 = $row['v1'];
         $v2 = $row['v2'];
         $v3 = $row['v3'];
+        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_val'], true);
+
         $listing = $row['listing'];
 
         $srp = array(
@@ -920,6 +923,7 @@ function GetBlocks($qid, $db){
             "v1" => $v1,
             "v2" => $v2,
             "v3" => $v3,
+            "ps_var" => $ps_var,
             "list" => $listing,
             "srp" => $srp,
         );
@@ -1146,6 +1150,8 @@ function GetProductItems($pages, $q_id, $db)
                 $v1 = $row['v1'];
                 $v2 = $row['v2'];
                 $v3 = $row['v3'];
+                $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_val'], true);
+
                 $listing = $row['list'];
 
                 $product = [];
@@ -1178,6 +1184,7 @@ function GetProductItems($pages, $q_id, $db)
                     "v1" => $v1,
                     "v2" => $v2,
                     "v3" => $v3,
+                    "ps_var" => $ps_var,
                     "list" => $listing,
 
                     "product" => $product,
@@ -1205,6 +1212,7 @@ function GetProductItems($pages, $q_id, $db)
                 "v1" => $v1,
                 "v2" => $v2,
                 "v3" => $v3,
+                "ps_var" => $ps_var,
                 "list" => $listing,
 
                 "product" => $product,
