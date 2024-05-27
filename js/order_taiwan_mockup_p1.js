@@ -3297,6 +3297,7 @@ add_with_image_set_select(all) {
   let ps_var = "";
 
   let sets = [];
+  let _this = this;
 
   for(var i=0; i < this.product_set.length; i++){
     let item_product = this.shallowCopy(
@@ -3453,6 +3454,8 @@ add_without_image_set_select(all) {
 
   let list = "";
   let ps_var = "";
+
+  let _this = this;
 
   let sets = [];
 

@@ -3636,6 +3636,8 @@ add_with_image_set_select(all) {
 
   let sets = [];
 
+  let _this = this;
+
   for(var i=0; i < this.product_set.length; i++){
     let item_product = this.shallowCopy(
       this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
@@ -3792,6 +3794,8 @@ add_without_image_set_select(all) {
   let ps_var = "";
 
   let sets = [];
+
+  let _this = this;
 
   for(var i=0; i < this.product_set.length; i++){
     let item_product = this.shallowCopy(
