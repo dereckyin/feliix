@@ -63,7 +63,7 @@ switch ($method) {
         $iq_id = (isset($_POST['iq_id']) ?  $_POST['iq_id'] : 0);
         $block = (isset($_POST['block']) ?  $_POST['block'] : []);
 
-        $item = (isset($_POST['item']) ?  $_POST['item'] : []);
+        $item = (isset($_POST['item']) ?  $_POST['item'] : "[]");
 
         $page = (isset($_POST['page']) ?  $_POST['page'] : 0);
         $access2 = (isset($_POST['access2']) ? $_POST['access2'] : false);

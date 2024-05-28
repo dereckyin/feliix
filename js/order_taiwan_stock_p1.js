@@ -2242,6 +2242,7 @@ var app = new Vue({
                 v1:item.v1,
                 v2:item.v2,
                 v3:item.v3,
+                ps_var:item.ps_var,
                 status:item.status,
                 notes:[],
                 shipping_way:item.shipping_way,

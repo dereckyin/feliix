@@ -63,7 +63,7 @@ switch ($method) {
         $od_id = (isset($_POST['od_id']) ?  $_POST['od_id'] : 0);
         $block = (isset($_POST['block']) ?  $_POST['block'] : []);
 
-        $item = (isset($_POST['item']) ?  $_POST['item'] : []);
+        $item = (isset($_POST['item']) ?  $_POST['item'] : "[]");
 
         $page = (isset($_POST['page']) ?  $_POST['page'] : 0);
         $access2 = (isset($_POST['access2']) ? $_POST['access2'] : false);
@@ -186,7 +186,7 @@ if($block_array[$i]['photo3'] == '')
                 $v2 = isset($block_array[$i]['v2']) ? $block_array[$i]['v2'] : '';
                 $v3 = isset($block_array[$i]['v3']) ? $block_array[$i]['v3'] : '';
 
-                $ps_var = isset($block_array[$i]['ps_var']) ? $block_array[$i]['ps_var'] : [];
+                $ps_var = isset($block_array[$i]['ps_var']) ? $block_array[$i]['ps_var'] : "[]";
                 $json_ps_var = json_encode($ps_var);
 
                 // bind the values
