@@ -1922,7 +1922,7 @@ function GetProductItems($pages, $q_id, $db)
                 $v2 = $row['v2'];
                 $v3 = $row['v3'];
 
-                $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
+                // $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
 
                 $listing = $row['list'];
             
@@ -1949,7 +1949,6 @@ function GetProductItems($pages, $q_id, $db)
                     "v1" => $v1,
                     "v2" => $v2,
                     "v3" => $v3,
-                    "ps_var" => $ps_var,
                     "list" => $listing,
                 );
                 
