@@ -1841,7 +1841,7 @@ $query .= "
         $v1 = $row['v1'];
         $v2 = $row['v2'];
         $v3 = $row['v3'];
-        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_val'], true);
+        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
         $listing = $row['listing'];
         $approval = [];
 if($prefix == 'transmittal_'){
@@ -1951,7 +1951,7 @@ function GetProductItems($pages, $q_id, $db)
                 $v1 = $row['v1'];
                 $v2 = $row['v2'];
                 $v3 = $row['v3'];
-                $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_val'], true);
+                $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
                 $listing = $row['list'];
             
                 $type == "" ? "" : "image";

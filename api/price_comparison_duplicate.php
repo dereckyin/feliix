@@ -1016,7 +1016,7 @@ function GetItems($option_id, $legend_id, $db){
         $v2 = $row['v2'];
         $v3 = $row['v3'];
 
-        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_val'], true);
+        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
         
         $url1 = $photo1 == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo1;
         $url2 = $photo2 == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo2;

@@ -172,7 +172,7 @@ if (!isset($jwt)) {
         $v2 = $row['v2'];
         $v3 = $row['v3'];
 
-        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_val'], true);
+        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
 
         $serial_number = $row['serial_number'];
 

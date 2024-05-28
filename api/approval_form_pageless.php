@@ -1811,7 +1811,7 @@ $query .= "
         $v2 = $row['v2'];
         $v3 = $row['v3'];
 
-        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_val'], true);
+        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
 
         $listing = $row['listing'];
         $approval = [];
@@ -1922,7 +1922,7 @@ function GetProductItems($pages, $q_id, $db)
                 $v2 = $row['v2'];
                 $v3 = $row['v3'];
 
-                $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_val'], true);
+                $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
 
                 $listing = $row['list'];
             
