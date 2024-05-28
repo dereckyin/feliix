@@ -4362,6 +4362,7 @@ Installation:`;
           amount:"",
           desc: "",
           pid: this.product.id,
+          discount : 0,
           v1: "",
           v2: "",
           v3: "",
