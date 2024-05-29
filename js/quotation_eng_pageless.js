@@ -5490,10 +5490,10 @@ Installation:`;
           qty: 1,
           unit: "",
           duration: "",
-          material_price: (price == null || price == 0) ? srp : price,
-          labor_price: (price == null || price == 0) ? srp : price,
+          material_price: (srp == 0 || srp == null) ? price : srp,
+          labor_price: (srp == 0 || srp == null) ? price : srp,
           ratio: "1.00",
-          total: (price == null || price == 0) ? srp : price,
+          total: (srp == 0 || srp == null) ? price : srp,
           group: "",
           pid:  this.product.id,
 
