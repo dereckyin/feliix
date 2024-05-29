@@ -3894,7 +3894,7 @@ Installation:`;
         if(item_product.id != undefined)
         {
           if(item_product.photo != "")
-            this.product_set[i].photo1 = item_product.photo;
+            this.product_set[i].photo = item_product.photo;
 
           price_ntd += item_product.price_ntd * 1;
           price += item_product.price * 1;
@@ -3959,9 +3959,9 @@ Installation:`;
           },
           type : block_a_image,
           code: this.product.code,
-          photo: this.product_set[0] != undefined ? this.product_set[0].photo1 : "",
-          photo2: this.product_set[1] != undefined ? this.product_set[1].photo1 : "",
-          photo3: this.product_set[2] != undefined ? this.product_set[2].photo1 : "",
+          photo: this.product_set[0] != undefined ? this.product_set[0].photo : "",
+          photo2: this.product_set[1] != undefined ? this.product_set[1].photo : "",
+          photo3: this.product_set[2] != undefined ? this.product_set[2].photo : "",
           qty: 1,
           price: srp,
           srp: quoted_price,
