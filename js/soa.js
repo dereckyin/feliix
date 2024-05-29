@@ -4188,8 +4188,6 @@ Installation:`;
       let ps_var = "";
 
       let sets = [];
-
-      var photo = "";
     
       for(var i=0; i < this.product_set.length; i++){
         let item_product = this.shallowCopy(
@@ -4218,9 +4216,7 @@ Installation:`;
         if(item_product.id != undefined)
         {
           if(item_product.photo != "")
-            photo = item_product.photo;
-          else
-            photo = this.product_set[i].photo1;
+            this.product_set[i].photo1 = item_product.photo;
 
           price_ntd += item_product.price_ntd * 1;
           price += item_product.price * 1;
@@ -4288,7 +4284,7 @@ Installation:`;
               },
               type : block_a_image,
               code: this.product.code,
-              photo: photo,
+              photo: this.product_set[0] != undefined ? this.product_set[0].photo1 : "",
               photo2: this.product_set[1] != undefined ? this.product_set[1].photo1 : "",
               photo3: this.product_set[2] != undefined ? this.product_set[2].photo1 : "",
               qty: 1,

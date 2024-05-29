@@ -3675,6 +3675,9 @@ add_with_image_set_select(all) {
 
     if(item_product.id != undefined)
     {
+      if(item_product.photo != "")
+        this.product_set[i].photo1 = item_product.photo;
+      
       price_ntd += item_product.price_ntd * 1;
       price += item_product.price * 1;
       quoted_price += item_product.quoted_price * 1;
