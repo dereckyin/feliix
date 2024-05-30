@@ -3735,7 +3735,7 @@ Installation:`;
       {
         list.replace(/\n+$/, "");
 
-        var block_a_image = 'image';
+        var block_a_image = 'noimage';
         var sn = 0;
         if(this.toggle_type == 'A')
           var items = this.temp_block_a;
@@ -3794,7 +3794,7 @@ Installation:`;
             url2 : '',
             url3 : '',
     
-            code: "",
+            code: this.product.code,
             photo: photo,
             qty: "1",
             price: srp,

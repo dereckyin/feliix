@@ -2945,19 +2945,16 @@ header( 'location:index' );
                         <div class="btnbox">
                             <ul>
                                 <li v-if="toggle_type == 'A'">
-                                    <button class="btn btn-info" @click="add_with_image_set_select()" v-if="out==''">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_set_select()" v-if="out==''">Add</button>
                                 </li>
-                                <li>
+                                <!-- <li>
                                     <button class="btn btn-info" @click="add_without_image_set_select()" v-if="out==''">Add without Image</button>
-                                </li>
-                            </ul>
-
-                            <ul>
+                                </li> -->
                                 <li>
                                     <button class="btn btn-warning" @click="close_single()">Cancel</button>
                                 </li>
-
                             </ul>
+
                         </div>
 
                     </div>
