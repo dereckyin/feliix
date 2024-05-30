@@ -3795,7 +3795,7 @@ Installation:`;
             url3 : '',
     
             code: "",
-            photo: photo,,
+            photo: photo,
             qty: "1",
             price: srp,
             srp: srp,
