@@ -3638,13 +3638,15 @@ catch (Exception $e) {
                             <!-- 如果是訂單類的任務，需要多出 Order Type欄位 -->
                             <ul v-if="receive_record.order.length > 0">
                                 <li><b>Order Type</b></li>
-                                <li>Order – {{ receive_record.order[0].order_type == 'taiwan' ? 'Close Deal' : receive_record.order[0].order_type == 'mockup' ? 'Mock up' : '' }}</li>
+                                <li>Order – {{ receive_record.order[0].order_type == 'taiwan' ? 'Close Deal' : receive_record.order[0].order_type == 'mockup' ? 'Mock up' : receive_record.order_type == 'sample' ? 'Order – Sample' : receive_record.order_type == 'stock' ? 'Order – Stock' : '' }}</li>
                             </ul>
                             <!-- 如果是訂單類的任務，需要多出 Order Name欄位，內容值的範例: LOTW-0001 LIGHTING FIXTURE -->
                             <ul v-if="receive_record.order.length > 0">
                                 <li><b>Order Name</b></li>
                                 <li v-if="receive_record.order[0].order_type == 'taiwan'"><a style="color: #25a2b8" :href="'order_taiwan_p1?id=' + receive_record.order[0].id">{{ receive_record.order[0].serial_name }} {{ receive_record.order[0].od_name }}</a></li>
                                 <li v-if="receive_record.order[0].order_type == 'mockup'"><a style="color: #25a2b8" :href="'order_taiwan_mockup_p1?id=' + receive_record.order[0].id">{{ receive_record.order[0].serial_name }} {{ receive_record.order[0].od_name }}</a></li>
+                                <li v-if="receive_record.order[0].order_type == 'sample'"><a style="color: #25a2b8" :href="'order_taiwan_sample_p1?id=' + receive_record.order[0].id">{{ receive_record.order[0].serial_name }} {{ receive_record.order[0].od_name }}</a></li>
+                                <li v-if="receive_record.order[0].order_type == 'stock'"><a style="color: #25a2b8" :href="'order_taiwan_stock_p1?id=' + receive_record.order[0].id">{{ receive_record.order[0].serial_name }} {{ receive_record.order[0].od_name }}</a></li>
                             </ul>
 
                             <!-- 如果是詢問單類的任務，需要多出 Inquiry Name欄位，內容值的範例: LI-0001 Decorative Lights -->

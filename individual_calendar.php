@@ -890,7 +890,12 @@ try {
     <!-- 具有 Order for Taiwan (Role 3) 權限的人，才能看到以下區塊 -->
     <div class="order_for_approval" v-if="access3">
         <span>Order for Approval</span>
-        <a :href="od.order_type = 'taiwan' ? 'order_taiwan_p2?id=' + od.id : 'order_taiwan_stock_p2?id=' + od.id" target="_blank" v-for="(od, index) in orders">• {{ od.serial_name }}  {{ od.od_name }}</a>
+        <template v-for="(od, index) in orders">
+            <a v-if="od.order_type == 'taiwan'" v-bind:href="'order_taiwan_p2?id=' + od.id" target="_blank">• {{ od.serial_name }}  {{ od.od_name }}</a>
+            <a v-if="od.order_type == 'stock'" v-bind:href="'order_taiwan_stock_p2?id=' + od.id" target="_blank">• {{ od.serial_name }}  {{ od.od_name }}</a>
+            <a v-if="od.order_type == 'sample'" v-bind:href="'order_taiwan_sample_p2?id=' + od.id" target="_blank">• {{ od.serial_name }}  {{ od.od_name }}</a>
+            <a v-if="od.order_type == 'mockup'" v-bind:href="'order_taiwan_mockup_p2?id=' + od.id" target="_blank">• {{ od.serial_name }}  {{ od.od_name }}</a>
+        </template>
     </div>
 
 </div>
