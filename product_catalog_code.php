@@ -66,8 +66,9 @@
                 $('.list_function .dialog').removeClass('show');
             })
 
-            $('.list_function .dialog').click(function (e) {
+            $('.list_function .filter').click(function (e) {
                 $("#tag01").selectpicker("refresh");
+                $('#tag01').selectpicker('val', app.fil_tag);
             })
 
         })
