@@ -898,16 +898,20 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
 
     // 判斷 Project Type 和 Proof Kind 和 Project Final Amount 來決定 稱呼者名稱
     // Project Type = Normal
-    if($special == "")
+    if($special == ""){
 	    $content = $content . "Glen has checked " . $payment . " proof, Please check details below:";
+	    $mail->AddCC('kenilynsy@gmail.com', 'Kenilyn Sy');
+	}
 
     // Project Type = X-Deal and Kind = 0 or 1
     if($special == "s" && ($kind == 0 || $kind == 1))
         $content = $content . "Boss has checked " . $payment . " proof, Please check details below:";
 
     // Project Type = X-Deal and Kind = 2
-    if($special == "s" && $kind == 2)
+    if($special == "s" && $kind == 2){
         $content = $content . "Glen has checked " . $payment . " proof, Please check details below:";
+        $mail->AddCC('kenilynsy@gmail.com', 'Kenilyn Sy');
+    }
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
     if($special == "sn" && $kind == 0 && $final_amount <= 100000)
@@ -918,12 +922,16 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
         $content = $content . "Boss has checked " . $payment . " proof, Please check details below:";
 
     // Project Type = No DP and Kind = 1 or 2 and Amount <= 10萬
-    if($special == "sn" && ($kind == 1 || $kind == 2) && $final_amount <= 100000)
+    if($special == "sn" && ($kind == 1 || $kind == 2) && $final_amount <= 100000){
         $content = $content . "Glen has checked " . $payment . " proof, Please check details below:";
+        $mail->AddCC('kenilynsy@gmail.com', 'Kenilyn Sy');
+    }
 
     // Project Type = No DP and Kind = 1 or 2 and Amount > 10萬
-    if($special == "sn" && ($kind == 1 || $kind == 2) && $final_amount > 100000)
+    if($special == "sn" && ($kind == 1 || $kind == 2) && $final_amount > 100000){
         $content = $content . "Glen has checked " . $payment . " proof, Please check details below:";
+        $mail->AddCC('kenilynsy@gmail.com', 'Kenilyn Sy');
+    }
 
 
     $content = $content . '</td>
