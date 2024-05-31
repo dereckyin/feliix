@@ -120,8 +120,8 @@ switch ($method) {
                 $brand_other = '';
 
                 $photo1 = isset($block_array[$i]['photo']) ? $block_array[$i]['photo'] : '';
-                $photo2 = '';
-                $photo3 = '';
+                $photo2 = isset($block_array[$i]['photo2']) ? $block_array[$i]['photo2'] : '';
+                $photo3 = isset($block_array[$i]['photo3']) ? $block_array[$i]['photo3'] : '';
 
                 $code = isset($block_array[$i]['code']) ? $block_array[$i]['code'] : '';
 
@@ -321,6 +321,8 @@ function GetBlocks($qid, $db){
         `type`,
         code,
         photo,
+        photo2,
+        photo3,
         qty,
         price,
         discount,
@@ -351,6 +353,8 @@ function GetBlocks($qid, $db){
         $type = $row['type'];
         $code = $row['code'];
         $photo = $row['photo'];
+        $photo2 = $row['photo2'];
+        $photo3 = $row['photo3'];
         $qty = $row['qty'];
         $price = $row['price'];
         $num = $row['num'];
@@ -375,6 +379,8 @@ function GetBlocks($qid, $db){
             "code" => $code,
             "type" => $type,
             "photo" => $photo,
+            "photo2" => $photo2,
+            "photo3" => $photo3,
             "type" => $type,
             "url" => $url,
             "qty" => $qty,
@@ -447,6 +453,8 @@ function GetQuotationItems($qid, $db){
                 $type = $row['type'];
                 $code = $row['code'];
                 $photo = $row['photo'];
+                $photo2 = $row['photo2'];
+                $photo3 = $row['photo3'];
                 $qty = $row['qty'];
                 $price = $row['price'];
                 $num = $row['num'];
@@ -470,6 +478,8 @@ function GetQuotationItems($qid, $db){
                     "code" => $code,
                     "type" => $type,
                     "photo" => $photo,
+                    "photo2" => $photo2,
+                    "photo3" => $photo3,
                     "type" => $type,
                     "url" => $url,
                     "qty" => $qty,
