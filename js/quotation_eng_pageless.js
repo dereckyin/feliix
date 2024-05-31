@@ -365,6 +365,18 @@ var app = new Vue({
          product_pages_bom: [],
          product_pages_10_bom: [],
          product_page_bom: 1,
+
+
+          // tools information
+          receive_records_tools_master:[],
+          pg_tools:0,
+          page_tools:0,
+          pages_tools : [],
+          tools_total : 0,
+ 
+          product_pages_tools: [],
+          product_pages_10_tools: [],
+          product_page_tools: 1,
         
     },
   
@@ -401,6 +413,7 @@ var app = new Vue({
       this.getTagGroup();
       this.getQuoMasterRecords();
       this.getBomRecords();
+      this.gettoolsRecords();
       this.getUsers();
       this.getCreators();
     },
@@ -421,6 +434,15 @@ var app = new Vue({
 
         this.setPagesBom();
         return this.paginateBom(this.receive_records_bom_master);
+
+      },
+
+      displayedtoolsMasterPosts() {
+        //if(this.pg == 0)
+        //  this.filter_apply_new();
+
+        this.setPagestools();
+        return this.paginatetools(this.receive_records_tools_master);
 
       },
 
@@ -888,6 +910,38 @@ var app = new Vue({
             this.product_pages_10_bom = pages_10;
     
         },
+
+        pre_page_tools: function(){
+          let tenPages = Math.floor((this.product_page_tools - 1) / 10) + 1;
+    
+            this.product_page_tools = parseInt(this.product_page_tools) - 10;
+            if(this.product_page_tools < 1)
+              this.product_page_tools = 1;
+     
+            this.product_pages_10_tools = [];
+    
+            let from = tenPages * 10;
+            let to = (tenPages + 1) * 10;
+    
+            this.product_pages_10_tools = this.product_pages_tools.slice(from, to);
+          
+        },
+    
+        nex_page_tools: function(){
+          let tenPages = Math.floor((this.product_page_tools - 1) / 10) + 1;
+    
+          this.product_page_tools = parseInt(this.product_page_tools) + 10;
+          if(this.product_page_tools > this.product_pages_tools.length)
+            this.product_page_tools = this.product_pages_tools.length;
+    
+          let from = tenPages * 10;
+          let to = (tenPages + 1) * 10;
+          let pages_10 = this.product_pages_tools.slice(from, to);
+    
+          if(pages_10.length > 0)
+            this.product_pages_10_tools = pages_10;
+    
+        },
   
         setPagesQuo () {
           console.log('setPagesQuo');
@@ -937,6 +991,43 @@ var app = new Vue({
   
         return  this.receive_records_bom_master;
           //return  this.receive_records_bom_master.slice(from, to);
+        },
+
+
+        setPagestools () {
+          console.log('setPagestools');
+          this.product_pages_tools = [];
+          let numberOfPages = Math.ceil(this.tools_total / this.perPage);
+  
+          if(numberOfPages == 1)
+            this.product_page_tools = 1;
+          for (let index = 1; index <= numberOfPages; index++) {
+            this.product_pages_tools.push(index);
+          }
+  
+          // this.setupChosen();
+        },
+
+        
+      paginatetools: function (posts) {
+         
+        if (this.product_page_tools < 1) this.product_page_tools = 1;
+        if (this.product_page_tools > this.product_pages_tools.length) this.product_page_tools = this.product_pages_tools.length;
+  
+        let tenPages = Math.floor((this.product_page_tools - 1) / 10);
+        if(tenPages < 0)
+          tenPages = 0;
+        this.product_pages_10_tools = [];
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+        
+        this.product_pages_10_tools = this.product_pages_tools.slice(from, to);
+  
+        from = this.product_page_tools * this.perPage - this.perPage;
+        to = this.product_page_tools * this.perPage;
+  
+        return  this.receive_records_tools_master;
+          //return  this.receive_records_tools_master.slice(from, to);
         },
   
       paginateQuo: function (posts) {
@@ -991,6 +1082,47 @@ var app = new Vue({
                     { 
                       _this.page_bom = _this.pg_bom;
                       _this.setPagesBom();
+                    }
+                },
+                (err) => {
+                    alert(err.response);
+                },
+                )
+                .finally(() => {
+                    
+                });
+        },
+        
+      gettoolsRecords: function(keyword) {
+        let _this = this;
+  
+        const params = {
+  
+                  key: _this.fil_keyword,
+
+                  page: _this.product_page_tools,
+                  size: 10,
+
+                  all: 'all',
+              };
+  
+        
+      
+            let token = localStorage.getItem('accessToken');
+      
+            axios
+                .get('api/electrical_tools_bom', { params, headers: {"Authorization" : `Bearer ${token}`} })
+                .then(
+                (res) => {
+                    _this.receive_records_tools_master = res.data;
+
+                    if(_this.receive_records_tools_master.length > 0)
+                      _this.tools_total = _this.receive_records_tools_master[0].cnt;
+  
+                    if(_this.pg_tools !== 0)
+                    { 
+                      _this.page_tools = _this.pg_tools;
+                      _this.setPagestools();
                     }
                 },
                 (err) => {
@@ -2072,6 +2204,11 @@ var app = new Vue({
 
       add_signature_codebook() {
         $('#modal_signature_codebook').modal('toggle');
+      },
+
+
+      electrical_tool_catalog() {
+        $("#modal_electrical_tool_catalog").modal('toggle');
       },
 
       sig_save: async function() {
@@ -4178,6 +4315,50 @@ Installation:`;
   
   
       },
+
+      
+    filter_apply_new_tools: function() {
+      let _this = this;
+
+      this.product_page_tools = 1;
+
+      const params = {
+                key: _this.fil_keyword,
+                page: _this.product_page_tools,
+                size: 10,
+
+                all: 'all',
+            };
+
+      
+    
+          let token = localStorage.getItem('accessToken');
+    
+          axios
+              .get('api/electrical_tools_bom', { params, headers: {"Authorization" : `Bearer ${token}`} })
+              .then(
+              (res) => {
+                  _this.receive_records_tools_master = res.data;
+
+                  if(_this.receive_records_tools_master.length > 0)
+                    _this.tools_total = _this.receive_records_tools_master[0].cnt;
+
+                  if(_this.pg_tools !== 0)
+                    { 
+                      _this.page_tools = _this.pg_tools;
+                      _this.setPagestools();
+                    }
+              },
+              (err) => {
+                  alert(err.response);
+              },
+              )
+              .finally(() => {
+                  
+              });
+  
+  
+      },
       
     filter_apply_new_quo: function() {
       let _this = this;
@@ -4261,6 +4442,40 @@ Installation:`;
         };
 
         this.temp_detail_block_consumable.details.push(item);
+
+        alert('Add Successfully');
+
+        this.$forceUpdate();
+      },
+
+      add_tools: function(item) {
+        var cost_type = document.getElementById('cost_type').value;
+        var sn = 0;
+        var items = this.temp_detail_block.details;
+
+
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].id > sn) {
+            sn = items[i].id;
+          }
+        }
+
+        sn = sn + 1;
+
+        item = {
+          id: sn,
+          cost_type: cost_type,
+          legend: "",
+          desc: item.particulars,
+          qty: 1,
+          unit: item.unit,
+          duration: "",
+          price: item.price,
+          ratio: "1.00",
+          total: Number(item.price).toFixed(2),
+        };
+
+        this.temp_detail_block.details.push(item);
 
         alert('Add Successfully');
 
