@@ -162,6 +162,7 @@ switch ($method) {
                     `v1` = :v1,
                     `v2` = :v2,
                     `v3` = :v3,
+                    `ps_var` = :ps_var,
                     `listing` = :listing,
                     `num` = :num,
                     `pid` = :pid,
@@ -211,6 +212,9 @@ switch ($method) {
                 $v2 = isset($block_array[$i]['v2']) ? $block_array[$i]['v2'] : '';
                 $v3 = isset($block_array[$i]['v3']) ? $block_array[$i]['v3'] : '';
 
+                $ps_var = isset($block_array[$i]['ps_var']) ? $block_array[$i]['ps_var'] : [];
+                $json_ps_var = json_encode($ps_var);
+
                 $listing = isset($block_array[$i]['list']) ? $block_array[$i]['list'] : '';
                 $num = isset($block_array[$i]['num']) ? $block_array[$i]['num'] : '';
                 $pid = isset($block_array[$i]['pid']) ? $block_array[$i]['pid'] : 0;
@@ -236,6 +240,7 @@ switch ($method) {
                 $stmt->bindParam(':v1', $v1);
                 $stmt->bindParam(':v2', $v2);
                 $stmt->bindParam(':v3', $v3);
+                $stmt->bindParam(':ps_var', $json_ps_var);
                 $stmt->bindParam(':listing', $listing);
                 $stmt->bindParam(':num', $num);
                 $stmt->bindParam(':pid', $pid);

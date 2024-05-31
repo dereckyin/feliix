@@ -5025,3 +5025,57 @@ ADD COLUMN `office_items` text COLLATE utf8mb4_unicode_ci;
 
 -- 20240513
 ALTER TABLE `user` CHANGE `seniority` `seniority` DECIMAL (10,1);
+
+-- 20240520
+ALTER TABLE quotation_page_type_block
+ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE approval_form_quotation_page_type_block
+ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE iq_item
+ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE od_item
+ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE price_comparison_item
+ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE soa_quotation_page_type_block
+ADD COLUMN `ps_var` JSON;
+
+ALTER TABLE transmittal_page_type_block
+ADD COLUMN `ps_var` JSON;
+
+-- 20240530
+CREATE TABLE `electrical_tools` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `unit` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `particulars` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `price` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `remarks` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `sn` int(11) DEFAULT 0,
+  `status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_id` int(11) DEFAULT 0,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('sets', 'Scaffolding H Frame Set', 2000, 0, now(), 1); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('sets', 'Rotary Hammer Drill', 4000, 0, now(), 2); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('sets', 'Impact Drill', 5000, 0, now(), 3); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('sets', 'Grinder', 2500, 0, now(), 4); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('sets', 'Cordless Drill', 3500, 0, now(), 5); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('sets', 'Personal Protective Equipement (Harness/Hardhat/Vest)', 3000, 0, now(), 6); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('pcs', 'G.I Pipe 2" 6M', 700, 0, now(), 7); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('pcs', 'Swivel Clamp', 350, 0, now(), 8); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('pcs', 'G.I Catwalk (Platform)', 1500, 0, now(), 9); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('pcs', 'Base Jack', 400, 0, now(), 10); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('pc ', 'Multitester', 3000, 0, now(), 11); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('sets', 'Ladder', 3000, 0, now(), 12); 
+insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('sets', 'Solder lead & Solder Gun', 1000, 0, now(), 13); 

@@ -63,7 +63,7 @@ switch ($method) {
         $od_id = (isset($_POST['od_id']) ?  $_POST['od_id'] : 0);
         $block = (isset($_POST['block']) ?  $_POST['block'] : []);
 
-        $item = (isset($_POST['item']) ?  $_POST['item'] : []);
+        $item = (isset($_POST['item']) ?  $_POST['item'] : "[]");
 
         $page = (isset($_POST['page']) ?  $_POST['page'] : 0);
         $access2 = (isset($_POST['access2']) ? $_POST['access2'] : false);
@@ -153,6 +153,7 @@ if($block_array[$i]['photo3'] == '')
                     `v1` = :v1,
                     `v2` = :v2,
                     `v3` = :v3,
+                    `ps_var` = :ps_var,
                     updated_id = :updated_id,
                     updated_at = now()
                     where id = :id
@@ -186,6 +187,9 @@ if($block_array[$i]['photo3'] == '')
                 $v1 = isset($block_array[$i]['v1']) ? $block_array[$i]['v1'] : '';
                 $v2 = isset($block_array[$i]['v2']) ? $block_array[$i]['v2'] : '';
                 $v3 = isset($block_array[$i]['v3']) ? $block_array[$i]['v3'] : '';
+                $ps_var = isset($block_array[$i]['ps_var']) ? $block_array[$i]['ps_var'] : [];
+                $json_ps_var = json_encode($ps_var);
+
 
                 // bind the values
                 $stmt->bindParam(':id', $id);
@@ -213,6 +217,8 @@ if($block_array[$i]['photo3'] == '')
                 $stmt->bindParam(':v1', $v1);
                 $stmt->bindParam(':v2', $v2);
                 $stmt->bindParam(':v3', $v3);
+
+                $stmt->bindParam(':ps_var', $json_ps_var);
               
                 $stmt->bindParam(':updated_id', $user_id);
                

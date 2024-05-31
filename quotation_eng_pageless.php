@@ -2326,6 +2326,55 @@ header( 'location:index' );
             width: 110px;
         }
 
+        #modal_electrical_tool_catalog.modal .modal_function input[type='text'] {
+            width: 90%;
+            font-size: 14px;
+        }
+
+        #tb_electrical_tool_catalog {
+            width: 100%;
+        }
+
+        #tb_electrical_tool_catalog thead th, #tb_electrical_tool_catalog tbody td {
+            text-align: center;
+            padding: 10px;
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        #tb_electrical_tool_catalog tbody td {
+            font-size: 13px;
+        }
+
+        #tb_electrical_tool_catalog thead th {
+            background-color: #E0E0E0;
+            border: 1px solid #C9C9C9;
+        }
+
+        #tb_electrical_tool_catalog tbody tr:nth-of-type(even) {
+            background-color: #F6F6F6;
+        }
+
+        #tb_electrical_tool_catalog tbody tr td:nth-of-type(1) {
+            width: 550px;
+        }
+
+        #tb_electrical_tool_catalog tbody tr td:nth-of-type(2) {
+            width: 100px;
+        }
+
+        #tb_electrical_tool_catalog tbody tr td:nth-of-type(3) {
+            width: 200px;
+        }
+
+        #tb_electrical_tool_catalog tbody tr td:nth-of-type(4) {
+            width: 350px;
+        }
+
+        #tb_electrical_tool_catalog tbody tr td:nth-of-type(5) {
+            width: 110px;
+        }
+
         .dialog.reverse {
             left: unset;
         }
@@ -2640,6 +2689,7 @@ header( 'location:index' );
                                     <option value="labor">Unit Labor Cost</option>
                                 </select>
                                 <a class="btn small green" @click="add_block_a()">Add Blank Detail</a>
+                                <a class="btn small green" @click="electrical_tool_catalog()">Electrical Tools and Equipments Catalog</a>
                             </div>
 
                             <div class="content_box">
@@ -4411,6 +4461,25 @@ header( 'location:index' );
                             <span>Description: </span> {{ product.description }}
                         </div>
 
+                        <!-- 針對 Product Set 產品的新加入方法 -->
+                        <div class="btnbox">
+                            <ul>
+                                <li v-if="toggle_type == 'A'">
+                                    <button class="btn btn-info" @click="add_with_image_set_select()" v-if="out==''">Add</button>
+                                </li>
+                                <!-- <li>
+                                    <button class="btn btn-info" @click="add_without_image_set_select()" v-if="out==''">Add without Image</button>
+                                </li>
+                            </ul>
+
+                            <ul> -->
+                                <li>
+                                    <button class="btn btn-warning" @click="close_single()">Cancel</button>
+                                </li>
+
+                            </ul>
+                        </div>
+
                     </div>
 
                 </div>
@@ -5669,6 +5738,102 @@ header( 'location:index' );
 
                             <td>
                                 <a class="btn small yellow" @click="add_consumable(item)">Add</a>
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+
+
+    <!-- Modal for Electrical Tools and Equipments Catalog -->
+    <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true" id="modal_electrical_tool_catalog">
+
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+
+        <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="myLargeModalLabel">Electrical Tools and Equipments Catalog</h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="modal_function" style="width: 100%; display: flex; align-items: center;">
+
+                    <div class="left_function" style="width: 81%;">
+                        <input type="text" v-model="fil_keyword" placeholder="Keyword">
+                    </div>
+
+                    <a class="btn small green" @click="filter_apply_new_tools()">Search</a>
+
+                </div>
+
+                <div class="list_function" style="margin: 7px 0;">
+                    <div class="pagenation">
+                        <a class="prev" :disabled="product_page_tools == 1" @click="pre_page_tools(); gettoolsRecords();">Prev
+                            10</a>
+                        <a class="page" v-for="pg_tools in product_pages_10_tools" @click="product_page_tools=pg_tools; gettoolsRecords();"
+                           v-bind:style="[pg_tools == product_page_tools ? { 'background':'#707071', 'color': 'white'} : { }]">{{
+                            pg_tools
+                            }}</a>
+                        <a class="next" :disabled="product_page_tools == product_pages_tools.length"
+                           @click="nex_page_tools(); gettoolsRecords();">Next
+                            10</a>
+                    </div>
+                </div>
+
+
+                <div>
+                    <table id="tb_electrical_tool_catalog" class="table  table-sm table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Unit</th>
+                            <th>Price</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item, index) in displayedtoolsMasterPosts">
+
+                            <td>
+                                {{ item.particulars }}
+                            </td>
+
+                            <td>
+                                {{ item.unit }}
+                            </td>
+
+                            <td>
+                            ₱ {{ item.price % 1 !== 0 ? Number(item.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : Number(item.price).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
+                            </td>
+
+                            <td>
+                                {{ item.remarks }}
+                            </td>
+
+                            <td>
+                                <a class="btn small yellow" @click="add_tools(item)">Add</a>
                             </td>
                         </tr>
 

@@ -104,6 +104,7 @@ switch ($method) {
                     `v1` = :v1,
                     `v2` = :v2,
                     `v3` = :v3,
+                    `ps_var` = :ps_var,
                     `status` = 0,
                     `status_at` = now(),
                     `normal` = :normal,
@@ -119,8 +120,8 @@ switch ($method) {
                 $brand_other = '';
 
                 $photo1 = isset($block_array[$i]['photo']) ? $block_array[$i]['photo'] : '';
-                $photo2 = '';
-                $photo3 = '';
+                $photo2 = isset($block_array[$i]['photo2']) ? $block_array[$i]['photo2'] : '';
+                $photo3 = isset($block_array[$i]['photo3']) ? $block_array[$i]['photo3'] : '';
 
                 $code = isset($block_array[$i]['code']) ? $block_array[$i]['code'] : '';
 
@@ -139,6 +140,9 @@ switch ($method) {
                 $v1 = isset($block_array[$i]['v1']) ? $block_array[$i]['v1'] : '';
                 $v2 = isset($block_array[$i]['v2']) ? $block_array[$i]['v2'] : '';
                 $v3 = isset($block_array[$i]['v3']) ? $block_array[$i]['v3'] : '';
+
+                $ps_var = isset($block_array[$i]['ps_var']) ? $block_array[$i]['ps_var'] : [];
+                $json_ps_var = json_encode($ps_var);
 
                 // check if normal product
                 $is_normal = IsNormalProduct($pid, $v1, $v2, $v3, $db);
@@ -164,6 +168,8 @@ switch ($method) {
                 $stmt->bindParam(':v1', $v1);
                 $stmt->bindParam(':v2', $v2);
                 $stmt->bindParam(':v3', $v3);
+
+                $stmt->bindParam(':ps_var', $json_ps_var);
 
                 $stmt->bindParam(':normal', $is_normal);
               
@@ -315,6 +321,8 @@ function GetBlocks($qid, $db){
         `type`,
         code,
         photo,
+        photo2,
+        photo3,
         qty,
         price,
         discount,
@@ -323,6 +331,7 @@ function GetBlocks($qid, $db){
         v1,
         v2,
         v3,
+        ps_var,
         listing,
         num,
         pid
@@ -344,6 +353,8 @@ function GetBlocks($qid, $db){
         $type = $row['type'];
         $code = $row['code'];
         $photo = $row['photo'];
+        $photo2 = $row['photo2'];
+        $photo3 = $row['photo3'];
         $qty = $row['qty'];
         $price = $row['price'];
         $num = $row['num'];
@@ -354,6 +365,9 @@ function GetBlocks($qid, $db){
         $v1 = $row['v1'];
         $v2 = $row['v2'];
         $v3 = $row['v3'];
+
+        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
+
         $listing = $row['listing'];
     
         $type == "" ? "" : "image";
@@ -365,6 +379,8 @@ function GetBlocks($qid, $db){
             "code" => $code,
             "type" => $type,
             "photo" => $photo,
+            "photo2" => $photo2,
+            "photo3" => $photo3,
             "type" => $type,
             "url" => $url,
             "qty" => $qty,
@@ -377,6 +393,7 @@ function GetBlocks($qid, $db){
             "v1" => $v1,
             "v2" => $v2,
             "v3" => $v3,
+            "ps_var" => $ps_var,
             "list" => $listing,
           
         );
@@ -436,6 +453,8 @@ function GetQuotationItems($qid, $db){
                 $type = $row['type'];
                 $code = $row['code'];
                 $photo = $row['photo'];
+                $photo2 = $row['photo2'];
+                $photo3 = $row['photo3'];
                 $qty = $row['qty'];
                 $price = $row['price'];
                 $num = $row['num'];
@@ -446,6 +465,8 @@ function GetQuotationItems($qid, $db){
                 $v1 = $row['v1'];
                 $v2 = $row['v2'];
                 $v3 = $row['v3'];
+                //$ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
+                $ps_var = $row['ps_var'];
                 $listing = $row['list'];
             
                 $type == "" ? "" : "image";
@@ -457,6 +478,8 @@ function GetQuotationItems($qid, $db){
                     "code" => $code,
                     "type" => $type,
                     "photo" => $photo,
+                    "photo2" => $photo2,
+                    "photo3" => $photo3,
                     "type" => $type,
                     "url" => $url,
                     "qty" => $qty,
@@ -469,6 +492,7 @@ function GetQuotationItems($qid, $db){
                     "v1" => $v1,
                     "v2" => $v2,
                     "v3" => $v3,
+                    "ps_var" => $ps_var,
                     "list" => $listing,
                     
                 );

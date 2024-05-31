@@ -653,6 +653,7 @@ function insert_gp($price_id, $option_id, $legend_id, $sn, $gp, $user_id, $db) {
     `v1` = :v1,
     `v2` = :v2,
     `v3` = :v3,
+    `ps_var` = :ps_var,
     `discount` = :discount,
     `status` = 0,
     `create_id` = :create_id,
@@ -660,6 +661,9 @@ function insert_gp($price_id, $option_id, $legend_id, $sn, $gp, $user_id, $db) {
     
     // prepare the query
     $stmt = $db->prepare($query);
+
+    $ps_var = isset($gp['ps_var']) ? $gp['ps_var'] : [];
+    $json_ps_var = json_encode($ps_var);
     
     // bind the values
     $stmt->bindParam(':price_id', $price_id);
@@ -682,6 +686,7 @@ function insert_gp($price_id, $option_id, $legend_id, $sn, $gp, $user_id, $db) {
     $stmt->bindParam(':v1', $gp['v1']);
     $stmt->bindParam(':v2', $gp['v2']);
     $stmt->bindParam(':v3', $gp['v3']);
+    $stmt->bindParam(':ps_var', $json_ps_var);
     $stmt->bindParam(':discount', $gp['discount']);
     $stmt->bindParam(':create_id', $user_id);
     
@@ -966,7 +971,8 @@ function GetItems($option_id, $legend_id, $db){
     pid,
     v1,
     v2,
-    v3
+    v3,
+    ps_var
     FROM   price_comparison_item
     WHERE  option_id = " . $option_id . "
     AND  legend_id = " . $legend_id . "
@@ -1009,6 +1015,8 @@ function GetItems($option_id, $legend_id, $db){
         $v1 = $row['v1'];
         $v2 = $row['v2'];
         $v3 = $row['v3'];
+
+        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
         
         $url1 = $photo1 == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo1;
         $url2 = $photo2 == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo2;
@@ -1038,6 +1046,7 @@ function GetItems($option_id, $legend_id, $db){
             'v1' => $v1,
             'v2' => $v2,
             'v3' => $v3,
+            'ps_var' => $ps_var,
             'url1' => $url1,
             'url2' => $url2,
             'url3' => $url3,

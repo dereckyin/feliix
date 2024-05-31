@@ -308,6 +308,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
                         `v1` = :v1,
                         `v2` = :v2,
                         `v3` = :v3,
+                        `ps_var` = :ps_var,
                         `photo` = :photo,
                         `photo2` = :photo2,
                         `photo3` = :photo3,
@@ -331,6 +332,10 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
                     $v1 = isset($block_array[$k]['v1']) ? $block_array[$k]['v1'] : '';
                     $v2 = isset($block_array[$k]['v2']) ? $block_array[$k]['v2'] : '';
                     $v3 = isset($block_array[$k]['v3']) ? $block_array[$k]['v3'] : '';
+
+                    $ps_var = isset($block_array[$k]['ps_var']) ? $block_array[$k]['ps_var'] : [];
+                    $json_ps_var = json_encode($ps_var);
+
                     $listing = isset($block_array[$k]['list']) ? $block_array[$k]['list'] : '';
 
                     $notes = isset($block_array[$k]['notes']) ? $block_array[$k]['notes'] : '';
@@ -355,6 +360,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
                     $stmt->bindParam(':v1', $v1);
                     $stmt->bindParam(':v2', $v2);
                     $stmt->bindParam(':v3', $v3);
+                    $stmt->bindParam(':ps_var', $json_ps_var);
                     $stmt->bindParam(':listing', $listing);
                     
                     $stmt->bindParam(':create_id', $user_id);
@@ -1260,6 +1266,7 @@ function GetBlocks($qid, $db){
         v1,
         v2,
         v3,
+        ps_var,
         notes,
         photo2,
         photo3,
@@ -1293,6 +1300,7 @@ function GetBlocks($qid, $db){
         $v1 = $row['v1'];
         $v2 = $row['v2'];
         $v3 = $row['v3'];
+        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
         $notes = $row['notes'];
         $photo2 = $row['photo2'];
         $photo3 = $row['photo3'];
@@ -1321,6 +1329,7 @@ function GetBlocks($qid, $db){
             "v1" => $v1,
             "v2" => $v2,
             "v3" => $v3,
+            "ps_var" => $ps_var,
             "notes" => $notes,
             "photo2" => $photo2,
             "photo3" => $photo3,

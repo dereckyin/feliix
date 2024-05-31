@@ -3806,9 +3806,9 @@ Installation:`;
   
     change_v_set(set){
       let item_product = this.shallowCopy(
-        set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == this.v3)
+        set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
       )
-  
+    
       if(item_product.id != undefined)
       {
         if(item_product.photo != "")
@@ -3818,18 +3818,18 @@ Installation:`;
         set.price_ntd = item_product.currency + " " + Number(item_product.price_ntd).toLocaleString();
         set.price = "PHP " + Number(item_product.price).toLocaleString();
         set.quoted_price = "PHP " + Number(item_product.quoted_price).toLocaleString();
-  
+    
         set.str_price_ntd_change = (item_product.price_ntd_change != "" ? "(" + item_product.price_ntd_change + ")" : "");
         set.str_price_change = (item_product.price_change != "" ? "(" + item_product.price_change + ")" : "");
         set.str_quoted_price_change = (item_product.quoted_price_change != "" ? "(" + item_product.quoted_price_change + ")" : "");
-  
+    
         set.phased_out = (item_product.enabled == 0 ? "F" : "");
-  
+    
         set.sheet_url = 'product_spec_sheet?sd=' + set.pid + '&d=' + item_product.id;
-  
+    
         set.out = item_product.enabled == 1 ? "" : "Y";
         set.out_cnt = 0;
-  
+    
         if(set.record[0]['out'] == 'Y')
         {
           set.out = "Y";
@@ -3842,20 +3842,326 @@ Installation:`;
         set.price_ntd = set.record[0]['price_ntd'];
         set.price = set.record[0]['price'];
         set.quoted_price = set.record[0]['quoted_price'];
-  
+    
         set.str_price_ntd_change = set.record[0]['str_price_ntd_change'];
         set.str_price_change = set.record[0]['str_price_change'];
         set.str_quoted_price_change = set.record[0]['str_quoted_price_change'];
-  
+    
         set.phased_out = "";
-  
+    
         set.sheet_url = 'product_spec_sheet?sd=' + set.pid;
-  
+    
         set.out = set.record[0]['out'];
         set.out_cnt = set.record[0]['phased_out_cnt'];
       }
-  
+    
+      this.check_all_set();
+    
     },
+    
+    check_all_set(){
+      let change = true;
+      let price_ntd = 0;
+      let price = 0;
+      let quoted_price = 0;
+    
+      for(var i=0; i < this.product_set.length; i++){
+        let item_product = this.shallowCopy(
+          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+        )
+    
+        if(item_product.id != undefined)
+        {
+          price_ntd += item_product.price_ntd * 1;
+          price += item_product.price * 1;
+          quoted_price += item_product.quoted_price * 1;
+        }
+        else
+          change = false;
+      }
+    
+      if(change)
+      {
+        //this.price_ntd = price_ntd;
+        this.product.price = "PHP " + Number(price).toLocaleString();;
+        this.product.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
+      }
+      else
+      {
+        this.product.price = this.price;
+          this.product.quoted_price = this.quoted_price;
+      }
+    },
+
+    add_with_image_set_select(all) {
+      let change = true;
+      let price_ntd = 0;
+      let price = 0;
+      let quoted_price = 0;
+      let qty = 0;
+      let srp = 0;
+
+      let list = "";
+      let ps_var = "";
+
+      let sets = [];
+    
+      for(var i=0; i < this.product_set.length; i++){
+        let item_product = this.shallowCopy(
+          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+        )
+
+        var list_g = "";
+
+        for(var j=0; j<this.product_set[i].specification.length; j++)
+        {
+            if(this.product_set[i].specification[j].k1 !== '')
+              list_g += this.product_set[i].specification[j].k1 + ': ' + this.product_set[i].specification[j].v1 + "\n";
+            if(this.product_set[i].specification[j].k2 !== '')
+              list_g += this.product_set[i].specification[j].k2 + ': ' + this.product_set[i].specification[j].v2 + "\n";
+        }
+
+        // add phased out information
+        if((this.product_set[i].phased_out_cnt > 0 && this.phased == 1) || (this.product_set[i].phased_out_cnt > 0 && all == 'all'))
+        {
+          list_g += "\n";
+          list_g += "Phased-out Variants:\n";
+          list_g += this.product_set[i].phased_out_text.split("<br/>").join("\n");
+        }
+        
+    
+        if(item_product.id != undefined)
+        {
+          if(item_product.photo != "")
+            this.product_set[i].photo = item_product.photo;
+
+          price_ntd += item_product.price_ntd * 1;
+          price += item_product.price * 1;
+          quoted_price += item_product.quoted_price * 1;
+          qty += this.product_set[i].qty * 1;
+
+          srp = quoted_price != 0 ? quoted_price : price;
+
+          ps_var = ('id: ' + this.product_set[i].id) + "\n";
+
+          if(item_product.v1 != ""){
+            list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+            ps_var += (item_product.k1 + ': ' + item_product.v1) + "\n";
+          }
+          if(item_product.v2 != ""){
+            list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+            ps_var += (item_product.k2 + ': ' + item_product.v2) + "\n";
+          }
+          if(item_product.v3 != ""){
+            list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+            ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+          }
+
+          sets.push(ps_var);
+
+          list += list_g;
+
+          list += "\n";
+
+        }
+        else
+          change = false;
+      }
+    
+      if(change)
+      {
+        list.replace(/\n+$/, "");
+
+        var block_a_image = 'image';
+        var sn = 0;
+        if(this.toggle_type == 'A')
+          var items = this.temp_block_a;
+
+        if(this.toggle_type == 'B')
+          var items = this.temp_block_b;
+
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].id > sn) {
+            sn = items[i].id;
+          }
+        }
+
+        sn = sn + 1;
+
+        item = {
+          id: sn,
+          url: this.product_set[0] != undefined ? this.product_set[0].url : "",
+          url2: this.product_set[1] != undefined ? this.product_set[1].url : "",
+          url3: this.product_set[2] != undefined ? this.product_set[2].url : "",
+          file: {
+            name: "",
+          },
+          type : block_a_image,
+          code: this.product.code,
+          photo: this.product_set[0] != undefined ? this.product_set[0].photo : "",
+          photo2: this.product_set[1] != undefined ? this.product_set[1].photo : "",
+          photo3: this.product_set[2] != undefined ? this.product_set[2].photo : "",
+          qty: 1,
+          price: srp,
+          srp: quoted_price,
+          discount: "0",
+          amount: srp,
+          desc: "",
+          list: list,
+          num:"",
+          notes: "",
+          ratio:1.0,
+          pid: this.product.id,
+          v1: "",
+          v2: "",
+          v3: "",
+
+          ps_var : sets,
+        };
+
+      }
+      else{
+        alert('Please choose option for each attribute of every sub-product');
+        return;
+      }
+    
+      items.push(item);
+      alert('Add Successfully');
+    },
+
+    
+    add_without_image_set_select(all) {
+      let change = true;
+      let price_ntd = 0;
+      let price = 0;
+      let quoted_price = 0;
+      let qty = 0;
+      let srp = 0;
+
+      let list = "";
+      let ps_var = "";
+
+      let sets = [];
+    
+      for(var i=0; i < this.product_set.length; i++){
+        let item_product = this.shallowCopy(
+          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+        )
+
+        var list_g = "";
+ 
+        for(var j=0; j<this.product_set[i].specification.length; j++)
+        {
+            if(this.product_set[i].specification[j].k1 !== '')
+              list_g += this.product_set[i].specification[j].k1 + ': ' + this.product_set[i].specification[j].v1 + "\n";
+            if(this.product_set[i].specification[j].k2 !== '')
+              list_g += this.product_set[i].specification[j].k2 + ': ' + this.product_set[i].specification[j].v2 + "\n";
+        }
+
+        // add phased out information
+        if((this.product_set[i].phased_out_cnt > 0 && this.phased == 1) || (this.product_set[i].phased_out_cnt > 0 && all == 'all'))
+        {
+          list_g += "\n";
+          list_g += "Phased-out Variants:\n";
+          list_g += this.product_set[i].phased_out_text.split("<br/>").join("\n");
+        }
+    
+        if(item_product.id != undefined)
+        {
+          price_ntd += item_product.price_ntd * 1;
+          price += item_product.price * 1;
+          quoted_price += item_product.quoted_price * 1;
+          qty += this.product_set[i].qty * 1;
+
+          srp = quoted_price != 0 ? quoted_price : price;
+
+          ps_var = ('id: ' + this.product_set[i].id) + "\n";
+
+          if(item_product.v1 != ""){
+            list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+            ps_var += (item_product.k1 + ': ' + item_product.v1) + "\n";
+          }
+          if(item_product.v2 != ""){
+            list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+            ps_var += (item_product.k2 + ': ' + item_product.v2) + "\n";
+          }
+          if(item_product.v3 != ""){
+            list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+            ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+          }
+
+          sets.push(ps_var);
+
+          list += list_g;
+
+          list += "\n";
+
+        }
+        else
+          change = false;
+      }
+    
+      if(change)
+      {
+
+        list.replace(/\n+$/, "");
+
+        var block_a_image = 'noimage';
+        var sn = 0;
+        if(this.toggle_type == 'A')
+          var items = this.temp_block_a;
+
+        if(this.toggle_type == 'B')
+          var items = this.temp_block_b;
+
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].id > sn) {
+            sn = items[i].id;
+          }
+        }
+
+        sn = sn + 1;
+
+        item = {
+          id: sn,
+          url: "",
+          url2: "",
+          url3: "",
+          file: {
+            name: "",
+          },
+          type : block_a_image,
+          code: this.product.code,
+          photo: "",
+          qty: 1,
+          price: srp,
+          srp: quoted_price,
+          discount: "0",
+          amount: srp,
+          desc: "",
+          list: list,
+          num:"",
+          notes: "",
+          ratio:1.0,
+          pid: this.product.id,
+          v1: "",
+          v2: "",
+          v3: "",
+
+          ps_var : sets,
+        };
+
+      }
+      else{
+        alert('Please choose option for each attribute of every sub-product');
+        return;
+      }
+
+      items.push(item);
+      alert('Add Successfully');
+    
+    },
+  
   
     
     set_up_specification_set(set) {

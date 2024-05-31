@@ -69,6 +69,7 @@ if (!isset($jwt)) {
                     v1,
                     v2,
                     v3,
+                    ps_var,
                     eta,
                     date_send,
                     arrive,
@@ -171,6 +172,8 @@ if (!isset($jwt)) {
         $v2 = $row['v2'];
         $v3 = $row['v3'];
 
+        $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
+
         $serial_number = $row['serial_number'];
 
         $test_updated_name = $row['test_updated_name'];
@@ -220,6 +223,7 @@ if (!isset($jwt)) {
             "v1" => $v1,
             "v2" => $v2,
             "v3" => $v3,
+            "ps_var" => $ps_var,
             "eta" => $eta,
             "date_send" => $date_send, 
             "arrive" => $arrive,

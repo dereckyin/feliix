@@ -592,6 +592,104 @@ else
                     }
                 }
 
+                // $smax = 0;
+                // $qmax = 0;
+                // $nmax = 0;
+
+                // $smin = 0;
+                // $qmin = 0;
+                // $nmin = 0;
+                
+                // if(count($product_set) > 0)
+                // {
+                //     for($i = 0; $i < count($product_set); $i++)
+                //     {
+                //         if (!in_array(tofloat($product_set[$i]->price),$pro_price) && tofloat($product_set[$i]->price) != '')
+                //         {
+                //             array_push($pro_price,tofloat($product_set[$i]->price));
+                //             $smax += tofloat($product_set[$i]->price);
+                //         }
+
+                //         if (!in_array(tofloat($product_set[$i]->price_ntd),$pro_price_ntd) && tofloat($product_set[$i]->price_ntd) != '')
+                //         {
+                //             array_push($pro_price_ntd,tofloat($product_set[$i]->price_ntd));
+                //             $nmax += tofloat($product_set[$i]->price_ntd);
+                //         }
+
+                //         // price_quoted
+                //         if (!in_array(tofloat($product_set[$i]->quoted_price),$pro_price_quoted) && tofloat($product_set[$i]->quoted_price) != '')
+                //         {
+                //             array_push($pro_price_quoted,tofloat($product_set[$i]->quoted_price));
+                //             $qmax += tofloat($product_set[$i]->quoted_price);
+                //         }
+
+                //         if($max_price_change == '' && $product_set[$i]->max_price_change != '')
+                //         {
+                //             $max_price_change = $product_set[$i]->max_price_change;
+                //         }
+
+                //         if($min_price_change == '' && $product_set[$i]->min_price_change != '')
+                //         {
+                //             $min_price_change = $product_set[$i]->min_price_change;
+                //         }
+
+                //         if($max_price_ntd_change == '' && $product_set[$i]->max_price_ntd_change != '')
+                //         {
+                //             $max_price_ntd_change = $product_set[$i]->max_price_ntd_change;
+                //         }
+
+                //         if($min_price_ntd_change == '' && $product_set[$i]->min_price_ntd_change != '')
+                //         {
+                //             $min_price_ntd_change = $product_set[$i]->min_price_ntd_change;
+                //         }
+
+                //         if($max_quoted_price_change == '' && $product_set[$i]->max_quoted_price_change != '')
+                //         {
+                //             $max_quoted_price_change = $product_set[$i]->max_quoted_price_change;
+                //         }
+
+                //         if($min_quoted_price_change == '' && $product_set[$i]->min_quoted_price_change != '')
+                //         {
+                //             $min_quoted_price_change = $product_set[$i]->min_quoted_price_change;
+                //         }
+
+                //         if(tofloat($product_set[$i]->price) > $srp)
+                //         {
+                //             $srp = tofloat($product_set[$i]->price);
+                //         }
+
+                //         if($product_set[$i]->max_price_change > $max_price_change && $product_set[$i]->max_price_change != '')
+                //         {
+                //             $max_price_change = $product_set[$i]->max_price_change;
+                //         }
+
+                //         if($product_set[$i]->min_price_change < $min_price_change && $product_set[$i]->min_price_change != '')
+                //         {
+                //             $min_price_change = $product_set[$i]->min_price_change;
+                //         }
+
+                //         if($product_set[$i]->max_price_ntd_change > $max_price_ntd_change && $product_set[$i]->max_price_ntd_change != '')
+                //         {
+                //             $max_price_ntd_change = $product_set[$i]->max_price_ntd_change;
+                //         }
+
+                //         if($product_set[$i]->min_price_ntd_change < $min_price_ntd_change && $product_set[$i]->min_price_ntd_change != '')
+                //         {
+                //             $min_price_ntd_change = $product_set[$i]->min_price_ntd_change;
+                //         }
+
+                //         if($product_set[$i]->max_quoted_price_change > $max_quoted_price_change && $product_set[$i]->max_quoted_price_change != '')
+                //         {
+                //             $max_quoted_price_change = $product_set[$i]->max_quoted_price_change;
+                //         }
+
+                //         if($product_set[$i]->min_quoted_price_change < $min_quoted_price_change && $product_set[$i]->min_quoted_price_change != '')
+                //         {
+                //             $min_quoted_price_change = $product_set[$i]->min_quoted_price_change;
+                //         }
+                //     }
+                // }
+
                 sort($pro_price);
                 sort($pro_price_ntd);
                 sort($pro_price_quoted);
@@ -1764,6 +1862,14 @@ function GetProductSetContent($id, $db){
         $pro_price_ntd = [];
         $pro_price_quoted = [];
         $pro_price = [];
+
+        if($row['price'] != null)
+            array_push($pro_price,$row['price']);
+        if($row['price_ntd'] != null)
+            array_push($pro_price_ntd,$row['price_ntd']);
+        if($row['quoted_price'] != null)
+            array_push($pro_price_quoted,$row['quoted_price']);
+
         if(count($product) > 0)
         {
             for($i = 0; $i < count($product); $i++)
@@ -1852,6 +1958,10 @@ function GetProductSetContent($id, $db){
 
             }
         }
+
+        $pro_price = array_unique($pro_price);
+        $pro_price_ntd = array_unique($pro_price_ntd);
+        $pro_price_quoted = array_unique($pro_price_quoted);
 
         sort($pro_price);
         sort($pro_price_ntd);
@@ -2273,5 +2383,8 @@ function GetProductSet($id, $db){
 }
 
 
+function tofloat($numberString) {
+    return floatval(preg_replace("/[^0-9.]/", '', $numberString));
+}
 
 ?>
