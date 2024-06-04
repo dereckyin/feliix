@@ -25,8 +25,8 @@ try {
             $username = $decoded->data->username;
 
 
-            // 可以存取Expense Recorder的人員名單如下：Dennis Lin(2), Glendon Wendell Co(4), Kristel Tan(6), Kuan(3), Mary Jude Jeng Articulo(9), Thalassa Wren Benzon(41), Stefanie Mika C. Santos(99)
-            if($username == "Dennis Lin" ||  $username == "Kristel Tan" ||  $username == "dereck" || $username == "Kuan" || $username == "Stefanie Mika C. Santos")
+            // 可以存取 user_profile 的人員名單如下：
+            if($username == "Dennis Lin" ||  $username == "Kristel Tan" ||  $username == "dereck" || $username == "Kuan" || $username == "Maria Trinidad Parco" || $username == "Gina Donato")
             {
                 $access6 = true;
             }
