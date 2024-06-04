@@ -260,18 +260,21 @@ function UpdateProduct($od_id, $item, $od_name,  $db)
 
     }
 
-    // update product_category
-    $pid = $item['pid'];
-    $query = "update product_category set last_order = :od_id, last_order_name = :od_name, last_order_at = now() where id = :pid ";
-    // prepare the query
-    $stmt = $db->prepare($query);
-
-    // bind the values
-    $stmt->bindParam(':od_id', $od_id);
-    $stmt->bindParam(':od_name', $od_name);
+    if($v1 == '' && $v2 == '' && $v3 == '' && count($ps_var) == 0)
+    {
+        // update product_category
+        $pid = $item['pid'];
+        $query = "update product_category set last_order = :od_id, last_order_name = :od_name, last_order_at = now() where id = :pid ";
+        // prepare the query
+        $stmt = $db->prepare($query);
     
-    $stmt->bindParam(':pid', $pid);
-
-    $stmt->execute();
+        // bind the values
+        $stmt->bindParam(':od_id', $od_id);
+        $stmt->bindParam(':od_name', $od_name);
+        
+        $stmt->bindParam(':pid', $pid);
+    
+        $stmt->execute();
+    }
 
 }
