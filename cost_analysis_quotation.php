@@ -194,35 +194,84 @@ if (!isset($jwt)) {
 
                     if($row['pid'] != '0')
                     {
-                        $product = $row['product'];
-
-                        if($product['currency'] == "")
+                        if(count($row['ps_var']) > 0)
                         {
-                            $sheet->setCellValue('J' . $i, $product['price']);
-                            $sheet->setCellValue('I' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
+                            $products = GetProductSet($row['ps_var'], $db);
+
+                            $price = "";
+                            $price_change = "";
+                            $price_ntd = "";
+                            $price_ntd_change = "";
+                            $currency = "";
+                            $price_changek = "";
+                            $pricel = "";
+                            
+                            foreach($products as $product)
+                            {
+                                if($product['currency'] == "")
+                                {
+                                    $price .= $product['price'] . " + ";
+                                    $price_change .= ($product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '') . " + ";
+                                }
+                                else
+                                {
+                                    $price .= $product['price_ntd'] . " + ";
+                                    $price_change .= ($product['price_ntd_change'] != '' ? substr($product['price_ntd_change'], 0, 10) : '') . " + ";
+                                }
+
+                                if($product['currency'] != "")
+                                    $currency .= $product['currency'] . " + ";
+
+                                $price_changek .= ($product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '') . " + ";
+                                $pricel .= $product['price'] . " + ";
+                            }
+                            
+                            $price = substr($price, 0, -2);
+                            $pricel = substr($pricel, 0, -2);
+                            $price_change = substr($price_change, 0, -2);
+                            $price_changek = substr($price_changek, 0, -2);
+                            $price_ntd = substr($price_ntd, 0, -2);
+                            $price_ntd_change = substr($price_ntd_change, 0, -2);
+                            $currency = substr($currency, 0, -2);
+
+                            $sheet->setCellValue('J' . $i, $price);
+                            $sheet->setCellValue('I' . $i, $price_change);
+                            $sheet->setCellValue('H' . $i, $currency);
+                            $sheet->setCellValue('K' . $i, $price_changek);
+                            $sheet->setCellValue('L' . $i, $pricel);
                         }
                         else
                         {
-                            $sheet->setCellValue('J' . $i, $product['price_ntd']);
-                            $sheet->setCellValue('I' . $i, $product['price_ntd_change'] != '' ? substr($product['price_ntd_change'], 0, 10) : '');
-                        }
-
-
-                        $sheet->setCellValue('H' . $i, $product['currency']);
-                        
-                        $sheet->setCellValue('K' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
-                        $sheet->setCellValue('L' . $i, $product['price']);
-
-                        if($product['price'] != 0 && $product['currency'] == "")
-                        {
-                            $sheet->setCellValue('O' . $i, round($product['price'] / $product['price'], 2));
-                            $sheet->setCellValue('P' . $i, round($price / $product['price'], 2));
-                        }
-                        
-                        if($product['price_ntd'] != 0 && $product['currency'] != "")
-                        {
-                            $sheet->setCellValue('O' . $i, round($product['price'] / $product['price_ntd'], 2));
-                            $sheet->setCellValue('P' . $i, round($price / $product['price_ntd'], 2));
+                            $product = $row['product'];
+    
+                            if($product['currency'] == "")
+                            {
+                                $sheet->setCellValue('J' . $i, $product['price']);
+                                $sheet->setCellValue('I' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
+                            }
+                            else
+                            {
+                                $sheet->setCellValue('J' . $i, $product['price_ntd']);
+                                $sheet->setCellValue('I' . $i, $product['price_ntd_change'] != '' ? substr($product['price_ntd_change'], 0, 10) : '');
+                            }
+    
+    
+                            $sheet->setCellValue('H' . $i, $product['currency']);
+                            
+                            $sheet->setCellValue('K' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
+                            $sheet->setCellValue('L' . $i, $product['price']);
+    
+                            if($product['price'] != 0 && $product['currency'] == "")
+                            {
+                                $sheet->setCellValue('O' . $i, round($product['price'] / $product['price'], 2));
+                                $sheet->setCellValue('P' . $i, round($price / $product['price'], 2));
+                            }
+                            
+                            if($product['price_ntd'] != 0 && $product['currency'] != "")
+                            {
+                                $sheet->setCellValue('O' . $i, round($product['price'] / $product['price_ntd'], 2));
+                                $sheet->setCellValue('P' . $i, round($price / $product['price_ntd'], 2));
+                            }
                         }
                     }
 
@@ -1150,7 +1199,7 @@ function GetProductItems($pages, $q_id, $db)
                 $v1 = $row['v1'];
                 $v2 = $row['v2'];
                 $v3 = $row['v3'];
-                // $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
+                $ps_var = $row['ps_var'];
 
                 $listing = $row['list'];
 
@@ -1186,6 +1235,8 @@ function GetProductItems($pages, $q_id, $db)
                     "v3" => $v3,
                     "list" => $listing,
 
+                    "ps_var" => $ps_var,
+
                     "product" => $product,
                 );
                 
@@ -1213,6 +1264,8 @@ function GetProductItems($pages, $q_id, $db)
                 "v3" => $v3,
                 "ps_var" => $ps_var,
                 "list" => $listing,
+
+                "ps_var" => $ps_var,
 
                 "product" => $product,
             );
@@ -1279,4 +1332,82 @@ function GetProduct($id, $v1, $v2, $v3, $db)
     
 
     return $pid;
+}
+
+
+
+function GetProductSet($ps_var, $db)
+{
+    $merged_results = [];
+
+    foreach($ps_var as $ps_lines)
+    {
+        $jsonstr = "";
+
+        $lines = explode("\n", $ps_lines);
+        foreach($lines as $line)
+        {
+            if(trim($line) != "")
+            {
+                // split key and value by :
+                $line = explode(":", $line);
+                $key = $line[0];
+                $value = $line[1];
+                $jsonstr .= '"' . trim($key) . '":"' . trim($value) . '",';
+            }
+        }
+
+        $jsonstr = rtrim($jsonstr, ",");
+        $jsonstr = "{" . $jsonstr . "}";
+
+        $var_json = json_decode($jsonstr, true);
+        
+        $v1 = "";
+        $v2 = "";
+        $v3 = "";
+        // iterate through json
+        foreach ($var_json as $key => $value) {
+            if($key != 'id')
+            {
+                if($v1 == "")
+                    $v1 = $value;
+                else if($v2 == "")
+                    $v2 = $value;
+                else if($v3 == "")
+                    $v3 = $value;
+            }
+            else if($key == 'id')
+            {
+                $pid = $value;
+            }
+        }
+
+        $query = "select * from product where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' ";
+        // prepare the query
+        $stmt = $db->prepare($query);
+
+        $stmt->bindParam(':pid', $pid);
+        
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $merged_results[] = $row;
+
+        $query = "select * from product_category where id = :pid";
+        // prepare the query
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':pid', $pid);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $currency = $row['currency'];
+
+        // add currency to the result
+        $merged_results[count($merged_results) - 1]['currency'] = $currency;
+
+    }
+
+    return $merged_results;
+
 }
