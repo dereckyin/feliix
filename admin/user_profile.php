@@ -141,6 +141,10 @@ try {
         cursor: default;
     }
 
+    .tablebox > ul > li:nth-of-type(n+2) {
+        font-size: 12px!important;
+    }
+
     @media screen and (min-width: 0px) and (max-width: 767px) {
         #my-content {
             display: none;
@@ -210,7 +214,7 @@ try {
                             <input type="date" v-model="date_start_company"  style="resize: none;"></input>
                         </li>
                         <li>
-                            <b>Last Day in Company</b>
+                            <b>Last Day of Work</b>
                         </li>
                         <li>
                             <input type="date" v-model="date_end_company"  style="resize: none;"></input>
@@ -234,7 +238,7 @@ try {
                         <li>Contact Number</li>
                         <li>Date Started in Company</li>
                         <li>Seniority</li>
-                        <li>Last Day in Company</li>
+                        <li>Last Day of Work</li>
                     </ul>
                     <ul v-for='(record, index) in displayedPosts' :key="index">
                         <li><input type="checkbox" name="record_id" class="alone" :value="record.index" :true-value="1"
