@@ -209,6 +209,12 @@ try {
                         <li>
                             <input type="date" v-model="date_start_company"  style="resize: none;"></input>
                         </li>
+                        <li>
+                            <b>Last Day in Company</b>
+                        </li>
+                        <li>
+                            <input type="date" v-model="date_end_company"  style="resize: none;"></input>
+                        </li>
                     </ul>
 
                     <div>
@@ -228,16 +234,19 @@ try {
                         <li>Contact Number</li>
                         <li>Date Started in Company</li>
                         <li>Seniority</li>
+                        <li>Last Day in Company</li>
                     </ul>
                     <ul v-for='(record, index) in displayedPosts' :key="index">
                         <li><input type="checkbox" name="record_id" class="alone" :value="record.index" :true-value="1"
                                    v-model:checked="record.is_checked"></li>
-                        <li>{{record.username}}</li>
+                        <!-- 如果是 status 不是 1 的使用者，在下面這個顯示姓名的 li 中請加上 style="color: oragnered;"  -->
+                        <li v-bind:style="record.status != '1' ? {  'color':'#ff4500' } : { }">{{record.username}}</li>
                         <li v-if="record.pic_url !== ''"><a class="man" :style="'background-image: url(../images/man/' + record.pic_url + ');'"></a></li>
                         <li v-if="record.pic_url == ''"><a class="man"></a></li>
                         <li>{{record.tel}}</li>
                         <li>{{record.date_start_company}}</li>
                         <li>{{record.seniority}}</li>
+                        <li>{{record.date_end_company}}</li>
                     </ul>
                 
 

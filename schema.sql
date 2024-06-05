@@ -5094,3 +5094,10 @@ ALTER TABLE product
 ADD COLUMN `last_order_name` varchar(64) COLLATE utf8mb4_unicode_ci default '';
 ALTER TABLE product
 ADD COLUMN `last_order_at` timestamp NULL;
+
+-- 20240605
+ALTER TABLE `user`
+ADD COLUMN `hide_user_profile` varchar(2) COLLATE utf8mb4_unicode_ci default '';
+
+ALTER TABLE `user`
+ADD COLUMN `date_end_company` varchar(24) COLLATE utf8mb4_unicode_ci default '';
