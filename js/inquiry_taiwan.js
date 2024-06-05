@@ -713,6 +713,49 @@ out : "",
         });
       },
 
+      
+      replyToTw : async function() {
+        let element = [];
+
+        for (let i = 0; i < this.items.length; i++) {
+            //if (this.items[i].is_checked == 1) {
+              element.push(this.items[i]);
+            //}
+        }
+
+        if(element.length == 0)
+          return;
+
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+
+        form_Data.append("jwt", token);
+        form_Data.append("iq_id", this.id);
+        form_Data.append("items", JSON.stringify(element));
+        form_Data.append("comment", this.comment);
+        form_Data.append("iq_name", this.iq_name);
+        form_Data.append("project_name", this.project_name);
+        form_Data.append("serial_name", this.serial_name);
+
+        let res = await axios({
+          method: 'post',
+          url: 'api/inquiry_taiwan_p1_send_reply_tw',
+          data: form_Data,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        this.getRecord();
+        this.comment = '';
+
+        Swal.fire({
+          text: "Reply Send To TW",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+      },
+
       withdrawNotesToTw : async function() {
         if(this.last_updated_id != this.uid)
         {
@@ -2697,8 +2740,8 @@ out : "",
         if(this.status == 0 && this.is_ariel == true)
           is_show = false;
 
-        if(this.status == 1 && this.is_ariel == false)
-          is_show = false;
+        // if(this.status == 1 && this.is_ariel == false)
+        //   is_show = false;
 
         if(this.status == 2)
           is_show = false;
