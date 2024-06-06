@@ -303,6 +303,8 @@ out : "",
 
         product_set : [],
         show_accessory: false,
+
+        comment_create_affected_item: [],
     },
   
     created() {
@@ -719,12 +721,21 @@ out : "",
 
         for (let i = 0; i < this.items.length; i++) {
             //if (this.items[i].is_checked == 1) {
-              element.push(this.items[i]);
+              // if in comment_create_affected_item
+              if(this.comment_create_affected_item.includes(this.items[i].id))
+                element.push(this.items[i]);
             //}
         }
 
         if(element.length == 0)
-          return;
+          {
+            Swal.fire({
+              text: "Nothing reply To TW",
+              icon: "info",
+              confirmButtonText: "OK",
+            });
+            return;
+          }
 
         var token = localStorage.getItem("token");
         var form_Data = new FormData();
@@ -2106,6 +2117,7 @@ out : "",
           .then(function(response) {
             if (response.data["batch_id"] != 0) {
               _this.comment_upload(task_id, response.data["batch_id"]);
+              _this.comment_create_affected_item.push(task_id);
             } 
   
           })
