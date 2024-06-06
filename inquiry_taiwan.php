@@ -1519,6 +1519,7 @@ try {
 
                             <a class="btn small green" @click="sendNotesToTw()" v-if="(status == 0 && is_ariel == false)">Send Inquity to TW</a>
                             <a class="btn small" @click="withdrawNotesToTw()" v-if="(status == 1 && is_ariel == false)">Withdraw</a>
+                            <a class="btn small yellow" @click="replyToTw()" v-if="(status == 1 && is_ariel == false)">Reply</a>
                         
                             <a class="btn small yellow" style="width: 200px;" @click="finish_partial_notes()" v-if="(status == 1 && is_ariel == true)">Complete Partial Inquiry</a>
                             <a class="btn small green" @click="finish_notes()" v-if="(status == 1 && is_ariel == true)">Complete Inquiry</a>
