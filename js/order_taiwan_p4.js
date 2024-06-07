@@ -2805,6 +2805,62 @@ var app = new Vue({
             });
       },
 
+      
+      print_petty() {
+        let element = [];
+        let _this = this;
+
+        for (let i = 0; i < this.items.length; i++) {
+          if (this.items[i].is_checked == 1) {
+              element.push(this.items[i].id);
+          }
+      }
+
+      if(element.length == 0)
+        {
+          Swal.fire({
+            text: "Please choose at least one item for exporting.",
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+        form_Data.append("jwt", token);
+        form_Data.append("id", this.id);
+        form_Data.append("order_type", "ORDER – CLOSE DEAL");
+        form_Data.append("serial_name", this.serial_name);
+        form_Data.append("od_name", this.od_name);
+        form_Data.append("project_name", this.project_name);
+        form_Data.append("url", "order_taiwan_p4?id=" + this.id);
+        form_Data.append("items", JSON.stringify(element));
+  
+        axios({
+          method: "post",
+          url: "api/order_taiwan_p4_print",
+          data: form_Data,
+          responseType: "blob",
+        })
+            .then(function(response) {
+                  const url = window.URL.createObjectURL(new Blob([response.data]));
+                  const link = document.createElement('a');
+                  link.href = url;
+                 
+                    link.setAttribute('download', _this.serial_name + '.xlsx');
+                 
+                  document.body.appendChild(link);
+                  link.click();
+  
+            })
+            .catch(function(response) {
+                //handle error
+                console.log(response)
+            });
+      },
+
+
 
       do_print_me(item, text){
         let _this = this;
