@@ -2835,7 +2835,7 @@ var app = new Vue({
         var form_Data = new FormData();
         form_Data.append("jwt", token);
         form_Data.append("id", this.id);
-        form_Data.append("order_type", "ORDER – SAMPLE");
+        form_Data.append("order_type", "ORDER – SAMPLES");
         form_Data.append("serial_name", this.serial_name);
         form_Data.append("od_name", this.od_name);
         form_Data.append("project_name", this.project_name);
