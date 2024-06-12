@@ -38,10 +38,17 @@ $serial_name = (isset($_POST['serial_name']) ?  $_POST['serial_name'] : '');
 $od_name = (isset($_POST['od_name']) ?  $_POST['od_name'] : '');
 $project_name = (isset($_POST['project_name']) ?  $_POST['project_name'] : '');
 $url = (isset($_POST['url']) ?  $_POST['url'] : '');
+
+$kind = (isset($_POST['kind']) ?  $_POST['kind'] : 'PROJECT');
+$link = (isset($_POST['link']) ?  $_POST['link'] : '');
+
 $items = (isset($_POST['items']) ?  $_POST['items'] : '[]');
 $items_array = json_decode($items,true);
 
 $items_str = implode(",", $items_array);
+
+$serial_mapping = (isset($_POST['serial']) ?  $_POST['serial'] : '[]');
+$mapping  = json_decode($serial_mapping,true);
 
 $conf = new Conf();
 
@@ -264,11 +271,12 @@ if($jwt){
             $sheet->getCell('C1')->getHyperlink()->setUrl($url);
             $sheet->getStyle('C1')->applyFromArray($serial_style);
 
-            $sheet->setCellValue('G1', 'PROJECT');
+            $sheet->setCellValue('G1', $kind);
             $sheet->getStyle('G1')->applyFromArray($order_style);
 
             $sheet->setCellValue('H1', $project_name);
             $sheet->mergeCells('H1:J1');
+            $sheet->getCell('H1')->getHyperlink()->setUrl($link);
             $sheet->getStyle('H1')->applyFromArray($serial_style);
 
             $sheet->getStyle('A2:I300')->getAlignment()->setHorizontal('center');
@@ -347,7 +355,18 @@ if($jwt){
             $i = 3;
             foreach($merged_results as $row)
             {
-                $sheet->setCellValue('A' . $i, $i-1);
+                // find id to serial in $mapping
+                $id = $row['id'];
+                $sn = "";
+                foreach($mapping as $m)
+                {
+                    if($m['id'] == $id)
+                    {
+                        $sn = $m['serial_number'];
+                        break;
+                    }
+                }
+                $sheet->setCellValue('A' . $i, $sn);
                 // $sheet->setCellValue('B' . $i, $row['status'] <= 1 ? '●' : '');
                 // $sheet->getStyle('B'. $i)->applyFromArray($center_style);
                 // $sheet->setCellValue('C' . $i, $row['status'] == 2 ? '●' : '');

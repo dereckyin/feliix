@@ -2809,11 +2809,15 @@ var app = new Vue({
       
       print_petty() {
         let element = [];
+        let serial = [];
         let _this = this;
+        var id_serial_mapping = {};
 
         for (let i = 0; i < this.items.length; i++) {
           if (this.items[i].is_checked == 1) {
-              element.push(this.items[i].id);
+            element.push(this.items[i].id);
+            id_serial_mapping = {id: this.items[i].id, serial_number: this.items[i].serial_number};
+            serial.push(id_serial_mapping);
           }
       }
 
@@ -2835,8 +2839,11 @@ var app = new Vue({
         form_Data.append("serial_name", this.serial_name);
         form_Data.append("od_name", this.od_name);
         form_Data.append("project_name", this.project_name);
-        form_Data.append("url", "order_taiwan_sample_p4?id=" + this.id);
+        form_Data.append("url", "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" + this.id);
         form_Data.append("items", JSON.stringify(element));
+        form_Data.append("kind", "TASK");
+        form_Data.append("link", 'https://feliix.myvnc.com/task_management_' + this.stage_id + '?sid=' + this.project_id);
+        form_Data.append("serial", JSON.stringify(serial));
   
         axios({
           method: "post",
@@ -2858,6 +2865,13 @@ var app = new Vue({
             .catch(function(response) {
                 //handle error
                 console.log(response)
+            })
+            .finally(function() {
+              for (let i = 0; i < _this.items.length; i++) {
+                if (_this.items[i].is_checked == 1) {
+                  _this.items[i].is_checked = 0;
+                }
+              }
             });
       },
 
