@@ -509,6 +509,14 @@ var app = new Vue({
       });
     },
 
+    last_order_info: function(info) {
+      Swal.fire({
+        title: "<i>Last Order:</i>",
+        html: "<h1>hello</h1>",
+        confirmButtonText: "Close",
+      });
+    },
+
     btnDelClick: function(id) {
       let _this = this;
 

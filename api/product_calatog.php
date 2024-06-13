@@ -407,6 +407,9 @@ else
 
                 $product_set_cnt = 0;
 
+                $last_order = $row['last_order'];
+                $last_order_name = $row['last_order_name'];
+
                 if($sub_category == '10020000')
                 {
                     if($p1_id != '')
@@ -503,6 +506,10 @@ else
                 $pro_price_ntd = [];
                 $pro_price_quoted = [];
                 $pro_price = [];
+
+                // for last order
+                $is_last_order = 0;
+
                 if(count($product) > 0)
                 {
                     for($i = 0; $i < count($product); $i++)
@@ -588,8 +595,16 @@ else
                             $min_quoted_price_change = $product[$i]['quoted_price_change'];
                         }
 
-
+                        if($product[$i]['last_order_name'] != '')
+                        {
+                            $is_last_order = 1;
+                        }
                     }
+                }
+
+                if($last_order_name != '')
+                {
+                    $is_last_order = 1;
                 }
 
                 // $smax = 0;
@@ -1093,6 +1108,10 @@ else
 
                                     "product_set_cnt" => $product_set_cnt,
 
+                                    "last_order" => $last_order,
+                                    "last_order_name" => $last_order_name,
+                                    "is_last_order" => $is_last_order,
+
                 );
             }
 
@@ -1166,6 +1185,9 @@ function GetProduct($id, $db){
         $quoted_price = $row['quoted_price'];
         $quoted_price_change = $row['quoted_price_change'] != '' ? substr($row['quoted_price_change'], 0, 10) : '';
 
+        $last_order = $row['last_order'];
+        $last_order_name = $row['last_order_name'];
+
         $merged_results[] = array(  "id" => $id, 
                                     "k1" => $k1, 
                                     "k2" => $k2, 
@@ -1191,7 +1213,8 @@ function GetProduct($id, $db){
                                     "quoted_price_change" => substr($quoted_price_change, 0, 10), 
                                    
                                     "file" => array( "value" => ''),
-                                   
+                                   "last_order" => $last_order,
+                                      "last_order_name" => $last_order_name,
             );
     }
 
@@ -1787,6 +1810,9 @@ function GetProductSetContent($id, $db){
         $created_name = $row['created_name'];
         $updated_name = $row['updated_name'];
 
+        $last_order = $row['last_order'];
+        $last_order_name = $row['last_order_name'];
+
         $product = GetProduct($id, $db);
 
         $out = $row['out'];
@@ -1862,6 +1888,9 @@ function GetProductSetContent($id, $db){
         $pro_price_ntd = [];
         $pro_price_quoted = [];
         $pro_price = [];
+
+        // for last order
+        $is_last_order = 0;
 
         if($row['price'] != null)
             array_push($pro_price,$row['price']);
@@ -1955,8 +1984,16 @@ function GetProductSetContent($id, $db){
                     $min_quoted_price_change = $product[$i]['quoted_price_change'];
                 }
 
-
+                if($product[$i]['last_order_name'] != '')
+                {
+                    $is_last_order = 1;
+                }
             }
+        }
+
+        if($last_order_name != '')
+        {
+            $is_last_order = 1;
         }
 
         $pro_price = array_unique($pro_price);
@@ -2337,6 +2374,10 @@ function GetProductSetContent($id, $db){
                             "phased_out_cnt" => $phased_out_cnt,
 
                             "phased_out_text1" => $phased_out_text1,
+
+                            "last_order" => $last_order,
+                            "last_order_name" => $last_order_name,
+                            "is_last_order" => $is_last_order,
 
         );
     }

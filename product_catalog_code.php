@@ -289,6 +289,17 @@
             color: #007bff;
         }
 
+        #tb_product_list tbody td ul.last_order_history button {
+            font-size: 14px;
+            font-weight: 500;
+            background-color: red;
+            color: white;
+            display: inline-block;
+            margin-left: 3px;
+            padding: 0 5px 3px;
+            border-radius: 10px;
+        }
+
         #tb_product_list tbody td div.phasedout_variant {
             text-align: left;
             color: red;
@@ -929,6 +940,17 @@
 
                             </ul>
 
+                            <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
+                            <ul class="last_order_history" v-if="set.is_last_order == 1">
+                                <li>
+                                    Last Order History:
+                                </li>
+                                <li>
+                                    <button @click="last_order_info(set)">info</button>
+                                </li>
+
+                            </ul>
+
                             <!-- 如果停產的子規格數目大於 0，才需要顯示下面的<div class="phasedout_variant"> 結構 -->
                             <div class="phasedout_variant" v-if="set.phased_out_cnt > 0">
 
@@ -1044,6 +1066,17 @@
                                 </li>
                                 <li>
                                     {{ item.updated_name !== null ? item.updated_at : '' }} {{ item.updated_name !== null ? '(' + item.updated_name + ')' : '' }}
+                                </li>
+
+                            </ul>
+
+                            <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
+                            <ul class="last_order_history"  v-if="item.is_last_order == 1">
+                                <li>
+                                    Last Order History:
+                                </li>
+                                <li>
+                                    <button @click="last_order_info(item)">info</button>
                                 </li>
 
                             </ul>
