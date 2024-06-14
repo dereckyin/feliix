@@ -576,13 +576,13 @@
                     <div class="basic_info">
 
                         <!-- 網頁載入時，if「這個產品的主產品在 product_category 資料表 last_order 欄位有值」或者「它的任何一個子規格在 product 資料表 last_order 欄位有值」，就需要顯示下面的 <div class="last_order_history"> -->
-                        <div class="last_order_history">
+                        <div class="last_order_history" v-if="set.is_last_order != ''">
 
                             <!-- 在網頁載入時 或 當使用者還沒選擇任何一個子規格組合時，只會顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
                             <!-- 當使用者選擇了一個子規格組合時(也就是每個維度選項都選擇了)，只會顯示下方 <span> 結構來列出該子規格最後訂購日期和相關訂單，但是不會顯示下方的 <button> 結構 -->
                             <!-- 但當使用者本來選擇了某一個子規格組合，後來變成沒有選擇任何子規格時，則會只顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
-                            <button>Last Order History</button>
-                            <span>Last Ordered: 最後一次被訂購的日期(日期即可) at <a href=”訂單類型搭配訂單ID”>訂單號碼</a></span>
+                            <button @click="last_order_info(set.is_last_order)" v-if="set.last_order_name == ''">Last Order History</button>
+                            <span v-if="set.last_order_name != ''">Last Ordered: {{ set.last_order_at }} at <a :href="set.last_order_url">{{ set.last_order_name }}</a></span>
                         </div>
 
                         <!-- 網頁載入時，調整成需要根據「該產品是否停產」以及「有多少子規格停產」，來決定下面三個<span>結構要顯示哪一個 -->
@@ -781,6 +781,16 @@
 
             <div class="infobox">
                 <div class="basic_info">
+
+                    <!-- 網頁載入時，if「這個產品的主產品在 product_category 資料表 last_order 欄位有值」或者「它的任何一個子規格在 product 資料表 last_order 欄位有值」，就需要顯示下面的 <div class="last_order_history"> -->
+                    <div class="last_order_history"  v-if="is_last_order != ''">
+
+                    <!-- 在網頁載入時 或 當使用者還沒選擇任何一個子規格組合時，只會顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
+                    <!-- 當使用者選擇了一個子規格組合時(也就是每個維度選項都選擇了)，只會顯示下方 <span> 結構來列出該子規格最後訂購日期和相關訂單，但是不會顯示下方的 <button> 結構 -->
+                    <!-- 但當使用者本來選擇了某一個子規格組合，後來變成沒有選擇任何子規格時，則會只顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
+                    <button @click="last_order_info(is_last_order)" v-if="last_order_url == ''">Last Order History</button>
+                    <span v-if="last_order_url != ''">Last Ordered: {{ last_order_at }} at <a :href="last_order_url">{{ last_order_name }}</a></span>
+                    </div>
 
                     <!-- 網頁載入時，調整成需要根據「該產品是否停產」以及「有多少子規格停產」，來決定下面三個<span>結構要顯示哪一個 -->
                     <!-- 但當使用者選擇到某一個停產的子規格組合時，下方的 <span> 結構就會變成要顯示第一個<span>結構；若使用者切換到另一個沒有停產的子規格組合，則沒有任何<span>結構需要顯示出來 -->

@@ -138,6 +138,11 @@ var app = new Vue({
     print_option: {},
 
     show_srp: true,
+
+    is_last_order : '',
+    last_order_name : '',
+    last_order_at : '',
+    last_order_url : '',
   },
 
   created() {
@@ -330,6 +335,10 @@ var app = new Vue({
           this.out = "Y";
           this.out_cnt = 0;
         }
+
+        this.last_order_name = item_product.last_order_name;
+        this.last_order_at = item_product.last_order_at;
+        this.last_order_url = item_product.last_order_url;
       }
       else
       {
@@ -348,6 +357,10 @@ var app = new Vue({
 
         this.out = this.record[0]['out'];
         this.out_cnt = this.record[0]['phased_out_cnt'];
+
+        this.last_order_name = "";
+        this.last_order_at = "";
+        this.last_order_url = "";
       }
 
     },
@@ -586,6 +599,8 @@ var app = new Vue({
 
             _this.edit_mode = true;
             _this.print_option = _this.record[0]['print_option'];
+
+            _this.is_last_order = _this.record[0]['is_last_order'];
           })
           .catch(function(error) {
             console.log(error);
@@ -1168,6 +1183,10 @@ var app = new Vue({
         set.out = "Y";
         set.out_cnt = 0;
       }
+
+      set.last_order_name = item_product.last_order_name;
+      set.last_order_at = item_product.last_order_at;
+      set.last_order_url = item_product.last_order_url;
     }
     else
     {
@@ -1186,6 +1205,11 @@ var app = new Vue({
 
       set.out = set.record[0]['out'];
       set.out_cnt = set.record[0]['phased_out_cnt'];
+
+      set.last_order_name = "";
+      set.last_order_at = "";
+      set.last_order_url = "";
+
     }
 
     this.check_all_set();
@@ -1304,6 +1328,14 @@ var app = new Vue({
 
  goto_sheet_set(set){
   window.open(set.sheet_url, '_blank');
+},
+
+last_order_info: function(info) {
+  Swal.fire({
+    title: "<h1><i>Last Order History</i></h1><br>",
+    html: info,
+    confirmButtonText: "Close",
+  });
 },
 
   },

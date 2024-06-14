@@ -941,12 +941,12 @@
                             </ul>
 
                             <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
-                            <ul class="last_order_history" v-if="set.is_last_order == 1">
+                            <ul class="last_order_history" v-if="set.is_last_order != ''">
                                 <li>
                                     Last Order History:
                                 </li>
                                 <li>
-                                    <button @click="last_order_info(set)">info</button>
+                                    <button @click="last_order_info(set.is_last_order)">info</button>
                                 </li>
 
                             </ul>
@@ -1071,12 +1071,12 @@
                             </ul>
 
                             <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
-                            <ul class="last_order_history"  v-if="item.is_last_order == 1">
+                            <ul class="last_order_history"  v-if="item.is_last_order != ''">
                                 <li>
                                     Last Order History:
                                 </li>
                                 <li>
-                                    <button @click="last_order_info(item)">info</button>
+                                    <button @click="last_order_info(item.is_last_order)">info</button>
                                 </li>
 
                             </ul>

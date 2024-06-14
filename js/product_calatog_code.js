@@ -511,8 +511,8 @@ var app = new Vue({
 
     last_order_info: function(info) {
       Swal.fire({
-        title: "<i>Last Order:</i>",
-        html: "<h1>hello</h1>",
+        title: "<h1><i>Last Order History</i></h1><br>",
+        html: info,
         confirmButtonText: "Close",
       });
     },
