@@ -187,7 +187,7 @@ function UpdateProduct($od_id, $item, $od_name,  $db)
 
     if($v1 != '' || $v2 != '' || $v3 != '')
     {
-        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' ";
+        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'close-deal', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' ";
         // prepare the query
         $stmt = $db->prepare($query);
 
@@ -243,7 +243,7 @@ function UpdateProduct($od_id, $item, $od_name,  $db)
             }
         }
 
-        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' ";
+        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'close-deal', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' ";
         // prepare the query
         $stmt = $db->prepare($query);
 
@@ -263,7 +263,7 @@ function UpdateProduct($od_id, $item, $od_name,  $db)
     {
         // update product_category
         $pid = $item['pid'];
-        $query = "update product_category set last_order = :od_id, last_order_name = :od_name, last_order_at = now() where id = :pid ";
+        $query = "update product_category set last_order = :od_id, last_order_name = :od_name, last_order_type = 'close-deal', last_order_at = now() where id = :pid ";
         // prepare the query
         $stmt = $db->prepare($query);
     
