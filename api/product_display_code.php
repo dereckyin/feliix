@@ -812,7 +812,7 @@ function GetProduct($id, $db, $currency){
                                     "file" => array( "value" => ''),
                                    "last_order" => $last_order,
                                     "last_order_name" => $last_order_name,
-                                    "last_order_at" => $last_order_at,
+                                    "last_order_at" => substr($last_order_at,0, 10),
                                     "last_order_url" => $last_order_url,
 
             );

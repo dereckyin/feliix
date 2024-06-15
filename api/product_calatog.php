@@ -410,6 +410,7 @@ else
                 $last_order = $row['last_order'];
                 $last_order_name = $row['last_order_name'];
                 $last_order_at = $row['last_order_at'];
+                $last_order_url = "";
 
                 if($sub_category == '10020000')
                 {
@@ -649,6 +650,8 @@ else
                     
                     if($order_info["order_type"] == "stock")
                         $url = "http://feliix.myvnc.com/order_taiwan_stock_p1?id=" . $last_order;
+
+                    $last_order_url = $url;
 
 
                     $is_last_order_main = "Main Product: <br>" . substr($last_order_at, 0, 10) . "at <a href='" . $url . "' target='_blank'>" .  $last_order_name . "</a><br>";
@@ -1160,6 +1163,8 @@ else
                                     "last_order" => $last_order,
                                     "last_order_name" => $last_order_name,
                                     "is_last_order" => $is_last_order,
+                                    "last_order_at" => substr($last_order_at,0, 10),
+                                    "last_order_url" => "",
 
                 );
             }
@@ -1243,6 +1248,28 @@ function GetProduct($id, $db){
         $last_order_name = $row['last_order_name'];
         $last_order_at = $row['last_order_at'];
 
+        if($last_order != "")
+            {
+                $order_info = getOrderInfo($last_order, $db);
+                $last_order_url = "";
+    
+                if($order_info["order_type"] == "taiwan")
+                    $last_order_url = "http://feliix.myvnc.com/order_taiwan_p1?id=" . $last_order;
+                
+                if($order_info["order_type"] == "mockup")
+                    $last_order_url = "http://feliix.myvnc.com/order_taiwan_mockup_p1?id=" . $last_order;
+                
+                if($order_info["order_type"] == "sample")
+                    $last_order_url = "http://feliix.myvnc.com/order_taiwan_sample_p1?id=" . $last_order;
+                
+                if($order_info["order_type"] == "stock")
+                    $last_order_url = "http://feliix.myvnc.com/order_taiwan_stock_p1?id=" . $last_order;
+            }
+            else
+            {
+                $last_order_url = "";
+            }
+
         $merged_results[] = array(  "id" => $id, 
                                     "k1" => $k1, 
                                     "k2" => $k2, 
@@ -1274,7 +1301,8 @@ function GetProduct($id, $db){
                                     "file" => array( "value" => ''),
                                    "last_order" => $last_order,
                                     "last_order_name" => $last_order_name,
-                                    "last_order_at" => $last_order_at,
+                                    "last_order_at" => substr($last_order_at,0, 10),
+                                    "last_order_url" => $last_order_url,
 
             );
     }
