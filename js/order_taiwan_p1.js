@@ -1184,6 +1184,8 @@ var app = new Vue({
           this.last_order_name = "";
           this.last_order_at = "";
           this.last_order_url = "";
+
+          this.product.last_order_url = "";
         }
   
       },
