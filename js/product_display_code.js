@@ -143,6 +143,7 @@ var app = new Vue({
     last_order_name : '',
     last_order_at : '',
     last_order_url : '',
+    last_have_spec : true,
   },
 
   created() {
@@ -339,6 +340,8 @@ var app = new Vue({
         this.last_order_name = item_product.last_order_name;
         this.last_order_at = item_product.last_order_at;
         this.last_order_url = item_product.last_order_url;
+
+        this.last_have_spec = false;
       }
       else
       {
@@ -361,6 +364,8 @@ var app = new Vue({
         this.last_order_name = "";
         this.last_order_at = "";
         this.last_order_url = "";
+
+        this.last_have_spec = true;
       }
 
     },
@@ -1187,6 +1192,8 @@ var app = new Vue({
       set.last_order_name = item_product.last_order_name;
       set.last_order_at = item_product.last_order_at;
       set.last_order_url = item_product.last_order_url;
+
+      set.last_have_spec = false;
     }
     else
     {
@@ -1209,6 +1216,8 @@ var app = new Vue({
       set.last_order_name = "";
       set.last_order_at = "";
       set.last_order_url = "";
+
+      set.last_have_spec = true;
 
     }
 

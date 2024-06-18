@@ -663,6 +663,7 @@ else
                                     "is_last_order" => $is_last_order,
 
                                     "last_order_url" => "",
+                                    "last_have_spec" => true,
             );
             }
 
@@ -814,6 +815,7 @@ function GetProduct($id, $db, $currency){
                                     "last_order_name" => $last_order_name,
                                     "last_order_at" => substr($last_order_at,0, 10),
                                     "last_order_url" => $last_order_url,
+                                    "last_have_spec" => true,
 
             );
     }
@@ -1789,6 +1791,7 @@ function GetProductSet($id, $qty, $db){
                                     "is_last_order" => $is_last_order,
 
                                     "last_order_url" => "",
+                                    "last_have_spec" => true,
 
             );
             }
