@@ -488,7 +488,7 @@ else
                         if($product[$i]['3th_variation'] != "=>")
                             $params .= ", " . str_replace("=>", " = ", $product[$i]['3th_variation']);
 
-                        $is_last_order_product = "(" . $order_sn++ . ") " . $params . ": <br>" . substr($product[$i]['last_order_at'], 0, 10) . "at <a href='" . $url . "' target='_blank'>" .  $product[$i]['last_order_name'] . "</a><br><br>";
+                        $is_last_order_product = "(" . $order_sn++ . ") " . $params . ": <br>" . substr($product[$i]['last_order_at'], 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $product[$i]['last_order_name'] . "</a><br><br>";
                     }
                 }
                 $phased_out_cnt = $phased_out_cnt;
@@ -654,7 +654,7 @@ else
                     $last_order_url = $url;
 
 
-                    $is_last_order_main = "Main Product: <br>" . substr($last_order_at, 0, 10) . "at <a href='" . $url . "' target='_blank'>" .  $last_order_name . "</a><br>";
+                    $is_last_order_main = "Main Product: <br>" . substr($last_order_at, 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $last_order_name . "</a><br>";
                 }
 
                 $is_last_order = $is_last_order_main . $is_last_order_product;
@@ -1955,7 +1955,7 @@ function GetProductSetContent($id, $db){
                 if($product[$i]['3th_variation'] != "=>")
                     $params .= ", " . str_replace("=>", " = ", $product[$i]['3th_variation']);
 
-                $is_last_order_product = "(" . $order_sn++ . ") " . $params . ": <br>" . substr($product[$i]['last_order_at'], 0, 10) . "at <a href='" . $url . "' target='_blank'>" .  $product[$i]['last_order_name'] . "</a><br><br>";
+                $is_last_order_product = "(" . $order_sn++ . ") " . $params . ": <br>" . substr($product[$i]['last_order_at'], 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $product[$i]['last_order_name'] . "</a><br><br>";
             }
             
         }
@@ -2129,7 +2129,7 @@ function GetProductSetContent($id, $db){
                 $url = "https://feliix.myvnc.com/order_taiwan_stock_p1?id=" . $last_order;
 
 
-            $is_last_order_main = "Main Product: <br>" . substr($last_order_at, 0, 10) . "at <a href='" . $url . "' target='_blank'>" .  $last_order_name . "</a><br>";
+            $is_last_order_main = "Main Product: <br>" . substr($last_order_at, 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $last_order_name . "</a><br>";
         }
 
         $is_last_order = $is_last_order_main . $is_last_order_product;
