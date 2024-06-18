@@ -283,6 +283,7 @@ var app = new Vue({
         last_order_name : '',
         last_order_at : '',
         last_order_url : '',
+        last_have_spec : true,
     },
   
     created() {
@@ -3714,6 +3715,8 @@ Installation:`;
           this.product.last_order_name = item_product.last_order_name;
           this.product.last_order_at = item_product.last_order_at;
           this.product.last_order_url = item_product.last_order_url;
+          this.last_have_spec = false;
+          this.product.last_have_spec = false;
 
         }
         else
@@ -3736,6 +3739,8 @@ Installation:`;
           this.last_order_url = "";
 
           this.product.last_order_url = "";
+          this.last_have_spec = true;
+          this.product.last_have_spec = true;
         }
   
       },
@@ -3871,6 +3876,7 @@ Installation:`;
         set.last_order_name = item_product.last_order_name;
         set.last_order_at = item_product.last_order_at;
         set.last_order_url = item_product.last_order_url;
+        set.last_have_spec = false;
       }
       else
       {
@@ -3893,6 +3899,7 @@ Installation:`;
         set.last_order_name = "";
       set.last_order_at = "";
       set.last_order_url = "";
+      set.last_have_spec = true;
       }
     
       this.check_all_set();
