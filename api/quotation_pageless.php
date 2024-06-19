@@ -1134,6 +1134,25 @@ function GetBlocks($qid, $db){
         $listing = $row['listing'];
 
         $srp = GetProductPrice($row['pid'], $row['v1'], $row['v2'], $row['v3'], $db);
+
+        $last_order_name = "";
+        $last_order_at = "";
+        $last_order_url = "";
+        $moq = "";
+        $is_last_order = "";
+        if($pid != 0)
+        {
+            $pd = GetProductMain($pid, $db);
+
+            if(count($pd) > 0)
+            {
+                $last_order_name = $pd[0]['last_order_name'];
+                $last_order_at = $pd[0]['last_order_at'];
+                $last_order_url = $pd[0]['last_order_url'];
+                $is_last_order = $pd[0]['is_last_order'];
+                $moq = $pd[0]['moq'];
+            }
+        }
     
         $type == "" ? "" : "image";
         $url = $photo == "" ? "" : "https://storage.googleapis.com/feliiximg/" . $photo;
@@ -1167,6 +1186,11 @@ function GetBlocks($qid, $db){
             "ps_var" => $ps_var,
             "list" => $listing,
             "srp" => $srp,
+            "last_order_name" => $last_order_name,
+            "last_order_at" => $last_order_at,
+            "last_order_url" => $last_order_url,
+            "is_last_order" => $is_last_order,
+            "moq" => $moq,
         );
     }
 
@@ -1397,4 +1421,242 @@ function GetProductId($code, $db)
     }
 
     return $pid;
+}
+
+function getOrderInfo($od_id, $db)
+{
+    $sql = "select order_type, serial_name, status from od_main WHERE id = ". $od_id;
+
+    $merged_results = array();
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results = $row;
+    }
+
+    return $merged_results;
+}
+
+
+function GetProductMain($id, $db){
+
+    $time_start = microtime(true); 
+
+    // product main
+    $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1 and p.id = ". $id;
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+        $id = '';
+        $category = '';
+        $tags = '';
+        $sub_category = '';
+
+        $sub_category = $row['sub_category'];
+    
+        $last_order = $row['last_order'];
+        $last_order_name = $row['last_order_name'];
+        $last_order_at = $row['last_order_at'];
+        $last_order_url = "";
+        $moq = $row['moq'];
+
+        $product = GetProduct($id, $db);
+
+
+        // for last order
+        $is_last_order_product = "";
+        $order_sn = 1;
+        
+        for($i = 0; $i < count($product); $i++)
+        {
+            
+
+            if($product[$i]['last_order_name'] != '')
+            {
+                $order_info = getOrderInfo($product[$i]['last_order'], $db);
+                $url = "";
+
+                if($order_info["order_type"] == "taiwan")
+                    $url = "https://feliix.myvnc.com/order_taiwan_p1?id=" . $product[$i]['last_order'];
+                
+                if($order_info["order_type"] == "mockup")
+                    $url = "https://feliix.myvnc.com/order_taiwan_mockup_p1?id=" . $product[$i]['last_order'];
+                
+                if($order_info["order_type"] == "sample")
+                    $url = "https://feliix.myvnc.com/order_taiwan_sample_p1?id=" . $product[$i]['last_order'];
+                
+                if($order_info["order_type"] == "stock")
+                    $url = "https://feliix.myvnc.com/order_taiwan_stock_p1?id=" . $product[$i]['last_order'];
+
+
+                $params = str_replace("=>", " = ", $product[$i]['1st_variation']);
+                if($product[$i]['2rd_variation'] != "=>")
+                    $params .= ", " . str_replace("=>", " = ", $product[$i]['2rd_variation']);
+                if($product[$i]['3th_variation'] != "=>")
+                    $params .= ", " . str_replace("=>", " = ", $product[$i]['3th_variation']);
+
+                $is_last_order_product .= "(" . $order_sn++ . ") " . $params . ": <br>" . substr($product[$i]['last_order_at'], 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $product[$i]['last_order_name'] . "</a><br><br>";
+            }
+        }
+
+
+        // for last order
+        $is_last_order_main = "";
+        if($last_order_name != '')
+        {
+            $order_info = getOrderInfo($last_order, $db);
+            $url = "";
+
+            if($order_info["order_type"] == "taiwan")
+                $url = "https://feliix.myvnc.com/order_taiwan_p1?id=" . $last_order;
+            
+            if($order_info["order_type"] == "mockup")
+                $url = "https://feliix.myvnc.com/order_taiwan_mockup_p1?id=" . $last_order;
+            
+            if($order_info["order_type"] == "sample")
+                $url = "https://feliix.myvnc.com/order_taiwan_sample_p1?id=" . $last_order;
+            
+            if($order_info["order_type"] == "stock")
+                $url = "https://feliix.myvnc.com/order_taiwan_stock_p1?id=" . $last_order;
+
+            $last_order_url = $url;
+
+
+            $is_last_order_main = "Main Product: <br>" . substr($last_order_at, 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $last_order_name . "</a><br>";
+        }
+
+        $is_last_order = $is_last_order_main . $is_last_order_product;
+
+        
+        $merged_results[] = array( "id" => $id,
+                            
+
+                            "last_order" => $last_order,
+                            "last_order_name" => $last_order_name,
+                            "is_last_order" => $is_last_order,
+                            "last_order_at" => substr($last_order_at,0, 10),
+                            "last_order_url" => $last_order_url,
+                            "last_have_spec" => true,
+                            "moq" => $moq,
+
+        );
+    }
+
+        $time_end = microtime(true);
+    
+        $execution_time = ($time_end - $time_start);
+        // echo '<b>GetProduct</b> '.$execution_time.'<br/>';
+        
+        return $merged_results;
+}
+
+
+
+function GetProduct($id, $db){
+
+    $time_start = microtime(true); 
+
+    $sql = "SELECT *, CONCAT('https://storage.googleapis.com/feliiximg/' , photo) url FROM product WHERE product_id = ". $id . " and STATUS <> -1";
+
+    $merged_results = array();
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $id = $row['id'];
+ 
+        $fir = $row['1st_variation'];
+        $sec = $row['2rd_variation'];
+        $thi = $row['3th_variation'];
+
+        $checked = '';
+        $code = $row['code'];
+        $price = $row['price'];
+        $price_ntd = $row['price_ntd'];
+        $price_org = $row['price'];
+        $price_ntd_org = $row['price_ntd'];
+        $price_change = $row['price_change'] != '' ? substr($row['price_change'], 0, 10) : '';
+        $price_ntd_change = $row['price_ntd_change'] != '' ? substr($row['price_ntd_change'], 0, 10) : '';
+        $status = $row['enabled'];
+        $photo = trim($row['photo']);
+        $enabled = $row['enabled'];
+        if($photo != '')
+            $url = $row['url'];
+        else
+            $url = '';
+
+        $quoted_price = $row['quoted_price'];
+        $quoted_price_change = $row['quoted_price_change'] != '' ? substr($row['quoted_price_change'], 0, 10) : '';
+
+        $last_order = $row['last_order'];
+        $last_order_name = $row['last_order_name'];
+        $last_order_at = $row['last_order_at'];
+
+        if($last_order != "")
+            {
+                $order_info = getOrderInfo($last_order, $db);
+                $last_order_url = "";
+    
+                if($order_info["order_type"] == "taiwan")
+                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_p1?id=" . $last_order;
+                
+                if($order_info["order_type"] == "mockup")
+                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_mockup_p1?id=" . $last_order;
+                
+                if($order_info["order_type"] == "sample")
+                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_sample_p1?id=" . $last_order;
+                
+                if($order_info["order_type"] == "stock")
+                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_stock_p1?id=" . $last_order;
+            }
+            else
+            {
+                $last_order_url = "";
+            }
+
+        $merged_results[] = array(  "id" => $id, 
+  
+                                    "1st_variation" => $fir,
+                                    "2rd_variation" => $sec,
+                                    "3th_variation" => $thi,
+
+                                    "checked" => $checked, 
+                                    "code" => $code, 
+                                    "price" => $price, 
+                                    "price_ntd" => $price_ntd, 
+                                    "price_org" => $price_org, 
+                                    "price_ntd_org" => $price_ntd_org, 
+                                    "price_change" => $price_change, 
+                                    "price_ntd_change" => $price_ntd_change, 
+                                    "status" => $status, 
+                                    "url" => $url, 
+                                    "photo" => $photo, 
+                                    "enabled" => $enabled,
+
+                                    "quoted_price" => $quoted_price, 
+                                    "quoted_price_org" => $quoted_price, 
+                                    "quoted_price_change" => substr($quoted_price_change, 0, 10), 
+                                   
+                                    "file" => array( "value" => ''),
+                                   "last_order" => $last_order,
+                                    "last_order_name" => $last_order_name,
+                                    "last_order_at" => substr($last_order_at,0, 10),
+                                    "last_order_url" => $last_order_url,
+                                    "last_have_spec" => true,
+
+            );
+    }
+
+    $time_end = microtime(true);
+
+    $execution_time = ($time_end - $time_start);
+    // echo '<b>GetProduct</b> '.$execution_time.'<br/>';
+    
+    return $merged_results;
 }

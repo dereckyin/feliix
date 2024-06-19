@@ -1008,6 +1008,24 @@ header( 'location:index' );
             word-break: break-all;
         }
 
+        .tb_format1 tbody tr td div.pid button.last_order_history {
+            font-size: 16px;
+            font-weight: 500;
+            background-color: red;
+            color: white;
+            display: inline-block;
+            margin-bottom: 3px;
+            padding: 0 7px 3px;
+            border-radius: 10px;
+        }
+
+        .tb_format1 tbody tr td div.moq {
+            font-size: 16px;
+            font-weight: 800;
+            word-break: break-all;
+            color: red;
+        }
+
         .tb_format1 tbody tr td div.brief {
             font-size: 16px;
             font-weight: 400;
@@ -1188,6 +1206,24 @@ header( 'location:index' );
             font-size: 16px;
             font-weight: 800;
             word-break: break-all;
+        }
+
+        .tb_format2 tbody tr td div.pid button.last_order_history {
+            font-size: 16px;
+            font-weight: 500;
+            background-color: red;
+            color: white;
+            display: inline-block;
+            margin-bottom: 3px;
+            padding: 0 7px 3px;
+            border-radius: 10px;
+        }
+
+        .tb_format2 tbody tr td div.moq {
+            font-size: 16px;
+            font-weight: 800;
+            word-break: break-all;
+            color: red;
         }
 
         .tb_format2 tbody tr td div.brief {
@@ -3290,13 +3326,15 @@ header( 'location:index' );
                                 <img v-show="bk.photo !== ''" :src=" bk.photo !== '' ? img_url + bk.photo : ''">
                             </td>
                             <td rowspan="2" v-if="bk.type == 'image'">
-                                <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }}</div>
+                                <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
                                 <div class="code">{{ bk.code }}</div>
                                 <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
                                 <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
                             </td>
                             <td v-if="bk.type == '' || bk.type== 'noimage'" colspan="2">
-                                <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }}</div>
+                                <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
                                 <div class="code">{{ bk.code }}</div>
                                 <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
                                 <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
@@ -3366,7 +3404,8 @@ header( 'location:index' );
                         <tr v-for="(bk, index) in tp.blocks">
                             <td>{{ bk.num }}</td>
                             <td colspan="2">
-                                <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }}</div>
+                                <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
                                 <div class="code">{{ bk.code }}</div>
                                 <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
                                 <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
