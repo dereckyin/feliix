@@ -1337,13 +1337,6 @@ function GetProductMain($id, $db){
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-        $id = '';
-        $category = '';
-        $tags = '';
-        $sub_category = '';
-
-        $sub_category = $row['sub_category'];
-    
         $last_order = $row['last_order'];
         $last_order_name = $row['last_order_name'];
         $last_order_at = $row['last_order_at'];
@@ -1351,7 +1344,6 @@ function GetProductMain($id, $db){
         $moq = $row['moq'];
 
         $product = GetProduct($id, $db);
-
 
         // for last order
         $is_last_order_product = "";
