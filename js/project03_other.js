@@ -2201,8 +2201,20 @@ var app = new Vue({
       cnt.innerHTML = comment.value.replace(/[^\x00-\xff]/g,"xx").length;
     },
 
-    clear_reply(task_id) {
-      var cnt = this.$refs['comment_task_cnt' + task_id][0];
+    clear_reply(message_id, ref_id) {
+      var cnt = this.$refs['task_reply_msg_cnt_' + message_id + '_' + ref_id][0];
+      cnt.innerHTML = "0";
+    },
+
+    count_reply_r(message_id, ref_id) {
+      var comment = this.$refs['task_reply_msg_r_' + message_id + '_' + ref_id][0];
+
+      var cnt = this.$refs['task_reply_msg_r_cnt_' + message_id + '_' + ref_id][0];
+      cnt.innerHTML = comment.value.replace(/[^\x00-\xff]/g,"xx").length;
+    },
+
+    clear_reply_r(message_id, ref_id) {
+      var cnt = this.$refs['task_reply_msg_cnt_' + message_id + '_' + ref_id][0];
       cnt.innerHTML = "0";
     },
 

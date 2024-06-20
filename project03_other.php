@@ -3761,7 +3761,7 @@ catch (Exception $e) {
                                                             <dd>
                                                                 
                                                                 <div class="btnbox">
-                                                                    (<a class="btn small orange" :ref="'task_reply_msg_cnt_' + item.message_id + '_' + item.ref_id">0</a>/1000)
+                                                                    (<span class="small" :ref="'task_reply_msg_cnt_' + item.message_id + '_' + item.ref_id">0</span>/1000)
                                                                     <a class="btn small orange" @click="msg_clear(item.message_id + '_' + item.ref_id)">Cancel</a>
                                                                     <a class="btn small green" @click="msg_create(item.message_id + '_' + item.ref_id, item.message_id)">Save</a>
                                                                 </div>
@@ -3908,7 +3908,7 @@ catch (Exception $e) {
                                                         <div class="dialog reply r3" :id="'task_reply_dlg_r_' + item.message_id + '_' + item.ref_id"  :style= "item.i_got_it == false ? 'top: 17px;' : ''">
                                                             <div class="formbox">
                                                                 <dl>
-                                                                    <dd><textarea name="" :ref="'task_reply_msg_r_' + item.message_id + '_' + item.ref_id" :id="'task_reply_msg_r_' + item.message_id + '_' + item.ref_id"></textarea></dd>
+                                                                    <dd><textarea name="" :ref="'task_reply_msg_r_' + item.message_id + '_' + item.ref_id" :id="'task_reply_msg_r_' + item.message_id + '_' + item.ref_id" @keyup="count_reply_r(item.message_id, item.ref_id)"></textarea></dd>
 
                                                                     <dd>
                                                                         <div class="pub-con" ref="bg">
@@ -3925,6 +3925,7 @@ catch (Exception $e) {
                                                                     </dd>
                                                                     <dd>
                                                                         <div class="btnbox">
+                                                                            (<span class="small" :ref="'task_reply_msg_r_cnt_' + item.message_id + '_' + item.ref_id">0</span>/1000)
                                                                             <a class="btn small orange" @click="msg_clear_r(item.message_id + '_' + item.ref_id)">Cancel</a>
                                                                             <a class="btn small green" @click="msg_create_r(item.message_id + '_' + item.ref_id, item.message_id)">Save</a>
                                                                         </div>
