@@ -2396,7 +2396,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Task Detail:</dt>
+                                        <dt>Task Detail: ({{ detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="detail"></textarea></dd>
                                     </dl>
                                     <dl>
@@ -2741,7 +2741,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Task Detail:</dt>
+                                        <dt>Task Detail: ({{ detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="detail"></textarea></dd>
                                     </dl>
                                     <dl>
@@ -3084,7 +3084,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Task Detail:</dt>
+                                        <dt>Task Detail: ({{ detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="detail"></textarea></dd>
                                     </dl>
                                     <dl>
@@ -3743,7 +3743,7 @@ catch (Exception $e) {
                                                 <div class="dialog reply r1" :id="'task_reply_dlg_' + item.message_id + '_' + item.ref_id" :style= "item.i_got_it == false ? 'top: 17px;' : ''">
                                                     <div class="formbox">
                                                         <dl>
-                                                            <dd><textarea name="" :ref="'task_reply_msg_' + item.message_id + '_' + item.ref_id" :id="'task_reply_msg_' + item.message_id + '_' + item.ref_id"></textarea></dd>
+                                                            <dd><textarea name="" :ref="'task_reply_msg_' + item.message_id + '_' + item.ref_id" :id="'task_reply_msg_' + item.message_id + '_' + item.ref_id" @keyup="count_reply(item.message_id, item.ref_id)"></textarea></dd>
 
                                                             <dd>
                                                                 <div class="pub-con" ref="bg">
@@ -3759,11 +3759,14 @@ catch (Exception $e) {
                                                                 </div>
                                                             </dd>
                                                             <dd>
+                                                                
                                                                 <div class="btnbox">
+                                                                    (<a class="btn small orange" :ref="'task_reply_msg_cnt_' + item.message_id + '_' + item.ref_id">0</a>/1000)
                                                                     <a class="btn small orange" @click="msg_clear(item.message_id + '_' + item.ref_id)">Cancel</a>
                                                                     <a class="btn small green" @click="msg_create(item.message_id + '_' + item.ref_id, item.message_id)">Save</a>
                                                                 </div>
                                                             </dd>
+                                                            
                                                         </dl>
                                                     </div>
                                                 </div>
@@ -3801,7 +3804,7 @@ catch (Exception $e) {
                         <div class="tablebox lv3c m03 dialogclear">
                             <ul>
                                 <li>
-                                    <textarea name="" id="" placeholder="Write your comment here" :ref="'comment_task_' + receive_record.task_id"></textarea>
+                                    <textarea name="" id="" placeholder="Write your comment here" :ref="'comment_task_' + receive_record.task_id" @keyup="count_message(receive_record.task_id)"></textarea>
                                     <div class="filebox">
                                         <a class="attch" v-for="(item,index) in taskItems(receive_record.task_id)" :key="index" @click="deleteTaskFile(receive_record.task_id, index)">{{item.name}}</a>
 
@@ -3813,6 +3816,7 @@ catch (Exception $e) {
                                             <span class="upload-des">choose file</span>
                                             <input class="input" type="file" :ref="'file_task_' + receive_record.task_id" placeholder="choose file" @change="changeTaskFile(receive_record.task_id)" multiple />
                                         </div>
+                                        (<span :ref="'comment_task_cnt' + receive_record.task_id" style="display: inline;">0</div>/1000)
                                         <a class="btn small green" @click="comment_create(receive_record.task_id)">Comment</a>
                                 </li>
 
@@ -3964,7 +3968,7 @@ catch (Exception $e) {
                                 <div class="tablebox lv3c m03 dialogclear">
                                     <ul>
                                         <li>
-                                            <textarea name="" id="" placeholder="Write your comment here" :ref="'comment_task_r_' + receive_record.task_id"></textarea>
+                                            <textarea name="" id="" placeholder="Write your comment here" :ref="'comment_task_r_' + receive_record.task_id" @keyup="count_message_r(receive_record.task_id)"></textarea>
                                             <div class="filebox">
                                                 <a class="attch" v-for="(item,index) in taskItems_r(receive_record.task_id)" :key="index" @click="deleteTaskFile_r(receive_record.task_id, index)">{{item.name}}</a>
 
@@ -3976,6 +3980,7 @@ catch (Exception $e) {
                                                     <span class="upload-des">choose file</span>
                                                     <input class="input" type="file" :ref="'file_task_r_' + receive_record.task_id" placeholder="choose file" @change="changeTaskFile_r(receive_record.task_id)" multiple />
                                                 </div>
+                                                (<span :ref="'comment_task_r_cnt' + receive_record.task_id" style="display: inline;">0</span>/1000)
                                                 <a class="btn small green" @click="comment_create_r(receive_record.task_id)">Comment</a>
                                         </li>
 

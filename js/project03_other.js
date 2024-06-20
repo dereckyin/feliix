@@ -145,6 +145,7 @@ var app = new Vue({
 
     related_orders: [],
     related_inquirys: [],
+
   },
 
   created() {
@@ -1782,6 +1783,7 @@ var app = new Vue({
       this.arrTask[task_id] = [];
       Vue.set(this.arrTask, 0, '');
       this.$refs['comment_task_' + task_id][0].value = "";
+      this.clear_message(task_id);
     },
 
     comment_clear_r(task_id) {
@@ -1789,6 +1791,7 @@ var app = new Vue({
       this.arrTask_r[task_id] = [];
       Vue.set(this.arrTask_r, 0, '');
       this.$refs['comment_task_r_' + task_id][0].value = "";
+      this.clear_message_r(task_id);
     },
 
     task_create_o() {
@@ -2163,6 +2166,44 @@ var app = new Vue({
           //handle error
           console.log(response)
         }).finally(function () { _this.task_edit_clear_o() });
+    },
+
+    count_message(task_id) {
+      var comment = this.$refs['comment_task_' + task_id][0];
+
+      var cnt = this.$refs['comment_task_cnt' + task_id][0];
+      cnt.innerHTML = comment.value.replace(/[^\x00-\xff]/g,"xx").length;
+    },
+
+    clear_message(task_id) {
+      var cnt = this.$refs['comment_task_cnt' + task_id][0];
+      cnt.innerHTML = "0";
+    },
+
+    count_message_r(task_id) {
+      var comment = this.$refs['comment_task_r_' + task_id][0];
+
+      var cnt = this.$refs['comment_task_r_cnt' + task_id][0];
+      cnt.innerHTML = comment.value.replace(/[^\x00-\xff]/g,"xx").length;
+    },
+
+    clear_message_r(task_id) {
+      var comment = this.$refs['comment_task_r_' + task_id][0];
+
+      var cnt = this.$refs['comment_task_r_cnt' + task_id][0];
+      cnt.innerHTML = "0";
+    },
+
+    count_reply(message_id, ref_id) {
+      var comment = this.$refs['task_reply_msg_' + message_id + '_' + ref_id][0];
+
+      var cnt = this.$refs['task_reply_msg_cnt_' + message_id + '_' + ref_id][0];
+      cnt.innerHTML = comment.value.replace(/[^\x00-\xff]/g,"xx").length;
+    },
+
+    clear_reply(task_id) {
+      var cnt = this.$refs['comment_task_cnt' + task_id][0];
+      cnt.innerHTML = "0";
     },
 
     task_edit_create_i() {
