@@ -303,6 +303,12 @@ var app = new Vue({
         show_accessory: false,
 
         temp_pages_verify : [],
+
+        is_last_order : '',
+        last_order_name : '',
+        last_order_at : '',
+        last_order_url : '',
+        last_have_spec : true,
     },
   
     created() {
@@ -1349,6 +1355,10 @@ var app = new Vue({
 
         this.out = product.out;
         this.out_cnt = product.phased_out_cnt;
+
+        this.last_order_name = product.last_order_name;
+        this.last_order_at = product.last_order_at;
+        this.last_order_url = product.last_order_url;
 
         this.chunk(this.related_product, 4);
 
@@ -3730,6 +3740,17 @@ Installation:`;
               this.out = "Y";
               this.out_cnt = 0;
           }
+
+          this.last_order_name = this.product.last_order_name;
+          this.last_order_at = this.product.last_order_at;
+          this.last_order_url = this.product.last_order_url;
+
+          this.product.last_order_name = item_product.last_order_name;
+          this.product.last_order_at = item_product.last_order_at;
+          this.product.last_order_url = item_product.last_order_url;
+          this.last_have_spec = false;
+          this.product.last_have_spec = false;
+
         }
         else
         {
@@ -3741,6 +3762,18 @@ Installation:`;
 
           this.out = this.product['out'];
           this.out_cnt = this.product['phased_out_cnt'];
+
+          this.product.last_order_name = this.last_order_name;
+          this.product.last_order_at = this.last_order_at;
+          this.product.last_order_url = this.last_order_url;
+
+          this.last_order_name = "";
+          this.last_order_at = "";
+          this.last_order_url = "";
+
+          this.product.last_order_url = "";
+          this.last_have_spec = true;
+          this.product.last_have_spec = true;
         }
   
       },
@@ -3766,6 +3799,14 @@ Installation:`;
           title: "<i>Phased-out Variants:</i>", 
           html: info,  
           confirmButtonText: "Close", 
+        });
+      },
+
+      last_order_info: function(info) {
+        Swal.fire({
+          title: "<h2><i>Last Order History</i></h2><br>",
+          html: info,
+          confirmButtonText: "Close",
         });
       },
 
@@ -3880,6 +3921,11 @@ Installation:`;
           set.out = "Y";
           set.out_cnt = 0;
         }
+
+        set.last_order_name = item_product.last_order_name;
+        set.last_order_at = item_product.last_order_at;
+        set.last_order_url = item_product.last_order_url;
+        set.last_have_spec = false;
       }
       else
       {
@@ -3898,6 +3944,11 @@ Installation:`;
   
         set.out = set.record[0]['out'];
         set.out_cnt = set.record[0]['phased_out_cnt'];
+
+        set.last_order_name = "";
+      set.last_order_at = "";
+      set.last_order_url = "";
+      set.last_have_spec = true;
       }
 
       this.check_all_set();

@@ -118,6 +118,11 @@ try{
             error_log($arr[2]);
         }
 
+        // update product_category
+        $pid = $items_array[$i]['pid'];
+        if($pid != 0)
+            UpdateProduct($od_id, $items_array[$i], $serial_name, $db);
+
     }
 
     $query = "INSERT INTO od_process
@@ -170,4 +175,105 @@ try{
 catch (Exception $e)
 {
     error_log($e->getMessage());
+}
+
+function UpdateProduct($od_id, $item, $od_name,  $db)
+{
+    $pid = $item['pid'];
+    $v1 = $item['v1'];
+    $v2 = $item['v2'];
+    $v3 = $item['v3'];
+    $ps_var = $item['ps_var'];
+
+    if($v1 != '' || $v2 != '' || $v3 != '')
+    {
+        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'close-deal', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' ";
+        // prepare the query
+        $stmt = $db->prepare($query);
+
+        // bind the values
+        $stmt->bindParam(':od_id', $od_id);
+        $stmt->bindParam(':od_name', $od_name);
+
+        $stmt->bindParam(':pid', $pid);
+
+        $stmt->execute();
+    }
+
+    
+    foreach($ps_var as $ps_lines)
+    {
+        $jsonstr = "";
+
+        $lines = explode("\n", $ps_lines);
+        foreach($lines as $line)
+        {
+            if(trim($line) != "")
+            {
+                // split key and value by :
+                $line = explode(":", $line);
+                $key = $line[0];
+                $value = $line[1];
+                $jsonstr .= '"' . trim($key) . '":"' . trim($value) . '",';
+            }
+        }
+
+        $jsonstr = rtrim($jsonstr, ",");
+        $jsonstr = "{" . $jsonstr . "}";
+
+        $var_json = json_decode($jsonstr, true);
+        
+        $v1 = "";
+        $v2 = "";
+        $v3 = "";
+        // iterate through json
+        foreach ($var_json as $key => $value) {
+            if($key != 'id')
+            {
+                if($v1 == "")
+                    $v1 = $value;
+                else if($v2 == "")
+                    $v2 = $value;
+                else if($v3 == "")
+                    $v3 = $value;
+            }
+            else if($key == 'id')
+            {
+                $pid = $value;
+            }
+        }
+
+        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'close-deal', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' ";
+        // prepare the query
+        $stmt = $db->prepare($query);
+
+        // bind the values
+        $stmt->bindParam(':od_id', $od_id);
+        $stmt->bindParam(':od_name', $od_name);
+
+        $stmt->bindParam(':pid', $pid);
+
+
+        $stmt->execute();
+        
+
+    }
+
+    if($v1 == '' && $v2 == '' && $v3 == '' && count($ps_var) == 0)
+    {
+        // update product_category
+        $pid = $item['pid'];
+        $query = "update product_category set last_order = :od_id, last_order_name = :od_name, last_order_type = 'close-deal', last_order_at = now() where id = :pid ";
+        // prepare the query
+        $stmt = $db->prepare($query);
+    
+        // bind the values
+        $stmt->bindParam(':od_id', $od_id);
+        $stmt->bindParam(':od_name', $od_name);
+        
+        $stmt->bindParam(':pid', $pid);
+    
+        $stmt->execute();
+    }
+
 }

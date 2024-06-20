@@ -5079,3 +5079,32 @@ insert into electrical_tools(unit, particulars, price, create_id, created_at, sn
 insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('pc ', 'Multitester', 3000, 0, now(), 11); 
 insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('sets', 'Ladder', 3000, 0, now(), 12); 
 insert into electrical_tools(unit, particulars, price, create_id, created_at, sn) values('sets', 'Solder lead & Solder Gun', 1000, 0, now(), 13); 
+
+-- 20240603
+ALTER TABLE product_category
+ADD COLUMN `last_order` bigint(20) unsigned NULL;
+ALTER TABLE product_category
+ADD COLUMN `last_order_name` varchar(64) COLLATE utf8mb4_unicode_ci default '';
+ALTER TABLE product_category
+ADD COLUMN `last_order_at` timestamp NULL;
+
+ALTER TABLE product
+ADD COLUMN `last_order` bigint(20) unsigned NULL;
+ALTER TABLE product
+ADD COLUMN `last_order_name` varchar(64) COLLATE utf8mb4_unicode_ci default '';
+ALTER TABLE product
+ADD COLUMN `last_order_at` timestamp NULL;
+
+-- 20240605
+ALTER TABLE `user`
+ADD COLUMN `hide_user_profile` varchar(2) COLLATE utf8mb4_unicode_ci default '';
+
+ALTER TABLE `user`
+ADD COLUMN `date_end_company` varchar(24) COLLATE utf8mb4_unicode_ci default '';
+
+-- 20240613
+ALTER TABLE product_category
+ADD COLUMN `last_order_type` varchar(64) COLLATE utf8mb4_unicode_ci default '';
+
+ALTER TABLE product
+ADD COLUMN `last_order_type` varchar(64) COLLATE utf8mb4_unicode_ci default '';

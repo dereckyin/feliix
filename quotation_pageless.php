@@ -979,6 +979,24 @@ header( 'location:index' );
             word-break: break-all;
         }
 
+        .tb_format1 tbody tr td div.pid button.last_order_history {
+            font-size: 16px;
+            font-weight: 500;
+            background-color: red;
+            color: white;
+            display: inline-block;
+            margin-bottom: 3px;
+            padding: 0 7px 3px;
+            border-radius: 10px;
+        }
+
+        .tb_format1 tbody tr td div.moq {
+            font-size: 16px;
+            font-weight: 800;
+            word-break: break-all;
+            color: red;
+        }
+
         .tb_format1 tbody tr td div.brief {
             font-size: 16px;
             font-weight: 400;
@@ -1188,6 +1206,24 @@ header( 'location:index' );
             font-size: 16px;
             font-weight: 800;
             word-break: break-all;
+        }
+
+        .tb_format2 tbody tr td div.pid button.last_order_history {
+            font-size: 16px;
+            font-weight: 500;
+            background-color: red;
+            color: white;
+            display: inline-block;
+            margin-bottom: 3px;
+            padding: 0 7px 3px;
+            border-radius: 10px;
+        }
+
+        .tb_format2 tbody tr td div.moq {
+            font-size: 16px;
+            font-weight: 800;
+            word-break: break-all;
+            color: red;
         }
 
         .tb_format2 tbody tr td div.brief {
@@ -2134,6 +2170,27 @@ header( 'location:index' );
             padding: 30px 20px 5px;
         }
 
+        .infobox .basic_info div.last_order_history button {
+            font-size: 16px;
+            font-weight: 500;
+            background-color: red;
+            color: white;
+            display: inline-block;
+            margin-bottom: 3px;
+            padding: 0 7px 3px;
+            border-radius: 10px;
+        }
+
+        .infobox .basic_info div.last_order_history span {
+            font-size: 16px;
+            font-weight: 500;
+            color: red;
+        }
+
+        .infobox .basic_info div.last_order_history span a {
+            color: blue;
+        }
+
         .infobox .basic_info span.phasedout {
             font-size: 16px;
             font-weight: 500;
@@ -2393,6 +2450,17 @@ header( 'location:index' );
         .list_function .sort_block a.btn.green {
             color: white;
             margin: 0 5px;
+        }
+
+        #modal_product_catalog tbody td ul.last_order_history button {
+            font-size: 14px;
+            font-weight: 500;
+            background-color: red;
+            color: white;
+            display: inline-block;
+            margin-left: 3px;
+            padding: 0 5px 3px;
+            border-radius: 10px;
         }
 
         #modal_product_catalog tbody td div.phasedout_variant {
@@ -3314,13 +3382,15 @@ header( 'location:index' );
                                         <img v-show="bk.photo !== ''" :src=" bk.photo !== '' ? img_url + bk.photo : ''">
                                     </td>
                                     <td rowspan="2" v-if="bk.type == 'image'">
-                                        <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }}</div>
+                                        <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                        <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
                                         <div class="code">{{ bk.code }}</div>
                                         <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
                                         <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
                                     </td>
                                     <td v-if="bk.type == '' || bk.type== 'noimage'" colspan="2">
-                                        <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }}</div>
+                                        <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                        <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
                                         <div class="code">{{ bk.code }}</div>
                                         <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
                                         <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
@@ -3388,7 +3458,8 @@ header( 'location:index' );
                                 <tr v-for="(bk, index) in tp.blocks">
                                     <td>{{ bk.num }}</td>
                                     <td colspan="2">
-                                        <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }}</div>
+                                        <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                        <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
                                         <div class="code">{{ bk.code }}</div>
                                         <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
                                         <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
@@ -3886,6 +3957,17 @@ header( 'location:index' );
 
                                         </ul>
 
+                                        <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
+                                        <ul class="last_order_history" v-if="set.is_last_order != ''">
+                                            <li>
+                                                Last Order History:
+                                            </li>
+                                            <li>
+                                                <button @click="last_order_info(set.is_last_order)">info</button>
+                                            </li>
+
+                                        </ul>
+
                                         <!-- 如果停產的子規格數目大於 0，才需要顯示下面的<div class="phasedout_variant"> 結構 -->
                                         <div class="phasedout_variant" v-if="set.phased_out_cnt > 0">
 
@@ -3993,6 +4075,16 @@ header( 'location:index' );
                                             {{ item.updated_at }}
                                         </li>
                                     </ul>
+                                <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
+                                <ul class="last_order_history"  v-if="item.is_last_order != ''">
+                                    <li>
+                                        Last Order History:
+                                    </li>
+                                    <li>
+                                        <button @click="last_order_info(item.is_last_order)">info</button>
+                                    </li>
+
+                                </ul>
                                     <!-- 如果停產的子規格數目大於 0，才需要顯示下面的<div class="phasedout_variant"> 結構 -->
                                     <div class="phasedout_variant" v-if="item.phased_out_cnt > 0">
 
@@ -4240,6 +4332,16 @@ header( 'location:index' );
                             </div>
                             <div class="infobox">
                                 <div class="basic_info">
+
+                                    <!-- 網頁載入時，if「這個產品的主產品在 product_category 資料表 last_order 欄位有值」或者「它的任何一個子規格在 product 資料表 last_order 欄位有值」，就需要顯示下面的 <div class="last_order_history"> -->
+                                    <div class="last_order_history" v-if="set.is_last_order != ''">
+                                        <!-- 在網頁載入時 或 當使用者還沒選擇任何一個子規格組合時，只會顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
+                                        <!-- 當使用者選擇了一個子規格組合時(也就是每個維度選項都選擇了)，只會顯示下方 <span> 結構來列出該子規格最後訂購日期和相關訂單，但是不會顯示下方的 <button> 結構 -->
+                                        <!-- 但當使用者本來選擇了某一個子規格組合，後來變成沒有選擇任何子規格時，則會只顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
+                                        <button @click="last_order_info(set.is_last_order)" v-if="set.last_have_spec">Last Order History</button>
+                                        <span v-if="set.last_order_name != ''">Last Ordered: {{ set.last_order_at }} at <a :href="set.last_order_url">{{ set.last_order_name }}</a></span>
+                                    </div>
+                                
                                     <span class="phasedout" v-if="set.out == 'Y' && set.out_cnt == 0">Phased Out</span>
                                     <span class="phasedout1" v-if="set.out_cnt == 1" @click="PhaseOutAlert_set(set.phased_out_text1)">1 variant is phased out</span>
                                     <span class="phasedout1" v-if="set.out_cnt > 1" @click="PhaseOutAlert_set(set.phased_out_text1)">{{ set.out_cnt }} variants are phased out</span>
@@ -4434,6 +4536,16 @@ header( 'location:index' );
 
                             <div class="infobox">
                                 <div class="basic_info">
+
+                                    <!-- 網頁載入時，if「這個產品的主產品在 product_category 資料表 last_order 欄位有值」或者「它的任何一個子規格在 product 資料表 last_order 欄位有值」，就需要顯示下面的 <div class="last_order_history"> -->
+                                    <div class="last_order_history" v-if="set.is_last_order != ''">
+                                        <!-- 在網頁載入時 或 當使用者還沒選擇任何一個子規格組合時，只會顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
+                                        <!-- 當使用者選擇了一個子規格組合時(也就是每個維度選項都選擇了)，只會顯示下方 <span> 結構來列出該子規格最後訂購日期和相關訂單，但是不會顯示下方的 <button> 結構 -->
+                                        <!-- 但當使用者本來選擇了某一個子規格組合，後來變成沒有選擇任何子規格時，則會只顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
+                                        <button @click="last_order_info(set.is_last_order)" v-if="set.last_have_spec">Last Order History</button>
+                                        <span v-if="set.last_order_name != ''">Last Ordered: {{ set.last_order_at }} at <a :href="set.last_order_url">{{ set.last_order_name }}</a></span>
+                                    </div>
+
                                     <span class="phasedout" v-if="set.out == 'Y' && set.out_cnt == 0">Phased Out</span>
                                     <span class="phasedout1" v-if="set.out_cnt == 1" @click="PhaseOutAlert_set(set.phased_out_text1)">1 variant is phased out</span>
                                     <span class="phasedout1" v-if="set.out_cnt > 1" @click="PhaseOutAlert_set(set.phased_out_text1)">{{ set.out_cnt }} variants are phased out</span>
@@ -4660,6 +4772,17 @@ header( 'location:index' );
                             </div>
                             <div class="infobox">
                                 <div class="basic_info">
+
+                                <!-- 網頁載入時，if「這個產品的主產品在 product_category 資料表 last_order 欄位有值」或者「它的任何一個子規格在 product 資料表 last_order 欄位有值」，就需要顯示下面的 <div class="last_order_history"> -->
+                                <div class="last_order_history"  v-if="product.is_last_order != ''">
+
+                                <!-- 在網頁載入時 或 當使用者還沒選擇任何一個子規格組合時，只會顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
+                                <!-- 當使用者選擇了一個子規格組合時(也就是每個維度選項都選擇了)，只會顯示下方 <span> 結構來列出該子規格最後訂購日期和相關訂單，但是不會顯示下方的 <button> 結構 -->
+                                <!-- 但當使用者本來選擇了某一個子規格組合，後來變成沒有選擇任何子規格時，則會只顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
+                                <button @click="last_order_info(product.is_last_order)" v-if="product.last_have_spec">Last Order History</button>
+                                <span v-if="product.last_order_url != ''">Last Ordered: {{ product.last_order_at }} at <a :href="product.last_order_url">{{ product.last_order_name }}</a></span>
+                                </div>
+
                                     <span class="phasedout" v-if="out == 'Y' && out_cnt == 0">Phased Out</span>
                                     <span class="phasedout1" v-if="out_cnt == 1" @click="PhaseOutAlert(product.phased_out_text1)">1 variant is phased out</span>
                                     <span class="phasedout1" v-if="out_cnt > 1" @click="PhaseOutAlert(product.phased_out_text1)">{{ out_cnt }} variants are phased out</span>
@@ -4823,6 +4946,15 @@ header( 'location:index' );
 
                             <div class="infobox">
                                 <div class="basic_info">
+                                <!-- 網頁載入時，if「這個產品的主產品在 product_category 資料表 last_order 欄位有值」或者「它的任何一個子規格在 product 資料表 last_order 欄位有值」，就需要顯示下面的 <div class="last_order_history"> -->
+                                <div class="last_order_history"  v-if="product.is_last_order != ''">
+
+                                <!-- 在網頁載入時 或 當使用者還沒選擇任何一個子規格組合時，只會顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
+                                <!-- 當使用者選擇了一個子規格組合時(也就是每個維度選項都選擇了)，只會顯示下方 <span> 結構來列出該子規格最後訂購日期和相關訂單，但是不會顯示下方的 <button> 結構 -->
+                                <!-- 但當使用者本來選擇了某一個子規格組合，後來變成沒有選擇任何子規格時，則會只顯示下方的 <button> 結構，但是不會顯示下方 <span> 結構 -->
+                                <button @click="last_order_info(product.is_last_order)" v-if="product.last_have_spec">Last Order History</button>
+                                <span v-if="product.last_order_url != ''">Last Ordered: {{ product.last_order_at }} at <a :href="product.last_order_url">{{ product.last_order_name }}</a></span>
+                                </div>
                                     <span class="phasedout" v-if="out == 'Y' && out_cnt == 0">Phased Out</span>
                                     <span class="phasedout1" v-if="out_cnt == 1" @click="PhaseOutAlert(product.phased_out_text1)">1 variant is phased out</span>
                                     <span class="phasedout1" v-if="out_cnt > 1" @click="PhaseOutAlert(product.phased_out_text1)">{{ out_cnt }} variants are phased out</span>

@@ -414,6 +414,23 @@ try {
             line-height: 1.45;
         }
 
+        .list_function.main .popupblock a.export_excel {
+            position: relative;
+        }
+
+        .list_function.main .popupblock a.export_excel::after {
+            content: " ";
+            background: url(images/ui/btn_export_excel.svg);
+            background-size: 22px 22px;
+            background-repeat: no-repeat;
+            width: 45px;
+            height: 45px;
+            position: absolute;
+            top: 0.5px;
+            left: 0.5px;
+            zoom: 130%;
+        }
+
         .list_function .pagenation a {
             color: #707071;
             border-color: #707071;
@@ -1439,6 +1456,19 @@ try {
         <div class="block D" style="display: block;">
 
             <div class="box-content">
+
+                <div class="list_function main">
+
+                    <!-- buttons to export selected items -->
+                    <div class="block">
+
+                        <div class="popupblock">
+                            <a id="" title="Export Selected Items into Excel" class="export_excel" @click="print_petty()"></a>
+                        </div>
+
+                    </div>
+
+                </div>
 
                 <table class="tb_order">
                     <thead>
