@@ -338,6 +338,10 @@ catch (Exception $e) {
         .list_function .block {
             margin-bottom: 0;
         }
+        div.text_count {
+	        font-size: 10px;
+	        float: right;
+        }
     </style>
 
     <style>
@@ -2415,7 +2419,7 @@ catch (Exception $e) {
                                     </dd>
                                 </dl>
                                 <dl>
-                                    <dt>Task Detail:</dt>
+                                    <dt>Task Detail: ({{ detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                     <dd><textarea placeholder="" v-model="detail"></textarea></dd>
                                 </dl>
                                 <dl>
@@ -2726,7 +2730,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Task Detail:</dt>
+                                        <dt>Task Detail: ({{ detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="detail"></textarea></dd>
                                     </dl>
                                     <dl>
@@ -3092,7 +3096,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Task Detail:</dt>
+                                        <dt>Task Detail: ({{ detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="detail"></textarea></dd>
                                     </dl>
                                     <dl>
@@ -3621,7 +3625,8 @@ catch (Exception $e) {
                                                 <div class="dialog reply r1" :id="'task_reply_dlg_' + item.message_id + '_' + item.ref_id" :style= "item.i_got_it == false ? 'top: 17px;' : ''">
                                                     <div class="formbox">
                                                         <dl>
-                                                            <dd><textarea name="" :ref="'task_reply_msg_' + item.message_id + '_' + item.ref_id" :id="'task_reply_msg_' + item.message_id + '_' + item.ref_id"></textarea></dd>
+                                                            <dd><textarea name="" :ref="'task_reply_msg_' + item.message_id + '_' + item.ref_id" :id="'task_reply_msg_' + item.message_id + '_' + item.ref_id"  @keyup="count_reply(item.message_id, item.ref_id)"></textarea>
+                                                            <div class="text_count">(<span class="small" :ref="'task_reply_msg_cnt_' + item.message_id + '_' + item.ref_id">0</span>/1000)</div></dd>
 
                                                             <dd>
                                                                 <div class="pub-con" ref="bg">
@@ -3686,7 +3691,7 @@ catch (Exception $e) {
                         <div class="tablebox lv3c m03 dialogclear">
                             <ul>
                                 <li>
-                                    <textarea name="" id="" placeholder="Write your comment here" :ref="'comment_task_' + receive_record.task_id"></textarea>
+                                    <textarea name="" id="" placeholder="Write your comment here" :ref="'comment_task_' + receive_record.task_id" @keyup="count_message(receive_record.task_id)"></textarea>
                                     <div class="filebox">
                                         <a class="attch" v-for="(item,index) in taskItems(receive_record.task_id)" :key="index" @click="deleteTaskFile(receive_record.task_id, index)">{{item.name}}</a>
 
@@ -3698,6 +3703,7 @@ catch (Exception $e) {
                                             <span class="upload-des">choose file</span>
                                             <input class="input" type="file" :ref="'file_task_' + receive_record.task_id" placeholder="choose file" @change="changeTaskFile(receive_record.task_id)" multiple />
                                         </div>
+                                        (<span :ref="'comment_task_cnt' + receive_record.task_id" style="display: inline;">0</div>/1000)
                                         <a class="btn small green" @click="comment_create(receive_record.task_id)">Comment</a>
                                 </li>
 
