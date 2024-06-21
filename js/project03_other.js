@@ -1629,6 +1629,9 @@ var app = new Vue({
 
       this.$refs['task_reply_msg_' + item_id][0].value = "";
 
+      var cnt = this.$refs['task_reply_msg_cnt_' + item_id][0];
+      cnt.innerHTML = "0";
+
       document.getElementById('task_reply_btn_' + item_id).classList.remove("focus");
       document.getElementById('task_reply_dlg_' + item_id).classList.remove("show");
     },
@@ -1636,6 +1639,9 @@ var app = new Vue({
     msg_clear_r(item_id) {
 
       this.$refs['task_reply_msg_r_' + item_id][0].value = "";
+
+      var cnt = this.$refs['task_reply_msg_r_cnt_' + item_id][0];
+      cnt.innerHTML = "0";
 
       document.getElementById('task_reply_btn_r_' + item_id).classList.remove("focus");
       document.getElementById('task_reply_dlg_r_' + item_id).classList.remove("show");
@@ -2201,21 +2207,11 @@ var app = new Vue({
       cnt.innerHTML = comment.value.replace(/[^\x00-\xff]/g,"xx").length;
     },
 
-    clear_reply(message_id, ref_id) {
-      var cnt = this.$refs['task_reply_msg_cnt_' + message_id + '_' + ref_id][0];
-      cnt.innerHTML = "0";
-    },
-
     count_reply_r(message_id, ref_id) {
       var comment = this.$refs['task_reply_msg_r_' + message_id + '_' + ref_id][0];
 
       var cnt = this.$refs['task_reply_msg_r_cnt_' + message_id + '_' + ref_id][0];
       cnt.innerHTML = comment.value.replace(/[^\x00-\xff]/g,"xx").length;
-    },
-
-    clear_reply_r(message_id, ref_id) {
-      var cnt = this.$refs['task_reply_msg_cnt_' + message_id + '_' + ref_id][0];
-      cnt.innerHTML = "0";
     },
 
     task_edit_create_i() {
