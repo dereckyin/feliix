@@ -2925,7 +2925,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Description:</dt>
+                                        <dt>Description: ({{ record.detail == undefined ? '0' : record.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="record.detail"></textarea></dd>
                                     </dl>
 
@@ -3301,7 +3301,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Description:</dt>
+                                        <dt>Description: ({{ record.detail == undefined ? '0' : record.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="record.detail"></textarea></dd>
                                     </dl>
 
