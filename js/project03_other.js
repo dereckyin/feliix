@@ -2942,15 +2942,15 @@ var app = new Vue({
 
           }
 
-          if (_this.arrTask[task_id].length == 0) {
-            _this.getProjectOtherTask(_this.stage_id);
-            _this.comment_clear(task_id);
-          }
+          // if (_this.arrTask[task_id].length == 0) {
+          //   _this.getProjectOtherTask(_this.stage_id);
+          //   _this.comment_clear(task_id);
+          // }
         })
         .catch(function (response) {
           //handle error
           console.log(response)
-        }).finally(function () { _this.comment_clear(task_id) });
+        }).finally(function () { _this.getProjectOtherTask(_this.stage_id); _this.comment_clear(task_id) });
     },
 
     comment_upload(task_id, batch_id) {
@@ -3061,15 +3061,15 @@ var app = new Vue({
 
           }
 
-          if (_this.arrTask_r[task_id].length == 0) {
-            _this.getProjectOtherTask_r(_this.stage_id);
-            _this.comment_clear_r(task_id);
-          }
+          // if (_this.arrTask_r[task_id].length == 0) {
+          //   _this.getProjectOtherTask_r(_this.stage_id);
+          //   _this.comment_clear_r(task_id);
+          // }
         })
         .catch(function (response) {
           //handle error
           console.log(response)
-        }).finally(function () { _this.comment_clear_r(task_id) });
+        }).finally(function () { _this.getProjectOtherTask_r(_this.stage_id); _this.comment_clear_r(task_id) });
     },
 
     comment_upload_r(task_id, batch_id) {
