@@ -2178,6 +2178,11 @@ header('location:index');
             background-image: url(images/ui/btn_edit_yellow.svg);
         }
 
+        div.text_count {
+	        font-size: 10px;
+	        float: right;
+        }
+
         #tasks {
             border: 5px solid #00811e;
             padding: 10px 20px 20px;
@@ -2381,7 +2386,7 @@ header('location:index');
                                     </dd>
                                 </dl>
                                 <dl>
-                                    <dt>Task Detail:</dt>
+                                    <dt>Task Detail: ({{ detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                     <dd><textarea placeholder="" v-model="detail"></textarea></dd>
                                 </dl>
                                 <dl>
@@ -2581,7 +2586,7 @@ header('location:index');
                                     </dd>
                                 </dl>
                                 <dl>
-                                    <dt>Description:</dt>
+                                    <dt>Description: ({{ record.detail == undefined ? '0' : record.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                     <dd><textarea placeholder="" v-model="record.detail"></textarea></dd>
                                 </dl>
 
@@ -3175,7 +3180,8 @@ header('location:index');
                                                     <dl>
                                                         <dd><textarea name=""
                                                                       :ref="'task_reply_msg_' + item.message_id + '_' + item.ref_id"
-                                                                      :id="'task_reply_msg_' + item.message_id + '_' + item.ref_id"></textarea>
+                                                                      :id="'task_reply_msg_' + item.message_id + '_' + item.ref_id" @keyup="count_reply(item.message_id, item.ref_id)"></textarea>
+                                                                      <div class="text_count">(<span class="small" :ref="'task_reply_msg_cnt_' + item.message_id + '_' + item.ref_id">0</span>/1000)</div>
                                                         </dd>
 
                                                         <dd>
@@ -3251,7 +3257,8 @@ header('location:index');
                         <ul>
                             <li>
                                 <textarea name="" id="" placeholder="Write your comment here"
-                                          :ref="'comment_task_' + receive_record.task_id"></textarea>
+                                          :ref="'comment_task_' + receive_record.task_id" @keyup="count_message(receive_record.task_id)"></textarea>
+                                          <div class="text_count">(<span class="small" :ref="'comment_task_cnt' + receive_record.task_id">0</span>/1000)</div>
                                 <div class="filebox">
                                     <a class="attch" v-for="(item,index) in taskItems(receive_record.task_id)"
                                        :key="index"
