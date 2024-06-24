@@ -2601,7 +2601,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Description: ({{ record.detail == undefined ? '' : record.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
+                                        <dt>Description: ({{ record.detail == undefined ? '0' : record.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="record.detail"></textarea></dd>
                                     </dl>
 
@@ -2933,7 +2933,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Description: ({{ record.detail == undefined ? '' : record.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
+                                        <dt>Description: ({{ record.detail == undefined ? '0' : record.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="record.detail"></textarea></dd>
                                     </dl>
 
@@ -3286,7 +3286,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Description: ({{ record.detail == undefined ? '' : record.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
+                                        <dt>Description: ({{ record.detail == undefined ? '0' : record.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="record.detail"></textarea></dd>
                                     </dl>
 
@@ -3498,7 +3498,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Description: ({{ record_r.detail == undefined ? '' : record_r.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
+                                        <dt>Description: ({{ record_r.detail == undefined ? '0' : record_r.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="record_r.detail"></textarea></dd>
                                     </dl>
                                     <dl>
