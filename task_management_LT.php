@@ -2582,7 +2582,7 @@ catch (Exception $e) {
                                     </dd>
                                 </dl>
                                 <dl>
-                                    <dt>Description:</dt>
+                                    <dt>Description: ({{ record.detail == undefined ? '0' : record.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                     <dd><textarea placeholder="" v-model="record.detail"></textarea></dd>
                                 </dl>
 
@@ -3574,7 +3574,7 @@ catch (Exception $e) {
                                 <li>{{ receive_record.due_date }} {{ receive_record.due_time }}</li>
                             </ul>
                             <ul>
-                                <li><b>Description</b></li>
+                                <li><b>Description ({{ receive_record.detail == undefined ? '0' : receive_record.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</b></li>
                                 <li style="white-space: pre-wrap;">{{ receive_record.detail }}</li>
                             </ul>
                             <ul>
