@@ -3498,7 +3498,7 @@ catch (Exception $e) {
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>Description: ({{ record_r.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
+                                        <dt>Description: ({{ record_r.detail.replace(/[^\x00-\xff]/g,"xx").length }}/1000)</dt>
                                         <dd><textarea placeholder="" v-model="record_r.detail"></textarea></dd>
                                     </dl>
                                     <dl>
