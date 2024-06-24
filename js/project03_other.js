@@ -2961,6 +2961,8 @@ var app = new Vue({
       var myArr = this.arrTask[task_id];
       var _this = this;
 
+      if(myArr != undefined)
+        {
       //循环文件数组挨个上传
       myArr.forEach((element, index) => {
         var config = {
@@ -3006,6 +3008,7 @@ var app = new Vue({
             console.log(err);
           });
       });
+      }
 
       this.taskCanSub[task_id] = true;
 
