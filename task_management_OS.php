@@ -3689,6 +3689,7 @@ catch (Exception $e) {
                             <ul>
                                 <li>
                                     <textarea name="" id="" placeholder="Write your comment here" :ref="'comment_task_' + receive_record.task_id" @keyup="count_message(receive_record.task_id)"></textarea>
+                                    <div class="text_count">(<span class="small" :ref="'comment_task_cnt' + receive_record.task_id">0</span>/1000)</div>
                                     <div class="filebox">
                                         <a class="attch" v-for="(item,index) in taskItems(receive_record.task_id)" :key="index" @click="deleteTaskFile(receive_record.task_id, index)">{{item.name}}</a>
 
@@ -3700,7 +3701,6 @@ catch (Exception $e) {
                                             <span class="upload-des">choose file</span>
                                             <input class="input" type="file" :ref="'file_task_' + receive_record.task_id" placeholder="choose file" @change="changeTaskFile(receive_record.task_id)" multiple />
                                         </div>
-                                        (<span :ref="'comment_task_cnt' + receive_record.task_id" style="display: inline;">0</div>/1000)
                                         <a class="btn small green" @click="comment_create(receive_record.task_id)">Comment</a>
                                 </li>
 
