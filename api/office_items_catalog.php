@@ -65,7 +65,7 @@ if($parent != "")
     $lv4 = substr($parent, 6, 2);
 }
 
-$query = "SELECT m.code code1, m.category cat1, s.code code2, s.category cat2, b.code code3, b.category cat3, d.code code4, d.category cat4, '' qty
+$query = "SELECT m.code code1, m.category cat1, s.code code2, s.category cat2, b.code code3, b.category cat3, d.code code4, d.category cat4, '' qty, d.photo, '' url
             FROM office_items_main_category m
             left join office_items_sub_category s on m.code = s.parent_code ";
 if($lv1 != "")
@@ -161,6 +161,12 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 if(count($merged_results) > 0)
 {
     $merged_results[0]['cnt'] = $cnt;
+}
+
+for($i = 0; $i < count($merged_results); $i++)
+{
+    if($merged_results[$i]['photo'] != '')
+        $merged_results[$i]['url'] = "https://storage.googleapis.com/feliiximg/" . $merged_results[$i]['photo'];
 }
 
 echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);

@@ -5108,3 +5108,7 @@ ADD COLUMN `last_order_type` varchar(64) COLLATE utf8mb4_unicode_ci default '';
 
 ALTER TABLE product
 ADD COLUMN `last_order_type` varchar(64) COLLATE utf8mb4_unicode_ci default '';
+
+-- 20240625
+ALTER TABLE office_items_description
+ADD COLUMN  `photo` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';

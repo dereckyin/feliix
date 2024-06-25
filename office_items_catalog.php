@@ -512,6 +512,15 @@ header('location:index');
         }
 
         div.tablebox tbody tr td:nth-of-type(10) {
+            width: 240px;
+        }
+
+        div.tablebox tbody tr td:nth-of-type(10) img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+        div.tablebox tbody tr td:nth-of-type(11) {
             width: 100px;
         }
 
@@ -619,6 +628,9 @@ header('location:index');
                             CODE
                         </th>
                         <th>
+                            IMAGE
+                        </th>
+                        <th>
                             QTY
                         </th>
                     </tr>
@@ -636,6 +648,7 @@ header('location:index');
                         <td>{{ item.code4 }}</td>
                         <td>{{ item.cat4 }}</td>
                         <td>{{ item.code1 + item.code2 + item.code3 + item.code4 }}</td>
+                        <td><img :src="item.url" v-if="item.url"></td>
                         <td>{{ item.qty }}</td>
                     </tr>
 
