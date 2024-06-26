@@ -102,17 +102,132 @@ if (!isset($jwt)) {
                     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                     die();
                 }
-                
+
+                $batch_type = "office_items";
+
                 for ($i = 0; $i < count($petty_array); $i++) {
 
+                    $upload_name = $petty_array[$i]['photo'];
+                    
                     $sn = $i+1;
+                    $batch_id = $sn;
 
+                    $file_name = $petty_array[$i]['photo'];
+                    if($file_name != '')    
+                    {
+                        $file_name = str_replace(".", "_", $file_name);
+                        $file_name = str_replace(" ", "_", $file_name);
+
+                        try {
+
+                            if (isset($_FILES[$file_name]['name'])) {
+                                $image_name = $_FILES[$file_name]['name'];
+
+                                if($image_name != $petty_array[$i]['photo'])
+                                {
+                                    continue;
+                                }
+
+                                $valid_extensions = array("jpg", "jpeg", "png", "gif", "pdf", "docx", "doc", "xls", "xlsx", "ppt", "pptx", "zip", "rar", "7z", "txt", "dwg", "skp", "psd", "evo");
+                                $extension = pathinfo($image_name, PATHINFO_EXTENSION);
+                                if (in_array(strtolower($extension), $valid_extensions)) {
+                                    //$upload_path = 'img/' . time() . '.' . $extension;
+
+                                    $storage = new StorageClient([
+                                        'projectId' => 'predictive-fx-284008',
+                                        'keyFilePath' => $conf::$gcp_key
+                                    ]);
+
+                                    $bucket = $storage->bucket('feliiximg');
+
+                                    $upload_name = time() . '_' .  pathinfo($image_name, PATHINFO_FILENAME) . '.' . $extension;
+
+                                    $file_size = filesize($_FILES[$file_name]['tmp_name']);
+                                    $size = 0;
+
+                                    $obj = $bucket->upload(
+                                        fopen($_FILES[$file_name]['tmp_name'], 'r'),
+                                        ['name' => $upload_name]);
+
+                                    $info = $obj->info();
+                                    $size = $info['size'];
+
+                                    if($size == $file_size && $file_size != 0 && $size != 0)
+                                    {
+                                        $query = "INSERT INTO gcp_storage_file
+                                        SET
+                                            batch_id = :batch_id,
+                                            batch_type = :batch_type,
+                                            filename = :filename,
+                                            gcp_name = :gcp_name,
+
+                                            create_id = :create_id,
+                                            created_at = now()";
+
+                                        // prepare the query
+                                        $stmt = $db->prepare($query);
+
+                                        // bind the values
+                                        $stmt->bindParam(':batch_id', $batch_id);
+                                        $stmt->bindParam(':batch_type', $batch_type);
+                                        $stmt->bindParam(':filename', $image_name);
+                                        $stmt->bindParam(':gcp_name', $upload_name);
+
+                                        $stmt->bindParam(':create_id', $user_id);
+
+                                        try {
+                                            // execute the query, also check if query was successful
+                                            if ($stmt->execute()) {
+                                                $last_id = $db->lastInsertId();
+                                            } else {
+                                                $arr = $stmt->errorInfo();
+                                                error_log($arr[2]);
+                                            }
+                                        } catch (Exception $e) {
+                                            error_log($e->getMessage());
+        
+                                            http_response_code(501);
+                                            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                                            die();
+                                        }
+
+
+                                        $message = 'Uploaded';
+                                        $upload_id = $last_id;
+                                        $image = $image_name;
+
+                                    } else {
+                                        $message = 'There is an error while uploading file';
+                
+                                        http_response_code(501);
+                                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                                        die();
+                                    }
+                                } else {
+                                    $message = 'Only Images or Office files allowed to upload';
+                        
+                                    http_response_code(501);
+                                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                                    die();
+                                }
+                            }
+                        
+                        } catch (Exception $e) {
+                    
+                            http_response_code(501);
+                            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . "Error uploading, Please use laptop to upload again."));
+                            die();
+                        }
+                        
+                    }
+                    
                     $query = "INSERT INTO office_items_description
                     SET
                     `sn` = :sn,
                     `code` = :code,
                     `category` = :category,
                     `parent_code` = '$code',
+                    `photo` = :photo,
                     `create_id` = :create_id,
                     `created_at` = now()";
                     
@@ -123,6 +238,7 @@ if (!isset($jwt)) {
                     $stmt->bindParam(':create_id', $user_id);
                     $stmt->bindParam(':code', $petty_array[$i]['code']);
                     $stmt->bindParam(':category', $petty_array[$i]['category']);
+                    $stmt->bindParam(':photo', $upload_name);
 
                     $stmt->bindParam(':sn', $sn);
                     
@@ -144,9 +260,12 @@ if (!isset($jwt)) {
                         echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                         die();
                         }
+
                 }
                 
                 $db->commit();
+
+                
                 
                 // // 有不同才寄信
                 // if(count($diff) > 0)

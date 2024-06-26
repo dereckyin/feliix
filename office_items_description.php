@@ -327,6 +327,11 @@ header('location:index');
             font-size: 24px;
         }
 
+        #tb_main_category tbody tr td:nth-of-type(3) img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
         .btnbox {
             text-align: center;
         }
@@ -395,6 +400,82 @@ header('location:index');
             display: inline-block;
             width: 300px;
             margin-left: 10px;
+        }
+
+        .itembox {
+            display: flex;
+            margin-top: 20px;
+            margin-right: 20px;
+            position: relative;
+        }
+
+        .itembox .photo {
+            border: 1px dashed #3FA4F4;
+            width: 200px;
+            height: 200px;
+            padding: 3px;
+            position: relative;
+        }
+
+        .itembox .photo::before {
+            content: "+";
+            display: block;
+            width: 36px;
+            height: 36px;
+            border: 1px dashed #3FA4F4;
+            border-radius: 18px;
+            line-height: 24px;
+            text-align: center;
+            color: #3FA4F4;
+            font-size: 36px;
+            font-weight: 300;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .itembox .photo>input[type='file'] {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+
+        .itembox .photo>img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .itembox.chosen .photo::before {
+            content: none;
+        }
+
+        .itembox>div>span {
+            display: none;
+        }
+
+        .itembox.chosen > div > span {
+            display: inline-block;
+            margin: 8px auto 5px;
+            width: 36px;
+            height: 36px;
+            border: 1px dashed #EA0029;
+            border-radius: 18px;
+            line-height: 28px;
+            text-align: center;
+            color: #EA0029;
+            font-size: 24px;
+            font-weight: 400;
+            cursor: pointer;
+            position: absolute;
+            top: 68px;
+            left: 210px;
         }
 
         .NTD_price{
@@ -476,8 +557,20 @@ header('location:index');
                 <div class="heading-and-btn" :ref="'porto'">
                     <ul>
                         <li>
-                        <input type="number" class="form-control" v-model="code" placeholder="Code" v-on:change="setTwoNumberDecimal()" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==2) return false;">
+                            <input type="number" class="form-control" v-model="code" placeholder="Code" v-on:change="setTwoNumberDecimal()" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==2) return false;">
                             <input type="text" class="form-control" v-model="category" placeholder="Description">
+
+                            <div :class="['itembox', (url != '' ? 'chosen' : '')]">
+                                <div class="photo">
+                                    <input type="file" id="photo" name="photo" @change="onFileChange($event)">
+                                    <img v-if="url" :src="url" />
+                                </div>
+
+                                <div>
+                                    <span @click="clear_photo()">x</span>
+                                </div>
+                            </div>
+
                         </li>
 
                         <li>
@@ -496,6 +589,7 @@ header('location:index');
                         <tr>
                             <th>Code</th>
                             <th>Description</th>
+                            <th>Image</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -505,6 +599,9 @@ header('location:index');
                         <!-- <tr> -->
                             <td>{{ item.code }}</td>
                             <td>{{ item.category }}</td>
+                            <td>
+                                <img :src="item.url" v-if="item.url != ''">
+                            </td>
                             <td>
                                 <i aria-hidden="true" class="fas fa-arrow-alt-circle-up"
                                    @click="_set_up(index, item.sn)"></i>

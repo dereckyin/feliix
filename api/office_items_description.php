@@ -46,7 +46,7 @@ $key = urldecode($key);
 
 $merged_results = array();
 
-$query = "SELECT *
+$query = "SELECT *, '' url
           FROM office_items_description
                 where status <> -1 ";
 
@@ -100,6 +100,12 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 if(count($merged_results) > 0)
 {
     $merged_results[0]['cnt'] = $cnt;
+}
+
+for($i = 0; $i < count($merged_results); $i++)
+{
+    if($merged_results[$i]['photo'] != '')
+        $merged_results[$i]['url'] = "https://storage.googleapis.com/feliiximg/" . $merged_results[$i]['photo'];
 }
 
 echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);

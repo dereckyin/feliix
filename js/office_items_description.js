@@ -33,6 +33,11 @@ var app = new Vue({
     view_detail: false,
 
     lv4: "",
+
+    url: "",
+    baseURL: "https://storage.googleapis.com/feliiximg/",
+    file_array: [],
+    item: {},
   },
 
   created() {
@@ -254,6 +259,11 @@ var app = new Vue({
       form_Data.append("code", this.lv4);
       form_Data.append("level1", JSON.stringify(this.level4));
 
+      for( var i = 0; i < this.file_array.length; i++ ){
+        let file = this.file_array[i];
+        form_Data.append(file.name, file);
+      }
+
       axios({
         method: "post",
         headers: {
@@ -271,6 +281,8 @@ var app = new Vue({
           });
           
           _this.detail();
+
+
           //_this.reset();
           
         })
@@ -284,7 +296,10 @@ var app = new Vue({
 
           _this.detail();
           //_this.reset();
-        });
+        }).finally(() => {
+          _this.submit = false;
+        }
+        );
 
     },
 
@@ -338,11 +353,22 @@ var app = new Vue({
         if (item.sn > max_sn) max_sn = item.sn;
       });
 
+      var fileTarget = document.getElementById("photo");
+      var photo = "";
+
+      if (fileTarget.files.length != 0) {
+        this.file_array.push(fileTarget.files[0]);
+        photo = fileTarget.files[0].name;
+      }
+        
+
         var ad = {
           id: 0,
           sn: ++max_sn,
           code: this.code,
           category: this.category,
+          url: this.url,
+          photo: photo,
           status : 0,
         };
         this.level4.push(ad);
@@ -374,6 +400,23 @@ var app = new Vue({
 
       element.code = this.code;
       element.category = this.category;
+
+      var fileTarget = document.getElementById("photo");
+      var photo = "";
+
+      if (fileTarget.files.length != 0) {
+        this.file_array.push(fileTarget.files[0]);
+        photo = fileTarget.files[0].name;
+
+        element.url = URL.createObjectURL(fileTarget.files[0]);
+      }
+      else
+      {
+        photo = this.item.photo;
+        element.url = this.item.url;
+      }
+
+      element.photo = photo;
           
       this.clear_edit();
     },
@@ -383,7 +426,11 @@ var app = new Vue({
 
       this.code = "";
       this.category = "";
+      this.url = "";
 
+      document.getElementById('photo').value = "";
+
+      this.item = {};
       this.editing = false;
 
     },
@@ -413,10 +460,15 @@ var app = new Vue({
  
       var element = this.level4.find(({ sn }) => sn === eid);
 
+      this.item =JSON.parse(JSON.stringify(element));
+
       this.org_id = eid;
       this.code = element.code;
       this.category = element.category;
       this.sn = element.sn;
+
+      if(element.url != "")
+        this.url = element.url;
     
       this.editing = true;
     },
@@ -449,6 +501,24 @@ var app = new Vue({
 
         //this.level4.splice(index, 1);
       }
+    },
+
+    onFileChange(e) {
+      const file = e.target.files[0];
+
+      this.url = URL.createObjectURL(file);
+    },
+
+    clear_photo() {
+
+        this.url = "";
+        document.getElementById('photo').value = "";
+
+        if(this.editing == true)
+          {
+            this.item.url = "";
+            this.item.photo = "";
+          }
     },
 
   },
