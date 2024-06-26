@@ -116,7 +116,7 @@ if (!isset($jwt)) {
                     if($file_name != '')    
                     {
                         $file_name = str_replace(".", "_", $file_name);
-
+                        $file_name = str_replace(" ", "_", $file_name);
 
                         try {
 
