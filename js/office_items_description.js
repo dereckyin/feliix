@@ -296,7 +296,10 @@ var app = new Vue({
 
           _this.detail();
           //_this.reset();
-        });
+        }).finally(() => {
+          _this.submit = false;
+        }
+        );
 
     },
 
