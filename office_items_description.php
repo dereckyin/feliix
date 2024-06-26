@@ -560,7 +560,7 @@ header('location:index');
                             <input type="number" class="form-control" v-model="code" placeholder="Code" v-on:change="setTwoNumberDecimal()" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==2) return false;">
                             <input type="text" class="form-control" v-model="category" placeholder="Description">
 
-                            <div :class="['itembox', (url !== null ? 'chosen' : '')]">
+                            <div :class="['itembox', (url != '' ? 'chosen' : '')]">
                                 <div class="photo">
                                     <input type="file" id="photo" name="photo" @change="onFileChange($event)">
                                     <img v-if="url" :src="url" />
