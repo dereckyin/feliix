@@ -650,7 +650,7 @@ header('location:index');
                         <td>{{ item.cat4 }}</td>
                         <td>{{ item.code1 + item.code2 + item.code3 + item.code4 }}</td>
                         <td>
-                            <a href="item.url" target="_blank" v-if="item.url">
+                            <a :href="item.url" target="_blank" v-if="item.url">
                                 <img :src="item.url" v-if="item.url">
                             </a>
                         </td>
