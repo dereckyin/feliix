@@ -265,6 +265,7 @@ $(function(){
 
                     <div class="btnbox">
                         <a class="btn" @click="approve_op" v-if="record.status == 3">Approve</a>
+                        <a class="btn" @click="approve_md" v-if="record.status == -3">Approve</a>
                         <a class="btn" @click="approve_md" v-if="record.status == 4">Approve</a>
                     </div>
 
