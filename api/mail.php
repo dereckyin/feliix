@@ -2429,6 +2429,11 @@ function send_expense_mail($request_no,  $applicant, $requestor, $requestor_emai
             $action = "approve";
             $tab = "Review";
             break;
+        case "Send To OP ONLY":
+            $title = "Expense Application for Approve: Request No." . $request_no . " from " . $applicant;
+            $action = "approve";
+            $tab = "Review";
+            break;
         case "Send To MD":
             $title = "Expense Application for approve: Request No." . $request_no . " from " . $applicant;
             $action = "approve";
