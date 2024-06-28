@@ -575,6 +575,16 @@ var app = new Vue({
         return;
       }
 
+      if(this.record.total > 5000)
+      {
+        Swal.fire({
+          text: 'Button of "Send OP" is only applicable to total amount requested is equal to or less than P5000.',
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
       Swal.fire({
         title: "Are you sure to proceed this action?",
         text: "Send to OP for approve",
@@ -657,6 +667,16 @@ var app = new Vue({
           confirmButtonText: "OK",
         });
 
+        return;
+      }
+
+      if(this.record.total <= 5000)
+      {
+        Swal.fire({
+          text: 'Button of "Send MD" is only applicable to total amount requested is more than P5000.',
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
         return;
       }
 
