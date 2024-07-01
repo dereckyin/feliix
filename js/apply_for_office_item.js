@@ -162,6 +162,80 @@ var app = new Vue({
 
   methods: {
 
+
+    setPages () {
+      console.log('setPages');
+      this.pages = [];
+
+      let numberOfPages = Math.ceil(this.total / this.perPage);
+
+      // if(this.fil_keyword != '')
+      //   numberOfPages = Math.ceil(this.receive_records.length / this.perPage);
+
+      if(numberOfPages == 1)
+        this.page = 1;
+      for (let index = 1; index <= numberOfPages; index++) {
+        this.pages.push(index);
+      }
+
+      this.paginate(this.receive_records);
+    },
+
+    paginate: function (posts) {
+      console.log('paginate');
+      if(this.page < 1)
+        this.page = 1;
+      if(this.page > this.pages.length)
+        this.page = this.pages.length;
+
+        let tenPages = Math.floor((this.page - 1) / 10);
+        if(tenPages < 0)
+          tenPages = 0;
+        this.pages_10 = [];
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+
+        this.pages_10 = this.pages.slice(from, to);
+
+      // if(this.fil_keyword != '')
+      //   return this.receive_records.slice(from, to);
+      // else
+        return  this.receive_records;
+    },
+
+    pre_page: function(){
+      let tenPages = Math.floor((this.page - 1) / 10) + 1;
+
+        this.page = parseInt(this.page) - 10;
+        if(this.page < 1)
+          this.page = 1;
+ 
+        this.pages_10 = [];
+
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+
+        this.pages_10 = this.pages.slice(from, to);
+      
+    },
+
+    nex_page: function(){
+      let tenPages = Math.floor((this.page - 1) / 10) + 1;
+
+      this.page = parseInt(this.page) + 10;
+      if(this.page > this.pages.length)
+        this.page = this.pages.length;
+
+      let from = tenPages * 10;
+      let to = (tenPages + 1) * 10;
+      let pages_10 = this.pages.slice(from, to);
+
+      if(pages_10.length > 0)
+        this.pages_10 = pages_10;
+
+    },
+
+
     getLevel1: function() {
         let _this = this;
   
@@ -304,6 +378,63 @@ var app = new Vue({
         }
     },
 
+
+    clear: function() {
+      this.lv1 = "";
+      this.lv1_item = {};
+      this.lv2 = "";
+      this.lv2_item = {};
+      this.lv3 = "";
+      this.lv3_item = {};
+      this.lv4 = "";
+      this.lv4_item = {};
+
+      this.level2 = [];
+      this.level3 = [];
+      this.level4 = [];
+
+      this.view_detail = false;
+      this.filter_apply_new();
+    },
+
+
+    filter_apply_new: function() {
+      let _this = this;
+
+      let token = localStorage.getItem("accessToken");
+
+    const params = {
+      level: 1,
+      parent: this.lv1 + this.lv2 + this.lv3 + this.lv4,
+      
+      page: _this.page,
+      size: _this.perPage,
+    };
+
+    axios
+      .get("api/office_items_catalog", {
+        params,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(
+        (res) => {
+          _this.items = res.data;
+
+          if(_this.items.length > 0)
+          {
+            _this.total = _this.items[0].cnt;
+            _this.setPages();
+          }
+          else
+            _this.total = 0;
+
+        },
+        (err) => {
+          alert(err.response);
+        }
+      )
+      .finally(() => {});
+  },
 
     clear_projectname: function() {
       this.project_name = "";
