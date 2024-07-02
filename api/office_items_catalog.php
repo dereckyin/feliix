@@ -65,7 +65,7 @@ if($parent != "")
     $lv4 = substr($parent, 6, 2);
 }
 
-$query = "SELECT m.code code1, m.category cat1, s.code code2, s.category cat2, b.code code3, b.category cat3, d.code code4, d.category cat4, '' qty, d.photo, '' url
+$query = "SELECT m.code code1, m.category cat1, s.code code2, s.category cat2, b.code code3, b.category cat3, d.code code4, d.category cat4, qty, reserve_qty, d.photo, '' url
             FROM office_items_main_category m
             left join office_items_sub_category s on m.code = s.parent_code ";
 if($lv1 != "")

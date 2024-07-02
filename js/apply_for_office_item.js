@@ -8,8 +8,8 @@ var app = new Vue({
 
     date_requested: "",
     request_type: "",
-    project_name1: "",
-    project_name: "",
+    reason1: "",
+    reason: "",
     payable_to: 1,
     payable_other: "",
     remark: "",
@@ -121,7 +121,7 @@ var app = new Vue({
       });
     } else _this.getRequestNo();
 
-    this.getProjectNames();
+    // this.getProjectNames();
     this.getLevel1();
     this.getItems();
   },
@@ -151,12 +151,12 @@ var app = new Vue({
   mounted() {},
 
   watch: {
-    request_type: function(val) {
-      if (val == "3") {
-        this.project_name = "Petty Cash Replenishment";
+    // request_type: function(val) {
+    //   if (val == "3") {
+    //     this.reason = "Petty Cash Replenishment";
       
-      } 
-    },
+    //   } 
+    // },
 
 
   },
@@ -477,7 +477,7 @@ var app = new Vue({
   },
 
     clear_projectname: function() {
-      this.project_name = "";
+      this.reason = "";
     },
 
     validateNumber: function(obj) {
@@ -490,9 +490,9 @@ var app = new Vue({
     },
 
     check_input: function() {
-      if (this.list_payee.trim() == "") {
+      if (this.date_requested.trim() == "") {
         Swal.fire({
-          text: "Please input Payee.",
+          text: "Date Needed is required.",
           icon: "warning",
           confirmButtonText: "OK",
         });
@@ -572,8 +572,8 @@ var app = new Vue({
             "-"
           );
           _this.request_type = response.data[0].request_type;
-          _this.project_name1 = response.data[0].project_name1;
-          _this.project_name = response.data[0].project_name;
+          _this.reason1 = response.data[0].reason1;
+          _this.reason = response.data[0].reason;
           _this.payable_to = response.data[0].payable_to;
           _this.rtype = response.data[0].rtype;
           _this.dept_name = response.data[0].dept_name;
@@ -597,49 +597,7 @@ var app = new Vue({
         });
     },
 
-    
-    getProjectNames: function() {
-      let _this = this;
-      let token = localStorage.getItem("accessToken");
-
-      const params = {
-        pid: 0,
-      };
-
-      axios
-      .get("api/expense_get_project_names", {
-        params,
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then(function(response) {
-          _this.projects = response.data;
-        })
-        .catch(function(error) {
-          //handle error
-        });
-    },
-
-    getProjectName: function(prj_id) {
-      let _this = this;
-      let token = localStorage.getItem("accessToken");
-
-      const params = {
-        pid: prj_id,
-      };
-
-      axios
-      .get("api/project02_get_project_name_by_project_id", {
-        params,
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then(function(response) {
-          _this.project_name1 = response.data;
-        })
-        .catch(function(error) {
-          //handle error
-        });
-    },
-
+  
     getRequestNo: function() {
       let _this = this;
       axios({
@@ -669,9 +627,9 @@ var app = new Vue({
         return false;
       }
 
-      if (this.request_type == "") {
+      if (this.reason == "") {
         Swal.fire({
-          text: "Choose request type",
+          text: "Reason is required.",
           icon: "warning",
           confirmButtonText: "OK",
         });
@@ -680,9 +638,9 @@ var app = new Vue({
         return false;
       }
 
-      if (this.project_name == "" && this.project_name1 == "") {
+      if (this.petty_list.length == 0) {
         Swal.fire({
-          text: "Please Input project name or reason",
+          text: "At least one office item should be included in Listing.",
           icon: "warning",
           confirmButtonText: "OK",
         });
@@ -691,38 +649,36 @@ var app = new Vue({
         return false;
       }
 
-      if (this.payable_to == 0) {
+      // every qty in petty_list should be a number and greater than 0
+      for (i = 0; i < this.petty_list.length; i++) {
+        if (!this.validateNumber(this.petty_list[i].amount)) {
+          Swal.fire({
+            text: "Qty should be at least 1.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return false;
+        }
+      }
+
+      // every qty in petty_list should not greater than stock
+      var html = "";
+      for (i = 0; i < this.petty_list.length; i++) {
+        if (this.petty_list[i].amount > this.petty_list[i].qty - this.petty_list[i].reserve_qty) {
+          html += "(" + Number(i+1) + ")" + this.petty_list[i].cat1 + " >> " + this.petty_list[i].cat2 + " >> " + this.petty_list[i].cat3 + " >> " + this.petty_list[i].cat4 + ": " + this.petty_list[i].amount + " (Stock qty is " + this.petty_list[i].qty + ", Reserve qty is " + this.petty_list[i].reserve_qty + ")" + "<br>";
+        }
+      }
+
+      if (html != "") {
         Swal.fire({
-          text: "Please select payable to",
-          icon: "warning",
+          html: "<h2>warning: Stock Not Enough</h2>" + "<br>" + html,
           confirmButtonText: "OK",
         });
-        //this.err_msg = 'Choose Punch location';
-        //$(window).scrollTop(0);
         return false;
       }
 
-      if (this.payable_to == 2 && this.payable_other == "") {
-        Swal.fire({
-          text: "Please specific other payable",
-          icon: "warning",
-          confirmButtonText: "OK",
-        });
-        //this.err_msg = 'Choose Punch location';
-        //$(window).scrollTop(0);
-        return false;
-      }
+      
 
-      if (!this.sum_amonut > 0) {
-        Swal.fire({
-          text: "Petty list required",
-          icon: "warning",
-          confirmButtonText: "OK",
-        });
-        //this.err_msg = 'Location Photo required';
-        //$(window).scrollTop(0);
-        return false;
-      }
 
       return true;
     },
@@ -750,7 +706,7 @@ var app = new Vue({
         return false;
       }
 
-      if (this.project_name == "" && this.project_name1 == "") {
+      if (this.reason == "" && this.reason1 == "") {
         Swal.fire({
           text: "Please Input project name or reason",
           icon: "warning",
@@ -812,8 +768,8 @@ var app = new Vue({
       form_Data.append("request_no", this.request_no);
       form_Data.append("date_requested", this.date_requested);
       form_Data.append("request_type", this.request_type);
-      form_Data.append("project_name", this.project_name);
-      form_Data.append("project_name1", this.project_name1);
+      form_Data.append("reason", this.reason);
+      form_Data.append("reason1", this.reason1);
       form_Data.append("payable_to", this.payable_to);
       form_Data.append("payable_other", this.payable_other);
       form_Data.append("remark", this.remark);
@@ -875,8 +831,8 @@ var app = new Vue({
       form_Data.append("pid", this.pid);
       form_Data.append("date_requested", this.date_requested.replaceAll('-', '/'));
       form_Data.append("request_type", this.request_type);
-      form_Data.append("project_name", this.project_name);
-      form_Data.append("project_name1", this.project_name1);
+      form_Data.append("reason", this.reason);
+      form_Data.append("reason1", this.reason1);
       form_Data.append("payable_to", this.payable_to);
       form_Data.append("payable_other", this.payable_other);
       form_Data.append("remark", this.remark);
@@ -943,10 +899,10 @@ var app = new Vue({
 
       this.date_requested = "";
       this.request_type = "";
-      this.project_name = "";
-      this.project_name1 = "";
+      this.reason = "";
+      this.reason1 = "";
       this.payable_to = 1;
-      this.$refs.payable_other.style.display = "none";
+      // this.$refs.payable_other.style.display = "none";
       this.payable_other = "";
 
       this.remark = "";
@@ -1164,13 +1120,18 @@ var app = new Vue({
 
         var ad = {
           id: ++sn,
-          sn: ++sn,
-          code: this.list_payee,
-          particulars: this.list_particulars,
-          price: this.list_price,
-          qty: this.list_qty,
-          status : 1,
-          check_remark: '',
+          code1: item.code1,
+          code2: item.code2,
+          code3: item.code3,
+          code4: item.code4,
+          cat1: item.cat1,
+          cat2: item.cat2,
+          cat3: item.cat3,
+          cat4: item.cat4,
+          url: item.url,
+          amount : item.amount,
+          qty: item.qty,
+          reserve_qty : item.reserve_qty,
         };
         this.petty_list.push(ad);
       

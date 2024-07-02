@@ -459,7 +459,7 @@
                         <li><b>Reason</b></li>
 
                         <li style="margin-bottom: 10px;"><input type="text" style="width:100%"
-                                                                v-model="project_name"></li>
+                                                                v-model="reason"></li>
 
 
                         <li><b>Listing</b>
@@ -483,9 +483,9 @@
                                             <img :src="item.url" v-if="item.url">
                                         </a>
                                     </li>
-                                    <li>{{ item.cat1 >> item.cat2 >> item.cat3 >> item.cat4  }}</li>
+                                    <li>{{ item.cat1 }} >> {{ item.cat2 }} >> {{ item.cat3 }} >> {{ item.cat4 }}</li>
                                     <li>
-                                        <input type="number" min=1>
+                                        <input type="number" min=1 v-model="item.amount">
                                     </li>
                                     <li>
                                         <i aria-hidden="true" class="fas fa-arrow-alt-circle-up"
