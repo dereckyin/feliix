@@ -605,7 +605,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/apply_for_petty_request_no",
+        url: "api/apply_for_office_item_request_no",
       })
         .then(function(response) {
           _this.request_no = response.data.request_no;
@@ -767,15 +767,8 @@ var app = new Vue({
       form_Data.append("jwt", token);
       form_Data.append("request_no", this.request_no);
       form_Data.append("date_requested", this.date_requested);
-      form_Data.append("request_type", this.request_type);
       form_Data.append("reason", this.reason);
-      form_Data.append("reason1", this.reason1);
-      form_Data.append("payable_to", this.payable_to);
-      form_Data.append("payable_other", this.payable_other);
       form_Data.append("remark", this.remark);
-
-      form_Data.append("rtype", this.rtype);
-      form_Data.append("dept_name", this.dept_name);
 
       for (var i = 0; i < this.$refs.file.files.length; i++) {
         let file = this.$refs.file.files[i];
@@ -789,7 +782,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/apply_for_petty",
+        url: "api/apply_for_office_item",
         data: form_Data,
       })
         .then(function(response) {
