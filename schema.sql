@@ -5112,3 +5112,26 @@ ADD COLUMN `last_order_type` varchar(64) COLLATE utf8mb4_unicode_ci default '';
 -- 20240625
 ALTER TABLE office_items_description
 ADD COLUMN  `photo` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20240701
+CREATE TABLE IF NOT EXISTS `apply_for_office_item` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) unsigned NOT NULL,
+  `request_no` varchar(10) COLLATE utf8mb4_unicode_ci default '',
+  `date_requested` varchar(20) COLLATE utf8mb4_unicode_ci default '',
+  `reason` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `listing` JSON,
+  `remarks` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `approval_id` bigint(20) unsigned default 0,
+  `approval_at` timestamp NULL DEFAULT NULL,
+  `reject_reason` varchar(1024) COLLATE utf8mb4_unicode_ci default '',
+  `reject_at` timestamp NULL DEFAULT NULL,
+  `re_approval_id` bigint(20) unsigned default 0,
+  `re_approval_at` timestamp NULL DEFAULT NULL,
+  `re_reject_reason` varchar(1024) COLLATE utf8mb4_unicode_ci default '',
+  `re_reject_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';

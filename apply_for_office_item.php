@@ -607,19 +607,14 @@
                         </div>
 
                         <!-- 分頁功能 -->
-                        <!-- 這個頁面需要做分頁，每一頁 20 筆資料
+                        <!-- 這個頁面需要做分頁，每一頁 20 筆資料  -->
                         <div class="pagenation">
-                            <a class="prev" style="color:#2F9A57;" :disabled="page == 1"
-                               @click="pre_page(); filter_apply_new();">Prev 10</a>
+                            <a class="prev" style="color:#707071;" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
 
-                            <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();"
-                               v-bind:style="[pg == page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg
-                                }}</a>
+                            <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                            <a class="next" style="color:#2F9A57;" :disabled="page == pages.length"
-                               @click="nex_page(); filter_apply_new();">Next 10</a>
+                            <a class="next" style="color:#707071;" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
                         </div>
-                        -->
 
                     </div>
 
@@ -674,7 +669,7 @@
                                 </td>
                                 <td>{{ item.qty }}</td>
                                 <td>
-                                    <button id="edit01"><i aria-hidden="true" class="fas fa-caret-right"></i></button>
+                                    <button id="edit01" @click="_add_criterion(item)"><i aria-hidden="true" class="fas fa-caret-right"></i></button>
                                 </td>
                             </tr>
 

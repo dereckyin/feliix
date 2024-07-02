@@ -123,6 +123,7 @@ var app = new Vue({
 
     this.getProjectNames();
     this.getLevel1();
+    this.getItems();
   },
 
   computed: {
@@ -234,6 +235,45 @@ var app = new Vue({
         this.pages_10 = pages_10;
 
     },
+
+    
+    getItems: function() {
+      let _this = this;
+
+      let token = localStorage.getItem("accessToken");
+
+    const params = {
+      level: 1,
+      parent: '',
+      
+      page: _this.page,
+      size: _this.perPage,
+    };
+
+    axios
+      .get("api/office_items_catalog", {
+        params,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(
+        (res) => {
+          _this.items = res.data;
+
+          if(_this.items.length > 0)
+          {
+            _this.total = _this.items[0].cnt;
+            _this.setPages();
+          }
+          else
+            _this.total = 0;
+
+        },
+        (err) => {
+          alert(err.response);
+        }
+      )
+      .finally(() => {});
+  },
 
 
     getLevel1: function() {
@@ -1115,24 +1155,17 @@ var app = new Vue({
     },
 
 
-    _add_criterion: function() {
-      if (
-        this.list_payee.trim() == "" ||
-        this.list_particulars.trim() == "" 
-      ) {
-        Swal.fire({
-          text: "Please enter the required fields",
-          icon: "warning",
-          confirmButtonText: "OK",
-        });
+    _add_criterion: function(item) {
 
-        return;
+      var sn = 0;
+      for (i = 0; i < this.petty_list.length; i++) {
+        if (this.petty_list[i].sn > sn) sn = this.petty_list[i].sn;
       }
 
         var ad = {
-          id: ++this.list_sn,
-          sn: ++this.list_sn,
-          payee: this.list_payee,
+          id: ++sn,
+          sn: ++sn,
+          code: this.list_payee,
           particulars: this.list_particulars,
           price: this.list_price,
           qty: this.list_qty,
