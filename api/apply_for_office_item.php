@@ -67,7 +67,7 @@ else
             `request_no` = :request_no,
             `date_requested` = :date_requested,
             `reason` = :reason,
-            `remark` = :remark,
+            `remarks` = :remark,
             `listing` = :listing,
             `status` = 1,
             `created_at` = now()";
@@ -80,7 +80,7 @@ else
         $stmt->bindParam(':request_no', $request_no);
         $stmt->bindParam(':date_requested', $date_requested);
         $stmt->bindParam(':reason', $reason);
-        $stmt->bindParam(':listing', $listing);
+        $stmt->bindParam(':listing', $petty_list);
         $stmt->bindParam(':remark', $remark);
 
         $last_id = 0;

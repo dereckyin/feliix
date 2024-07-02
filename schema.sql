@@ -5137,10 +5137,10 @@ CREATE TABLE IF NOT EXISTS `apply_for_office_item` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
 ALTER TABLE office_items_description
-Add column `qty` bigint(20) unsigned NULL; 
+Add column `qty` bigint(20) unsigned default 0;
 
 ALTER TABLE office_items_description
-Add column `reserve_qty` bigint(20) unsigned NULL; 
+Add column `reserve_qty` bigint(20) unsigned default 0; 
 
 CREATE TABLE IF NOT EXISTS `office_stock_history` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
