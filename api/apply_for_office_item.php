@@ -39,6 +39,9 @@ $conf = new Conf();
 use \Firebase\JWT\JWT;
 use Google\Cloud\Storage\StorageClient;
 
+const FOR_APPROVE = 4;
+const FOR_RELEASE = 5;
+
 if ( !isset( $jwt ) ) {
     http_response_code(401);
 
@@ -69,11 +72,13 @@ else
             `reason` = :reason,
             `remarks` = :remark,
             `listing` = :listing,
-            `status` = 1,
+            `status` = :status,
             `created_at` = now()";
 
         // prepare the query
         $stmt = $db->prepare($query);
+
+        $status = CheckItemsForStatus($array_list);
 
         // bind the values
         $stmt->bindParam(':uid', $uid);
@@ -81,6 +86,7 @@ else
         $stmt->bindParam(':date_requested', $date_requested);
         $stmt->bindParam(':reason', $reason);
         $stmt->bindParam(':listing', $petty_list);
+        $stmt->bindParam(':status', $status);
         $stmt->bindParam(':remark', $remark);
 
         $last_id = 0;
@@ -259,7 +265,6 @@ else
         // save history
         foreach ($array_list as $item)
         {
-
             $query = "INSERT INTO office_stock_history
             SET
                 `request_id` = :request_id,
@@ -275,6 +280,36 @@ else
             $stmt->bindParam(':request_id', $batch_id);
             $stmt->bindParam(':item_id', $item['id']);
             $stmt->bindParam(':qty', $item['qty']);
+            
+            try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
+
+            $query = "update office_items_description
+            SET
+                `reserve_qty` = `reserve_qty` + " . $item['qty'] . "
+                where id = :id";
+    
+            // prepare the query
+            $stmt = $db->prepare($query);
+    
+            // bind the values
+ 
+            $stmt->bindParam(':item_id', $item['id']);
             
             try {
                 // execute the query, also check if query was successful
@@ -315,6 +350,19 @@ else
     }
 }
 
+function CheckItemsForStatus($array_list)
+{
+    $status = FOR_RELEASE;
+    foreach ($array_list as $item)
+    {
+        if($item['cat1'] != "OFFICE SUPPLIES")
+        {
+            $status = FOR_APPROVE;
+            break;
+        }
+    }
+    return $status;
+}
 
 function SendNotifyMail($id)
 {
@@ -393,4 +441,52 @@ function GetPettyDetail($id, $db)
     }
 
     return $merged_results;
+}
+
+
+function GetStatus($loc)
+{
+    $location = "";
+    switch ($loc) {
+        case -2:
+            $location = "Void";
+            break;
+        case -1:
+            $location = "Withdrawn";
+            break;
+        case 0:
+            $location = "Rejected";
+            break;
+        case 1:
+            $location = "For Check";
+            break;
+        case 2:
+            $location = "For Check";
+            break;
+        case 3:
+            $location = "For Approve";
+            break;
+        case 4:
+            $location = "For Approve";
+            break;
+        case 5:
+            $location = "For Release";
+            break;
+        case 6:
+            $location = "For Liquidate";
+            break;
+        case 7:
+            $location = "For Liquidate";
+            break;
+        case 8:
+            $location = "For Verify";
+            break;
+        case 9:
+            $location = "Completed";
+            break;
+        
+                
+    }
+
+    return $location;
 }
