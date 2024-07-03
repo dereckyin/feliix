@@ -5157,3 +5157,17 @@ CREATE TABLE IF NOT EXISTS `office_stock_history` (
   `status` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `office_items_stock` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `qty` bigint(20) unsigned NOT NULL default 0,
+  `reserve_qty` bigint(20) unsigned NOT NULL default 0,
+  `action` varchar(64) COLLATE utf8mb4_unicode_ci default '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';

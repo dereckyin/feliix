@@ -152,7 +152,7 @@ else
         }
 
         $batch_id = $last_id;
-        $batch_type = "office_item";
+        $batch_type = "apply_office_item";
 
         try {
             $total = count($_FILES['files']['name']);
@@ -304,17 +304,18 @@ else
                 die();
             }
 
-            $query = "update office_items_description
+            $query = "update office_items_stock
             SET
                 `reserve_qty` = `reserve_qty` + " . $item['amount'] . "
-                where id = :id";
+                where code = :code";
     
             // prepare the query
             $stmt = $db->prepare($query);
     
             // bind the values
+            $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
  
-            $stmt->bindParam(':id', $item['item_id']);
+            $stmt->bindParam(':code', $code);
             
             try {
                 // execute the query, also check if query was successful
