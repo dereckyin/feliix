@@ -1125,6 +1125,7 @@ var app = new Vue({
           amount : item.amount,
           qty: item.qty,
           reserve_qty : item.reserve_qty,
+          item_id: item.id,
         };
         this.petty_list.push(ad);
       

@@ -282,8 +282,8 @@ else
     
             // bind the values
             $stmt->bindParam(':request_id', $batch_id);
-            $stmt->bindParam(':item_id', $item['id']);
-            $stmt->bindParam(':qty', $item['qty']);
+            $stmt->bindParam(':item_id', $item['item_id']);
+            $stmt->bindParam(':qty', $item['amount']);
             $stmt->bindParam(':create_id', $user_id);
             
             try {
@@ -306,7 +306,7 @@ else
 
             $query = "update office_items_description
             SET
-                `reserve_qty` = `reserve_qty` + " . $item['qty'] . "
+                `reserve_qty` = `reserve_qty` + " . $item['amount'] . "
                 where id = :id";
     
             // prepare the query
@@ -314,7 +314,7 @@ else
     
             // bind the values
  
-            $stmt->bindParam(':id', $item['id']);
+            $stmt->bindParam(':id', $item['item_id']);
             
             try {
                 // execute the query, also check if query was successful
