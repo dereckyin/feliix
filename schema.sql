@@ -5147,7 +5147,7 @@ Add column `reserve_qty` bigint(20) unsigned default 0;
 CREATE TABLE IF NOT EXISTS `office_stock_history` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `request_id` bigint(20) unsigned NOT NULL,
-  `item_id` bigint(20) unsigned NOT NULL,
+  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `qty` bigint(20) unsigned NOT NULL,
   `action` varchar(64) COLLATE utf8mb4_unicode_ci default '',
   `create_id` int(11) DEFAULT 0,
@@ -5171,3 +5171,5 @@ CREATE TABLE IF NOT EXISTS `office_items_stock` (
   `status` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- INSERT INTO office_items_stock(code, qty, reserve_qty, create_id, created_at, `status`) VALUES('02020101', 10, 3, 1, NOW(), 1);

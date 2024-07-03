@@ -267,10 +267,12 @@ else
         // save history
         foreach ($array_list as $item)
         {
+            $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
+
             $query = "INSERT INTO office_stock_history
             SET
                 `request_id` = :request_id,
-                `item_id` = :item_id,
+                `code` = :code,
                 `qty` = :qty,
                 `action` = 'APPLY',
                 `status` = 1,
@@ -282,7 +284,7 @@ else
     
             // bind the values
             $stmt->bindParam(':request_id', $batch_id);
-            $stmt->bindParam(':item_id', $item['item_id']);
+            $stmt->bindParam(':code', $code);
             $stmt->bindParam(':qty', $item['amount']);
             $stmt->bindParam(':create_id', $user_id);
             
@@ -312,9 +314,6 @@ else
             // prepare the query
             $stmt = $db->prepare($query);
     
-            // bind the values
-            $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
- 
             $stmt->bindParam(':code', $code);
             
             try {
