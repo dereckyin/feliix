@@ -1106,13 +1106,13 @@ var app = new Vue({
 
     _add_criterion: function(item) {
 
-      var sn = 0;
+      var id = 0;
       for (i = 0; i < this.petty_list.length; i++) {
-        if (this.petty_list[i].sn > sn) sn = this.petty_list[i].sn;
+        if (this.petty_list[i].id > id) id = this.petty_list[i].id;
       }
 
         var ad = {
-          id: ++sn,
+          id: ++id,
           code1: item.code1,
           code2: item.code2,
           code3: item.code3,
