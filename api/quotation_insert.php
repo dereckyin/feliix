@@ -249,6 +249,7 @@ else
 【*1 year warranty for Feliix DANCELIGHT】
 【*2 years warranty for Feliix HG】
 【*2 years warranty for Feliix SB】
+【*2 years warranty for Feliix GD】
 【*3 years warranty for Feliix TONS】
 【*3 years warranty for Feliix COLORS】
 【*3 years warranty for Feliix LEDOUX】
@@ -307,7 +308,7 @@ else
 "FELIIX CL"
 【*LEAD TIME; 30-45 Days (seaship); 1-2 Weeks (airship); 60-90 Days (If NO Stocks); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
 
-"FELIIX TONS | FELIIX HG | FELIIX LD | FELIIX ST"
+"FELIIX TONS | FELIIX HG | FELIIX LD | FELIIX ST | FELIIX GD"
 【*LEAD TIME; 60-90 Days; changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
 
 "FELIIX XL | FELIIX SD"
@@ -367,7 +368,6 @@ else
                 $title = "Disclaimer";
                 $brief = "";
                 $list = "Feliix Inc. is not responsible for specification and layout revisions that may affect lux outcomes, unless it is a proposal produced and approved by the company itself.
-
 
 *Need 4 wires for (0/1-10V) Dimmable
 *Need 5 wires for (0/1-10V) Dimmable with Ground included";
