@@ -5130,7 +5130,9 @@ CREATE TABLE IF NOT EXISTS `apply_for_office_item` (
   `re_approval_at` timestamp NULL DEFAULT NULL,
   `re_reject_reason` varchar(1024) COLLATE utf8mb4_unicode_ci default '',
   `re_reject_at` timestamp NULL DEFAULT NULL,
+  `create_id` int(11) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
   `updated_at` timestamp NULL DEFAULT NULL,
   `status` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
@@ -5147,7 +5149,10 @@ CREATE TABLE IF NOT EXISTS `office_stock_history` (
   `request_id` bigint(20) unsigned NOT NULL,
   `item_id` bigint(20) unsigned NOT NULL,
   `qty` bigint(20) unsigned NOT NULL,
+  `action` varchar(64) COLLATE utf8mb4_unicode_ci default '',
+  `create_id` int(11) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
   `updated_at` timestamp NULL DEFAULT NULL,
   `status` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)

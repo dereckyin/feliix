@@ -73,6 +73,7 @@ else
             `remarks` = :remark,
             `listing` = :listing,
             `status` = :status,
+            `create_id` = :create_id,
             `created_at` = now()";
 
         // prepare the query
@@ -88,6 +89,7 @@ else
         $stmt->bindParam(':listing', $petty_list);
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':remark', $remark);
+        $stmt->bindParam(':create_id', $user_id);
 
         $last_id = 0;
         // execute the query, also check if query was successful
@@ -270,7 +272,9 @@ else
                 `request_id` = :request_id,
                 `item_id` = :item_id,
                 `qty` = :qty,
+                `action` = 'APPLY',
                 `status` = 1,
+                `create_id` = :create_id,
                 `created_at` = now()";
     
             // prepare the query
@@ -280,6 +284,7 @@ else
             $stmt->bindParam(':request_id', $batch_id);
             $stmt->bindParam(':item_id', $item['id']);
             $stmt->bindParam(':qty', $item['qty']);
+            $stmt->bindParam(':create_id', $user_id);
             
             try {
                 // execute the query, also check if query was successful
