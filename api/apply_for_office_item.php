@@ -314,7 +314,7 @@ else
     
             // bind the values
  
-            $stmt->bindParam(':item_id', $item['id']);
+            $stmt->bindParam(':id', $item['id']);
             
             try {
                 // execute the query, also check if query was successful
