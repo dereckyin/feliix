@@ -245,10 +245,15 @@ else
             {
                 $title = "Warranty";
                 $brief = "Terms and Condition";
-                $list = "【*1 year warranty for Everlight, Feliix SSIT, and Feliix SB Decorative】
-【*2 years warranty for Feliix SB & Colors】
+                $list = "【*1 year warranty for Feliix EL, Feliix ST, Feliix YD, Feliix TYG and Feliix SB Decorative】
+【*1 year warranty for Feliix DANCELIGHT】
+【*2 years warranty for Feliix HG】
+【*2 years warranty for Feliix SB】
+【*2 years warranty for Feliix GD】
 【*3 years warranty for Feliix TONS】
-【*5 years warranty for Feliix Decorative】
+【*3 years warranty for Feliix COLORS】
+【*3 years warranty for Feliix LEDOUX】
+【*5 years warranty for Feliix Decorative (Xcellent & Seed Design)】
 【*Does not cover defects resulting from normal wear, improper use, or improper installation which does not conform to the installation instructions.】
 【*Warranty is null and void when tampered/seal is broken】";
 
@@ -295,15 +300,28 @@ else
                 $title = "Purchased Order";
                 $brief = "Terms and Condition";
                 $list = '"FELIIX SB"
-【*LEAD TIME; 60-75 Working Days; changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+【*LEAD TIME; 60-90 Days; VTRIM ITEMS (1-2 Weeks); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
 
-"EVERLIGHT | DECORATIVE | FELIIX SSIT"
-【*LEAD TIME; 60-75 Working Days; changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+"FELIIX DL"
+【*LEAD TIME; 30-45 Days (seaship); 1-2 Weeks (airship); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
 
-"FELIIX TONS"
-【*LEAD TIME; 60-75 Working Days; changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+"FELIIX CL"
+【*LEAD TIME; 30-45 Days (seaship); 1-2 Weeks (airship); 60-90 Days (If NO Stocks); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+
+"FELIIX TONS | FELIIX HG | FELIIX LD | FELIIX ST | FELIIX GD"
+【*LEAD TIME; 60-90 Days; changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+
+"FELIIX XL | FELIIX SD"
+【*LEAD TIME; 30-45 Days (seaship); 1-2 Weeks (airship); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+
+"FELIIX YD"
+【*LEAD TIME; 30-45 Days (EXCEPT Dimmable); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+
+"FELIIX WH"
+【*LEAD TIME; 30-45 Days (EXCEPT 4 Circuit Trackbar); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
 
 【*50% Downpayment before processing the items, 50% upon delivery】
+【*We accept credit cards for 6 month to pay without any interest】
 【*Custom items- approval of specs by client and/or designer】
 【*Installation of items is not part of the service unless requested by client for additional cost.】';
 
@@ -349,7 +367,10 @@ else
 
                 $title = "Disclaimer";
                 $brief = "";
-                $list = "Feliix Inc. is not responsible for specification and layout revisions that may affect lux outcomes, unless it is a proposal produced and approved by the company itself.";
+                $list = "Feliix Inc. is not responsible for specification and layout revisions that may affect lux outcomes, unless it is a proposal produced and approved by the company itself.
+
+*Need 4 wires for (0/1-10V) Dimmable
+*Need 5 wires for (0/1-10V) Dimmable with Ground included";
 
                 $query = "INSERT INTO quotation_term
                 SET
