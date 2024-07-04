@@ -1109,6 +1109,17 @@ var app = new Vue({
       var id = 0;
       for (i = 0; i < this.petty_list.length; i++) {
         if (this.petty_list[i].id > id) id = this.petty_list[i].id;
+
+        if(this.petty_list[i].code1 == item.code1 && this.petty_list[i].code2 == item.code2 && this.petty_list[i].code3 == item.code3 && this.petty_list[i].code4 == item.code4)
+        {
+          Swal.fire({
+            text: "Same-code item cannot be added into Listing twice.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+
+          return;
+        }
       }
 
         var ad = {
