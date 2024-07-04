@@ -295,6 +295,16 @@
         background-color: #fff;
     }
 
+    #modal_EditListing .list_function .pagenation a {
+        border-color: #2F9A57;
+        color: #2F9A57;
+    }
+
+    #modal_EditListing .list_function .pagenation a:hover {
+        border-color: #2F9A57;
+        color: #FFF;
+    }
+
     #modal_EditListing .tablebox {
         width: 100%;
         padding: 5px 10px 10px;
@@ -307,11 +317,11 @@
 
     #modal_EditListing .tablebox thead tr th {
         background-color: #E5F7EB;
-        padding: 8px;
+        padding: 10px;
         text-align: center;
         vertical-align: middle;
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 15px;
+        font-weight: 700;
         color: #333;
         min-width: 50px;
         border: 1px solid #2F9A57;
@@ -496,28 +506,6 @@
                                     </li>
                                 </ul>
 
-                                <!-- listing 裡面的一個範例
-                                <ul>
-                                    <li>01010101</li>
-                                    <li>
-                                        <a href="https://storage.googleapis.com/feliiximg/1719371345_LINE_ALBUM_HG Decorative Lights_240626_1.jpg" target="_blank">
-                                            <img src="https://storage.googleapis.com/feliiximg/1719371345_LINE_ALBUM_HG Decorative Lights_240626_1.jpg">
-                                        </a>
-                                    </li>
-                                    <li>OFFICE SUPPLIES >> BOND PAPER >> TOILET PAPER >> A4</li>
-                                    <li>
-                                        <input type="number" min="1">
-                                    </li>
-                                    <li>
-                                        <i aria-hidden="true" class="fas fa-arrow-alt-circle-up"
-                                           @click="_set_up(index, item.id)"></i>
-                                        <i aria-hidden="true" class="fas fa-arrow-alt-circle-down"
-                                           @click="_set_down(index, item.id)"></i>
-                                        <i aria-hidden="true" class="fas fa-trash-alt" @click="_del(item.id)"></i>
-                                    </li>
-                                </ul>
-                                -->
-
                             </div>
 
                         </li>
@@ -609,11 +597,11 @@
                         <!-- 分頁功能 -->
                         <!-- 這個頁面需要做分頁，每一頁 20 筆資料  -->
                         <div class="pagenation">
-                            <a class="prev" style="color:#707071;" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+                            <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
 
-                            <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
+                            <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                            <a class="next" style="color:#707071;" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                            <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
                         </div>
 
                     </div>
@@ -667,7 +655,7 @@
                                         <img :src="item.url" v-if="item.url">
                                     </a>
                                 </td>
-                                <td>{{ item.qty }}</td>
+                                <td>{{ item.qty }}<br>(RES: {{item.reserve_qty}})</td>
                                 <td>
                                     <button id="edit01" @click="_add_criterion(item)"><i aria-hidden="true" class="fas fa-caret-right"></i></button>
                                 </td>
