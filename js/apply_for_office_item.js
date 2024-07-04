@@ -272,7 +272,7 @@ var app = new Vue({
           alert(err.response);
         }
       )
-      .finally(() => {});
+      .finally(() => { console.log('getItems') });
   },
 
 

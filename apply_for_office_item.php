@@ -54,6 +54,7 @@
     <!-- JS for current webpage -->
     <script>
     function EditListing() {
+        app.getItems();
         $(".mask").toggle();
         $("#modal_EditListing").toggle();
     }
