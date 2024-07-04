@@ -2116,25 +2116,79 @@ var app = new Vue({
       },
 
       block_b_up: function(fromIndex, eid) {
-        var toIndex = fromIndex - 1;
+
+        let _this = this;
+
+        Swal.fire({
+          title: 'Determine Steps',
+          html: 'Input how many steps you want to move: <br/> <input type="text" id="steps" value="1" /> <br/>',
+          confirmButtonText: 'OK',
+          showCancelButton: true,
+          preConfirm: () => {
+            steps = Swal.getPopup().querySelector('#steps').value
+      
+            return {steps: steps}
+          }
+        }).then((result) => {
+          //Swal.fire("alcool: "+`${result.value.alcool}`+" and Cigarro: "+`${result.value.cigarro}`);
+
+          var steps = result.value.steps;
+      
+          for(var i = 0; i < steps; i++)
+          {
+            var toIndex = fromIndex - 1;
   
         if (toIndex < 0) 
           return;
 
-        var element = this.temp_block_b.find(({ id }) => id === eid);
-        this.temp_block_b.splice(fromIndex, 1);
-        this.temp_block_b.splice(toIndex, 0, element);
+        var element = _this.temp_block_b.find(({ id }) => id === eid);
+        _this.temp_block_b.splice(fromIndex, 1);
+        _this.temp_block_b.splice(toIndex, 0, element);
+
+            fromIndex = toIndex;
+          }
+
+        })
+        
+        
       },
 
       block_b_down: function(fromIndex, eid) {
-        var toIndex = fromIndex + 1;
 
-        if (toIndex > this.temp_block_b.length - 1) 
-          return;
-  
-        var element = this.temp_block_b.find(({ id }) => id === eid);
-        this.temp_block_b.splice(fromIndex, 1);
-        this.temp_block_b.splice(toIndex, 0, element);
+        let _this = this;
+
+        Swal.fire({
+          title: 'Determine Steps',
+          html: 'Input how many steps you want to move: <br/> <input type="text" id="steps" value="1" /> <br/>',
+          confirmButtonText: 'OK',
+          showCancelButton: true,
+          preConfirm: () => {
+            steps = Swal.getPopup().querySelector('#steps').value
+      
+            return {steps: steps}
+          }
+        }).then((result) => {
+          //Swal.fire("alcool: "+`${result.value.alcool}`+" and Cigarro: "+`${result.value.cigarro}`);
+
+          var steps = result.value.steps;
+
+          for(var i = 0; i < steps; i++)
+          {
+            var toIndex = fromIndex + 1;
+
+            if (toIndex > _this.temp_block_b.length - 1) 
+              return;
+      
+            var element = _this.temp_block_b.find(({ id }) => id === eid);
+            _this.temp_block_b.splice(fromIndex, 1);
+            _this.temp_block_b.splice(toIndex, 0, element);
+
+          fromIndex = toIndex;
+        }
+          
+          })
+
+        
       },
 
       block_b_del: function(eid) {
@@ -2146,25 +2200,74 @@ var app = new Vue({
       },
 
       block_a_up: function(fromIndex, eid) {
-        var toIndex = fromIndex - 1;
-  
-        if (toIndex < 0) 
-          return;
+        let _this = this;
 
-        var element = this.temp_block_a.find(({ id }) => id === eid);
-        this.temp_block_a.splice(fromIndex, 1);
-        this.temp_block_a.splice(toIndex, 0, element);
+        Swal.fire({
+          title: 'Determine Steps',
+          html: 'Input how many steps you want to move: <br/> <input type="text" id="steps" value="1" /> <br/>',
+          confirmButtonText: 'OK',
+          showCancelButton: true,
+          preConfirm: () => {
+            steps = Swal.getPopup().querySelector('#steps').value
+      
+            return {steps: steps}
+          }
+        }).then((result) => {
+          //Swal.fire("alcool: "+`${result.value.alcool}`+" and Cigarro: "+`${result.value.cigarro}`);
+
+          var steps = result.value.steps;
+      
+          for(var i = 0; i < steps; i++)
+          {
+            var toIndex = fromIndex - 1;
+  
+            if (toIndex < 0) 
+              return;
+  
+            var element = _this.temp_block_a.find(({ id }) => id === eid);
+            _this.temp_block_a.splice(fromIndex, 1);
+            _this.temp_block_a.splice(toIndex, 0, element);
+
+            fromIndex = toIndex;
+          }
+
+        })
+
       },
 
       block_a_down: function(fromIndex, eid) {
-        var toIndex = fromIndex + 1;
+        let _this = this;
 
-        if (toIndex > this.temp_block_a.length - 1) 
-          return;
-  
-        var element = this.temp_block_a.find(({ id }) => id === eid);
-        this.temp_block_a.splice(fromIndex, 1);
-        this.temp_block_a.splice(toIndex, 0, element);
+        Swal.fire({
+          title: 'Determine Steps',
+          html: 'Input how many steps you want to move: <br/> <input type="text" id="steps" value="1" /> <br/>',
+          confirmButtonText: 'OK',
+          showCancelButton: true,
+          preConfirm: () => {
+            steps = Swal.getPopup().querySelector('#steps').value
+      
+            return {steps: steps}
+          }
+        }).then((result) => {
+          //Swal.fire("alcool: "+`${result.value.alcool}`+" and Cigarro: "+`${result.value.cigarro}`);
+
+          var steps = result.value.steps;
+
+          for(var i = 0; i < steps; i++)
+          {
+          var toIndex = fromIndex + 1;
+
+          if (toIndex > _this.temp_block_a.length - 1) 
+            return;
+    
+          var element = _this.temp_block_a.find(({ id }) => id === eid);
+          _this.temp_block_a.splice(fromIndex, 1);
+          _this.temp_block_a.splice(toIndex, 0, element);
+
+          fromIndex = toIndex;
+        }
+          
+          })
       },
 
       block_a_del: function(eid) {
