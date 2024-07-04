@@ -618,7 +618,7 @@ var app = new Vue({
     validateForm() {
       if (this.date_requested == "") {
         Swal.fire({
-          text: "Choose request date",
+          text: "Date Needed is required.",
           icon: "warning",
           confirmButtonText: "OK",
         });
