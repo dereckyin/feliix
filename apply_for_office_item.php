@@ -302,7 +302,7 @@
     }
 
     #modal_EditListing .list_function .pagenation a:hover {
-        border-color: #2F9A57;
+        background-color: #2F9A57;
         color: #FFF;
     }
 
