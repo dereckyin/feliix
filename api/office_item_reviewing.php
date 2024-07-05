@@ -209,7 +209,7 @@ function GetAttachment($_id, $db)
 
 function UpdateQty($list, $db)
 {
-    foreach($list as $item)
+    foreach($list as &$item)
     {
         $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
 
