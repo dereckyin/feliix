@@ -5173,3 +5173,17 @@ CREATE TABLE IF NOT EXISTS `office_items_stock` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
 -- INSERT INTO office_items_stock(code, qty, reserve_qty, create_id, created_at, `status`) VALUES('02020101', 10, 3, 1, NOW(), 1);
+
+-- 20240705 for office apply history
+CREATE TABLE IF NOT EXISTS `office_item_apply_history` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `request_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `actor` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `action` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `reason` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';

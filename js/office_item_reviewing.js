@@ -304,10 +304,11 @@ var app = new Vue({
       var token = localStorage.getItem("token");
       form_Data.append("jwt", token);
       if(status == 3)
-        form_Data.append("crud", "OP Review Reject To User");
+        form_Data.append("crud", "Approver Reject");
       if(status == 4)
-        form_Data.append("crud", "MD Review Reject To User");
+        form_Data.append("crud", "Approver Reject");
       form_Data.append("id", id);
+      form_Data.append("list", this.record.list);
       form_Data.append("remark", this.reject_reason);
 
       axios({
@@ -316,7 +317,7 @@ var app = new Vue({
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
-        url: "api/petty_cash_action",
+        url: "api/office_item_action",
         data: form_Data,
       })
         .then(function(response) {
@@ -438,17 +439,6 @@ var app = new Vue({
 
     reject: function() {
       let _this = this;
-
-      if (this.proof_id < 1) {
-        Swal.fire({
-          text: "Please select applicant to be rejected!",
-          icon: "warning",
-          confirmButtonText: "OK",
-        });
-
-        //$(window).scrollTop(0);
-        return;
-      }
 
       if (this.reject_reason.trim() === "") {
         Swal.fire({
