@@ -53,6 +53,10 @@ $conf = new Conf();
 use \Firebase\JWT\JWT;
 use Google\Cloud\Storage\StorageClient;
 
+const TO_REJECT = 2;
+const TO_APPROVE = 4;
+const TO_RELEASE = 5;
+
 if (!isset($jwt)) {
     http_response_code(401);
 
@@ -76,7 +80,7 @@ if (!isset($jwt)) {
             
             // to release
             $query = "update apply_for_office_item set 
-                        status = 4, 
+                        status = " . TO_RELEASE . ", 
                         updated_id = :updated_id, 
                         updated_at = now() 
                         where id = :id";
@@ -173,7 +177,7 @@ if (!isset($jwt)) {
 
             // to reject
             $query = "update apply_for_office_item set 
-                        status = 2, 
+                        status = " . TO_REJECT . ", 
                         updated_id = :updated_id, 
                         updated_at = now() 
                         where id = :id";

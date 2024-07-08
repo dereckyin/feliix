@@ -24,6 +24,7 @@ if (!isset($jwt)) {
         // decode jwt
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         $user_id = $decoded->data->id;
+        $username = $decoded->data->username;
         //if(!$decoded->data->is_admin)
         //{
         //  http_response_code(401);
@@ -57,7 +58,7 @@ switch ($method) {
         $size = (isset($_GET['size']) ?  $_GET['size'] : "");
 
         // check if can see petty expense list (Record only for himself)
-        $sql = "select * from expense_flow where uid = " . $user_id . " AND `status` <> -1 and flow in (2, 3)";
+        $sql = "SELECT * FROM access_control WHERE office_item_approve LIKE '%" . $username . "%' ";
         $stmt = $db->prepare($sql);
         $stmt->execute();
 
@@ -69,12 +70,7 @@ switch ($method) {
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             
             $apartment_id = $row['apartment_id'];
-            $flow = $row['flow'];
-
-            if($flow == 2)
-                array_push($array_flow, -4);
-            
-            array_push($arry_apartment_id, $apartment_id);
+            $flow = 4;
             array_push($array_flow, $flow);
         }
         
@@ -103,7 +99,7 @@ switch ($method) {
         $status_str = "";
         foreach($array_flow as &$list)
         {
-            $status_str .= $list + 1 . ",";
+            $status_str .= $list . ",";
         }
 
         $sql = $sql . "

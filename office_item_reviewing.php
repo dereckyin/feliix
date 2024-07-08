@@ -1,3 +1,56 @@
+<?php
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
+if ($jwt === NULL || $jwt === '') {
+    setcookie("userurl", $_SERVER['REQUEST_URI']);
+    header('location:index');
+}
+
+include_once 'api/config/core.php';
+include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
+include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'api/libs/php-jwt-master/src/JWT.php';
+include_once 'api/project03_is_creator.php';
+
+use \Firebase\JWT\JWT;
+
+try {
+    // decode jwt
+    $decoded = JWT::decode($jwt, $key, array('HS256'));
+
+    $user_id = $decoded->data->id;
+    $username = $decoded->data->username;
+
+    $position = $decoded->data->position;
+    $department = $decoded->data->department;
+
+    $database = new Database();
+    $db = $database->getConnection();
+
+    //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
+    //    header( 'location:index.php' );
+
+    $access6 = false;
+
+    $query = "SELECT * FROM access_control WHERE office_item_approve LIKE '%" . $username . "%' ";
+    $stmt = $db->prepare( $query );
+    $stmt->execute();
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $access6 = true;
+    }
+
+
+    if ($access6 == false)
+        header('location:index');
+}
+// if decode fails, it means jwt is invalid
+catch (Exception $e) {
+
+    header('location:index');
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
