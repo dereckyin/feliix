@@ -5187,3 +5187,5 @@ CREATE TABLE IF NOT EXISTS `office_item_apply_history` (
   `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+alter table office_stock_history change `qty` `qty` int(11) DEFAULT 0;

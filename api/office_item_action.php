@@ -71,11 +71,41 @@ if (!isset($jwt)) {
 
         $uid = $user_id;
 
+        // approve approval
+        if ($crud == "Approver Approved") {
+            
+            // to release
+            $query = "update apply_for_office_item set 
+                        status = 4, 
+                        updated_id = :updated_id, 
+                        updated_at = now() 
+                        where id = :id";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':updated_id', $user_id);
+
+            // execute the query, also check if query was successful
+            if (!$stmt->execute()) {
+                $arr = $stmt->errorInfo();
+                error_log($arr[2]);
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                die();
+            }
+
+        }
+
         // for reject approval
         if ($crud == "Approver Reject") {
             foreach($list_array as $item)
             {
                 $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
+                $amount = $item['amount'] * -1;
                 // office_stock_history
                 $query = "INSERT INTO office_stock_history
                 SET
@@ -93,7 +123,7 @@ if (!isset($jwt)) {
                 // bind the values
                 $stmt->bindParam(':request_id', $id);
                 $stmt->bindParam(':code', $code);
-                $stmt->bindParam(':qty', $item['amount'] * -1);
+                $stmt->bindParam(':qty', $amount);
                 $stmt->bindParam(':_action', $crud);
                 $stmt->bindParam(':create_id', $user_id);
     
@@ -140,6 +170,31 @@ if (!isset($jwt)) {
                 }
 
             }
+
+            // to reject
+            $query = "update apply_for_office_item set 
+                        status = 2, 
+                        updated_id = :updated_id, 
+                        updated_at = now() 
+                        where id = :id";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':updated_id', $user_id);
+
+            // execute the query, also check if query was successful
+            if (!$stmt->execute()) {
+                $arr = $stmt->errorInfo();
+                error_log($arr[2]);
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                die();
+            }
+
         }
 
         // save history

@@ -162,6 +162,7 @@ switch ($method) {
             
             $desc = GetStatus($row['status']);
             $attachment = GetAttachment($id, $db);
+            $history = GetHistory($id, $db);
 
             $list = JSON_decode($row['listing'], true);
             $list = UpdateQty($list, $db);
@@ -176,6 +177,7 @@ switch ($method) {
                 "status" => $status,
                 "desc" => $desc,
                 "attachment" => $attachment,
+                "history" => $history,
                 "requestor" => $requestor,
                 "created_at" => $created_at,
                 "list" => $list
@@ -361,8 +363,8 @@ function GetList($_id, $db)
 
 function GetHistory($_id, $db)
 {
-    $sql = "select pm.id, `actor`, `action`, reason, `status`, DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at from petty_history pm 
-            where `status` <> -1 and petty_id = " . $_id . " order by created_at ";
+    $sql = "select pm.id, `actor`, `action`, reason, `status`, DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at from office_item_apply_history pm 
+            where `status` <> -1 and request_id = " . $_id . " order by created_at ";
 
     $merged_results = array();
 

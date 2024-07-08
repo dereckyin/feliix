@@ -220,8 +220,9 @@ var app = new Vue({
       var token = localStorage.getItem("token");
       form_Data.append("jwt", token);
 
-      form_Data.append("crud", "MD Send To Releaser");
+      form_Data.append("crud", "Approver Approved");
       form_Data.append("id", id);
+      form_Data.append("list", JSON.stringify(this.record.list));
       form_Data.append("remark", "");
 
       axios({
@@ -230,7 +231,7 @@ var app = new Vue({
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
-        url: "api/petty_cash_action",
+        url: "api/office_item_action",
         data: form_Data,
       })
         .then(function(response) {
@@ -308,7 +309,7 @@ var app = new Vue({
       if(status == 4)
         form_Data.append("crud", "Approver Reject");
       form_Data.append("id", id);
-      form_Data.append("list", this.record.list);
+      form_Data.append("list", JSON.stringify(this.record.list));
       form_Data.append("remark", this.reject_reason);
 
       axios({
@@ -406,17 +407,6 @@ var app = new Vue({
 
     approve_md: function() {
       let _this = this;
-
-      if (this.proof_id < 1) {
-        Swal.fire({
-          text: "Please select applicant to be approved!",
-          icon: "warning",
-          confirmButtonText: "OK",
-        });
-
-        //$(window).scrollTop(0);
-        return;
-      }
 
       Swal.fire({
         title: "Are you sure to proceed this action?",
