@@ -68,8 +68,6 @@ switch ($method) {
         $merged_results = array();
         
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            
-            $apartment_id = $row['apartment_id'];
             $flow = 4;
             array_push($array_flow, $flow);
         }

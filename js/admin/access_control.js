@@ -38,7 +38,7 @@ var app = new Vue({
     edit_emp: [],
     edit_basic: [],
     office_items : [],
-    office_item_approver: [],
+    office_item_approve: [],
     office_item_release: [],
   },
 
