@@ -334,6 +334,47 @@ else
                 die();
             }
         }
+
+        
+        // save history
+        $query = "INSERT INTO office_item_apply_history
+        SET
+            `request_id` = :request_id,
+            `actor` = :actor,
+            `action` = :_action,
+            `reason` = :remark,
+            `status` = 1,
+            `created_at` = now()";
+
+        // prepare the query
+        $stmt = $db->prepare($query);
+
+        $crud = "Submitted";
+
+        // bind the values
+        $stmt->bindParam(':request_id', $batch_id);
+        $stmt->bindParam(':actor', $user_name);
+        $stmt->bindParam(':_action', $crud);
+        $stmt->bindParam(':remark', $remark);
+
+        try {
+            // execute the query, also check if query was successful
+            if (!$stmt->execute()) {
+                $arr = $stmt->errorInfo();
+                error_log($arr[2]);
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                die();
+            }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $db->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
+        }
+
        
         $db->commit();
 

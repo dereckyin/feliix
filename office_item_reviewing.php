@@ -272,7 +272,7 @@ $(function(){
                                     <img :src="item.url" v-if="item.url">
                                 </a>
                             </li>
-                            <li>{{ record.requestor }}</li>
+                            <li>{{ item.cat1 }} >> {{ item.cat2 }} >> {{ item.cat3 }} >> {{ item.cat4 }}</li>
                             <li>{{ item.amount }}</li>
                             <li>{{ item.qty }}<br>(Reserved: {{ item.reserve_qty }})</li>
                         </ul>
