@@ -61,7 +61,7 @@ switch ($method) {
         $size = (isset($_GET['size']) ?  $_GET['size'] : "");
 
         // check if can see petty expense list (Record only for himself)
-        $sql = "SELECT * FROM access_control WHERE office_item_approve LIKE '%" . $username . "%' ";
+        $sql = "SELECT * FROM access_control WHERE office_item_release LIKE '%" . $username . "%' ";
         $stmt = $db->prepare($sql);
         $stmt->execute();
 
@@ -71,7 +71,7 @@ switch ($method) {
         $merged_results = array();
         
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $flow = APPROVE;
+            $flow = RELEASE;
             array_push($array_flow, $flow);
         }
         
