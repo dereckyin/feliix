@@ -111,7 +111,7 @@ switch ($method) {
             }
         }
 
-        $sql = $sql . " ORDER BY pm.id ";
+        $sql = $sql . " ORDER BY pm.date_requested ";
 
         if (!empty($_GET['size'])) {
             $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);

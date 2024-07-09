@@ -896,6 +896,7 @@ var app = new Vue({
       this.reason1 = "";
       this.payable_to = 1;
       // this.$refs.payable_other.style.display = "none";
+      this.$refs.file.value = "";
       this.payable_other = "";
 
       this.remark = "";
