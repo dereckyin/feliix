@@ -177,7 +177,7 @@ $(function(){
         <!-- tags js在 main.js -->
         <div class="tags">
             <a class="tag A focus">Review</a>
-            <a class="tag B" href="expense_releasing">Release</a>
+            <a class="tag B" href="office_item_releasing">Release</a>
         </div>
         <!-- Blocks -->
         <div class="block A focus">

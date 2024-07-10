@@ -122,6 +122,48 @@ var app = new Vue({
         _this.proof_id = 0;
     },
 
+    toggle_auth: function() {
+      this.proof_id = 0;
+  },
+
+    export_office_item: function() {
+      let _this = this;
+
+      var form_Data = new FormData();
+
+      var token = localStorage.getItem("token");
+      form_Data.append("jwt", token);
+
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        url: "api/export_office_item_releasing",
+        data: form_Data,
+        responseType: "blob",
+      })
+
+        .then(function(response) {
+          console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "office_item_releasing.xlsx"); //or any other extension
+          document.body.appendChild(link);
+          link.click();
+        })
+        .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        });
+    },
+  
+
     getUserName: function() {
       var token = localStorage.getItem("token");
       var form_Data = new FormData();
