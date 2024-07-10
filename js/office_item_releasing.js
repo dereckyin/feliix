@@ -132,33 +132,64 @@ var app = new Vue({
     },
 
     toggle_auth: function() {
-      this.proof_id = 0;
+      
+      window.jQuery("#Modal_signature").toggle();
   },
 
+  
+  submit_auth() {
+    let _this = this;
+    var sig_date = $("#sig_date").jSignature('getData', 'image');
+    var sig_name = $("#sig_name").jSignature('getData', 'image');
+
+    var releaser_sig_date = $("#releaser_sig_date").jSignature('getData', 'image');
+    var releaser_sig_name = $("#releaser_sig_name").jSignature('getData', 'image');
+
+    let data = { sig_date: sig_date, sig_name: sig_name, releaser_sig_date: releaser_sig_date, releaser_sig_name : releaser_sig_name, item_id: this.record.id, list: this.record.list};
+    this.loading = true;
+
+    axios
+    .post("api/office_item_snapshot", data, {
+        headers: {
+        "Content-Type": "application/json"
+        }
+    }).then(function(response) {
+        console.log(response.data);
+        _this.close_auth();
+        _this.reset_auth();
+            
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
+},
+
   reset_auth() {
-    this.sig_date.jSignature('reset');
-    this.sig_name.jSignature('reset');
-    this.releaser_sig_date.jSignature('reset');
-    this.releaser_sig_name.jSignature('reset');
+    $("#sig_date").jSignature('reset');
+    $("#sig_name").jSignature('reset');
+
+    $("#releaser_sig_date").jSignature('reset');
+    $("#releaser_sig_name").jSignature('reset');
 },
 
 authRecord() {
 
-  if(this.auth_date == "")
-  {
+  window.jQuery("#Modal_signature").toggle();
+
+
       if(this.loading == false)
       {
-          this.sig_date = $("#sig_date").jSignature();
-          this.sig_name = $("#sig_name").jSignature();
+          $("#sig_date").jSignature();
+          $("#sig_name").jSignature();
 
-          this.releaser_sig_date = $("#releaser_sig_date").jSignature();
-          this.releaser_sig_name = $("#releaser_sig_name").jSignature();
+          $("#releaser_sig_date").jSignature();
+          $("#releaser_sig_name").jSignature();
 
           this.loading = true;
       }
 
-      this.auth_date = new Date().toISOString().slice(0, 10);
-  }
+      
 },
 
     export_office_item: function() {
@@ -547,6 +578,7 @@ authRecord() {
 
         //$(window).scrollTop(0);
         this.auth_date = "";
+        this.loading = false;
         this.view_detail = false;
         return;
       }
@@ -555,7 +587,8 @@ authRecord() {
         this.receive_records.find((element) => element.id == this.proof_id)
       );
       
-      this.auth_date = this.record.auth_date != undefined ? this.record.auth_date : "";
+      this.auth_date = "";
+      this.loading = false;
       this.reject_reason = "";
       this.view_detail = true;
     },

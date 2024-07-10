@@ -197,13 +197,13 @@ catch (Exception $e) {
         }
 
         #Modal_signature {
+            display: none;
             position: absolute;
             top: 20px;
             left: 0;
             right: 0;
             margin: auto;
             z-index: 2;
-            display: block;
         }
 
         #Modal_signature > .modal-content {
@@ -521,7 +521,7 @@ catch (Exception $e) {
 
 
             <!-- Online Office Item Application Voucher Modal start -->
-            <div id="Modal_signature" class="modal" v-if="proof_id != 0 && auth_date != ''">
+            <div id="Modal_signature" class="modal" >
 
                 <!-- Modal content -->
                 <div class="modal-content">
@@ -667,7 +667,7 @@ catch (Exception $e) {
                     <div class="btnbox" style="margin-bottom: -20px;">
                         <a class="btn red" @click="toggle_auth()">Close</a>
                         <a class="btn red" @click="reset_auth()">Reset</a>
-                        <a class="btn" @click="">Finish Releasing</a>
+                        <a class="btn" @click="submit_auth()">Finish Releasing</a>
                     </div>
 
                 </div>
