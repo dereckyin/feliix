@@ -511,7 +511,7 @@ catch (Exception $e) {
 
                         <div class="btnbox">
                             <a class="btn" @click="export_office_item">Export Voucher</a>
-                            <a class="btn" :disabled="submit == true" @click="">Finish Releasing</a>
+                            <a class="btn" :disabled="submit == true" @click="finish();">Finish Releasing</a>
                             <a class="btn blue" @click="authRecord();">Online Voucher</a>
                         </div>
                     </form>
@@ -598,7 +598,7 @@ catch (Exception $e) {
                             <li>{{ item.qty }}<br>(Reserved: {{ item.reserve_qty }})</li>
                         </ul>
                     </div>
-
+<!--
 
                     <div class="sign_dialog" style="display: none;">
 
@@ -631,19 +631,19 @@ catch (Exception $e) {
                         </div>
 
                     </div>
-
+    -->
                     <div class="sign_dialog">
 
                         <h5>Releaser</h5>
 
                         <div class="releaser_name bg_gray">
-                            <div id="signature_name1" style='height: 155.6px;'></div>
+                            <div id="releaser_sig_name" style='height: 155.6px;'></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.releaser_sig_name"
                                  v-if="record.releaser_sig_name">
                         </div>
 
                         <div class="releaser_date bg_gray">
-                            <div id="signature_date1" style='height: 155.6px;'></div>
+                            <div id="releaser_sig_date" style='height: 155.6px;'></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.releaser_sig_date"
                                  v-if="record.releaser_sig_date">
                         </div>
@@ -651,13 +651,13 @@ catch (Exception $e) {
                         <h5>Receiver</h5>
 
                         <div class="receiver_name bg_gray">
-                            <div id="signature_name2" style='height: 155.6px;'></div>
+                            <div id="sig_name" style='height: 155.6px;'></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_name"
                                  v-if="record.sig_name">
                         </div>
 
                         <div class="receiver_date bg_gray">
-                            <div id="signature_date2" style='height: 155.6px;'></div>
+                            <div id="sig_date" style='height: 155.6px;'></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_date"
                                  v-if="record.sig_date">
                         </div>

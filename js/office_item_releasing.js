@@ -36,6 +36,8 @@ var app = new Vue({
 
     sig_name: {},
     sig_date: {},
+
+    loading: false,
   },
 
   created() {
@@ -146,11 +148,16 @@ authRecord() {
   {
       if(this.loading == false)
       {
-          this.sig_date = $("#signature_date").jSignature();
-          this.sig_name = $("#signature_name").jSignature();
+          this.sig_date = $("#sig_date").jSignature();
+          this.sig_name = $("#sig_name").jSignature();
+
+          this.releaser_sig_date = $("#releaser_sig_date").jSignature();
+          this.releaser_sig_name = $("#releaser_sig_name").jSignature();
 
           this.loading = true;
       }
+
+      this.auth_date = new Date().toISOString().slice(0, 10);
   }
 },
 
@@ -237,6 +244,68 @@ authRecord() {
         text: "Click to close",
         imageUrl: "img/" + pic,
       });
+    },
+
+    finish: function() {
+      let _this = this;
+
+      if(this.submit == true) return;
+
+      if (this.$refs.file.files.length == 0) {
+        Swal.fire({
+          text: "File Attachment is required.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
+      this.submit = true;
+
+      id = this.record.id;
+
+      var token = localStorage.getItem("token");
+      var form_Data = new FormData();
+
+      form_Data.append("jwt", token);
+      form_Data.append("crud", "Releaser released");
+      form_Data.append("id", id);
+      form_Data.append("list", JSON.stringify(this.record.list));
+
+      for (var i = 0; i < this.$refs.file.files.length; i++) {
+        let file = this.$refs.file.files[i];
+        form_Data.append("files[" + i + "]", file);
+      }
+
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        url: "api/office_item_action",
+        data: form_Data,
+      })
+        .then(function(response) {
+          //handle success
+          Swal.fire({
+            html: response.data.message,
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+          
+          _this.resetForm();
+          
+        })
+        .catch(function(error) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(error),
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+
+        });
+
     },
 
     approveReceiveRecord_OP: function(id) {

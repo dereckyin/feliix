@@ -57,6 +57,7 @@ const TO_REJECT = 2;
 const TO_VOID = 3;
 const TO_APPROVE = 4;
 const TO_RELEASE = 5;
+const TO_COMPLETE = 6;
 
 if (!isset($jwt)) {
     http_response_code(401);
@@ -297,6 +298,219 @@ if (!isset($jwt)) {
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
                 die();
             }
+
+        }
+
+
+        // for void
+        if ($crud == "Releaser released") {
+            foreach($list_array as $item)
+            {
+                $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
+                $amount = $item['amount'] * -1;
+                // office_stock_history
+                $query = "INSERT INTO office_stock_history
+                SET
+                    `request_id` = :request_id,
+                    `code` = :code,
+                    `qty` = :qty,
+                    `action` = :_action,
+                    `status` = 1,
+                    `create_id` = :create_id,
+                    `created_at` = now()";
+    
+                // prepare the query
+                $stmt = $db->prepare($query);
+    
+                // bind the values
+                $stmt->bindParam(':request_id', $id);
+                $stmt->bindParam(':code', $code);
+                $stmt->bindParam(':qty', $amount);
+                $stmt->bindParam(':_action', $crud);
+                $stmt->bindParam(':create_id', $user_id);
+    
+                try {
+                    // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        $arr = $stmt->errorInfo();
+                        error_log($arr[2]);
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                        die();
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+
+                $query = "update office_items_stock set 
+                            reserve_qty = reserve_qty - :qty, 
+                            qty = qty - :qty,
+                            updated_id = :updated_id, 
+                            updated_at = now() 
+                            where code = :code";
+
+                // prepare the query
+                $stmt = $db->prepare($query);
+
+                // bind the values
+                $stmt->bindParam(':code', $code);
+                $stmt->bindParam(':qty', $item['amount']);
+                $stmt->bindParam(':updated_id', $user_id);
+
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                    die();
+                }
+
+            }
+
+            // to complete
+            $query = "update apply_for_office_item set 
+                        status = " . TO_COMPLETE . ", 
+                        updated_id = :updated_id, 
+                        updated_at = now() 
+                        where id = :id";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':updated_id', $user_id);
+
+            // execute the query, also check if query was successful
+            if (!$stmt->execute()) {
+                $arr = $stmt->errorInfo();
+                error_log($arr[2]);
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                die();
+            }
+
+            $batch_id = $id;
+            $batch_type = "office_item_release";
+
+            try {
+                $total = count($_FILES['files']['name']);
+                // Loop through each file
+                for( $i=0 ; $i < $total ; $i++ ) {
+
+                    if(isset($_FILES['files']['name'][$i]))
+                    {
+                        $image_name = $_FILES['files']['name'][$i];
+                        $valid_extensions = array("jpg","jpeg","png","gif","pdf","docx","doc","xls","xlsx","ppt","pptx","zip","rar","7z","txt","dwg","skp","psd","evo");
+                        $extension = pathinfo($image_name, PATHINFO_EXTENSION);
+                        if (in_array(strtolower($extension), $valid_extensions)) 
+                        {
+                            //$upload_path = 'img/' . time() . '.' . $extension;
+
+                            $storage = new StorageClient([
+                                'projectId' => 'predictive-fx-284008',
+                                'keyFilePath' => $conf::$gcp_key
+                            ]);
+
+                            $bucket = $storage->bucket('feliiximg');
+
+                            $upload_name = time() . '_' . pathinfo($image_name, PATHINFO_FILENAME) . '.' . $extension;
+
+                            $file_size = filesize($_FILES['files']['tmp_name'][$i]);
+                            $size = 0;
+
+                            $obj = $bucket->upload(
+                                fopen($_FILES['files']['tmp_name'][$i], 'r'),
+                                ['name' => $upload_name]);
+
+                            $info = $obj->info();
+                            $size = $info['size'];
+
+                            if($size == $file_size && $file_size != 0 && $size != 0)
+                            {
+                                $query = "INSERT INTO gcp_storage_file
+                                SET
+                                    batch_id = :batch_id,
+                                    batch_type = :batch_type,
+                                    filename = :filename,
+                                    gcp_name = :gcp_name,
+
+                                    create_id = :create_id,
+                                    created_at = now()";
+
+                                // prepare the query
+                                $stmt = $db->prepare($query);
+                            
+                                // bind the values
+                                $stmt->bindParam(':batch_id', $batch_id);
+                                $stmt->bindParam(':batch_type', $batch_type);
+                                $stmt->bindParam(':filename', $image_name);
+                                $stmt->bindParam(':gcp_name', $upload_name);
+                    
+                                $stmt->bindParam(':create_id', $user_id);
+
+                                try {
+                                    // execute the query, also check if query was successful
+                                    if ($stmt->execute()) {
+                                        $last_id = $db->lastInsertId();
+                                    }
+                                    else
+                                    {
+                                        $arr = $stmt->errorInfo();
+                                        error_log($arr[2]);
+                                    }
+                                }
+                                catch (Exception $e)
+                                {
+                                    error_log($e->getMessage());
+                                    $db->rollback();
+                                    http_response_code(501);
+                                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                                    die();
+                                }
+
+
+                                $message = 'Uploaded';
+                                $code = 0;
+                                $upload_id = $last_id;
+                                $image = $image_name;
+                            }
+                            else
+                            {
+                                $message = 'There is an error while uploading file';
+                                $db->rollback();
+                                http_response_code(501);
+                                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                                die();
+                                
+                            }
+                        }
+                        else
+                        {
+                            $message = 'Only Images or Office files allowed to upload';
+                            $db->rollback();
+                            http_response_code(501);
+                            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                            die();
+                        }
+                    }
+
+                }
+            } catch (Exception $e) {
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " Error uploading, Please use laptop to upload again."));
+                die();
+            }
+
 
         }
 
