@@ -2,11 +2,11 @@
 
  date_default_timezone_set('Asia/Taipei');
  $date = date('d');
- $show0 = false;
+ //$show0 = false;
 
-if($date % 2 == 0)
-    $show0 = true;
-?>
+// if($date % 2 == 0)
+//     $show0 = true;
+// ?>
 
 <?php include 'check.php';?>
 <!DOCTYPE html>
@@ -160,7 +160,7 @@ $(function(){
             <div class="mainContent" style="text-align: center;">
                 <!-- mainContent為動態內容包覆的內容區塊 -->
 
-                <div class="banner1" <?php if($show0 == false) echo('style="display:none;"'); ?>>
+                <div class="banner1" <?php if($date % 3 != 0) echo('style="display:none;"'); ?>>
                     <img src="images/action_and_word.png" height="auto" width="90%"/>
                     <!--
                         <div style="font-size:5vw; font-weight: bold;">Wear Mask</div>
@@ -175,8 +175,12 @@ $(function(){
                     -->
                 </div>
 
-                <div class="banner2" <?php if($show0 == true) echo('style="display:none;"'); ?>>
+                <div class="banner2" <?php if($date % 3 != 1) echo('style="display:none;"'); ?>>
                     <img src="images/communication.jpg" height="auto" width="96%"/>
+                </div>
+
+                <div class="banner3" <?php if($date % 3 != 2) echo('style="display:none;"'); ?>>
+                    <img src="images/S__7733280.jpg" height="auto" width="96%"/>
                 </div>
             </div>
         </div>
