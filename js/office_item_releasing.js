@@ -30,6 +30,12 @@ var app = new Vue({
     is_approval: false,
 
     auth_date : "",
+
+    releaser_sig_name: {},
+    releaser_sig_date: {},
+
+    sig_name: {},
+    sig_date: {},
   },
 
   created() {
@@ -126,6 +132,27 @@ var app = new Vue({
     toggle_auth: function() {
       this.proof_id = 0;
   },
+
+  reset_auth() {
+    this.sig_date.jSignature('reset');
+    this.sig_name.jSignature('reset');
+    this.releaser_sig_date.jSignature('reset');
+    this.releaser_sig_name.jSignature('reset');
+},
+
+authRecord() {
+
+  if(this.auth_date == "")
+  {
+      if(this.loading == false)
+      {
+          this.sig_date = $("#signature_date").jSignature();
+          this.sig_name = $("#signature_name").jSignature();
+
+          this.loading = true;
+      }
+  }
+},
 
     export_office_item: function() {
       let _this = this;

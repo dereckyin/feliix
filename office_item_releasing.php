@@ -512,7 +512,7 @@ catch (Exception $e) {
                         <div class="btnbox">
                             <a class="btn" @click="export_office_item">Export Voucher</a>
                             <a class="btn" :disabled="submit == true" @click="">Finish Releasing</a>
-                            <a class="btn blue" @click="">Online Voucher</a>
+                            <a class="btn blue" @click="authRecord();">Online Voucher</a>
                         </div>
                     </form>
 
@@ -606,14 +606,14 @@ catch (Exception $e) {
 
                         <div :class="['releaser_name', (auth_date == '' ? 'bg_gray' : '')]">
                             <div id="signature_name1" v-if="auth_date == ''"></div>
-                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_name"
-                                 v-if="record.sig_name">
+                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.releaser_sig_name"
+                                 v-if="record.releaser_sig_name">
                         </div>
 
                         <div :class="['releaser_date', (auth_date == '' ? 'bg_gray' : '')]">
                             <div id="signature_date1" v-if="auth_date == ''"></div>
-                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_date"
-                                 v-if="record.sig_date">
+                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.releaser_sig_date"
+                                 v-if="record.releaser_sig_date">
                         </div>
 
                         <h5>Receiver</h5>
@@ -638,14 +638,14 @@ catch (Exception $e) {
 
                         <div class="releaser_name bg_gray">
                             <div id="signature_name1" style='height: 155.6px;'></div>
-                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_name"
-                                 v-if="record.sig_name">
+                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.releaser_sig_name"
+                                 v-if="record.releaser_sig_name">
                         </div>
 
                         <div class="releaser_date bg_gray">
                             <div id="signature_date1" style='height: 155.6px;'></div>
-                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_date"
-                                 v-if="record.sig_date">
+                            <img :src="'https://storage.googleapis.com/feliiximg/' + record.releaser_sig_date"
+                                 v-if="record.releaser_sig_date">
                         </div>
 
                         <h5>Receiver</h5>
