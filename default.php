@@ -180,7 +180,7 @@ $(function(){
                 </div>
 
                 <div class="banner3" <?php if($date % 3 != 2) echo('style="display:none;"'); ?>>
-                    <img src="images/S__7733280.jpg" height="auto" width="96%"/>
+                    <img src="images/S__7733280.jpg" height="auto" width="85%"/>
                 </div>
             </div>
         </div>

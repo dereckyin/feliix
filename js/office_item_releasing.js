@@ -16,6 +16,7 @@ var app = new Vue({
 
     proof_remark: "",
     reject_reason: "",
+    void_reason: "",
 
     proof_id: 0,
 
@@ -348,13 +349,58 @@ var app = new Vue({
 
       var token = localStorage.getItem("token");
       form_Data.append("jwt", token);
-      if(status == 3)
-        form_Data.append("crud", "Approver Reject");
-      if(status == 4)
-        form_Data.append("crud", "Approver Reject");
+      // if(status == 3)
+      //   form_Data.append("crud", "Approver Reject");
+      // if(status == 4)
+        form_Data.append("crud", "Releaser Rejected");
       form_Data.append("id", id);
       form_Data.append("list", JSON.stringify(this.record.list));
       form_Data.append("remark", this.reject_reason);
+
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+        url: "api/office_item_action",
+        data: form_Data,
+      })
+        .then(function(response) {
+          //handle success
+          //this.$forceUpdate();
+          Swal.fire({
+            text: response.data.message,
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+          _this.resetForm();
+        })
+        .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: response.data,
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+        });
+    },
+
+    
+    voidReceiveRecord: function(id, status) {
+      let _this = this;
+      targetId = this.record.id;
+      var form_Data = new FormData();
+
+      var token = localStorage.getItem("token");
+      form_Data.append("jwt", token);
+      // if(status == 3)
+      //   form_Data.append("crud", "Approver Reject");
+      // if(status == 4)
+        form_Data.append("crud", "Releaser Voided");
+      form_Data.append("id", id);
+      form_Data.append("list", JSON.stringify(this.record.list));
+      form_Data.append("remark", this.void_reason);
 
       axios({
         method: "post",
@@ -404,6 +450,7 @@ var app = new Vue({
         // });
 
         //$(window).scrollTop(0);
+        this.auth_date = "";
         this.view_detail = false;
         return;
       }
@@ -412,6 +459,7 @@ var app = new Vue({
         this.receive_records.find((element) => element.id == this.proof_id)
       );
       
+      this.auth_date = this.record.auth_date != undefined ? this.record.auth_date : "";
       this.reject_reason = "";
       this.view_detail = true;
     },
@@ -503,6 +551,38 @@ var app = new Vue({
       });
     },
 
+    void_me: function() {
+      let _this = this;
+
+      if (this.void_reason.trim() === "") {
+        Swal.fire({
+          text: "Please enter voiding reason!",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+
+        //$(window).scrollTop(0);
+        return;
+      }
+
+      Swal.fire({
+        title: "Are you sure to proceed this action?",
+        text: "Void this record",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.value) {
+          _this.submit = true;
+          _this.voidReceiveRecord(this.proof_id, this.record.status);
+
+          _this.resetForm();
+        }
+      });
+    },
+
     reject_checker: function() {
         let _this = this;
   
@@ -550,6 +630,7 @@ var app = new Vue({
     resetForm: function() {
       this.record = [];
       this.reject_reason = "";
+      this.void_reason = "";
       this.getLeaveCredit();
     },
 

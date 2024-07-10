@@ -54,6 +54,7 @@ use \Firebase\JWT\JWT;
 use Google\Cloud\Storage\StorageClient;
 
 const TO_REJECT = 2;
+const TO_VOID = 3;
 const TO_APPROVE = 4;
 const TO_RELEASE = 5;
 
@@ -104,8 +105,8 @@ if (!isset($jwt)) {
 
         }
 
-        // for reject approval
-        if ($crud == "Approver Reject") {
+        // for reject
+        if ($crud == "Approver Reject" || $crud == "Releaser Rejected") {
             foreach($list_array as $item)
             {
                 $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
@@ -178,6 +179,104 @@ if (!isset($jwt)) {
             // to reject
             $query = "update apply_for_office_item set 
                         status = " . TO_REJECT . ", 
+                        updated_id = :updated_id, 
+                        updated_at = now() 
+                        where id = :id";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':updated_id', $user_id);
+
+            // execute the query, also check if query was successful
+            if (!$stmt->execute()) {
+                $arr = $stmt->errorInfo();
+                error_log($arr[2]);
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                die();
+            }
+
+        }
+
+        
+        // for void
+        if ($crud == "Releaser Voided") {
+            foreach($list_array as $item)
+            {
+                $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
+                $amount = $item['amount'] * -1;
+                // office_stock_history
+                $query = "INSERT INTO office_stock_history
+                SET
+                    `request_id` = :request_id,
+                    `code` = :code,
+                    `qty` = :qty,
+                    `action` = :_action,
+                    `status` = 1,
+                    `create_id` = :create_id,
+                    `created_at` = now()";
+    
+                // prepare the query
+                $stmt = $db->prepare($query);
+    
+                // bind the values
+                $stmt->bindParam(':request_id', $id);
+                $stmt->bindParam(':code', $code);
+                $stmt->bindParam(':qty', $amount);
+                $stmt->bindParam(':_action', $crud);
+                $stmt->bindParam(':create_id', $user_id);
+    
+                try {
+                    // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        $arr = $stmt->errorInfo();
+                        error_log($arr[2]);
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                        die();
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+
+                $query = "update office_items_stock set 
+                            reserve_qty = reserve_qty - :qty, 
+                            updated_id = :updated_id, 
+                            updated_at = now() 
+                            where code = :code";
+
+                // prepare the query
+                $stmt = $db->prepare($query);
+
+                // bind the values
+                $stmt->bindParam(':code', $code);
+                $stmt->bindParam(':qty', $item['amount']);
+                $stmt->bindParam(':updated_id', $user_id);
+
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                    die();
+                }
+
+            }
+
+            // to reject
+            $query = "update apply_for_office_item set 
+                        status = " . TO_VOID . ", 
                         updated_id = :updated_id, 
                         updated_at = now() 
                         where id = :id";

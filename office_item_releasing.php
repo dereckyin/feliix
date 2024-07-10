@@ -410,7 +410,7 @@ catch (Exception $e) {
                 </div>
 
 
-                <div class="details" v-if="proof_id != 0">
+                <div class="details" v-if="proof_id != 0 && auth_date == ''">
                     <div class="tablebox">
                         <ul class="head">
                             <li class="head">Request No.</li>
@@ -433,8 +433,7 @@ catch (Exception $e) {
                             </li>
                             <li>
                                 <p v-for='(item, index) in record.history' :key="index">
-                                    {{ item.action }} <a v-if="item.reason != ''">: {{ item.reason }}</a> ({{ item.actor
-                                    }} at {{ item.created_at }})
+                                    {{ item.action }} <a v-if="item.reason != ''">: {{ item.reason }}</a> ({{ item.actor }} at {{ item.created_at }})
                                 </p>
                             </li>
                         </ul>
@@ -469,28 +468,17 @@ catch (Exception $e) {
                             <li>Stock Status</li>
                         </ul>
                         <ul v-for='(item, index) in record.list' :key="index">
-                            <li>{{ }}</li>
+                            <li>{{ item.code1 + item.code2 + item.code3 + item.code4 }}</li>
                             <li>
                                 <a href="item.url" target="_blank" v-if="item.url">
                                     <img :src="item.url" v-if="item.url">
                                 </a>
                             </li>
-                            <li>{{ }}</li>
-                            <li>{{ }}</li>
-                            <li>{{ }}<br>(Reserved: {{}})</li>
+                            <li>{{ item.cat1 }} >> {{ item.cat2 }} >> {{ item.cat3 }} >> {{ item.cat4 }}</li>
+                            <li>{{ item.amount }}</li>
+                            <li>{{ item.qty }}<br>(Reserved: {{ item.reserve_qty }})</li>
                         </ul>
 
-                        <ul>
-                            <li>01010101</li>
-                            <li>
-                                <a href="https://storage.googleapis.com/feliiximg/1719371345_LINE_ALBUM_HG Decorative Lights_240626_1.jpg"
-                                   target="_blank"><img
-                                        src="https://storage.googleapis.com/feliiximg/1719371345_LINE_ALBUM_HG Decorative Lights_240626_1.jpg"></a>
-                            </li>
-                            <li>OFFICE SUPPLIES &gt;&gt; BOND PAPER &gt;&gt; TOILET PAPER &gt;&gt; A4</li>
-                            <li>3</li>
-                            <li>10<br>(Reserved: 2)</li>
-                        </ul>
                     </div>
 
                     <form>
@@ -507,11 +495,11 @@ catch (Exception $e) {
                     <form>
                         <ul>
                             <li><b>Voiding Reason</b></li>
-                            <li><textarea style="width:100%" v-model="reject_reason"></textarea></li>
+                            <li><textarea style="width:100%" v-model="void_reason"></textarea></li>
                         </ul>
 
                         <div class="btnbox">
-                            <a class="btn red" @click="reject">Void Application</a>
+                            <a class="btn red" @click="void_me">Void Application</a>
                         </div>
                     </form>
 
@@ -533,7 +521,7 @@ catch (Exception $e) {
 
 
             <!-- Online Office Item Application Voucher Modal start -->
-            <div id="Modal_signature" class="modal" v-if="proof_id != 0">
+            <div id="Modal_signature" class="modal" v-if="proof_id != 0 && auth_date != ''">
 
                 <!-- Modal content -->
                 <div class="modal-content">
@@ -564,8 +552,7 @@ catch (Exception $e) {
                             </li>
                             <li>
                                 <p v-for='(item, index) in record.history' :key="index">
-                                    {{ item.action }} <a v-if="item.reason != ''">: {{ item.reason }}</a> ({{ item.actor
-                                    }} at {{ item.created_at }})
+                                    {{ item.action }} <a v-if="item.reason != ''">: {{ item.reason }}</a> ({{ item.actor }} at {{ item.created_at }})
                                 </p>
                             </li>
                         </ul>
