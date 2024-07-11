@@ -36,8 +36,8 @@ catch (Exception $e) {
 $database = new Database();
 $db = $database->getConnection();
 
-// $id = (isset($_POST['id']) ?  $_POST['id'] : 0);
-$id = 4;
+$id = (isset($_POST['id']) ?  $_POST['id'] : 0);
+// $id = 4;
 
 $sql = "SELECT  pm.id,
 pm.uid,
