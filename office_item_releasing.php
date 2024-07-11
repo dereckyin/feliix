@@ -697,7 +697,7 @@ catch (Exception $e) {
 
 <!-- import JavaScript -->
 <script src="js/element-ui@2.15.14/lib/index.js"></script>
-<script src="js/office_item_releasing.js?random=<?php echo uniqid(); ?>"></script>
+<script src="js/office_item_releasing.js"></script>
 
 <script src="js/jSignature/flashcanvas.js"></script>
 <script src="js/jSignature/jSignature.min.js"></script>

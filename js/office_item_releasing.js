@@ -136,9 +136,23 @@ var app = new Vue({
       window.jQuery("#Modal_signature").toggle();
   },
 
+  close_auth: function() {
+    window.jQuery("#Modal_signature").toggle();
+},
   
   submit_auth() {
     let _this = this;
+
+    if($("#sig_date").jSignature('getData', 'native').length == 0 || $("#sig_name").jSignature('getData', 'native').length == 0 || $("#releaser_sig_date").jSignature('getData', 'native').length == 0 || $("#releaser_sig_name").jSignature('getData', 'native').length == 0)
+    {
+        Swal.fire({
+            text: "Signing name and date for both releaser and requestor is required.",
+            icon: "warning",
+            confirmButtonText: "OK"
+        });
+        return;
+    }
+
     var sig_date = $("#sig_date").jSignature('getData', 'image');
     var sig_name = $("#sig_name").jSignature('getData', 'image');
 
@@ -157,6 +171,7 @@ var app = new Vue({
         console.log(response.data);
         _this.close_auth();
         _this.reset_auth();
+        _this.resetForm();
             
     })
     .catch(function(error) {
@@ -200,12 +215,14 @@ authRecord() {
       var token = localStorage.getItem("token");
       form_Data.append("jwt", token);
 
+      form_Data.append('id', this.record.id)
+
       axios({
         method: "post",
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/export_office_item_releasing",
+        url: "api/office_item_releasing_export",
         data: form_Data,
         responseType: "blob",
       })
@@ -215,7 +232,7 @@ authRecord() {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "office_item_releasing.xlsx"); //or any other extension
+          link.setAttribute("download", "office_item_releasing" + _this.record['request_no'] + ".docx"); //or any other extension
           document.body.appendChild(link);
           link.click();
         })

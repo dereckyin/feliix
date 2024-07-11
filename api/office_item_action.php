@@ -302,7 +302,7 @@ if (!isset($jwt)) {
         }
 
 
-        // for void
+        // for Released
         if ($crud == "Releaser released") {
             foreach($list_array as $item)
             {
