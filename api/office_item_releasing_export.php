@@ -185,9 +185,10 @@ $table1->addCell(1000, ['borderSize' => 6, 'bgColor' => 'EFEFEF'])->addText("Nee
 $table1->addCell(1000, ['borderSize' => 6, 'bgColor' => 'EFEFEF'])->addText("Stock Status",  ['bold' => true], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
 
 foreach ($list as &$value) {
+    $url = str_replace(' ', '%20', $value['url']);
     $table1->addRow();
     $table1->addCell(2600, ['borderSize' => 6])->addText(htmlspecialchars($value['code1'] . $value['code2'] . $value['code3'] . $value['code4']), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(2600, ['borderSize' => 6])->addImage($value['url'], ['width' => 50, 'height' => 50, 'wrappingStyle' => 'inline']);
+    $table1->addCell(2600, ['borderSize' => 6])->addImage($url, ['width' => 50, 'height' => 50, 'wrappingStyle' => 'inline']);
     $table1->addCell(6100, ['borderSize' => 6])->addText(htmlspecialchars($value['cat1'] . " >> " . $value['cat2'] . " >> " . $value['cat3'] . " >> " . $value['cat4']), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
     $table1->addCell(600, ['borderSize' => 6])->addText(number_format($value['amount']), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
     $table1->addCell(600, ['borderSize' => 6])->addText(number_format($value['qty']) . "(Reserved: " . number_format($value['reserve_qty']). ")", [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
