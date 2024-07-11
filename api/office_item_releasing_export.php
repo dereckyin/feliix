@@ -194,7 +194,7 @@ foreach ($list as &$value) {
         $table1->addCell(2600, ['borderSize' => 6])->addText("");
     $table1->addCell(6100, ['borderSize' => 6])->addText(htmlspecialchars($value['cat1'] . " >> " . $value['cat2'] . " >> " . $value['cat3'] . " >> " . $value['cat4']), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
     $table1->addCell(600, ['borderSize' => 6])->addText(number_format($value['amount']), [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
-    $table1->addCell(600, ['borderSize' => 6])->addText(number_format($value['qty']) . "(Reserved: " . number_format($value['reserve_qty']). ")", [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+    $table1->addCell(600, ['borderSize' => 6])->addText(number_format($value['qty']) . "\n (Reserved: " . number_format($value['reserve_qty']). ")", [], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
 }
 
 
@@ -234,7 +234,7 @@ $table3 = $section->addTable('table3', [
     'textAlign' => 'left'
 ]);
 
-$todya = date("Y/m/d");
+$today = date("Y/m/d");
 
 $table3->addRow();
 $table3->addCell(5250, ['borderSize' => 'none'])->addText("Date of released/liquidation:", [], []);
