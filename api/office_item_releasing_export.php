@@ -311,7 +311,7 @@ function addMultiLineAttach($cell, $strArr)
 function GetAttachment($_id, $db)
 {
     $sql = "select COALESCE(h.filename, '') filename, COALESCE(h.gcp_name, '') gcp_name
-            from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = 'petty'
+            from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = 'apply_office_item'
             order by h.created_at ";
 
     $merged_results = array();
