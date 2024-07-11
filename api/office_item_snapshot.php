@@ -266,8 +266,8 @@ switch ($method) {
 
         $db->commit();
     
-        $returnArray = array('batch_id' => $item_id);
-        $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
+        http_response_code(200);
+        echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));
         
         echo $jsonEncodedReturnArray;
             

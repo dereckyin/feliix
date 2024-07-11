@@ -172,6 +172,12 @@ var app = new Vue({
         _this.close_auth();
         _this.reset_auth();
         _this.resetForm();
+
+        Swal.fire({
+          html: response.data.message,
+          icon: "info",
+          confirmButtonText: "OK",
+        });
             
     })
     .catch(function(error) {
