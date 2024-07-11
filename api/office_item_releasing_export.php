@@ -506,8 +506,8 @@ function GetList($_id, $db)
 
 function GetHistory($_id, $db)
 {
-    $sql = "select pm.id, `actor`, `action`, reason, `status`, DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at from petty_history pm 
-            where `status` <> -1 and petty_id = " . $_id . " order by created_at ";
+    $sql = "select pm.id, `actor`, `action`, reason, `status`, DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at from office_item_apply_history pm 
+            where `status` <> -1 and request_id = " . $_id . " order by created_at ";
 
     $merged_results = array();
 
