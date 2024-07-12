@@ -238,7 +238,7 @@ authRecord() {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "office_item_releasing_" + _this.record['request_no'] + ".docx"); //or any other extension
+          link.setAttribute("download", "Office Item Application Voucher_" + _this.record['request_no'] + ".docx"); //or any other extension
           document.body.appendChild(link);
           link.click();
         })
