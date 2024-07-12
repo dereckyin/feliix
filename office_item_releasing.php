@@ -256,7 +256,7 @@ catch (Exception $e) {
         }
 
         #Modal_signature .modal-content .sign_dialog .releaser_name::after {
-            content: "Released by Releaser的名字";
+            content: attr(data-attr);
             position: absolute;
             bottom: -27px;
             left: 5px;
@@ -316,7 +316,7 @@ catch (Exception $e) {
         }
 
         #Modal_signature .modal-content .sign_dialog .receiver_name::after {
-            content: "Received by Requestor的名字";
+            content: attr(data-attr);
             position: absolute;
             bottom: -27px;
             left: 5px;
@@ -636,7 +636,7 @@ catch (Exception $e) {
 
                         <h5>Releaser</h5>
 
-                        <div class="releaser_name bg_gray">
+                        <div class="releaser_name bg_gray" :data-attr="'Released by ' + name">
                             <div id="releaser_sig_name" style='height: 155.6px;'></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.releaser_sig_name"
                                  v-if="record.releaser_sig_name">
@@ -650,7 +650,7 @@ catch (Exception $e) {
 
                         <h5>Receiver</h5>
 
-                        <div class="receiver_name bg_gray">
+                        <div class="receiver_name bg_gray" :data-attr="'Received by ' + record.requestor">
                             <div id="sig_name" style='height: 155.6px;'></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_name"
                                  v-if="record.sig_name">
