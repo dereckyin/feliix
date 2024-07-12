@@ -552,7 +552,7 @@ catch (Exception $e) {
                             </li>
                             <li>
                                 <p v-for='(item, index) in record.history' :key="index">
-                                    {{ item.action }} <a v-if="item.reason != ''">: {{ item.reason }}</a> ({{ item.actor }} at {{ item.created_at }})
+                                    {{ item.action }} <a v-if="item.reason != '' && item.action != 'Submitted'">: {{ item.reason }}</a> ({{ item.actor }} at {{ item.created_at }})
                                 </p>
                             </li>
                         </ul>
@@ -567,14 +567,14 @@ catch (Exception $e) {
                         <ul>
                             <li class="head">Attachments</li>
                             <li>
-                                <a v-for='(item, index) in record.items' :key="index" :href="baseURL + item.gcp_name"
+                                <a v-for='(item, index) in record.attachment' :key="index" :href="baseURL + item.gcp_name"
                                    target="_blank">{{item.filename}}</a>
                             </li>
                         </ul>
                         <ul>
                             <li class="head">Remarks
                             </li>
-                            <li>{{ record.remark }}</li>
+                            <li>{{ record.remarks }}</li>
                         </ul>
                     </div>
 

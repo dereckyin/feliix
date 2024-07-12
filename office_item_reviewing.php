@@ -232,7 +232,7 @@ $(function(){
                             </li>
                             <li>
                                 <p v-for='(item, index) in record.history' :key="index">
-                                    {{ item.action }} <a v-if="item.reason != ''">: {{ item.reason }}</a> ({{ item.actor }} at {{ item.created_at }})
+                                    {{ item.action }} <a v-if="item.reason != '' && item.action != 'Submitted'">: {{ item.reason }}</a> ({{ item.actor }} at {{ item.created_at }})
                                 </p>
                             </li>
                         </ul>
