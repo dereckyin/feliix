@@ -48,7 +48,7 @@ header('Access-Control-Allow-Origin: *');
 include_once 'config/database.php';
 
 $list = (isset($_POST['list']) ?  $_POST['list'] : "[]");
-$list_array = json_decode($list);
+$list_array = json_decode($list, true);
 
 $database = new Database();
 $db = $database->getConnection();

@@ -120,6 +120,39 @@ var app = new Vue({
         _this.proof_id = 0;
     },
 
+    
+    update_qty: async function(record) {
+      let _this = this;
+
+      var form_Data = new FormData();
+      var token = localStorage.getItem("token");
+
+      form_Data.append("jwt", token);
+      form_Data.append("list", JSON.stringify(record.list));
+
+      await axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        url: "api/office_item_update_qty",
+        data: form_Data,
+      })
+        .then(function(response) {
+          //handle success
+          console.log(response.data);
+          _this.record.list = response.data;
+        })
+        .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        });
+    },
+
     getUserName: function() {
       var token = localStorage.getItem("token");
       var form_Data = new FormData();
@@ -341,7 +374,7 @@ var app = new Vue({
         });
     },
 
-    detail: function() {
+    detail: async function() {
       let _this = this;
 
       //let favorite = [];
@@ -367,6 +400,8 @@ var app = new Vue({
       this.record = this.shallowCopy(
         this.receive_records.find((element) => element.id == this.proof_id)
       );
+
+      await this.update_qty(this.record);
       
       this.reject_reason = "";
       this.view_detail = true;
