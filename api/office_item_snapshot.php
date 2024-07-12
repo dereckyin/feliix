@@ -269,7 +269,6 @@ switch ($method) {
         http_response_code(200);
         echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));
         
-        echo $jsonEncodedReturnArray;
             
     }
 
