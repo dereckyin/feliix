@@ -198,7 +198,7 @@ switch ($method) {
                 error_log($arr[2]);
                 $db->rollback();
                 http_response_code(501);
-                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . "Out of stock, Cannot release!"));
                 die();
             }
             
