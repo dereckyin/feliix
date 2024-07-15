@@ -5198,4 +5198,4 @@ ADD COLUMN `office_item_release` text COLLATE utf8mb4_unicode_ci;
 
 -- 20240715
 ALTER TABLE office_stock_history
-ADD column `reserve_qty` int(11) DEFAULT 0;
+ADD column `reserve_qty` int(11) DEFAULT 0 AFTER qty;
