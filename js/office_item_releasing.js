@@ -370,7 +370,7 @@ authRecord() {
           //handle error
           Swal.fire({
             text: JSON.stringify(error.data[0]),
-            icon: "info",
+            icon: "error",
             confirmButtonText: "OK",
           });
 
