@@ -451,6 +451,8 @@
         <!-- tags js在 main.js -->
         <div class="tags">
             <a class="tag A focus">Apply</a>
+            <a class="tag B" href="office_item_application_liquidate">Liquidate</a>
+            <a class="tag C" href="office_item_application_records">Records</a>
         </div>
         <!-- Blocks -->
         <div class="block A focus" style="position: relative;">
