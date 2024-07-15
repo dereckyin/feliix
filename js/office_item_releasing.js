@@ -188,6 +188,11 @@ var app = new Vue({
             
     })
     .catch(function(error) {
+      Swal.fire({
+        text: JSON.stringify(error.data[0]),
+        icon: "error",
+        confirmButtonText: "OK",
+      });
         console.log(error);
     });
 
@@ -364,7 +369,7 @@ authRecord() {
         .catch(function(error) {
           //handle error
           Swal.fire({
-            text: JSON.stringify(error),
+            text: JSON.stringify(error.data[0]),
             icon: "info",
             confirmButtonText: "OK",
           });
