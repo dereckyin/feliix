@@ -113,6 +113,39 @@ catch (Exception $e) {
     <!-- CSS for current webpage -->
     <style type="text/css">
 
+        a, a:link, a:visited, a:active, a:hover, area {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        a, a:link {
+            color: #000;
+        }
+
+        a:hover {
+            color: #333;
+        }
+
+        body.black header nav a, body.black header nav a:link {
+            color: #000;
+        }
+
+        body.black header nav a:hover {
+            color: #333;
+        }
+
+        body.black header nav {
+            font-family: 'M PLUS 1p', Arial, Helvetica, 'LiHei Pro', "微軟正黑體", 'Microsoft JhengHei', "新細明體", sans-serif;
+        }
+
+        body.black header nav ul.info {
+            margin-bottom: 0;
+        }
+
+        body.black header nav ul.info b {
+            font-weight: bold;
+        }
+
         body {
             font-family: "M PLUS 1p", Arial, Helvetica, "LiHei Pro", 微軟正黑體, "Microsoft JhengHei", 新細明體, sans-serif!important;
         }
@@ -208,7 +241,6 @@ catch (Exception $e) {
 
         #Modal_signature > .modal-content {
             width: 90%;
-            max-height: 95vh;
             margin: auto;
             border: 3px solid black;
             padding: 20px 25px;
@@ -637,13 +669,13 @@ catch (Exception $e) {
                         <h5>Releaser</h5>
 
                         <div class="releaser_name bg_gray" :data-attr="'Released by ' + name">
-                            <div id="releaser_sig_name" style='height: 155.6px;'></div>
+                            <div id="releaser_sig_name" style='height: 155.6px; overflow: hidden;'></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.releaser_sig_name"
                                  v-if="record.releaser_sig_name">
                         </div>
 
                         <div class="releaser_date bg_gray">
-                            <div id="releaser_sig_date" style='height: 155.6px;'></div>
+                            <div id="releaser_sig_date" style='height: 155.6px; overflow: hidden;'></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.releaser_sig_date"
                                  v-if="record.releaser_sig_date">
                         </div>
@@ -651,13 +683,13 @@ catch (Exception $e) {
                         <h5>Receiver</h5>
 
                         <div class="receiver_name bg_gray" :data-attr="'Received by ' + record.requestor">
-                            <div id="sig_name" style='height: 155.6px;'></div>
+                            <div id="sig_name" style='height: 155.6px; overflow: hidden;'></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_name"
                                  v-if="record.sig_name">
                         </div>
 
                         <div class="receiver_date bg_gray">
-                            <div id="sig_date" style='height: 155.6px;'></div>
+                            <div id="sig_date" style='height: 155.6px; overflow: hidden;'></div>
                             <img :src="'https://storage.googleapis.com/feliiximg/' + record.sig_date"
                                  v-if="record.sig_date">
                         </div>
