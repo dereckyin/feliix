@@ -135,11 +135,16 @@ var app = new Vue({
       
       window.jQuery("#Modal_signature").toggle();
       window.jQuery("#mask").toggle();
+
+      this.reset_auth();
+
   },
 
   close_auth: function() {
     window.jQuery("#Modal_signature").toggle();
     window.jQuery("#mask").toggle();
+
+    this.reset_auth();
 },
   
   submit_auth() {
@@ -194,6 +199,8 @@ var app = new Vue({
 
     $("#releaser_sig_date").jSignature('reset');
     $("#releaser_sig_name").jSignature('reset');
+
+    this.loading = false;
 },
 
 authRecord() {
