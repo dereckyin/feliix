@@ -237,7 +237,7 @@ $table3 = $section->addTable('table3', [
 $today = date("Y/m/d");
 
 $table3->addRow();
-$table3->addCell(5250, ['borderSize' => 'none'])->addText("Date of released/liquidation:", [], []);
+$table3->addCell(5250, ['borderSize' => 'none'])->addText("Date Released:", [], []);
 $table3->addCell(5250, ['borderSize' => 'none'])->addText("Date",  [], []);
 
 $table3->addRow();
@@ -296,6 +296,9 @@ function addMultiLineText($cell, $strArr)
 {
     // add text line together
     foreach ($strArr as $v) {
+        if($v['actor'] == 'Submitted')
+        $cell->addText($v['action'] . ' (' . $v['actor'] . ' at ' . $v['created_at'] . ')', ['bold' => false], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+        else
         $cell->addText($v['action'] . ' ' . htmlspecialchars($v['reason']) . ' (' . $v['actor'] . ' at ' . $v['created_at'] . ')', ['bold' => false], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
     }
 }

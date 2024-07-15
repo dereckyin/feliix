@@ -134,10 +134,12 @@ var app = new Vue({
     toggle_auth: function() {
       
       window.jQuery("#Modal_signature").toggle();
+      window.jQuery("#mask").toggle();
   },
 
   close_auth: function() {
     window.jQuery("#Modal_signature").toggle();
+    window.jQuery("#mask").toggle();
 },
   
   submit_auth() {
@@ -197,6 +199,7 @@ var app = new Vue({
 authRecord() {
 
   window.jQuery("#Modal_signature").toggle();
+  window.jQuery("#mask").toggle();
 
 
       if(this.loading == false)
@@ -209,6 +212,7 @@ authRecord() {
 
           this.loading = true;
       }
+    
 
       
 },

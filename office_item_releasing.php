@@ -370,7 +370,7 @@ catch (Exception $e) {
 <body class="black">
 
 <div class="bodybox">
-    <div class="mask" :ref="'mask'" style="display:none"></div>
+    <div class="mask" id="mask" style="display:none"></div>
     <!-- header -->
     <header>header</header>
     <!-- header end -->
