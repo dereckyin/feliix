@@ -273,7 +273,7 @@ else
             SET
                 `request_id` = :request_id,
                 `code` = :code,
-                `qty` = :qty,
+                `reserve_qty` = :qty,
                 `action` = 'APPLY',
                 `status` = 1,
                 `create_id` = :create_id,

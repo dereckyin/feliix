@@ -143,6 +143,7 @@ switch ($method) {
                     `request_id` = :request_id,
                     `code` = :code,
                     `qty` = :qty,
+                    `reserve_qty` = :qty,
                     `action` = :_action,
                     `status` = 1,
                     `create_id` = :create_id,
