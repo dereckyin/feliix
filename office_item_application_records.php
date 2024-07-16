@@ -351,7 +351,7 @@ body.green input[type=date] {
                             <ul>
                                 <li class="head">Remarks
                                 </li>
-                                <li>{{ record.remark }}</li>
+                                <li>{{ record.remarks }}</li>
                             </ul>
                         </div>
 
@@ -383,7 +383,7 @@ body.green input[type=date] {
                             </ul>
                             <ul>
                                 <li class="head">Date Released</li>
-                                <li>{{record.release_date}}</li>
+                                <li>{{record.date_release}}</li>
                             </ul>
                             <ul>
                                 <li class="head">Proof of Release</li>
@@ -393,7 +393,7 @@ body.green input[type=date] {
                         </div>
 
                         <div class="btnbox">
-                            <a class="btn" v-if="record.status == 0 || record.status == -1  || record.status == 2" v-bind:href="'apply_for_expense?pid='+ record.id">&nbsp;&nbsp;Re-Submit&nbsp;&nbsp;</a>
+                            <a class="btn" v-if="record.status == 0 || record.status == -1 || record.status == 2 || record.status == 3" v-bind:href="'apply_for_office_item?pid='+ record.id">&nbsp;&nbsp;Re-Submit&nbsp;&nbsp;</a>
                             <a class="btn" v-if="record.status == 4 || record.status == 5" @click="withdraw">Withdraw</a>
                         </div>
 

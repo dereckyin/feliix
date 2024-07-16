@@ -91,7 +91,7 @@ switch ($method) {
             }
         }
 
-        $sql = $sql . " ORDER BY pm.date_requested ";
+        $sql = $sql . " ORDER BY pm.created_at ";
 
         if (!empty($_GET['size'])) {
             $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
@@ -118,10 +118,12 @@ switch ($method) {
         $status = "";
         $requestor = "";
         $created_at = "";
+
+        $date_release = "";
         
         $list = [];
         $attachment = [];
-    
+        $release_items = [];
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $id = $row['id'];
@@ -138,6 +140,16 @@ switch ($method) {
             $attachment = GetAttachment($id, $db);
             $history = GetHistory($id, $db);
 
+            foreach($history as $h)
+            {
+                if($h['action'] == 'Releaser released')
+                {
+                    $date_release = $h['created_at'];
+                    break;
+                }
+            }
+
+            $release_items = GetReleaseAttachment($row['id'], $db);
             $list = JSON_decode($row['listing'], true);
             $list = UpdateQty($list, $db);
 
@@ -152,6 +164,8 @@ switch ($method) {
                 "desc" => $desc,
                 "attachment" => $attachment,
                 "history" => $history,
+                "date_release" => $date_release,
+                "release_items" => $release_items,
                 "requestor" => $requestor,
                 "created_at" => $created_at,
                 "list" => $list
@@ -289,13 +303,30 @@ function GetStatus($loc)
         case 6:
             $location = "Completed";
             break;
-       
-        
-                
     }
 
     return $location;
 }
+
+
+function GetReleaseAttachment($_id, $db)
+{
+    $sql = "select COALESCE(h.filename, '') filename, COALESCE(h.gcp_name, '') gcp_name
+            from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = 'office_item_release'
+            order by h.created_at ";
+
+    $merged_results = array();
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = $row;
+    }
+
+    return $merged_results;
+}
+
 
 function GetList($_id, $db)
 {

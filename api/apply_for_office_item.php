@@ -489,28 +489,18 @@ function GetPettyDetail($id, $db)
     return $merged_results;
 }
 
-
 function GetStatus($loc)
 {
     $location = "";
     switch ($loc) {
-        case -2:
+        case 3:
             $location = "Void";
             break;
         case -1:
             $location = "Withdrawn";
             break;
-        case 0:
-            $location = "Rejected";
-            break;
-        case 1:
-            $location = "For Check";
-            break;
         case 2:
-            $location = "For Check";
-            break;
-        case 3:
-            $location = "For Approve";
+            $location = "Rejected";
             break;
         case 4:
             $location = "For Approve";
@@ -519,19 +509,8 @@ function GetStatus($loc)
             $location = "For Release";
             break;
         case 6:
-            $location = "For Liquidate";
-            break;
-        case 7:
-            $location = "For Liquidate";
-            break;
-        case 8:
-            $location = "For Verify";
-            break;
-        case 9:
             $location = "Completed";
             break;
-        
-                
     }
 
     return $location;

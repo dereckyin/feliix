@@ -561,7 +561,7 @@ var app = new Vue({
         pid: pid,
       };
       axios
-        .get("api/apply_for_petty_edit", {
+        .get("api/apply_for_office_item_edit", {
           params,
           headers: { Authorization: `Bearer ${token}` },
         })
@@ -571,24 +571,10 @@ var app = new Vue({
             "/",
             "-"
           );
-          _this.request_type = response.data[0].request_type;
-          _this.reason1 = response.data[0].reason1;
+
           _this.reason = response.data[0].reason;
-          _this.payable_to = response.data[0].payable_to;
-          _this.rtype = response.data[0].rtype;
-          _this.dept_name = response.data[0].dept_name;
-
-          if (_this.payable_to == 1) {
-            document.getElementById("specific_payableto").style.display =
-              "none";
-          } else {
-            document.getElementById("specific_payableto").value = "";
-            document.getElementById("specific_payableto").style.display = "";
-          }
-
-          _this.item_list = response.data[0].items;
-          _this.payable_other = response.data[0].payable_other;
-          _this.remark = response.data[0].remark;
+          _this.item_list = response.data[0].attachment;
+          _this.remark = response.data[0].remarks;
 
           _this.petty_list = response.data[0].list;
         })
@@ -810,7 +796,7 @@ var app = new Vue({
     },
 
     apply_edit: function() {
-      if (!this.validateForm_edit()) return;
+      if (!this.validateForm()) return;
 
       if(this.submit == true) return;
 
@@ -821,25 +807,11 @@ var app = new Vue({
       let _this = this;
 
       form_Data.append("jwt", token);
-      form_Data.append("pid", this.pid);
-      form_Data.append("date_requested", this.date_requested.replaceAll('-', '/'));
-      form_Data.append("request_type", this.request_type);
+      form_Data.append("request_no", this.request_no);
+      form_Data.append("date_requested", this.date_requested);
       form_Data.append("reason", this.reason);
-      form_Data.append("reason1", this.reason1);
-      form_Data.append("payable_to", this.payable_to);
-      form_Data.append("payable_other", this.payable_other);
       form_Data.append("remark", this.remark);
-
-      form_Data.append("rtype", this.rtype);
-      form_Data.append("dept_name", this.dept_name);
-
-      var favorite = [];
-      for(var i = 0; i < this.item_list.length; i++)
-      {
-        if(this.item_list[i].is_checked === false)
-          favorite.push(this.item_list[i].id);
-      }
-      form_Data.append("items_to_delete", JSON.stringify(favorite));
+      form_Data.append("pid", this.pid);
 
       for (var i = 0; i < this.$refs.file.files.length; i++) {
         let file = this.$refs.file.files[i];
@@ -853,7 +825,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/apply_for_petty_edit",
+        url: "api/apply_for_office_item_edit",
         data: form_Data,
       })
         .then(function(response) {
@@ -863,7 +835,7 @@ var app = new Vue({
             icon: "info",
             confirmButtonText: "OK",
           }).then(function() {
-            window.location = "apply_for_expense";
+            window.location = "office_item_application_records";
             //_this.reset();
           });
 

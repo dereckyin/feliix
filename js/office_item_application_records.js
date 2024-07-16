@@ -411,7 +411,7 @@ var app = new Vue({
         this.receive_records.find((element) => element.id == this.proof_id)
       );
 
-      //await this.update_qty(this.record);
+      await this.update_qty(this.record);
       
       this.reject_reason = "";
       this.view_detail = true;
