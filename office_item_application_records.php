@@ -329,7 +329,7 @@ body.green input[type=date] {
                                 </li>
                                 <li>
                                     <p v-for='(item, index) in record.history' :key="index">
-                                        {{ item.action }} <a v-if="item.reason != ''">: {{ item.reason }}</a> ({{ item.actor }} at {{ item.created_at }})
+                                        {{ item.action }} <a v-if="item.reason != '' && item.action != 'Submitted'">: {{ item.reason }}</a> ({{ item.actor }} at {{ item.created_at }})
                                     </p>
                                 </li>
                             </ul>
@@ -340,12 +340,12 @@ body.green input[type=date] {
                             </ul>
                             <ul>
                                 <li class="head">Reason</li>
-                                <li v-if="record.rtype==''">{{ record.project_name}}</li>
+                                <li>{{ record.reason}}</li>
                             </ul>
                             <ul>
                                 <li class="head">Attachments</li>
                                 <li>
-                                    <a v-for='(item, index) in record.items' :key="index" :href="baseURL + item.gcp_name" target="_blank">{{item.filename}}</a>
+                                    <a v-for='(item, index) in record.attachment' :key="index" :href="baseURL + item.gcp_name" target="_blank">{{item.filename}}</a>
                                 </li>
                             </ul>
                             <ul>
@@ -364,15 +364,15 @@ body.green input[type=date] {
                                 <li>Stock Status</li>
                             </ul>
                             <ul v-for='(item, index) in record.list' :key="index" >
-                                <li>{{ item.payee }}</li>
+                            <li>{{ item.code1 + item.code2 + item.code3 + item.code4 }}</li>
                                 <li>
                                     <a href="item.url" target="_blank" v-if="item.url">
                                         <img :src="item.url" v-if="item.url">
                                     </a>
                                 </li>
-                                <li>{{ Number(item.price).toLocaleString() }}</li>
-                                <li>{{ Number(item.qty).toLocaleString() }}</li>
-                                <li>{{ }}<br>(Reserved: {{}})</li>
+                                <li>{{ item.cat1 }} >> {{ item.cat2 }} >> {{ item.cat3 }} >> {{ item.cat4 }}</li>
+                                <li>{{ item.amount }}</li>
+                                <li>{{ item.qty }}<br>(Reserved: {{ item.reserve_qty }})</li>
                             </ul>
                         </div>
 
@@ -393,8 +393,8 @@ body.green input[type=date] {
                         </div>
 
                         <div class="btnbox">
-                            <a class="btn" v-if="record.status == 0 || record.status == -1  || record.status == -2" v-bind:href="'apply_for_expense?pid='+ record.id">&nbsp;&nbsp;Re-Submit&nbsp;&nbsp;</a>
-                            <a class="btn" v-if="record.status == 1 || record.status == 2 || record.status == 3 || record.status == 4" @click="withdraw">Withdraw</a>
+                            <a class="btn" v-if="record.status == 0 || record.status == -1  || record.status == 2" v-bind:href="'apply_for_expense?pid='+ record.id">&nbsp;&nbsp;Re-Submit&nbsp;&nbsp;</a>
+                            <a class="btn" v-if="record.status == 4 || record.status == 5" @click="withdraw">Withdraw</a>
                         </div>
 
                     </div>
