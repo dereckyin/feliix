@@ -404,7 +404,7 @@ switch ($method) {
             }
         }
 
-        
+        $re_remark = "";
         // save history
         $query = "INSERT INTO office_item_apply_history
         SET
@@ -418,13 +418,13 @@ switch ($method) {
         // prepare the query
         $stmt = $db->prepare($query);
 
-        $crud = "Submitted";
+        $crud = "Re-Submitted";
 
         // bind the values
         $stmt->bindParam(':request_id', $batch_id);
         $stmt->bindParam(':actor', $user_name);
         $stmt->bindParam(':_action', $crud);
-        $stmt->bindParam(':remark', $remark);
+        $stmt->bindParam(':remark', $re_remark);
 
         try {
             // execute the query, also check if query was successful
