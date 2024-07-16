@@ -128,7 +128,45 @@ var app = new Vue({
     },
 
     withdraw: function() {
-        let _this = this;
+      let _this = this;
+      targetId = this.record.id;
+      var form_Data = new FormData();
+
+      var token = localStorage.getItem("token");
+      form_Data.append("jwt", token);
+
+      form_Data.append("crud", "Withdraw");
+      form_Data.append("id", id);
+      form_Data.append("list", JSON.stringify(this.record.list));
+      form_Data.append("remark", "");
+
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+        url: "api/office_item_action",
+        data: form_Data,
+      })
+        .then(function(response) {
+          //handle success
+          //this.$forceUpdate();
+          Swal.fire({
+            text: response.data.message,
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+          _this.resetForm();
+        })
+        .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: response.data,
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+        });
     },
     
     update_qty: async function(record) {
