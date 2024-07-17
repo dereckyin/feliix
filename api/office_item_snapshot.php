@@ -108,7 +108,7 @@ switch ($method) {
         
         try {
             if (isset($file_sig_date)) {
-                upload_file($item_id, $file_sig_date, "signature.jpg", $user_id, $db, $conf);
+                upload_file($item_id, $file_sig_date, "online_voucher.jpg", $user_id, $db, $conf);
             }
             
             // if(isset($file_sig_name))
