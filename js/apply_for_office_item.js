@@ -92,6 +92,8 @@ var app = new Vue({
 
     items: [],
     total : 0,
+
+    befor_reset : true,
   },
 
   created() {
@@ -890,6 +892,16 @@ var app = new Vue({
         this.getRequestNo();
         this.item_list = [];
       }
+
+      if(this.pid != 0)
+      {
+        this.befor_reset = false;
+        for(var i = 0; i < this.item_list.length; i++)
+          this.item_list[i].is_checked = false;
+      }
+      else
+        this.befor_reset = true;
+      
       this.list_sn = 0;
 
       this.submit = false;

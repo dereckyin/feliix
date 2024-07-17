@@ -118,8 +118,6 @@ switch ($method) {
         $status = "";
         $requestor = "";
         $created_at = "";
-
-        $date_release = "";
         
         $list = [];
         $attachment = [];
@@ -139,6 +137,8 @@ switch ($method) {
             $desc = GetStatus($row['status']);
             $attachment = GetAttachment($id, $db);
             $history = GetHistory($id, $db);
+
+            $date_release = "";
 
             foreach($history as $h)
             {

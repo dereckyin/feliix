@@ -517,7 +517,7 @@
                         <li>
                             <input type="file" ref="file" name="file[]" multiple style="width:100%">
 
-                            <div class="list_attch" v-for="(item,index) in item_list" :key="index">
+                            <div class="list_attch" v-for="(item,index) in item_list" :key="index" v-show="befor_reset">
                                 <input type="checkbox" :id="'file' + item.id" v-model="item.is_checked">
                                 <label :for="'file' + item.id"><a class="attch" :href="baseURL + item.gcp_name"
                                                                   target="_blank">{{item.filename}}</a></label>
