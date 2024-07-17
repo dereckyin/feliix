@@ -136,7 +136,7 @@ var app = new Vue({
       form_Data.append("jwt", token);
 
       form_Data.append("crud", "Withdraw");
-      form_Data.append("id", id);
+      form_Data.append("id", targetId);
       form_Data.append("list", JSON.stringify(this.record.list));
       form_Data.append("remark", "");
 
