@@ -77,53 +77,54 @@ switch ($method) {
         
         $item_id = $data['item_id'];
         $sig_date = $data['sig_date'];
-        $sig_name = $data['sig_name'];
-        $releaser_sig_date = $data['releaser_sig_date'];
-        $releaser_sig_name = $data['releaser_sig_name'];
+        // $sig_name = $data['sig_name'];
+        // $releaser_sig_date = $data['releaser_sig_date'];
+        // $releaser_sig_name = $data['releaser_sig_name'];
         $list = $data['list'];
         
-        
-        $sig_date = str_replace(' ', '+', $sig_date[1]);
+        $sig_date = str_replace('data:image/png;base64,', '', $sig_date);
+        $sig_date = str_replace('data:image/jpeg;base64,', '', $sig_date);
+        $sig_date = str_replace(' ', '+', $sig_date);
         if($sig_date != "")
         $file_sig_date = base64_decode($sig_date);
         
-        $sig_name = str_replace(' ', '+', $sig_name[1]);
-        if($sig_name != "")
-        $file_sig_name = base64_decode($sig_name);
+        // $sig_name = str_replace(' ', '+', $sig_name[1]);
+        // if($sig_name != "")
+        // $file_sig_name = base64_decode($sig_name);
         
-        $releaser_sig_date = str_replace(' ', '+', $releaser_sig_date[1]);
-        if($releaser_sig_date != "")
-        $file_releaser_sig_date = base64_decode($releaser_sig_date);
+        // $releaser_sig_date = str_replace(' ', '+', $releaser_sig_date[1]);
+        // if($releaser_sig_date != "")
+        // $file_releaser_sig_date = base64_decode($releaser_sig_date);
         
-        $releaser_sig_name = str_replace(' ', '+', $releaser_sig_name[1]);
-        if($releaser_sig_name != "")
-        $file_releaser_sig_name = base64_decode($releaser_sig_name);
+        // $releaser_sig_name = str_replace(' ', '+', $releaser_sig_name[1]);
+        // if($releaser_sig_name != "")
+        // $file_releaser_sig_name = base64_decode($releaser_sig_name);
         
         $file_name_sig_name = "";
-        $file_name_sig_date = "";
+        // $file_name_sig_date = "";
         
-        $file_name_releaser_sig_name = "";
-        $file_name_releaser_sig_date = "";
+        // $file_name_releaser_sig_name = "";
+        // $file_name_releaser_sig_date = "";
         
         try {
             if (isset($file_sig_date)) {
-                upload_file($item_id, $file_sig_date, "sig_date.jpg", $user_id, $db, $conf);
+                upload_file($item_id, $file_sig_date, "signature.jpg", $user_id, $db, $conf);
             }
             
-            if(isset($file_sig_name))
-            {
-                upload_file($item_id, $file_sig_name, "sig_name.jpg", $user_id, $db, $conf);
-            }
+            // if(isset($file_sig_name))
+            // {
+            //     upload_file($item_id, $file_sig_name, "sig_name.jpg", $user_id, $db, $conf);
+            // }
             
-            if(isset($file_releaser_sig_date))
-            {
-                upload_file($item_id, $file_releaser_sig_date, "releaser_sig_date.jpg", $user_id, $db, $conf);
-            }
+            // if(isset($file_releaser_sig_date))
+            // {
+            //     upload_file($item_id, $file_releaser_sig_date, "releaser_sig_date.jpg", $user_id, $db, $conf);
+            // }
             
-            if(isset($file_releaser_sig_name))
-            {
-                upload_file($item_id, $file_releaser_sig_name, "releaser_sig_name.jpg", $user_id, $db, $conf);
-            }
+            // if(isset($file_releaser_sig_name))
+            // {
+            //     upload_file($item_id, $file_releaser_sig_name, "releaser_sig_name.jpg", $user_id, $db, $conf);
+            // }
             
         }catch (Exception $e){
             

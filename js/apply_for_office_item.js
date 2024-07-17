@@ -813,6 +813,14 @@ var app = new Vue({
       form_Data.append("remark", this.remark);
       form_Data.append("pid", this.pid);
 
+      var favorite = [];
+      for(var i = 0; i < this.item_list.length; i++)
+      {
+        if(this.item_list[i].is_checked === false)
+          favorite.push(this.item_list[i].id);
+      }
+      form_Data.append("items_to_delete", JSON.stringify(favorite));
+
       for (var i = 0; i < this.$refs.file.files.length; i++) {
         let file = this.$refs.file.files[i];
         form_Data.append("files[" + i + "]", file);
@@ -860,8 +868,7 @@ var app = new Vue({
       this.list_qty = 0;
       this.petty_list = [];
 
-      this.request_no = "";
-
+      
       this.date_requested = "";
       this.request_type = "";
       this.reason = "";
@@ -870,18 +877,22 @@ var app = new Vue({
       // this.$refs.payable_other.style.display = "none";
       this.$refs.file.value = "";
       this.payable_other = "";
-
+      
       this.remark = "";
-
+      
       this.rtype = "";
       this.dept_name = "";
-
-      this.pid = 0;
+      
+      if(this.pid == 0)
+      {
+        this.request_no = "";
+        this.pid = 0;
+        this.getRequestNo();
+        this.item_list = [];
+      }
       this.list_sn = 0;
-      this.item_list = [];
 
       this.submit = false;
-      this.getRequestNo();
     },
 
     shallowCopy(obj) {

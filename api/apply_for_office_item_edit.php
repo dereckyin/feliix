@@ -170,6 +170,9 @@ switch ($method) {
 
         $remark = (isset($_POST['remark']) ?  $_POST['remark'] : '');
 
+        $items_to_delete = (isset($_POST['items_to_delete']) ?  $_POST['items_to_delete'] : "[]");
+        $items_array = json_decode($items_to_delete,true);
+
         $petty_list = (isset($_POST['petty_list']) ?  $_POST['petty_list'] : '[]');
         $array_list = json_decode($petty_list, true);
 
@@ -333,6 +336,37 @@ switch ($method) {
                 }
             }
 
+            // items to delete
+            for ($i = 0; $i < count($items_array); $i++) {
+                $query = "DELETE FROM gcp_storage_file
+                    WHERE
+                        `id` = :_id";
+
+                // prepare the query
+                $stmt = $db->prepare($query);
+
+                // bind the values
+                $stmt->bindParam(':_id', $items_array[$i]);
+
+                try {
+                    // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        $arr = $stmt->errorInfo();
+                        error_log($arr[2]);
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                        die();
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+            }
+
         // save history
         foreach ($array_list as $item)
         {
@@ -480,7 +514,7 @@ function CheckItemsForStatus($array_list)
 
 function GetAttachment($_id, $db)
 {
-    $sql = "select COALESCE(h.filename, '') filename, COALESCE(h.gcp_name, '') gcp_name
+    $sql = "select id, 1 is_checked, COALESCE(h.filename, '') filename, COALESCE(h.gcp_name, '') gcp_name
             from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = 'apply_office_item'
             order by h.created_at ";
 

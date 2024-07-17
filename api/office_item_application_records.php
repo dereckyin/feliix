@@ -91,7 +91,7 @@ switch ($method) {
             }
         }
 
-        $sql = $sql . " ORDER BY pm.created_at ";
+        $sql = $sql . " ORDER BY pm.created_at desc";
 
         if (!empty($_GET['size'])) {
             $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);

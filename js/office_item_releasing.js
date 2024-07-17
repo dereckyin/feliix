@@ -160,14 +160,21 @@ var app = new Vue({
         return;
     }
 
-    var sig_date = $("#sig_date").jSignature('getData', 'image');
-    var sig_name = $("#sig_name").jSignature('getData', 'image');
+    // var sig_date = $("#sig_date").jSignature('getData', 'image');
+    // var sig_name = $("#sig_name").jSignature('getData', 'image');
 
-    var releaser_sig_date = $("#releaser_sig_date").jSignature('getData', 'image');
-    var releaser_sig_name = $("#releaser_sig_name").jSignature('getData', 'image');
+    // var releaser_sig_date = $("#releaser_sig_date").jSignature('getData', 'image');
+    // var releaser_sig_name = $("#releaser_sig_name").jSignature('getData', 'image');
 
-    let data = { sig_date: sig_date, sig_name: sig_name, releaser_sig_date: releaser_sig_date, releaser_sig_name : releaser_sig_name, item_id: this.record.id, list: this.record.list};
-    this.loading = true;
+    var cls = '.modal-content';
+
+    html2canvas(document.querySelector(cls), { proxy: "html2canvasproxy", useCORS: false, logging: true, allowTaint: true}).then(canvas => {
+      //document.body.appendChild(canvas)
+    let dataurl = canvas.toDataURL();
+
+    //let data = { sig_date: sig_date, sig_name: sig_name, releaser_sig_date: releaser_sig_date, releaser_sig_name : releaser_sig_name, item_id: this.record.id, list: this.record.list};
+    let data = { sig_date: dataurl, item_id: _this.record.id, list: _this.record.list};
+    _this.loading = true;
 
     axios
     .post("api/office_item_snapshot", data, {
@@ -195,6 +202,7 @@ var app = new Vue({
       });
         console.log(error);
     });
+  });
 
 },
 

@@ -733,4 +733,6 @@ catch (Exception $e) {
 
 <script src="js/jSignature/flashcanvas.js"></script>
 <script src="js/jSignature/jSignature.min.js"></script>
+<script src="js/canvas2image/canvas2image.js"></script>
+<script defer src="js/html2canvas/html2canvas.min.js"></script>
 </html>
