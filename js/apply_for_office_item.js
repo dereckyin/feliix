@@ -637,7 +637,7 @@ var app = new Vue({
 
       // every qty in petty_list should be a number and greater than 0
       for (i = 0; i < this.petty_list.length; i++) {
-        if (!this.validateNumber(this.petty_list[i].amount)) {
+        if (!this.validateNumber(this.petty_list[i].amount) && this.petty_list[i].amount < 1) {
           Swal.fire({
             text: "Qty should be at least 1.",
             icon: "warning",
