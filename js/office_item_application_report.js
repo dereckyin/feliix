@@ -902,39 +902,44 @@ var app = new Vue({
     },
 
     
-    export_petty: function() {
-   
+    export_office_item: function() {
       let _this = this;
+
       var form_Data = new FormData();
 
-      form_Data.append('id', this.record["id"])
-     
-      const filename = "leave";
+      var token = localStorage.getItem("token");
+      form_Data.append("jwt", token);
 
-      const token = sessionStorage.getItem('token');
+      form_Data.append('id', this.record.id)
 
       axios({
-              method: 'post',
-              url: 'office_item_release_application',
-              data: form_Data,
-              responseType: 'blob', // important
-          })
-          .then(function(response) {
-                const url = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = url;
-               
-                  link.setAttribute('download', 'Expense Application Voucher_' + _this.record['request_no'] + '.docx');
-               
-                document.body.appendChild(link);
-                link.click();
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        url: "api/office_item_releasing_export",
+        data: form_Data,
+        responseType: "blob",
+      })
 
-          })
-          .catch(function(response) {
-              //handle error
-              console.log(response)
+        .then(function(response) {
+          console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "Office Item Application Voucher_" + _this.record['request_no'] + ".docx"); //or any other extension
+          document.body.appendChild(link);
+          link.click();
+        })
+        .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: "error",
+            confirmButtonText: "OK",
           });
-  },
+        });
+    },
 
   
     export_petty_list() {
@@ -972,7 +977,7 @@ var app = new Vue({
                 const link = document.createElement('a');
                 link.href = url;
                
-                  link.setAttribute('download', 'Expense Application Voucher.xlsx');
+                  link.setAttribute('download', 'Office Item Application Report.xlsx');
                
                 document.body.appendChild(link);
                 link.click();
