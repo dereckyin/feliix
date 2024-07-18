@@ -664,6 +664,8 @@ if($jwt){
                 $short_brand = "ET";
             if(strtoupper($brand) == 'EVERLIGHT')
                 $short_brand = "EL";
+            if(strtoupper($brand) == 'GAMMA')
+                $short_brand = "GM";
             if(strtoupper($brand) == 'GENTECH')
                 $short_brand = "GT";
             if(strtoupper($brand) == 'GLEDOPTO')
