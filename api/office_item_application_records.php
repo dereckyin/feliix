@@ -81,7 +81,7 @@ switch ($method) {
                 where pm.`uid` = " . $user_id;
 
         if (!empty($sdate)) {
-            $sql = $sql . " AND DATE_FORMAT(pm.date_requested, '%Y-%m') = '" . $sdate . "'";
+            $sql = $sql . " AND DATE_FORMAT(pm.created_at, '%Y-%m') = '" . $sdate . "'";
         }
  
         if (!empty($_GET['page'])) {
