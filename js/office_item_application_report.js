@@ -100,34 +100,9 @@ var app = new Vue({
             case "fc":
               _this.fil_creator = decodeURI(tmp[1]);
               break;
-            case "ft":
-              _this.fil_type = tmp[1];
-              break;
             case "fs":
               _this.fil_status = tmp[1].split(",");
               break;
-            case "fat":
-              _this.fil_amount_type = tmp[1];
-              break;
-            case "fau":
-              _this.fil_amount_upper = tmp[1];
-              break;
-            case "fal":
-              _this.fil_amount_lower = tmp[1];
-              break;
-            case "ftd":
-              _this.fil_type_date = tmp[1];
-              break;
-            case "fds":
-              _this.fil_date_start = tmp[1];
-              break;
-            case "fde":
-              _this.fil_date_end = tmp[1];
-              break;
-            case "fp":
-              _this.fil_project_name = decodeURI(tmp[1]);
-              break;
-        
             case "of1":
               _this.od_factor1 = tmp[1];
               break;
@@ -272,15 +247,7 @@ var app = new Vue({
         fru: _this.fil_request_no_upper,
         frl: _this.fil_request_no_lower,
         fc: _this.fil_creator,
-        ft: _this.fil_type,
         fs: _this.fil_status.join(','),
-        fat: _this.fil_amount_type,
-        fau: _this.fil_amount_upper,
-        fal: _this.fil_amount_lower,
-        ftd: _this.fil_type_date,
-        fds: _this.fil_date_start,
-        fde: _this.fil_date_end,
-        fp: _this.fil_project_name,
         of1: _this.od_factor1,
         ofd1: _this.od_factor1_order,
         of2: _this.od_factor2,
@@ -429,24 +396,8 @@ var app = new Vue({
         _this.fil_request_no_lower +
         "&fc=" +
         _this.fil_creator +
-        "&ft=" +
-        _this.fil_type +
         "&fs=" +
         _this.fil_status.join(',') +
-        "&fat=" +
-        _this.fil_amount_type +
-        "&fau=" +
-        _this.fil_amount_upper +
-        "&fal=" +
-        _this.fil_amount_lower +
-        "&ftd=" +
-        _this.fil_type_date +
-        "&fp=" +
-        _this.fil_project_name +
-        "&fds=" +
-        _this.fil_date_start +
-        "&fde=" +
-        _this.fil_date_end +
         "&of1=" +
         _this.od_factor1 +
         "&ofd1=" +
@@ -482,24 +433,8 @@ var app = new Vue({
         _this.fil_request_no_lower +
         "&fc=" +
         _this.fil_creator +
-        "&ft=" +
-        _this.fil_type +
         "&fs=" +
         _this.fil_status.join(',') +
-        "&fat=" +
-        _this.fil_amount_type +
-        "&fau=" +
-        _this.fil_amount_upper +
-        "&fal=" +
-        _this.fil_amount_lower +
-        "&ftd=" +
-        _this.fil_type_date +
-        "&fp=" +
-        _this.fil_project_name +
-        "&fds=" +
-        _this.fil_date_start +
-        "&fde=" +
-        _this.fil_date_end +
         "&of1=" +
         _this.od_factor1 +
         "&ofd1=" +
@@ -950,15 +885,7 @@ var app = new Vue({
       form_Data.append("fru", this.fil_request_no_upper);
       form_Data.append("frl", this.fil_request_no_lower);
       form_Data.append("fc", this.fil_creator);
-      form_Data.append("ft", this.fil_type);
       form_Data.append("fs", this.fil_status.join(','));
-      form_Data.append("fat", this.fil_amount_type);
-      form_Data.append("fau", this.fil_amount_upper);
-      form_Data.append("fal", this.fil_amount_lower);
-      form_Data.append("ftd", this.fil_type_date);
-      form_Data.append("fp", this.fil_project_name);
-      form_Data.append("fds", this.fil_date_start);
-      form_Data.append("fde", this.fil_date_end);
       form_Data.append("of1", this.od_factor1);
       form_Data.append("ofd1", this.od_factor1_order);
       form_Data.append("of2", this.od_factor2);
