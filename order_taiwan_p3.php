@@ -1619,6 +1619,7 @@ try {
                             <a class="btn small green" @click="cancel()" v-if="MarkasCanceled()">Mark as Canceled</a>
 
                             <a class="btn small green" @click="edit_shipping_info('ship_info')" v-if="EditShippingInfo() && no_privlege() != true">Edit Shipping Info</a>
+                            <a class="btn small green" @click="edit_shipping_info_dn('date_needed')" v-if="EditDateNeeded()  && no_privlege() != true">Edit Date Needed</a>
                             <a class="btn small green" @click="edit_shipping_info('ware_info')" v-if="EditWarehouseInfo() && no_privlege() != true">Edit Warehouse Info</a>
                             <a class="btn small green" @click="edit_shipping_info('assing_test')" v-if="AssignTesting() && no_privlege() != true && 1==0">Assign Testing</a>
                             <a class="btn small green" @click="edit_shipping_info('edit_test')" v-if="EditTestingInfo() && no_privlege() != true">Edit Testing Info</a>
@@ -1772,10 +1773,10 @@ try {
             </td>
 
             <td>
-                <div class="read_block" v-if="!item.is_edit">
+                <div class="read_block" v-if="!item.is_edit_dn">
                     {{ item.date_needed }}
                 </div>
-                <div class="write_block" v-if="item.is_edit">
+                <div class="write_block" v-if="item.is_edit_dn">
                     <input type="text" v-model="item.date_needed">
                 </div>
             </td>

@@ -738,6 +738,14 @@ var app = new Vue({
           return false;
       },
 
+      EditDateNeeded()
+      {
+        if((this.access1 == true || this.access3 || this.access5 || this.access6 || this.access7) && this.is_info == false)
+          return true;
+        else
+          return false;
+      },
+
       EditWarehouseInfo()
       {
         if(this.access4 == true && this.is_info == false)
@@ -932,6 +940,16 @@ var app = new Vue({
       },
 
       edit_shipping_info(type) {
+        
+        for (let i = 0; i < this.items.length; i++) {
+          this.items[i].is_info = true;
+          this.is_info = true;
+          this.info_type = type;
+        }
+
+      },
+
+      edit_shipping_info_dn(type) {
         
         for (let i = 0; i < this.items.length; i++) {
           this.items[i].is_info = true;
