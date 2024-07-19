@@ -545,10 +545,12 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $attachment = GetAttachment($id, $db);
             $history = GetHistory($id, $db);
 
+            $history_desc = GetHistoryDesc($id, $db);
+
             $date_release = "";
             $date_approved = "";
 
-            foreach($history as $h)
+            foreach($history_desc as $h)
             {
                 if($h['action'] == 'Releaser released')
                 {
@@ -557,7 +559,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 }
             }
 
-            foreach($history as $h)
+            foreach($history_desc as $h)
             {
                 if($h['action'] == 'Approver Approved')
                 {
@@ -684,6 +686,23 @@ function GetStatus($loc)
 }
 
 function GetHistory($_id, $db)
+{
+    $sql = "select pm.id, `actor`, `action`, reason, `status`, DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at from office_item_apply_history pm 
+            where `status` <> -1 and request_id = " . $_id . " order by created_at ";
+
+    $merged_results = array();
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = $row;
+    }
+
+    return $merged_results;
+}
+
+function GetHistoryDesc($_id, $db)
 {
     $sql = "select pm.id, `actor`, `action`, reason, `status`, DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at from office_item_apply_history pm 
             where `status` <> -1 and request_id = " . $_id . " order by created_at desc ";
