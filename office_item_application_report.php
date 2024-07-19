@@ -207,6 +207,19 @@
             margin-top: 10px;
         }
 
+        div.tablebox.listing ul li {
+            height: 128px;
+        }
+
+        div.tablebox.listing ul.head li {
+            height: auto;
+        }
+
+        div.tablebox.listing ul li:nth-of-type(2) img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+
         div.box-content form {
             border: 3px solid #EA0029;
             margin-top: 40px;
