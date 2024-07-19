@@ -101,7 +101,14 @@ var app = new Vue({
               _this.fil_creator = decodeURI(tmp[1]);
               break;
             case "fs":
-              _this.fil_status = tmp[1].split(",");
+              var temp = tmp[1].split(",");
+              if(temp.length > 0)
+              {
+                // remove the first empty element
+                if(temp[0] == "")
+                  temp.shift();
+              }
+                _this.fil_status = temp;
               break;
             case "of1":
               _this.od_factor1 = tmp[1];
