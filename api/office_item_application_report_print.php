@@ -264,64 +264,28 @@ if($of1 != "" && $of1 != "0")
             break;  
         case 3:
             if($ofd1 == 2)
-                $sOrder = "Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = pm.id AND pl.`status` <> -1), 0) desc";
+                $sOrder = "p.username desc ";
             else
-                $sOrder = "Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = pm.id AND pl.`status` <> -1) , 99999999)";
+                $sOrder = "p.username ";
             break;  
-        case 4:
-            if($ofd1 == 2)
-                $sOrder = "Coalesce(pm.amount_verified, 0) desc";
-            else
-                $sOrder = "Coalesce(pm.amount_verified, 99999999)";
-            break;
         case 5:
             if($ofd1 == 2)
                 $sOrder = "Coalesce(pm.date_requested, '0000-00-00') desc";
             else
                 $sOrder = "Coalesce(pm.date_requested, '9999-99-99')";
             break;
-        case 6:
-            if($ofd1 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Checker Checked' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Checker Checked' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
         case 7:
             if($ofd1 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'OP Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'OP Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-        case 8:
-            if($ofd1 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'MD Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'MD Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
         case 9:
             if($ofd1 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Releaser Released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Releaser Released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
-        case 10:
-            if($ofd1 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Liquidated' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Liquidated' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-        case 11:
-            if($ofd1 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Verifier Verified' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Verifier Verified' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-            case 12:
-                if($ofd1 == 2)
-                    $sOrder = "pm.project_name1 desc ";
-                else
-                $sOrder = "CONCAT(trim(pm.project_name1), 'ZZZZZZZZZZZZZZZZZZZZ') ";
-                break;
         default:
     }
 }
@@ -344,64 +308,28 @@ if($of2 != "" && $of2 != "0" && $sOrder != "")
             break;  
         case 3:
             if($ofd2 == 2)
-                $sOrder .= ", Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = pm.id AND pl.`status` <> -1), 0) desc";
+                $sOrder = ", p.username desc ";
             else
-                $sOrder .= ", Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = pm.id AND pl.`status` <> -1), 0) desc";
+                $sOrder = ", p.username ";
             break;  
-        case 4:
-            if($ofd2 == 2)
-                $sOrder .= ", Coalesce(pm.amount_verified, 0) desc";
-            else
-                $sOrder .= ", Coalesce(pm.amount_verified, 99999999)";
-            break;
         case 5:
             if($ofd2 == 2)
                 $sOrder .= ", Coalesce(pm.date_requested, '0000-00-00') desc";
             else
                 $sOrder .= ", Coalesce(pm.date_requested, '9999-99-99')";
             break;
-        case 6:
-            if($ofd2 == 2)
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Checker Checked' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Checker Checked' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
         case 7:
             if($ofd2 == 2)
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'OP Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'OP Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-        case 8:
-            if($ofd2 == 2)
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'MD Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'MD Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
         case 9:
             if($ofd2 == 2)
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Releaser Released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Releaser Released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
-        case 10:
-            if($ofd2 == 2)
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Liquidated' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Liquidated' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-        case 11:
-            if($ofd2 == 2)
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Verifier Verified' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Verifier Verified' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-            case 12:
-                if($ofd2 == 2)
-                    $sOrder .= ", pm.project_name1 desc ";
-                else
-                    $sOrder .= ", CONCAT(trim(pm.project_name1), 'ZZZZZZZZZZZZZZZZZZZZ') ";
-                break;
         default:
     }
 }
@@ -424,64 +352,28 @@ if($of2 != "" && $of2 != "0" && $sOrder == "")
             break;  
         case 3:
             if($ofd2 == 2)
-                $sOrder = "Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = pm.id AND pl.`status` <> -1), 0) desc";
+                $sOrder = "p.username desc ";
             else
-                $sOrder = "Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = pm.id AND pl.`status` <> -1), 999999990) ";
+                $sOrder = "p.username ";
             break;  
-        case 4:
-            if($ofd2 == 2)
-                $sOrder = "Coalesce(pm.amount_verified, 0) desc";
-            else
-                $sOrder = "Coalesce(pm.amount_verified, 99999999)";
-            break;
         case 5:
             if($ofd2 == 2)
                 $sOrder = "Coalesce(pm.date_requested, '0000-00-00') desc";
             else
                 $sOrder = "Coalesce(pm.date_requested, '9999-99-99')";
             break;
-        case 6:
-            if($ofd2 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Checker Checked' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Checker Checked' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
         case 7:
             if($ofd2 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'OP Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'OP Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-        case 8:
-            if($ofd2 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'MD Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'MD Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
         case 9:
             if($ofd2 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Releaser Released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Releaser Released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
-        case 10:
-            if($ofd2 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Liquidated' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Liquidated' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-        case 11:
-            if($ofd2 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Verifier Verified' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Verifier Verified' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-            case 12:
-                if($ofd2 == 2)
-                    $sOrder = "pm.project_name1 desc";
-                else
-                    $sOrder = "CONCAT(trim(pm.project_name1), 'ZZZZZZZZZZZZZZZZZZZZ') ";
-                break;
         default:
     }
 }
@@ -757,7 +649,7 @@ function GetStatus($loc)
 function GetHistory($_id, $db)
 {
     $sql = "select pm.id, `actor`, `action`, reason, `status`, DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at from office_item_apply_history pm 
-            where `status` <> -1 and request_id = " . $_id . " order by created_at ";
+            where `status` <> -1 and request_id = " . $_id . " order by created_at desc ";
 
     $merged_results = array();
 

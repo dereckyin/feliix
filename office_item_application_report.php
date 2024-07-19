@@ -401,12 +401,12 @@
                                         <dt>1st Criterion</dt>
                                         <dd>
                                             <select v-model="od_factor1">
-                                                <option value="0"></option>
+                                                <option value=""></option>
                                                 <option value="1">
                                                     Request No.
                                                 </option>
 
-                                                <option value="">
+                                                <option value="3">
                                                     Requestor
                                                 </option>
 
@@ -447,12 +447,12 @@
                                         <dt>2nd Criterion</dt>
                                         <dd>
                                             <select v-model="od_factor2">
-                                                <option value="0"></option>
+                                                <option value=""></option>
                                                 <option value="1">
                                                     Request No.
                                                 </option>
 
-                                                <option value="">
+                                                <option value="3">
                                                     Requestor
                                                 </option>
 
