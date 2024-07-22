@@ -1619,7 +1619,7 @@ try {
                             <a class="btn small green" @click="cancel()" v-if="MarkasCanceled()">Mark as Canceled</a>
 
                             <a class="btn small green" @click="edit_shipping_info('ship_info')" v-if="EditShippingInfo() && no_privlege() != true">Edit Shipping Info</a>
-                            <a class="btn small green" @click="edit_shipping_info_dn('date_needed')" v-if="EditDateNeeded()  && no_privlege() != true">Edit Date Needed</a>
+                            <a class="btn small green" @click="edit_shipping_info_dn('date_needed')" v-if="EditDateNeeded()  && no_privlege() != true && is_edit_dn != true">Edit Date Needed</a>
                             <a class="btn small green" @click="edit_shipping_info('ware_info')" v-if="EditWarehouseInfo() && no_privlege() != true">Edit Warehouse Info</a>
                             <a class="btn small green" @click="edit_shipping_info('assing_test')" v-if="AssignTesting() && no_privlege() != true && 1==0">Assign Testing</a>
                             <a class="btn small green" @click="edit_shipping_info('edit_test')" v-if="EditTestingInfo() && no_privlege() != true">Edit Testing Info</a>
@@ -1628,7 +1628,9 @@ try {
                             <a class="btn small green" @click="edit_shipping_info('edit_final')" v-if="EditFinalInfo() && no_privlege() != true">Edit Final Info</a>
                             <a class="btn small" @click="cancel_shipping_info()" v-if="Cancel()">Cancel</a>
                             <a class="btn small green" @click="save_shipping_info()" v-if="Save()">Save</a>
-                           
+                            <a class="btn small" @click="cancel_date_needed()" v-if="is_edit_dn">Cancel</a>
+                            <a class="btn small green" @click="save_date_needed()" v-if="is_edit_dn">Save</a>
+
                             <input type="text" placeholder="Comment" v-model="comment" v-if="(access2 == true || access4 == true || access5 == true || access6 == true) && no_privlege() != true">
                         </div>
 
@@ -1773,10 +1775,10 @@ try {
             </td>
 
             <td>
-                <div class="read_block" v-if="!item.is_edit_dn">
+                <div class="read_block" v-if="!is_edit_dn">
                     {{ item.date_needed }}
                 </div>
-                <div class="write_block" v-if="item.is_edit_dn">
+                <div class="write_block" v-if="is_edit_dn">
                     <input type="text" v-model="item.date_needed">
                 </div>
             </td>

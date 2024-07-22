@@ -447,6 +447,8 @@ var app = new Vue({
         last_order_at : '',
         last_order_url : '',
         last_have_spec : true,
+
+        is_edit_dn : false,
     },
   
     created() {
@@ -938,6 +940,11 @@ var app = new Vue({
         this.is_info = false;
         this.info_type = '';
       },
+      
+      cancel_date_needed() {
+        this.getRecord();
+        this.is_edit_dn = false;
+      },
 
       edit_shipping_info(type) {
         
@@ -950,12 +957,9 @@ var app = new Vue({
       },
 
       edit_shipping_info_dn(type) {
+
+        this.is_edit_dn = true;
         
-        for (let i = 0; i < this.items.length; i++) {
-          this.items[i].is_info = true;
-          this.is_info = true;
-          this.info_type = type;
-        }
 
       },
 
@@ -1015,6 +1019,64 @@ var app = new Vue({
       },
 
       save_shipping_info: async function() {
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+
+        form_Data.append("jwt", token);
+        form_Data.append("od_id", this.id);
+        form_Data.append("items", JSON.stringify(this.items));
+        form_Data.append("comment", this.comment);
+        form_Data.append("type", this.info_type);
+
+        form_Data.append("od_name", this.od_name);
+        form_Data.append("project_name", this.project_name);
+        form_Data.append("serial_name", this.serial_name);
+
+        // get earch item in items
+        for (let i = 0; i < this.items.length; i++) {
+          var item = this.items[i];
+
+          var file = document.getElementById('photo_' + item.id + '_4');
+
+          if(file) {
+            let f = file.files[0];
+            if(typeof f !== 'undefined') 
+              form_Data.append('photo_' + item.id + '_4', f);
+          }
+
+          var file = document.getElementById('photo_' + item.id + '_5');
+
+          if(file) {
+            let f = file.files[0];
+            if(typeof f !== 'undefined') 
+              form_Data.append('photo_' + item.id + '_5', f);
+          }
+        }
+        
+        let res = await axios({
+          method: 'post',
+          url: 'api/order_taiwan_p1_shipping',
+          data: form_Data,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        this.getRecord();
+        this.comment = '';
+
+        this.is_info = false;
+        this.info_type = '';
+  
+        Swal.fire({
+          //text: "Records Edited" + res.data,
+          text: "Action completed successfully",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+      },
+
+      save_date_needed: async function() {
         var token = localStorage.getItem("token");
         var form_Data = new FormData();
 
