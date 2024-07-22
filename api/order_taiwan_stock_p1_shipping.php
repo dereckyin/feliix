@@ -141,6 +141,8 @@ switch ($method) {
             $test_update = false;
             $delivery_updeate = false;
 
+            $date_needed_update = false;
+
             if(count($pre_item) > 0)
             {
                 $ret = show_diff($pre_item[0], $items[$i]);
@@ -156,6 +158,11 @@ switch ($method) {
                     if(strpos($ret, "check_d") !== false || strpos($ret, "remark_d") !== false)
                     {
                         $delivery_updeate = true;
+                    }
+
+                    if(strpos($ret, "date_needed") !== false)
+                    {
+                        $date_needed_update = true;
                     }
                     
                 }
@@ -176,6 +183,8 @@ switch ($method) {
             $remark_d = $items[$i]['remark_d'];
             $check_t = $items[$i]['check_t'];
             $check_d = $items[$i]['check_d'];
+
+            $date_needed = $items[$i]['date_needed'];
 
             $photo4 = $items[$i]['photo4'];
             $photo5 = $items[$i]['photo5'];
@@ -223,6 +232,11 @@ switch ($method) {
                 {
                     $query .= " `delivery_updated_name` = '$user_name',
                     `delivery_updated_at` = now(), ";
+                }
+
+                if($date_needed_update == true)
+                {
+                    $query .= " `date_needed` = '$date_needed', ";
                 }
                 
                 
@@ -346,6 +360,9 @@ switch ($method) {
             order_sample_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
         if($type == 'edit_delivery')
             order_stock_delievery_notification($user_name, 'access1,access3,access4,access5', '', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
+        if($type == 'date_needed')
+            order_sample_delievery_notification($user_name, 'access1,access2,access3,access4,access5,access6,access7', '', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, "stock");
+
         
         echo $jsonEncodedReturnArray;
 
@@ -397,7 +414,8 @@ function GetShipping($id, $db){
             n.updated_id,
             n.updated_at,
             n.photo4_name,
-            n.photo5_name
+            n.photo5_name,
+            n.date_needed
                 FROM   od_item n
             WHERE  n.id = " . $id . "
             ORDER BY n.id
@@ -431,6 +449,8 @@ function GetShipping($id, $db){
         $photo4_name = $row['photo4_name'];
         $photo5_name = $row['photo5_name'];
 
+        $date_needed = $row['date_needed'];
+
         $created_at = $row['created_at'];
       
         $merged_results[] = array(
@@ -456,6 +476,8 @@ function GetShipping($id, $db){
 
             "photo4_name" => $photo4_name,
             "photo5_name" => $photo5_name,
+
+            "date_needed" => $date_needed,
 
         );
     }

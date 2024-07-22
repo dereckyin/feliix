@@ -1084,7 +1084,7 @@ var app = new Vue({
         form_Data.append("od_id", this.id);
         form_Data.append("items", JSON.stringify(this.items));
         form_Data.append("comment", this.comment);
-        form_Data.append("type", this.info_type);
+        form_Data.append("type", 'date_needed');
 
         form_Data.append("od_name", this.od_name);
         form_Data.append("project_name", this.project_name);
@@ -1123,7 +1123,7 @@ var app = new Vue({
         this.getRecord();
         this.comment = '';
 
-        this.is_info = false;
+        this.is_edit_dn = false;
         this.info_type = '';
   
         Swal.fire({
