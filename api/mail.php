@@ -11351,6 +11351,41 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
         
     }
 
+    if($action == 'date_needed')
+    {
+        foreach($items as &$item)
+        {
+            $assignee[] = $item['delivery'];
+        }
+
+        $notifior = GetAccessNotifiersByName($name, $serial_name);
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddCC($list["email"], $list["username"]);
+        }
+
+
+        // access5
+        $_list = explode(",", $access);
+        foreach($_list as &$c_list)
+        {
+            $notifior = GetAccessNotifiers($c_list, $serial_name);
+            foreach($notifior as &$list)
+            {
+                $receiver .= $list["username"] . ", ";
+            }
+        }
+
+        $receiver = "all";
+        // $receiver = rtrim($receiver, ", ");
+
+        $mail->Subject = 'Info of date needed by client for items of "' . $order_type . ': ' . $serial_name . '" is revised';
+        $header = ' Info of date needed by client for items of "' . $order_type . ': ' . $serial_name . '" is revised. Please check details below:';
+        $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $od_id;
+        
+    }
+
 
 
     $content = '<!DOCTYPE html>
@@ -11668,6 +11703,41 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
 
         $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
+        $url = "https://feliix.myvnc.com/order_taiwan_mockup_p3?id=" . $od_id;
+        
+    }
+
+    if($action == 'date_needed')
+    {
+        foreach($items as &$item)
+        {
+            $assignee[] = $item['delivery'];
+        }
+
+        $notifior = GetAccessNotifiersByName($name, $serial_name);
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddCC($list["email"], $list["username"]);
+        }
+
+
+        // access5
+        $_list = explode(",", $access);
+        foreach($_list as &$c_list)
+        {
+            $notifior = GetAccessNotifiers($c_list, $serial_name);
+            foreach($notifior as &$list)
+            {
+                $receiver .= $list["username"] . ", ";
+            }
+        }
+
+        $receiver = "all";
+        // $receiver = rtrim($receiver, ", ");
+
+        $mail->Subject = 'Info of date needed by client for items of "' . $order_type . ': ' . $serial_name . '" is revised';
+        $header = ' Info of date needed by client for items of "' . $order_type . ': ' . $serial_name . '" is revised. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_mockup_p3?id=" . $od_id;
         
     }
@@ -11992,6 +12062,40 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
         
     }
 
+    if($action == 'date_needed')
+    {
+        foreach($items as &$item)
+        {
+            $assignee[] = $item['delivery'];
+        }
+
+        $notifior = GetAccessNotifiersByName($name, $serial_name);
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddCC($list["email"], $list["username"]);
+        }
+
+
+        // access5
+        $_list = explode(",", $access);
+        foreach($_list as &$c_list)
+        {
+            $notifior = GetAccessNotifiers($c_list, $serial_name);
+            foreach($notifior as &$list)
+            {
+                $receiver .= $list["username"] . ", ";
+            }
+        }
+
+        $receiver = "all";
+        // $receiver = rtrim($receiver, ", ");
+
+        $mail->Subject = 'Info of date needed by client for items of "' . $order_type . ': ' . $serial_name . '" is revised';
+        $header = ' Info of date needed by client for items of "' . $order_type . ': ' . $serial_name . '" is revised. Please check details below:';
+        $url = "https://feliix.myvnc.com/order_taiwan_" . $type . "_p3?id=" . $od_id;
+        
+    }
 
 
     $content = '<!DOCTYPE html>
@@ -12213,6 +12317,41 @@ function order_sample_delievery_notification($name, $access,  $access_cc, $proje
 
         $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
+        $url = "https://feliix.myvnc.com/order_taiwan_" . $type . "_p3?id=" . $od_id;
+        
+    }
+
+    if($action == 'date_needed')
+    {
+        foreach($items as &$item)
+        {
+            $assignee[] = $item['delivery'];
+        }
+
+        $notifior = GetAccessNotifiersByName($name, $serial_name);
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddCC($list["email"], $list["username"]);
+        }
+
+
+        // access5
+        $_list = explode(",", $access);
+        foreach($_list as &$c_list)
+        {
+            $notifior = GetAccessNotifiers($c_list, $serial_name);
+            foreach($notifior as &$list)
+            {
+                $receiver .= $list["username"] . ", ";
+            }
+        }
+
+        $receiver = "all";
+        // $receiver = rtrim($receiver, ", ");
+
+        $mail->Subject = 'Info of date needed by client for items of "' . $order_type . ': ' . $serial_name . '" is revised';
+        $header = ' Info of date needed by client for items of "' . $order_type . ': ' . $serial_name . '" is revised. Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_" . $type . "_p3?id=" . $od_id;
         
     }

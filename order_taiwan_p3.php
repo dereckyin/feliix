@@ -1595,40 +1595,43 @@ try {
                     <!-- buttons to add product -->
                     <div class="block">
 
-                        <div class="popupblock" v-if="info_type == '' && access2 == true">
+                        <div class="popupblock" v-if="info_type == '' && access2 == true && is_edit_dn != true">
                             <a title="Add Item by Manual Encoding">
                                 <i class="fas fa-plus" @click="addItem()"></i>
                             </a>
                         </div>
 
-                        <div class="popupblock" v-if="info_type == '' && access2 == true">
+                        <div class="popupblock" v-if="info_type == '' && access2 == true && is_edit_dn != true">
                             <a title="Add Item from Product Database">
                                 <i class="fas fa-list-alt"  @click="product_catalog()"></i>
                             </a>
                         </div>
 
-                        <div class="popupblock" v-if="info_type == '' && access2 == true"> 
+                        <div class="popupblock" v-if="info_type == '' && access2 == true && is_edit_dn != true"> 
                             <a title="Export Supplier's Document">
                                 <i class="fas fa-file-excel" @click="export_excel()"></i>
                             </a>
                         </div>
 
                         <div class="btn_block">
-                            <a class="btn small green" @click="approve()" v-if="MarkasApproved()">Mark as Approved</a>
-                            <a class="btn small green" @click="order()" v-if="MarkasOrdered()">Mark as Ordered</a>
-                            <a class="btn small green" @click="cancel()" v-if="MarkasCanceled()">Mark as Canceled</a>
+                            <a class="btn small green" @click="approve()" v-if="MarkasApproved() && is_edit_dn != true">Mark as Approved</a>
+                            <a class="btn small green" @click="order()" v-if="MarkasOrdered() && is_edit_dn != true">Mark as Ordered</a>
+                            <a class="btn small green" @click="cancel()" v-if="MarkasCanceled() && is_edit_dn != true">Mark as Canceled</a>
 
-                            <a class="btn small green" @click="edit_shipping_info('ship_info')" v-if="EditShippingInfo() && no_privlege() != true">Edit Shipping Info</a>
-                            <a class="btn small green" @click="edit_shipping_info('ware_info')" v-if="EditWarehouseInfo() && no_privlege() != true">Edit Warehouse Info</a>
+                            <a class="btn small green" @click="edit_shipping_info('ship_info')" v-if="EditShippingInfo() && no_privlege() != true && is_edit_dn != true">Edit Shipping Info</a>
+                            <a class="btn small green" @click="edit_shipping_info_dn('date_needed')" v-if="EditDateNeeded()  && no_privlege() != true && is_edit_dn != true">Edit Date Needed</a>
+                            <a class="btn small green" @click="edit_shipping_info('ware_info')" v-if="EditWarehouseInfo() && no_privlege() != true && is_edit_dn != true">Edit Warehouse Info</a>
                             <a class="btn small green" @click="edit_shipping_info('assing_test')" v-if="AssignTesting() && no_privlege() != true && 1==0">Assign Testing</a>
-                            <a class="btn small green" @click="edit_shipping_info('edit_test')" v-if="EditTestingInfo() && no_privlege() != true">Edit Testing Info</a>
+                            <a class="btn small green" @click="edit_shipping_info('edit_test')" v-if="EditTestingInfo() && no_privlege() != true && is_edit_dn != true">Edit Testing Info</a>
                             <a class="btn small green" @click="edit_shipping_info('assign_delivery')" v-if="AssignDelivery() && no_privlege() != true && 1==0">Assign Delivery</a>
-                            <a class="btn small green" @click="edit_shipping_info('edit_delivery')" v-if="EditDeliveryInfo() && no_privlege() != true">Edit Delivery Info</a>
-                            <a class="btn small green" @click="edit_shipping_info('edit_final')" v-if="EditFinalInfo() && no_privlege() != true">Edit Final Info</a>
+                            <a class="btn small green" @click="edit_shipping_info('edit_delivery')" v-if="EditDeliveryInfo() && no_privlege() != true && is_edit_dn != true">Edit Delivery Info</a>
+                            <a class="btn small green" @click="edit_shipping_info('edit_final')" v-if="EditFinalInfo() && no_privlege() != true && is_edit_dn != true">Edit Final Info</a>
                             <a class="btn small" @click="cancel_shipping_info()" v-if="Cancel()">Cancel</a>
                             <a class="btn small green" @click="save_shipping_info()" v-if="Save()">Save</a>
-                           
-                            <input type="text" placeholder="Comment" v-model="comment" v-if="(access2 == true || access4 == true || access5 == true || access6 == true) && no_privlege() != true">
+                            <a class="btn small" @click="cancel_date_needed()" v-if="is_edit_dn">Cancel</a>
+                            <a class="btn small green" @click="save_date_needed()" v-if="is_edit_dn">Save</a>
+
+                            <input type="text" placeholder="Comment" v-model="comment" v-if="(access2 == true || access4 == true || access5 == true || access6 == true) && no_privlege() != true || is_edit_dn">
                         </div>
 
                     </div>
@@ -1772,10 +1775,10 @@ try {
             </td>
 
             <td>
-                <div class="read_block" v-if="!item.is_edit">
+                <div class="read_block" v-if="!is_edit_dn">
                     {{ item.date_needed }}
                 </div>
-                <div class="write_block" v-if="item.is_edit">
+                <div class="write_block" v-if="is_edit_dn">
                     <input type="text" v-model="item.date_needed">
                 </div>
             </td>
