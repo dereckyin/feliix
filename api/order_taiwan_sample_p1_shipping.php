@@ -361,7 +361,7 @@ switch ($method) {
         if($type == 'edit_delivery')
             order_sample_delievery_notification($user_name, 'access4', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Samples', $comment, $type, $items_array, $o_id, "sample");
         if($type == 'date_needed')
-            order_sample_delievery_notification($user_name, 'access1,access2,access3,access4,access5,access6,access7', '', $project_name, $serial_name, $od_name, 'Order - Samples', $comment, $type, $items_array, $o_id, "sample");
+            order_sample_notification02($user_name, 'access1,access2,access3,access4,access5,access6,access7', '', $project_name, $serial_name, $od_name, 'Order - Samples', $comment, $type, $items_array, $o_id, "sample");
         
         echo $jsonEncodedReturnArray;
 
