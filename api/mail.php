@@ -12093,7 +12093,7 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
 
         $mail->Subject = 'Info of date needed by client for items of "' . $order_type . ': ' . $serial_name . '" is revised';
         $header = ' Info of date needed by client for items of "' . $order_type . ': ' . $serial_name . '" is revised. Please check details below:';
-        $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $type . "_p3?id=" . $od_id;
+        $url = "https://feliix.myvnc.com/order_taiwan_" . $type . "_p3?id=" . $od_id;
         
     }
 
