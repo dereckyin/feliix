@@ -1629,7 +1629,7 @@ try {
                             <a class="btn small" @click="cancel_date_needed()" v-if="is_edit_dn">Cancel</a>
                             <a class="btn small green" @click="save_date_needed()" v-if="is_edit_dn">Save</a>
 
-                            <input type="text" placeholder="Comment" v-model="comment" v-if="(access2 == true || access4 == true || access5 == true || access6 == true) && no_privlege() != true">
+                            <input type="text" placeholder="Comment" v-model="comment" v-if="(access2 == true || access4 == true || access5 == true || access6 == true) && no_privlege() != true || is_edit_dn">
                         </div>
 
                     </div>
