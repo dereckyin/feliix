@@ -40,6 +40,7 @@ var app = new Vue({
     office_items : [],
     office_item_approve: [],
     office_item_release: [],
+    limited_access : [],
   },
 
   created() {
@@ -180,6 +181,10 @@ var app = new Vue({
               _this.office_item_release = res.data[0]["office_item_release"].split(",").filter(function (el) {
                 return el != "";
               });
+              if (kind === 29 || kind === undefined)
+              _this.limited_access = res.data[0]["limited_access"].split(",").filter(function (el) {
+                return el != "";
+              });
 
           },
           (err) => {
@@ -253,6 +258,7 @@ var app = new Vue({
       form_Data.append("office_items", this.office_items.toString());
       form_Data.append("office_item_approve", this.office_item_approve.toString());
       form_Data.append("office_item_release", this.office_item_release.toString());
+      form_Data.append("limited_access", this.limited_access.toString());
 
       axios({
         method: "post",
