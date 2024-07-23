@@ -489,7 +489,7 @@ try {
             {
         ?>
         <ul class="menu">
-            <li class="sec03 focus">
+            <li class="sec03">
                 <a class="uni">Project<br>Management</a>
                 <a class="list" href="meeting_calendar">Meeting Calendar</a>
             </li>
