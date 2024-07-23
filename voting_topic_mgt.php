@@ -30,6 +30,9 @@ try {
                 header( 'location:index' );
             }
 
+            if($decoded->data->limited_access == true)
+                header( 'location:index' );
+
             $database = new Database();
             $db = $database->getConnection();
 

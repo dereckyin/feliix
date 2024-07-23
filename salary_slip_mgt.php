@@ -24,6 +24,9 @@ try {
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
             $username = $decoded->data->username;
+            
+if($decoded->data->limited_access == true)
+header( 'location:index' );
 
             $database = new Database();
             $db = $database->getConnection();

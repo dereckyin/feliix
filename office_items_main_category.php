@@ -30,6 +30,10 @@ $username = $decoded->data->username;
 $position = $decoded->data->position;
 $department = $decoded->data->department;
 
+
+if($decoded->data->limited_access == true)
+                header( 'location:index' );
+
 $database = new Database();
 $db = $database->getConnection();
 

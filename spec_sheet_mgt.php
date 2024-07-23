@@ -24,6 +24,10 @@ try {
                 header( 'location:index' );
             }
 
+            
+if($decoded->data->limited_access == true)
+header( 'location:index' );
+
     $user_id = $decoded->data->id;
     $username = $decoded->data->username;
 

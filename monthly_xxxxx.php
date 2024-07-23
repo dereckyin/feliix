@@ -25,6 +25,9 @@ try {
     $position = $decoded->data->position;
     $department = $decoded->data->department;
 
+    if($decoded->data->limited_access == true)
+                header( 'location:index' );
+
     //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
     //    header( 'location:index.php' );
 

@@ -27,6 +27,10 @@ try {
             $GLOBALS['position'] = $decoded->data->position;
             $GLOBALS['department'] = $decoded->data->department;
 
+            
+if($decoded->data->limited_access == true)
+header( 'location:index' );
+
             if($GLOBALS['department'] == 'Lighting' || $GLOBALS['department'] == 'Office' || $GLOBALS['department'] == 'Sales'){
             $test_manager = "1";
             }

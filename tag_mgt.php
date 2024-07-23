@@ -24,6 +24,7 @@ try {
                 header( 'location:index' );
             }
 
+            
     $user_id = $decoded->data->id;
     $username = $decoded->data->username;
 
