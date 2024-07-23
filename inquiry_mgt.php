@@ -24,6 +24,9 @@ try {
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
 
+            if($decoded->data->limited_access == true)
+                header( 'location:index' );
+
 $GLOBALS['position'] = $decoded->data->position;
 $GLOBALS['department'] = $decoded->data->department;
 

@@ -32,6 +32,9 @@ try {
 $GLOBALS['position'] = $decoded->data->position;
 $GLOBALS['department'] = $decoded->data->department;
 
+if($decoded->data->limited_access == true)
+                header( 'location:index' );
+
 $position = $decoded->data->position;
 $department = $decoded->data->department;
 

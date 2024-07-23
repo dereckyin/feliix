@@ -26,6 +26,9 @@ $GLOBALS['department'] = $decoded->data->department;
 $test_manager = $decoded->data->test_manager;
 $user_id = $decoded->data->id;
 
+if($decoded->data->limited_access == true)
+                header( 'location:index' );
+
 //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
 //    header( 'location:index.php' );
 

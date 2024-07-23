@@ -27,6 +27,8 @@ use \Firebase\JWT\JWT;
     $access12 = false;
     $access13 = false;
 
+    $limited_access = false;
+
     $access_office_item = true;
 
 
@@ -249,6 +251,13 @@ try {
             $access13 = true;
         }
 
+        $query = "SELECT * FROM access_control WHERE limited_access LIKE '%" . $username . "%' ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $limited_access = true;
+        }
+
         // $query = "SELECT * FROM access_control WHERE office_items LIKE '%" . $username . "%' ";
         // $stmt = $db->prepare( $query );
         // $stmt->execute();
@@ -286,7 +295,7 @@ try {
             <li class="name"><?= isset($username) ? $username : "" ?> <br /> <b style="font-size: 26px;"><?= isset($position) ? $position : "" ?></b></li>
         </ul>
         <?php
-            if($user_id != 94)
+            if($user_id != 94 && !$limited_access)
             {
         ?>
         <ul class="menu">
@@ -476,15 +485,34 @@ try {
         </ul>
         <?php
             }
-            else
+            else if($limited_access)
             {
         ?>
         <ul class="menu">
-            <li class="sec03 focus">
+            <li class="sec03">
                 <a class="uni">Project<br>Management</a>
-                <a class="list" href="schedule_calendar">Schedule Calendar</a>
+                <a class="list" href="meeting_calendar">Meeting Calendar</a>
             </li>
         </ul>
+        <ul class="menu">
+                <li class="gray02">
+                    <a class="uni">Product<br>Database</a>
+                    <a class="list" href="product_catalog_code">Product Catalog</a>
+                    <a class="list" href="tag_mgt">Tag Management</a>
+                </li>
+            </ul>
+        <?php
+            }
+            else
+            {
+        ?>
+            <ul class="menu">
+                <li class="sec03 focus">
+                    <a class="uni">Project<br>Management</a>
+                    <a class="list" href="schedule_calendar">Schedule Calendar</a>
+                </li>
+            </ul>
+            
         <?php
             }
         ?>

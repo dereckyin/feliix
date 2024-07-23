@@ -21,6 +21,10 @@ try {
     // decode jwt
     $decoded = JWT::decode($jwt, $key, array('HS256'));
 
+    
+if($decoded->data->limited_access == true)
+header( 'location:index' );
+
     //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
     //    header( 'location:index.php' );
 }

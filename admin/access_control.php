@@ -563,6 +563,60 @@
 
                 </div>
 
+                <div class="box-content">
+                    <ul>
+                        <li><b>Office Items Approver</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="office_item_approve" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(27)">Cancel</a>
+                        <a class="btn" @click="save(27)">Save</a>
+                    </div>
+
+                </div>
+
+                <div class="box-content">
+                    <ul>
+                        <li><b>Office Items Releaser</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="office_item_release" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(28)">Cancel</a>
+                        <a class="btn" @click="save(28)">Save</a>
+                    </div>
+
+                </div>
+
+                <div class="box-content">
+                    <ul>
+                        <li><b>User with Limited Access (Meeting Calendar and Product Catalog)</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="limited_access" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(29)">Cancel</a>
+                        <a class="btn" @click="save(29)">Save</a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

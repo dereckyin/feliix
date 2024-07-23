@@ -26,6 +26,10 @@ try {
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
 
+            
+if($decoded->data->limited_access == true)
+header( 'location:index' );
+
             if(!is_numeric($user_id))
                 header( 'location:index' );
 

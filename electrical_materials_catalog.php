@@ -30,7 +30,8 @@ try {
     $position = $decoded->data->position;
     $department = $decoded->data->department;
 
-
+    if($decoded->data->limited_access == true)
+    header( 'location:index' );
 }
 // if decode fails, it means jwt is invalid
 catch (Exception $e) {

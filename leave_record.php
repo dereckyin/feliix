@@ -9,6 +9,9 @@ try {
 
         $leave_level = $decoded->data->leave_level;
 
+        if($decoded->data->limited_access == true)
+                header( 'location:index' );
+
         $valid_date = new DateTime('2022-12-01');
         $all_valid_date = new DateTime('2023-01-01');
         $today = new DateTime();

@@ -27,6 +27,8 @@ try {
 
     //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
     //    header( 'location:index.php' );
+    if($decoded->data->limited_access == true)
+                header( 'location:index' );
 
     $access6 = false;
 

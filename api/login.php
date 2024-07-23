@@ -50,6 +50,14 @@ else
 
 $login_history->ip = get_ip();
 
+$limited_access = false;
+// limited access
+$query = "SELECT * FROM access_control WHERE limited_access LIKE '%" . $user->username . "%' ";
+$stmt = $db->prepare( $query );
+$stmt->execute();
+while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $limited_access = true;
+}
 
 // generate json web token
 include_once 'config/core.php';
@@ -90,6 +98,7 @@ if($user_exists && password_verify($password, $user->password)  && $user->status
            "apartment_id" => $user->apartment_id,
            "pic_url" => $user->pic_url,
            "leave_level" => $user->leave_level,
+           "limited_access" => $limited_access,
        )
     );
 
