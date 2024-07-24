@@ -11433,6 +11433,13 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
             }
         }
 
+        $notifior = GetAccessNotifiersByName($name, "");
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddCC($list["email"], $list["username"]);
+        }
+
         $receiver = "all";
         // $receiver = rtrim($receiver, ", ");
 
@@ -11826,6 +11833,13 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
 
         }
 
+        $notifior = GetAccessNotifiersByName($name, "");
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddCC($list["email"], $list["username"]);
+        }
+
         // access 1
         $notifior = GetAccessNotifiers("access1", $serial_name);
         foreach($notifior as &$list)
@@ -11843,6 +11857,13 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
                 $receiver .= $list["username"] . ", ";
                 $mail->AddAddress($list["email"], $list["username"]);
             }
+        }
+
+        $notifior = GetAccessNotifiersByName($name, "");
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddCC($list["email"], $list["username"]);
         }
 
         $receiver = "all";
@@ -12253,6 +12274,13 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
                 $receiver .= $list["username"] . ", ";
                 $mail->AddAddress($list["email"], $list["username"]);
             }
+        }
+
+        $notifior = GetAccessNotifiersByName($name, "");
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddCC($list["email"], $list["username"]);
         }
 
         $receiver = "all";
