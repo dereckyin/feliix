@@ -11397,19 +11397,22 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
             if($pic1 != 0)
             {
                 $pic = GetNotifiers($pic1);
-                $mail->AddAddress($pic["email"], $pic["username"]);
+                for($i=0; $i<count($pic); $i++)
+                    $mail->AddAddress($pic[$i]["email"],$pic[$i]["username"]);
             }
             
             if($pic2 != 0)
             {
                 $pic = GetNotifiers($pic2);
-                $mail->AddAddress($pic["email"], $pic["username"]);
+                for($i=0; $i<count($pic); $i++)
+                    $mail->AddAddress($pic[$i]["email"],$pic[$i]["username"]);
             }
 
             if($create_id != 0)
             {
                 $pic = GetNotifiers($create_id);
-                $mail->AddAddress($pic["email"], $pic["username"]);
+                for($i=0; $i<count($pic); $i++)
+                    $mail->AddAddress($pic[$i]["email"],$pic[$i]["username"]);
             }
 
         }
