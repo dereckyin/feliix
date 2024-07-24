@@ -16856,7 +16856,7 @@ function get_pic_from_project_main($id)
     $database = new Database();
     $db = $database->getConnection();
 
-    $query = "SELECT pic1, pic2, create_id FROM project_main WHERE id = " . $id;
+    $query = "SELECT pic1, pic2, create_id FROM project_main WHERE id = (SELECT project_id FROM project_stages WHERE id =" . $id . ")";
 
     // prepare the query
     $stmt = $db->prepare($query);
