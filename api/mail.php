@@ -11366,7 +11366,62 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
         }
 
 
-        // access5
+        // access 7 from od_main
+        $ret = get_access7_from_od_main($od_id);
+        $project_id = $ret[0];
+        $task_type = $ret[1];
+        $access7 = $ret[2];
+        
+        if($access7  != "")
+        {
+            $_list = explode(",", $access7 );
+            foreach($_list as &$c_list)
+            {
+                $c_list = trim($c_list);
+                $notifior = GetAccessNotifiersByName($c_list, $serial_name);
+                foreach($notifior as &$list)
+                {
+                    $receiver = $list["username"];
+                    $mail->AddAddress($list["email"], $list["username"]);
+                }
+            }
+        }
+
+        if($task_type == "")
+        {
+            $pm_info = get_pic_from_project_main($project_id);
+            $pic1 = $pm_info[0];
+            $pic2 = $pm_info[1];
+            $create_id = $pm_info[2];
+
+            if($pic1 != 0)
+            {
+                $pic = GetNotifiers($pic1);
+                $mail->AddAddress($pic["email"], $pic["username"]);
+            }
+            
+            if($pic2 != 0)
+            {
+                $pic = GetNotifiers($pic2);
+                $mail->AddAddress($pic["email"], $pic["username"]);
+            }
+
+            if($create_id != 0)
+            {
+                $pic = GetNotifiers($create_id);
+                $mail->AddAddress($pic["email"], $pic["username"]);
+            }
+
+        }
+
+        // access 1
+        $notifior = GetAccessNotifiers("access1", $serial_name);
+        foreach($notifior as &$list)
+        {
+            $mail->AddAddress($list["email"], $list["username"]);
+        }
+
+        // other
         $_list = explode(",", $access);
         foreach($_list as &$c_list)
         {
@@ -11374,6 +11429,7 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
             foreach($notifior as &$list)
             {
                 $receiver .= $list["username"] . ", ";
+                $mail->AddAddress($list["email"], $list["username"]);
             }
         }
 
@@ -11722,7 +11778,62 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
         }
 
 
-        // access5
+        // access 7 from od_main
+        $ret = get_access7_from_od_main($od_id);
+        $project_id = $ret[0];
+        $task_type = $ret[1];
+        $access7 = $ret[2];
+        
+        if($access7  != "")
+        {
+            $_list = explode(",", $access7 );
+            foreach($_list as &$c_list)
+            {
+                $c_list = trim($c_list);
+                $notifior = GetAccessNotifiersByName($c_list, $serial_name);
+                foreach($notifior as &$list)
+                {
+                    $receiver = $list["username"];
+                    $mail->AddAddress($list["email"], $list["username"]);
+                }
+            }
+        }
+
+        if($task_type == "")
+        {
+            $pm_info = get_pic_from_project_main($project_id);
+            $pic1 = $pm_info[0];
+            $pic2 = $pm_info[1];
+            $create_id = $pm_info[2];
+
+            if($pic1 != 0)
+            {
+                $pic = GetNotifiers($pic1);
+                $mail->AddAddress($pic["email"], $pic["username"]);
+            }
+            
+            if($pic2 != 0)
+            {
+                $pic = GetNotifiers($pic2);
+                $mail->AddAddress($pic["email"], $pic["username"]);
+            }
+
+            if($create_id != 0)
+            {
+                $pic = GetNotifiers($create_id);
+                $mail->AddAddress($pic["email"], $pic["username"]);
+            }
+
+        }
+
+        // access 1
+        $notifior = GetAccessNotifiers("access1", $serial_name);
+        foreach($notifior as &$list)
+        {
+            $mail->AddAddress($list["email"], $list["username"]);
+        }
+
+        // other
         $_list = explode(",", $access);
         foreach($_list as &$c_list)
         {
@@ -11730,6 +11841,7 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
             foreach($notifior as &$list)
             {
                 $receiver .= $list["username"] . ", ";
+                $mail->AddAddress($list["email"], $list["username"]);
             }
         }
 
@@ -12076,8 +12188,62 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
             $mail->AddCC($list["email"], $list["username"]);
         }
 
+        // access 7 from od_main
+        $ret = get_access7_from_od_main($od_id);
+        $project_id = $ret[0];
+        $task_type = $ret[1];
+        $access7 = $ret[2];
+        
+        if($access7  != "")
+        {
+            $_list = explode(",", $access7 );
+            foreach($_list as &$c_list)
+            {
+                $c_list = trim($c_list);
+                $notifior = GetAccessNotifiersByName($c_list, $serial_name);
+                foreach($notifior as &$list)
+                {
+                    $receiver = $list["username"];
+                    $mail->AddAddress($list["email"], $list["username"]);
+                }
+            }
+        }
 
-        // access5
+        if($task_type == "")
+        {
+            $pm_info = get_pic_from_project_main($project_id);
+            $pic1 = $pm_info[0];
+            $pic2 = $pm_info[1];
+            $create_id = $pm_info[2];
+
+            if($pic1 != 0)
+            {
+                $pic = GetNotifiers($pic1);
+                $mail->AddAddress($pic["email"], $pic["username"]);
+            }
+            
+            if($pic2 != 0)
+            {
+                $pic = GetNotifiers($pic2);
+                $mail->AddAddress($pic["email"], $pic["username"]);
+            }
+
+            if($create_id != 0)
+            {
+                $pic = GetNotifiers($create_id);
+                $mail->AddAddress($pic["email"], $pic["username"]);
+            }
+
+        }
+
+        // access 1
+        $notifior = GetAccessNotifiers("access1", $serial_name);
+        foreach($notifior as &$list)
+        {
+            $mail->AddAddress($list["email"], $list["username"]);
+        }
+
+        // other
         $_list = explode(",", $access);
         foreach($_list as &$c_list)
         {
@@ -12085,6 +12251,7 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
             foreach($notifior as &$list)
             {
                 $receiver .= $list["username"] . ", ";
+                $mail->AddAddress($list["email"], $list["username"]);
             }
         }
 
@@ -16631,6 +16798,57 @@ function delete_car_request_mail_6($to, $cc, $project, $creator, $date_check, $t
 
 }
 
+function get_access7_from_od_main($id)
+{
+    $database = new Database();
+    $db = $database->getConnection();
+
+    $query = "SELECT task_id, task_type, access7 FROM od_main WHERE id = " . $id;
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $task_id = 0;
+    $task_type = "";
+    $access7 = "";
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $task_id = $row['task_id'];
+        $task_type = $row['task_type'];
+        $access7 = $row['access7'];
+    }
+
+    return array($task_id, $task_type, $access7);
+
+}
+
+function get_pic_from_project_main($id)
+{
+    $database = new Database();
+    $db = $database->getConnection();
+
+    $query = "SELECT pic1, pic2, create_id FROM project_main WHERE id = " . $id;
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $pic1 = 0;
+    $pic2 = 0;
+    $create_id = 0;
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $pic1 = $row['pic1'];
+        $pic2 = $row['pic2'];
+        $create_id = $row['create_id'];
+    }
+
+    return array($pic1, $pic2, $create_id);
+
+
+}
+
 
 function GetDataSheetChecker($requestor)
 {
@@ -16898,24 +17116,24 @@ function _rawurlencode($string) {
 
 function SetupMail($mail, $conf)
 {
-    $mail->SMTPDebug  = 0;
-    $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = "ssl";
-    $mail->Port       = 465;
-    $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf::$mail_host;
-    $mail->Username   = $conf::$mail_username;
-    $mail->Password   = $conf::$mail_password;
-
-
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "tls";
-    // $mail->Port       = 587;
+    // $mail->SMTPSecure = "ssl";
+    // $mail->Port       = 465;
     // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = 'smtp.ethereal.email';
-    // $mail->Username   = 'jermey.wilkinson@ethereal.email';
-    // $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
+    // $mail->Host       = $conf::$mail_host;
+    // $mail->Username   = $conf::$mail_username;
+    // $mail->Password   = $conf::$mail_password;
+
+
+    $mail->SMTPDebug  = 0;
+    $mail->SMTPAuth   = true;
+    $mail->SMTPSecure = "tls";
+    $mail->Port       = 587;
+    $mail->SMTPKeepAlive = true;
+    $mail->Host       = 'smtp.ethereal.email';
+    $mail->Username   = 'jermey.wilkinson@ethereal.email';
+    $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
 
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
