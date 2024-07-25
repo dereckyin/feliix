@@ -361,7 +361,7 @@ switch ($method) {
         if($type == 'edit_delivery')
             mockup_notification02($user_name, 'access5', 'access1,access2,access3,access4', $project_name, $serial_name, $od_name, 'Order - Mockup', $comment, $type, $items_array, $o_id);
         if($type == 'date_needed')
-            mockup_notification02($user_name, 'access1,access2,access3,access4,access5,access6,access7', '', $project_name, $serial_name, $od_name, 'Order - Mockup', $comment, $type, $items_array, $o_id);
+            mockup_notification02($user_name, 'access2,access3,access4,access5', '', $project_name, $serial_name, $od_name, 'Order - Mockup', $comment, $type, $items_array, $o_id);
         
         echo $jsonEncodedReturnArray;
 
