@@ -120,6 +120,9 @@ switch ($method) {
                         request_no, 
                         check_name,
                         pm.`status`,
+                        create_id,
+                        checker checker_id,
+                        approver approver_id,
                         p.username,
                         DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at,
                         DATE_FORMAT(pm.updated_at, '%Y/%m/%d %T') updated_at,
@@ -572,6 +575,10 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $created_at = $row['created_at'];
             $updated_at = $row['updated_at'];
 
+            $create_id = $row['create_id'];
+            $checker_id = $row['checker_id'];
+            $approver_id = $row['approver_id'];
+
             $checker = $row['checker'];
             $approver = $row['approver'];
             
@@ -584,6 +591,9 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 "id" => $id,
                 "request_no" => $request_no,
                 "check_name" => $check_name,
+                "create_id" => $create_id,
+                "checker_id" => $checker_id,
+                "approver_id" => $approver_id,
                 "date_requested" => $date_requested,
                 "status" => $status,
                 "requestor" => $requestor,

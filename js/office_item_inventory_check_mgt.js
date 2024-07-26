@@ -2,6 +2,7 @@ var app = new Vue({
   el: "#app",
   data: {
     name: "",
+    user_id : 0,
     month1: "",
 
     picked: "A",
@@ -199,7 +200,6 @@ var app = new Vue({
 
   methods: {
 
-    
     editRow:function(item){
       if(this.is_modifying)
           return;
@@ -273,9 +273,49 @@ var app = new Vue({
     });
   },
 
+  check_valid: function(status, username, creator, checker, approver){
+    var ret_msg = "";
+
+    if(status == 1)
+    {
+      if(username != checker)
+        ret_msg = "For inventory check record with PHASE 1: Create Checking List by Checker, only checker is allowed to delete it.";
+    }
+    else if(status == 2)
+    {
+      if(username != checker)
+        ret_msg = "For inventory check record with PHASE 2: Inventory Count by Checker, only checker is allowed to delete it.";
+    }
+    else if(status == 3)
+    {
+      if(username == approver)
+        ret_msg = "For inventory check record with PHASE 2: Inventory Count by Checker, only checker is allowed to delete it.";
+    }
+    else if(status == 4)
+    {
+      ret_msg = "For inventory check record with PHASE 2: Inventory Count by Checker, only checker is allowed to delete it.";
+    }
+
+    return ret_msg;
+  },
+
   deleteRow: function(item){
     let _id = item['id'];
     let _this = this;
+
+    let ret_msg = this.check_valid(item['status'], this.user_id, item['create_id'], item['checker_id'], item['approver_id']);
+
+    if(ret_msg != "")
+    {
+      Swal.fire({
+        html: ret_msg,
+        icon: "info",
+        confirmButtonText: "OK",
+      });
+
+      return;
+    }
+
 
     Swal.fire({
         title: "Delete",
@@ -724,8 +764,9 @@ var app = new Vue({
         .then(function(response) {
           //handle success
           _this.name = response.data.username;
-          _this.is_manager = response.data.is_manager;
-          if (_this.name === "Glendon Wendell Co") _this.is_approval = true;
+          _this.user_id = response.data.user_id;
+          //_this.is_manager = response.data.is_manager;
+          //if (_this.name === "Glendon Wendell Co") _this.is_approval = true;
         })
         .catch(function(response) {
           //handle error
