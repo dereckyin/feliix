@@ -466,7 +466,7 @@
                                 <input name="check_name" type="text" v-show="record.is_edited == 0" v-model="check_name" maxlength="1024">
                             </li>
                             <li>{{ record.desc }}</li>
-                            <li>{{ record.created_at }}<br>{{record.created_by}}</li>
+                            <li>{{ record.created_at }}<br>{{record.create_by}}</li>
                             <li>{{ record.updated_at }}<br>{{record.updated_by}}</li>
                             <li>{{ record.checker }}</li>
                             <li>{{ record.approver }}</li>
