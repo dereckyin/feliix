@@ -332,20 +332,20 @@ var app = new Vue({
 
       const check_name = this.check_name.trim();
       //var project_id = item['project_id'];
-      var project_id = this.project_id;
+      // var project_id = this.project_id;
 
-      const project_name = this.shallowCopy(
-                  this.projects.find(
-                    (element) => element.id == project_id));
+      // const project_name = this.shallowCopy(
+      //             this.projects.find(
+      //               (element) => element.id == project_id));
 
-      if(this.type == 'task') {
-        form_Data.append('kind', this.kind);
-        project_id = this.task_id;
-      }
+      // if(this.type == 'task') {
+      //   form_Data.append('kind', this.kind);
+      //   project_id = this.task_id;
+      // }
                   
 
       form_Data.append('check_name', check_name);
-      form_Data.append('project_id', project_id);
+      // form_Data.append('project_id', project_id);
       form_Data.append('id', item['id']);
 
       axios({
@@ -354,7 +354,7 @@ var app = new Vue({
                   'Content-Type': 'multipart/form-data',
                   Authorization: `Bearer ${token}`
               },
-              url: 'api/quotation_edit_row',
+              url: 'api/office_item_inventory_check_mgt_edit_row',
               data: form_Data
           })
           .then(function(response) {
@@ -363,10 +363,10 @@ var app = new Vue({
 
               _this.clear();
               _this.check_name = '';
-              _this.project_id = 0;
-              _this.task_id = 0;
-              _this.kind = '';
-              _this.type = 'project';
+              // _this.project_id = 0;
+              // _this.task_id = 0;
+              // _this.kind = '';
+              // _this.type = 'project';
 
           })
           .catch(function(response) {
