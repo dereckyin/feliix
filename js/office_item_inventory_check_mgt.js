@@ -171,10 +171,10 @@ var app = new Vue({
 
   watch: {
 
-    // receive_records () {
+    receive_records () {
 
-    //   this.setPages();
-    // },
+      this.setPages();
+    },
 
     proof_id() {
       this.detail();
