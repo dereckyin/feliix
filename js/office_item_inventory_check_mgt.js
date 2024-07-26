@@ -190,25 +190,12 @@ var app = new Vue({
 
       // keep pre data
       this.pre_data.check_name = item.check_name;
-      this.pre_data.kind = item.kind;
-      this.pre_data.project_id = item.project_id; 
 
       this.is_modifying = true;
 
       item['is_edited'] = 0;
 
-      this.project_id = 0;
-      this.task_id = 0;
-
       this.check_name = item['check_name'];
-
-      this.type = (item['kind'] == '' ? 'project' : 'task');
-      
-      if(item['kind'] == '')
-       this.project_id = item['project_id'];
-
-      if(item['kind'] !== '')
-       this.task_id = item['project_id'];
 
       this.kind = item['kind'];
 
@@ -221,7 +208,7 @@ var app = new Vue({
 
     Swal.fire({
         title: "Duplicate",
-        text: "Are you sure to duplicate this quotation?",
+        text: "Are you sure to duplicate this check?",
         icon: "info",
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -240,7 +227,7 @@ var app = new Vue({
 
             //DELETE table_name WHERE ID=id;
             $.ajax({
-                url: "api/quotation_duplicate",
+                url: "api/office_item_inventory_check_mgt_duplicate",
                 type: "POST",
                 contentType: 'multipart/form-data',
                 processData: false,
@@ -254,7 +241,8 @@ var app = new Vue({
                       icon: "info",
                       confirmButtonText: "OK",
                     });
-                    me.clear();
+                    // me.clear();
+                    _this.getLeaveCredit();
                 },
 
                 // show error message to user
@@ -294,7 +282,7 @@ var app = new Vue({
 
             //DELETE table_name WHERE ID=id;
             $.ajax({
-                url: "api/quotation_delete",
+                url: "api/office_item_inventory_check_mgt_delete",
                 type: "POST",
                 contentType: 'multipart/form-data',
                 processData: false,
@@ -361,12 +349,13 @@ var app = new Vue({
               //handle success
               console.log(response)
 
-              _this.clear();
+              //_this.clear();
               _this.check_name = '';
               // _this.project_id = 0;
               // _this.task_id = 0;
               // _this.kind = '';
               // _this.type = 'project';
+              _this.getLeaveCredit();
 
           })
           .catch(function(response) {
