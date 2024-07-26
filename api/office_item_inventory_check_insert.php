@@ -54,7 +54,14 @@ else
 
         $request_no = "IC-" . str_pad($row_id, 5, '0', STR_PAD_LEFT);
 
-        $query = "INSERT INTO office_item_inventory_check SET request_no = :request_no, check_name = :check_name, create_id = :create_id, created_at = now(), `status` = 1";
+        $query = "INSERT INTO office_item_inventory_check SET 
+                    request_no = :request_no, 
+                    check_name = :check_name, 
+                    create_id = :create_id, 
+                    created_at = now(), 
+                    updated_id = :create_id,
+                    updated_at = now(),
+                    `status` = 1";
 
         $stmt1 = $db->prepare( $query );
 

@@ -176,9 +176,9 @@ var app = new Vue({
       this.setPages();
     },
 
-    proof_id() {
-      this.detail();
-    },
+    // proof_id() {
+    //   this.detail();
+    // },
   },
 
   methods: {
