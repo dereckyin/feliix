@@ -56,12 +56,19 @@ switch ($method) {
         $id = (isset($_GET['id']) ?  $_GET['id'] : '');
         $fru = (isset($_GET['fru']) ?  $_GET['fru'] : '');
         $frl = (isset($_GET['frl']) ?  $_GET['frl'] : '');
-        $fc = (isset($_GET['fc']) ?  $_GET['fc'] : '');
 
+        $fc = (isset($_GET['fc']) ?  $_GET['fc'] : '');
         $fc = urldecode($fc);
+        $fch = (isset($_GET['fch']) ?  $_GET['fch'] : '');
+        $fch = urldecode($fch);
+        $fap = (isset($_GET['fap']) ?  $_GET['fap'] : '');
+        $fap = urldecode($fap);
 
         $fp = (isset($_GET['fp']) ? $_GET['fp'] : '');
         $fp = urldecode($fp);
+
+        $fk = (isset($_GET['fk']) ?  $_GET['fk'] : '');
+        $fk = urldecode($fk);
 
         $ft = (isset($_GET['ft']) ?  $_GET['ft'] : '');
         $fs = (isset($_GET['fs']) ?  $_GET['fs'] : '');
@@ -138,14 +145,32 @@ if($ft != "" && $ft != "0")
 
 if($frl != "")
 {
-    $sql = $sql . " and pm.request_no >= '" . sprintf('%05d', $frl) . "' ";
-    $query_cnt = $query_cnt . " and pm.request_no >= '" . sprintf('%05d', $frl) . "' ";
+    $sql = $sql . " and pm.request_no >= 'IC-" . sprintf('%05d', $frl) . "' ";
+    $query_cnt = $query_cnt . " and pm.request_no >= 'IC-" . sprintf('%05d', $frl) . "' ";
 }
 
 if($fru != "")
 {
-    $sql = $sql . " and pm.request_no <= '" . sprintf('%05d', $fru) . "' ";
-    $query_cnt = $query_cnt . " and pm.request_no <= '" . sprintf('%05d', $fru) . "' ";
+    $sql = $sql . " and pm.request_no <= 'IC-" . sprintf('%05d', $fru) . "' ";
+    $query_cnt = $query_cnt . " and pm.request_no <= 'IC-" . sprintf('%05d', $fru) . "' ";
+}
+
+if($fc != "")
+{
+    $sql = $sql . " and p.username = '" . $fc . "' ";
+    $query_cnt = $query_cnt . " and p.username = '" . $fc . "' ";
+}
+
+if($fch != "")
+{
+    $sql = $sql . " and c.username = '" . $fch . "' ";
+    $query_cnt = $query_cnt . " and c.username = '" . $fch . "' ";
+}
+
+if($fap != "")
+{
+    $sql = $sql . " and a.username = '" . $fap . "' ";
+    $query_cnt = $query_cnt . " and a.username = '" . $fap . "' ";
 }
 
 if($fc != "")
@@ -160,23 +185,25 @@ if($fp != "")
     $query_cnt = $query_cnt . " and pm.project_name1 = '" . $fp . "' ";
 }
 
+if($fk != "")
+{
+    $sql = $sql . " and pm.check_name like '%" . $fk . "%' ";
+    $query_cnt = $query_cnt . " and pm.check_name like '%" . $fk . "%' ";
+}
+
 $status_array = [];
 
 
 if($fs != "" && $fs != "0")
 {
-    if(strpos($fs,"-1") > -1)
-        $status_array = array_merge($status_array, [-1]);
+    if(strpos($fs,"1") > -1)
+        $status_array = array_merge($status_array, [1]);
     if(strpos($fs,"2") > -1)
         $status_array = array_merge($status_array, [2]);
     if(strpos($fs,"3") > -1)
         $status_array = array_merge($status_array, [3]);
     if(strpos($fs,"4") > -1)
         $status_array = array_merge($status_array, [4]);
-    if(strpos($fs,"5") > -1)
-        $status_array = array_merge($status_array, [5]);
-    if(strpos($fs,"6") > -1)
-        $status_array = array_merge($status_array, [6]);
 }
 
 if(count($status_array) > 0)

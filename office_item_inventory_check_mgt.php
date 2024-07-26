@@ -276,15 +276,10 @@
                                             data-width="100%" title="No status selected" id="tag01" v-model="fil_status">
 
                                             <option value=""></option>
-                                            <option value="1">For Check</option>
-                                            <option value="2">For Approve</option>
-                                            <option value="3">For Release</option>
-                                            <option value="4">For Liquidate</option>
-                                            <option value="5">For Verify</option>
-                                            <option value="6">Completed</option>
-                                            <option value="7">Rejected</option>
-                                            <option value="8">Withdrawn</option>
-
+                                            <option value="1">PHASE 1: Create Checking List by Checker</option>
+                                            <option value="2">PHASE 2: Inventory Count by Checker</option>
+                                            <option value="3">PHASE 3: Review by Approver</option>
+                                            <option value="4">PHASE 4: Inventory Check Completed</option>
                                         </select>
                                     </dd>
 
@@ -301,9 +296,9 @@
 
                                     <dt style="margin-top: 2px;">Checker</dt>
                                     <dd>
-                                        <select v-model="fil_creator">
+                                        <select v-model="fil_checker">
                                             <option value="">
-                                            <option v-for="item in creators" :value="item.username"
+                                            <option v-for="item in checkers" :value="item.username"
                                                     :key="item.username">
                                                 {{ item.username }}
                                             </option>
@@ -312,9 +307,9 @@
 
                                     <dt style="margin-top: 2px;">Approver</dt>
                                     <dd>
-                                        <select v-model="fil_creator">
+                                        <select v-model="fil_approver">
                                             <option value="">
-                                            <option v-for="item in creators" :value="item.username"
+                                            <option v-for="item in approvers" :value="item.username"
                                                     :key="item.username">
                                                 {{ item.username }}
                                             </option>

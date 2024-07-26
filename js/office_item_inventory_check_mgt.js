@@ -40,11 +40,16 @@ var app = new Vue({
     is_approval: false,
 
     creators: {},
+    checkers: {},
+    approvers: {},
 
     fil_request_no_upper: "",
     fil_request_no_lower: "",
     
     fil_creator: "",
+    fil_checker: "",
+    fil_approver: "",
+
     fil_type: "",
     fil_status: [],
     fil_amount_type : "",
@@ -109,6 +114,15 @@ var app = new Vue({
             case "fc":
               _this.fil_creator = decodeURI(tmp[1]);
               break;
+            case "fch":
+              _this.fil_checker = decodeURI(tmp[1]);
+              break;
+            case "fap":
+              _this.fil_approver = decodeURI(tmp[1]);
+              break;
+            case "fk":
+                _this.fil_keyword = decodeURI(tmp[1]);
+                break;
             case "fs":
               var temp = tmp[1].split(",");
               if(temp.length > 0)
@@ -151,6 +165,8 @@ var app = new Vue({
     this.getLeaveCredit(id);
     // this.getProjectNames();
     this.getCreators();
+    this.getCheckers();
+    this.getApprovers();
   },
 
   computed: {
@@ -463,6 +479,9 @@ var app = new Vue({
         fru: _this.fil_request_no_upper,
         frl: _this.fil_request_no_lower,
         fc: _this.fil_creator,
+        fch: _this.fil_checker,
+        fap: _this.fil_approver,
+        fk: _this.fil_keyword,
         fs: _this.fil_status.join(','),
         of1: _this.od_factor1,
         ofd1: _this.od_factor1_order,
@@ -513,90 +532,6 @@ var app = new Vue({
         });
     },
 
-    revise: function() {
-      let _this = this;
-      targetId = this.record.id;
-      var form_Data = new FormData();
-
-      var token = localStorage.getItem("token");
-      form_Data.append("jwt", token);
-
-      form_Data.append("crud", "Revise");
-      form_Data.append("id", targetId);
-      form_Data.append("remark", '');
-
-      axios({
-        method: "post",
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-        url: "api/petty_cash_action",
-        data: form_Data,
-      })
-        .then(function(response) {
-          //handle success
-          //this.$forceUpdate();
-          Swal.fire({
-            text: response.data.message,
-            icon: "info",
-            confirmButtonText: "OK",
-          });
-          _this.resetForm();
-        })
-        .catch(function(response) {
-          //handle error
-          Swal.fire({
-            text: response.data,
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-        });
-      
-    },
-
-    withdraw: function() {
-      let _this = this;
-      targetId = this.record.id;
-      var form_Data = new FormData();
-
-      var token = localStorage.getItem("token");
-      form_Data.append("jwt", token);
-
-      form_Data.append("crud", "Withdraw");
-      form_Data.append("id", targetId);
-      form_Data.append("remark", '');
-
-      axios({
-        method: "post",
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-        url: "api/petty_cash_action",
-        data: form_Data,
-      })
-        .then(function(response) {
-          //handle success
-          //this.$forceUpdate();
-          Swal.fire({
-            text: response.data.message,
-            icon: "info",
-            confirmButtonText: "OK",
-          });
-          _this.resetForm();
-        })
-        .catch(function(response) {
-          //handle error
-          Swal.fire({
-            text: response.data,
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-        });
-      
-    },
-
     filter_apply_new: function(pg) {
       let _this = this;
 
@@ -609,13 +544,19 @@ var app = new Vue({
       }
 
       window.location.href =
-        "office_item_application_report?" +
+        "office_item_inventory_check_mgt?" +
         "fru=" +
         _this.fil_request_no_upper +
         "&frl=" +
         _this.fil_request_no_lower +
         "&fc=" +
         _this.fil_creator +
+        "&fch=" +
+        _this.fil_checker +
+        "&fap=" +
+        _this.fil_approver +
+        "&fk=" +
+      _this.fil_keyword +
         "&fs=" +
         _this.fil_status.join(',') +
         "&of1=" +
@@ -646,13 +587,19 @@ var app = new Vue({
       }
 
       window.location.href =
-        "office_item_application_report?" +
+        "office_item_inventory_check_mgt?" +
         "fru=" +
         _this.fil_request_no_upper +
         "&frl=" +
         _this.fil_request_no_lower +
         "&fc=" +
         _this.fil_creator +
+        "&fch=" +
+        _this.fil_checker +
+        "&fap=" +
+        _this.fil_approver +
+        "&fk=" +
+      _this.fil_keyword +
         "&fs=" +
         _this.fil_status.join(',') +
         "&of1=" +
@@ -679,6 +626,8 @@ var app = new Vue({
       this.fil_request_no_upper = '';
       this.fil_request_no_lower = '';
       this.fil_creator = '';
+      this.fil_checker = '';
+      this.fil_approver = '';
       this.fil_type = "";
       this.fil_status = [];
       this.fil_amount_type = "";
@@ -1024,12 +973,52 @@ var app = new Vue({
       let token = localStorage.getItem("accessToken");
 
       axios
-        .get("api/admin/office_item_creators", {
+        .get("api/admin/office_item_inventory_check_creators", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(
           (res) => {
             _this.creators = res.data;
+          },
+          (err) => {
+            alert(err.response);
+          }
+        )
+        .finally(() => {});
+    },
+
+    getCheckers() {
+      let _this = this;
+
+      let token = localStorage.getItem("accessToken");
+
+      axios
+        .get("api/admin/office_item_inventory_check_checkers", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(
+          (res) => {
+            _this.checkers = res.data;
+          },
+          (err) => {
+            alert(err.response);
+          }
+        )
+        .finally(() => {});
+    },
+
+    getApprovers() {
+      let _this = this;
+
+      let token = localStorage.getItem("accessToken");
+
+      axios
+        .get("api/admin/office_item_inventory_check_approvers", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(
+          (res) => {
+            _this.approvers = res.data;
           },
           (err) => {
             alert(err.response);
@@ -1106,6 +1095,8 @@ var app = new Vue({
       form_Data.append("fru", this.fil_request_no_upper);
       form_Data.append("frl", this.fil_request_no_lower);
       form_Data.append("fc", this.fil_creator);
+      form_Data.append("fch", this.fil_checker);
+      form_Data.append("fap", this.fil_approver);
       form_Data.append("fs", this.fil_status.join(','));
       form_Data.append("of1", this.od_factor1);
       form_Data.append("ofd1", this.od_factor1_order);
