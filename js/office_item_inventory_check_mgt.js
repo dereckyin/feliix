@@ -894,7 +894,6 @@ var app = new Vue({
       if(this.submit)
         return;
 
-      this.submit = true;
 
       if (this.check_name.trim() == "") {
         Swal.fire({
@@ -906,6 +905,8 @@ var app = new Vue({
         //$(window).scrollTop(0);
         return;
       }
+      
+      this.submit = true;
 
       var form_Data = new FormData();
 

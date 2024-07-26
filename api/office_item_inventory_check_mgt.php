@@ -124,12 +124,15 @@ switch ($method) {
                         checker checker_id,
                         approver approver_id,
                         p.username,
+                        p.username created_by,
+                        u.username updated_by,
                         DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at,
                         DATE_FORMAT(pm.updated_at, '%Y/%m/%d %T') updated_at,
                         c.username checker,
                         a.username approver
                 from office_item_inventory_check pm 
                 LEFT JOIN user p ON p.id = pm.create_id 
+                LEFT JOIN user u ON u.id = pm.updated_id
                 LEFT JOIN user c ON c.id = pm.checker
                 LEFT JOIN user a ON a.id = pm.approver
                 where 1=1 ";
@@ -575,6 +578,9 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $created_at = $row['created_at'];
             $updated_at = $row['updated_at'];
 
+            $create_by = $row['created_by'];
+            $updated_by = $row['updated_by'];
+
             $create_id = $row['create_id'];
             $checker_id = $row['checker_id'];
             $approver_id = $row['approver_id'];
@@ -599,6 +605,8 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 "requestor" => $requestor,
                 "created_at" => $created_at,
                 "updated_at" => $updated_at,
+                "create_by" => $create_by,
+                "updated_by" => $updated_by,
                 "checker" => $checker,
                 "approver" => $approver,
                 "desc" => $desc,
