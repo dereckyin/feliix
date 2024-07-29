@@ -617,6 +617,42 @@
 
                 </div>
 
+                <div class="box-content">
+                    <ul>
+                        <li><b>Checker of Office Items Inventory Check</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="inventory_checker" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(30)">Cancel</a>
+                        <a class="btn" @click="save(30)">Save</a>
+                    </div>
+
+                </div>
+
+                <div class="box-content">
+                    <ul>
+                        <li><b>Approver of Office Items Inventory Check</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="inventory_approver" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(31)">Cancel</a>
+                        <a class="btn" @click="save(31)">Save</a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

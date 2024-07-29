@@ -41,6 +41,8 @@ var app = new Vue({
     office_item_approve: [],
     office_item_release: [],
     limited_access : [],
+    inventory_checker : [],
+    inventory_approver : [],
   },
 
   created() {
@@ -185,6 +187,14 @@ var app = new Vue({
               _this.limited_access = res.data[0]["limited_access"].split(",").filter(function (el) {
                 return el != "";
               });
+              if (kind === 30 || kind === undefined)
+              _this.inventory_checker = res.data[0]["inventory_checker"].split(",").filter(function (el) {
+                return el != "";
+              });
+              if (kind === 31 || kind === undefined)
+              _this.inventory_approver = res.data[0]["inventory_approver"].split(",").filter(function (el) {
+                return el != "";
+              });
 
           },
           (err) => {
@@ -259,6 +269,8 @@ var app = new Vue({
       form_Data.append("office_item_approve", this.office_item_approve.toString());
       form_Data.append("office_item_release", this.office_item_release.toString());
       form_Data.append("limited_access", this.limited_access.toString());
+      form_Data.append("inventory_checker", this.inventory_checker.toString());
+      form_Data.append("inventory_approver", this.inventory_approver.toString());
 
       axios({
         method: "post",

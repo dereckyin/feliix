@@ -5230,3 +5230,10 @@ CREATE TABLE IF NOT EXISTS `office_item_inventory_check` (
   `status` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20240729
+ALTER TABLE access_control
+ADD COLUMN `inventory_checker` text COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE access_control
+ADD COLUMN `inventory_approver` text COLLATE utf8mb4_unicode_ci;

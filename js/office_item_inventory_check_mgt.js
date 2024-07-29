@@ -82,6 +82,9 @@ var app = new Vue({
       project_id : 0,
     },
 
+    is_approver: false,
+    is_checker : false,
+
   },
 
   created() {
@@ -121,9 +124,33 @@ var app = new Vue({
             case "fap":
               _this.fil_approver = decodeURI(tmp[1]);
               break;
+            case "fds":
+              _this.fil_date_start = tmp[1];
+              break;
+            case "fde":
+              _this.fil_date_end = tmp[1];
+              break;
+            case "fus":
+              _this.fil_update_start = tmp[1];
+              break;
+            case "fue":
+              _this.fil_update_end = tmp[1];
+              break;
             case "fk":
                 _this.fil_keyword = decodeURI(tmp[1]);
                 break;
+            case "fds":
+              _this.fil_date_start = tmp[1];
+              break;
+            case "fde":
+              _this.fil_date_end = tmp[1];
+              break;
+            case "fus":
+              _this.fil_update_start = tmp[1];
+              break;
+            case "fue":
+              _this.fil_update_end = tmp[1];
+              break;
             case "fs":
               var temp = tmp[1].split(",");
               if(temp.length > 0)
@@ -168,6 +195,7 @@ var app = new Vue({
     this.getCreators();
     this.getCheckers();
     this.getApprovers();
+    this.getAccess();
   },
 
   computed: {
@@ -199,6 +227,38 @@ var app = new Vue({
   },
 
   methods: {
+
+    
+    getAccess: function() {
+      var token = localStorage.getItem('token');
+      var form_Data = new FormData();
+      let _this = this;
+
+      form_Data.append('jwt', token);
+
+      axios({
+          method: 'get',
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+          url: 'api/office_item_inventory_access_control',
+          data: form_Data
+      })
+      .then(function(response) {
+          //handle success
+          _this.is_checker = response.data.inventory_checker;
+          _this.is_approver = response.data.inventory_approver;
+
+      })
+      .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+      });
+    },
 
     editRow:function(item){
       if(this.is_modifying)
@@ -273,22 +333,22 @@ var app = new Vue({
     });
   },
 
-  check_valid: function(status, username, creator, checker, approver){
+  check_valid: function(status, checker, approver){
     var ret_msg = "";
 
     if(status == 1)
     {
-      if(username != checker)
+      if(!checker)
         ret_msg = "For inventory check record with PHASE 1: Create Checking List by Checker, only checker is allowed to delete it.";
     }
     else if(status == 2)
     {
-      if(username != checker)
+      if(!checker)
         ret_msg = "For inventory check record with PHASE 2: Inventory Count by Checker, only checker is allowed to delete it.";
     }
     else if(status == 3)
     {
-      if(username == approver)
+      if(!approver)
         ret_msg = "For inventory check record with PHASE 2: Inventory Count by Checker, only checker is allowed to delete it.";
     }
     else if(status == 4)
@@ -303,7 +363,7 @@ var app = new Vue({
     let _id = item['id'];
     let _this = this;
 
-    let ret_msg = this.check_valid(item['status'], this.user_id, item['create_id'], item['checker_id'], item['approver_id']);
+    let ret_msg = this.check_valid(item['status'], this.is_checker, this.is_approver);
 
     if(ret_msg != "")
     {
@@ -522,6 +582,10 @@ var app = new Vue({
         fch: _this.fil_checker,
         fap: _this.fil_approver,
         fk: _this.fil_keyword,
+        fds : _this.fil_date_start,
+        fde : _this.fil_date_end,
+        fus : _this.fil_update_start,
+        fue : _this.fil_update_end,
         fs: _this.fil_status.join(','),
         of1: _this.od_factor1,
         ofd1: _this.od_factor1_order,
@@ -595,6 +659,14 @@ var app = new Vue({
         _this.fil_checker +
         "&fap=" +
         _this.fil_approver +
+        "&fds=" +
+        _this.fil_date_start +
+        "&fde=" +
+        _this.fil_date_end +
+        "&fus=" +
+        _this.fil_update_start +
+        "&fue=" +
+        _this.fil_update_end +
         "&fk=" +
       _this.fil_keyword +
         "&fs=" +
@@ -638,6 +710,14 @@ var app = new Vue({
         _this.fil_checker +
         "&fap=" +
         _this.fil_approver +
+        "&fds=" +
+        _this.fil_date_start +
+        "&fde=" +
+        _this.fil_date_end +
+        "&fus=" +
+        _this.fil_update_start +
+        "&fue=" +
+        _this.fil_update_end +
         "&fk=" +
       _this.fil_keyword +
         "&fs=" +
@@ -678,6 +758,9 @@ var app = new Vue({
       this.fil_type_date = "";
       this.fil_date_start = "";
       this.fil_date_end = "";
+
+      this.fil_update_start = "";
+      this.fil_update_end = "";
 
       this.fil_project_name = "";
  
@@ -1139,6 +1222,10 @@ var app = new Vue({
       form_Data.append("fc", this.fil_creator);
       form_Data.append("fch", this.fil_checker);
       form_Data.append("fap", this.fil_approver);
+      form_Data.append("fds", this.fil_date_start);
+      form_Data.append("fde", this.fil_date_end);
+      form_Data.append("fus", this.fil_update_start);
+      form_Data.append("fue", this.fil_update_end);
       form_Data.append("fs", this.fil_status.join(','));
       form_Data.append("of1", this.od_factor1);
       form_Data.append("ofd1", this.od_factor1_order);

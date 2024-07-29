@@ -77,10 +77,16 @@ switch ($method) {
         $fal = (isset($_GET['fal']) ?  $_GET['fal'] : '');
 
         $ftd = (isset($_GET['ftd']) ?  $_GET['ftd'] : '');
+
         $fds = (isset($_GET['fds']) ?  $_GET['fds'] : '');
         $fds = str_replace('-', '/', $fds);
         $fde = (isset($_GET['fde']) ?  $_GET['fde'] : '');
         $fde = str_replace('-', '/', $fde);
+
+        $fus = (isset($_GET['fus']) ?  $_GET['fus'] : '');
+        $fus = str_replace('-', '/', $fus);
+        $fue = (isset($_GET['fue']) ?  $_GET['fue'] : '');
+        $fue = str_replace('-', '/', $fue);
 
         $of1 = (isset($_GET['of1']) ?  $_GET['of1'] : '');
         $ofd1 = (isset($_GET['ofd1']) ?  $_GET['ofd1'] : '');
@@ -279,17 +285,30 @@ if($fat == "2" && $fal != "")
     $query_cnt = $query_cnt . " and pm.amount_verified >= " . $fal . " ";
 }
 
-if($ftd == "1" && $fds != "")
+if($fds != "")
 {
-    $sql = $sql . " and DATE_FORMAT(pm.date_requested, '%Y/%m/%d') >= '" . $fds . "' ";
-    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.date_requested, '%Y/%m/%d') >= '" . $fds . "' ";
+    $sql = $sql . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') >= '" . $fds . "' ";
+    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') >= '" . $fds . "' ";
 }
 
-if($ftd == "1" && $fde != "")
+if($fde != "")
 {
-    $sql = $sql . " and DATE_FORMAT(pm.date_requested, '%Y/%m/%d') <= '" . $fde . "' ";
-    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.date_requested, '%Y/%m/%d') <= '" . $fde . "' ";
+    $sql = $sql . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') <= '" . $fde . "' ";
+    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') <= '" . $fde . "' ";
 }
+
+if($fus != "")
+{
+    $sql = $sql . " and DATE_FORMAT(pm.updated_at, '%Y/%m/%d') >= '" . $fus . "' ";
+    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.updated_at, '%Y/%m/%d') >= '" . $fus . "' ";
+}
+
+if($fue != "")
+{
+    $sql = $sql . " and DATE_FORMAT(pm.updated_at, '%Y/%m/%d') <= '" . $fue . "' ";
+    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.updated_at, '%Y/%m/%d') <= '" . $fue . "' ";
+}
+
 
 if($ftd == "2" && $fds != "")
 {
@@ -395,9 +414,9 @@ if($of1 != "" && $of1 != "0")
             break;  
         case 3:
             if($ofd1 == 2)
-                $sOrder = "p.username desc ";
+                $sOrder = "Coalesce(pm.updated_at, '0000-00-00') desc";
             else
-                $sOrder = "p.username ";
+                $sOrder = "Coalesce(pm.updated_at, '9999-99-99') ";
             break;  
         case 5:
             if($ofd1 == 2)
@@ -439,9 +458,9 @@ if($of2 != "" && $of2 != "0" && $sOrder != "")
             break;  
         case 3:
             if($ofd2 == 2)
-                $sOrder = ", p.username desc ";
+                $sOrder .= ", Coalesce(pm.updated_at, '0000-00-00') desc";
             else
-                $sOrder = ", p.username ";
+                $sOrder .= ", Coalesce(pm.updated_at, '0000-00-00') ";
             break;  
         case 5:
             if($ofd2 == 2)
@@ -483,9 +502,9 @@ if($of2 != "" && $of2 != "0" && $sOrder == "")
             break;  
         case 3:
             if($ofd2 == 2)
-                $sOrder = "p.username desc ";
+                $sOrder = "Coalesce(pm.updated_at, '0000-00-00') desc";
             else
-                $sOrder = "p.username ";
+                $sOrder = "Coalesce(pm.updated_at, '9999-99-99') ";
             break;  
         case 5:
             if($ofd2 == 2)
