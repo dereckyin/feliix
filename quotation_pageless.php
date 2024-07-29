@@ -982,6 +982,11 @@ header( 'location:index' );
             word-break: break-all;
         }
 
+        .tb_format1 tbody tr td div.pid.deleted, .tb_format1 tbody tr td div.code.deleted {
+            text-decoration: line-through;
+            text-decoration-color: red;
+        }
+
         .tb_format1 tbody tr td div.pid button.last_order_history {
             font-size: 16px;
             font-weight: 500;
@@ -1209,6 +1214,11 @@ header( 'location:index' );
             font-size: 16px;
             font-weight: 800;
             word-break: break-all;
+        }
+
+        .tb_format2 tbody tr td div.pid.deleted, .tb_format2 tbody tr td div.code.deleted {
+            text-decoration: line-through;
+            text-decoration-color: red;
         }
 
         .tb_format2 tbody tr td div.pid button.last_order_history {
@@ -2446,6 +2456,14 @@ header( 'location:index' );
             width: 4%;
         }
 
+        .carousel-control-prev-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23e0e0e0' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5L4.25 4l2.5-2.5L5.25 0z'/%3e%3c/svg%3e") !important;
+        }
+
+        .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23e0e0e0' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5L3.75 4l-2.5 2.5L2.75 8l4-4-4-4z'/%3e%3c/svg%3e") !important;
+        }
+
         .list_function .sort_block {
             float: left;
         }
@@ -3385,16 +3403,16 @@ header( 'location:index' );
                                         <img v-show="bk.photo !== ''" :src=" bk.photo !== '' ? img_url + bk.photo : ''">
                                     </td>
                                     <td rowspan="2" v-if="bk.type == 'image'">
-                                        <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                        <div :class="['pid', 'noPrint', (bk.status == -1 ? 'deleted' : '')]" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
                                         <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
-                                        <div class="code">{{ bk.code }}</div>
+                                        <div :class="['code', (bk.status == -1 ? 'deleted' : '')]">{{ bk.code }}</div>
                                         <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
                                         <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
                                     </td>
                                     <td v-if="bk.type == '' || bk.type== 'noimage'" colspan="2">
-                                        <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                        <div :class="['pid', 'noPrint', (bk.status == -1 ? 'deleted' : '')]" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
                                         <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
-                                        <div class="code">{{ bk.code }}</div>
+                                        <div :class="['code', (bk.status == -1 ? 'deleted' : '')]">{{ bk.code }}</div>
                                         <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
                                         <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
                                     </td>
@@ -3461,9 +3479,9 @@ header( 'location:index' );
                                 <tr v-for="(bk, index) in tp.blocks">
                                     <td>{{ bk.num }}</td>
                                     <td colspan="2">
-                                        <div class="pid noPrint" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                        <div :class="['pid', 'noPrint', (bk.status == -1 ? 'deleted' : '')]" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
                                         <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
-                                        <div class="code">{{ bk.code }}</div>
+                                        <div :class="['code', (bk.status == -1 ? 'deleted' : '')]">{{ bk.code }}</div>
                                         <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
                                         <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
                                     </td>
@@ -5248,8 +5266,8 @@ header( 'location:index' );
                                 </td>
 
                                 <td>
-                                    <div class="pid noPrint" v-if="item.pid != 0">{{ "ID: " +  item.pid}}</div>
-                                    <div class="code">{{ item.code }}</div>
+                                    <div :class="['pid', 'noPrint', (item.status == -1 ? 'deleted' : '')]" v-if="item.pid != 0">{{ "ID: " +  item.pid}}</div>
+                                    <div :class="['code', (item.status == -1 ? 'deleted' : '')]">{{ item.code }}</div>
                                     <div class="brief">{{ item.brief }}</div>
                                     <div class="listing">{{ item.desc }}{{ item.list }}</div>
                                 </td>
