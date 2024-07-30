@@ -1139,6 +1139,7 @@ function GetBlocks($qid, $db){
         $last_order_at = "";
         $last_order_url = "";
         $moq = "";
+        $status = "";
         $is_last_order = "";
         if($pid != 0)
         {
@@ -1151,6 +1152,7 @@ function GetBlocks($qid, $db){
                 $last_order_url = $pd[0]['last_order_url'];
                 $is_last_order = $pd[0]['is_last_order'];
                 $moq = $pd[0]['moq'];
+                $status = $pd[0]['status'];
             }
         }
     
@@ -1191,6 +1193,7 @@ function GetBlocks($qid, $db){
             "last_order_url" => $last_order_url,
             "is_last_order" => $is_last_order,
             "moq" => $moq,
+            "status" => $status,
         );
     }
 
@@ -1445,7 +1448,7 @@ function GetProductMain($id, $db){
     $time_start = microtime(true); 
 
     // product main
-    $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1 and p.id = ". $id;
+    $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.id = ". $id;
 
     $stmt = $db->prepare( $sql );
     $stmt->execute();
@@ -1457,6 +1460,7 @@ function GetProductMain($id, $db){
         $last_order_at = $row['last_order_at'];
         $last_order_url = "";
         $moq = $row['moq'];
+        $status = $row['status'];
 
         $product = GetProduct($id, $db);
 
@@ -1535,6 +1539,7 @@ function GetProductMain($id, $db){
                             "last_order_url" => $last_order_url,
                             "last_have_spec" => true,
                             "moq" => $moq,
+                            "status" => $status,
 
         );
     }
