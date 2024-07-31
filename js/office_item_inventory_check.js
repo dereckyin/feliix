@@ -216,7 +216,7 @@ var app = new Vue({
             if (response.data.length > 0) {
             
               _this.record = response.data[0];
-              _this.phase1 = _this.record.phase1;
+              _this.phase1 = JSON.parse(JSON.stringify(_this.record.phase1));
               _this.it_total = _this.phase1.length;
 
               //_this.it_setPages();
@@ -1037,7 +1037,7 @@ var app = new Vue({
       this.reason1 = "";
       this.payable_to = 1;
       // this.$refs.payable_other.style.display = "none";
-      this.$refs.file.value = "";
+      //this.$refs.file.value = "";
       this.payable_other = "";
       
       this.remark = "";
@@ -1045,22 +1045,25 @@ var app = new Vue({
       this.rtype = "";
       this.dept_name = "";
       
-      if(this.pid == 0)
-      {
-        this.request_no = "";
-        this.pid = 0;
-        this.getRequestNo();
-        this.item_list = [];
-      }
+      // if(this.pid == 0)
+      // {
+      //   this.request_no = "";
+      //   this.pid = 0;
+      //   this.getRequestNo();
+      //   this.item_list = [];
+      // }
 
-      if(this.pid != 0)
-      {
-        this.befor_reset = false;
-        for(var i = 0; i < this.item_list.length; i++)
-          this.item_list[i].is_checked = false;
-      }
-      else
-        this.befor_reset = true;
+      // if(this.pid != 0)
+      // {
+      //   this.befor_reset = false;
+      //   for(var i = 0; i < this.item_list.length; i++)
+      //     this.item_list[i].is_checked = false;
+      // }
+      // else
+      //   this.befor_reset = true;
+
+      this.phase1 = JSON.parse(JSON.stringify(this.record.phase1));
+      this.it_total = this.phase1.length;
       
       this.list_sn = 0;
 
@@ -1309,11 +1312,64 @@ var app = new Vue({
           url: item.url,
           amount : item.amount,
           qty: item.qty,
+          note: "",
           reserve_qty : item.reserve_qty,
           item_id: item.id,
         };
         this.phase1.push(ad);
       
+        this.e_clear_edit();
+    },
+
+    
+    add_filtered: function() {
+
+      var id = 0;
+      var duplicate = false;
+      for(j=0; j < this.items.length; j++)
+      {
+        duplicate = false;
+        
+        for (i = 0; i < this.phase1.length; i++) {
+          if (this.phase1[i].id > id) id = this.phase1[i].id;
+  
+          if(this.phase1[i].code1 == this.items[j].code1 && this.phase1[i].code2 == this.items[j].code2 && this.phase1[i].code3 == this.items[j].code3 && this.phase1[i].code4 == this.items[j].code4)
+          {
+            // Swal.fire({
+            //   text: "Same-code this.items[j] cannot be added into Listing twice.",
+            //   icon: "warning",
+            //   confirmButtonText: "OK",
+            // });
+  
+            duplicate = true;
+            break;
+          }
+
+        }
+
+        if(duplicate == true)
+          continue;
+
+        var ad = {
+          id: ++id,
+          code1: this.items[j].code1,
+          code2: this.items[j].code2,
+          code3: this.items[j].code3,
+          code4: this.items[j].code4,
+          cat1: this.items[j].cat1,
+          cat2: this.items[j].cat2,
+          cat3: this.items[j].cat3,
+          cat4: this.items[j].cat4,
+          url: this.items[j].url,
+          amount : this.items[j].amount,
+          qty: this.items[j].qty,
+          note: "",
+          reserve_qty : this.items[j].reserve_qty,
+          item_id: this.items[j].id,
+        };
+        this.phase1.push(ad);
+
+      }
         this.e_clear_edit();
     },
 

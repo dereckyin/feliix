@@ -613,6 +613,8 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
             $phase_1 = $row['phase_1'];
             $phase1 = json_decode($phase_1, true);
+            if($phase1 == null)
+                $phase1 = [];
             $phase1 = UpdateQty($phase1, $db);
 
             $merged_results[] = array(
