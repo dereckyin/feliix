@@ -1,3 +1,4 @@
+<?php include 'check.php';?>
 <!DOCTYPE html>
 <html>
 
@@ -462,7 +463,7 @@
                         <ul v-for='(record, index) in displayedRecord' :key="index">
                             <li>{{ record.request_no  }}</li>
                             <li>
-                                <a v-show="record.is_edited == 1" :class="record.followup == 'Y' ? 'red' : ''" v-bind:href="'office_item_inventory_check?id=' + record.id">{{record.check_name }}</a>
+                                <a v-show="record.is_edited == 1" :class="record.followup == 'Y' ? 'red' : ''" v-bind:href="'office_item_inventory_check?id=' + record.id" target="_blank">{{record.check_name }}</a>
                                 <input name="check_name" type="text" v-show="record.is_edited == 0" v-model="check_name" maxlength="1024">
                             </li>
                             <li>{{ record.desc }}</li>

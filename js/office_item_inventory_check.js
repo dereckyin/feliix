@@ -192,11 +192,49 @@ var app = new Vue({
 
   methods: {
 
-    getRecord: function(id) {
+    can_access: async function(id) {
+      let ret = "";
+      let token = localStorage.getItem("accessToken");
+
+      const params = {
+        id: id,
+      };
+
+      try {
+        let res = await axios.get("api/office_item_can_access", {
+          params,
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        ret = res.data;
+
+      } catch (err) {
+        console.log(err);
+      }
+
+      return ret;
+    }
+    ,
+
+    getRecord: async function(id) {
         let _this = this;
 
         if(id == 0)
           return;
+
+        let ret = await this.can_access(id);
+
+        if(ret != "")
+        {
+          await Swal.fire({
+            text: ret,
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+
+          window.location = "office_item_inventory_check_mgt";
+          return;
+        }
   
         const params = {
           pg: 1,
@@ -218,6 +256,7 @@ var app = new Vue({
               _this.record = response.data[0];
               _this.phase1 = JSON.parse(JSON.stringify(_this.record.phase1));
               _this.it_total = _this.phase1.length;
+              _this.notes = _this.record.note_1;
 
               //_this.it_setPages();
             }
@@ -228,9 +267,46 @@ var app = new Vue({
   
       },
 
+      save: function() {
+        let _this = this;
 
-    save: function() {
-    },
+        var form_Data = new FormData();
+        var token = localStorage.getItem("token");
+        form_Data.append("jwt", token);
+        form_Data.append("id", _this.id);
+        form_Data.append("notes", _this.notes);
+        form_Data.append("phase", JSON.stringify(_this.phase1));
+  
+        axios({
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+          url: "api/office_item_inventory_check_save",
+          data: form_Data,
+        })
+          .then(function(response) {
+            //handle success
+            //this.$forceUpdate();
+            Swal.fire({
+              text: response.data.message,
+              icon: "info",
+              confirmButtonText: "OK",
+            });
+
+          })
+          .catch(function(response) {
+            //handle error
+            Swal.fire({
+              text: response.data,
+              icon: "warning",
+              confirmButtonText: "OK",
+            });
+          });
+        
+      },
+
 
     goto_phase3: function() {
     },
@@ -637,6 +713,33 @@ var app = new Vue({
       )
       .finally(() => {});
   },
+
+    filter_apply_async: async function() {
+      let data = [];
+      let token = localStorage.getItem("accessToken");
+
+      const params = {
+        level: 1,
+        parent: this.lv1 + this.lv2 + this.lv3 + this.lv4,
+        page: 1,
+        size: 100000,
+      };
+
+      try {
+        let res = await axios.get("api/office_items_catalog", {
+          params,
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        data = res.data;
+      } catch (err) {
+        console.log(err);
+        alert("error");
+      }
+
+      return data;
+    },
+
 
     clear_projectname: function() {
       this.reason = "";
@@ -1064,7 +1167,7 @@ var app = new Vue({
 
       this.phase1 = JSON.parse(JSON.stringify(this.record.phase1));
       this.it_total = this.phase1.length;
-      
+      this.notes = this.record.note_1;
       this.list_sn = 0;
 
       this.submit = false;
@@ -1322,21 +1425,24 @@ var app = new Vue({
     },
 
     
-    add_filtered: function() {
+    add_filtered: async function() {
 
       var id = 0;
       var duplicate = false;
-      for(j=0; j < this.items.length; j++)
+
+      var items = await this.filter_apply_async();
+
+      for(j=0; j < items.length; j++)
       {
         duplicate = false;
         
         for (i = 0; i < this.phase1.length; i++) {
           if (this.phase1[i].id > id) id = this.phase1[i].id;
   
-          if(this.phase1[i].code1 == this.items[j].code1 && this.phase1[i].code2 == this.items[j].code2 && this.phase1[i].code3 == this.items[j].code3 && this.phase1[i].code4 == this.items[j].code4)
+          if(this.phase1[i].code1 == items[j].code1 && this.phase1[i].code2 == items[j].code2 && this.phase1[i].code3 == items[j].code3 && this.phase1[i].code4 == items[j].code4)
           {
             // Swal.fire({
-            //   text: "Same-code this.items[j] cannot be added into Listing twice.",
+            //   text: "Same-code items[j] cannot be added into Listing twice.",
             //   icon: "warning",
             //   confirmButtonText: "OK",
             // });
@@ -1352,20 +1458,20 @@ var app = new Vue({
 
         var ad = {
           id: ++id,
-          code1: this.items[j].code1,
-          code2: this.items[j].code2,
-          code3: this.items[j].code3,
-          code4: this.items[j].code4,
-          cat1: this.items[j].cat1,
-          cat2: this.items[j].cat2,
-          cat3: this.items[j].cat3,
-          cat4: this.items[j].cat4,
-          url: this.items[j].url,
-          amount : this.items[j].amount,
-          qty: this.items[j].qty,
+          code1: items[j].code1,
+          code2: items[j].code2,
+          code3: items[j].code3,
+          code4: items[j].code4,
+          cat1: items[j].cat1,
+          cat2: items[j].cat2,
+          cat3: items[j].cat3,
+          cat4: items[j].cat4,
+          url: items[j].url,
+          amount : items[j].amount,
+          qty: items[j].qty,
           note: "",
-          reserve_qty : this.items[j].reserve_qty,
-          item_id: this.items[j].id,
+          reserve_qty : items[j].reserve_qty,
+          item_id: items[j].id,
         };
         this.phase1.push(ad);
 

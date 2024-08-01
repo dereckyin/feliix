@@ -136,6 +136,7 @@ switch ($method) {
                         DATE_FORMAT(pm.updated_at, '%Y/%m/%d %T') updated_at,
                         c.username checker,
                         a.username approver,
+                        note_1,
                         phase_1
                 from office_item_inventory_check pm 
                 LEFT JOIN user p ON p.id = pm.create_id 
@@ -583,6 +584,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
         $checker = "";
         $approver = "";
 
+        $note_1 = "";
         $phase_1 = "[]";
         
         $list = [];
@@ -617,6 +619,8 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 $phase1 = [];
             $phase1 = UpdateQty($phase1, $db);
 
+            $note_1 = $row['note_1'];
+
             $merged_results[] = array(
                 "is_edited" => 1,
                 "followup" => "",
@@ -636,7 +640,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 "checker" => $checker,
                 "approver" => $approver,
                 "desc" => $desc,
-
+                "note_1" => $note_1,
                 "phase1" => $phase1,
             
                 "cnt" => $cnt,
