@@ -100,7 +100,7 @@ var app = new Vue({
     record: {},
 
     it_page: 1,
-    it_perPage: 5,
+    it_perPage: 20,
     it_pages: [],
     it_pages_10: [],
 
