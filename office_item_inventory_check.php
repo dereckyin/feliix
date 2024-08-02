@@ -673,7 +673,7 @@
                 <div class="tablebox notes">
                     <ul class="head">
                         <li>PHASE 1: Create Checking List by Checker<br>Notes</li>
-                        <li></li>
+                        <li>{{ notes }}</li>
                     </ul>
                     <ul class="head">
                         <li>PHASE 3: Review by Approver<br>Notes</li>
@@ -701,11 +701,11 @@
                             <!-- 分頁功能，下方的 tablebox 的內容要做分頁，每一頁 20 筆資料  -->
                             <div class="list_function">
                                 <div class="pagenation">
-                                    <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+                                    <a class="prev" :disabled="it_page == 1" @click="it_pre_page();">Prev 10</a>
 
-                                    <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
+                                    <a class="page" v-for="pg in it_pages_10" @click="it_page=pg;" v-bind:style="[pg == it_page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                                    <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                                    <a class="next" :disabled="it_page == it_pages.length" @click="it_nex_page();">Next 10</a>
                                 </div>
                             </div>
                         </li>
@@ -720,7 +720,7 @@
                                     <li>Qty Counted</li>
                                 </ul>
 
-                                <ul v-for="(item,index) in petty_list" :key="index">
+                                <ul v-for="(item,index) in phase" :key="index" :class="[is_toIndex === (it_page - 1 ) * it_perPage + index ? 'shake' : '' ]" :data-attr="index">
                                     <li>{{ item.code1 + item.code2 + item.code3 + item.code4 }}</li>
                                     <li>
                                         <a :href="item.url" target="_blank" v-if="item.url">
@@ -729,12 +729,12 @@
                                     </li>
                                     <li>{{ item.cat1 }} >> {{ item.cat2 }} >> {{ item.cat3 }} >> {{ item.cat4 }}</li>
 
-                                    <li>{{庫存的數量}}</li>
+                                    <li>{{item.qty}}</li>
 
                                     <li>
-                                        <input type="number" min=0 v-model="item.count1" placeholder="Qty">
+                                        <input type="number" min=0 v-model="item.qty1" placeholder="Qty">
                                         <br>
-                                        <textarea v-model="item.remarks" placeholder="Remarks"></textarea>
+                                        <textarea v-model="item.note" placeholder="Remarks"></textarea>
                                     </li>
 
                                 </ul>

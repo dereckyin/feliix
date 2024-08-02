@@ -312,6 +312,54 @@ var app = new Vue({
     },
 
     goto_phase2: function() {
+      if (this.phase1.length == 0) {
+        Swal.fire({
+          text: "Checking list needs to contain at least one item before going to the next phase!",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return false;
+      }
+
+      let _this = this;
+
+      var form_Data = new FormData();
+      var token = localStorage.getItem("token");
+      form_Data.append("jwt", token);
+      form_Data.append("id", _this.id);
+      form_Data.append("notes", _this.notes);
+      form_Data.append("phase", JSON.stringify(_this.phase1));
+      form_Data.append("status", 2);
+
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+        url: "api/office_item_inventory_check_action",
+        data: form_Data,
+      })
+        .then(function(response) {
+          //handle success
+          //this.$forceUpdate();
+          Swal.fire({
+            text: response.data.message,
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+
+          _this.getRecord(_this.id);
+
+        })
+        .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: response.data,
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+        });
     },
 
     goto_phase1: function() {
@@ -1415,6 +1463,7 @@ var app = new Vue({
           url: item.url,
           amount : item.amount,
           qty: item.qty,
+          qty1: 0,
           note: "",
           reserve_qty : item.reserve_qty,
           item_id: item.id,
@@ -1469,6 +1518,7 @@ var app = new Vue({
           url: items[j].url,
           amount : items[j].amount,
           qty: items[j].qty,
+          qty1: 0,
           note: "",
           reserve_qty : items[j].reserve_qty,
           item_id: items[j].id,
