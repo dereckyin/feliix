@@ -685,7 +685,7 @@
                 <form>
                     <ul>
                         <li><b>Notes</b></li>
-                        <li><textarea style="width:100%" v-model="notes"></textarea></li>
+                        <li><textarea style="width:100%" v-model="notes2"></textarea></li>
 
 
                         <li class="row_list">

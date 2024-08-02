@@ -97,6 +97,9 @@ var app = new Vue({
 
     id: 0,
     notes:"",
+
+    notes2:"",
+
     record: {},
 
     it_page: 1,
