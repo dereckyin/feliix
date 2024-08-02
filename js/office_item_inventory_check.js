@@ -346,13 +346,15 @@ var app = new Vue({
         .then(function(response) {
           //handle success
           //this.$forceUpdate();
+          // yes then go to next phase
           Swal.fire({
             text: response.data.message,
             icon: "info",
             confirmButtonText: "OK",
+          }).then(function() {
+            _this.getRecord(_this.id);
+            _this.it_page = 1;
           });
-
-          _this.getRecord(_this.id);
 
         })
         .catch(function(response) {
@@ -1466,7 +1468,7 @@ var app = new Vue({
           url: item.url,
           amount : item.amount,
           qty: item.qty,
-          qty1: 0,
+          qty1: "",
           note: "",
           reserve_qty : item.reserve_qty,
           item_id: item.id,
@@ -1521,7 +1523,7 @@ var app = new Vue({
           url: items[j].url,
           amount : items[j].amount,
           qty: items[j].qty,
-          qty1: 0,
+          qty1: "",
           note: "",
           reserve_qty : items[j].reserve_qty,
           item_id: items[j].id,
