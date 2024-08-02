@@ -87,6 +87,12 @@ switch ($method) {
         if($status == 1 && !$checker)
             $ret = "Only Checker is allowed to visit this inventory check record.";
 
+        if($status == 2 && !$checker)
+            $ret = "Only Checker is allowed to visit this inventory check record.";
+
+        if($status == 3 && !$approver)
+            $ret = "Only Approver is allowed to visit this inventory check record.";
+
         $jsonEncodedReturnArray = json_encode($ret, JSON_PRETTY_PRINT);
         echo $jsonEncodedReturnArray;
 
