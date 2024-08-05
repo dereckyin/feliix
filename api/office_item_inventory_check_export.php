@@ -205,6 +205,7 @@ if($jwt){
                 if($row['url'] != '')
                 {
                     $row['url'] = str_replace('+', '%20', $row['url']);
+                    $row['url'] = str_replace(' ', '%20', $row['url']);
 
                     grab_image($row['url'], preg_replace('/[^A-Za-z0-9]/', '', $row['url']));
 
