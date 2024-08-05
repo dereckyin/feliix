@@ -97,8 +97,8 @@ var app = new Vue({
 
     id: 0,
     notes:"",
-
     notes2:"",
+    notes3:"",
 
     record: {},
 
@@ -260,6 +260,8 @@ var app = new Vue({
               _this.phase1 = JSON.parse(JSON.stringify(_this.record.phase1));
               _this.it_total = _this.phase1.length;
               _this.notes = _this.record.note_1;
+              _this.notes2 = _this.record.note_2;
+              _this.notes3 = _this.record.note_3;
 
               //_this.it_setPages();
             }
@@ -310,8 +312,102 @@ var app = new Vue({
         
       },
 
+      save2: function() {
+        let _this = this;
+
+        var form_Data = new FormData();
+        var token = localStorage.getItem("token");
+        form_Data.append("jwt", token);
+        form_Data.append("id", _this.id);
+        form_Data.append("stage", 2);
+        form_Data.append("notes", _this.notes2);
+        form_Data.append("phase", JSON.stringify(_this.phase1));
+  
+        axios({
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+          url: "api/office_item_inventory_check_save",
+          data: form_Data,
+        })
+          .then(function(response) {
+            //handle success
+            //this.$forceUpdate();
+            Swal.fire({
+              text: response.data.message,
+              icon: "info",
+              confirmButtonText: "OK",
+            });
+
+          })
+          .catch(function(response) {
+            //handle error
+            Swal.fire({
+              text: response.data,
+              icon: "warning",
+              confirmButtonText: "OK",
+            });
+          });
+        
+      },
 
     goto_phase3: function() {
+      // all the pahse1.qty1 should not be empty
+      for (i = 0; i < this.phase1.length; i++) {
+        if (this.phase1[i].qty1 == "" || this.phase1[i].qty1 == undefined) {
+          Swal.fire({
+            text: "Qty counted is required for every item in the checking list.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return false;
+        }
+      }
+      
+      let _this = this;
+
+      var form_Data = new FormData();
+      var token = localStorage.getItem("token");
+      form_Data.append("jwt", token);
+      form_Data.append("id", _this.id);
+      form_Data.append("notes", _this.notes2);
+      form_Data.append("phase", JSON.stringify(_this.phase1));
+      form_Data.append("stage", 2);
+      form_Data.append("status", 3);
+
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+        url: "api/office_item_inventory_check_action",
+        data: form_Data,
+      })
+        .then(function(response) {
+          //handle success
+          //this.$forceUpdate();
+          // yes then go to next phase
+          Swal.fire({
+            text: response.data.message,
+            icon: "info",
+            confirmButtonText: "OK",
+          }).then(function() {
+            _this.getRecord(_this.id);
+            _this.it_page = 1;
+          });
+
+        })
+        .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: response.data,
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+        });
     },
 
     goto_phase2: function() {
@@ -1216,6 +1312,9 @@ var app = new Vue({
         this.phase1[i].qty1 = "";
         this.phase1[i].note = "";
       }
+
+      // this.notes2 = this.record.note_2;
+      this.notes2 = "";
     },
 
     reset: function() {
@@ -1260,6 +1359,7 @@ var app = new Vue({
       this.phase1 = JSON.parse(JSON.stringify(this.record.phase1));
       this.it_total = this.phase1.length;
       this.notes = this.record.note_1;
+      
       this.list_sn = 0;
 
       this.submit = false;

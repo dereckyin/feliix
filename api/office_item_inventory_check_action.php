@@ -68,11 +68,25 @@ if (!isset($jwt)) {
             $notes = (isset($_POST['notes']) ?  $_POST['notes'] : '');
             $id = (isset($_POST['id']) ?  $_POST['id'] : '0');
             $status = (isset($_POST['status']) ?  $_POST['status'] : '0');
+            $stage = (isset($_POST['stage']) ?  $_POST['stage'] : 1);
             
             try {
                 $query = "update office_item_inventory_check
-                set note_1 = :note_1, 
-                phase_1 = :phase_1,
+                set ";
+if($stage == 1)
+{
+                $query .= " note_1 = :note_1, ";
+}
+if($stage == 2)
+{
+                $query .= " note_2 = :note_1, ";
+}
+if($stage == 3)
+{
+                $query .= " note_3 = :note_1, ";
+}
+
+                $query .= " phase_1 = :phase_1,
                 `status` = :status,
                 updated_id = :updated_id,
                 updated_at = now()

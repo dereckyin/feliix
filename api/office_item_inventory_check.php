@@ -137,7 +137,9 @@ switch ($method) {
                         c.username checker,
                         a.username approver,
                         note_1,
-                        phase_1
+                        phase_1,
+                        note_2,
+                        note_3
                 from office_item_inventory_check pm 
                 LEFT JOIN user p ON p.id = pm.create_id 
                 LEFT JOIN user u ON u.id = pm.updated_id
@@ -620,6 +622,8 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $phase1 = UpdateQty($phase1, $db);
 
             $note_1 = $row['note_1'];
+            $note_2 = $row['note_2'];
+            $note_3 = $row['note_3'];
 
             $merged_results[] = array(
                 "is_edited" => 1,
@@ -641,6 +645,8 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 "approver" => $approver,
                 "desc" => $desc,
                 "note_1" => $note_1,
+                "note_2" => $note_2,
+                "note_3" => $note_3,
                 "phase1" => $phase1,
             
                 "cnt" => $cnt,
