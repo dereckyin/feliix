@@ -608,6 +608,9 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
             $checker = $row['checker'];
             $approver = $row['approver'];
+
+            $check_at = $row['check_at'];
+            $approval_at = $row['approval_at'];
             
             $desc = GetStatus($row['status']);
         
@@ -631,6 +634,9 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 "checker" => $checker,
                 "approver" => $approver,
                 "desc" => $desc,
+
+                "check_at" => $check_at,
+                "approval_at" => $approval_at,
             
                 "cnt" => $cnt,
             );
