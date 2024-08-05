@@ -81,6 +81,7 @@
         a, a:link, a:visited, a:active, a:hover, area {
             text-decoration: none;
             cursor: pointer;
+            color: #0056b3;
         }
 
         body.fourth {

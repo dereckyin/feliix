@@ -219,7 +219,7 @@
     #modal_EditListing {
         display: none;
         position: absolute;
-        top: 20px;
+        top: -105px;
         left: 0;
         right: 0;
         margin: auto;
@@ -232,7 +232,7 @@
         border: 2px solid #2F9A57;
         padding: 20px 25px;
         background-color: white;
-        max-height: 850px;
+        max-height: 95vh;
         overflow-y: auto;
     }
 
