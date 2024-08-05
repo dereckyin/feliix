@@ -93,7 +93,7 @@ if($status == 3)
 
 if($status == 1)
 {
-                $query .= " check_id = 0, check_at = '', ";
+                $query .= " check_id = 0, check_at = null, ";
 }
                 $query .= " phase_1 = :phase_1,
                 `status` = :status,
