@@ -135,12 +135,14 @@ switch ($method) {
                         DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at,
                         DATE_FORMAT(pm.updated_at, '%Y/%m/%d %T') updated_at,
                         c.username checker,
-                        a.username approver
+                        DATE_FORMAT(pm.check_at, '%Y/%m/%d %T') check_at,
+                        a.username approver,
+                        DATE_FORMAT(pm.approval_at, '%Y/%m/%d %T') approval_at
                 from office_item_inventory_check pm 
                 LEFT JOIN user p ON p.id = pm.create_id 
                 LEFT JOIN user u ON u.id = pm.updated_id
-                LEFT JOIN user c ON c.id = pm.checker
-                LEFT JOIN user a ON a.id = pm.approver
+                LEFT JOIN user c ON c.id = pm.check_id
+                LEFT JOIN user a ON a.id = pm.approval_id
                 where 1=1 ";
 
 if($id != "" && $id != "0")
