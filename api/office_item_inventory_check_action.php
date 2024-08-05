@@ -86,6 +86,15 @@ if($stage == 3)
                 $query .= " note_3 = :note_1, ";
 }
 
+if($status == 3)
+{
+                $query .= " check_id = " . $user_id . ", check_at = now(), ";
+}
+
+if($status == 2)
+{
+                $query .= " check_id = '', check_at = '', ";
+}
                 $query .= " phase_1 = :phase_1,
                 `status` = :status,
                 updated_id = :updated_id,

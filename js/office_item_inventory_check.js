@@ -356,7 +356,7 @@ var app = new Vue({
     goto_phase3: function() {
       // all the pahse1.qty1 should not be empty
       for (i = 0; i < this.phase1.length; i++) {
-        if (this.phase1[i].qty1 == "" || this.phase1[i].qty1 == undefined) {
+        if (this.phase1[i].qty1 === "" || this.phase1[i].qty1 === undefined) {
           Swal.fire({
             text: "Qty counted is required for every item in the checking list.",
             icon: "warning",
