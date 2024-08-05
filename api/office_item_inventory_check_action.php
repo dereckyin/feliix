@@ -91,7 +91,7 @@ if($status == 3)
                 $query .= " check_id = " . $user_id . ", check_at = now(), ";
 }
 
-if($status == 2)
+if($status == 1)
 {
                 $query .= " check_id = '', check_at = '', ";
 }
