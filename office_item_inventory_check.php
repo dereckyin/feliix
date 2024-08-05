@@ -693,7 +693,7 @@
                                 <b>Checking List</b>
 
                                 <!-- 匯出清單，可以套用利用 office_items_catalog.php 的匯出功能去修改 -->
-                                <a class="btn_export" href="javascript: void(0)" onclick="">
+                                <a class="btn_export" href="javascript: void(0)" @click="export_list()">
                                     <i aria-hidden="true" class="fas fa-file-export"></i>
                                 </a>
                             </div>
@@ -747,7 +747,7 @@
                     </ul>
 
                     <div class="btnbox">
-                        <a class="btn red" @click="reset" title="Clear All Encoded Content">Reset</a>
+                        <a class="btn red" @click="reset_phase1" title="Clear All Encoded Content">Reset</a>
                         <a class="btn" @click="save" title="Temporarily Save Encoded Content">Save</a>
                         <a class="btn red" @click="goto_phase1" title="Go to Previous Phase: Create Checking List by Checker">Previous Phase</a>
                         <a class="btn" @click="goto_phase3" title="Go to Next Phase: Review by Approver">Next Phase</a>

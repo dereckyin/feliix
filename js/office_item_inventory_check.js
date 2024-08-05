@@ -367,6 +367,38 @@ var app = new Vue({
         });
     },
 
+    export_list: function() {
+      let _this = this;
+
+      let token = localStorage.getItem("accessToken");
+
+        var form_Data = new FormData();
+
+        form_Data.append("jwt", token);
+        form_Data.append("id", this.id);
+        form_Data.append("list", JSON.stringify(_this.phase1));
+  
+      axios({
+        method: "post",
+        url: "api/office_item_inventory_check_export",
+        data: form_Data,
+        responseType: "blob",
+      })
+        .then(function(response) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+
+          link.setAttribute("download", "Office_Item_Application_" + _this.record.request_no + ".xlsx");
+
+          document.body.appendChild(link);
+          link.click();
+        })
+        .catch(function(response) {
+          console.log(response);
+        });
+      },
+
     goto_phase1: function() {
     },
 
@@ -1177,6 +1209,13 @@ var app = new Vue({
           _this.reset();
         });
 
+    },
+
+    reset_phase1: function() {
+      for (var i = 0; i < this.phase1.length; i++) {
+        this.phase1[i].qty1 = "";
+        this.phase1[i].note = "";
+      }
     },
 
     reset: function() {
