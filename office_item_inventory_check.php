@@ -677,7 +677,7 @@
                     </ul>
                     <ul class="head">
                         <li>PHASE 3: Review by Approver<br>Notes</li>
-                        <li></li>
+                        <li>{{ notes3 }}</li>
                     </ul>
                 </div>
 
@@ -770,11 +770,11 @@
                 <div class="tablebox notes">
                     <ul class="head">
                         <li>PHASE 1: Create Checking List by Checker<br>Notes</li>
-                        <li></li>
+                        <li>{{ notes }}</li>
                     </ul>
                     <ul class="head">
                         <li>PHASE 2: Inventory Count by Checker<br>Notes</li>
-                        <li></li>
+                        <li>{{ notes2 }}</li>
                     </ul>
                 </div>
 
@@ -873,15 +873,15 @@
                 <div class="tablebox notes">
                     <ul class="head">
                         <li>PHASE 1: Create Checking List by Checker<br>Notes</li>
-                        <li></li>
+                        <li>{{ notes }}</li>
                     </ul>
                     <ul class="head">
                         <li>PHASE 2: Inventory Count by Checker<br>Notes</li>
-                        <li></li>
+                        <li>{{ notes2 }}</li>
                     </ul>
                     <ul class="head">
                         <li>PHASE 3: Review by Approver<br>Notes</li>
-                        <li></li>
+                        <li>{{ notes3 }}</li>
                     </ul>
                 </div>
 
