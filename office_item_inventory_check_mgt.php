@@ -469,8 +469,8 @@
                             <li>{{ record.desc }}</li>
                             <li>{{ record.created_at }}<br>{{record.create_by}}</li>
                             <li>{{ record.updated_at }}<br>{{record.updated_by}}</li>
-                            <li>{{ record.checker }}<br>{{record.check_at}}</li>
-                            <li>{{ record.approver }}<br>{{record.approval_at}}</li>
+                            <li>{{ record.check_at }}<br>{{record.checker}}</li>
+                            <li>{{ record.approval_at }}<br>{{record.approver}}</li>
                             <li>
                                 <!-- 修改名字 -->
                                 <button v-show="record.is_edited == 1" @click="editRow(record)"><i class="fas fa-edit"></i></button>
