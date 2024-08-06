@@ -782,7 +782,7 @@
                 <form>
                     <ul>
                         <li><b>Notes</b></li>
-                        <li><textarea style="width:100%" v-model="notes"></textarea></li>
+                        <li><textarea style="width:100%" v-model="notes3"></textarea></li>
 
 
                         <li class="row_list">
@@ -790,7 +790,7 @@
                                 <b>Checking List</b>
 
                                 <!-- 匯出清單，可以套用利用 office_items_catalog.php 的匯出功能去修改，和 Phase 2 的匯出結果欄位內容不相同 -->
-                                <a class="btn_export" href="javascript: void(0)" onclick="">
+                                <a class="btn_export" href="javascript: void(0)" onclick="export_list3()">
                                     <i aria-hidden="true" class="fas fa-file-export"></i>
                                 </a>
                             </div>
@@ -798,11 +798,11 @@
                             <!-- 分頁功能，下方的 tablebox 的內容要做分頁，每一頁 20 筆資料  -->
                             <div class="list_function">
                                 <div class="pagenation">
-                                    <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+                                    <a class="prev" :disabled="it_page == 1" @click="it_pre_page();">Prev 10</a>
 
-                                    <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
+                                    <a class="page" v-for="pg in it_pages_10" @click="it_page=pg;" v-bind:style="[pg == it_page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                                    <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                                    <a class="next" :disabled="it_page == it_pages.length" @click="it_nex_page();">Next 10</a>
                                 </div>
                             </div>
                         </li>
@@ -818,7 +818,7 @@
                                     <li>Comment</li>
                                 </ul>
 
-                                <ul v-for="(item,index) in petty_list" :key="index">
+                                <ul v-for="(item,index) in phase" :key="index">
                                     <li>{{ item.code1 + item.code2 + item.code3 + item.code4 }}</li>
                                     <li>
                                         <a :href="item.url" target="_blank" v-if="item.url">
@@ -828,13 +828,13 @@
                                     <li>{{ item.cat1 }} >> {{ item.cat2 }} >> {{ item.cat3 }} >> {{ item.cat4 }}</li>
 
                                     <!-- 庫存的數量 -->
-                                    <li>{{}}</li>
+                                    <li>{{item.qty}}</li>
 
                                     <!-- Checker 輸入的數量 和 Checker 輸入的remarks -->
-                                    <li>{{}}<br>{{}}</li>
+                                    <li>{{item.qty1}}<br>{{item.note}}</li>
 
                                     <li>
-                                        <input type="number" min=1 v-model="item.count2">
+                                        <input type="number" min=1 v-model="item.qty2">
                                         <input type="text" v-model="item.comment">
                                     </li>
 
