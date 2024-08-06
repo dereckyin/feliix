@@ -91,7 +91,7 @@ if($status == 3)
                 $query .= " check_id = " . $user_id . ", check_at = now(), ";
 }
 
-if($status == 1)
+if($status == 2 && $stage == 3)
 {
                 $query .= " check_id = 0, check_at = null, ";
 }

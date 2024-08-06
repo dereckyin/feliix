@@ -272,55 +272,15 @@ var app = new Vue({
   
       },
 
-      save: function() {
+      save: function(stage, note) {
         let _this = this;
 
         var form_Data = new FormData();
         var token = localStorage.getItem("token");
         form_Data.append("jwt", token);
         form_Data.append("id", _this.id);
-        form_Data.append("notes", _this.notes);
-        form_Data.append("phase", JSON.stringify(_this.phase1));
-  
-        axios({
-          method: "post",
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-          url: "api/office_item_inventory_check_save",
-          data: form_Data,
-        })
-          .then(function(response) {
-            //handle success
-            //this.$forceUpdate();
-            Swal.fire({
-              text: response.data.message,
-              icon: "info",
-              confirmButtonText: "OK",
-            });
-
-          })
-          .catch(function(response) {
-            //handle error
-            Swal.fire({
-              text: response.data,
-              icon: "warning",
-              confirmButtonText: "OK",
-            });
-          });
-        
-      },
-
-      save2: function() {
-        let _this = this;
-
-        var form_Data = new FormData();
-        var token = localStorage.getItem("token");
-        form_Data.append("jwt", token);
-        form_Data.append("id", _this.id);
-        form_Data.append("stage", 2);
-        form_Data.append("notes", _this.notes2);
+        form_Data.append("stage", stage);
+        form_Data.append("notes", note);
         form_Data.append("phase", JSON.stringify(_this.phase1));
   
         axios({
@@ -495,6 +455,39 @@ var app = new Vue({
         });
       },
 
+      
+    export_list3: function() {
+      let _this = this;
+
+      let token = localStorage.getItem("accessToken");
+
+        var form_Data = new FormData();
+
+        form_Data.append("jwt", token);
+        form_Data.append("id", this.id);
+        form_Data.append("list", JSON.stringify(_this.phase1));
+  
+      axios({
+        method: "post",
+        url: "api/office_item_inventory_check_stage3_export",
+        data: form_Data,
+        responseType: "blob",
+      })
+        .then(function(response) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+
+          link.setAttribute("download", "Office_Item_Application_" + _this.record.request_no + ".xlsx");
+
+          document.body.appendChild(link);
+          link.click();
+        })
+        .catch(function(response) {
+          console.log(response);
+        });
+      },
+
     goto_phase1: function() {
       let _this = this;
         Swal.fire({
@@ -514,6 +507,79 @@ var app = new Vue({
           }
         });
 
+    },
+
+    
+    goto_phase2: function() {
+      let _this = this;
+        Swal.fire({
+          title: "“Reject”",
+          text: "When you click the button of “Reject”, then all your encoding content except for “Notes” will be discarded and unrecoverable. Are you sure to continue this action?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "No",
+          confirmButtonText: "Yes",
+        }).then((result) => {
+          if (result.value) {
+            _this.do_goto_phase2(); // <--- submit form programmatically
+          } else {
+            // swal("Cancelled", "Your imaginary file is safe :)", "error");
+          }
+        });
+
+    },
+
+    
+    do_goto_phase2() {
+      let _this = this;
+
+      for (var i = 0; i < this.phase1.length; i++) {
+        this.phase1[i].qty2 = "";
+        this.phase1[i].comment = "";
+      }
+
+      var form_Data = new FormData();
+      var token = localStorage.getItem("token");
+      form_Data.append("jwt", token);
+      form_Data.append("id", _this.id);
+      form_Data.append("notes", _this.notes3);
+      form_Data.append("phase", JSON.stringify(_this.phase1));
+      form_Data.append("stage", 3);
+      form_Data.append("status", 2);
+
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+        url: "api/office_item_inventory_check_action",
+        data: form_Data,
+      })
+        .then(function(response) {
+          //handle success
+          //this.$forceUpdate();
+          // yes then go to next phase
+          Swal.fire({
+            text: response.data.message,
+            icon: "info",
+            confirmButtonText: "OK",
+          }).then(function() {
+            _this.getRecord(_this.id);
+            _this.it_page = 1;
+          });
+
+        })
+        .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: response.data,
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+        });
     },
 
     
@@ -1383,6 +1449,16 @@ var app = new Vue({
       this.notes2 = "";
     },
 
+    reset3: function() {
+      for (var i = 0; i < this.phase1.length; i++) {
+        this.phase1[i].qty2 = "";
+        this.phase1[i].comment = "";
+      }
+
+      // this.notes2 = this.record.note_2;
+      this.notes3 = "";
+    },
+
     reset: function() {
       this.list_payee = "";
       this.list_particulars = "";
@@ -1675,6 +1751,8 @@ var app = new Vue({
           qty: item.qty,
           qty1: "",
           note: "",
+          qty2: "",
+          comment: "",
           reserve_qty : item.reserve_qty,
           item_id: item.id,
         };
@@ -1730,6 +1808,8 @@ var app = new Vue({
           qty: items[j].qty,
           qty1: "",
           note: "",
+          qty2: "",
+          comment: "",
           reserve_qty : items[j].reserve_qty,
           item_id: items[j].id,
         };

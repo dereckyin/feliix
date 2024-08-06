@@ -229,7 +229,7 @@
     #modal_EditListing {
         display: none;
         position: absolute;
-        top: -60px;
+        top: 20px;
         left: 0;
         right: 0;
         margin: auto;
@@ -242,7 +242,7 @@
         border: 2px solid #2F9A57;
         padding: 20px 25px;
         background-color: white;
-        max-height: 95vh;
+        max-height: 850px;
         overflow-y: auto;
     }
 
@@ -525,15 +525,28 @@
         font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     }
 
-    #phase2 .tablebox ul > li:nth-of-type(5) input {
+    #phase2 .tablebox ul > li:nth-of-type(5) input, #phase3 .tablebox ul > li:nth-of-type(6) input {
         width: 120px;
         margin-bottom: 20px;
     }
 
-    #phase2 .tablebox ul > li:nth-of-type(5) textarea {
+    #phase2 .tablebox ul > li:nth-of-type(5) textarea, #phase3 .tablebox ul > li:nth-of-type(6) textarea {
         width: 90%;
     }
 
+    #phase3 .tablebox ul > li.checker_result > span.green {
+        color: green;
+        margin-left: 10px;
+    }
+
+    #phase3 .tablebox ul > li.checker_result > span.red {
+        color: red;
+        margin-left: 10px;
+    }
+
+    #phase3 .tablebox ul > li.checker_result > div {
+        margin-top: 5px;
+    }
 
     .shake {
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
@@ -652,7 +665,7 @@
 
                     <div class="btnbox">
                         <a class="btn red" @click="reset" title="Clear All Encoded Content">Reset</a>
-                        <a class="btn" @click="save" title="Temporarily Save Encoded Content">Save</a>
+                        <a class="btn" @click="save(1, notes)" title="Temporarily Save Encoded Content">Save</a>
                         <a class="btn" @click="goto_phase2" title="Go to Next Phase: Inventory Count by Checker">Next Phase</a>
                     </div>
 
@@ -748,7 +761,7 @@
 
                     <div class="btnbox">
                         <a class="btn red" @click="reset2" title="Clear All Encoded Content">Reset</a>
-                        <a class="btn" @click="save2" title="Temporarily Save Encoded Content">Save</a>
+                        <a class="btn" @click="save(2, notes2)" title="Temporarily Save Encoded Content">Save</a>
                         <a class="btn red" @click="goto_phase1" title="Go to Previous Phase: Create Checking List by Checker">Previous Phase</a>
                         <a class="btn" @click="goto_phase3" title="Go to Next Phase: Review by Approver">Next Phase</a>
                     </div>
@@ -831,7 +844,22 @@
                                     <li>{{item.qty}}</li>
 
                                     <!-- Checker 輸入的數量 和 Checker 輸入的remarks -->
-                                    <li>{{item.qty1}}<br>{{item.note}}</li>
+                                    <li class="checker_result">
+
+                                        {{item.qty1}}
+
+                                        <!-- 如果 盤點數量 大於 庫存數量，則下方的 <span> 結構需要創造出來 -->
+                                        <span class="green" v-if="item.qty1 > item.qty">
+                                            ( ↑ {{item.qty1 - item.qty}} )
+                                        </span>
+
+                                        <!-- 如果 盤點數量 小於 庫存數量，則下方的 <span> 結構需要創造出來 -->
+                                        <span class="red" v-if="item.qty1 < item.qty">
+                                            ( ↓ {{item.qty - item.qty1}} )
+                                        </span>
+
+                                        <div>{{ item.note }}</div>
+                                    </li>
 
                                     <li>
                                         <input type="number" min=1 v-model="item.qty2">
@@ -848,9 +876,9 @@
                     </ul>
 
                     <div class="btnbox">
-                        <a class="btn red" @click="reset" title="Clear All Encoded Content">Reset</a>
-                        <a class="btn" @click="save" title="Temporarily Save Encoded Content">Save</a>
-                        <a class="btn red" @click="reject" title="Go to Previous Phase: Inventory Count by Checker">Reject</a>
+                        <a class="btn red" @click="reset3" title="Clear All Encoded Content">Reset</a>
+                        <a class="btn" @click="save(3, notes3)" title="Temporarily Save Encoded Content">Save</a>
+                        <a class="btn red" @click="goto_phase2" title="Go to Previous Phase: Inventory Count by Checker">Reject</a>
                         <a class="btn" @click="approve" title="Go to Next Phase: Inventory Check Completed">Approve</a>
                     </div>
 
