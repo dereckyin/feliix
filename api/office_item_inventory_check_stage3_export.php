@@ -177,8 +177,8 @@ if($jwt){
 
             // $sheet->setTitle("盛盛訂購單");
 
-            $sheet->getStyle('A1:E300')->getAlignment()->setHorizontal('center');
-            $sheet->getStyle('A1:E300')->getAlignment()->setVertical('center');
+            $sheet->getStyle('A1:F300')->getAlignment()->setHorizontal('center');
+            $sheet->getStyle('A1:F300')->getAlignment()->setVertical('center');
 
 
             $sheet->getColumnDimension('A')->setWidth(17.15);
@@ -186,6 +186,7 @@ if($jwt){
             $sheet->getColumnDimension('C')->setWidth(50.82);
             $sheet->getColumnDimension('D')->setWidth(40.82);
             $sheet->getColumnDimension('E')->setWidth(40.82);
+            $sheet->getColumnDimension('F')->setWidth(40.82);
 
             // header
             $sheet->setCellValue('A1', 'Code');
@@ -193,6 +194,7 @@ if($jwt){
             $sheet->setCellValue('C1', 'Particulars');
             $sheet->setCellValue('D1', 'Qty in Stock');
             $sheet->setCellValue('E1', 'Qty Counted');
+            $sheet->setCellValue('F1', 'Comment');
 
             $sheet->getStyle('A1:E1')->getFont()->setBold(true);
 
@@ -229,9 +231,31 @@ if($jwt){
 
                 $sheet->setCellValue('D'. $i, $row['qty']);
 
-                $sheet->setCellValue('E'. $i, (isset($row['qty1']) ?  $row['qty1'] . "\n" : "") . $row['note']);
+                $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
+                
+                if($row['qty1'] - $row['qty'] > 0)
+                    $att_str = "   ( ↑ " . ($row['qty1'] - $row['qty']) . " )\n";
+                else if($row['qty1'] - $row['qty'] < 0)
+                    $att_str = "   ( ↓ " . ($row['qty'] - $row['qty1']) . " )\n";
+                else
+                    $att_str = "";
+                
+                $richText->createText($row['qty1']);
+                $payable = $richText->createTextRun($att_str);
+
+                if($row['qty1'] - $row['qty'] > 0)
+                    $payable->getFont()->getColor()->setARGB("25A2B8");
+                else if($row['qty1'] - $row['qty'] < 0)
+                    $payable->getFont()->getColor()->setARGB("FF0000");
+
+                
+                $richText->createText($row['note']);
+
+                $sheet->setCellValue('E'. $i, $richText);
                 $sheet->getStyle('E'. $i)->getAlignment()->setWrapText(true);
 
+                $sheet->setCellValue('F'. $i, (isset($row['qty2']) ?  $row['qty2'] . "\n" : "") . $row['comment']);
+                $sheet->getStyle('F'. $i)->getAlignment()->setWrapText(true);
 
                 $i++;
             }

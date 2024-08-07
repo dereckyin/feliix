@@ -510,7 +510,7 @@ var app = new Vue({
     },
 
     
-    goto_phase2: function() {
+    backto_phase2: function() {
       let _this = this;
         Swal.fire({
           title: "“Reject”",

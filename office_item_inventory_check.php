@@ -803,7 +803,7 @@
                                 <b>Checking List</b>
 
                                 <!-- 匯出清單，可以套用利用 office_items_catalog.php 的匯出功能去修改，和 Phase 2 的匯出結果欄位內容不相同 -->
-                                <a class="btn_export" href="javascript: void(0)" onclick="export_list3()">
+                                <a class="btn_export" href="javascript: void(0)" @click="export_list3()">
                                     <i aria-hidden="true" class="fas fa-file-export"></i>
                                 </a>
                             </div>
@@ -849,12 +849,12 @@
                                         {{item.qty1}}
 
                                         <!-- 如果 盤點數量 大於 庫存數量，則下方的 <span> 結構需要創造出來 -->
-                                        <span class="green" v-if="item.qty1 > item.qty">
+                                        <span class="green" v-if="parseInt(item.qty1) > parseInt(item.qty)">
                                             ( ↑ {{item.qty1 - item.qty}} )
                                         </span>
 
                                         <!-- 如果 盤點數量 小於 庫存數量，則下方的 <span> 結構需要創造出來 -->
-                                        <span class="red" v-if="item.qty1 < item.qty">
+                                        <span class="red" v-if="parseInt(item.qty1) < parseInt(item.qty)">
                                             ( ↓ {{item.qty - item.qty1}} )
                                         </span>
 
@@ -878,7 +878,7 @@
                     <div class="btnbox">
                         <a class="btn red" @click="reset3" title="Clear All Encoded Content">Reset</a>
                         <a class="btn" @click="save(3, notes3)" title="Temporarily Save Encoded Content">Save</a>
-                        <a class="btn red" @click="goto_phase2" title="Go to Previous Phase: Inventory Count by Checker">Reject</a>
+                        <a class="btn red" @click="backto_phase2" title="Go to Previous Phase: Inventory Count by Checker">Reject</a>
                         <a class="btn" @click="approve" title="Go to Next Phase: Inventory Check Completed">Approve</a>
                     </div>
 
