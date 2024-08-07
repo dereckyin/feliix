@@ -313,6 +313,53 @@ var app = new Vue({
         
       },
 
+
+    do_goto_phase4: function() {
+      let _this = this;
+
+      var form_Data = new FormData();
+      var token = localStorage.getItem("token");
+      form_Data.append("jwt", token);
+      form_Data.append("id", _this.id);
+      form_Data.append("notes", _this.notes3);
+      form_Data.append("phase", JSON.stringify(_this.phase1));
+      form_Data.append("stage", 3);
+      form_Data.append("status", 4);
+
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+        url: "api/office_item_inventory_check_action",
+        data: form_Data,
+      })
+        .then(function(response) {
+          //handle success
+          //this.$forceUpdate();
+          // yes then go to next phase
+          Swal.fire({
+            text: response.data.message,
+            icon: "info",
+            confirmButtonText: "OK",
+          }).then(function() {
+            _this.getRecord(_this.id);
+            _this.it_page = 1;
+          });
+
+        })
+        .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: response.data,
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+        });
+    },
+
+
     goto_phase3: function() {
       // all the pahse1.qty1 should not be empty
       for (i = 0; i < this.phase1.length; i++) {
@@ -502,6 +549,27 @@ var app = new Vue({
         }).then((result) => {
           if (result.value) {
             _this.do_goto_phase1(); // <--- submit form programmatically
+          } else {
+            // swal("Cancelled", "Your imaginary file is safe :)", "error");
+          }
+        });
+
+    },
+
+    goto_phase4: function() {
+      let _this = this;
+        Swal.fire({
+          title: "Approve",
+          text: "Are you sure to approve this inventory check result?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "No",
+          confirmButtonText: "Yes",
+        }).then((result) => {
+          if (result.value) {
+            _this.do_goto_phase4(); // <--- submit form programmatically
           } else {
             // swal("Cancelled", "Your imaginary file is safe :)", "error");
           }

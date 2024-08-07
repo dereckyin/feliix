@@ -127,6 +127,9 @@ if($status == 2 && $stage == 3)
                     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                     die();
                 }
+
+                if($status == 4)
+                    update_office_item_qty($phase, $db, $user_id);
             
                 
                 $db->commit();
@@ -145,4 +148,22 @@ if($status == 2 && $stage == 3)
             break;
         }
         
+
+        function update_office_item_qty($phase, $db, $user_id)
+        {
+            $phase_array = json_decode($phase, true);
+
+            foreach ($phase_array as $key => $value) {
+                $qty = $value['qty2'] != "" ? $value['qty2'] : $value['qty1'];
+
+                $item_id = $value[''];
+
+                $query = "update office_item set qty = qty - :qty where id = :id";
+                $stmt = $db->prepare($query);
+                $stmt->bindParam(':qty', $qty);
+                $stmt->bindParam(':id', $item_id);
+                $stmt->execute();
+            }
+            
+        }
         ?>

@@ -879,7 +879,7 @@
                         <a class="btn red" @click="reset3" title="Clear All Encoded Content">Reset</a>
                         <a class="btn" @click="save(3, notes3)" title="Temporarily Save Encoded Content">Save</a>
                         <a class="btn red" @click="backto_phase2" title="Go to Previous Phase: Inventory Count by Checker">Reject</a>
-                        <a class="btn" @click="approve" title="Go to Next Phase: Inventory Check Completed">Approve</a>
+                        <a class="btn" @click="goto_phase4" title="Go to Next Phase: Inventory Check Completed">Approve</a>
                     </div>
 
                 </form>
