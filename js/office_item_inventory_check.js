@@ -99,6 +99,7 @@ var app = new Vue({
     notes:"",
     notes2:"",
     notes3:"",
+    notes4:"",
 
     record: {},
 
@@ -262,6 +263,7 @@ var app = new Vue({
               _this.notes = _this.record.note_1;
               _this.notes2 = _this.record.note_2;
               _this.notes3 = _this.record.note_3;
+              _this.notes4 = _this.record.note_4;
 
               //_this.it_setPages();
             }
@@ -579,6 +581,7 @@ var app = new Vue({
     },
 
     
+    
     backto_phase2: function() {
       let _this = this;
         Swal.fire({
@@ -598,6 +601,10 @@ var app = new Vue({
           }
         });
 
+    },
+
+    go_to_check_mgt: function() {
+      window.location = "office_item_inventory_check_mgt";
     },
 
     

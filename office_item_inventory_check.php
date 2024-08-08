@@ -534,17 +534,23 @@
         width: 90%;
     }
 
-    #phase3 .tablebox ul > li.checker_result > span.green {
+    #phase3 .tablebox ul > li.checker_result > span.green,
+    #phase4 .tablebox ul > li.checker_result > span.green,
+    #phase4 .tablebox ul > li.approver_result > span.green {
         color: green;
         margin-left: 10px;
     }
 
-    #phase3 .tablebox ul > li.checker_result > span.red {
+    #phase3 .tablebox ul > li.checker_result > span.red,
+    #phase4 .tablebox ul > li.checker_result > span.red,
+    #phase4 .tablebox ul > li.approver_result > span.red {
         color: red;
         margin-left: 10px;
     }
 
-    #phase3 .tablebox ul > li.checker_result > div {
+    #phase3 .tablebox ul > li.checker_result > div,
+    #phase4 .tablebox ul > li.checker_result > div,
+    #phase4 .tablebox ul > li.approver_result > div {
         margin-top: 5px;
     }
 
@@ -917,7 +923,7 @@
                 <form>
                     <ul>
                         <li><b>Notes</b></li>
-                        <li><textarea style="width:100%" v-model="notes"></textarea></li>
+                        <li><textarea style="width:100%" v-model="note4"></textarea></li>
 
 
                         <li class="row_list">
@@ -931,12 +937,12 @@
 
                             <!-- 分頁功能，下方的 tablebox 的內容要做分頁，每一頁 20 筆資料  -->
                             <div class="list_function">
-                                <div class="pagenation">
-                                    <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+                            <div class="pagenation">
+                                    <a class="prev" :disabled="it_page == 1" @click="it_pre_page();">Prev 10</a>
 
-                                    <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
+                                    <a class="page" v-for="pg in it_pages_10" @click="it_page=pg;" v-bind:style="[pg == it_page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                                    <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                                    <a class="next" :disabled="it_page == it_pages.length" @click="it_nex_page();">Next 10</a>
                                 </div>
                             </div>
                         </li>
@@ -952,7 +958,7 @@
                                     <li>Comment</li>
                                 </ul>
 
-                                <ul v-for="(item,index) in petty_list" :key="index">
+                                <ul v-for="(item,index) in phase" :key="index">
                                     <li>{{ item.code1 + item.code2 + item.code3 + item.code4 }}</li>
                                     <li>
                                         <a :href="item.url" target="_blank" v-if="item.url">
@@ -962,13 +968,44 @@
                                     <li>{{ item.cat1 }} >> {{ item.cat2 }} >> {{ item.cat3 }} >> {{ item.cat4 }}</li>
 
                                     <!-- 庫存的數量 -->
-                                    <li>{{}}</li>
+                                    <li>{{item.qty}}</li>
 
                                     <!-- Checker 輸入的數量 和 Checker 輸入的remarks -->
-                                    <li>{{}}<br>{{}}</li>
+                                    <li class="checker_result">
+
+                                        {{ item.qty1 }}
+
+                                        <!-- 如果 盤點數量 大於 庫存數量，則下方的 <span> 結構需要創造出來 -->
+                                        <span class="green" v-if="parseInt(item.qty1) > parseInt(item.qty)">
+                                            ( ↑ {{item.qty1 - item.qty}} )
+                                        </span>
+
+                                        <!-- 如果 盤點數量 小於 庫存數量，則下方的 <span> 結構需要創造出來 -->
+                                        <span class="red" v-if="parseInt(item.qty1) < parseInt(item.qty)">
+                                            ( ↓ {{item.qty - item.qty1}} )
+                                        </span>
+
+                                        <div>{{item.note}}</div>
+                                    </li>
 
                                     <!-- Approver 輸入的數量 和 Approver 輸入的comment -->
-                                    <li>{{}}<br>{{}}</li>
+                                    <li class="approver_result">
+
+                                        {{ item.qty2 }}
+
+                                        <!-- 如果 Approver的數量 大於 庫存數量，則下方的 <span> 結構需要創造出來 -->
+                                        <span class="green" v-if="item.qty2 != '' && parseInt(item.qty2) > parseInt(item.qty)">
+                                            ( ↑ {{item.qty2 - item.qty}} )
+                                        </span>
+
+                                        <!-- 如果 Approver的數量 小於 庫存數量，則下方的 <span> 結構需要創造出來 -->
+                                        <span class="red" v-if="item.qty2 != '' && parseInt(item.qty2) < parseInt(item.qty)">
+                                            ( ↓ {{item.qty - item.qty2}} )
+                                        </span>
+
+                                        <div>{{item.comment}}</div>
+                                    </li>
+
 
                                 </ul>
 
@@ -980,7 +1017,7 @@
                     </ul>
 
                     <div class="btnbox">
-                        <a class="btn" @click="save">Go Back To Inventory Check Mgt.</a>
+                        <a class="btn" @click="go_to_check_mgt()">Go Back To Inventory Check Mgt.</a>
                     </div>
 
                 </form>
