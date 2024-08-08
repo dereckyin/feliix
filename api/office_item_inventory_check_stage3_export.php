@@ -1,9 +1,9 @@
 <?php
 ob_start();
 // required headers
- error_reporting(0);
+//error_reporting(0);
  
- require '../vendor/autoload.php';
+require '../vendor/autoload.php';
 // required to encode json web token
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -209,12 +209,12 @@ if($jwt){
                     $row['url'] = str_replace('+', '%20', $row['url']);
                     $row['url'] = str_replace(' ', '%20', $row['url']);
 
-                    grab_image($row['url'], preg_replace('/[^A-Za-z0-9]/', '', $row['url']));
+                    grab_image($row['url'], $conf::$upload_path . preg_replace('/[^A-Za-z0-9]/', '', $row['url']));
 
                     $objDrawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
                     $objDrawing->setName('url');
                     $objDrawing->setDescription('url');
-                    $objDrawing->setPath(preg_replace('/[^A-Za-z0-9]/', '', $row['url']));
+                    $objDrawing->setPath($conf::$upload_path . preg_replace('/[^A-Za-z0-9]/', '', $row['url']));
                     $objDrawing->setCoordinates('B' . $i);
                     $objDrawing->setWidthAndHeight(100, 100);
                     $objDrawing->setResizeProportional(true);
@@ -238,7 +238,7 @@ if($jwt){
                 else if($row['qty1'] - $row['qty'] < 0)
                     $att_str = "   ( ↓ " . ($row['qty'] - $row['qty1']) . " )\n";
                 else
-                    $att_str = "";
+                    $att_str = " ";
                 
                 $richText->createText($row['qty1']);
                 $payable = $richText->createTextRun($att_str);

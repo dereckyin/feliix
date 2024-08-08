@@ -207,12 +207,12 @@ if($jwt){
                     $row['url'] = str_replace('+', '%20', $row['url']);
                     $row['url'] = str_replace(' ', '%20', $row['url']);
 
-                    grab_image($row['url'], preg_replace('/[^A-Za-z0-9]/', '', $row['url']));
+                    grab_image($row['url'], $conf::$upload_path . preg_replace('/[^A-Za-z0-9]/', '', $row['url']));
 
                     $objDrawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
                     $objDrawing->setName('url');
                     $objDrawing->setDescription('url');
-                    $objDrawing->setPath(preg_replace('/[^A-Za-z0-9]/', '', $row['url']));
+                    $objDrawing->setPath($conf::$upload_path . preg_replace('/[^A-Za-z0-9]/', '', $row['url']));
                     $objDrawing->setCoordinates('B' . $i);
                     $objDrawing->setWidthAndHeight(100, 100);
                     $objDrawing->setResizeProportional(true);
