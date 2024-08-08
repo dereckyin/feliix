@@ -69,6 +69,7 @@ if (!isset($jwt)) {
             $id = (isset($_POST['id']) ?  $_POST['id'] : '0');
             $status = (isset($_POST['status']) ?  $_POST['status'] : '0');
             $stage = (isset($_POST['stage']) ?  $_POST['stage'] : 1);
+            $request_no = (isset($_POST['request_no']) ?  $_POST['request_no'] : '');
             
             try {
                 $query = "update office_item_inventory_check
@@ -129,7 +130,7 @@ if($status == 2 && $stage == 3)
                 }
 
                 if($status == 4)
-                    update_office_item_qty($phase, $db, $user_id);
+                    update_office_item_qty($id, $request_no, $phase, $db, $user_id);
             
                 
                 $db->commit();
@@ -149,20 +150,32 @@ if($status == 2 && $stage == 3)
         }
         
 
-        function update_office_item_qty($phase, $db, $user_id)
+        function update_office_item_qty($request_id, $request_no, $phase, $db, $user_id)
         {
             $phase_array = json_decode($phase, true);
 
             foreach ($phase_array as $key => $value) {
+                $code = $value['code1'] . $value['code2'] . $value['code3'] . $value['code4'];
                 $qty = $value['qty2'] != "" ? $value['qty2'] : $value['qty1'];
 
-                $item_id = $value[''];
-
-                $query = "update office_item set qty = qty - :qty where id = :id";
+                $query = "update office_items_stock set qty = :qty, updated_id = :updated_id, updated_at = now() where code = :code";
                 $stmt = $db->prepare($query);
                 $stmt->bindParam(':qty', $qty);
-                $stmt->bindParam(':id', $item_id);
+                $stmt->bindParam(':code', $code);
+                $stmt->bindParam(':updated_id', $user_id);
                 $stmt->execute();
+
+                $action = 'Inventory Check' . ': ' . $request_no;
+                $query = "insert into office_stock_history (request_id, code, qty, action, create_id, created_at, updated_id, updated_at) values (:request_id, :code, :qty, '" . $action . "', :updated_id, now(), :updated_id, now())";
+                $stmt = $db->prepare($query);
+                
+                $stmt->bindParam(':request_id', $request_id);
+                $stmt->bindParam(':code', $code);
+                $stmt->bindParam(':qty', $qty);
+                $stmt->bindParam(':updated_id', $user_id);
+
+                $stmt->execute();
+
             }
             
         }

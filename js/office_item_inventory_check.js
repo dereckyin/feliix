@@ -325,6 +325,7 @@ var app = new Vue({
       form_Data.append("phase", JSON.stringify(_this.phase1));
       form_Data.append("stage", 3);
       form_Data.append("status", 4);
+      form_Data.append("request_no", _this.record.request_no);
 
       axios({
         method: "post",
