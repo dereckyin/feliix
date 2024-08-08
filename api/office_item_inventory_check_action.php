@@ -156,43 +156,49 @@ if($status == 2 && $stage == 3)
 
             foreach ($phase_array as $key => $value) {
                 $code = $value['code1'] . $value['code2'] . $value['code3'] . $value['code4'];
+
+                $amount = $value['qty'] != "" ? $value['qty'] : 0;
                 $qty = $value['qty2'] != "" ? $value['qty2'] : $value['qty1'];
 
-                $query = "select * from office_items_stock where code = :code";
-                $stmt = $db->prepare($query);
-                $stmt->bindParam(':code', $code);
-                $stmt->execute();
-
-                $num = $stmt->rowCount();
-                if ($num == 0) {
-                    $query = "insert into office_items_stock (code, qty, create_id, created_at, updated_id, updated_at, status) values (:code, :qty, :updated_id, now(), :updated_id, now(), 1)";
-                    $stmt = $db->prepare($query);
-                    $stmt->bindParam(':code', $code);
-                    $stmt->bindParam(':qty', $qty);
-                    $stmt->bindParam(':updated_id', $user_id);
-                    $stmt->execute();
-                }
-                else
+                if($amount != $qty)
                 {
-                    $query = "update office_items_stock set qty = :qty, updated_id = :updated_id, updated_at = now() where code = :code";
+                    $query = "select * from office_items_stock where code = :code";
                     $stmt = $db->prepare($query);
-                    $stmt->bindParam(':qty', $qty);
                     $stmt->bindParam(':code', $code);
+                    $stmt->execute();
+
+                    $num = $stmt->rowCount();
+                    if ($num == 0) {
+                        $query = "insert into office_items_stock (code, qty, create_id, created_at, updated_id, updated_at, status) values (:code, :qty, :updated_id, now(), :updated_id, now(), 1)";
+                        $stmt = $db->prepare($query);
+                        $stmt->bindParam(':code', $code);
+                        $stmt->bindParam(':qty', $qty);
+                        $stmt->bindParam(':updated_id', $user_id);
+                        $stmt->execute();
+                    }
+                    else
+                    {
+                        $query = "update office_items_stock set qty = :qty, updated_id = :updated_id, updated_at = now() where code = :code";
+                        $stmt = $db->prepare($query);
+                        $stmt->bindParam(':qty', $qty);
+                        $stmt->bindParam(':code', $code);
+                        $stmt->bindParam(':updated_id', $user_id);
+                        $stmt->execute();
+                    }
+
+                    $action = 'Inventory Check' . ': ' . $request_no . ' set to ' . $qty;
+                    $query = "insert into office_stock_history (request_id, code, qty, action, create_id, created_at, updated_id, updated_at) values (:request_id, :code, :qty, '" . $action . "', :updated_id, now(), :updated_id, now())";
+                    $stmt = $db->prepare($query);
+
+                    $diff = $qty - $amount;
+
+                    $stmt->bindParam(':request_id', $request_id);
+                    $stmt->bindParam(':code', $code);
+                    $stmt->bindParam(':qty', $diff);
                     $stmt->bindParam(':updated_id', $user_id);
+
                     $stmt->execute();
                 }
-
-                $action = 'Inventory Check' . ': ' . $request_no;
-                $query = "insert into office_stock_history (request_id, code, qty, action, create_id, created_at, updated_id, updated_at) values (:request_id, :code, :qty, '" . $action . "', :updated_id, now(), :updated_id, now())";
-                $stmt = $db->prepare($query);
-
-                $stmt->bindParam(':request_id', $request_id);
-                $stmt->bindParam(':code', $code);
-                $stmt->bindParam(':qty', $qty);
-                $stmt->bindParam(':updated_id', $user_id);
-
-                $stmt->execute();
-
             }
             
         }
