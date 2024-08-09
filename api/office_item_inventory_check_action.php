@@ -92,6 +92,11 @@ if($status == 3)
                 $query .= " check_id = " . $user_id . ", check_at = now(), ";
 }
 
+if($status == 4)
+{
+                $query .= " approval_id = " . $user_id . ", approval_at = now(), ";
+}
+
 if($status == 2 && $stage == 3)
 {
                 $query .= " check_id = 0, check_at = null, ";
