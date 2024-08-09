@@ -274,7 +274,8 @@ if($jwt){
                 }
 
                 
-                $richText1->createText($row['note']);
+                if(isset($row['comment']))
+                    $richText1->createText($row['comment']);
 
                 $sheet->setCellValue('F'. $i, $richText1);
                 $sheet->getStyle('F'. $i)->getAlignment()->setWrapText(true);
