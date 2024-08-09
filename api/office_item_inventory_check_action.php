@@ -163,7 +163,7 @@ if($status == 2 && $stage == 3)
                 $code = $value['code1'] . $value['code2'] . $value['code3'] . $value['code4'];
 
                 $amount = $value['qty'] != "" ? $value['qty'] : 0;
-                $qty = $value['qty2'] != "" ? $value['qty2'] : $value['qty1'];
+                $qty = isset($value['qty2']) != "" ? isset($value['qty2']) : $value['qty1'];
 
                 if($amount != $qty)
                 {
