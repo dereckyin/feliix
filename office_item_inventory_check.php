@@ -922,8 +922,8 @@
 
                 <form>
                     <ul>
-                        <li><b>Notes</b></li>
-                        <li><textarea style="width:100%" v-model="note4"></textarea></li>
+                        <!-- <li><b>Notes</b></li>
+                        <li><textarea style="width:100%" v-model="notes4"></textarea></li> -->
 
 
                         <li class="row_list">
