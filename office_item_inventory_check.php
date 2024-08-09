@@ -930,7 +930,7 @@
                             <div class="label_btn">
                                 <b>Checking List</b>
                                 <!-- 匯出清單，可以套用利用 office_items_catalog.php 的匯出功能去修改，和 Phase 2 的匯出結果欄位內容不相同 -->
-                                <a class="btn_export" href="javascript: void(0)" onclick="">
+                                <a class="btn_export" href="javascript: void(0)" @click="export_list4()">
                                     <i aria-hidden="true" class="fas fa-file-export"></i>
                                 </a>
                             </div>

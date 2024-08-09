@@ -620,7 +620,9 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $phase1 = json_decode($phase_1, true);
             if($phase1 == null)
                 $phase1 = [];
-            $phase1 = UpdateQty($phase1, $db);
+
+            if($status != 4)
+                $phase1 = UpdateQty($phase1, $db);
 
             $note_1 = $row['note_1'];
             $note_2 = $row['note_2'];
