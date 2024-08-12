@@ -319,6 +319,17 @@ var app = new Vue({
     do_goto_phase4: function() {
       let _this = this;
 
+      for (i = 0; i < this.phase1.length; i++) {
+        if (parseInt(this.phase1[i].qty2) < 0) {
+          Swal.fire({
+            text: "Qty is not allowed to be negative.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return false;
+        }
+      }
+
       var form_Data = new FormData();
       var token = localStorage.getItem("token");
       form_Data.append("jwt", token);
@@ -369,6 +380,17 @@ var app = new Vue({
         if (this.phase1[i].qty1 === "" || this.phase1[i].qty1 === undefined) {
           Swal.fire({
             text: "Qty counted is required for every item in the checking list.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return false;
+        }
+      }
+
+      for (i = 0; i < this.phase1.length; i++) {
+        if (parseInt(this.phase1[i].qty1) < 0) {
+          Swal.fire({
+            text: "Qty is not allowed to be negative.",
             icon: "warning",
             confirmButtonText: "OK",
           });
