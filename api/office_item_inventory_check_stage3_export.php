@@ -261,11 +261,11 @@ if($jwt){
 
                 if(isset($row['qty2']) && $row['qty2'] != '')
                 {
-                    if($row['qty2'] - $row['qty'] > 0)
-                        $att_str = "   ( ↑ " . ($row['qty2'] - $row['qty']) . " )\n";
-                    else if($row['qty2'] - $row['qty'] < 0)
-                        $att_str = "   ( ↓ " . ($row['qty'] - $row['qty2']) . " )\n";
-                    else
+                    // if($row['qty2'] - $row['qty'] > 0)
+                    //     $att_str = "   ( ↑ " . ($row['qty2'] - $row['qty']) . " )\n";
+                    // else if($row['qty2'] - $row['qty'] < 0)
+                    //     $att_str = "   ( ↓ " . ($row['qty'] - $row['qty2']) . " )\n";
+                    // else
                         $att_str = " ";
     
                     if($att_str == " ")
@@ -275,10 +275,10 @@ if($jwt){
 
                     $payable1 = $richText1->createTextRun($att_str);
     
-                    if($row['qty2'] - $row['qty'] > 0)
-                        $payable1->getFont()->getColor()->setARGB("25A2B8");
-                    else if($row['qty2'] - $row['qty'] < 0)
-                        $payable1->getFont()->getColor()->setARGB("FF0000");
+                    // if($row['qty2'] - $row['qty'] > 0)
+                    //     $payable1->getFont()->getColor()->setARGB("25A2B8");
+                    // else if($row['qty2'] - $row['qty'] < 0)
+                    //     $payable1->getFont()->getColor()->setARGB("FF0000");
                 }
 
                 
