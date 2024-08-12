@@ -241,7 +241,11 @@ if($jwt){
                 else
                     $att_str = " ";
                 
-                $richText->createText($row['qty1'] . "\n");
+                if($att_str == " ")
+                    $richText->createText($row['qty1'] . "\n");
+                else
+                    $richText->createText($row['qty1']);
+
                 $payable = $richText->createTextRun($att_str);
 
                 if($row['qty1'] - $row['qty'] > 0)
@@ -264,7 +268,11 @@ if($jwt){
                     else
                         $att_str = " ";
     
-                    $richText1->createText($row['qty2'] . "\n");
+                    if($att_str == " ")
+                        $richText1->createText($row['qty2'] . "\n");
+                    else
+                        $richText1->createText($row['qty2']);
+
                     $payable1 = $richText1->createTextRun($att_str);
     
                     if($row['qty2'] - $row['qty'] > 0)
