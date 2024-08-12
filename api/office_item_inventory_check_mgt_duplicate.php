@@ -98,8 +98,8 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
     $phase_3 = $merged_results[0]['phase_3'];
     $phase_4 = $merged_results[0]['phase_4'];
 
-    $checker = "";
-    $approver = "";
+    $checker = 0;
+    $approver = 0;
 
     $phase_1 = UpdateQty($phase_1, $db);
     
