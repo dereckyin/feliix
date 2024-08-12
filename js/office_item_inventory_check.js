@@ -319,17 +319,6 @@ var app = new Vue({
     do_goto_phase4: function() {
       let _this = this;
 
-      for (i = 0; i < this.phase1.length; i++) {
-        if (parseInt(this.phase1[i].qty2) < 0) {
-          Swal.fire({
-            text: "Qty is not allowed to be negative.",
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-          return false;
-        }
-      }
-
       var form_Data = new FormData();
       var token = localStorage.getItem("token");
       form_Data.append("jwt", token);
@@ -626,6 +615,18 @@ var app = new Vue({
           confirmButtonText: "Yes",
         }).then((result) => {
           if (result.value) {
+
+            for (i = 0; i < _this.phase1.length; i++) {
+              if (parseInt(_this.phase1[i].qty2) < 0) {
+                Swal.fire({
+                  text: "Qty is not allowed to be negative.",
+                  icon: "warning",
+                  confirmButtonText: "OK",
+                });
+                return false;
+              }
+            }
+
             _this.do_goto_phase4(); // <--- submit form programmatically
           } else {
             // swal("Cancelled", "Your imaginary file is safe :)", "error");

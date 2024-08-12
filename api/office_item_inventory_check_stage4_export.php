@@ -255,7 +255,7 @@ if($jwt){
                 $sheet->setCellValue('E'. $i, $richText);
                 $sheet->getStyle('E'. $i)->getAlignment()->setWrapText(true);
 
-                if(isset($row['qty2']))
+                if(isset($row['qty2']) && $row['qty2'] != '')
                 {
                     if($row['qty2'] - $row['qty'] > 0)
                         $att_str = "   ( ↑ " . ($row['qty2'] - $row['qty']) . " )\n";
