@@ -5237,3 +5237,10 @@ ADD COLUMN `inventory_checker` text COLLATE utf8mb4_unicode_ci;
 
 ALTER TABLE access_control
 ADD COLUMN `inventory_approver` text COLLATE utf8mb4_unicode_ci;
+
+-- 20240812
+ALTER TABLE office_stock_history
+ADD column `act_1` varchar(512) COLLATE utf8mb4_unicode_ci default '' AFTER `action`;
+
+ALTER TABLE office_stock_history
+ADD column `act_2` varchar(512) COLLATE utf8mb4_unicode_ci default '' AFTER `act_1`;

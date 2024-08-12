@@ -323,7 +323,7 @@ var app = new Vue({
 
                 // show error message to user
                 error: function (xhr, resp, text) {
-
+                    // confirm("Error: " + xhr.responseText);
                 }
             });
 

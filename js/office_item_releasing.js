@@ -348,6 +348,7 @@ authRecord() {
       form_Data.append("jwt", token);
       form_Data.append("crud", "Releaser released");
       form_Data.append("id", id);
+      form_Data.append("request_no", this.record.request_no);
       form_Data.append("list", JSON.stringify(this.record.list));
 
       for (var i = 0; i < this.$refs.file.files.length; i++) {

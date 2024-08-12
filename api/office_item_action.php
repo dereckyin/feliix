@@ -29,6 +29,7 @@ $total_amount_liquidate = (isset($_POST['total_amount_liquidate']) ?  $_POST['to
 $petty = (isset($_POST['items']) ?  $_POST['items'] : "[]");
 $petty_array = json_decode($petty,true);
 
+$request_no = (isset($_POST['request_no']) ?  $_POST['request_no'] : '');
 
 
 include_once 'config/core.php';
@@ -405,6 +406,11 @@ if (!isset($jwt)) {
             {
                 $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
                 $amount = $item['amount'] * -1;
+
+                $act = "Releaser released";
+                $act_1 = "OIA-" . $request_no;
+                $act_2 = "Release " . $item['amount'];
+
                 // office_stock_history
                 $query = "INSERT INTO office_stock_history
                 SET
@@ -413,6 +419,8 @@ if (!isset($jwt)) {
                     `qty` = :qty,
                     `reserve_qty` = :qty,
                     `action` = :_action,
+                    `act_1` = :act_1,
+                    `act_2` = :act_2,
                     `status` = 1,
                     `create_id` = :create_id,
                     `created_at` = now()";
@@ -424,7 +432,9 @@ if (!isset($jwt)) {
                 $stmt->bindParam(':request_id', $id);
                 $stmt->bindParam(':code', $code);
                 $stmt->bindParam(':qty', $amount);
-                $stmt->bindParam(':_action', $crud);
+                $stmt->bindParam(':_action', $act);
+                $stmt->bindParam(':act_1', $act_1);
+                $stmt->bindParam(':act_2', $act_2);
                 $stmt->bindParam(':create_id', $user_id);
     
                 try {

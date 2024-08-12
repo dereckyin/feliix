@@ -88,18 +88,20 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
 
     $request_no = "IC-" . str_pad($row_id, 5, '0', STR_PAD_LEFT);
 
-    $note_1 = $merged_results[0]['note_1'];
-    $note_2 = $merged_results[0]['note_2'];
-    $note_3 = $merged_results[0]['note_3'];
-    $note_4 = $merged_results[0]['note_4'];
+    $note_1 = "";
+    $note_2 = "";
+    $note_3 = "";
+    $note_4 = "";
 
     $phase_1 = $merged_results[0]['phase_1'];
     $phase_2 = $merged_results[0]['phase_2'];
     $phase_3 = $merged_results[0]['phase_3'];
     $phase_4 = $merged_results[0]['phase_4'];
 
-    $checker = $merged_results[0]['checker'];
-    $approver = $merged_results[0]['approver'];
+    $checker = "";
+    $approver = "";
+
+    $phase_1 = UpdateQty($phase_1, $db);
     
     $query = "INSERT INTO office_item_inventory_check
         SET
@@ -120,10 +122,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
 
             `status` = 1,
             `create_id` = :create_id,
-            `created_at` =  now(),
-
-            updated_id = :create_id,
-            updated_at = now()";
+            `created_at` =  now()";
 
     // prepare the query
     $stmt = $db->prepare($query);
@@ -169,6 +168,37 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
     }
 }
 
+function UpdateQty($list, $db)
+{
+    $list = json_decode($list, true);
+
+    foreach($list as &$item)
+    {
+        $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
+
+        $sql = "select qty, reserve_qty from office_items_stock where code = '" . $code . "'";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $qty = $row['qty'];
+            $reserve_qty = $row['reserve_qty'];
+
+            $item['qty'] = $qty;
+            $item['reserve_qty'] = $reserve_qty;
+
+            $item['qty2'] = "";
+            $item['qty1'] = "";
+
+            $item['note'] = "";
+            $item['comment'] = "";
+        }
+    }
+
+    $list = json_encode($list);
+
+    return $list;
+}
 
 function GetQuotation($id, $db) {
     $merged_results = array();
