@@ -868,8 +868,8 @@
                                     </li>
 
                                     <li>
-                                        <input type="number" min=1 v-model="item.qty2">
-                                        <input type="text" v-model="item.comment">
+                                        <input placeholder="Qty" type="number" min=1 v-model="item.qty2">
+                                        <textarea v-model="item.comment" placeholder="Comment"></textarea>
                                     </li>
 
                                 </ul>
