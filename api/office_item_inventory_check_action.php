@@ -165,6 +165,9 @@ if($status == 2 && $stage == 3)
                 $amount = $value['qty'] != "" ? $value['qty'] : 0;
                 $qty = isset($value['qty2']) ? $value['qty2'] : $value['qty1'];
 
+                if($qty == "")
+                    $qty = $value['qty1'];
+
                 if($amount != $qty)
                 {
                     $query = "select * from office_items_stock where code = :code";
