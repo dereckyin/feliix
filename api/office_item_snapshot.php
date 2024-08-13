@@ -138,6 +138,11 @@ switch ($method) {
         {
             $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
             $amount = $item['amount'] * -1;
+
+            $act = "Office Item Application";
+            $act_1 = "OIA-" . $request_no;
+            $act_2 = "Release " . $item['amount'];
+            
             // office_stock_history
             $query = "INSERT INTO office_stock_history
                 SET
@@ -146,6 +151,8 @@ switch ($method) {
                     `qty` = :qty,
                     `reserve_qty` = :qty,
                     `action` = :_action,
+                    `act_1` = :act_1,
+                    `act_2` = :act_2,
                     `status` = 1,
                     `create_id` = :create_id,
                     `created_at` = now()";
@@ -157,7 +164,9 @@ switch ($method) {
             $stmt->bindParam(':request_id', $item_id);
             $stmt->bindParam(':code', $code);
             $stmt->bindParam(':qty', $amount);
-            $stmt->bindParam(':_action', $crud);
+            $stmt->bindParam(':_action', $act);
+            $stmt->bindParam(':act_1', $act_1);
+            $stmt->bindParam(':act_2', $act_2);
             $stmt->bindParam(':create_id', $user_id);
             
             try {
