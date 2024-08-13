@@ -173,7 +173,7 @@ var app = new Vue({
     let dataurl = canvas.toDataURL();
 
     //let data = { sig_date: sig_date, sig_name: sig_name, releaser_sig_date: releaser_sig_date, releaser_sig_name : releaser_sig_name, item_id: this.record.id, list: this.record.list};
-    let data = { sig_date: dataurl, item_id: _this.record.id, list: _this.record.list};
+    let data = { sig_date: dataurl, item_id: _this.record.id, list: _this.record.list, request_no: _this.record.request_no};
     _this.loading = true;
 
     axios

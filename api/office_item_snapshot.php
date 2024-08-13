@@ -81,6 +81,8 @@ switch ($method) {
         // $releaser_sig_date = $data['releaser_sig_date'];
         // $releaser_sig_name = $data['releaser_sig_name'];
         $list = $data['list'];
+
+        $request_no = $data['request_no'];
         
         $sig_date = str_replace('data:image/png;base64,', '', $sig_date);
         $sig_date = str_replace('data:image/jpeg;base64,', '', $sig_date);
