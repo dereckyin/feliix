@@ -120,7 +120,7 @@ switch ($method) {
                 LEFT JOIN user p ON p.id = pm.create_id 
                 LEFT JOIN user c ON c.id = pm.checker
                 LEFT JOIN user a ON a.id = pm.approver
-                where 1=1  ";
+                where pm.`status` <> -1   ";
 
         $sql = "SELECT  pm.id,
                         request_no, 
@@ -143,7 +143,7 @@ switch ($method) {
                 LEFT JOIN user u ON u.id = pm.updated_id
                 LEFT JOIN user c ON c.id = pm.check_id
                 LEFT JOIN user a ON a.id = pm.approval_id
-                where 1=1 ";
+                where pm.`status` <> -1  ";
 
 if($id != "" && $id != "0")
 {
@@ -544,6 +544,9 @@ if (!empty($_GET['page'])) {
     }
 }
 
+
+if($page == 0)
+    $page = 1;
 
 if (!empty($_GET['size'])) {
     $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);

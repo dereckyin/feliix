@@ -225,7 +225,7 @@
             <!-- tags js在 main.js -->
             <div class="tags">
                 <a class="tag A focus">Inventory Check</a>
-                <a class="tag B">Inventory Replenishment</a>
+                <a class="tag B" href="office_item_inventory_replenish_mgt">Inventory Replenishment</a>
                 <a class="tag C">Inventory Modification</a>
                 <a class="tag D">Inventory Change History</a>
             </div>

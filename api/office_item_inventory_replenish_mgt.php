@@ -120,7 +120,7 @@ switch ($method) {
                 LEFT JOIN user p ON p.id = pm.create_id 
                 LEFT JOIN user c ON c.id = pm.checker
                 LEFT JOIN user a ON a.id = pm.approver
-                where 1=1  ";
+                where pm.`status` <> -1  ";
 
         $sql = "SELECT  pm.id,
                         request_no, 
@@ -143,7 +143,7 @@ switch ($method) {
                 LEFT JOIN user u ON u.id = pm.updated_id
                 LEFT JOIN user c ON c.id = pm.check_id
                 LEFT JOIN user a ON a.id = pm.approval_id
-                where 1=1 ";
+                where pm.`status` <> -1 ";
 
 if($id != "" && $id != "0")
 {
@@ -159,14 +159,14 @@ if($ft != "" && $ft != "0")
 
 if($frl != "")
 {
-    $sql = $sql . " and pm.request_no >= 'IC-" . sprintf('%05d', $frl) . "' ";
-    $query_cnt = $query_cnt . " and pm.request_no >= 'IC-" . sprintf('%05d', $frl) . "' ";
+    $sql = $sql . " and pm.request_no >= 'IR-" . sprintf('%05d', $frl) . "' ";
+    $query_cnt = $query_cnt . " and pm.request_no >= 'IR-" . sprintf('%05d', $frl) . "' ";
 }
 
 if($fru != "")
 {
-    $sql = $sql . " and pm.request_no <= 'IC-" . sprintf('%05d', $fru) . "' ";
-    $query_cnt = $query_cnt . " and pm.request_no <= 'IC-" . sprintf('%05d', $fru) . "' ";
+    $sql = $sql . " and pm.request_no <= 'IR-" . sprintf('%05d', $fru) . "' ";
+    $query_cnt = $query_cnt . " and pm.request_no <= 'IR-" . sprintf('%05d', $fru) . "' ";
 }
 
 if($fc != "")
@@ -544,6 +544,8 @@ if (!empty($_GET['page'])) {
     }
 }
 
+if($page == 0)
+    $page = 1;
 
 if (!empty($_GET['size'])) {
     $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
@@ -712,16 +714,13 @@ function GetStatus($loc)
     $location = "";
     switch ($loc) {
         case 1:
-            $location = "PHASE 1: Create Checking List by Checker";
+            $location = "PHASE 1: Checker Creates Item List and Encodes Replenished Qty";
             break;
         case 2:
-            $location = "PHASE 2: Inventory Count by Checker";
+            $location = "PHASE 2: Approver Reviews";
             break;
         case 3:
-            $location = "PHASE 3: Review by Approver";
-            break;
-        case 4:
-            $location = "PHASE 4: Inventory Check Completed";
+            $location = "PHASE 3: Inventory Replenishment Completed";
             break;
     }
 
