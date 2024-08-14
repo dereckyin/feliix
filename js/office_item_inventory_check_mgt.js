@@ -412,7 +412,9 @@ var app = new Vue({
                       icon: "info",
                       confirmButtonText: "OK",
                     });
-                    me.clear();
+                    // me.clear();
+
+                    _this.getLeaveCredit();
                 },
 
                 // show error message to user

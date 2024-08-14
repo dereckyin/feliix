@@ -101,6 +101,11 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
     $checker = 0;
     $approver = 0;
 
+    if($phase_1 == "")
+    {
+        $phase_1 = "[]";
+    }
+
     $phase_1 = UpdateQty($phase_1, $db);
     
     $query = "INSERT INTO office_item_inventory_replenish
