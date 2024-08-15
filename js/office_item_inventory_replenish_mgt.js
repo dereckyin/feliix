@@ -982,7 +982,7 @@ var app = new Vue({
 
       if (this.check_name.trim() == "") {
         Swal.fire({
-          text: "Name of Inventory Check is required!",
+          text: "Name of Inventory Replenishment is required!",
           icon: "warning",
           confirmButtonText: "OK",
         });
