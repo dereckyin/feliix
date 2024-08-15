@@ -284,7 +284,7 @@ var app = new Vue({
 
     Swal.fire({
         title: "Duplicate",
-        text: "Are you sure to duplicate this inventory check record?",
+        text: "Are you sure to duplicate this inventory replenishment record?",
         icon: "info",
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
