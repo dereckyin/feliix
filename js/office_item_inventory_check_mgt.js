@@ -349,11 +349,11 @@ var app = new Vue({
     else if(status == 3)
     {
       if(!approver)
-        ret_msg = "For inventory check record with PHASE 2: Inventory Count by Checker, only checker is allowed to delete it.";
+        ret_msg = "For inventory check record with PHASE 3: Inventory Count by Checker, only approver is allowed to delete it.";
     }
     else if(status == 4)
     {
-      ret_msg = "For inventory check record with PHASE 2: Inventory Count by Checker, only checker is allowed to delete it.";
+      ret_msg = "For inventory check record with PHASE 4: Inventory Check Completed, no one is allowed to delete it.";
     }
 
     return ret_msg;

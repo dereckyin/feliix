@@ -339,21 +339,16 @@ var app = new Vue({
     if(status == 1)
     {
       if(!checker)
-        ret_msg = "For inventory check record with PHASE 1: Create Checking List by Checker, only checker is allowed to delete it.";
+        ret_msg = "For inventory replenishment record with PHASE 1: Checker Creates Item List and Encodes Replenished Qty, only checker is allowed to delete it.";
     }
     else if(status == 2)
     {
-      if(!checker)
-        ret_msg = "For inventory check record with PHASE 2: Inventory Count by Checker, only checker is allowed to delete it.";
+      if(!approver)
+        ret_msg = "For inventory replenishment record with PHASE 2: Approver Reviews, only approver is allowed to delete it.";
     }
     else if(status == 3)
     {
-      if(!approver)
-        ret_msg = "For inventory check record with PHASE 2: Inventory Count by Checker, only checker is allowed to delete it.";
-    }
-    else if(status == 4)
-    {
-      ret_msg = "For inventory check record with PHASE 2: Inventory Count by Checker, only checker is allowed to delete it.";
+      ret_msg = "For inventory replenishment record with PHASE 3: Inventory Replenishment Completed, no one is allowed to delete it.";
     }
 
     return ret_msg;
