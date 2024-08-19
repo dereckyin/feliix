@@ -725,7 +725,7 @@
                     <ul class="head">
                         <li>PHASE 1: Checker Creates Item List and Encodes Replenished Qty<br>Supporting Attachments</li>
                         <li>
-                            <a v-for='(item, index) in record.items' :key="index" :href="baseURL + item.gcp_name" target="_blank">{{item.filename}}</a>
+                            <a v-for='(item, index) in record.attachment' :key="index" :href="baseURL + item.gcp_name" target="_blank">{{item.filename}}</a>
                         </li>
                     </ul>
                 </div>
