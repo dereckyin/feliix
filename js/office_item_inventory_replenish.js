@@ -319,6 +319,9 @@ var app = new Vue({
               confirmButtonText: "OK",
             });
 
+            _this.$refs.file.value = "";
+            _this.getRecord(_this.id);
+
           })
           .catch(function(response) {
             //handle error
@@ -450,13 +453,24 @@ var app = new Vue({
     goto_phase2: function() {
       if (this.phase1.length == 0) {
         Swal.fire({
-          text: "Checking list needs to contain at least one item before going to the next phase!",
+          text: "Item list needs to contain at least one item before going to the next phase!",
           icon: "warning",
           confirmButtonText: "OK",
         });
         return false;
       }
 
+        for (i = 0; i < this.phase1.length; i++) {
+            if ((parseInt(this.phase1[i].qty1) || 0) < 1) {
+                Swal.fire({
+                    text: "Every item in Item list needs to have at least one qty before going to the next phase!",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+                return false;
+            }
+        }
+     
       let _this = this;
 
       var form_Data = new FormData();
@@ -1604,6 +1618,17 @@ var app = new Vue({
 
       // this.notes2 = this.record.note_2;
       this.notes3 = "";
+    },
+
+    reset1: function() {
+        this.phase1 = [];
+        this.$refs.file.value = "";
+        this.notes = "";
+
+        // each item_list should be unchecked
+        for(var i = 0; i < this.item_list.length; i++)
+          this.item_list[i].is_checked = false;
+    
     },
 
     reset: function() {

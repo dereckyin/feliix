@@ -122,7 +122,15 @@ if($stage == 3)
                 $batch_type = "office_item_inventory_replenish";
 
                 try {
-                    $total = count($_FILES['files']['name']);
+                    // count if there is any file
+                    if(isset($_FILES['files']['name']))
+                    {
+                        $total = count($_FILES['files']['name']);
+                    }
+                    else
+                    {
+                        $total = 0;
+                    }
                     // Loop through each file
                     for( $i=0 ; $i < $total ; $i++ ) {
 
