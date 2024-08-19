@@ -3254,7 +3254,7 @@ header( 'location:index' );
 
     <!-- Function Bar end-->
 
-    <div class="mainContent" style="background-color: rgb(230,230,230)">
+    <div class="mainContent" style="overflow-x: auto; background-color: rgb(230,230,230)">
 
         <div class="qn_page" v-for="(pg, index) in pages">
 
