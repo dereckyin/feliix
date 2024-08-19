@@ -205,7 +205,7 @@ var app = new Vue({
       };
 
       try {
-        let res = await axios.get("api/office_item_can_access", {
+        let res = await axios.get("api/office_item_can_access_replenish", {
           params,
           headers: { Authorization: `Bearer ${token}` },
         });
