@@ -87,12 +87,8 @@ if($stage == 3)
                 $query .= " note_3 = :note_1, ";
 }
 
-if($status == 3)
-{
-                $query .= " check_id = " . $user_id . ", check_at = now(), ";
-}
 
-if($status == 4)
+if($status == 3)
 {
                 $query .= " approval_id = " . $user_id . ", approval_at = now(), ";
 }
@@ -134,7 +130,7 @@ if($status == 2 && $stage == 3)
                     die();
                 }
 
-                if($status == 4)
+                if($status == 3)
                     update_office_item_qty($id, $request_no, $phase, $db, $user_id);
             
                 

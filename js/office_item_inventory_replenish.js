@@ -385,29 +385,8 @@ var app = new Vue({
     },
 
 
-    goto_phase3: function() {
-      // all the pahse1.qty1 should not be empty
-      for (i = 0; i < this.phase1.length; i++) {
-        if (this.phase1[i].qty1 === "" || this.phase1[i].qty1 === undefined) {
-          Swal.fire({
-            text: "Qty counted is required for every item in the checking list.",
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-          return false;
-        }
-      }
+    do_goto_phase3: function() {
 
-      for (i = 0; i < this.phase1.length; i++) {
-        if (parseInt(this.phase1[i].qty1) < 0) {
-          Swal.fire({
-            text: "Qty is not allowed to be negative.",
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-          return false;
-        }
-      }
       
       let _this = this;
 
@@ -668,7 +647,28 @@ var app = new Vue({
 
     },
 
-    
+    goto_phase3: function() {
+      let _this = this;
+        Swal.fire({
+          title: "Approve",
+          text: "Are you sure to approve this inventory replenishment result?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "No",
+          confirmButtonText: "Yes",
+        }).then((result) => {
+          if (result.value) {
+
+
+            _this.do_goto_phase3(); // <--- submit form programmatically
+          } else {
+            // swal("Cancelled", "Your imaginary file is safe :)", "error");
+          }
+        });
+
+    },
     
     backto_phase1: function() {
       let _this = this;
