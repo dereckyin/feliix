@@ -295,12 +295,14 @@ var app = new Vue({
         }
         form_Data.append("items_to_delete", JSON.stringify(favorite));
 
-        for (var i = 0; i < this.$refs.file.files.length; i++) {
+        if(this.$refs.file != undefined)
+        {
+          for (var i = 0; i < this.$refs.file.files.length; i++) {
             let file = this.$refs.file.files[i];
             form_Data.append("files[" + i + "]", file);
           }
-    
-  
+        }
+
         axios({
           method: "post",
           headers: {
