@@ -734,7 +734,7 @@
                 <form>
                     <ul>
                         <li><b>Notes</b></li>
-                        <li><textarea style="width:100%" v-model="notes3"></textarea></li>
+                        <li><textarea style="width:100%" v-model="notes2"></textarea></li>
 
 
                         <li class="row_list">
@@ -802,8 +802,8 @@
 
                     <div class="btnbox">
                         <a class="btn red" @click="reset3" title="Clear All Encoded Content">Reset</a>
-                        <a class="btn" @click="save(3, notes3)" title="Temporarily Save Encoded Content">Save</a>
-                        <a class="btn red" @click="backto_phase2" title="Go to Previous Phase: Inventory Count by Checker">Reject</a>
+                        <a class="btn" @click="save(2, notes2)" title="Temporarily Save Encoded Content">Save</a>
+                        <a class="btn red" @click="backto_phase1" title="Go to Previous Phase: Inventory Count by Checker">Reject</a>
                         <a class="btn" @click="goto_phase4" title="Go to Next Phase: Inventory Check Completed">Approve</a>
                     </div>
 

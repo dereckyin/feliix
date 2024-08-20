@@ -539,7 +539,7 @@ var app = new Vue({
           const link = document.createElement("a");
           link.href = url;
 
-          link.setAttribute("download", "Office_Item_Application_" + _this.record.request_no + ".xlsx");
+          link.setAttribute("download", "Office_Item_Replenishment_" + _this.record.request_no + ".xlsx");
 
           document.body.appendChild(link);
           link.click();
@@ -572,7 +572,7 @@ var app = new Vue({
           const link = document.createElement("a");
           link.href = url;
 
-          link.setAttribute("download", "Office_Item_Application_" + _this.record.request_no + ".xlsx");
+          link.setAttribute("download", "Office_Item_Replenishment_" + _this.record.request_no + ".xlsx");
 
           document.body.appendChild(link);
           link.click();
@@ -670,7 +670,7 @@ var app = new Vue({
 
     
     
-    backto_phase2: function() {
+    backto_phase1: function() {
       let _this = this;
         Swal.fire({
           title: "“Reject”",
@@ -683,7 +683,7 @@ var app = new Vue({
           confirmButtonText: "Yes",
         }).then((result) => {
           if (result.value) {
-            _this.do_goto_phase2(); // <--- submit form programmatically
+            _this.do_goto_phase1(); // <--- submit form programmatically
           } else {
             // swal("Cancelled", "Your imaginary file is safe :)", "error");
           }
@@ -696,7 +696,7 @@ var app = new Vue({
     },
 
     
-    do_goto_phase2() {
+    do_goto_phase1() {
       let _this = this;
 
       for (var i = 0; i < this.phase1.length; i++) {
@@ -710,8 +710,8 @@ var app = new Vue({
       form_Data.append("id", _this.id);
       form_Data.append("notes", _this.notes3);
       form_Data.append("phase", JSON.stringify(_this.phase1));
-      form_Data.append("stage", 3);
-      form_Data.append("status", 2);
+      form_Data.append("stage", 2);
+      form_Data.append("status", 1);
 
       axios({
         method: "post",
