@@ -831,12 +831,12 @@
                     <ul class="head">
                         <li>PHASE 1: Checker Creates Item List and Encodes Replenished Qty<br>Supporting Attachments</li>
                         <li>
-                            <a v-for='(item, index) in record.items' :key="index" :href="baseURL + item.gcp_name" target="_blank">{{item.filename}}</a>
+                            <a v-for='(item, index) in record.attachment' :key="index" :href="baseURL + item.gcp_name" target="_blank">{{item.filename}}</a>
                         </li>
                     </ul>
                     <ul class="head">
                         <li>PHASE 2: Approver Reviews<br>Notes</li>
-                        <li>{{ notes3 }}</li>
+                        <li>{{ notes2 }}</li>
                     </ul>
                 </div>
 
@@ -872,7 +872,7 @@
                                     <li>Particulars</li>
                                     <li>Replenished Qty</li>
                                     <li>Comment</li>
-                                    <li>Stock Qty After Replenishment</li>
+                                    <!-- <li>Stock Qty After Replenishment</li> -->
                                 </ul>
 
                                 <ul v-for="(item,index) in phase" :key="index">
@@ -900,10 +900,10 @@
                                         <div>{{item.comment}}</div>
                                     </li>
 
-                                    <!-- 顯示庫存數量變化，從原本的幾個 變成 後來的幾個 -->
+                                    <!-- 顯示庫存數量變化，從原本的幾個 變成 後來的幾個 
                                     <li>
                                         {{ 原本的庫存數量 }} → {{ 後來的庫存數量}}
-                                    </li>
+                                    </li> -->
 
 
                                 </ul>
@@ -916,7 +916,7 @@
                     </ul>
 
                     <div class="btnbox">
-                        <a class="btn" @click="go_to_check_mgt()">Go Back To Inventory Replenishment Mgt.</a>
+                        <a class="btn" @click="go_to_replenish_mgt()">Go Back To Inventory Replenishment Mgt.</a>
                     </div>
 
                 </form>
