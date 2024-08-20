@@ -321,7 +321,8 @@ var app = new Vue({
               confirmButtonText: "OK",
             });
 
-            _this.$refs.file.value = "";
+            if(this.$refs.file != undefined)
+              _this.$refs.file.value = "";
             _this.getRecord(_this.id);
 
           })
