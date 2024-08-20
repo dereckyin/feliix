@@ -182,7 +182,7 @@ if($status == 2 && $stage == 3)
                     }
                     else
                     {
-                        $query = "update office_items_stock set qty = :qty, updated_id = :updated_id, updated_at = now() where code = :code";
+                        $query = "update office_items_stock set qty = qty + :qty, updated_id = :updated_id, updated_at = now() where code = :code";
                         $stmt = $db->prepare($query);
                         $stmt->bindParam(':qty', $qty);
                         $stmt->bindParam(':code', $code);
@@ -190,8 +190,8 @@ if($status == 2 && $stage == 3)
                         $stmt->execute();
                     }
 
-                    $action = 'Set to ' . $qty;
-                    $query = "insert into office_stock_history (request_id, code, qty, action, act_1, act_2, create_id, created_at, `status`) values (:request_id, :code, :qty, 'Inventory Check', '" . $request_no . "', '" . $action . "', :updated_id, now(), 1)";
+                    $action = 'Replenish ' . $qty;
+                    $query = "insert into office_stock_history (request_id, code, qty, action, act_1, act_2, create_id, created_at, `status`) values (:request_id, :code, :qty, 'Inventory Replenishment', '" . $request_no . "', '" . $action . "', :updated_id, now(), 1)";
                     $stmt = $db->prepare($query);
 
                     $diff = $qty - $amount;
