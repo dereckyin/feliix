@@ -801,7 +801,7 @@
                     </ul>
 
                     <div class="btnbox">
-                        <a class="btn red" @click="reset2" title="Clear All Encoded Content">Reset</a>
+                        <a class="btn red" @click="reset3" title="Clear All Encoded Content">Reset</a>
                         <a class="btn" @click="save(2, notes2)" title="Temporarily Save Encoded Content">Save</a>
                         <a class="btn red" @click="backto_phase1" title="Go to Previous Phase: Inventory Count by Checker">Reject</a>
                         <a class="btn" @click="goto_phase3" title="Go to Next Phase: Inventory Check Completed">Approve</a>

@@ -321,7 +321,7 @@ var app = new Vue({
               confirmButtonText: "OK",
             });
 
-            if(this.$refs.file != undefined)
+            if(_this.$refs.file != undefined)
               _this.$refs.file.value = "";
             _this.getRecord(_this.id);
 
@@ -593,26 +593,6 @@ var app = new Vue({
         });
       },
 
-    goto_phase1: function() {
-      let _this = this;
-        Swal.fire({
-          title: "Previous Phase",
-          text: "When you click the button of “Previous Phase”, then all the encoded or saved content in Columns “Notes”, “Qty Checked” and “Remarks” will be discarded and unrecoverable. Are you sure to continue this action?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          cancelButtonText: "No",
-          confirmButtonText: "Yes",
-        }).then((result) => {
-          if (result.value) {
-            _this.do_goto_phase1(); // <--- submit form programmatically
-          } else {
-            // swal("Cancelled", "Your imaginary file is safe :)", "error");
-          }
-        });
-
-    },
 
     goto_phase4: function() {
       let _this = this;
@@ -708,7 +688,7 @@ var app = new Vue({
       var token = localStorage.getItem("token");
       form_Data.append("jwt", token);
       form_Data.append("id", _this.id);
-      form_Data.append("notes", _this.notes3);
+      form_Data.append("notes", _this.notes2);
       form_Data.append("phase", JSON.stringify(_this.phase1));
       form_Data.append("stage", 2);
       form_Data.append("status", 1);
@@ -747,52 +727,6 @@ var app = new Vue({
     },
 
     
-    do_goto_phase1() {
-      let _this = this;
-
-      this.reset2();
-
-      var form_Data = new FormData();
-      var token = localStorage.getItem("token");
-      form_Data.append("jwt", token);
-      form_Data.append("id", _this.id);
-      form_Data.append("notes", "");
-      form_Data.append("phase", JSON.stringify(_this.phase1));
-      form_Data.append("stage", 2);
-      form_Data.append("status", 1);
-
-      axios({
-        method: "post",
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-        url: "api/office_item_inventory_replenish_action",
-        data: form_Data,
-      })
-        .then(function(response) {
-          //handle success
-          //this.$forceUpdate();
-          // yes then go to next phase
-          Swal.fire({
-            text: response.data.message,
-            icon: "info",
-            confirmButtonText: "OK",
-          }).then(function() {
-            _this.getRecord(_this.id);
-            _this.it_page = 1;
-          });
-
-        })
-        .catch(function(response) {
-          //handle error
-          Swal.fire({
-            text: response.data,
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-        });
-    },
 
     reject: function() {
     },
