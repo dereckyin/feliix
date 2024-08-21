@@ -624,7 +624,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             if($phase1 == null)
                 $phase1 = [];
 
-            if($status != 4)
+            if($status != 3)
                 $phase1 = UpdateQty($phase1, $db);
 
             $note_1 = $row['note_1'];
