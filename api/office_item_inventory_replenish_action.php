@@ -192,7 +192,7 @@ if($status == 1)
                 }
 
                 $action = 'Replenish ' . $qty;
-                $query = "insert into office_stock_history (request_id, code, qty, action, act_1, act_2, create_id, created_at, `status`) values (:request_id, :code, :qty, 'Inventory Replenishment', '" . $request_no . "', '" . $action . "', :updated_id, now(), 1)";
+                $query = "insert into office_stock_history (request_id, code, qty, action, act_1, act_2, create_id, created_at, `status`, org_qty) values (:request_id, :code, :qty, 'Inventory Replenishment', '" . $request_no . "', '" . $action . "', :updated_id, now(), 1, " . $value['qty'] . ")";
                 $stmt = $db->prepare($query);
 
                 $diff = $qty;

@@ -5271,3 +5271,7 @@ CREATE TABLE IF NOT EXISTS `office_item_inventory_replenish` (
   `status` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20240821 keep the orginal qty
+ALTER TABLE office_stock_history
+ADD column `org_qty` int(11) DEFAULT 0;
