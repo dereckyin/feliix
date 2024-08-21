@@ -275,10 +275,10 @@ if($jwt){
 
                     $payable1 = $richText1->createTextRun($att_str);
     
-                    if($row['qty2'] - $row['qty'] > 0)
-                        $payable1->getFont()->getColor()->setARGB("25A2B8");
-                    else if($row['qty2'] - $row['qty'] < 0)
-                        $payable1->getFont()->getColor()->setARGB("FF0000");
+                    // if($row['qty2'] - $row['qty'] > 0)
+                    //     $payable1->getFont()->getColor()->setARGB("25A2B8");
+                    // else if($row['qty2'] - $row['qty'] < 0)
+                    //     $payable1->getFont()->getColor()->setARGB("FF0000");
                 }
 
                 

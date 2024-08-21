@@ -192,9 +192,9 @@ if($jwt){
             $sheet->setCellValue('A1', 'Code');
             $sheet->setCellValue('B1', 'Image');
             $sheet->setCellValue('C1', 'Particulars');
-            $sheet->setCellValue('D1', 'Qty in Stock');
-            $sheet->setCellValue('E1', 'Qty Counted');
-            $sheet->setCellValue('F1', 'Comment');
+            $sheet->setCellValue('D1', 'Replenished Qty');
+            $sheet->setCellValue('E1', 'Comment');
+
 
             $sheet->getStyle('A1:E1')->getFont()->setBold(true);
 
@@ -229,16 +229,16 @@ if($jwt){
 
                 $sheet->setCellValue('C'. $i, $row['cat1'] . " >> " . $row['cat2'] . " >> " . $row['cat3'] . " >> " . $row['cat4']);
 
-                $sheet->setCellValue('D'. $i, $row['qty']);
+                //$sheet->setCellValue('D'. $i, $row['qty']);
 
                 $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
                 $richText1 = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
 
-                if($row['qty1'] - $row['qty'] > 0)
-                    $att_str = "   ( ↑ " . ($row['qty1'] - $row['qty']) . " )\n";
-                else if($row['qty1'] - $row['qty'] < 0)
-                    $att_str = "   ( ↓ " . ($row['qty'] - $row['qty1']) . " )\n";
-                else
+                // if($row['qty1'] - $row['qty'] > 0)
+                //     $att_str = "   ( ↑ " . ($row['qty1'] - $row['qty']) . " )\n";
+                // else if($row['qty1'] - $row['qty'] < 0)
+                //     $att_str = "   ( ↓ " . ($row['qty'] - $row['qty1']) . " )\n";
+                // else
                     $att_str = " ";
                 
                     if($att_str == " ")
@@ -256,8 +256,8 @@ if($jwt){
                 
                 $richText->createText($row['note']);
 
-                $sheet->setCellValue('E'. $i, $richText);
-                $sheet->getStyle('E'. $i)->getAlignment()->setWrapText(true);
+                $sheet->setCellValue('D'. $i, $richText);
+                $sheet->getStyle('D'. $i)->getAlignment()->setWrapText(true);
 
                 if(isset($row['qty2']) && $row['qty2'] != '')
                 {
@@ -285,8 +285,8 @@ if($jwt){
                 if(isset($row['comment']))
                     $richText1->createText($row['comment']);
 
-                $sheet->setCellValue('F'. $i, $richText1);
-                $sheet->getStyle('F'. $i)->getAlignment()->setWrapText(true);
+                $sheet->setCellValue('E'. $i, $richText1);
+                $sheet->getStyle('E'. $i)->getAlignment()->setWrapText(true);
 
                 $i++;
             }
