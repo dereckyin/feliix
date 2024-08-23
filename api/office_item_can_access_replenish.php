@@ -74,7 +74,7 @@ switch ($method) {
                 $approver = true;
         }
 
-        $query = "SELECT `status` FROM office_item_inventory_check WHERE id = :id";
+        $query = "SELECT `status` FROM office_item_inventory_replenish WHERE id = :id";
         $stmt = $db->prepare( $query );
         $stmt->bindParam(':id', $id);
         $stmt->execute();

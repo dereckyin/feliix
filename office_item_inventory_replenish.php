@@ -803,8 +803,8 @@
                     <div class="btnbox">
                         <a class="btn red" @click="reset3" title="Clear All Encoded Content">Reset</a>
                         <a class="btn" @click="save(2, notes2)" title="Temporarily Save Encoded Content">Save</a>
-                        <a class="btn red" @click="backto_phase1" title="Go to Previous Phase: Inventory Count by Checker">Reject</a>
-                        <a class="btn" @click="goto_phase3" title="Go to Next Phase: Inventory Check Completed">Approve</a>
+                        <a class="btn red" @click="backto_phase1" title="Go to Previous Phase: Inventory replenish by Checker">Reject</a>
+                        <a class="btn" @click="goto_phase3" title="Go to Next Phase: Inventory Replenish Completed">Approve</a>
                     </div>
 
                 </form>
@@ -872,7 +872,7 @@
                                     <li>Particulars</li>
                                     <li>Replenished Qty</li>
                                     <li>Comment</li>
-                                    <!-- <li>Stock Qty After Replenishment</li> -->
+                                    <li>Stock Qty After Replenishment</li>
                                 </ul>
 
                                 <ul v-for="(item,index) in phase" :key="index">
@@ -900,10 +900,17 @@
                                         <div>{{item.comment}}</div>
                                     </li>
 
-                                    <!-- 顯示庫存數量變化，從原本的幾個 變成 後來的幾個 
-                                    <li>
-                                        {{ 原本的庫存數量 }} → {{ 後來的庫存數量}}
-                                    </li> -->
+                                    <li class="checker_result">
+
+                                        {{ item.qty_before }}
+
+                                        <!-- 如果 盤點數量 大於 庫存數量，則下方的 <span> 結構需要創造出來 -->
+                                        <span class="green">
+                                            + {{item.qty2 != '' ? item.qty2 : item.qty1 }} -> {{ item.qty_after}}
+                                        </span>
+
+                                        <div>{{ item.note }}</div>
+                                    </li>
 
 
                                 </ul>

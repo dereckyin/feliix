@@ -464,6 +464,23 @@ var app = new Vue({
       form_Data.append("phase", JSON.stringify(_this.phase1));
       form_Data.append("status", 2);
 
+      
+      var favorite = [];
+      for(var i = 0; i < this.item_list.length; i++)
+      {
+          if(this.item_list[i].is_checked === false)
+          favorite.push(this.item_list[i].id);
+      }
+      form_Data.append("items_to_delete", JSON.stringify(favorite));
+
+      if(this.$refs.file != undefined)
+      {
+        for (var i = 0; i < this.$refs.file.files.length; i++) {
+          let file = this.$refs.file.files[i];
+          form_Data.append("files[" + i + "]", file);
+        }
+      }
+
       axios({
         method: "post",
         headers: {

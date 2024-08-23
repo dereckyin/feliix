@@ -194,9 +194,10 @@ if($jwt){
             $sheet->setCellValue('C1', 'Particulars');
             $sheet->setCellValue('D1', 'Replenished Qty');
             $sheet->setCellValue('E1', 'Comment');
+            $sheet->setCellValue('F1', 'Comment');
 
 
-            $sheet->getStyle('A1:E1')->getFont()->setBold(true);
+            $sheet->getStyle('A1:F1')->getFont()->setBold(true);
 
             $i = 2;
 
@@ -233,6 +234,7 @@ if($jwt){
 
                 $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
                 $richText1 = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
+                $richText2 = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
 
                 // if($row['qty1'] - $row['qty'] > 0)
                 //     $att_str = "   ( ↑ " . ($row['qty1'] - $row['qty']) . " )\n";
@@ -287,6 +289,27 @@ if($jwt){
 
                 $sheet->setCellValue('E'. $i, $richText1);
                 $sheet->getStyle('E'. $i)->getAlignment()->setWrapText(true);
+
+
+
+                $amount = $row['qty2'] != '' ? $row['qty2'] : $row['qty1'];
+
+                $att_str = " + " . $amount . " -> " . $row['qty_after'];
+    
+                    $richText2->createText($row['qty_before']);
+
+                    $payable2 = $richText2->createTextRun($att_str);
+
+                    $payable2->getFont()->getColor()->setARGB("25A2B8");
+    
+                    // if($row['qty2'] - $row['qty'] > 0)
+                    //     $payable1->getFont()->getColor()->setARGB("25A2B8");
+                    // else if($row['qty2'] - $row['qty'] < 0)
+                    //     $payable1->getFont()->getColor()->setARGB("FF0000");
+                
+
+                $sheet->setCellValue('F'. $i, $richText2);
+                $sheet->getStyle('F'. $i)->getAlignment()->setWrapText(true);
 
                 $i++;
             }
