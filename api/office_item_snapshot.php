@@ -82,6 +82,8 @@ switch ($method) {
         // $releaser_sig_name = $data['releaser_sig_name'];
         $list = $data['list'];
 
+        $list = UpdateQty($list, $db);
+
         $request_no = $data['request_no'];
         
         $sig_date = str_replace('data:image/png;base64,', '', $sig_date);
@@ -350,3 +352,29 @@ created_at = now()";
     }
 }
             
+
+function UpdateQty($list, $db)
+{
+    $phase_array = json_decode($list, true);
+
+    foreach($phase_array as &$item)
+    {
+        $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
+
+        $sql = "select qty from office_items_stock where code = '" . $code . "'";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        
+        $qty = 0;
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $qty = $row['qty'];
+
+        }
+
+        $amount = $item['qty2'] != "" ? $item['qty2'] : $item['qty1'];
+        $item['qty_before'] = $qty;
+        $item['qty_after'] = $amount;
+    }
+
+    return json_encode($phase_array);
+}

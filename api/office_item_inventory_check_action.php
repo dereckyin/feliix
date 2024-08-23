@@ -70,6 +70,9 @@ if (!isset($jwt)) {
             $status = (isset($_POST['status']) ?  $_POST['status'] : '0');
             $stage = (isset($_POST['stage']) ?  $_POST['stage'] : 1);
             $request_no = (isset($_POST['request_no']) ?  $_POST['request_no'] : '');
+
+            if($status == 4)
+                $phase = UpdateQty($phase, $db);
             
             try {
                 $query = "update office_item_inventory_check
@@ -209,5 +212,31 @@ if($status == 2 && $stage == 3)
                 }
             }
             
+        }
+
+        function UpdateQty($list, $db)
+        {
+            $phase_array = json_decode($list, true);
+
+            foreach($phase_array as &$item)
+            {
+                $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
+
+                $sql = "select qty from office_items_stock where code = '" . $code . "'";
+                $stmt = $db->prepare($sql);
+                $stmt->execute();
+                
+                $qty = 0;
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $qty = $row['qty'];
+
+                }
+
+                $amount = $item['qty2'] != "" ? $item['qty2'] : $item['qty1'];
+                $item['qty_before'] = $qty;
+                $item['qty_after'] = $amount;
+            }
+
+            return json_encode($phase_array);
         }
         ?>

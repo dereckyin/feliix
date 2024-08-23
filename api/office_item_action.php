@@ -208,6 +208,9 @@ if (!isset($jwt)) {
         
         // for void
         if ($crud == "Releaser Voided") {
+
+            $item = UpdateQty($item, $db);
+
             foreach($list_array as $item)
             {
                 $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
@@ -220,8 +223,8 @@ if (!isset($jwt)) {
                     `reserve_qty` = :qty,
                     `action` = :_action,
                     `status` = 1,
-                    `qty_before` = " . $item['qty'] . ",
-                    `qty_after` = " . ($item['qty'] - $item['amount']) . ",
+                    `qty_before` = " . $item['qty_before'] . ",
+                    `qty_after` = " . ($item['qty_before']) . ",
                     `create_id` = :create_id,
                     `created_at` = now()";
     
@@ -235,23 +238,23 @@ if (!isset($jwt)) {
                 $stmt->bindParam(':_action', $crud);
                 $stmt->bindParam(':create_id', $user_id);
     
-                try {
-                    // execute the query, also check if query was successful
-                    if (!$stmt->execute()) {
-                        $arr = $stmt->errorInfo();
-                        error_log($arr[2]);
-                        $db->rollback();
-                        http_response_code(501);
-                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
-                        die();
-                    }
-                } catch (Exception $e) {
-                    error_log($e->getMessage());
-                    $db->rollback();
-                    http_response_code(501);
-                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-                    die();
-                }
+                // try {
+                //     // execute the query, also check if query was successful
+                //     if (!$stmt->execute()) {
+                //         $arr = $stmt->errorInfo();
+                //         error_log($arr[2]);
+                //         $db->rollback();
+                //         http_response_code(501);
+                //         echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                //         die();
+                //     }
+                // } catch (Exception $e) {
+                //     error_log($e->getMessage());
+                //     $db->rollback();
+                //     http_response_code(501);
+                //     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                //     die();
+                // }
 
                 $query = "update office_items_stock set 
                             reserve_qty = reserve_qty - :qty, 
@@ -404,6 +407,9 @@ if (!isset($jwt)) {
 
         // for Released
         if ($crud == "Releaser released") {
+            
+            $item = UpdateQty($item, $db);
+
             foreach($list_array as $item)
             {
                 $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
@@ -424,8 +430,8 @@ if (!isset($jwt)) {
                     `act_1` = :act_1,
                     `act_2` = :act_2,
                     `status` = 1,
-                    `qty_before` = " . $item['qty'] . ",
-                    `qty_after` = " . ($item['qty'] - $item['amount']) . ",
+                    `qty_before` = " . $item['qty_before'] . ",
+                    `qty_after` = " . ($item['qty_before'] - $item['amount']) . ",
                     `create_id` = :create_id,
                     `created_at` = now()";
     
@@ -1261,4 +1267,30 @@ function update_apply_for_petty_liquidate($petty_array, $db, $id, $user_id)
         }
     }
 
+}
+
+function UpdateQty($list, $db)
+{
+    foreach($phase_array as &$item)
+    {
+        $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
+
+        $amount = $item['amount'] * -1;
+
+        $sql = "select qty from office_items_stock where code = '" . $code . "'";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        
+        $qty = 0;
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $qty = $row['qty'];
+
+        }
+
+        $amount = $item['qty2'] != "" ? $item['qty2'] : $item['qty1'];
+        $item['qty_before'] = $qty;
+        $item['qty_after'] = $qty + $amount;
+    }
+
+    return $phase_array;
 }
