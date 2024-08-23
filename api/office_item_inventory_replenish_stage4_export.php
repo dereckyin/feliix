@@ -300,7 +300,7 @@ if($jwt){
 
                     $payable2 = $richText2->createTextRun($att_str);
 
-                    $payable2->getFont()->getColor()->setARGB("00FF00");
+                    $payable2->getFont()->getColor()->setARGB("009900");
     
                     // if($row['qty2'] - $row['qty'] > 0)
                     //     $payable1->getFont()->getColor()->setARGB("25A2B8");
