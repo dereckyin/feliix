@@ -909,7 +909,6 @@
                                             + {{item.qty2 != '' ? item.qty2 : item.qty1 }} -> {{ item.qty_after}}
                                         </span>
 
-                                        <div>{{ item.note }}</div>
                                     </li>
 
 
