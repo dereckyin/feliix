@@ -408,7 +408,7 @@ if (!isset($jwt)) {
         // for Released
         if ($crud == "Releaser released") {
             
-            $item = UpdateQty($item, $db);
+            $list_array = UpdateQty($list_array, $db);
 
             foreach($list_array as $item)
             {
@@ -1271,7 +1271,7 @@ function update_apply_for_petty_liquidate($petty_array, $db, $id, $user_id)
 
 function UpdateQty($list, $db)
 {
-    foreach($phase_array as &$item)
+    foreach($list as &$item)
     {
         $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
 
@@ -1287,10 +1287,9 @@ function UpdateQty($list, $db)
 
         }
 
-        $amount = $item['qty2'] != "" ? $item['qty2'] : $item['qty1'];
         $item['qty_before'] = $qty;
         $item['qty_after'] = $qty + $amount;
     }
 
-    return $phase_array;
+    return $list;
 }

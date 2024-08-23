@@ -355,11 +355,12 @@ created_at = now()";
 
 function UpdateQty($list, $db)
 {
-    $phase_array = json_decode($list, true);
 
-    foreach($phase_array as &$item)
+    foreach($list as &$item)
     {
         $code = $item['code1'] . $item['code2'] . $item['code3'] . $item['code4'];
+
+        $amount = $item['amount'] * -1;
 
         $sql = "select qty from office_items_stock where code = '" . $code . "'";
         $stmt = $db->prepare($sql);
@@ -371,10 +372,9 @@ function UpdateQty($list, $db)
 
         }
 
-        $amount = $item['qty2'] != "" ? $item['qty2'] : $item['qty1'];
         $item['qty_before'] = $qty;
-        $item['qty_after'] = $amount;
+        $item['qty_after'] = $qty + $amount;
     }
 
-    return json_encode($phase_array);
+    return $list;
 }
