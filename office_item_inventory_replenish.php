@@ -533,33 +533,21 @@
         display: block;
     }
 
-    #phase2 .tablebox ul > li:nth-of-type(5) input, #phase3 .tablebox ul > li:nth-of-type(6) input {
+    #phase1 .tablebox ul > li:nth-of-type(4) input, #phase2 .tablebox ul > li:nth-of-type(5) input {
         width: 120px;
         margin-bottom: 20px;
     }
 
-    #phase2 .tablebox ul > li:nth-of-type(5) textarea, #phase3 .tablebox ul > li:nth-of-type(6) textarea {
+    #phase1 .tablebox ul > li:nth-of-type(4) textarea, #phase2 .tablebox ul > li:nth-of-type(5) textarea {
         width: 90%;
     }
 
-    #phase3 .tablebox ul > li.checker_result > span.green,
-    #phase4 .tablebox ul > li.checker_result > span.green,
-    #phase4 .tablebox ul > li.approver_result > span.green {
+    #phase3 .tablebox ul > li.qty_transition > span.green {
         color: green;
-        margin-left: 10px;
     }
 
-    #phase3 .tablebox ul > li.checker_result > span.red,
-    #phase4 .tablebox ul > li.checker_result > span.red,
-    #phase4 .tablebox ul > li.approver_result > span.red {
+    #phase3 .tablebox ul > li.qty_transition > span.red {
         color: red;
-        margin-left: 10px;
-    }
-
-    #phase3 .tablebox ul > li.checker_result > div,
-    #phase4 .tablebox ul > li.checker_result > div,
-    #phase4 .tablebox ul > li.approver_result > div {
-        margin-top: 5px;
     }
 
     .shake {
@@ -872,7 +860,7 @@
                                     <li>Particulars</li>
                                     <li>Replenished Qty</li>
                                     <li>Comment</li>
-                                    <li>Stock Qty After Replenishment</li>
+                                    <li>Stock in Qty<br>After Replenishment</li>
                                 </ul>
 
                                 <ul v-for="(item,index) in phase" :key="index">
@@ -900,14 +888,12 @@
                                         <div>{{item.comment}}</div>
                                     </li>
 
-                                    <li class="checker_result">
+                                    <li class="qty_transition">
 
                                         {{ item.qty_before }}
 
-                                        <!-- 如果 盤點數量 大於 庫存數量，則下方的 <span> 結構需要創造出來 -->
-                                        <span class="green">
-                                            + {{item.qty2 != '' ? item.qty2 : item.qty1 }} -> {{ item.qty_after}}
-                                        </span>
+                                        <!-- 如果 數量上升，則下方的 <span> 結構需要創造出來 -->
+                                        <span class="green"> + {{item.qty2 != '' ? item.qty2 : item.qty1 }} → {{ item.qty_after}}</span>
 
                                     </li>
 

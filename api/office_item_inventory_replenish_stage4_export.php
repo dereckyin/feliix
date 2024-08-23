@@ -194,7 +194,7 @@ if($jwt){
             $sheet->setCellValue('C1', 'Particulars');
             $sheet->setCellValue('D1', 'Replenished Qty');
             $sheet->setCellValue('E1', 'Comment');
-            $sheet->setCellValue('F1', 'Comment');
+            $sheet->setCellValue('F1', 'Stock in Qty After Replenishment');
 
 
             $sheet->getStyle('A1:F1')->getFont()->setBold(true);
@@ -294,13 +294,13 @@ if($jwt){
 
                 $amount = $row['qty2'] != '' ? $row['qty2'] : $row['qty1'];
 
-                $att_str = " + " . $amount . " -> " . $row['qty_after'];
+                $att_str = " + " . $amount . " → " . $row['qty_after'];
     
                     $richText2->createText($row['qty_before']);
 
                     $payable2 = $richText2->createTextRun($att_str);
 
-                    $payable2->getFont()->getColor()->setARGB("25A2B8");
+                    $payable2->getFont()->getColor()->setARGB("00FF00");
     
                     // if($row['qty2'] - $row['qty'] > 0)
                     //     $payable1->getFont()->getColor()->setARGB("25A2B8");
