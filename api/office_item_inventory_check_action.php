@@ -195,7 +195,7 @@ if($status == 2 && $stage == 3)
                     }
 
                     $action = 'Set to ' . $qty;
-                    $query = "insert into office_stock_history (request_id, code, qty, action, act_1, act_2, create_id, created_at, `status`, org_qty) values (:request_id, :code, :qty, 'Inventory Check', '" . $request_no . "', '" . $action . "', :updated_id, now(), 1, " . $value['qty'] . ")";
+                    $query = "insert into office_stock_history (request_id, code, qty, action, act_1, act_2, create_id, created_at, `status`, qty_before, qty_after) values (:request_id, :code, :qty, 'Inventory Check', '" . $request_no . "', '" . $action . "', :updated_id, now(), 1, " . $value['qty'] . ", " . $qty . ")";
                     $stmt = $db->prepare($query);
 
                     $diff = $qty - $amount;

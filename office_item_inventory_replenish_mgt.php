@@ -227,7 +227,7 @@
                 <a class="tag A" href="office_item_inventory_check_mgt">Inventory Check</a>
                 <a class="tag B focus">Inventory Replenishment</a>
                 <a class="tag C">Inventory Modification</a>
-                <a class="tag D">Inventory Change History</a>
+                <a class="tag D" href="office_item_inventory_change_history">Inventory Change History</a>
             </div>
             <!-- Blocks -->
             <div class="block B focus">

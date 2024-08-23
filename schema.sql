@@ -5274,4 +5274,7 @@ CREATE TABLE IF NOT EXISTS `office_item_inventory_replenish` (
 
 -- 20240821 keep the orginal qty
 ALTER TABLE office_stock_history
-ADD column `org_qty` int(11) DEFAULT 0;
+ADD column `qty_before` int(11) DEFAULT 0;
+
+ALTER TABLE office_stock_history
+ADD column `qty_after` int(11) DEFAULT 0;

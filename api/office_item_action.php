@@ -220,7 +220,8 @@ if (!isset($jwt)) {
                     `reserve_qty` = :qty,
                     `action` = :_action,
                     `status` = 1,
-                    `org_qty` = " . $item['qty'] . ",
+                    `qty_before` = " . $item['qty'] . ",
+                    `qty_after` = " . ($item['qty'] - $item['amount']) . ",
                     `create_id` = :create_id,
                     `created_at` = now()";
     
@@ -423,7 +424,8 @@ if (!isset($jwt)) {
                     `act_1` = :act_1,
                     `act_2` = :act_2,
                     `status` = 1,
-                    `org_qty` = " . $item['qty'] . ",
+                    `qty_before` = " . $item['qty'] . ",
+                    `qty_after` = " . ($item['qty'] - $item['amount']) . ",
                     `create_id` = :create_id,
                     `created_at` = now()";
     

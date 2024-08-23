@@ -14,7 +14,7 @@
     <link rel="apple-touch-icon" href="images/iosicon.png" />
 
     <!-- SEO -->
-    <title>Office Item Inventory Check</title>
+    <title>Office Item Inventory Change History</title>
     <meta name="keywords" content="FELIIX">
     <meta name="Description" content="FELIIX">
     <meta name="robots" content="all" />
@@ -167,28 +167,27 @@
             padding-top: 5px;
         }
 
-        .tableframe .tablebox ul li:nth-of-type(1) input[type='text'] {
-            width: 90%;
-            border-color: #1e6ba8;
-            background-color: white;
+        .tableframe .tablebox ul.content li:nth-of-type(3) img {
+            max-width: 100px;
+            max-height: 100px;
         }
 
-        .tableframe .tablebox ul li:nth-of-type(8) {
-            width: 180px;
+        .tableframe .tablebox ul.content li:nth-of-type(4) {
+            max-width: 400px;
         }
 
-        .tableframe .tablebox ul li:nth-of-type(8) button {
-            border: 2px solid black;
-            width: 34px;
-            box-sizing: border-box;
-            padding: 6px;
-            margin: 0 3px;
-            font-size: 18px;
+        .tableframe .tablebox ul.content li:nth-of-type(6) a {
+            text-decoration: none;
+            color: #0056b3;
+            font-weight: 700;
         }
 
-        .tableframe .tablebox ul li:nth-of-type(8) button i {
-            padding: 0;
-            color: #000;
+        .tableframe .tablebox ul.content li:nth-of-type(8) span.green {
+            color: green;
+        }
+
+        .tableframe .tablebox ul.content li:nth-of-type(8) span.red {
+            color: red;
         }
 
         ul.dropdown-menu.inner li {
@@ -224,32 +223,15 @@
         <div class="mainContent">
             <!-- tags js在 main.js -->
             <div class="tags">
-                <a class="tag A focus">Inventory Check</a>
+                <a class="tag A" href="office_item_inventory_check_mgt">Inventory Check</a>
                 <a class="tag B" href="office_item_inventory_replenish_mgt">Inventory Replenishment</a>
                 <a class="tag C">Inventory Modification</a>
-                <a class="tag D" href="office_item_inventory_change_history">Inventory Change History</a>
+                <a class="tag D focus">Inventory Change History</a>
             </div>
             <!-- Blocks -->
-            <div class="block A focus">
+            <div class="block D focus">
 
                 <div class="list_function">
-
-                    <!-- 建立新庫存檢查單 -->
-                    <div class="popupblock">
-                        <a class="inserting" id="btn_insert"></a>
-                        <div id="insert_dialog" class="dialog d-add"><h6>Create New Inventory Check:</h6>
-                            <div class="formbox">
-                                <dl>
-                                    <dt>Name of Inventory Check</dt>
-                                    <dd><input type="text" placeholder="" v-model="check_name" style="margin-bottom: 15px;"></dd>
-                                </dl>
-                                <div class="btnbox">
-                                    <a class="btn small" @click="clear()">Cancel</a>
-                                    <a class="btn small green" @click="approve()">Create</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- 篩選 -->
                     <div class="popupblock">
@@ -257,68 +239,53 @@
                         <div id="filter_dialog" class="dialog d-filter"><h6>Filter Function:</h6>
                             <div class="formbox">
                                 <dl>
-                                    <dt style="margin-bottom:-15px;">Ticket No.</dt>
-                                    <div class="half">
-                                        <dt>From</dt>
-                                        <dd><input type="number" min="1" step="1" v-model="fil_request_no_lower"></dd>
-                                    </div>
-                                    <div class="half">
-                                        <dt>To</dt>
-                                        <dd><input type="number" min="1" step="1" v-model="fil_request_no_upper"></dd>
-                                    </div>
+                                    <dt style="margin-top: 2px;">Main Category</dt>
+                                    <dd>
+                                        <select v-model='lv1' v-on:change="getLevel2()">
+                                            <option value="">----- Main Category -----</option>
+                                            <!-- Main Category 的選項內容格式為：Main Category(Code)，例如像是：OFFICE SUPPLIES(01) -->
+                                            <option :value="item.code" v-for="(item, index) in level1">{{ item.category }}({{ item.code }})
+                                            </option>
+                                        </select>
+                                    </dd>
 
-                                    <dt style="margin-top: 5px;">Name of Inventory Check</dt>
+                                    <dt style="margin-top: 2px;">Sub Category</dt>
+                                    <dd>
+                                        <select v-model='lv2' v-on:change="getLevel3()">
+                                            <option value="">----- Sub Category -----</option>
+                                            <!-- Sub Category 的選項內容格式為：Sub Category(Code)，例如像是：BALLPEN(01)。當使用者選擇不同的 Main Category 時，Sub Category 的 select 只會載入特定 Main Category 底下的 Sub Category 到 select 裡面 -->
+                                            <option :value="item.code" v-for="(item, index) in level2">{{ item.category }}({{ item.code }})
+                                            </option>
+                                        </select>
+                                    </dd>
+
+                                    <dt style="margin-top: 2px;">Brand</dt>
+                                    <dd>
+                                        <select v-model='lv3' v-on:change="getLevel4()">
+                                            <option value="">----- Brand -----</option>
+                                            <!-- Brand 的選項內容格式為：Brand(Code)，例如像是：HP(01)。當使用者在某一層的的 select 選擇了某一個值之後，下一層的 select 只會載入階層架構下該節點的子節點 到 select 裡面 -->
+                                            <option :value="item.code" v-for="(item, index) in level3">{{ item.category }}({{ item.code }})
+                                            </option>
+                                        </select>
+                                    </dd>
+
+                                    <dt style="margin-top: 2px;">Description</dt>
+                                    <dd>
+                                        <select v-model='lv4'>
+                                            <option value="">----- Description -----</option>
+                                            <option :value="item.code" v-for="(item, index) in level4">{{ item.category }}({{ item.code }})
+                                            </option>
+                                        </select>
+                                    </dd>
+
+
+                                    <dt style="margin-top: 5px;">Code</dt>
                                     <dd>
                                         <input type="text" v-model="fil_keyword">
                                     </dd>
-                                    
-                                    <dt>Status</dt>
-                                    <dd>
-                                        <select class="selectpicker" multiple data-live-search="true" data-size="8"
-                                            data-width="100%" title="No status selected" id="tag01" v-model="fil_status">
 
-                                            <option value=""></option>
-                                            <option value="1">PHASE 1: Create Checking List by Checker</option>
-                                            <option value="2">PHASE 2: Inventory Count by Checker</option>
-                                            <option value="3">PHASE 3: Review by Approver</option>
-                                            <option value="4">PHASE 4: Inventory Check Completed</option>
-                                        </select>
-                                    </dd>
 
-                                    <dt style="margin-top: 2px;">Creator</dt>
-                                    <dd>
-                                        <select v-model="fil_creator">
-                                            <option value="">
-                                            <option v-for="item in creators" :value="item.username"
-                                                    :key="item.username">
-                                                {{ item.username }}
-                                            </option>
-                                        </select>
-                                    </dd>
-
-                                    <dt style="margin-top: 2px;">Checker</dt>
-                                    <dd>
-                                        <select v-model="fil_checker">
-                                            <option value="">
-                                            <option v-for="item in checkers" :value="item.username"
-                                                    :key="item.username">
-                                                {{ item.username }}
-                                            </option>
-                                        </select>
-                                    </dd>
-
-                                    <dt style="margin-top: 2px;">Approver</dt>
-                                    <dd>
-                                        <select v-model="fil_approver">
-                                            <option value="">
-                                            <option v-for="item in approvers" :value="item.username"
-                                                    :key="item.username">
-                                                {{ item.username }}
-                                            </option>
-                                        </select>
-                                    </dd>
-
-                                    <dt style="margin-bottom:-18px;">Created Time</dt>
+                                    <dt style="margin-bottom:-18px;">Executed Time</dt>
                                     <div class="half">
                                         <dt>from</dt>
                                         <dd><input type="date" v-model="fil_date_start"></dd>
@@ -329,17 +296,31 @@
                                         <dd><input type="date" v-model="fil_date_end"></dd>
                                     </div>
 
-                                    <dt style="margin-bottom:-18px;">Last Updated Time</dt>
-                                    <div class="half">
-                                        <dt>from</dt>
-                                        <dd><input type="date" v-model="fil_update_start"></dd>
-                                    </div>
 
-                                    <div class="half">
-                                        <dt>to</dt>
-                                        <dd><input type="date" v-model="fil_update_end"></dd>
-                                    </div>
-                                                               
+                                    <dt>Executor</dt>
+                                    <dd>
+                                        <select v-model="fil_approver">
+                                            <option value="">
+                                            <option v-for="item in approvers" :value="item.username"
+                                                    :key="item.username">
+                                                {{ item.username }}
+                                            </option>
+                                        </select>
+                                    </dd>
+
+                                    <dt>Reason</dt>
+                                    <dd>
+                                        <select class="selectpicker" multiple data-live-search="true" data-size="8"
+                                            data-width="100%" title="No status selected" id="tag01" v-model="fil_status">
+
+                                            <option value=""></option>
+                                            <option value="1">Office Item Application</option>
+                                            <option value="2">Inventory Check</option>
+                                            <option value="3">Inventory Replenishment</option>
+                                            <option value="4">Inventory Modification</option>
+                                        </select>
+                                    </dd>
+
                                 </dl>
 
                                 <div class="btnbox"><a class="btn small" @click="filter_clear()">Cancel</a><a
@@ -362,13 +343,10 @@
                                             <select v-model="od_factor1">
                                                 <option value="0"></option>
                                                 <option value="1">
-                                                    Ticket No.
+                                                    Executed Time
                                                 </option>
                                                 <option value="2">
-                                                    Created Time
-                                                </option>
-                                                <option value="3">
-                                                    Last Updated Time
+                                                    Code
                                                 </option>
                                             </select>
                                         </dd>
@@ -394,14 +372,11 @@
                                             <select v-model="od_factor2">
                                                 <option value="0"></option>
                                                 <option value="1">
-                                                    Ticket No.
+                                                    Executed Time
                                                 </option>
                                                 <option value="2">
-                                                    Created Time
+                                                    Code
                                                 </option>
-                                                <option value="3">
-                                                    Last Updated Time
-                                                </option>                        
                                             </select>
                                         </dd>
                                     </div>
@@ -430,11 +405,10 @@
                     </div>
 
 
-                    <!-- 這個頁面暫時不需要 匯出功能
                     <div class="popupblock">
                         <a class="exporting" id="btn_export" @click="export_petty_list()"></a>
                     </div>
-                    -->
+
 
 
                     <!-- 分頁 -->
@@ -450,62 +424,72 @@
                 <div class="tableframe">
                     <div class="tablebox lv1">
                         <ul class="head">
-                            <li>Ticket No.</li>
-                            <li>Name of Inventory Check</li>
-                            <li>Phase</li>
-                            <li>Created Time</li>
-                            <li>Last Updated Time</li>
-                            <li>Checker</li>
-                            <li>Approver</li>
-                            <li>Action</li>
+                            <li>Executed Time</li>
+                            <li>Code</li>
+                            <li>Image</li>
+                            <li>Full Description</li>
+                            <li>Executor</li>
+                            <li>Reason</li>
+                            <li>Qty Before</li>
+                            <li>Qty Change</li>
+                            <li>Qty After</li>
                         </ul>
 
-                       
-                        <ul v-for='(record, index) in displayedRecord' :key="index">
-                            <li>{{ record.request_no  }}</li>
+                        <!-- 表格內記錄的格式範例 -->
+                        <ul class="content" v-for="(item,index) in phase" :key="index">
+                            <li>2024-08-12 11:47</li>
+                            <li>02020106</li>
                             <li>
-                                <a v-show="record.is_edited == 1" :class="record.followup == 'Y' ? 'red' : ''" v-bind:href="'office_item_inventory_check?id=' + record.id" target="_blank">{{record.check_name }}</a>
-                                <input name="check_name" type="text" v-show="record.is_edited == 0" v-model="check_name" maxlength="1024">
+                                <a :href="item.url" target="_blank" v-if="item.url">
+                                    <img :src="item.url" v-if="item.url">
+                                </a>
                             </li>
-                            <li>{{ record.desc }}</li>
-                            <li>{{ record.created_at }}<br>{{record.create_by}}</li>
-                            <li>{{ record.updated_at }}<br>{{record.updated_by}}</li>
-                            <li>{{ record.check_at }}<br>{{record.checker}}</li>
-                            <li>{{ record.approval_at }}<br>{{record.approver}}</li>
-                            <li>
-                                <!-- 修改名字 -->
-                                <button v-show="record.is_edited == 1" @click="editRow(record)"><i class="fas fa-edit"></i></button>
-
-                                <!-- 複製庫存檢查單 -->
-                                <button v-show="record.is_edited == 1" @click="duplicateRow(record)"><i class="fas fa-copy"></i></button>
-
-                                <!-- 刪除庫存檢查單 -->
-                                <button v-show="record.is_edited == 1" @click="deleteRow(record)"><i class="fas fa-trash"></i></button>
-
-                                <button v-show="record.is_edited == 0" @click="confirmRow(record)"><i class="fas fa-check"></i></button>
-                                <button v-show="record.is_edited == 0" @click="cancelRow(record)"><i class="fas fa-times"></i></button>
-
-                            </li>
-                        </ul>
-
-                        <!-- 表格內記錄的格式範例
-                        <ul>
-                            <li>IC-00001</li>
-                            <li>Regular Check in July</li>
-                            <li>Completed</li>
-                            <li>2024-07-31 10:38:04<br>Dennis Lin</li>
-                            <li>2024-07-31 12:00:00<br>Kristel Tan</li>
+                            <li>OFFICE EQUIPMENT >> MONITOR >> PAGE01 >> PAGE06</li>
                             <li>Dennis Lin</li>
-                            <li>Kristel Tan</li>
                             <li>
-
-                                <button  @click="editRow(receive_records)"><i class="fas fa-edit"></i></button>
-                                <button  @click="duplicateRow(receive_records)"><i class="fas fa-copy"></i></button>
-                                <button  @click="deleteRow(receive_records)"><i class="fas fa-trash"></i></button>
-
+                                Inventory Check<br>
+                                <a :href="item.url" target="_blank" v-if="item.url">IC-00001</a><br>
+                                Set to 0
                             </li>
+                            <li>1</li>
+                            <li>-1</li>
+                            <li>0</li>
                         </ul>
-                        --!>
+                        
+<!--
+                        <ul class="content">
+                            <li>{{動作執行時間}}</li>
+                            <li>{{ item.code1 + item.code2 + item.code3 + item.code4 }}</li>
+                            <li>
+                                <a :href="item.url" target="_blank" v-if="item.url">
+                                    <img :src="item.url" v-if="item.url">
+                                </a>
+                            </li>
+                            <li>{{ item.cat1 }} >> {{ item.cat2 }} >> {{ item.cat3 }} >> {{ item.cat4 }}</li>
+                            <li>{{動作執行者}}</li>
+                            <li>
+                                {{作業流程種類}}<br>
+                                <a :href="item.url" target="_blank" v-if="item.url">{{作業流程的單號}}</a><br>
+                                {{作業流程的動作敘述}}
+                            </li>
+                            <li>{{作業執行前的庫存數量}}</li>
+
+
+                            <li>
+                                 數量變化，如果是正的或零，表示成 +數字，而且數字為綠色，則下方的 <span> 結構需要創造出來 
+                                <span class="green" v-if="">
+                                    +{{數量變化}}
+                                </span>
+
+                                數量變化，如果是負，表示成 -數字(不過數量變化本來就有負號了)，而且數字為紅色，則下方的 <span> 結構需要創造出來 
+                                <span class="red" v-if="">
+                                    {{數量變化}}
+                                </span>
+                            </li>
+
+                            <li>{{作業執行後的庫存數量}}</li>
+                        </ul>
+    -->
 
                     </div>
                 </div>
@@ -529,6 +513,6 @@
 
 <!-- import JavaScript -->
 <script src="js/element-ui@2.15.14/lib/index.js"></script>
-<script src="js/office_item_inventory_check_mgt.js"></script>
+<script src="js/office_item_inventory_change_history.js"></script>
 
 </html>
