@@ -1572,7 +1572,7 @@ var app = new Vue({
       }
 
       // this.notes2 = this.record.note_2;
-      this.notes3 = "";
+      this.notes2 = "";
     },
 
     reset1: function() {
