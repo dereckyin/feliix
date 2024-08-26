@@ -130,6 +130,18 @@ var app = new Vue({
             case "id":
               id = tmp[1];
               break;
+            case "lv1":
+              _this.lv1 = tmp[1];
+              break;
+            case "lv2":
+              _this.lv2 = tmp[1];
+              break;
+            case "lv3":
+              _this.lv3 = tmp[1];
+              break;
+            case "lv4":
+              _this.lv4 = tmp[1];
+              break;
             case "fru":
               _this.fil_request_no_upper = tmp[1];
               break;
@@ -272,17 +284,38 @@ var app = new Vue({
               _this.level1 = res.data;
   
               _this.org_level1 = JSON.parse(JSON.stringify(_this.level1));
+
+              if(_this.lv1 != "")
+                _this.getLevel2();
+              else
+              {
+                _this.lv1 = "";
+                _this.lv1_item = {};
+                _this.level2 = [];
+                _this.level3 = [];
+                _this.level4 = [];
+              }
+
+              if(_this.lv2 != "")
+                _this.getLevel3();
+              else
+              {
+                _this.lv2 = "";
+                _this.lv2_item = {};
+                _this.level3 = [];
+                _this.level4 = [];
+              }
+
+              if(_this.lv3 != "")
+                _this.getLevel4();
+              else
+              {
+                _this.lv3 = "";
+                _this.lv3_item = {};
+                _this.level4 = [];
+              }
   
-              _this.lv1 = "";
-              _this.lv1_item = {};
-              _this.lv2 = "";
-              _this.lv2_item = {};
-              _this.lv3 = "";
-              _this.lv3_item = {};
-  
-              _this.level2 = [];
-              _this.level3 = [];
-              _this.level4 = [];
+              
   
             },
             (err) => {
@@ -345,10 +378,14 @@ var app = new Vue({
           _this.level3 = res.data;
           _this.org_level3 = JSON.parse(JSON.stringify(_this.level3));
 
+          if(_this.lv3 != "")
+            _this.getLevel4();
+          else
+          {
             _this.lv3 = "";
             _this.lv3_item = {};
-
-          _this.level4 = [];
+            _this.level4 = [];
+          }
   
         } catch (err) {
           console.log(err)
@@ -380,13 +417,24 @@ var app = new Vue({
           _this.org_level2 = JSON.parse(JSON.stringify(_this.level2));
 
 
-            _this.lv2 = "";
-            _this.lv2_item = {};
-            _this.lv3 = "";
-            _this.lv3_item = {};
+            if(_this.lv2 != "")
+                _this.getLevel3();
+              else
+              {
+                _this.lv2 = "";
+                _this.lv2_item = {};
+                _this.level3 = [];
+                _this.level4 = [];
+              }
 
-          _this.level3 = [];
-          _this.level4 = [];
+              if(_this.lv3 != "")
+                _this.getLevel4();
+              else
+              {
+                _this.lv3 = "";
+                _this.lv3_item = {};
+                _this.level4 = [];
+              }
   
         } catch (err) {
           console.log(err)
@@ -744,6 +792,10 @@ var app = new Vue({
 
       const params = {
         id: id,
+        lv1: _this.lv1,
+        lv2: _this.lv2,
+        lv3: _this.lv3,
+        lv4: _this.lv4,
         fru: _this.fil_request_no_upper,
         frl: _this.fil_request_no_lower,
         fc: _this.fil_creator,
@@ -768,7 +820,7 @@ var app = new Vue({
       this.total = 0;
 
       axios
-        .get("api/office_item_inventory_check_mgt", {
+        .get("api/office_item_inventory_change_history", {
           params,
           headers: { Authorization: `Bearer ${token}` },
         })
@@ -816,9 +868,17 @@ var app = new Vue({
       }
 
       window.location.href =
-        "office_item_inventory_check_mgt?" +
+        "office_item_inventory_change_history?" +
         "fru=" +
         _this.fil_request_no_upper +
+        "&lv1=" +
+        _this.lv1 +
+        "&lv2=" +
+        _this.lv2 +
+        "&lv3=" +
+        _this.lv3 +
+        "&lv4=" +
+        _this.lv4 +
         "&frl=" +
         _this.fil_request_no_lower +
         "&fc=" +
@@ -867,9 +927,17 @@ var app = new Vue({
       }
 
       window.location.href =
-        "office_item_inventory_check_mgt?" +
+        "office_item_inventory_change_history?" +
         "fru=" +
         _this.fil_request_no_upper +
+        "&lv1=" +
+        _this.lv1 +
+        "&lv2=" +
+        _this.lv2 +
+        "&lv3=" +
+        _this.lv3 +
+        "&lv4=" +
+        _this.lv4 +
         "&frl=" +
         _this.fil_request_no_lower +
         "&fc=" +
@@ -933,6 +1001,11 @@ var app = new Vue({
       this.fil_project_name = "";
  
       this.fil_keyword = "";
+
+      this.lv1 = "";
+      this.lv2 = "";
+      this.lv3 = "";
+      this.lv4 = "";
       
       document.getElementById("btn_filter").classList.remove("focus");
       document.getElementById("filter_dialog").classList.remove("show");
@@ -1385,6 +1458,10 @@ var app = new Vue({
       var form_Data = new FormData();
       let _this = this;
       form_Data.append("jwt", token);
+      form_Data.append("lv1", this.lv1);
+      form_Data.append("lv2", this.lv2);
+      form_Data.append("lv3", this.lv3);
+      form_Data.append("lv4", this.lv4);
       form_Data.append("fru", this.fil_request_no_upper);
       form_Data.append("frl", this.fil_request_no_lower);
       form_Data.append("fc", this.fil_creator);
@@ -1404,7 +1481,7 @@ var app = new Vue({
 
       axios({
         method: "post",
-        url: "api/office_item_application_report_print",
+        url: "api/office_item_inventory_change_report",
         data: form_Data,
         responseType: "blob",
       })
@@ -1413,7 +1490,7 @@ var app = new Vue({
                 const link = document.createElement('a');
                 link.href = url;
                
-                  link.setAttribute('download', 'Office Item Application Report.xlsx');
+                  link.setAttribute('download', 'Office Item Inventory Change Report.xlsx');
                
                 document.body.appendChild(link);
                 link.click();

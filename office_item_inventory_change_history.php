@@ -436,24 +436,26 @@
                         </ul>
 
                         <!-- 表格內記錄的格式範例 -->
-                        <ul class="content" v-for="(item,index) in phase" :key="index">
-                            <li>2024-08-12 11:47</li>
-                            <li>02020106</li>
+                        <ul class="content" v-for="(item,index) in displayedRecord" :key="index">
+                            <li>{{ item.created_at }}</li>
+                            <li>{{ item.code }}</li>
                             <li>
-                                <a :href="item.url" target="_blank" v-if="item.url">
-                                    <img :src="item.url" v-if="item.url">
+                                <a :href="baseURL + item.photo" target="_blank" v-if="item.photo">
+                                    <img :src="baseURL + item.photo" v-if="item.photo">
                                 </a>
                             </li>
-                            <li>OFFICE EQUIPMENT >> MONITOR >> PAGE01 >> PAGE06</li>
-                            <li>Dennis Lin</li>
+                            <li>{{ item.cat1 }} >> {{ item.cat2 }} >> {{ item.cat3 }} >> {{ item.cat4 }}</li>
+                            <li>{{ item.created_by }}</li>
                             <li>
                                 Inventory Check<br>
-                                <a :href="item.url" target="_blank" v-if="item.url">IC-00001</a><br>
-                                Set to 0
+                                <a :href="item.url" target="_blank" v-if="item.act_1">{{ item.act_1 }}</a><br>
+                                {{ item.act_2 }}
                             </li>
-                            <li>1</li>
-                            <li>-1</li>
-                            <li>0</li>
+                            <li>{{ item.qty_before }}</li>
+                            <li><span :class="[(item.qty >= 0 ? 'green' : 'red')]">
+                                {{ item.qty }}
+                            </span></li>
+                            <li>{{ item.qty_after }}</li>
                         </ul>
                         
 <!--

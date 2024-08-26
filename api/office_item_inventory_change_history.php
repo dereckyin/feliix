@@ -96,6 +96,11 @@ switch ($method) {
         $page = (isset($_GET['page']) ?  $_GET['page'] : 1);
         $size = (isset($_GET['size']) ?  $_GET['size'] : 20);
 
+        $lv1 = (isset($_GET['lv1']) ?  $_GET['lv1'] : '');
+        $lv2 = (isset($_GET['lv2']) ?  $_GET['lv2'] : '');
+        $lv3 = (isset($_GET['lv3']) ?  $_GET['lv3'] : '');
+        $lv4 = (isset($_GET['lv4']) ?  $_GET['lv4'] : '');
+
         // check if can see petty expense list (Record only for himself)
         /*
         $sql = "select * from expense_flow where uid = " . $user_id . " where status <> -1";
@@ -118,31 +123,31 @@ switch ($method) {
         $query_cnt = "SELECT  count(*) cnt
                 from office_stock_history pm 
                 LEFT JOIN user p ON p.id = pm.create_id 
-                LEFT JOIN user c ON c.id = pm.checker
-                LEFT JOIN user a ON a.id = pm.approver
                 where pm.`status` <> -1   ";
 
-        $sql = "SELECT  pm.id,
-                        pm.request_no, 
+        $sql = "SELECT pm.id,
+                        pm.request_id, 
                         pm.code,
+                        pm.qty,
+                        pm.`action`,
+                        pm.act_1,
+                        pm.act_2,
+                        pm.qty_before,
+                        pm.qty_after,
                         pm.`status`,
-                        create_id,
-                        checker checker_id,
-                        approver approver_id,
-                        p.username,
                         p.username created_by,
-                        u.username updated_by,
                         DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at,
-                        DATE_FORMAT(pm.updated_at, '%Y/%m/%d %T') updated_at,
-                        c.username checker,
-                        DATE_FORMAT(pm.check_at, '%Y/%m/%d %T') check_at,
-                        a.username approver,
-                        DATE_FORMAT(pm.approval_at, '%Y/%m/%d %T') approval_at
+                        m.code code1, m.category cat1, 
+                		s.code code2, s.category cat2, 
+                		b.code code3, b.category cat3, 
+                		d.code code4, d.category cat4, 
+                		d.photo
                 from office_stock_history pm 
                 LEFT JOIN user p ON p.id = pm.create_id 
-                LEFT JOIN user u ON u.id = pm.updated_id
-                LEFT JOIN user c ON c.id = pm.check_id
-                LEFT JOIN user a ON a.id = pm.approval_id
+                left join office_items_main_category m on m.code = SUBSTRING(pm.code, 1, 2) and m.status <> -1
+        		left join office_items_sub_category s on s.parent_code = SUBSTRING(pm.code, 1, 2) and s.code = SUBSTRING(pm.code, 3, 2) and s.status <> -1
+        		left join office_items_brand b on b.parent_code =  SUBSTRING(pm.code, 1, 4) and b.code = SUBSTRING(pm.code, 5, 2) and b.status <> -1
+        		left join office_items_description d on d.parent_code = SUBSTRING(pm.code, 1, 6) and d.code = SUBSTRING(pm.code, 7, 2) and d.status <> -1
                 where pm.`status` <> -1  ";
 
 if($id != "" && $id != "0")
@@ -151,80 +156,63 @@ if($id != "" && $id != "0")
     $query_cnt = $query_cnt . " and pm.id = '" . $id . "' ";
 }
 
-if($ft != "" && $ft != "0")
+if($lv1 != "" || $lv2 != "" || $lv3 != "" || $lv4 != "")
 {
-    $sql = $sql . " and pm.request_type = '" . $ft . "' ";
-    $query_cnt = $query_cnt . " and pm.request_type = '" . $ft . "' ";
-}
-
-if($frl != "")
-{
-    $sql = $sql . " and pm.request_no >= 'IC-" . sprintf('%05d', $frl) . "' ";
-    $query_cnt = $query_cnt . " and pm.request_no >= 'IC-" . sprintf('%05d', $frl) . "' ";
-}
-
-if($fru != "")
-{
-    $sql = $sql . " and pm.request_no <= 'IC-" . sprintf('%05d', $fru) . "' ";
-    $query_cnt = $query_cnt . " and pm.request_no <= 'IC-" . sprintf('%05d', $fru) . "' ";
-}
-
-if($fc != "")
-{
-    $sql = $sql . " and p.username = '" . $fc . "' ";
-    $query_cnt = $query_cnt . " and p.username = '" . $fc . "' ";
-}
-
-if($fch != "")
-{
-    $sql = $sql . " and c.username = '" . $fch . "' ";
-    $query_cnt = $query_cnt . " and c.username = '" . $fch . "' ";
-}
-
-if($fap != "")
-{
-    $sql = $sql . " and a.username = '" . $fap . "' ";
-    $query_cnt = $query_cnt . " and a.username = '" . $fap . "' ";
-}
-
-if($fc != "")
-{
-    $sql = $sql . " and p.username = '" . $fc . "' ";
-    $query_cnt = $query_cnt . " and p.username = '" . $fc . "' ";
-}
-
-if($fp != "")
-{
-    $sql = $sql . " and pm.project_name1 = '" . $fp . "' ";
-    $query_cnt = $query_cnt . " and pm.project_name1 = '" . $fp . "' ";
+    $sql = $sql . " and pm.code like '" . $lv1 . $lv2 .$lv3 . $lv4 . "%' ";
+    $query_cnt = $query_cnt . " and pm.code like '"  . $lv1 . $lv2 .$lv3 . $lv4 .  "%' ";
 }
 
 if($fk != "")
 {
-    $sql = $sql . " and pm.check_name like '%" . $fk . "%' ";
-    $query_cnt = $query_cnt . " and pm.check_name like '%" . $fk . "%' ";
+    $sql = $sql . " and pm.code like '" . $fk . "%' ";
+    $query_cnt = $query_cnt . " and pm.code like '" . $fk . "%' ";
+}
+
+if($fds != "")
+{
+    $sql = $sql . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') >= '" . $fds . "' ";
+    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') >= '" . $fds . "' ";
+}
+
+if($fde != "")
+{
+    $sql = $sql . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') <= '" . $fde . "' ";
+    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') <= '" . $fde . "' ";
+}
+
+if($fap != "")
+{
+    $sql = $sql . " and p.username = '" . $fap . "' ";
+    $query_cnt = $query_cnt . " and p.username = '" . $fap . "' ";
+}
+
+// nothing selected
+if($lv1 == "" && $lv2 == "" && $lv3 == "" && $lv4 == ""  && $fk == "" && $fds == "" && $fde == "" && $fap == "" && $fs == "")
+{
+    $sql = $sql . " and pm.code like '______' ";
+    $query_cnt = $query_cnt . " and pm.code like '______' ";
 }
 
 $status_array = [];
 
-
 if($fs != "" && $fs != "0")
 {
     if(strpos($fs,"1") > -1)
-        $status_array = array_merge($status_array, [1]);
+        $status_array = array_merge($status_array, ["pm.act_1 like 'OIA-%'"]);
     if(strpos($fs,"2") > -1)
-        $status_array = array_merge($status_array, [2]);
+        $status_array = array_merge($status_array, ["pm.act_1 like 'IC-%'"]);
     if(strpos($fs,"3") > -1)
-        $status_array = array_merge($status_array, [3]);
+        $status_array = array_merge($status_array, ["pm.act_1 like 'IR-%'"]);
     if(strpos($fs,"4") > -1)
-        $status_array = array_merge($status_array, [4]);
+        $status_array = array_merge($status_array, ["pm.act_1 like 'IM-%'"]);
 }
 
 if(count($status_array) > 0)
 {
-    $sql = $sql . " and pm.`status` in (" . implode(",", $status_array) . ") ";
-    $query_cnt = $query_cnt . " and pm.`status` in (" . implode(",", $status_array) . ") ";
+    $sql = $sql . " and (" . implode(" or ", $status_array) . ") ";
+    $query_cnt = $query_cnt . " and (" . implode(" or ", $status_array) . ") ";
 }
+
 
 // if($fs != "" && $fs != "0")
 // {
@@ -534,7 +522,7 @@ if($of2 != "" && $of2 != "0" && $sOrder == "")
 if($sOrder != "")
     $sql = $sql . " order by  " . $sOrder;
 else
-    $sql = $sql . " order by pm.request_no desc ";
+    $sql = $sql . " order by pm.created_at ";
 
 
 if (!empty($_GET['page'])) {
@@ -573,74 +561,55 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
         $stmt = $db->prepare($sql);
         $stmt->execute();
-
-        $id = 0;
-        $request_no = "";
-        $check_name = "";
-        $date_requested = "";
-
-        $status = "";
-        $requestor = "";
-        $created_at = "";
-        $updated_at = "";
-
-        $checker = "";
-        $approver = "";
-
-        
-        $list = [];
-        $attachment = [];
-        $release_items = [];
-    
+   
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $id = $row['id'];
-            $request_no = $row['request_no'];
-            $check_name = $row['check_name'];
+            $request_id = $row['request_id'];
+            $code = $row['code'];
+            $qty = $row['qty'];
+            $action = $row['action'];
+            $act_1 = $row['act_1'];
+            $act_2 = $row['act_2'];
+            $qty_before = $row['qty_before'];
+            $qty_after = $row['qty_after'];
             $status = $row['status'];
-            $requestor = $row['username'];
+            $created_by = $row['created_by'];
             $created_at = $row['created_at'];
-            $updated_at = $row['updated_at'];
-
-            $create_by = $row['created_by'];
-            $updated_by = $row['updated_by'];
-
-            $create_id = $row['create_id'];
-            $checker_id = $row['checker_id'];
-            $approver_id = $row['approver_id'];
-
-            $checker = $row['checker'];
-            $approver = $row['approver'];
-
-            $check_at = $row['check_at'];
-            $approval_at = $row['approval_at'];
-            
-            $desc = GetStatus($row['status']);
-        
+            $code1 = $row['code1'];
+            $code2 = $row['code2'];
+            $code3 = $row['code3'];
+            $code4 = $row['code4'];
+            $cat1 = $row['cat1'];
+            $cat2 = $row['cat2'];
+            $cat3 = $row['cat3'];
+            $cat4 = $row['cat4'];
+            $photo = $row['photo'];
+            $url = GetUrl($row['act_1'], $row['request_id']);
 
             $merged_results[] = array(
-                "is_edited" => 1,
-                "followup" => "",
                 "id" => $id,
-                "request_no" => $request_no,
-                "check_name" => $check_name,
-                "create_id" => $create_id,
-                "checker_id" => $checker_id,
-                "approver_id" => $approver_id,
-                "date_requested" => $date_requested,
+                "request_id" => $request_id,
+                "code" => $code,
+                "qty" => $qty,
+                "action" => $action,
+                "act_1" => $act_1,
+                "act_2" => $act_2,
+                "qty_before" => $qty_before,
+                "qty_after" => $qty_after,
                 "status" => $status,
-                "requestor" => $requestor,
+                "created_by" => $created_by,
                 "created_at" => $created_at,
-                "updated_at" => $updated_at,
-                "create_by" => $create_by,
-                "updated_by" => $updated_by,
-                "checker" => $checker,
-                "approver" => $approver,
-                "desc" => $desc,
-
-                "check_at" => $check_at,
-                "approval_at" => $approval_at,
-            
+                "code1" => $code1,
+                "code2" => $code2,
+                "code3" => $code3,
+                "code4" => $code4,
+                "cat1" => $cat1,
+                "cat2" => $cat2,
+                "cat3" => $cat3,
+                "cat4" => $cat4,
+                "photo" => $photo,
+                "url" => $url,
                 "cnt" => $cnt,
             );
 
@@ -708,6 +677,26 @@ function GetReleaseAttachment($_id, $db)
     }
 
     return $merged_results;
+}
+
+function GetUrl($act_1, $request_id)
+{
+    $location = "";
+    // get "ORA' from "ORA-0101" as $loc
+    $loc = substr($act_1, 0, strpos($act_1, "-"));
+    switch ($loc) {
+        case "OIA":
+            $location = "office_item_application_report" . "?id=" . $request_id;
+            break;
+        case "IR":
+            $location = "office_item_inventory_replenish" . "?id=" . $request_id;
+            break;
+        case "IC":
+            $location = "office_item_inventory_check" . "?id=" . $request_id;
+            break;
+    }
+
+    return $location;
 }
 
 function GetStatus($loc)
