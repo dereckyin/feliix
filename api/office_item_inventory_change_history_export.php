@@ -285,7 +285,7 @@ if($jwt){
                 $payable = $richText->createTextRun($att_str);
 
                 if($row['qty'] >= 0)
-                    $payable->getFont()->getColor()->setARGB("25A2B8");
+                    $payable->getFont()->getColor()->setARGB("009900");
                 else if($row['qty'] < 0)
                     $payable->getFont()->getColor()->setARGB("FF0000");
 

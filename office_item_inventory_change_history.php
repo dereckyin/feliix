@@ -96,7 +96,7 @@
         body.fourth .mainContent>.block .formbox,
         body.fourth .mainContent>.block .formbox dd,
         body.fourth .mainContent>.tags a {
-            border-color: var(--fth01);
+            border-color: var(--fth03);
         }
 
         body.fourth header nav a, body.fourth header nav a:link {
@@ -118,6 +118,7 @@
         body.fourth .mainContent > .tags a {
             background-color: var(--fth02);
             margin-right: 5px;
+            color: rgb(33, 37, 41);
         }
 
         body.fourth .mainContent > .tags a:first-of-type {
@@ -126,6 +127,7 @@
 
         body.fourth .mainContent > .tags a.focus {
             background-color: var(--fth01);
+            color: white;
         }
 
         body.fourth .list_function {
@@ -167,19 +169,41 @@
             padding-top: 5px;
         }
 
+        .tableframe .tablebox.lv1 li:nth-of-type(1) {
+            width: 180px;
+        }
+
+         .tableframe .tablebox.lv1 li:nth-of-type(2) {
+            width: 130px;
+        }
+
+        .tableframe .tablebox.lv1 li:nth-of-type(3) {
+            width: 170px;
+        }
+
         .tableframe .tablebox ul.content li:nth-of-type(3) img {
             max-width: 100px;
             max-height: 100px;
         }
 
-        .tableframe .tablebox ul.content li:nth-of-type(4) {
-            max-width: 400px;
+        .tableframe .tablebox.lv1 li:nth-of-type(5) {
+            width: 200px;
+        }
+
+        .tableframe .tablebox.lv1 li:nth-of-type(6) {
+            width: 260px;
         }
 
         .tableframe .tablebox ul.content li:nth-of-type(6) a {
             text-decoration: none;
             color: #0056b3;
             font-weight: 700;
+        }
+
+        .tableframe .tablebox.lv1 li:nth-of-type(7),
+        .tableframe .tablebox.lv1 li:nth-of-type(8),
+        .tableframe .tablebox.lv1 li:nth-of-type(9) {
+            width: 150px;
         }
 
         .tableframe .tablebox ul.content li:nth-of-type(8) span.green {
