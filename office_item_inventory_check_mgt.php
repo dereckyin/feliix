@@ -96,7 +96,7 @@
         body.fourth .mainContent>.block .formbox,
         body.fourth .mainContent>.block .formbox dd,
         body.fourth .mainContent>.tags a {
-            border-color: var(--fth01);
+            border-color: var(--fth03);
         }
 
         body.fourth header nav a, body.fourth header nav a:link {
@@ -118,6 +118,7 @@
         body.fourth .mainContent > .tags a {
             background-color: var(--fth02);
             margin-right: 5px;
+            color: rgb(33, 37, 41);
         }
 
         body.fourth .mainContent > .tags a:first-of-type {
@@ -126,6 +127,7 @@
 
         body.fourth .mainContent > .tags a.focus {
             background-color: var(--fth01);
+            color: white;
         }
 
         body.fourth .list_function {
@@ -171,6 +173,18 @@
             width: 90%;
             border-color: #1e6ba8;
             background-color: white;
+        }
+
+        .tableframe .tablebox.lv1 li:nth-of-type(4) {
+            color: #212529;
+            min-width: 0;
+            width: 170px;
+        }
+
+        .tableframe .tablebox.lv1 li:nth-of-type(5),
+        .tableframe .tablebox.lv1 li:nth-of-type(6),
+        .tableframe .tablebox.lv1 li:nth-of-type(7) {
+            width: 170px;
         }
 
         .tableframe .tablebox ul li:nth-of-type(8) {

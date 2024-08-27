@@ -859,6 +859,18 @@ var app = new Vue({
     filter_apply_new: function(pg) {
       let _this = this;
 
+      if(this.lv1 != "" && this.fil_keyword == "")
+      {
+        Swal.fire({
+          text: 'Choosing "Main Category" is necessary when applying filter.',
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+
+        //$(window).scrollTop(0);
+        return;
+      }
+
       if(_this.page < 1) _this.page = 1;
       if (_this.page > _this.pages.length) _this.page = _this.pages.length;
       _this.page = 1;
