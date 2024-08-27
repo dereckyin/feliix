@@ -1467,6 +1467,7 @@ var app = new Vue({
       form_Data.append("fc", this.fil_creator);
       form_Data.append("fch", this.fil_checker);
       form_Data.append("fap", this.fil_approver);
+      form_Data.append("fk", this.fil_keyword);
       form_Data.append("fds", this.fil_date_start);
       form_Data.append("fde", this.fil_date_end);
       form_Data.append("fus", this.fil_update_start);
