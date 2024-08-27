@@ -229,7 +229,7 @@ if($jwt){
 
 
 
-            $sheet->getStyle('A1:H1')->getFont()->setBold(true);
+            $sheet->getStyle('A1:I1')->getFont()->setBold(true);
 
             $i = 2;
 
