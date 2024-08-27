@@ -274,6 +274,7 @@ if($jwt){
 
                 $sheet->setCellValue('F'. $i, $richTextF);
                 $sheet->getStyle('F'. $i)->getAlignment()->setWrapText(true);
+                $sheet->getCell('F' . $i)->getHyperlink()->setUrl($row['url']);
 
                 $sheet->setCellValue('G'. $i, $row['qty_before']);
 
@@ -695,7 +696,7 @@ function GetUrl($act_1, $request_id)
             break;
     }
 
-    return $location;
+    return "https://feliix.myvnc.com/" . $location;
 }
 
 ?>
