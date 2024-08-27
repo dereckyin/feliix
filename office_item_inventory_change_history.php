@@ -346,7 +346,7 @@
                                                     Executed Time
                                                 </option>
                                                 <option value="2">
-                                                    Code
+                                                    Reason
                                                 </option>
                                             </select>
                                         </dd>
@@ -375,7 +375,7 @@
                                                     Executed Time
                                                 </option>
                                                 <option value="2">
-                                                    Code
+                                                    Reason
                                                 </option>
                                             </select>
                                         </dd>

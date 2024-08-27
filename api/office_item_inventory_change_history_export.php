@@ -558,9 +558,9 @@ if($of1 != "" && $of1 != "0")
             break;  
         case 2:
             if($ofd1 == 2)
-                $sOrder = "pm.code desc";
+                $sOrder = "pm.act_1 desc";
             else
-                $sOrder = "pm.code ";
+                $sOrder = "pm.act_1 ";
             break;  
 
         default:
@@ -579,9 +579,9 @@ if($of2 != "" && $of2 != "0" && $sOrder != "")
             break;  
         case 2:
             if($ofd2 == 2)
-                $sOrder .= ", pm.request_no desc";
+                $sOrder .= ", pm.act_1 desc";
             else
-                $sOrder .= ", pm.request_no ";
+                $sOrder .= ", pm.act_1 ";
             break;  
       
         default:
@@ -600,9 +600,9 @@ if($of2 != "" && $of2 != "0" && $sOrder == "")
             break;  
         case 2:
             if($ofd2 == 2)
-                $sOrder = "pm.request_no desc";
+                $sOrder = "pm.act_1 desc";
             else
-                $sOrder = "pm.request_no ";
+                $sOrder = "pm.act_1 ";
             break;  
        
         default:
