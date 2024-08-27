@@ -53,14 +53,8 @@ $db = $database->getConnection();
 switch ($method) {
     case 'GET':
   
-        $id = (isset($_GET['id']) ?  $_GET['id'] : '');
-        $fru = (isset($_GET['fru']) ?  $_GET['fru'] : '');
-        $frl = (isset($_GET['frl']) ?  $_GET['frl'] : '');
+        $fs = (isset($_GET['fs']) ?  $_GET['fs'] : '');
 
-        $fc = (isset($_GET['fc']) ?  $_GET['fc'] : '');
-        $fc = urldecode($fc);
-        $fch = (isset($_GET['fch']) ?  $_GET['fch'] : '');
-        $fch = urldecode($fch);
         $fap = (isset($_GET['fap']) ?  $_GET['fap'] : '');
         $fap = urldecode($fap);
 
@@ -70,23 +64,10 @@ switch ($method) {
         $fk = (isset($_GET['fk']) ?  $_GET['fk'] : '');
         $fk = urldecode($fk);
 
-        $ft = (isset($_GET['ft']) ?  $_GET['ft'] : '');
-        $fs = (isset($_GET['fs']) ?  $_GET['fs'] : '');
-        $fat = (isset($_GET['fat']) ?  $_GET['fat'] : '');
-        $fau = (isset($_GET['fau']) ?  $_GET['fau'] : '');
-        $fal = (isset($_GET['fal']) ?  $_GET['fal'] : '');
-
-        $ftd = (isset($_GET['ftd']) ?  $_GET['ftd'] : '');
-
         $fds = (isset($_GET['fds']) ?  $_GET['fds'] : '');
         $fds = str_replace('-', '/', $fds);
         $fde = (isset($_GET['fde']) ?  $_GET['fde'] : '');
         $fde = str_replace('-', '/', $fde);
-
-        $fus = (isset($_GET['fus']) ?  $_GET['fus'] : '');
-        $fus = str_replace('-', '/', $fus);
-        $fue = (isset($_GET['fue']) ?  $_GET['fue'] : '');
-        $fue = str_replace('-', '/', $fue);
 
         $of1 = (isset($_GET['of1']) ?  $_GET['of1'] : '');
         $ofd1 = (isset($_GET['ofd1']) ?  $_GET['ofd1'] : '');
@@ -136,7 +117,7 @@ switch ($method) {
                         pm.qty_after,
                         pm.`status`,
                         p.username created_by,
-                        DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at,
+                        DATE_FORMAT(pm.created_at, '%Y/%m/%d %H:%i') created_at,
                         m.code code1, m.category cat1, 
                 		s.code code2, s.category cat2, 
                 		b.code code3, b.category cat3, 
@@ -150,11 +131,6 @@ switch ($method) {
         		left join office_items_description d on d.parent_code = SUBSTRING(pm.code, 1, 6) and d.code = SUBSTRING(pm.code, 7, 2) and d.status <> -1
                 where pm.`status` <> -1  ";
 
-if($id != "" && $id != "0")
-{
-    $sql = $sql . " and pm.id = '" . $id . "' ";
-    $query_cnt = $query_cnt . " and pm.id = '" . $id . "' ";
-}
 
 if($lv1 != "" || $lv2 != "" || $lv3 != "" || $lv4 != "")
 {
@@ -214,218 +190,26 @@ if(count($status_array) > 0)
 }
 
 
-// if($fs != "" && $fs != "0")
-// {
-//     if(strpos($fs,"1") > -1)
-//         $sql = $sql . " and pm.`status` in (1, 2) ";
-//     if(strpos($fs,"2") > -1)
-//         $sql = $sql . " and pm.`status` in (3, 4) ";
-//     if(strpos($fs,"3") > -1)
-//         $sql = $sql . " and pm.`status` in (5) ";
-//     if(strpos($fs,"4") > -1)
-//         $sql = $sql . " and pm.`status` in (6, 7) ";
-//     if(strpos($fs,"5") > -1)
-//         $sql = $sql . " and pm.`status` in (8) ";
-//     if(strpos($fs,"6") > -1)
-//         $sql = $sql . " and pm.`status` in (9) ";
-//     if(strpos($fs,"7") > -1)
-//         $sql = $sql . " and pm.`status` in (0) ";
-//     if(strpos($fs,"8") > -1)
-//         $sql = $sql . " and pm.`status` in (-1) ";
-
-//     if(strpos($fs,"1") > -1)
-//         $query_cnt = $query_cnt . " and pm.`status` in (1, 2) ";
-//     if(strpos($fs,"2") > -1)
-//         $query_cnt = $query_cnt . " and pm.`status` in (3, 4) ";
-//     if(strpos($fs,"3") > -1)
-//         $query_cnt = $query_cnt . " and pm.`status` in (5) ";
-//     if(strpos($fs,"4") > -1)
-//         $query_cnt = $query_cnt . " and pm.`status` in (6, 7) ";
-//     if(strpos($fs,"5") > -1)
-//         $query_cnt = $query_cnt . " and pm.`status` in (8) ";
-//     if(strpos($fs,"6") > -1)
-//         $query_cnt = $query_cnt . " and pm.`status` in (9) ";
-//     if(strpos($fs,"7") > -1)
-//         $query_cnt = $query_cnt . " and pm.`status` in (0) ";
-//     if(strpos($fs,"8") > -1)
-//         $query_cnt = $query_cnt . " and pm.`status` in (-1) ";
-// }
-
-if($fat == "1" && $fau != "")
-{
-    $sql = $sql . " and (select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = pm.id AND pl.`status` <> -1) <= " . $fau . " ";
-    $query_cnt = $query_cnt . " and (select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = pm.id AND pl.`status` <> -1) <= " . $fau . " ";
-}
-
-if($fat == "1" && $fal != "")
-{
-    $sql = $sql . " and (select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = pm.id AND pl.`status` <> -1) >= " . $fal . " ";
-    $query_cnt = $query_cnt . " and (select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = pm.id AND pl.`status` <> -1) >= " . $fal . " ";
-}
-
-if($fat == "2" && $fau != "")
-{
-    $sql = $sql . " and pm.amount_verified <= " . $fau . " ";
-    $query_cnt = $query_cnt . " and pm.amount_verified <= " . $fau . " ";
-}
-
-if($fat == "2" && $fal != "")
-{
-    $sql = $sql . " and pm.amount_verified >= " . $fal . " ";
-    $query_cnt = $query_cnt . " and pm.amount_verified >= " . $fal . " ";
-}
-
-if($fds != "")
-{
-    $sql = $sql . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') >= '" . $fds . "' ";
-    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') >= '" . $fds . "' ";
-}
-
-if($fde != "")
-{
-    $sql = $sql . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') <= '" . $fde . "' ";
-    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') <= '" . $fde . "' ";
-}
-
-if($fus != "")
-{
-    $sql = $sql . " and DATE_FORMAT(pm.updated_at, '%Y/%m/%d') >= '" . $fus . "' ";
-    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.updated_at, '%Y/%m/%d') >= '" . $fus . "' ";
-}
-
-if($fue != "")
-{
-    $sql = $sql . " and DATE_FORMAT(pm.updated_at, '%Y/%m/%d') <= '" . $fue . "' ";
-    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.updated_at, '%Y/%m/%d') <= '" . $fue . "' ";
-}
-
-
-if($ftd == "2" && $fds != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Checker Checked' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Checker Checked' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-}
-
-if($ftd == "2" && $fde != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Checker Checked' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Checker Checked' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-}
-
-if($ftd == "3" && $fds != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'OP Approved' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'OP Approved' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-}
-
-if($ftd == "3" && $fde != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'OP Approved' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'OP Approved' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-}
-
-if($ftd == "4" && $fds != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'MD Approved' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'MD Approved' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-}
-
-if($ftd == "4" && $fde != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'MD Approved' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'MD Approved' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-}
-
-if($ftd == "5" && $fds != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Releaser Released' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Releaser Released' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-}
-
-if($ftd == "5" && $fde != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Releaser Released' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Releaser Released' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-}
-
-if($ftd == "6" && $fds != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Liquidated' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Liquidated' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-}
-
-if($ftd == "6" && $fde != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Liquidated' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Liquidated' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-}
-
-if($ftd == "7" && $fds != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Verifier Verified' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Verifier Verified' order by ph.created_at desc LIMIT 1) >= '" . $fds . "' ";
-}
-
-if($ftd == "7" && $fde != "")
-{
-    $sql = $sql . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Verifier Verified' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-    $query_cnt = $query_cnt . " and (select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from petty_history ph where ph.`status` <> -1 and ph.petty_id = pm.id and ph.`action` = 'Verifier Verified' order by ph.created_at desc LIMIT 1) <= '" . $fde . "' ";
-}
-
-if($ftd == "8" && $fds != "")
-{
-    $sql = $sql . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') >= '" . $fds . "' ";
-    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') >= '" . $fds . "' ";
-}
-
-if($ftd == "8" && $fde != "")
-{
-    $sql = $sql . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') <= '" . $fde . "' ";
-    $query_cnt = $query_cnt . " and DATE_FORMAT(pm.created_at, '%Y/%m/%d') <= '" . $fde . "' ";
-}
-
 
 $sOrder = "";
 if($of1 != "" && $of1 != "0")
 {
     switch ($of1)
     {
+        
         case 1:
-            if($ofd1 == 2)
-                $sOrder = "pm.request_no desc";
-            else
-                $sOrder = "pm.request_no ";
-            break;  
-        case 2:
             if($ofd1 == 2)
                 $sOrder = "Coalesce(pm.created_at, '0000-00-00') desc";
             else
                 $sOrder = "Coalesce(pm.created_at, '9999-99-99') ";
             break;  
-        case 3:
+        case 2:
             if($ofd1 == 2)
-                $sOrder = "Coalesce(pm.updated_at, '0000-00-00') desc";
+                $sOrder = "pm.code desc";
             else
-                $sOrder = "Coalesce(pm.updated_at, '9999-99-99') ";
+                $sOrder = "pm.code ";
             break;  
-        case 5:
-            if($ofd1 == 2)
-                $sOrder = "Coalesce(pm.date_requested, '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce(pm.date_requested, '9999-99-99')";
-            break;
-        case 7:
-            if($ofd1 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-        case 9:
-            if($ofd1 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
+
         default:
     }
 }
@@ -436,40 +220,17 @@ if($of2 != "" && $of2 != "0" && $sOrder != "")
     {
         case 1:
             if($ofd2 == 2)
-                $sOrder .= ", pm.request_no desc";
-            else
-                $sOrder .= ", pm.request_no ";
-            break;  
-        case 2:
-            if($ofd2 == 2)
                 $sOrder .= ", Coalesce(pm.created_at, '0000-00-00') desc";
             else
                 $sOrder .= ", Coalesce(pm.created_at, '0000-00-00') ";
             break;  
-        case 3:
+        case 2:
             if($ofd2 == 2)
-                $sOrder .= ", Coalesce(pm.updated_at, '0000-00-00') desc";
+                $sOrder .= ", pm.request_no desc";
             else
-                $sOrder .= ", Coalesce(pm.updated_at, '0000-00-00') ";
+                $sOrder .= ", pm.request_no ";
             break;  
-        case 5:
-            if($ofd2 == 2)
-                $sOrder .= ", Coalesce(pm.date_requested, '0000-00-00') desc";
-            else
-                $sOrder .= ", Coalesce(pm.date_requested, '9999-99-99')";
-            break;
-        case 7:
-            if($ofd2 == 2)
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-        case 9:
-            if($ofd2 == 2)
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
+      
         default:
     }
 }
@@ -480,40 +241,17 @@ if($of2 != "" && $of2 != "0" && $sOrder == "")
     {
         case 1:
             if($ofd2 == 2)
-                $sOrder = "pm.request_no desc";
-            else
-                $sOrder = "pm.request_no ";
-            break;  
-        case 2:
-            if($ofd2 == 2)
                 $sOrder = "Coalesce(pm.created_at, '0000-00-00') desc";
             else
                 $sOrder = "Coalesce(pm.created_at, '9999-99-99') ";
             break;  
-        case 3:
+        case 2:
             if($ofd2 == 2)
-                $sOrder = "Coalesce(pm.updated_at, '0000-00-00') desc";
+                $sOrder = "pm.request_no desc";
             else
-                $sOrder = "Coalesce(pm.updated_at, '9999-99-99') ";
+                $sOrder = "pm.request_no ";
             break;  
-        case 5:
-            if($ofd2 == 2)
-                $sOrder = "Coalesce(pm.date_requested, '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce(pm.date_requested, '9999-99-99')";
-            break;
-        case 7:
-            if($ofd2 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
-        case 9:
-            if($ofd2 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
-            else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
-            break;
+       
         default:
     }
 }

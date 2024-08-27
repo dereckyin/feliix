@@ -447,7 +447,7 @@
                             <li>{{ item.cat1 }} >> {{ item.cat2 }} >> {{ item.cat3 }} >> {{ item.cat4 }}</li>
                             <li>{{ item.created_by }}</li>
                             <li>
-                                Inventory Check<br>
+                                {{ item.action }}<br>
                                 <a :href="item.url" target="_blank" v-if="item.act_1">{{ item.act_1 }}</a><br>
                                 {{ item.act_2 }}
                             </li>

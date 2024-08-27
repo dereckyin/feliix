@@ -1379,7 +1379,7 @@ var app = new Vue({
       let token = localStorage.getItem("accessToken");
 
       axios
-        .get("api/admin/office_item_inventory_check_approvers", {
+        .get("api/admin/office_item_inventory_change_history_approvers", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(
@@ -1481,7 +1481,7 @@ var app = new Vue({
 
       axios({
         method: "post",
-        url: "api/office_item_inventory_change_report",
+        url: "api/office_item_inventory_change_history_export",
         data: form_Data,
         responseType: "blob",
       })
@@ -1490,7 +1490,7 @@ var app = new Vue({
                 const link = document.createElement('a');
                 link.href = url;
                
-                  link.setAttribute('download', 'Office Item Inventory Change Report.xlsx');
+                  link.setAttribute('download', 'Office_Item_Inventory_Change_History.xlsx');
                
                 document.body.appendChild(link);
                 link.click();
