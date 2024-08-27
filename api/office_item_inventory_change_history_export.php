@@ -280,7 +280,7 @@ if($jwt){
 
                 $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
              
-                $richText->createText($row['qty']);
+                $att_str = $row['qty'];
 
                 $payable = $richText->createTextRun($att_str);
 
