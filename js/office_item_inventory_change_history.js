@@ -920,7 +920,7 @@ var app = new Vue({
       let _this = this;
 
       
-      if(this.lv1 != "" && this.fil_keyword == "")
+      if(this.lv1 == "" && this.fil_keyword == "")
         {
           Swal.fire({
             text: 'Choosing "Main Category" is necessary when applying filter.',
