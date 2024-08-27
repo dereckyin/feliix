@@ -202,8 +202,8 @@ if($jwt){
 
             // $sheet->setTitle("盛盛訂購單");
 
-            $sheet->getStyle('A1:F300')->getAlignment()->setHorizontal('center');
-            $sheet->getStyle('A1:F300')->getAlignment()->setVertical('center');
+            $sheet->getStyle('A1:I300')->getAlignment()->setHorizontal('center');
+            $sheet->getStyle('A1:I300')->getAlignment()->setVertical('center');
 
 
             $sheet->getColumnDimension('A')->setWidth(17.15);
@@ -212,6 +212,9 @@ if($jwt){
             $sheet->getColumnDimension('D')->setWidth(40.82);
             $sheet->getColumnDimension('E')->setWidth(40.82);
             $sheet->getColumnDimension('F')->setWidth(40.82);
+            $sheet->getColumnDimension('G')->setWidth(40.82);
+            $sheet->getColumnDimension('H')->setWidth(40.82);
+            $sheet->getColumnDimension('I')->setWidth(40.82);
 
             // header
             $sheet->setCellValue('A1', 'Executed Time');
@@ -226,7 +229,7 @@ if($jwt){
 
 
 
-            $sheet->getStyle('A1:F1')->getFont()->setBold(true);
+            $sheet->getStyle('A1:H1')->getFont()->setBold(true);
 
             $i = 2;
 
@@ -247,7 +250,7 @@ if($jwt){
                     $objDrawing->setName('photo');
                     $objDrawing->setDescription('photo');
                     $objDrawing->setPath($conf::$upload_path . preg_replace('/[^A-Za-z0-9]/', '', $row['photo']));
-                    $objDrawing->setCoordinates('B' . $i);
+                    $objDrawing->setCoordinates('C' . $i);
                     $objDrawing->setWidthAndHeight(100, 100);
                     $objDrawing->setResizeProportional(true);
                     $objDrawing->setOffsetX(80);
@@ -266,9 +269,11 @@ if($jwt){
                 $richTextF = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
                 $richTextF->createText($row['action'] . "\n");
                 $payable = $richTextF->createTextRun($row['act_1'] . "\n");
+                $payable->getFont()->setBold(true);
                 $richTextF->createText($row['act_2']);
 
                 $sheet->setCellValue('F'. $i, $richTextF);
+                $sheet->getStyle('F'. $i)->getAlignment()->setWrapText(true);
 
                 $sheet->setCellValue('G'. $i, $row['qty_before']);
 
@@ -638,7 +643,7 @@ else
         $cat2 = $row['cat2'];
         $cat3 = $row['cat3'];
         $cat4 = $row['cat4'];
-        $photo = $row['photo'];
+        $photo = "https://storage.googleapis.com/feliiximg/" . $row['photo'];
         $url = GetUrl($row['act_1'], $row['request_id']);
         
         $merged_results[] = array(
