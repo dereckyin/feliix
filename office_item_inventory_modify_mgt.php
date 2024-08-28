@@ -14,7 +14,7 @@
     <link rel="apple-touch-icon" href="images/iosicon.png" />
 
     <!-- SEO -->
-    <title>Office Item Inventory Replenishment</title>
+    <title>Office Item Inventory Modification</title>
     <meta name="keywords" content="FELIIX">
     <meta name="Description" content="FELIIX">
     <meta name="robots" content="all" />
@@ -178,7 +178,7 @@
         .tableframe .tablebox.lv1 li:nth-of-type(4) {
             color: #212529;
             min-width: 0;
-            width: 170px;
+            width: 180px;
         }
 
         .tableframe .tablebox.lv1 li:nth-of-type(5),
@@ -188,7 +188,7 @@
         }
 
         .tableframe .tablebox ul li:nth-of-type(8) {
-            width: 180px;
+            width: 170px;
         }
 
         .tableframe .tablebox ul li:nth-of-type(8) button {
@@ -239,22 +239,22 @@
             <!-- tags js在 main.js -->
             <div class="tags">
                 <a class="tag A" href="office_item_inventory_check_mgt">Inventory Check</a>
-                <a class="tag B focus">Inventory Replenishment</a>
-                <a class="tag C" href="office_item_inventory_modify_mgt">Inventory Modification</a>
+                <a class="tag B" href="office_item_inventory_replenish_mgt">Inventory Replenishment</a>
+                <a class="tag C focus">Inventory Modification</a>
                 <a class="tag D" href="office_item_inventory_change_history">Inventory Change History</a>
             </div>
             <!-- Blocks -->
-            <div class="block B focus">
+            <div class="block C focus">
 
                 <div class="list_function">
 
-                    <!-- 建立新庫存入貨單 -->
+                    <!-- 建立新的庫存異動單 -->
                     <div class="popupblock">
                         <a class="inserting" id="btn_insert"></a>
-                        <div id="insert_dialog" class="dialog d-add"><h6>Create New Inventory Replenishment:</h6>
+                        <div id="insert_dialog" class="dialog d-add"><h6>Create New Inventory Modification:</h6>
                             <div class="formbox">
                                 <dl>
-                                    <dt>Name of Inventory Replenishment</dt>
+                                    <dt>Name of Inventory Modification</dt>
                                     <dd><input type="text" placeholder="" v-model="check_name" style="margin-bottom: 15px;"></dd>
                                 </dl>
                                 <div class="btnbox">
@@ -281,7 +281,7 @@
                                         <dd><input type="number" min="1" step="1" v-model="fil_request_no_upper"></dd>
                                     </div>
 
-                                    <dt style="margin-top: 5px;">Name of Inventory Replenishment</dt>
+                                    <dt style="margin-top: 5px;">Name of Inventory Modification</dt>
                                     <dd>
                                         <input type="text" v-model="fil_keyword">
                                     </dd>
@@ -292,9 +292,9 @@
                                             data-width="100%" title="No status selected" id="tag01" v-model="fil_status">
 
                                             <option value=""></option>
-                                            <option value="1">PHASE 1: Checker Creates Item List and Encodes Replenished Qty</option>
+                                            <option value="1">PHASE 1: Checker Creates Item List and Encodes Modified Qty</option>
                                             <option value="2">PHASE 2: Approver Reviews</option>
-                                            <option value="3">PHASE 3: Inventory Replenishment Completed</option>
+                                            <option value="3">PHASE 3: Inventory Modification Completed</option>
                                         </select>
                                     </dd>
 
@@ -464,7 +464,7 @@
                     <div class="tablebox lv1">
                         <ul class="head">
                             <li>Ticket No.</li>
-                            <li>Name of Inventory Replenishment</li>
+                            <li>Name of Inventory Modification</li>
                             <li>Phase</li>
                             <li>Created Time</li>
                             <li>Last Updated Time</li>
@@ -477,7 +477,7 @@
                         <ul v-for='(record, index) in displayedRecord' :key="index">
                             <li>{{ record.request_no  }}</li>
                             <li>
-                                <a v-show="record.is_edited == 1" :class="record.followup == 'Y' ? 'red' : ''" v-bind:href="'office_item_inventory_replenish?id=' + record.id" target="_blank">{{record.check_name }}</a>
+                                <a v-show="record.is_edited == 1" :class="record.followup == 'Y' ? 'red' : ''" v-bind:href="'office_item_inventory_modify?id=' + record.id" target="_blank">{{record.check_name }}</a>
                                 <input name="check_name" type="text" v-show="record.is_edited == 0" v-model="check_name" maxlength="1024">
                             </li>
                             <li>{{ record.desc }}</li>
@@ -489,10 +489,10 @@
                                 <!-- 修改名字 -->
                                 <button v-show="record.is_edited == 1" @click="editRow(record)"><i class="fas fa-edit"></i></button>
 
-                                <!-- 複製庫存入庫單 -->
+                                <!-- 複製庫存異動單 -->
                                 <button v-show="record.is_edited == 1" @click="duplicateRow(record)"><i class="fas fa-copy"></i></button>
 
-                                <!-- 刪除庫存入庫單 -->
+                                <!-- 刪除庫存異動單 -->
                                 <button v-show="record.is_edited == 1" @click="deleteRow(record)"><i class="fas fa-trash"></i></button>
 
                                 <button v-show="record.is_edited == 0" @click="confirmRow(record)"><i class="fas fa-check"></i></button>
@@ -503,9 +503,9 @@
 
                         <!-- 表格內記錄的格式範例
                         <ul>
-                            <li>IR-00001</li>
-                            <li>Regular Replenishment in September</li>
-                            <li>Inventory Replenishment Completed</li>
+                            <li>IM-00001</li>
+                            <li>Sudden Modification</li>
+                            <li>Inventory Modification Completed</li>
                             <li>2024-08-31 10:38:04<br>Dennis Lin</li>
                             <li>2024-08-31 12:00:00<br>Kristel Tan</li>
                             <li>2024-08-31 11:15:22<br>Dennis Lin</li>
@@ -542,6 +542,6 @@
 
 <!-- import JavaScript -->
 <script src="js/element-ui@2.15.14/lib/index.js"></script>
-<script src="js/office_item_inventory_replenish_mgt.js"></script>
+<script src="js/office_item_inventory_modify_mgt.js"></script>
 
 </html>

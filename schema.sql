@@ -5278,3 +5278,30 @@ ADD column `qty_before` int(11) DEFAULT 0;
 
 ALTER TABLE office_stock_history
 ADD column `qty_after` int(11) DEFAULT 0;
+
+-- 20240828
+CREATE TABLE IF NOT EXISTS `office_item_inventory_modify` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `check_name` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `request_no` varchar(10) COLLATE utf8mb4_unicode_ci default '',
+  `note_1` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_1` JSON,
+  `note_2` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_2` JSON,
+  `note_3` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_3` JSON,
+  `note_4` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_4` JSON,
+  `checker` int(11) DEFAULT 0,
+  `approver`  int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `check_id` int(11) DEFAULT 0,
+  `check_at` timestamp NULL DEFAULT NULL,
+  `approval_id` bigint(20) unsigned default 0,
+  `approval_at` timestamp NULL DEFAULT NULL,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
