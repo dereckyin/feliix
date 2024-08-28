@@ -284,7 +284,7 @@ var app = new Vue({
 
     Swal.fire({
         title: "Duplicate",
-        text: "Are you sure to duplicate this inventory _modify record?",
+        text: "Are you sure to duplicate this inventory modification record?",
         icon: "info",
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -339,16 +339,16 @@ var app = new Vue({
     if(status == 1)
     {
       if(!checker)
-        ret_msg = "For inventory replenishment record with PHASE 1: Checker Creates Item List and Encodes Replenished Qty, only checker is allowed to delete it.";
+        ret_msg = "For inventory modification record with PHASE 1: Checker Creates Item List and Encodes Modified Qty, only checker is allowed to delete it.";
     }
     else if(status == 2)
     {
       if(!approver)
-        ret_msg = "For inventory replenishment record with PHASE 2: Approver Reviews, only approver is allowed to delete it.";
+        ret_msg = "For inventory modification record with PHASE 2: Approver Reviews, only approver is allowed to delete it.";
     }
     else if(status == 3)
     {
-      ret_msg = "For inventory replenishment record with PHASE 3: Inventory Replenishment Completed, no one is allowed to delete it.";
+      ret_msg = "For inventory modification record with PHASE 3: Inventory Modification Completed, no one is allowed to delete it.";
     }
 
     return ret_msg;
@@ -977,7 +977,7 @@ var app = new Vue({
 
       if (this.check_name.trim() == "") {
         Swal.fire({
-          text: "Name of Inventory Replenishment is required!",
+          text: "Name of Inventory Modification is required!",
           icon: "warning",
           confirmButtonText: "OK",
         });

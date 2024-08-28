@@ -714,13 +714,13 @@ function GetStatus($loc)
     $location = "";
     switch ($loc) {
         case 1:
-            $location = "PHASE 1: Checker Creates Item List and Encodes Replenished Qty";
+            $location = "PHASE 1: Checker Creates Item List and Encodes Modified Qty";
             break;
         case 2:
             $location = "PHASE 2: Approver Reviews";
             break;
         case 3:
-            $location = "PHASE 3: Inventory Replenishment Completed";
+            $location = "PHASE 3: Inventory Modification Completed";
             break;
     }
 

@@ -41,7 +41,7 @@ else
         $merged_results = array();
 
         /* fetch data */
-        $query = "SELECT id from office_item_inventory_replenish order by id desc limit 1";
+        $query = "SELECT id from office_item_inventory_modify order by id desc limit 1";
 
         $stmt = $db->prepare( $query );
         $stmt->execute();
