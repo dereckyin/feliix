@@ -466,7 +466,7 @@ var app = new Vue({
             }
         }
 
-        if(this.notes4 == "")
+        if(this.notes == "")
         {
             Swal.fire({
                 text: 'Please select the reason of inventory modification.',
@@ -476,7 +476,7 @@ var app = new Vue({
             return false;
         }
 
-        if(this.notes == "" && this.notes4 == "")
+        if(this.notes == "Other" && this.notes4 == "")
             {
                 Swal.fire({
                     text: 'Please state the details of reason if selecting “Other” option.',
