@@ -96,6 +96,7 @@ var app = new Vue({
     befor_reset : true,
 
     id: 0,
+    notes_chosed:"",
     notes:"",
     notes2:"",
     notes3:"",
@@ -285,6 +286,7 @@ var app = new Vue({
         form_Data.append("id", _this.id);
         form_Data.append("stage", stage);
         form_Data.append("notes", note);
+        form_Data.append("notes4", this.notes4)
         form_Data.append("phase", JSON.stringify(_this.phase1));
 
         var favorite = [];
@@ -452,7 +454,38 @@ var app = new Vue({
                 });
                 return false;
             }
+
+            if(this.phase1[i].sign == "")
+            {
+                Swal.fire({
+                    text: 'Every item in Item list needs to indicate “+” or “-” before going to the next phase!',
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+                return false;
+            }
         }
+
+        if(this.notes4 == "")
+        {
+            Swal.fire({
+                text: 'Please select the reason of inventory modification.',
+                icon: "warning",
+                confirmButtonText: "OK",
+            });
+            return false;
+        }
+
+        if(this.notes == "" && this.notes4 == "")
+            {
+                Swal.fire({
+                    text: 'Please state the details of reason if selecting “Other” option.',
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+                return false;
+            }
+        
      
       let _this = this;
 
@@ -461,6 +494,7 @@ var app = new Vue({
       form_Data.append("jwt", token);
       form_Data.append("id", _this.id);
       form_Data.append("notes", _this.notes);
+      form_Data.append("notes4", _this.notes4)
       form_Data.append("phase", JSON.stringify(_this.phase1));
       form_Data.append("status", 2);
 
@@ -1876,6 +1910,7 @@ var app = new Vue({
           url: item.url,
           amount : item.amount,
           qty: item.qty,
+          sign: "",
           qty1: "",
           note: "",
           qty2: "",
@@ -1933,6 +1968,7 @@ var app = new Vue({
           url: items[j].url,
           amount : items[j].amount,
           qty: items[j].qty,
+          sign: "",
           qty1: "",
           note: "",
           qty2: "",

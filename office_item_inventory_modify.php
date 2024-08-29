@@ -633,17 +633,17 @@
                     <ul>
                         <li><b>Reason</b></li>
                         <li>
-                            <select style="width: 100%; margin-bottom: 8px;">
+                            <select style="width: 100%; margin-bottom: 8px;" v-model="notes">
                                 <option value=""></option>
-                                <option value="">Missing of Item</option>
-                                <option value="">Damage of Item</option>
-                                <option value="">Theft of Item</option>
-                                <option value="">Recording of Errors</option>
-                                <option value="">Return Item</option>
-                                <option value="">Other</option>
+                                <option value="Missing of Item">Missing of Item</option>
+                                <option value="Damage of Item">Damage of Item</option>
+                                <option value="Theft of Item">Theft of Item</option>
+                                <option value="Recording of Errors">Recording of Errors</option>
+                                <option value="Return Item">Return Item</option>
+                                <option value="Other">Other</option>
                             </select>
 
-                            <textarea style="width:100%" placeholder="Notes" v-model="notes"></textarea>
+                            <textarea style="width:100%" placeholder="Notes" v-model="notes4"></textarea>
                         </li>
 
 
@@ -684,7 +684,7 @@
                                     </li>
                                     <li>{{ item.cat1 }} >> {{ item.cat2 }} >> {{ item.cat3 }} >> {{ item.cat4 }}</li>
                                     <li>
-                                        <select>
+                                        <select v-model="item.sign">
                                             <option></option>
                                             <option>+</option>
                                             <option>-</option>
