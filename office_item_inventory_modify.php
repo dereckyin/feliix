@@ -734,7 +734,7 @@
                 <div class="tablebox notes">
                     <ul class="head">
                         <li>PHASE 1: Checker Creates Item List and Encodes Modified Qty<br>Reason</li>
-                        <li>{{reason}} <span v-if="notes != ''">: {{ notes }}</span></li>
+                        <li>{{notes}} <span v-if="notes4 != ''">: {{ notes4 }}</span></li>
                     </ul>
                 </div>
 
@@ -790,20 +790,15 @@
                                     <li class="checker_result">
 
                                         <!-- 如果 異動是 +，則下方的 <span> 結構需要創造出來 -->
-                                        <span class="green" v-if="">
-                                            + {{item.qty1}}
-                                        </span>
-
-                                        <!-- 如果 異動是 -，則下方的 <span> 結構需要創造出來 -->
-                                        <span class="red" v-if="">
-                                            - {{item.qty1}}
+                                        <span :class="[ item.sign == '+' ? 'green' : 'red']">
+                                            {{item.sign}} {{item.qty1}}
                                         </span>
 
                                         <div>{{ item.note }}</div>
                                     </li>
 
                                     <li>
-                                        <select>
+                                        <select v-model="item.sign2">
                                             <option></option>
                                             <option>+</option>
                                             <option>-</option>
