@@ -325,9 +325,13 @@ if($status == 1)
                 $code = $value['code1'] . $value['code2'] . $value['code3'] . $value['code4'];
 
                 $qty = $value['qty2'] != "" ? $value['qty2'] : $value['qty1'];
+                $sign = $value['sign2'] != "" ? $value['sign2'] : $value['sign'];
 
                 if($qty == "")
                     $qty = $value['qty1'];
+
+                if($sign == "-")
+                    $qty *= -1;
 
                 $query = "select * from office_items_stock where code = :code";
                 $stmt = $db->prepare($query);
@@ -404,8 +408,11 @@ if($status == 1)
                     }
                 }
 
-                $action = 'Replenish ' . $qty;
-                $query = "insert into office_stock_history (request_id, code, qty, action, act_1, act_2, create_id, created_at, `status`, qty_before, qty_after) values (:request_id, :code, :qty, 'Inventory Replenishment', '" . $request_no . "', '" . $action . "', :updated_id, now(), 1, " . $qty_before . ", " . $qty_after . ")";
+                if($sign == "-")
+                    $action = 'Deduct ' . $qty * -1;
+                else
+                    $action = 'Increase ' . $qty;
+                $query = "insert into office_stock_history (request_id, code, qty, action, act_1, act_2, create_id, created_at, `status`, qty_before, qty_after) values (:request_id, :code, :qty, 'Inventory Modification', '" . $request_no . "', '" . $action . "', :updated_id, now(), 1, " . $qty_before . ", " . $qty_after . ")";
                 $stmt = $db->prepare($query);
 
                 $diff = $qty;
@@ -456,8 +463,13 @@ if($status == 1)
                 }
 
                 $amount = $item['qty2'] != "" ? $item['qty2'] : $item['qty1'];
+                $sign = $item['sign2'] != "" ? $item['sign2'] : $item['sign'];
+
                 $item['qty_before'] = $qty;
-                $item['qty_after'] = $qty + $amount;
+                if($sign == '+')
+                    $item['qty_after'] = $qty + $amount;
+                if($sign == '-')
+                    $item['qty_after'] = $qty - $amount;
             }
 
             return json_encode($phase_array);
