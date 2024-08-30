@@ -570,7 +570,7 @@ var app = new Vue({
           const link = document.createElement("a");
           link.href = url;
 
-          link.setAttribute("download", "Office_Item_Replenishment_" + _this.record.request_no + ".xlsx");
+          link.setAttribute("download", "Office_Item_Modification_" + _this.record.request_no + ".xlsx");
 
           document.body.appendChild(link);
           link.click();
@@ -603,7 +603,7 @@ var app = new Vue({
           const link = document.createElement("a");
           link.href = url;
 
-          link.setAttribute("download", "Office_Item_Replenishment_" + _this.record.request_no + ".xlsx");
+          link.setAttribute("download", "Office_Item_Modification_" + _this.record.request_no + ".xlsx");
 
           document.body.appendChild(link);
           link.click();
@@ -635,7 +635,7 @@ var app = new Vue({
           const link = document.createElement("a");
           link.href = url;
 
-          link.setAttribute("download", "Office_Item_Replenishment_" + _this.record.request_no + ".xlsx");
+          link.setAttribute("download", "Office_Item_Modification_" + _this.record.request_no + ".xlsx");
 
           document.body.appendChild(link);
           link.click();
