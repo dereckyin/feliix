@@ -681,6 +681,32 @@ var app = new Vue({
 
     goto_phase3: function() {
       let _this = this;
+
+      for (i = 0; i < this.phase1.length; i++) {
+
+        if(this.phase1[i].qty2 != "")
+        {
+          if ((parseInt(this.phase1[i].qty2) || 0) < 1) {
+              Swal.fire({
+                  text: "If you encode the qty for one item, then the encoded qty must be equal to or greater than 1! ",
+                  icon: "warning",
+                  confirmButtonText: "OK",
+              });
+              return false;
+          }
+
+            if(this.phase1[i].sign2 == "")
+            {
+                Swal.fire({
+                    text: 'If you encode the qty for one item, then you have to indicate its modification type to be “+” or “-”.',
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+                return false;
+            }
+        }
+    }
+
         Swal.fire({
           title: "Approve",
           text: "Are you sure to approve this inventory modification result?",
