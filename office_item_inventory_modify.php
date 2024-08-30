@@ -844,7 +844,7 @@
                 <div class="tablebox notes">
                     <ul class="head">
                         <li>PHASE 1: Checker Creates Item List and Encodes Modified Qty<br>Reason</li>
-                        <li>{{reason}} <span v-if="notes != ''">: {{ notes }}</span></li>
+                        <li>{{notes}} <span v-if="notes4 != ''">: {{ notes4 }}</span></li>
                     </ul>
                     <ul class="head">
                         <li>PHASE 2: Approver Reviews<br>Notes</li>
@@ -901,13 +901,8 @@
                                     <li class="checker_result">
 
                                         <!-- 如果 異動是 +，則下方的 <span> 結構需要創造出來 -->
-                                        <span class="green" v-if="">
-                                            + {{item.qty1}}
-                                        </span>
-
-                                        <!-- 如果 異動是 -，則下方的 <span> 結構需要創造出來 -->
-                                        <span class="red" v-if="">
-                                            - {{item.qty1}}
+                                        <span :class="[ item.sign == '+' ? 'green' : 'red']">
+                                            {{item.sign}} {{item.qty1}}
                                         </span>
 
                                         <div>{{ item.note }}</div>
@@ -918,13 +913,8 @@
                                     <li class="approver_result">
 
                                         <!-- 如果 異動是 +，則下方的 <span> 結構需要創造出來 -->
-                                        <span class="green" v-if="">
-                                            + {{item.qty2}}
-                                        </span>
-
-                                        <!-- 如果 異動是 -，則下方的 <span> 結構需要創造出來 -->
-                                        <span class="red" v-if="">
-                                            - {{item.qty2}}
+                                        <span :class="[ item.sign2 == '+' ? 'green' : 'red']" v-if="item.qty2 != ''">
+                                            {{item.sign2}} {{item.qty2}}
                                         </span>
 
                                         <div>{{item.comment}}</div>
@@ -935,10 +925,7 @@
                                         {{ item.qty_before }}
 
                                         <!-- 如果 數量上升，則下方的 <span> 結構需要創造出來 -->
-                                        <span class="green"> + {{item.qty2 != '' ? item.qty2 : item.qty1 }} → {{ item.qty_after}}</span>
-
-                                        <!-- 如果 數量下降，則下方的 <span> 結構需要創造出來 -->
-                                        <span class="red"> + {{item.qty2 != '' ? item.qty2 : item.qty1 }} → {{ item.qty_after}}</span>
+                                        <span :class="[ (item.sign2 != '' ? item.sign2 : item.sign) == '+' ? 'green' : 'red']"> {{ (item.sign2 != '' ? item.sign2 : item.sign) }} {{item.qty2 != '' ? item.qty2 : item.qty1 }} → {{ item.qty_after}}</span>
 
                                     </li>
 
