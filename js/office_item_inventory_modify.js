@@ -683,7 +683,7 @@ var app = new Vue({
       let _this = this;
         Swal.fire({
           title: "Approve",
-          text: "Are you sure to approve this inventory replenishment result?",
+          text: "Are you sure to approve this inventory modification result?",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
@@ -706,7 +706,7 @@ var app = new Vue({
       let _this = this;
         Swal.fire({
           title: "“Reject”",
-          text: "When you click the button of “Reject”, then all your encoding content except for “Notes” will be discarded and unrecoverable. Are you sure to continue this action?",
+          text: "When you click the button of “Reject”, then all your encoding content except for “Notes” will be discarded and unrecoverable. Are you sure to continue this action? ",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
