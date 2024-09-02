@@ -714,19 +714,19 @@ var app = new Vue({
                 });
                 return false;
             }
-
-            let sign = this.phase1[i].sign2 == "" ? this.phase1[i].sign : this.phase1[i].sign2; 
-            let qty = this.phase1[i].qty2 == "" ? this.phase1[i].qty : this.phase1[i].qty2;
-            if(sign == "-" && qty > (parseInt(this.phase1[i].qty) || 0))
-              {
-                  Swal.fire({
-                      text: 'The current stock qty of “' + this.phase1[i].code1 + this.phase1[i].code2 + this.phase1[i].code3 + this.phase1[i].code4 + '” is ' + this.phase1[i].qty + '. The requesting operation “-' + qty + '” will lead to negative value in stock qty, which is not allowed.',
-                      icon: "warning",
-                      confirmButtonText: "OK",
-                  });
-                  return false;
-              }
         }
+
+        let sign = this.phase1[i].sign2 == "" ? this.phase1[i].sign : this.phase1[i].sign2; 
+        let qty = this.phase1[i].qty2 == "" ? this.phase1[i].qty : this.phase1[i].qty2;
+        if(sign == "-" && qty > (parseInt(this.phase1[i].qty) || 0))
+          {
+              Swal.fire({
+                  text: 'The current stock qty of “' + this.phase1[i].code1 + this.phase1[i].code2 + this.phase1[i].code3 + this.phase1[i].code4 + '” is ' + this.phase1[i].qty + '. The requesting operation “-' + qty + '” will lead to negative value in stock qty, which is not allowed.',
+                  icon: "warning",
+                  confirmButtonText: "OK",
+              });
+              return false;
+          }
     }
 
         Swal.fire({
