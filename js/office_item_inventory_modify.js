@@ -1638,7 +1638,7 @@ var app = new Vue({
 
     reset1: function() {
         this.phase1 = [];
-        this.$refs.file.value = "";
+        //this.$refs.file.value = "";
         this.notes = "";
         this.notes4 = "";
 
