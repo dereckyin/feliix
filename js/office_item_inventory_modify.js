@@ -464,6 +464,16 @@ var app = new Vue({
                 });
                 return false;
             }
+
+            if(this.phase1[i].sign == "-" && (parseInt(this.phase1[i].qty1) || 0) > (parseInt(this.phase1[i].qty) || 0))
+            {
+                Swal.fire({
+                    text: 'The current stock qty of “' + this.phase1[i].code1 + this.phase1[i].code2 + this.phase1[i].code3 + this.phase1[i].code4 + '” is ' + this.phase1[i].qty + '. The requesting operation “-' + this.phase1[i].qty1 + '” will lead to negative value in stock qty, which is not allowed.',
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+                return false;
+            }
         }
 
         if(this.notes == "")
@@ -704,6 +714,16 @@ var app = new Vue({
                 });
                 return false;
             }
+
+            if(this.phase1[i].sign2 == "-" && (parseInt(this.phase1[i].qty2) || 0) > (parseInt(this.phase1[i].qty) || 0))
+              {
+                  Swal.fire({
+                      text: 'The current stock qty of “' + this.phase1[i].code1 + this.phase1[i].code2 + this.phase1[i].code3 + this.phase1[i].code4 + '” is ' + this.phase1[i].qty + '. The requesting operation “-' + this.phase1[i].qty2 + '” will lead to negative value in stock qty, which is not allowed.',
+                      icon: "warning",
+                      confirmButtonText: "OK",
+                  });
+                  return false;
+              }
         }
     }
 
