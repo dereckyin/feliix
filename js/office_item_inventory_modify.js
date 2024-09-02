@@ -717,7 +717,7 @@ var app = new Vue({
         }
 
         let sign = this.phase1[i].sign2 == "" ? this.phase1[i].sign : this.phase1[i].sign2; 
-        let qty = this.phase1[i].qty2 == "" ? this.phase1[i].qty : this.phase1[i].qty2;
+        let qty = this.phase1[i].qty2 == "" ? this.phase1[i].qty1 : this.phase1[i].qty2;
         if(sign == "-" && qty > (parseInt(this.phase1[i].qty) || 0))
           {
               Swal.fire({
