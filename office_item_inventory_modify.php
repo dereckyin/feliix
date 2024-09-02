@@ -734,7 +734,7 @@
                 <div class="tablebox notes">
                     <ul class="head">
                         <li>PHASE 1: Checker Creates Item List and Encodes Modified Qty<br>Reason</li>
-                        <li>{{notes}} <span v-if="notes4 != ''">: {{ notes4 }}</span></li>
+                        <li>{{notes}} <span v-if="notes4 != ''"> : {{ notes4 }}</span></li>
                     </ul>
                 </div>
 
@@ -844,7 +844,7 @@
                 <div class="tablebox notes">
                     <ul class="head">
                         <li>PHASE 1: Checker Creates Item List and Encodes Modified Qty<br>Reason</li>
-                        <li>{{notes}} <span v-if="notes4 != ''">: {{ notes4 }}</span></li>
+                        <li>{{notes}} <span v-if="notes4 != ''"> : {{ notes4 }}</span></li>
                     </ul>
                     <ul class="head">
                         <li>PHASE 2: Approver Reviews<br>Notes</li>

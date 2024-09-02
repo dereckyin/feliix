@@ -192,7 +192,7 @@ if($jwt){
             $sheet->setCellValue('A1', 'Code');
             $sheet->setCellValue('B1', 'Image');
             $sheet->setCellValue('C1', 'Particulars');
-            $sheet->setCellValue('D1', 'Replenished Qty');
+            $sheet->setCellValue('D1', 'Modified Qty');
             $sheet->setCellValue('E1', 'Comment');
 
 
@@ -242,7 +242,7 @@ if($jwt){
                 $payable = $richText->createTextRun($att_str);
 
                 if($sign == "+")
-                    $payable->getFont()->getColor()->setARGB("25A2B8");
+                    $payable->getFont()->getColor()->setARGB("009900");
                 else if($sign == "-")
                     $payable->getFont()->getColor()->setARGB("FF0000");
 
@@ -261,12 +261,12 @@ if($jwt){
                     $payable1 = $richText1->createTextRun($att_str);
 
                     if($sign == "+")
-                        $payable1->getFont()->getColor()->setARGB("25A2B8");
+                        $payable1->getFont()->getColor()->setARGB("009900");
                     else if($sign == "-")
                         $payable1->getFont()->getColor()->setARGB("FF0000");
     
                     // if($row['qty2'] - $row['qty'] > 0)
-                    //     $payable1->getFont()->getColor()->setARGB("25A2B8");
+                    //     $payable1->getFont()->getColor()->setARGB("009900");
                     // else if($row['qty2'] - $row['qty'] < 0)
                     //     $payable1->getFont()->getColor()->setARGB("FF0000");
                 }

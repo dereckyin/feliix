@@ -411,7 +411,7 @@ if($status == 1)
                 if($sign == "-")
                     $action = 'Deduct ' . $qty * -1;
                 else
-                    $action = 'Increase ' . $qty;
+                    $action = 'Add ' . $qty;
                 $query = "insert into office_stock_history (request_id, code, qty, action, act_1, act_2, create_id, created_at, `status`, qty_before, qty_after) values (:request_id, :code, :qty, 'Inventory Modification', '" . $request_no . "', '" . $action . "', :updated_id, now(), 1, " . $qty_before . ", " . $qty_after . ")";
                 $stmt = $db->prepare($query);
 

@@ -1629,6 +1629,7 @@ var app = new Vue({
       for (var i = 0; i < this.phase1.length; i++) {
         this.phase1[i].qty2 = "";
         this.phase1[i].comment = "";
+        this.phase1[i].sign2 = "";
       }
 
       // this.notes2 = this.record.note_2;
@@ -1639,6 +1640,7 @@ var app = new Vue({
         this.phase1 = [];
         this.$refs.file.value = "";
         this.notes = "";
+        this.notes4 = "";
 
         // each item_list should be unchecked
         for(var i = 0; i < this.item_list.length; i++)

@@ -432,6 +432,9 @@ function GetUrl($act_1, $request_id)
         case "IC":
             $location = "office_item_inventory_check" . "?id=" . $request_id;
             break;
+        case "IM":
+            $location = "office_item_inventory_modify" . "?id=" . $request_id;
+            break;
     }
 
     return $location;
