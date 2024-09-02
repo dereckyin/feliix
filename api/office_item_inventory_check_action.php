@@ -138,8 +138,10 @@ if($status == 2 && $stage == 3)
                 }
 
                 if($status == 4)
+                {
                     update_office_item_qty($id, $request_no, $phase, $db, $user_id);
-            
+                    update_office_item_forzen($db);
+                }
                 
                 $db->commit();
                 
@@ -155,6 +157,36 @@ if($status == 2 && $stage == 3)
                 die();
             }
             break;
+        }
+
+        function update_office_item_forzen($db)
+        {
+            $frozen = "";
+            
+            $query = "select count(*) cnt from office_item_inventory_check where status not in (-1, 4)";
+            $stmt = $db->prepare($query);
+            
+            if($stmt->execute()) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                if($row['cnt'] > 0) {
+                    $frozen = "Y";
+                } else {
+                    $frozen = "";
+                }
+            } else {
+                echo json_encode(array("message" => "Failed"));
+                die();
+            }
+            
+            $query = "UPDATE access_control SET frozen_office = :frozen";
+            $stmt = $db->prepare($query);
+            
+            $stmt->bindParam(':frozen', $frozen);
+            
+            if(!$stmt->execute()) {
+                echo json_encode(array("message" => "Failed"));
+                die();
+            }
         }
         
 

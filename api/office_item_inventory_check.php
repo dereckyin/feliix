@@ -617,6 +617,8 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $desc = GetStatus($row['status']);
 
             $phase_1 = $row['phase_1'];
+            if($phase_1 == null)
+                $phase_1 = "[]";
             $phase1 = json_decode($phase_1, true);
             if($phase1 == null)
                 $phase1 = [];

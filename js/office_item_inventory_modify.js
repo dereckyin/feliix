@@ -113,6 +113,7 @@ var app = new Vue({
     it_total : 0,
 
     is_toIndex: "",
+
   },
 
   created() {
@@ -149,6 +150,7 @@ var app = new Vue({
     // this.getProjectNames();
     this.getLevel1();
     this.getItems();
+
   },
 
   computed: {
@@ -197,6 +199,24 @@ var app = new Vue({
 
   methods: {
 
+    is_forzen: async function() {
+      let ret = "";
+      let token = localStorage.getItem("accessToken");
+
+      try {
+        let res = await axios.get("api/office_item_is_forzen", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        ret = res.data.forzen;
+
+      } catch (err) {
+        console.log(err);
+      }
+
+      return ret;
+    },
+
     can_access: async function(id) {
       let ret = "";
       let token = localStorage.getItem("accessToken");
@@ -218,8 +238,7 @@ var app = new Vue({
       }
 
       return ret;
-    }
-    ,
+    },
 
     getRecord: async function(id) {
         let _this = this;
@@ -691,6 +710,16 @@ var app = new Vue({
 
     goto_phase3: function() {
       let _this = this;
+
+      if(this.is_forzen() != "")
+      {
+        Swal.fire({
+          text: "Office Items Inventory Check is ongoing, so it is not allowed to proceed the action of approving on inventory modification.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
 
       for (i = 0; i < this.phase1.length; i++) {
 

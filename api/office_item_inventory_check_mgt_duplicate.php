@@ -171,6 +171,8 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
         echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
         die();
     }
+
+    update_office_item_forzen($db);
 }
 
 function UpdateQty($list, $db)
@@ -224,3 +226,32 @@ function GetQuotation($id, $db) {
     return $merged_results;
 }
 
+function update_office_item_forzen($db)
+{
+    $frozen = "";
+    
+    $query = "select count(*) cnt from office_item_inventory_check where status not in (-1, 4)";
+    $stmt = $db->prepare($query);
+    
+    if($stmt->execute()) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($row['cnt'] > 0) {
+            $frozen = "Y";
+        } else {
+            $frozen = "";
+        }
+    } else {
+        echo json_encode(array("message" => "Failed"));
+        die();
+    }
+    
+    $query = "UPDATE access_control SET frozen_office = :frozen";
+    $stmt = $db->prepare($query);
+    
+    $stmt->bindParam(':frozen', $frozen);
+    
+    if(!$stmt->execute()) {
+        echo json_encode(array("message" => "Failed"));
+        die();
+    }
+}

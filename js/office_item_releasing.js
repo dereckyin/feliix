@@ -82,6 +82,24 @@ var app = new Vue({
   },
 
   methods: {
+    is_forzen: async function() {
+      let ret = "";
+      let token = localStorage.getItem("accessToken");
+
+      try {
+        let res = await axios.get("api/office_item_is_forzen", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        ret = res.data.forzen;
+
+      } catch (err) {
+        console.log(err);
+      }
+
+      return ret;
+    },
+
     setPages() {
       console.log("setPages");
       this.pages = [];
@@ -150,6 +168,16 @@ var app = new Vue({
   submit_auth() {
     let _this = this;
 
+    if(this.is_forzen() != "")
+      {
+        Swal.fire({
+          text: "Office Items Inventory Check is ongoing, so it is not allowed to proceed the action of releasing on office item application.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
     if($("#sig_date").jSignature('getData', 'native').length == 0 || $("#sig_name").jSignature('getData', 'native').length == 0 || $("#releaser_sig_date").jSignature('getData', 'native').length == 0 || $("#releaser_sig_name").jSignature('getData', 'native').length == 0)
     {
         Swal.fire({
@@ -217,6 +245,16 @@ var app = new Vue({
 },
 
 authRecord() {
+
+  if(this.is_forzen() != "")
+    {
+      Swal.fire({
+        text: "Office Items Inventory Check is ongoing, so it is not allowed to proceed the action of releasing on office item application.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
 
   window.jQuery("#Modal_signature").toggle();
   window.jQuery("#mask").toggle();
@@ -326,6 +364,16 @@ authRecord() {
 
     finish: function() {
       let _this = this;
+
+      if(this.is_forzen() != "")
+        {
+          Swal.fire({
+            text: "Office Items Inventory Check is ongoing, so it is not allowed to proceed the action of releasing on office item application.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
 
       if(this.submit == true) return;
 

@@ -5305,3 +5305,7 @@ CREATE TABLE IF NOT EXISTS `office_item_inventory_modify` (
   `status` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20240902
+ALTER TABLE access_control
+ADD COLUMN `frozen_office` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '';

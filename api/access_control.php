@@ -42,6 +42,7 @@ $office_item_release = (isset($_POST['office_item_release']) ?  $_POST['office_i
 $limited_access = (isset($_POST['limited_access']) ?  $_POST['limited_access'] : '');
 $inventory_checker = (isset($_POST['inventory_checker']) ?  $_POST['inventory_checker'] : '');
 $inventory_approver = (isset($_POST['inventory_approver']) ?  $_POST['inventory_approver'] : '');
+$frozen_office = (isset($_POST['frozen_office']) ?  $_POST['frozen_office'] : '');
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -67,7 +68,7 @@ if (!isset($jwt)) {
     if ($action == 1) {
         //select all
         try {
-            $query = "SELECT payess1, payess2, payess3, salary payess4, salary_mgt payess5, salary_slip_mgt payess6, payess7, payess8, access1, access2, access3, access4, access5, access6, access7, knowledge, vote1, vote2, schedule_confirm, halfday, tag_management, soa, transmittal, edit_emp, edit_basic, office_items, office_item_approve, office_item_release, limited_access, inventory_checker, inventory_approver from access_control where id = 1";
+            $query = "SELECT payess1, payess2, payess3, salary payess4, salary_mgt payess5, salary_slip_mgt payess6, payess7, payess8, access1, access2, access3, access4, access5, access6, access7, knowledge, vote1, vote2, schedule_confirm, halfday, tag_management, soa, transmittal, edit_emp, edit_basic, office_items, office_item_approve, office_item_release, limited_access, inventory_checker, inventory_approver, frozen_office from access_control where id = 1";
 
             $stmt = $db->prepare($query);
             $stmt->execute();
@@ -115,7 +116,8 @@ if (!isset($jwt)) {
                             office_item_release = :office_item_release,
                             limited_access = :limited_access,
                             inventory_checker = :inventory_checker,
-                            inventory_approver = :inventory_approver
+                            inventory_approver = :inventory_approver,
+                            frozen_office = :frozen_office
                         where id = :id";
 
             // prepare the query
@@ -155,6 +157,7 @@ if (!isset($jwt)) {
             $limited_access = htmlspecialchars(strip_tags($limited_access));
             $inventory_checker = htmlspecialchars(strip_tags($inventory_checker));
             $inventory_approver = htmlspecialchars(strip_tags($inventory_approver));
+            $frozen_office = htmlspecialchars(strip_tags($frozen_office));
             
             // bind the values
             $stmt->bindParam(':id', $id);
@@ -189,6 +192,7 @@ if (!isset($jwt)) {
             $stmt->bindParam(':limited_access', $limited_access);
             $stmt->bindParam(':inventory_checker', $inventory_checker);
             $stmt->bindParam(':inventory_approver', $inventory_approver);
+            $stmt->bindParam(':frozen_office', $frozen_office);
 
             try {
                 // execute the query, also check if query was successful

@@ -653,6 +653,27 @@
 
                 </div>
 
+                <div class="box-content">
+                    <ul>
+                        <li><b>Frozen of Office Items Releasing as well as Office Items Inventory Replenishment and Modification</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <select style="margin-bottom: 8px;" v-model="frozen_office">
+                                    <option value="">No</option>
+                                    <option value="Y">Yes</option>
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(32)">Cancel</a>
+                        <a class="btn" @click="save(32)">Save</a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>
