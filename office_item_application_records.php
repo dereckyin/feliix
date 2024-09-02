@@ -275,7 +275,6 @@ body.green input[type=date] {
             <!-- tags js在 main.js -->
             <div class="tags">
                 <a class="tag A" href="apply_for_office_item">Apply</a>
-                <a class="tag B" href="office_item_application_liquidate">Liquidate</a>
                 <a class="tag C focus">Records</a>
             </div>
             <!-- Blocks -->

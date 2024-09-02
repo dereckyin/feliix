@@ -126,6 +126,22 @@ try {
             $access11 = true;
         }
 
+        $office_item_approver_releaser = false;
+        $query = "SELECT * FROM access_control WHERE (office_item_approve LIKE '%" . $username . "%' or office_item_release LIKE '%" . $username . "%') ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $office_item_approver_releaser = true;
+        }
+
+        $office_inventory_approver_releaser = false;
+        $query = "SELECT * FROM access_control WHERE (inventory_checker LIKE '%" . $username . "%' or inventory_approver LIKE '%" . $username . "%') ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $office_inventory_approver_releaser = true;
+        }
+
         $access3 = false;
         if($user_id == 1 || $user_id == 4 || $user_id == 6 || $user_id == 2 || $user_id == 41 || $user_id == 3 || $user_id == 9 || $user_id == 87 || $user_id == 99 || $user_id == 139 || $user_id == 143 || $user_id == 146 || $user_id == 154)
             $access3 = true;
@@ -351,6 +367,7 @@ try {
             <li class="sec03">
                 <a class="uni">Inventory<br>Management</a>
                 <a class="list" href="../transmittal_mgt">Transmittal Management</a>
+                <?=($office_inventory_approver_releaser == true) ? '<a class="list" href="../office_item_inventory_check_mgt">Office Items Inventory Management</a>' : '' ?>
             </li>
 
             <li class="sec02">
@@ -370,6 +387,7 @@ try {
                 <?=($access8 == true) ? '<a class="list" href="../salary_recorder">Salary Recorder</a>' : '' ?>
                 <?=($access9 == true) ? '<a class="list" href="../store_sales_recorder">Store Sales Recorder</a>' : '' ?>
                 <?=($access10 == true) ? '<a class="list" href="../po_to_mrlai_recorder">Recorder of PO to Mr. Lai</a>' : '' ?>
+                <?=($office_item_approver_releaser == true) ? '<a class="list" href="../office_item_reviewing">Office Item Application Review</a>' : '' ?>
             </li>
             <?php 
                 }
@@ -441,9 +459,10 @@ try {
                 <a class="list">Query/Ammend</a>
             </li>
             <li class="sec02">
-                <a class="uni">Payment Request/Claim<br> and Salary Slip</a>
+                <a class="uni">Payment Request/Claim<br>Office Item Request<br> and Salary Slip</a>
                 <a class="list" href="../apply_for_expense">Expense Apply/Liquidate</a>
                 <a class="list" href="../salary_slip">Salary Slip</a>
+                <a class="list" href="../apply_for_office_item">Office Item Request</a>
             </li>
             <li class="gray02">
                 <a class="uni">Product<br>Database</a>
