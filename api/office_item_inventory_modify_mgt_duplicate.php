@@ -195,6 +195,9 @@ function UpdateQty($list, $db)
             $item['qty2'] = "";
             $item['qty1'] = "";
 
+            $item['sign'] = "";
+            $item['sign2'] = "";
+
             $item['note'] = "";
             $item['comment'] = "";
         }

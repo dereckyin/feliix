@@ -57,7 +57,7 @@ else
             $size = (isset($_GET['size']) ?  $_GET['size'] : "");
             $keyword = (isset($_GET['keyword']) ?  $_GET['keyword'] : "");
 
-            $sql = "SELECT distinct 0 as is_checked, approver id, u2.username FROM office_item_inventory_modify pm left join `user` u2  on pm.approver = u2.id where 1 = 1 ";
+            $sql = "SELECT distinct 0 as is_checked, approver id, u2.username FROM office_item_inventory_modify pm left join `user` u2  on pm.approval_id = u2.id where 1 = 1 ";
 
             if(!empty($_GET['page'])) {
                 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
