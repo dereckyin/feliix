@@ -57,7 +57,7 @@ else
             $size = (isset($_GET['size']) ?  $_GET['size'] : "");
             $keyword = (isset($_GET['keyword']) ?  $_GET['keyword'] : "");
 
-            $sql = "SELECT distinct 0 as is_checked, approver id, u2.username FROM office_item_inventory_replenish pm left join `user` u2  on pm.approver = u2.id where 1 = 1 ";
+            $sql = "SELECT distinct 0 as is_checked, approval_id id, u2.username FROM office_item_inventory_replenish pm left join `user` u2  on pm.approval_id = u2.id where 1 = 1 ";
 
             if(!empty($_GET['page'])) {
                 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -83,9 +83,11 @@ else
             $stmt = $db->prepare( $sql );
             $stmt->execute();
 
-
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $merged_results[] = $row;
+                if($row['id'] != 0)
+                {
+                    $merged_results[] = $row;
+                }
             }
 
             echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);
