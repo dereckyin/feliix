@@ -668,7 +668,7 @@ var app = new Vue({
       if(this.is_forzen() != "")
       {
         Swal.fire({
-          text: "Office Items Inventory Check is ongoing, so it is not allowed to proceed the action of approving on inventory modification.",
+          text: "Office Items Inventory Check is ongoing, so it is not allowed to proceed the action of approving on inventory replenishment.",
           icon: "warning",
           confirmButtonText: "OK",
         });
