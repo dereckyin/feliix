@@ -205,7 +205,7 @@ var app = new Vue({
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        ret = res.data.forzen;
+        ret = res.data.frozen;
 
       } catch (err) {
         console.log(err);
@@ -662,10 +662,10 @@ var app = new Vue({
 
     },
 
-    goto_phase3: function() {
+    goto_phase3: async function() {
       let _this = this;
 
-      if(this.is_forzen() != "")
+      if(await this.is_forzen() != "")
       {
         Swal.fire({
           text: "Office Items Inventory Check is ongoing, so it is not allowed to proceed the action of approving on inventory replenishment.",

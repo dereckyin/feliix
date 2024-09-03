@@ -91,7 +91,7 @@ var app = new Vue({
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        ret = res.data.forzen;
+        ret = res.data.frozen;
 
       } catch (err) {
         console.log(err);
@@ -165,10 +165,10 @@ var app = new Vue({
     this.reset_auth();
 },
   
-  submit_auth() {
+  async submit_auth() {
     let _this = this;
 
-    if(this.is_forzen() != "")
+    if(await this.is_forzen() != "")
       {
         Swal.fire({
           text: "Office Items Inventory Check is ongoing, so it is not allowed to proceed the action of releasing on office item application.",

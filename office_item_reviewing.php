@@ -37,7 +37,7 @@ header( 'location:index' );
 
     $access6 = false;
 
-    $query = "SELECT * FROM access_control WHERE office_item_approve LIKE '%" . $username . "%' ";
+    $query = "SELECT * FROM access_control WHERE (office_item_approve LIKE '%" . $username . "%' or office_item_release LIKE '%" . $username . "%') ";
     $stmt = $db->prepare( $query );
     $stmt->execute();
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
