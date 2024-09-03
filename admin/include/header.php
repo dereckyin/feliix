@@ -461,8 +461,8 @@ try {
             <li class="sec02">
                 <a class="uni">Payment Request/Claim<br>Office Item Request<br> and Salary Slip</a>
                 <a class="list" href="../apply_for_expense">Expense Apply/Liquidate</a>
-                <a class="list" href="../salary_slip">Salary Slip</a>
                 <a class="list" href="../apply_for_office_item">Office Item Request</a>
+                <a class="list" href="../salary_slip">Salary Slip</a>
             </li>
             <li class="gray02">
                 <a class="uni">Product<br>Database</a>
