@@ -244,9 +244,9 @@ var app = new Vue({
     this.loading = false;
 },
 
-authRecord() {
+async authRecord() {
 
-  if(this.is_forzen() != "")
+  if(await this.is_forzen() != "")
     {
       Swal.fire({
         text: "Office Items Inventory Check is ongoing, so it is not allowed to proceed the action of releasing on office item application.",
@@ -362,10 +362,10 @@ authRecord() {
       });
     },
 
-    finish: function() {
+    finish: async function() {
       let _this = this;
 
-      if(this.is_forzen() != "")
+      if(await this.is_forzen() != "")
         {
           Swal.fire({
             text: "Office Items Inventory Check is ongoing, so it is not allowed to proceed the action of releasing on office item application.",
