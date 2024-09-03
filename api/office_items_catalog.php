@@ -65,7 +65,7 @@ if($parent != "")
     $lv4 = substr($parent, 6, 2);
 }
 
-$query = "SELECT m.code code1, m.category cat1, s.code code2, s.category cat2, b.code code3, b.category cat3, d.code code4, d.category cat4, '' qty, d.photo, '' url
+$query = "SELECT d.id, m.code code1, m.category cat1, s.code code2, s.category cat2, b.code code3, b.category cat3, d.code code4, d.category cat4, IFNULL(q.qty, 0) qty, IFNULL(q.reserve_qty, 0) reserve_qty, d.photo, '' url
             FROM office_items_main_category m
             left join office_items_sub_category s on m.code = s.parent_code ";
 if($lv1 != "")
@@ -82,6 +82,7 @@ if($lv3 != "")
 {
     $query = $query . " and b.code = '" . $lv3 . "' ";
 }
+$query = $query . " LEFT JOIN office_items_stock q ON q.code = concat(d.parent_code, d.code) ";
 $query = $query . "   where m.status <> -1 and s.status <> -1 and b.status <> -1 and d.status <> -1 ";
 
 if($lv4 != "")
@@ -108,6 +109,7 @@ if($lv3 != "")
 {
     $query_cnt = $query_cnt . " and b.code = '" . $lv3 . "' ";
 }
+$query_cnt = $query_cnt . "  LEFT JOIN office_items_stock q ON q.code = concat(d.parent_code, d.code) ";
 $query_cnt = $query_cnt . "   where m.status <> -1 and s.status <> -1 and b.status <> -1 and d.status <> -1 ";
 
 if($lv4 != "")

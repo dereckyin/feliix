@@ -55,7 +55,7 @@ if($jwt){
         // response in json format
         http_response_code(200);
 
-        $query = "SELECT m.code code1, m.category cat1, s.code code2, s.category cat2, b.code code3, b.category cat3, d.code code4, d.category cat4, '' qty
+        $query = "SELECT m.code code1, m.category cat1, s.code code2, s.category cat2, b.code code3, b.category cat3, d.code code4, d.category cat4, IFNULL(q.qty, 0) qty, IFNULL(q.reserve_qty, 0) reserve_qty
             FROM office_items_main_category m
             left join office_items_sub_category s on m.code = s.parent_code ";
         if($lv1 != "")
@@ -72,6 +72,7 @@ if($jwt){
         {
             $query = $query . " and b.code = '" . $lv3 . "' ";
         }
+        $query = $query . " LEFT JOIN office_items_stock q ON q.code = concat(d.parent_code, d.code) ";
         $query = $query . "   where m.status <> -1 and s.status <> -1 and b.status <> -1 and d.status <> -1 ";
 
         if($lv4 != "")

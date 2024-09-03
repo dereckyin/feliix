@@ -5112,3 +5112,200 @@ ADD COLUMN `last_order_type` varchar(64) COLLATE utf8mb4_unicode_ci default '';
 -- 20240625
 ALTER TABLE office_items_description
 ADD COLUMN  `photo` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20240701
+CREATE TABLE IF NOT EXISTS `apply_for_office_item` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) unsigned NOT NULL,
+  `request_no` varchar(10) COLLATE utf8mb4_unicode_ci default '',
+  `date_requested` varchar(20) COLLATE utf8mb4_unicode_ci default '',
+  `reason` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `listing` JSON,
+  `remarks` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `approval_id` bigint(20) unsigned default 0,
+  `approval_at` timestamp NULL DEFAULT NULL,
+  `reject_reason` varchar(1024) COLLATE utf8mb4_unicode_ci default '',
+  `reject_at` timestamp NULL DEFAULT NULL,
+  `re_approval_id` bigint(20) unsigned default 0,
+  `re_approval_at` timestamp NULL DEFAULT NULL,
+  `re_reject_reason` varchar(1024) COLLATE utf8mb4_unicode_ci default '',
+  `re_reject_at` timestamp NULL DEFAULT NULL,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+ALTER TABLE office_items_description
+Add column `qty` bigint(20) unsigned default 0;
+
+ALTER TABLE office_items_description
+Add column `reserve_qty` bigint(20) unsigned default 0; 
+
+CREATE TABLE IF NOT EXISTS `office_stock_history` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `request_id` bigint(20) unsigned NOT NULL,
+  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `qty` bigint(20) unsigned NOT NULL,
+  `action` varchar(64) COLLATE utf8mb4_unicode_ci default '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `office_items_stock` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `qty` bigint(20) unsigned NOT NULL default 0,
+  `reserve_qty` bigint(20) unsigned NOT NULL default 0,
+  `action` varchar(64) COLLATE utf8mb4_unicode_ci default '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- INSERT INTO office_items_stock(code, qty, reserve_qty, create_id, created_at, `status`) VALUES('02020101', 10, 3, 1, NOW(), 1);
+
+-- 20240705 for office apply history
+CREATE TABLE IF NOT EXISTS `office_item_apply_history` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `request_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `actor` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `action` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `reason` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+alter table office_stock_history change `qty` `qty` int(11) DEFAULT 0;
+
+ALTER TABLE access_control
+ADD COLUMN `office_item_approve` text COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE access_control
+ADD COLUMN `office_item_release` text COLLATE utf8mb4_unicode_ci;
+
+-- 20240715
+ALTER TABLE office_stock_history
+ADD column `reserve_qty` int(11) DEFAULT 0 AFTER qty;
+
+-- 20240723
+ALTER TABLE access_control
+ADD COLUMN `limited_access` text COLLATE utf8mb4_unicode_ci;
+
+-- 20240724
+CREATE TABLE IF NOT EXISTS `office_item_inventory_check` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `check_name` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `request_no` varchar(10) COLLATE utf8mb4_unicode_ci default '',
+  `note_1` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_1` JSON,
+  `note_2` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_2` JSON,
+  `note_3` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_3` JSON,
+  `note_4` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_4` JSON,
+  `checker` int(11) DEFAULT 0,
+  `approver`  int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `check_id` int(11) DEFAULT 0,
+  `check_at` timestamp NULL DEFAULT NULL,
+  `approval_id` bigint(20) unsigned default 0,
+  `approval_at` timestamp NULL DEFAULT NULL,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20240729
+ALTER TABLE access_control
+ADD COLUMN `inventory_checker` text COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE access_control
+ADD COLUMN `inventory_approver` text COLLATE utf8mb4_unicode_ci;
+
+-- 20240812
+ALTER TABLE office_stock_history
+ADD column `act_1` varchar(512) COLLATE utf8mb4_unicode_ci default '' AFTER `action`;
+
+ALTER TABLE office_stock_history
+ADD column `act_2` varchar(512) COLLATE utf8mb4_unicode_ci default '' AFTER `act_1`;
+
+-- 20240814
+CREATE TABLE IF NOT EXISTS `office_item_inventory_replenish` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `check_name` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `request_no` varchar(10) COLLATE utf8mb4_unicode_ci default '',
+  `note_1` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_1` JSON,
+  `note_2` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_2` JSON,
+  `note_3` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_3` JSON,
+  `note_4` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_4` JSON,
+  `checker` int(11) DEFAULT 0,
+  `approver`  int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `check_id` int(11) DEFAULT 0,
+  `check_at` timestamp NULL DEFAULT NULL,
+  `approval_id` bigint(20) unsigned default 0,
+  `approval_at` timestamp NULL DEFAULT NULL,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20240821 keep the orginal qty
+ALTER TABLE office_stock_history
+ADD column `qty_before` int(11) DEFAULT 0;
+
+ALTER TABLE office_stock_history
+ADD column `qty_after` int(11) DEFAULT 0;
+
+-- 20240828
+CREATE TABLE IF NOT EXISTS `office_item_inventory_modify` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `check_name` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `request_no` varchar(10) COLLATE utf8mb4_unicode_ci default '',
+  `note_1` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_1` JSON,
+  `note_2` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_2` JSON,
+  `note_3` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_3` JSON,
+  `note_4` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `phase_4` JSON,
+  `checker` int(11) DEFAULT 0,
+  `approver`  int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `check_id` int(11) DEFAULT 0,
+  `check_at` timestamp NULL DEFAULT NULL,
+  `approval_id` bigint(20) unsigned default 0,
+  `approval_at` timestamp NULL DEFAULT NULL,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20240902
+ALTER TABLE access_control
+ADD COLUMN `frozen_office` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '';
