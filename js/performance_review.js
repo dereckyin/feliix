@@ -132,7 +132,7 @@ var app = new Vue({
       var d = new Date(d + '-01');
       var d_next = new Date(d.setMonth(d.getMonth() + 1));
       this.review_next_month = moment(d_next).format('YYYY-MM');
-      var d_next = new Date(d.setMonth(d.getMonth() + 2));
+      var d_next = new Date(d.setMonth(d.getMonth() + 1));
       this.review_next_month3 = moment(d_next).format('YYYY-MM');
     },
 
