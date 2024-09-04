@@ -637,7 +637,7 @@ header( 'location:index' );
                         <li>{{ record.status }}</li>
                         <li>{{ record.employee }}</li>
                         <li>{{ record.title }} ({{ record.department }})</li>
-                        <li v-if="record.period == 0">{{ record.review_month }} ~ {{ record.review_next_month }}</li>
+                        <li v-if="record.period == 0 || record.period == 3">{{ record.review_month }} ~ {{ record.review_next_month }}</li>
                         <li v-if="record.period == 1">{{ record.review_month }} </li>
                     </ul>
 
@@ -677,13 +677,17 @@ header( 'location:index' );
                                     <select style="margin-bottom: 10px;" v-model="month_type">
                                         <option value="0"></option>
                                         <option value="1">1 Month</option>
-                                        <option value="2">2 Months</option>
+                                        <!-- <option value="2">2 Months</option> -->
+                                        <option value="3">3 Months</option>
                                     </select>
 
                                     <input type="month" min="2021-04" step="1" v-if="month_type == 1" v-model="review_month_1" style="width: 49%; margin-right: 1.5%;">
                             
                                     <input type="month" min="2021-04" step="2" v-if="month_type == 2" v-model="review_month" style="width: 49%; margin-right: 1.5%;">
                                     <input type="month" readonly="readonly" v-if="month_type == 2" v-model="review_next_month" style="width: 49%;">
+
+                                    <input type="month" min="2021-03" step="3" v-if="month_type == 3" v-model="review_month" style="width: 49%; margin-right: 1.5%;">
+                                    <input type="month" readonly="readonly" v-if="month_type == 3" v-model="review_next_month3" style="width: 49%;">
                                 </li>
 
                                 <li><b>Version of Template</b></li>
@@ -736,8 +740,8 @@ header( 'location:index' );
                                 <li class="content">{{ evals.manager }}</li>
 
                                 <li><b>Review Period:</b></li>
-                                <li class="content" v-if="evals.period == '0'">{{ evals.review_month }} ~ {{ evals.review_next_month }}</li>
-                                <li class="content" v-if="evals.period == '1'">{{ evals.review_month }}</li>
+                                <li class="content" v-if="evals.period == 0 || evals.period == 3 ">{{ evals.review_month }} ~ {{ evals.review_next_month }}</li>
+                                <li class="content" v-if="evals.period == 1">{{ evals.review_month }}</li>
 
                                 <li><b>Version of Template:</b></li>
                                 <li class="content">{{ evals.version }}</li>
@@ -1017,7 +1021,7 @@ header( 'location:index' );
                                 <li class="content">{{ views.manager }}</li>
 
                                 <li><b>Review Period:</b></li>
-                                <li class="content" v-if="views.period == 0">{{ views.review_month }} ~ {{ views.review_next_month }}</li>
+                                <li class="content" v-if="views.period == 0 || views.period == 3">{{ views.review_month }} ~ {{ views.review_next_month }}</li>
                                 <li class="content" v-if="views.period == 1">{{ views.review_month }}</li>
 
                                 <li><b>Version of Template:</b></li>
@@ -1354,7 +1358,7 @@ header( 'location:index' );
                                 <li class="content">{{ views.manager }}</li>
 
                                 <li><b>Review Period:</b></li>
-                                <li class="content" v-if="views.period == 0">{{ views.review_month }} ~ {{ views.review_next_month }}</li>
+                                <li class="content" v-if="views.period == 0 || views.period == 3">{{ views.review_month }} ~ {{ views.review_next_month }}</li>
                                 <li class="content" v-if="views.period == 1">{{ views.review_month }}</li>
 
                                 <li><b>Version of Template:</b></li>
