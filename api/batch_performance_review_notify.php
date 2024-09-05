@@ -34,7 +34,7 @@ $sql = "SELECT user.id,
                     'OPERATIONS MANAGER', 
                     'MANAGING DIRECTOR') ";
 
-$review_start_date = date("Y-m", strtotime("-2 month"));
+$review_start_date = date("Y-m", strtotime("-3 month"));
 $review_end_date = date("Y-m", strtotime("-1 month"));
 
 $stmt = $db->prepare($sql);
