@@ -787,18 +787,33 @@ var app = new Vue({
 
       EditDeliveryInfo()
       {
-        if((this.access5 == true || this.access6 == true) && this.is_info == false)
-        {
-          // serial_name start with 'L' need to be lignting department
-          if(this.serial_name[0] == 'L' && this.dept == 'Lighting')
-            return true;
-          if(this.serial_name[0] == 'O' && this.dept == 'Office')
-            return true;
+        // if((this.access5 == true || this.access6 == true) && this.is_info == false)
+        // {
+        //   // serial_name start with 'L' need to be lignting department
+        //   if(this.serial_name[0] == 'L' && this.dept == 'Lighting')
+        //     return true;
+        //   if(this.serial_name[0] == 'O' && this.dept == 'Office')
+        //     return true;
 
-          return false;
-        }
-        else
-          return false;
+        //   return false;
+        // }
+        // else
+        //   return false;
+        if(this.serial_name.substring(0, 3) == 'OPO')
+          {
+            if((this.dept == 'Office' && this.access6 == true) && this.is_info == false)
+              return true;
+            else
+              return false;
+          } 
+  
+          if(this.serial_name.substring(0, 3) == 'LPO')
+          {
+            if((this.dept != 'Office' && (this.access5 == true || this.access6 == true)) && this.is_info == false)
+              return true;
+            else
+              return false  
+          }
       },
 
       EditFinalInfo()

@@ -294,6 +294,9 @@ var app = new Vue({
         project_name : '',
         serial_name : '',
 
+        pic1 : 0,
+        pic2 : 0,
+
         of1:'',
         ofd1:'',
 
@@ -638,6 +641,8 @@ var app = new Vue({
                   _this.stage_id = res.data[0].stage_id;
                   _this.project_name = res.data[0].project_name;
                   _this.serial_name = res.data[0].serial_name;
+                  _this.pic1 = res.data[0].pic1;
+                  _this.pic2 = res.data[0].pic2;
   
                 },
                 (err) => {
@@ -782,10 +787,25 @@ var app = new Vue({
 
       EditDeliveryInfo()
       {
-        if((this.dept == 'Engineering' && this.access6 == true) && this.is_info == false)
-          return true;
-        else
-          return false;
+        // if((this.dept == 'Engineering' && this.access6 == true) && this.is_info == false)
+        //   return true;
+        // else
+        //   return false;
+        if(this.serial_name.substring(0, 3) == 'OPO')
+          {
+            if((this.dept == 'Office' && this.access6 == true) && this.is_info == false)
+              return true;
+            else
+              return false;
+          } 
+  
+          if(this.serial_name.substring(0, 3) == 'LPO')
+          {
+            if((this.dept != 'Office' && (this.access5 == true || this.access6 == true)) && this.is_info == false)
+              return true;
+            else
+              return false  
+          }
       },
 
       EditFinalInfo()
@@ -1030,6 +1050,8 @@ var app = new Vue({
 
         form_Data.append("od_name", this.od_name);
         form_Data.append("project_name", this.project_name);
+        form_Data.append("pic1", this.pic1);
+        form_Data.append("pic2", this.pic2);
         form_Data.append("serial_name", this.serial_name);
 
         // get earch item in items

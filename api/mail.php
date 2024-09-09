@@ -11159,7 +11159,7 @@ function order_sample_notification($name, $access,  $access_cc, $project_name, $
 
 }
 
-function order_notification02($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id)
+function order_notification02($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id, $pic1 = 0, $pic2 = 0)
 {
     $conf = new Conf();
 
@@ -11266,16 +11266,32 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
         }
 
         $receiver = "";
-        // access5
-        $_list = explode(",", $access);
-        foreach($_list as &$c_list)
+
+        if($pic1 != 0)
         {
-            $notifior = GetAccessNotifiers($c_list, $serial_name);
-            foreach($notifior as &$list)
-            {
-                $receiver .= $list["username"] . ", ";
-            }
+            $pic = GetNotifiers($pic1);
+            $mail->AddAddress($pic["email"], $pic["username"]);
+            $receiver .= $pic["username"] . ", ";
         }
+        
+        if($pic2 != 0)
+        {
+            $pic = GetNotifiers($pic2);
+            $mail->AddAddress($pic["email"], $pic["username"]);
+            $receiver .= $pic["username"] . ", ";
+        }
+
+
+        // // access5
+        // $_list = explode(",", $access);
+        // foreach($_list as &$c_list)
+        // {
+        //     $notifior = GetAccessNotifiers($c_list, $serial_name);
+        //     foreach($notifior as &$list)
+        //     {
+        //         $receiver .= $list["username"] . ", ";
+        //     }
+        // }
         
         $receiver = rtrim($receiver, ", ");
 

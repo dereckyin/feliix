@@ -784,13 +784,28 @@ var app = new Vue({
 
       EditDeliveryInfo()
       {
-        if((this.access4 == true) && this.is_info == false)
-        {
+        // if((this.access4 == true) && this.is_info == false)
+        // {
       
-          return true;
-        }
-        else
-          return false;
+        //   return true;
+        // }
+        // else
+        //   return false;
+        if(this.serial_name.substring(0, 3) == 'OPO')
+          {
+            if((this.dept == 'Office' && this.access6 == true) && this.is_info == false)
+              return true;
+            else
+              return false;
+          } 
+  
+          if(this.serial_name.substring(0, 3) == 'LPO')
+          {
+            if((this.dept != 'Office' && (this.access4 == true || this.access5 == true || this.access6 == true)) && this.is_info == false)
+              return true;
+            else
+              return false  
+          }
       },
 
       EditFinalInfo()

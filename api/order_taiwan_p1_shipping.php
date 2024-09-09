@@ -80,6 +80,9 @@ switch ($method) {
         $serial_name = (isset($_POST['serial_name']) ?  $_POST['serial_name'] : '');
         $project_name = (isset($_POST['project_name']) ?  $_POST['project_name'] : '');
 
+        $pic1 = (isset($_POST['pic1']) ?  $_POST['pic1'] : 0);
+        $pic2 = (isset($_POST['pic2']) ?  $_POST['pic2'] : 0);
+
         $diff = [];
         
         // update main table
@@ -369,7 +372,7 @@ switch ($method) {
         if($type == 'assing_test')
             order_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id);
         if($type == 'edit_test')
-            order_notification02($user_name, 'access5', 'access1,access2,access3,access4', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id);
+            order_notification02($user_name, 'access5', 'access1,access2,access3,access4', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id, $pic1, $pic2);
         if($type == 'assign_delivery')
             order_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id);
         if($type == 'edit_delivery')
