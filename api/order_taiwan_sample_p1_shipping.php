@@ -81,6 +81,7 @@ switch ($method) {
         $project_name = (isset($_POST['project_name']) ?  $_POST['project_name'] : '');
 
         $diff = [];
+        $all_tested = true;
         
         // update main table
         $query = "UPDATE od_main SET `updated_id` = :updated_id,  `updated_at` = now() WHERE id = :id";
@@ -136,6 +137,12 @@ switch ($method) {
             }
             else{
                 //用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;
+            }
+
+            // 每一個品項在 Testing Info 都有值了，那系統會發出的通知信件
+            if($items[$i]["check_t"] == "" && $items[$i]["remark_t"] == "")
+            {
+                $all_tested = false;
             }
 
             $test_update = false;
@@ -354,8 +361,8 @@ switch ($method) {
             order_sample_notification($user_name, 'access1', 'access2,access5,access3,access4', $project_name, $serial_name, $od_name, 'Order - Samples', $comment, $type, $items_array, $o_id, "sample");
         if($type == 'assing_test')
             order_sample_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Samples', $comment, $type, $items_array, $o_id, "sample");
-        if($type == 'edit_test')
-            order_sample_notification02($user_name, 'access1', 'access5,access2,access3,access4', $project_name, $serial_name, $od_name, 'Order - Samples', $comment, $type, $items_array, $o_id, "sample");
+        if($type == 'edit_test' && $all_tested == true)
+            order_sample_notification02($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Samples', $comment, $type, $items_array, $o_id, "sample");
         if($type == 'assign_delivery')
             order_sample_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Samples', $comment, $type, $items_array, $o_id, "sample");
         if($type == 'edit_delivery')

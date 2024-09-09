@@ -10138,7 +10138,7 @@ function knowledge_add_notification($name, $name_at, $access, $access_cc, $title
     $_list = explode(",", $access);
     foreach($_list as &$c_list)
     {
-        $notifior = GetNotifiers($c_list, $serial_name);
+        $notifior = GetNotifiers($c_list);
         foreach($notifior as &$list)
         {
             $receiver .= $list["username"] . ", ";
@@ -10152,7 +10152,7 @@ function knowledge_add_notification($name, $name_at, $access, $access_cc, $title
     $cc_list = explode(",", $access_cc);
     foreach($cc_list as &$c_list)
     {
-        $notifior = GetNotifiers($c_list, $serial_name);
+        $notifior = GetNotifiers($c_list);
         foreach($notifior as &$list)
         {
             $cc = $list["username"];
@@ -10271,7 +10271,7 @@ function batch_voting_system_notify_mail($access, $access_cc, $topic_name, $crea
     $_list = explode(",", $access);
     foreach($_list as &$c_list)
     {
-        $notifior = GetNotifiers($c_list, $serial_name);
+        $notifior = GetNotifiers($c_list);
         foreach($notifior as &$list)
         {
             $receiver .= $list["username"] . ", ";
@@ -10285,7 +10285,7 @@ function batch_voting_system_notify_mail($access, $access_cc, $topic_name, $crea
     $cc_list = explode(",", $access_cc);
     foreach($cc_list as &$c_list)
     {
-        $notifior = GetNotifiers($c_list, $serial_name);
+        $notifior = GetNotifiers($c_list);
         foreach($notifior as &$list)
         {
             $cc = $list["username"];
@@ -11270,15 +11270,23 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
         if($pic1 != 0)
         {
             $pic = GetNotifiers($pic1);
-            $mail->AddAddress($pic["email"], $pic["username"]);
-            $receiver .= $pic["username"] . ", ";
+
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
         }
         
         if($pic2 != 0)
         {
             $pic = GetNotifiers($pic2);
-            $mail->AddAddress($pic["email"], $pic["username"]);
-            $receiver .= $pic["username"] . ", ";
+
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
         }
 
 
@@ -12128,6 +12136,13 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
             $mail->AddCC($list["email"], $list["username"]);
         }
 
+        // access 7 from od_main
+        $ret = get_access7_from_od_main($od_id);
+        $project_id = $ret[0];
+        $task_type = $ret[1];
+        $access7 = $ret[2];
+        $create_id = $ret[3];
+    
         $receiver = "";
         // access5
         $_list = explode(",", $access);
@@ -12138,6 +12153,13 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
             {
                 $receiver .= $list["username"] . ", ";
             }
+        }
+
+        $pic = GetNotifiers($create_id);
+        for($i=0; $i<count($pic); $i++)
+        {
+            $mail->AddAddress($pic[$i]["email"],$pic[$i]["username"]);
+            $receiver .= $pic[$i]["username"] . ", ";
         }
         
         $receiver = rtrim($receiver, ", ");
@@ -12340,7 +12362,7 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
                 <td style="font-size: 15px; padding: 0 0 5px 15px; text-align: justify; line-height: 1.8;">';
                     $content = $content . 'Order Type: ' . $order_type . '<br>';
                     $content = $content . 'Order Name: ' . $serial_name . ' ' . $order_name . '<br>';
-                    $content = $content . 'Related Project: ' . $project_name . '<br>';
+                    $content = $content . 'Related Task: ' . $project_name . '<br>';
                     $content = $content . 'Submission Time: ' . date('Y/m/d h:i:s a', time()) . '<br>';
                     $content = $content . 'Submitter: ' . $name . '<br>';
                     $content = $content . 'Comment: ' . $remark . '';
@@ -16850,7 +16872,7 @@ function get_access7_from_od_main($id)
     $database = new Database();
     $db = $database->getConnection();
 
-    $query = "SELECT task_id, task_type, access7 FROM od_main WHERE id = " . $id;
+    $query = "SELECT create_id, task_id, task_type, access7 FROM od_main WHERE id = " . $id;
 
     // prepare the query
     $stmt = $db->prepare($query);
@@ -16861,12 +16883,13 @@ function get_access7_from_od_main($id)
     $access7 = "";
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $create_id = $row['create_id'];
         $task_id = $row['task_id'];
         $task_type = $row['task_type'];
         $access7 = $row['access7'];
     }
 
-    return array($task_id, $task_type, $access7);
+    return array($task_id, $task_type, $access7, $create_id);
 
 }
 
@@ -17163,24 +17186,24 @@ function _rawurlencode($string) {
 
 function SetupMail($mail, $conf)
 {
-    $mail->SMTPDebug  = 0;
-    $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = "ssl";
-    $mail->Port       = 465;
-    $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf::$mail_host;
-    $mail->Username   = $conf::$mail_username;
-    $mail->Password   = $conf::$mail_password;
-
-
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "tls";
-    // $mail->Port       = 587;
+    // $mail->SMTPSecure = "ssl";
+    // $mail->Port       = 465;
     // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = 'smtp.ethereal.email';
-    // $mail->Username   = 'jermey.wilkinson@ethereal.email';
-    // $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
+    // $mail->Host       = $conf::$mail_host;
+    // $mail->Username   = $conf::$mail_username;
+    // $mail->Password   = $conf::$mail_password;
+
+
+    $mail->SMTPDebug  = 0;
+    $mail->SMTPAuth   = true;
+    $mail->SMTPSecure = "tls";
+    $mail->Port       = 587;
+    $mail->SMTPKeepAlive = true;
+    $mail->Host       = 'smtp.ethereal.email';
+    $mail->Username   = 'jermey.wilkinson@ethereal.email';
+    $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
 
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
