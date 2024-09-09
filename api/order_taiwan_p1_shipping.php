@@ -84,6 +84,8 @@ switch ($method) {
         $pic2 = (isset($_POST['pic2']) ?  $_POST['pic2'] : 0);
 
         $diff = [];
+
+        $all_delivery = "_a";
         
         // update main table
         $query = "UPDATE od_main SET `updated_id` = :updated_id,  `updated_at` = now() WHERE id = :id";
@@ -154,6 +156,13 @@ switch ($method) {
             else{
                 //用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;
             }
+
+            // 每一個品項在 Delivery Info 都有值了，那系統會發出的通知信件
+            if($items[$i]["check_d"] == "" && $items[$i]["remark_d"] == "")
+            {
+                $all_delivery = "";
+            }
+
 
             $test_update = false;
             $delivery_updeate = false;
@@ -375,8 +384,8 @@ switch ($method) {
             order_notification02($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id, $pic1, $pic2);
         if($type == 'assign_delivery')
             order_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id);
-        if($type == 'edit_delivery')
-            order_notification02($user_name, 'access5', 'access1,access2,access3,access4', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id);
+        if($type == 'edit_delivery' . $all_delivery)
+            order_notification02($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id, $pic1, $pic2);
         if($type == 'date_needed')
             order_notification02($user_name, 'access2,access3,access4,access5', '', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id);
         

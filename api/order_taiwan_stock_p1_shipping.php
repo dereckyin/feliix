@@ -83,6 +83,7 @@ switch ($method) {
         $diff = [];
 
         $all_tested = true;
+        $all_delivery = true;
         
         // update main table
         $query = "UPDATE od_main SET `updated_id` = :updated_id,  `updated_at` = now() WHERE id = :id";
@@ -144,6 +145,11 @@ switch ($method) {
             if($items[$i]["check_t"] == "" && $items[$i]["remark_t"] == "")
             {
                 $all_tested = false;
+            }
+
+            if($items[$i]["check_d"] == "" && $items[$i]["remark_d"] == "")
+            {
+                $all_delivery = false;
             }
 
             $test_update = false;
@@ -366,8 +372,8 @@ switch ($method) {
             order_sample_notification02($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
         if($type == 'assign_delivery')
             order_sample_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
-        if($type == 'edit_delivery')
-            order_stock_delievery_notification($user_name, 'access1,access3,access4,access5', '', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
+        if($type == 'edit_delivery' && $all_delivery == true)
+            order_stock_delievery_notification($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
         if($type == 'date_needed')
             order_sample_notification02($user_name, 'access2,access3,access4,access5', '', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, "stock");
 
