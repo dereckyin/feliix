@@ -686,7 +686,7 @@ header( 'location:index' );
                                     <input type="month" min="2021-04" step="2" v-if="month_type == 2" v-model="review_month" style="width: 49%; margin-right: 1.5%;">
                                     <input type="month" readonly="readonly" v-if="month_type == 2" v-model="review_next_month" style="width: 49%;">
 
-                                    <input type="month" min="2021-03" step="3" v-if="month_type == 3" v-model="review_month" style="width: 49%; margin-right: 1.5%;">
+                                    <input type="month" min="2024-06" step="3" v-if="month_type == 3" v-model="review_month" style="width: 49%; margin-right: 1.5%;">
                                     <input type="month" readonly="readonly" v-if="month_type == 3" v-model="review_next_month3" style="width: 49%;">
                                 </li>
 
