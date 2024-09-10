@@ -11710,7 +11710,7 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
 }
 
 
-function mockup_notification02($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id)
+function mockup_notification02($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id, $pic1 = 0, $pic2 = 0)
 {
     $conf = new Conf();
 
@@ -11827,6 +11827,29 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
                 $receiver .= $list["username"] . ", ";
             }
         }
+
+        if($pic1 != 0)
+        {
+            $pic = GetNotifiers($pic1);
+
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+        
+        if($pic2 != 0)
+        {
+            $pic = GetNotifiers($pic2);
+
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+
         
         // $receiver = rtrim($receiver, ", ");
         $receiver = "All";
