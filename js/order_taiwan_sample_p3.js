@@ -771,10 +771,23 @@ var app = new Vue({
 
       EditTestingInfo()
       {
-        if((this.dept == 'Engineering' && this.access6 == true) && this.is_info == false)
-          return true;
-        else
-          return false;
+        // (1) 對於 OPO訂單，只有 Office 部門的 角色6人員可以看到「Edit Delivery Info」按鈕，而其他剩下的人都看不到。
+        if(this.serial_name.substring(0, 3) == 'OPO')
+          {
+            if((this.dept == 'Office' && this.access6 == true) && this.is_info == false)
+              return true;
+            else
+              return false;
+          } 
+  
+          // (2) 對於 LPO 訂單，只有具有角色5權限的使用者 以及 非Office部門的角色6 人員，可以看見並執行 「Edit Delivery Info」按鈕；而其他剩下的人都看不到
+          if(this.serial_name.substring(0, 3) == 'LPO')
+          {
+            if(((this.dept != 'Office' && this.access6 == true) || this.access5 == true) && this.is_info == false)
+              return true;
+            else
+              return false  
+          }
       },
 
       AssignDelivery()
@@ -787,18 +800,7 @@ var app = new Vue({
 
       EditDeliveryInfo()
       {
-        // if((this.access5 == true || this.access6 == true) && this.is_info == false)
-        // {
-        //   // serial_name start with 'L' need to be lignting department
-        //   if(this.serial_name[0] == 'L' && this.dept == 'Lighting')
-        //     return true;
-        //   if(this.serial_name[0] == 'O' && this.dept == 'Office')
-        //     return true;
-
-        //   return false;
-        // }
-        // else
-        //   return false;
+        // (1) 對於 OPO訂單，只有 Office 部門的 角色6人員可以看到「Edit Delivery Info」按鈕，而其他剩下的人都看不到。
         if(this.serial_name.substring(0, 3) == 'OPO')
           {
             if((this.dept == 'Office' && this.access6 == true) && this.is_info == false)
@@ -807,9 +809,10 @@ var app = new Vue({
               return false;
           } 
   
+          // (2) 對於 LPO 訂單，只有具有角色5權限的使用者 以及 非Office部門的角色6 人員，可以看見並執行 「Edit Delivery Info」按鈕；而其他剩下的人都看不到
           if(this.serial_name.substring(0, 3) == 'LPO')
           {
-            if((this.dept != 'Office' && (this.access5 == true || this.access6 == true)) && this.is_info == false)
+            if(((this.dept != 'Office' && this.access6 == true) || this.access5 == true) && this.is_info == false)
               return true;
             else
               return false  
