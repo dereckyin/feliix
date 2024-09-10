@@ -12874,7 +12874,7 @@ function order_sample_delievery_notification($name, $access,  $access_cc, $proje
                 <td style="font-size: 15px; padding: 0 0 5px 15px; text-align: justify; line-height: 1.8;">';
                     $content = $content . 'Order Type: ' . $order_type . '<br>';
                     $content = $content . 'Order Name: ' . $serial_name . ' ' . $order_name . '<br>';
-                    $content = $content . 'Related Project: ' . $project_name . '<br>';
+                    $content = $content . 'Related Task: ' . $project_name . '<br>';
                     $content = $content . 'Submission Time: ' . date('Y/m/d h:i:s a', time()) . '<br>';
                     $content = $content . 'Submitter: ' . $name . '<br>';
                     $content = $content . 'Comment: ' . $remark . '';
@@ -13078,7 +13078,7 @@ function order_stock_delievery_notification($name, $access,  $access_cc, $projec
                 <td style="font-size: 15px; padding: 0 0 5px 15px; text-align: justify; line-height: 1.8;">';
                     $content = $content . 'Order Type: ' . $order_type . '<br>';
                     $content = $content . 'Order Name: ' . $serial_name . ' ' . $order_name . '<br>';
-                    $content = $content . 'Related Project: ' . $project_name . '<br>';
+                    $content = $content . 'Related Task: ' . $project_name . '<br>';
                     $content = $content . 'Submission Time: ' . date('Y/m/d h:i:s a', time()) . '<br>';
                     $content = $content . 'Submitter: ' . $name . '<br>';
                     $content = $content . 'Comment: ' . $remark . '';
