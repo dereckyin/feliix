@@ -12755,44 +12755,58 @@ function order_sample_delievery_notification($name, $access,  $access_cc, $proje
     {
         // 收件人：角色4, 部門為 Admin 的所有人員
         
-        $_list = explode(",", $access);
-        foreach($_list as &$c_list)
-        {
-            $notifior = GetAccessNotifiers($c_list, $serial_name);
-            foreach($notifior as &$list)
-            {
-                $receiver .= $list["username"] . ", ";
-                $mail->AddAddress($list["email"], $list["username"]);
-            }
-        }
-        $receiver = rtrim($receiver, ", ");
+        // $_list = explode(",", $access);
+        // foreach($_list as &$c_list)
+        // {
+        //     $notifior = GetAccessNotifiers($c_list, $serial_name);
+        //     foreach($notifior as &$list)
+        //     {
+        //         $receiver .= $list["username"] . ", ";
+        //         $mail->AddAddress($list["email"], $list["username"]);
+        //     }
+        // }
+        // $receiver = rtrim($receiver, ", ");
 
-        $notifior = GetAccessNotifiersByDepartment("Admin");
-        foreach($notifior as &$list)
-        {
-            if( $list["username"] == 'Gina Donato' || $list["username"] == 'Ronnie Fernando Dela Cruz'){
-                $receiver .= $list["username"] . ", ";
-                $mail->AddAddress($list["email"], $list["username"]);
-            }
-        }
+        // $notifior = GetAccessNotifiersByDepartment("Admin");
+        // foreach($notifior as &$list)
+        // {
+        //     if( $list["username"] == 'Gina Donato' || $list["username"] == 'Ronnie Fernando Dela Cruz'){
+        //         $receiver .= $list["username"] . ", ";
+        //         $mail->AddAddress($list["email"], $list["username"]);
+        //     }
+        // }
 
-        // CC收件人：執行動作的人, 角色1, 角色3, 職位為Sales Manager的使用者, 角色5
-        $cc_list = explode(",", $access_cc);
-        foreach($cc_list as &$c_list)
-        {
-            $notifior = GetAccessNotifiers($c_list, $serial_name);
-            foreach($notifior as &$list)
-            {
-                $cc = $list["username"];
-                $mail->AddCC($list["email"], $list["username"]);
-            }
-        }
+        // // CC收件人：執行動作的人, 角色1, 角色3, 職位為Sales Manager的使用者, 角色5
+        // $cc_list = explode(",", $access_cc);
+        // foreach($cc_list as &$c_list)
+        // {
+        //     $notifior = GetAccessNotifiers($c_list, $serial_name);
+        //     foreach($notifior as &$list)
+        //     {
+        //         $cc = $list["username"];
+        //         $mail->AddCC($list["email"], $list["username"]);
+        //     }
+        // }
 
         // $notifior = GetChargeNotifiersByTitle('Sales Manager');
         // foreach($notifior as &$list)
         // {
         //     $mail->AddCC($list["email"], $list["username"]);
         // }
+
+        $pm_info = get_task_from_od_main($od_id);
+        $create_id = $pm_info[0];
+
+        if($create_id != 0)
+        {
+            $pic = GetNotifiers($create_id);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+       
     
         $notifior = GetAccessNotifiersByName($name, "");
         foreach($notifior as &$list)
@@ -13013,23 +13027,36 @@ function order_stock_delievery_notification($name, $access,  $access_cc, $projec
 
     if($action == 'edit_delivery')
     {
-        //收件人：角色1, 角色3, 職位為Sales Manager的使用者, 角色4, 角色5
-        $_list = explode(",", $access);
-        foreach($_list as &$c_list)
-        {
-            $notifior = GetAccessNotifiers($c_list, $serial_name);
-            foreach($notifior as &$list)
-            {
-                $receiver .= $list["username"] . ", ";
-                $mail->AddAddress($list["email"], $list["username"]);
-            }
-        }
-        $receiver = rtrim($receiver, ", ");
+        // //收件人：角色1, 角色3, 職位為Sales Manager的使用者, 角色4, 角色5
+        // $_list = explode(",", $access);
+        // foreach($_list as &$c_list)
+        // {
+        //     $notifior = GetAccessNotifiers($c_list, $serial_name);
+        //     foreach($notifior as &$list)
+        //     {
+        //         $receiver .= $list["username"] . ", ";
+        //         $mail->AddAddress($list["email"], $list["username"]);
+        //     }
+        // }
+        // $receiver = rtrim($receiver, ", ");
 
-        $notifior = GetChargeNotifiersByTitle('Sales Manager');
-        foreach($notifior as &$list)
+        // $notifior = GetChargeNotifiersByTitle('Sales Manager');
+        // foreach($notifior as &$list)
+        // {
+        //     $mail->AddAddress($list["email"], $list["username"]);
+        // }
+
+        $pm_info = get_task_from_od_main($od_id);
+        $create_id = $pm_info[0];
+
+        if($create_id != 0)
         {
-            $mail->AddAddress($list["email"], $list["username"]);
+            $pic = GetNotifiers($create_id);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
         }
 
         // CC收件人：執行動作的人
@@ -17142,6 +17169,53 @@ function get_access7_from_od_main($id)
     }
 
     return array($task_id, $task_type, $access7, $create_id);
+
+}
+
+function get_task_from_od_main($id)
+{
+    $database = new Database();
+    $db = $database->getConnection();
+
+    $query = "SELECT  task_type FROM od_main WHERE id = " . $id;
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $task_type = "";
+    $create_id = 0;
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $task_type = $row['task_type'];
+    }
+
+    if($task_type != '')
+    {
+        if($task_type == 'SVC')
+            $task_type = '_sv';
+        if($task_type == 'LT')
+            $task_type = '_l';
+        if($task_type == 'OS')
+            $task_type = '_o';
+        if($task_type == 'SLS')
+            $task_type = '_sl';
+
+        $query = 'select create_id from project_other_task' . $task_type . ' where id = ' . $id;
+
+        // prepare the query
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+
+        
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $create_id = $row['create_id'];
+        }
+
+    }
+
+
+    return array($create_id);
 
 }
 
