@@ -369,8 +369,8 @@ switch ($method) {
             mockup_notification02($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Mockup', $comment, $type, $items_array, $o_id, $pic1, $pic2);
         if($type == 'assign_delivery')
             mockup_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Mockup', $comment, $type, $items_array, $o_id);
-        if($type == 'edit_delivery' . $all_delivery)
-            mockup_notification02($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Mockup', $comment, $type, $items_array, $o_id);
+        if($type == 'edit_delivery')
+            mockup_notification02($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Mockup', $comment, $type . $all_delivery, $items_array, $o_id);
         if($type == 'date_needed')
             mockup_notification02($user_name, 'access2,access3,access4,access5', '', $project_name, $serial_name, $od_name, 'Order - Mockup', $comment, $type, $items_array, $o_id);
         
