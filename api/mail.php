@@ -17177,17 +17177,19 @@ function get_task_from_od_main($id)
     $database = new Database();
     $db = $database->getConnection();
 
-    $query = "SELECT  task_type FROM od_main WHERE id = " . $id;
+    $query = "SELECT  task_id, task_type FROM od_main WHERE id = " . $id;
 
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
 
     $task_type = "";
+    $task_id = 0;
     $create_id = 0;
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $task_type = $row['task_type'];
+        $task_id = $row['task_id'];
     }
 
     if($task_type != '')
@@ -17201,7 +17203,7 @@ function get_task_from_od_main($id)
         if($task_type == 'SLS')
             $task_type = '_sl';
 
-        $query = 'select create_id from project_other_task' . $task_type . ' where id = ' . $id;
+        $query = 'select create_id from project_other_task' . $task_type . ' where id = ' . $task_id;
 
         // prepare the query
         $stmt = $db->prepare($query);
