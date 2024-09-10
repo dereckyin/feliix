@@ -12401,7 +12401,8 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
             $receiver .= $pic[$i]["username"] . ", ";
         }
         
-        $receiver = rtrim($receiver, ", ");
+        // $receiver = rtrim($receiver, ", ");
+        $receiver = "All";
 
         $mail->Subject = 'Testing info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the testing info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
