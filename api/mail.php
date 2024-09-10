@@ -11301,7 +11301,7 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
         //     }
         // }
         
-        $receiver = "All";
+        $receiver = "all";
 
         $mail->Subject = 'Testing info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the testing info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -11392,7 +11392,7 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
             }
         }
 
-        $receiver = rtrim($receiver, ", ");
+        $receiver = "all";
 
         $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -11463,7 +11463,7 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
             }
         }
 
-        $receiver = rtrim($receiver, ", ");
+        $receiver = "all";
 
         $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -11852,7 +11852,7 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
 
         
         // $receiver = rtrim($receiver, ", ");
-        $receiver = "All";
+        $receiver = "all";
 
         $mail->Subject = 'Testing info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the testing info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -11954,7 +11954,7 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
             }
         }
 
-        $receiver = rtrim($receiver, ", ");
+        $receiver = "all";
 
         $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -12016,7 +12016,7 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
             }
         }
 
-        $receiver = rtrim($receiver, ", ");
+        $receiver = "all";
 
         $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -12402,7 +12402,7 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
         }
         
         // $receiver = rtrim($receiver, ", ");
-        $receiver = "All";
+        $receiver = "all";
 
         $mail->Subject = 'Testing info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the testing info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -12455,7 +12455,7 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
             $mail->AddCC($list["email"], $list["username"]);
         }
 
-        $receiver = "All";
+        
 
         // access5
         $_list = explode(",", $access);
@@ -12468,7 +12468,7 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
             }
         }
 
-        $receiver = rtrim($receiver, ", ");
+        $receiver = "all";
 
         $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
