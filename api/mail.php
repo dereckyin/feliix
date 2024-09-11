@@ -10138,7 +10138,7 @@ function knowledge_add_notification($name, $name_at, $access, $access_cc, $title
     $_list = explode(",", $access);
     foreach($_list as &$c_list)
     {
-        $notifior = GetNotifiers($c_list, $serial_name);
+        $notifior = GetNotifiers($c_list);
         foreach($notifior as &$list)
         {
             $receiver .= $list["username"] . ", ";
@@ -10152,7 +10152,7 @@ function knowledge_add_notification($name, $name_at, $access, $access_cc, $title
     $cc_list = explode(",", $access_cc);
     foreach($cc_list as &$c_list)
     {
-        $notifior = GetNotifiers($c_list, $serial_name);
+        $notifior = GetNotifiers($c_list);
         foreach($notifior as &$list)
         {
             $cc = $list["username"];
@@ -10271,7 +10271,7 @@ function batch_voting_system_notify_mail($access, $access_cc, $topic_name, $crea
     $_list = explode(",", $access);
     foreach($_list as &$c_list)
     {
-        $notifior = GetNotifiers($c_list, $serial_name);
+        $notifior = GetNotifiers($c_list);
         foreach($notifior as &$list)
         {
             $receiver .= $list["username"] . ", ";
@@ -10285,7 +10285,7 @@ function batch_voting_system_notify_mail($access, $access_cc, $topic_name, $crea
     $cc_list = explode(",", $access_cc);
     foreach($cc_list as &$c_list)
     {
-        $notifior = GetNotifiers($c_list, $serial_name);
+        $notifior = GetNotifiers($c_list);
         foreach($notifior as &$list)
         {
             $cc = $list["username"];
@@ -11159,7 +11159,7 @@ function order_sample_notification($name, $access,  $access_cc, $project_name, $
 
 }
 
-function order_notification02($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id)
+function order_notification02($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id, $pic1 = 0, $pic2 = 0)
 {
     $conf = new Conf();
 
@@ -11266,18 +11266,42 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
         }
 
         $receiver = "";
-        // access5
-        $_list = explode(",", $access);
-        foreach($_list as &$c_list)
+
+        if($pic1 != 0)
         {
-            $notifior = GetAccessNotifiers($c_list, $serial_name);
-            foreach($notifior as &$list)
+            $pic = GetNotifiers($pic1);
+
+            if(count($pic) > 0)
             {
-                $receiver .= $list["username"] . ", ";
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
             }
         }
         
-        $receiver = rtrim($receiver, ", ");
+        if($pic2 != 0)
+        {
+            $pic = GetNotifiers($pic2);
+
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+
+
+        // // access5
+        // $_list = explode(",", $access);
+        // foreach($_list as &$c_list)
+        // {
+        //     $notifior = GetAccessNotifiers($c_list, $serial_name);
+        //     foreach($notifior as &$list)
+        //     {
+        //         $receiver .= $list["username"] . ", ";
+        //     }
+        // }
+        
+        $receiver = "all";
 
         $mail->Subject = 'Testing info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the testing info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -11343,7 +11367,103 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
             }
         }
 
-        $receiver = rtrim($receiver, ", ");
+        $pm_info = get_pic_from_od_main($od_id);
+        $pic1 = $pm_info[0];
+        $pic2 = $pm_info[1];
+        $create_id = $pm_info[2];
+
+        if($pic1 != 0)
+        {
+            $pic = GetNotifiers($pic1);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+        
+        if($pic2 != 0)
+        {
+            $pic = GetNotifiers($pic2);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+
+        $receiver = "all";
+
+        $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
+        $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
+        $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $od_id;
+        
+    }
+
+    
+    if($action == 'edit_delivery_a')
+    {
+        foreach($items as &$item)
+        {
+            $assignee[] = $item['delivery'];
+        }
+
+        $notifior = GetAccessNotifiersByName($name, $serial_name);
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddCC($list["email"], $list["username"]);
+        }
+
+        $receiver = "";
+
+        // access5
+        $_list = explode(",", $access);
+        foreach($_list as &$c_list)
+        {
+            $notifior = GetAccessNotifiers($c_list, $serial_name);
+            foreach($notifior as &$list)
+            {
+                $receiver .= $list["username"] . ", ";
+            }
+        }
+
+        $pm_info = get_pic_from_od_main($od_id);
+        $pic1 = $pm_info[0];
+        $pic2 = $pm_info[1];
+        $create_id = $pm_info[2];
+
+        if($pic1 != 0)
+        {
+            $pic = GetNotifiers($pic1);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+        
+        if($pic2 != 0)
+        {
+            $pic = GetNotifiers($pic2);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+
+        if($create_id != 0)
+        {
+            $pic = GetNotifiers($create_id);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+
+        $receiver = "all";
 
         $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -11397,22 +11517,31 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
             if($pic1 != 0)
             {
                 $pic = GetNotifiers($pic1);
-                for($i=0; $i<count($pic); $i++)
-                    $mail->AddAddress($pic[$i]["email"],$pic[$i]["username"]);
+                if(count($pic) > 0)
+                {
+                    $mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                    $receiver .= $pic[0]["username"] . ", ";
+                }
             }
             
             if($pic2 != 0)
             {
                 $pic = GetNotifiers($pic2);
-                for($i=0; $i<count($pic); $i++)
-                    $mail->AddAddress($pic[$i]["email"],$pic[$i]["username"]);
+                if(count($pic) > 0)
+                {
+                    $mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                    $receiver .= $pic[0]["username"] . ", ";
+                }
             }
 
             if($create_id != 0)
             {
                 $pic = GetNotifiers($create_id);
-                for($i=0; $i<count($pic); $i++)
-                    $mail->AddAddress($pic[$i]["email"],$pic[$i]["username"]);
+                if(count($pic) > 0)
+                {
+                    $mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                    $receiver .= $pic[0]["username"] . ", ";
+                }
             }
 
         }
@@ -11581,7 +11710,7 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
 }
 
 
-function mockup_notification02($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id)
+function mockup_notification02($name, $access,  $access_cc, $project_name, $serial_name, $order_name, $order_type, $remark, $action, $items, $od_id, $pic1 = 0, $pic2 = 0)
 {
     $conf = new Conf();
 
@@ -11698,8 +11827,32 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
                 $receiver .= $list["username"] . ", ";
             }
         }
+
+        if($pic1 != 0)
+        {
+            $pic = GetNotifiers($pic1);
+
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
         
-        $receiver = rtrim($receiver, ", ");
+        if($pic2 != 0)
+        {
+            $pic = GetNotifiers($pic2);
+
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+
+        
+        // $receiver = rtrim($receiver, ", ");
+        $receiver = "all";
 
         $mail->Subject = 'Testing info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the testing info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -11738,6 +11891,78 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
         
     }
 
+    if($action == 'edit_delivery_a')
+    {
+        foreach($items as &$item)
+        {
+            $assignee[] = $item['delivery'];
+        }
+
+        $notifior = GetAccessNotifiersByName($name, $serial_name);
+        foreach($notifior as &$list)
+        {
+            $receiver = $list["username"];
+            $mail->AddCC($list["email"], $list["username"]);
+        }
+
+        $receiver = "";
+
+        // access5
+        $_list = explode(",", $access);
+        foreach($_list as &$c_list)
+        {
+            $notifior = GetAccessNotifiers($c_list, $serial_name);
+            foreach($notifior as &$list)
+            {
+                $receiver .= $list["username"] . ", ";
+            }
+        }
+
+        
+        $pm_info = get_pic_from_od_main($od_id);
+        $pic1 = $pm_info[0];
+        $pic2 = $pm_info[1];
+        $create_id = $pm_info[2];
+
+        if($pic1 != 0)
+        {
+            $pic = GetNotifiers($pic1);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+        
+        if($pic2 != 0)
+        {
+            $pic = GetNotifiers($pic2);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+
+        if($create_id != 0)
+        {
+            $pic = GetNotifiers($create_id);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+
+        $receiver = "all";
+
+        $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
+        $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
+        $url = "https://feliix.myvnc.com/order_taiwan_mockup_p3?id=" . $od_id;
+        
+    }
+
+    
     if($action == 'edit_delivery')
     {
         foreach($items as &$item)
@@ -11765,7 +11990,33 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
             }
         }
 
-        $receiver = rtrim($receiver, ", ");
+        
+        $pm_info = get_pic_from_od_main($od_id);
+        $pic1 = $pm_info[0];
+        $pic2 = $pm_info[1];
+        $create_id = $pm_info[2];
+
+        if($pic1 != 0)
+        {
+            $pic = GetNotifiers($pic1);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+        
+        if($pic2 != 0)
+        {
+            $pic = GetNotifiers($pic2);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
+        }
+
+        $receiver = "all";
 
         $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -11819,19 +12070,31 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
             if($pic1 != 0)
             {
                 $pic = GetNotifiers($pic1);
-                $mail->AddAddress($pic["email"], $pic["username"]);
+                if(count($pic) > 0)
+                {
+                    $mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                    $receiver .= $pic[0]["username"] . ", ";
+                }
             }
             
             if($pic2 != 0)
             {
                 $pic = GetNotifiers($pic2);
-                $mail->AddAddress($pic["email"], $pic["username"]);
+                if(count($pic) > 0)
+                {
+                    $mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                    $receiver .= $pic[0]["username"] . ", ";
+                }
             }
 
             if($create_id != 0)
             {
                 $pic = GetNotifiers($create_id);
-                $mail->AddAddress($pic["email"], $pic["username"]);
+                if(count($pic) > 0)
+                {
+                    $mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                    $receiver .= $pic[0]["username"] . ", ";
+                }
             }
 
         }
@@ -12112,6 +12375,13 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
             $mail->AddCC($list["email"], $list["username"]);
         }
 
+        // access 7 from od_main
+        $ret = get_access7_from_od_main($od_id);
+        $project_id = $ret[0];
+        $task_type = $ret[1];
+        $access7 = $ret[2];
+        $create_id = $ret[3];
+    
         $receiver = "";
         // access5
         $_list = explode(",", $access);
@@ -12123,8 +12393,16 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
                 $receiver .= $list["username"] . ", ";
             }
         }
+
+        $pic = GetNotifiers($create_id);
+        for($i=0; $i<count($pic); $i++)
+        {
+            $mail->AddAddress($pic[$i]["email"],$pic[$i]["username"]);
+            $receiver .= $pic[$i]["username"] . ", ";
+        }
         
-        $receiver = rtrim($receiver, ", ");
+        // $receiver = rtrim($receiver, ", ");
+        $receiver = "all";
 
         $mail->Subject = 'Testing info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the testing info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -12177,7 +12455,7 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
             $mail->AddCC($list["email"], $list["username"]);
         }
 
-        $receiver = "All";
+        
 
         // access5
         $_list = explode(",", $access);
@@ -12190,7 +12468,7 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
             }
         }
 
-        $receiver = rtrim($receiver, ", ");
+        $receiver = "all";
 
         $mail->Subject = 'Delivery info for items of "' . $order_type . ': ' . $serial_name . '" is updated';
         $header = $name . ' updated the delivery info for items of "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -12243,19 +12521,31 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
             if($pic1 != 0)
             {
                 $pic = GetNotifiers($pic1);
-                $mail->AddAddress($pic["email"], $pic["username"]);
+                if(count($pic) > 0)
+                {
+                    $mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                    $receiver .= $pic[0]["username"] . ", ";
+                }
             }
             
             if($pic2 != 0)
             {
                 $pic = GetNotifiers($pic2);
-                $mail->AddAddress($pic["email"], $pic["username"]);
+                if(count($pic) > 0)
+                {
+                    $mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                    $receiver .= $pic[0]["username"] . ", ";
+                }
             }
 
             if($create_id != 0)
             {
                 $pic = GetNotifiers($create_id);
-                $mail->AddAddress($pic["email"], $pic["username"]);
+                if(count($pic) > 0)
+                {
+                    $mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                    $receiver .= $pic[0]["username"] . ", ";
+                }
             }
 
         }
@@ -12324,7 +12614,7 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
                 <td style="font-size: 15px; padding: 0 0 5px 15px; text-align: justify; line-height: 1.8;">';
                     $content = $content . 'Order Type: ' . $order_type . '<br>';
                     $content = $content . 'Order Name: ' . $serial_name . ' ' . $order_name . '<br>';
-                    $content = $content . 'Related Project: ' . $project_name . '<br>';
+                    $content = $content . 'Related Task: ' . $project_name . '<br>';
                     $content = $content . 'Submission Time: ' . date('Y/m/d h:i:s a', time()) . '<br>';
                     $content = $content . 'Submitter: ' . $name . '<br>';
                     $content = $content . 'Comment: ' . $remark . '';
@@ -12465,44 +12755,58 @@ function order_sample_delievery_notification($name, $access,  $access_cc, $proje
     {
         // 收件人：角色4, 部門為 Admin 的所有人員
         
-        $_list = explode(",", $access);
-        foreach($_list as &$c_list)
+        // $_list = explode(",", $access);
+        // foreach($_list as &$c_list)
+        // {
+        //     $notifior = GetAccessNotifiers($c_list, $serial_name);
+        //     foreach($notifior as &$list)
+        //     {
+        //         $receiver .= $list["username"] . ", ";
+        //         $mail->AddAddress($list["email"], $list["username"]);
+        //     }
+        // }
+        // $receiver = rtrim($receiver, ", ");
+
+        // $notifior = GetAccessNotifiersByDepartment("Admin");
+        // foreach($notifior as &$list)
+        // {
+        //     if( $list["username"] == 'Gina Donato' || $list["username"] == 'Ronnie Fernando Dela Cruz'){
+        //         $receiver .= $list["username"] . ", ";
+        //         $mail->AddAddress($list["email"], $list["username"]);
+        //     }
+        // }
+
+        // // CC收件人：執行動作的人, 角色1, 角色3, 職位為Sales Manager的使用者, 角色5
+        // $cc_list = explode(",", $access_cc);
+        // foreach($cc_list as &$c_list)
+        // {
+        //     $notifior = GetAccessNotifiers($c_list, $serial_name);
+        //     foreach($notifior as &$list)
+        //     {
+        //         $cc = $list["username"];
+        //         $mail->AddCC($list["email"], $list["username"]);
+        //     }
+        // }
+
+        // $notifior = GetChargeNotifiersByTitle('Sales Manager');
+        // foreach($notifior as &$list)
+        // {
+        //     $mail->AddCC($list["email"], $list["username"]);
+        // }
+
+        $pm_info = get_task_from_od_main($od_id);
+        $create_id = $pm_info[0];
+
+        if($create_id != 0)
         {
-            $notifior = GetAccessNotifiers($c_list, $serial_name);
-            foreach($notifior as &$list)
+            $pic = GetNotifiers($create_id);
+            if(count($pic) > 0)
             {
-                $receiver .= $list["username"] . ", ";
-                $mail->AddAddress($list["email"], $list["username"]);
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
             }
         }
-        $receiver = rtrim($receiver, ", ");
-
-        $notifior = GetAccessNotifiersByDepartment("Admin");
-        foreach($notifior as &$list)
-        {
-            if( $list["username"] == 'Gina Donato' || $list["username"] == 'Ronnie Fernando Dela Cruz'){
-                $receiver .= $list["username"] . ", ";
-                $mail->AddAddress($list["email"], $list["username"]);
-            }
-        }
-
-        // CC收件人：執行動作的人, 角色1, 角色3, 職位為Sales Manager的使用者, 角色5
-        $cc_list = explode(",", $access_cc);
-        foreach($cc_list as &$c_list)
-        {
-            $notifior = GetAccessNotifiers($c_list, $serial_name);
-            foreach($notifior as &$list)
-            {
-                $cc = $list["username"];
-                $mail->AddCC($list["email"], $list["username"]);
-            }
-        }
-
-        $notifior = GetChargeNotifiersByTitle('Sales Manager');
-        foreach($notifior as &$list)
-        {
-            $mail->AddCC($list["email"], $list["username"]);
-        }
+       
     
         $notifior = GetAccessNotifiersByName($name, "");
         foreach($notifior as &$list)
@@ -12584,7 +12888,7 @@ function order_sample_delievery_notification($name, $access,  $access_cc, $proje
                 <td style="font-size: 15px; padding: 0 0 5px 15px; text-align: justify; line-height: 1.8;">';
                     $content = $content . 'Order Type: ' . $order_type . '<br>';
                     $content = $content . 'Order Name: ' . $serial_name . ' ' . $order_name . '<br>';
-                    $content = $content . 'Related Project: ' . $project_name . '<br>';
+                    $content = $content . 'Related Task: ' . $project_name . '<br>';
                     $content = $content . 'Submission Time: ' . date('Y/m/d h:i:s a', time()) . '<br>';
                     $content = $content . 'Submitter: ' . $name . '<br>';
                     $content = $content . 'Comment: ' . $remark . '';
@@ -12723,23 +13027,36 @@ function order_stock_delievery_notification($name, $access,  $access_cc, $projec
 
     if($action == 'edit_delivery')
     {
-        //收件人：角色1, 角色3, 職位為Sales Manager的使用者, 角色4, 角色5
-        $_list = explode(",", $access);
-        foreach($_list as &$c_list)
-        {
-            $notifior = GetAccessNotifiers($c_list, $serial_name);
-            foreach($notifior as &$list)
-            {
-                $receiver .= $list["username"] . ", ";
-                $mail->AddAddress($list["email"], $list["username"]);
-            }
-        }
-        $receiver = rtrim($receiver, ", ");
+        // //收件人：角色1, 角色3, 職位為Sales Manager的使用者, 角色4, 角色5
+        // $_list = explode(",", $access);
+        // foreach($_list as &$c_list)
+        // {
+        //     $notifior = GetAccessNotifiers($c_list, $serial_name);
+        //     foreach($notifior as &$list)
+        //     {
+        //         $receiver .= $list["username"] . ", ";
+        //         $mail->AddAddress($list["email"], $list["username"]);
+        //     }
+        // }
+        // $receiver = rtrim($receiver, ", ");
 
-        $notifior = GetChargeNotifiersByTitle('Sales Manager');
-        foreach($notifior as &$list)
+        // $notifior = GetChargeNotifiersByTitle('Sales Manager');
+        // foreach($notifior as &$list)
+        // {
+        //     $mail->AddAddress($list["email"], $list["username"]);
+        // }
+
+        $pm_info = get_task_from_od_main($od_id);
+        $create_id = $pm_info[0];
+
+        if($create_id != 0)
         {
-            $mail->AddAddress($list["email"], $list["username"]);
+            $pic = GetNotifiers($create_id);
+            if(count($pic) > 0)
+            {
+            	$mail->AddAddress($pic[0]["email"], $pic[0]["username"]);
+                $receiver .= $pic[0]["username"] . ", ";
+            }
         }
 
         // CC收件人：執行動作的人
@@ -12788,7 +13105,7 @@ function order_stock_delievery_notification($name, $access,  $access_cc, $projec
                 <td style="font-size: 15px; padding: 0 0 5px 15px; text-align: justify; line-height: 1.8;">';
                     $content = $content . 'Order Type: ' . $order_type . '<br>';
                     $content = $content . 'Order Name: ' . $serial_name . ' ' . $order_name . '<br>';
-                    $content = $content . 'Related Project: ' . $project_name . '<br>';
+                    $content = $content . 'Related Task: ' . $project_name . '<br>';
                     $content = $content . 'Submission Time: ' . date('Y/m/d h:i:s a', time()) . '<br>';
                     $content = $content . 'Submitter: ' . $name . '<br>';
                     $content = $content . 'Comment: ' . $remark . '';
@@ -16834,7 +17151,7 @@ function get_access7_from_od_main($id)
     $database = new Database();
     $db = $database->getConnection();
 
-    $query = "SELECT task_id, task_type, access7 FROM od_main WHERE id = " . $id;
+    $query = "SELECT create_id, task_id, task_type, access7 FROM od_main WHERE id = " . $id;
 
     // prepare the query
     $stmt = $db->prepare($query);
@@ -16845,12 +17162,88 @@ function get_access7_from_od_main($id)
     $access7 = "";
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $create_id = $row['create_id'];
         $task_id = $row['task_id'];
         $task_type = $row['task_type'];
         $access7 = $row['access7'];
     }
 
-    return array($task_id, $task_type, $access7);
+    return array($task_id, $task_type, $access7, $create_id);
+
+}
+
+function get_task_from_od_main($id)
+{
+    $database = new Database();
+    $db = $database->getConnection();
+
+    $query = "SELECT  task_id, task_type FROM od_main WHERE id = " . $id;
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $task_type = "";
+    $task_id = 0;
+    $create_id = 0;
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $task_type = $row['task_type'];
+        $task_id = $row['task_id'];
+    }
+
+    if($task_type != '')
+    {
+        if($task_type == 'SVC')
+            $task_type = '_sv';
+        if($task_type == 'LT')
+            $task_type = '_l';
+        if($task_type == 'OS')
+            $task_type = '_o';
+        if($task_type == 'SLS')
+            $task_type = '_sl';
+
+        $query = 'select create_id from project_other_task' . $task_type . ' where id = ' . $task_id;
+
+        // prepare the query
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+
+        
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $create_id = $row['create_id'];
+        }
+
+    }
+
+
+    return array($create_id);
+
+}
+
+function get_pic_from_od_main($id)
+{
+    $database = new Database();
+    $db = $database->getConnection();
+
+    $query = "SELECT pic1, pic2, project_main.create_id FROM project_main WHERE id = (SELECT project_id FROM project_stages WHERE id = (select stage_id from project_other_task where id = (select task_id from od_main where id = " . $id . ")))";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $pic1 = 0;
+    $pic2 = 0;
+    $create_id = 0;
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $pic1 = $row['pic1'];
+        $pic2 = $row['pic2'];
+        $create_id = $row['create_id'];
+    }
+
+    return array($pic1, $pic2, $create_id);
+
 
 }
 

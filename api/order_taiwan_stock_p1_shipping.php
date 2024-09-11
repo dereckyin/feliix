@@ -81,6 +81,9 @@ switch ($method) {
         $project_name = (isset($_POST['project_name']) ?  $_POST['project_name'] : '');
 
         $diff = [];
+
+        $all_tested = true;
+        $all_delivery = true;
         
         // update main table
         $query = "UPDATE od_main SET `updated_id` = :updated_id,  `updated_at` = now() WHERE id = :id";
@@ -136,6 +139,17 @@ switch ($method) {
             }
             else{
                 //用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;
+            }
+
+            // 每一個品項在 Testing Info 都有值了，那系統會發出的通知信件
+            if($items[$i]["check_t"] == "" && $items[$i]["remark_t"] == "" && $items[$i]["confirm"] != "E")
+            {
+                $all_tested = false;
+            }
+
+            if($items[$i]["check_d"] == "" && $items[$i]["remark_d"] == "" && $items[$i]["confirm"] != "E")
+            {
+                $all_delivery = false;
             }
 
             $test_update = false;
@@ -342,10 +356,31 @@ switch ($method) {
             }
         }
 
-        if(count($items_array) == 0)
+        if(($type == 'edit_delivery' && $all_delivery == true) || ($type == 'edit_test' && $all_tested == true))
         {
-            echo $jsonEncodedReturnArray;
-            break;
+            $items_array = $items;
+
+            if($type == 'edit_delivery' || $type == 'edit_test')
+            {
+                $items_array = array_filter($items_array, function($item) {
+                    return $item['confirm'] != 'E';
+                });
+            }
+        }
+        else
+        {
+            if($type == 'edit_delivery' || $type == 'edit_test')
+            {
+                $items_array = array_filter($items_array, function($item) {
+                    return $item['confirm'] != 'E';
+                });
+            }
+
+            if(count($items_array) == 0)
+            {
+                echo $jsonEncodedReturnArray;
+                break;
+            }
         }
 
         if($type == 'ship_info')
@@ -354,12 +389,12 @@ switch ($method) {
             order_type_notification($user_name, 'access5', 'access2,access1,access3,access4', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
         if($type == 'assing_test')
             order_sample_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
-        if($type == 'edit_test')
-            order_sample_notification02($user_name, 'access5', 'access1,access2,access3,access4', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
+        if($type == 'edit_test' && $all_tested == true)
+            order_sample_notification02($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
         if($type == 'assign_delivery')
             order_sample_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
-        if($type == 'edit_delivery')
-            order_stock_delievery_notification($user_name, 'access1,access3,access4,access5', '', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
+        if($type == 'edit_delivery' && $all_delivery == true)
+            order_stock_delievery_notification($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, 'stock');
         if($type == 'date_needed')
             order_sample_notification02($user_name, 'access2,access3,access4,access5', '', $project_name, $serial_name, $od_name, 'Order - Stocks', $comment, $type, $items_array, $o_id, "stock");
 

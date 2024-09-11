@@ -80,7 +80,12 @@ switch ($method) {
         $serial_name = (isset($_POST['serial_name']) ?  $_POST['serial_name'] : '');
         $project_name = (isset($_POST['project_name']) ?  $_POST['project_name'] : '');
 
+        $pic1 = (isset($_POST['pic1']) ?  $_POST['pic1'] : 0);
+        $pic2 = (isset($_POST['pic2']) ?  $_POST['pic2'] : 0);
+
         $diff = [];
+
+        $all_delivery = "_a";
         
         // update main table
         $query = "UPDATE od_main SET `updated_id` = :updated_id,  `updated_at` = now() WHERE id = :id";
@@ -151,6 +156,13 @@ switch ($method) {
             else{
                 //用「頁面上接收_date_sent 去更新資料表 od_item 中的 Date Sent 欄位 」;
             }
+
+            // 每一個品項在 Delivery Info 都有值了，那系統會發出的通知信件
+            if($items[$i]["check_d"] == "" && $items[$i]["remark_d"] == "" && $items[$i]["confirm"] != "E")
+            {
+                $all_delivery = "";
+            }
+
 
             $test_update = false;
             $delivery_updeate = false;
@@ -356,10 +368,31 @@ switch ($method) {
             }
         }
 
-        if(count($items_array) == 0)
+        if($type == 'edit_delivery' && $all_delivery == true)
         {
-            echo $jsonEncodedReturnArray;
-            break;
+            $items_array = $items;
+
+            if($type == 'edit_delivery' || $type == 'edit_test')
+            {
+                $items_array = array_filter($items_array, function($item) {
+                    return $item['confirm'] != 'E';
+                });
+            }
+        }
+        else
+        {
+            if($type == 'edit_delivery' || $type == 'edit_test')
+            {
+                $items_array = array_filter($items_array, function($item) {
+                    return $item['confirm'] != 'E';
+                });
+            }
+
+            if(count($items_array) == 0)
+            {
+                echo $jsonEncodedReturnArray;
+                break;
+            }
         }
 
         if($type == 'ship_info')
@@ -369,11 +402,11 @@ switch ($method) {
         if($type == 'assing_test')
             order_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id);
         if($type == 'edit_test')
-            order_notification02($user_name, 'access5', 'access1,access2,access3,access4', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id);
+            order_notification02($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id, $pic1, $pic2);
         if($type == 'assign_delivery')
             order_notification02($user_name, '', 'access1,access3,access5', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id);
         if($type == 'edit_delivery')
-            order_notification02($user_name, 'access5', 'access1,access2,access3,access4', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id);
+            order_notification02($user_name, '', '', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type . $all_delivery, $items_array, $o_id, $pic1, $pic2);
         if($type == 'date_needed')
             order_notification02($user_name, 'access2,access3,access4,access5', '', $project_name, $serial_name, $od_name, 'Order - Close Deal', $comment, $type, $items_array, $o_id);
         
