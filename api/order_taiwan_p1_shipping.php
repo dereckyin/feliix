@@ -158,7 +158,7 @@ switch ($method) {
             }
 
             // 每一個品項在 Delivery Info 都有值了，那系統會發出的通知信件
-            if($items[$i]["check_d"] == "" && $items[$i]["remark_d"] == "")
+            if($items[$i]["check_d"] == "" && $items[$i]["remark_d"] == "" && $items[$i]["confirm"] != "E")
             {
                 $all_delivery = "";
             }
@@ -387,7 +387,7 @@ switch ($method) {
                     return $item['confirm'] != 'E';
                 });
             }
-            
+
             if(count($items_array) == 0)
             {
                 echo $jsonEncodedReturnArray;

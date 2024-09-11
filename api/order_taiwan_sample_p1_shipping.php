@@ -141,13 +141,13 @@ switch ($method) {
             }
 
             // 每一個品項在 Testing Info 都有值了，那系統會發出的通知信件
-            if($items[$i]["check_t"] == "" && $items[$i]["remark_t"] == "")
+            if($items[$i]["check_t"] == "" && $items[$i]["remark_t"] == "" && $items[$i]["confirm"] != "E")
             {
                 $all_tested = false;
             }
 
-            if($items[$i]["check_d"] == "" && $items[$i]["remark_d"] == "")
-        {
+            if($items[$i]["check_d"] == "" && $items[$i]["remark_d"] == "" && $items[$i]["confirm"] != "E")
+            {
                 $all_delivery = false;
             }
 

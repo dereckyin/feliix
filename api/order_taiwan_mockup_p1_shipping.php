@@ -144,7 +144,7 @@ switch ($method) {
             }
 
             // 每一個品項在 Delivery Info 都有值了，那系統會發出的通知信件
-            if($items[$i]["check_d"] == "" && $items[$i]["remark_d"] == "")
+            if($items[$i]["check_d"] == "" && $items[$i]["remark_d"] == "" && $items[$i]["confirm"] != "E")
             {
                 $all_delivery = "";
             }
@@ -356,7 +356,7 @@ switch ($method) {
         if($type == 'edit_delivery' && $all_delivery == true)
         {
             $items_array = $items;
-            
+
             if($type == 'edit_delivery' || $type == 'edit_test')
             {
                 $items_array = array_filter($items_array, function($item) {
