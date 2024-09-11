@@ -353,10 +353,17 @@ switch ($method) {
             }
         }
 
-        if(count($items_array) == 0)
+        if($type == 'edit_delivery' && $all_delivery == true)
         {
-            echo $jsonEncodedReturnArray;
-            break;
+            $items_array = $items;
+        }
+        else
+        {
+            if(count($items_array) == 0)
+            {
+                echo $jsonEncodedReturnArray;
+                break;
+            }
         }
 
         if($type == 'ship_info')
