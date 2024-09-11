@@ -358,9 +358,23 @@ switch ($method) {
         if(($type == 'edit_delivery' && $all_delivery == true) || ($type == 'edit_test' && $all_tested == true))
         {
             $items_array = $items;
+
+            if($type == 'edit_delivery' || $type == 'edit_test')
+            {
+                $items_array = array_filter($items_array, function($item) {
+                    return $item['confirm'] != 'E';
+                });
+            }
         }
         else
         {
+            if($type == 'edit_delivery' || $type == 'edit_test')
+            {
+                $items_array = array_filter($items_array, function($item) {
+                    return $item['confirm'] != 'E';
+                });
+            }
+
             if(count($items_array) == 0)
             {
                 echo $jsonEncodedReturnArray;
