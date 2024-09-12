@@ -2636,6 +2636,16 @@ Installation:`;
         
       },
 
+      save_access() {
+        this.show_access = false;
+
+        this.can_view = this.temp_can_view;
+        this.can_duplicate = this.temp_can_duplicate
+
+        this.access_save();
+        
+      },
+
       cancel_footer() {
         this.show_footer = false;
       },
@@ -2695,6 +2705,11 @@ Installation:`;
         // page
         this.pages = [];
         this.temp_pages = [];
+
+        this.can_view = '';
+        this.can_duplicate = '';
+        this.temp_can_view = '';
+        this.temp_can_duplicate = '';
 
       },
 
@@ -2789,7 +2804,8 @@ Installation:`;
               // sig
               _this.sig = _this.receive_records[0].sig_info;
 
-              
+              _this.can_view = _this.receive_records[0].can_view;
+              _this.can_duplicate = _this.receive_records[0].can_duplicate;
 
               // temp
               _this.id = _this.receive_records[0].id;
@@ -2813,6 +2829,8 @@ Installation:`;
               // product array
               _this.product_array = _this.receive_records[0].product_array;
               
+              _this.temp_can_view = _this.receive_records[0].can_view;
+              _this.temp_can_duplicate = _this.receive_records[0].can_duplicate;
             }
           })
           .catch(function(error) {
@@ -3126,6 +3144,95 @@ Installation:`;
         }
       
       },
+
+      
+      access_save : function() {
+        if (this.submit == true) return;
+
+        this.submit = true;
+  
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+        let _this = this;
+  
+        form_Data.append("jwt", token);
+ 
+        form_Data.append("id", this.id);
+
+        form_Data.append("can_view", this.can_view);
+        form_Data.append("can_duplicate", this.can_duplicate);
+          
+  
+        if(this.id == 0) {
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/quotation_access_insert",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              _this.id = response.data.id;
+              
+              Swal.fire({
+                html: response.data.message,
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            })
+            .catch(function(error) {
+              //handle error
+              Swal.fire({
+                text: JSON.stringify(error),
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            });
+        }
+
+        if(this.id != 0) {
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/quotation_access_update",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              Swal.fire({
+                html: response.data.message,
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            })
+            .catch(function(error) {
+              //handle error
+              Swal.fire({
+                text: JSON.stringify(error),
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            });
+        }
+      
+      },
+
 
       footer_save : function() {
         if (this.submit == true) return;

@@ -94,6 +94,7 @@ var app = new Vue({
 
     total : 0,
 
+    quotation_control : false,
   },
 
   created () {
@@ -164,6 +165,8 @@ var app = new Vue({
     this.getTask('o');
     this.getTask('sv');
     this.getTask('sl');
+
+    this.getQuotationControl();
   },
 
   computed: {
@@ -284,6 +287,37 @@ var app = new Vue({
 
 
   methods:{
+
+    
+    getQuotationControl: function() {
+      var token = localStorage.getItem('token');
+      var form_Data = new FormData();
+      let _this = this;
+
+      form_Data.append('jwt', token);
+
+      axios({
+          method: 'get',
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+          url: 'api/quotation_control',
+          data: form_Data
+      })
+      .then(function(response) {
+          //handle success
+          _this.quotation_control = response.data.quotation_control;
+
+      })
+      .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+      });
+    },
 
     getUsers () {
 

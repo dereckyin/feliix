@@ -35,7 +35,37 @@ $test_manager = "1";
 //  ('Kuan', 'Dennis Lin', 'dereck', 'Ariel Lin', 'Kristel Tan');
 if($user_id == 48 || $user_id == 2 || $user_id == 11 || $user_id == 6 ||  $user_id == 1 || $user_id == 3 || $user_id == 89 || $user_id == 129 || $user_id == 137 || $user_id == 138 || $user_id == 148)
 $test_manager = "1";
+
+$database = new Database();
+$db = $database->getConnection();
+
+$quotation_control = false;
+$query = "SELECT quotation_control FROM access_control WHERE quotation_control LIKE '%" . $username . "%' ";
+$stmt = $db->prepare( $query );
+$stmt->execute();
+while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+$quotation_control = true;
 }
+
+if(!$quotation_control)
+{
+    $id = (isset($_GET['id']) ?  $_GET['id'] : 0);
+    $query = "SELECT can_view FROM quotation WHERE id = " . $id;
+
+    $stmt = $db->prepare( $query );
+    $stmt->execute();
+    $can_view = '';
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $can_view = $row['can_view'];
+    }
+
+    if($can_view != "")
+        header( 'location:index' );
+
+}
+
+}
+
 
 
 catch (Exception $e){
@@ -2524,19 +2554,10 @@ header( 'location:index' );
             </div>
 
             <div class="block fn">
-                <div class="popupblock">
-                    <?php
-                if ($test_manager[0]  == "1")
-                {
-                ?>
+                <div class="popupblock" v-if="quotation_control && project_category == 'Office Systems'">
+
                     <a id="status_fn1" class="fn1" :ref="'a_fn1'" @click="show_access = !show_access">Access</a>
-                    <?php
-                } else {
-                ?>
-                    <a>Header</a>
-                    <?php
-                }
-                ?>
+
                     <div id="access_dialog" class="dialog fn1 show" :ref="'dlg_fn1'" v-show="show_access">
                         <h6>Access</h6>
                         <div class="formbox">
