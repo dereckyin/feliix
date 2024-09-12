@@ -89,7 +89,10 @@ $query = "SELECT pm.id,
                 c_user.username AS created_by, 
                 u_user.username AS updated_by,
                 DATE_FORMAT(pm.created_at, '%Y-%m-%d %H:%i:%s') created_at, 
-                DATE_FORMAT(pm.updated_at, '%Y-%m-%d %H:%i:%s') updated_at
+                DATE_FORMAT(pm.updated_at, '%Y-%m-%d %H:%i:%s') updated_at,
+                pm.project_category,
+                pm.can_view,
+                pm.can_duplicate
           FROM quotation pm 
                 LEFT JOIN user c_user ON pm.create_id = c_user.id 
                 LEFT JOIN user u_user ON pm.updated_id = u_user.id 
@@ -261,6 +264,10 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $updated_by = $row['updated_by'];
     $created_at = $row['created_at'];
     $updated_at = $row['updated_at'];
+
+    $can_view = $row['can_view'];
+    $can_duplicate = $row['can_duplicate'];
+    $project_category = $row['project_category'];
    
     $post = GetRecentPost($row['id'], $db);
 
@@ -283,6 +290,9 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "updated_by" => $updated_by,
         "created_at" => $created_at,
         "updated_at" => $updated_at,
+        "can_view" => $can_view,
+        "can_duplicate" => $can_duplicate,
+        "project_category" => $project_category,
         "post" => $post,
         "cnt" => $cnt,
      
