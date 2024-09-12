@@ -268,6 +268,16 @@ var app = new Vue({
         last_order_name : '',
         last_order_at : '',
         last_order_url : '',
+
+
+        show_access : false,
+        quotation_control : false,
+
+        temp_can_view : '',
+        can_view : '',
+        temp_can_duplicate: '',
+        can_duplicate: '',
+        
     },
   
     created() {
@@ -301,6 +311,7 @@ var app = new Vue({
       this.get_brands();
       this.get_signature();
       this.getTagGroup();
+      this.getQuotationControl();
     },
   
     computed: {
@@ -431,6 +442,37 @@ var app = new Vue({
     },
   
     methods: {
+      
+      getQuotationControl: function() {
+        var token = localStorage.getItem('token');
+        var form_Data = new FormData();
+        let _this = this;
+  
+        form_Data.append('jwt', token);
+  
+        axios({
+            method: 'get',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            url: 'api/quotation_control',
+            data: form_Data
+        })
+        .then(function(response) {
+            //handle success
+            _this.quotation_control = response.data.quotation_control;
+  
+        })
+        .catch(function(response) {
+            //handle error
+            Swal.fire({
+              text: JSON.stringify(response),
+              icon: 'error',
+              confirmButtonText: 'OK'
+            })
+        });
+      },
+
       getTagGroup: function() {
         let _this = this;
           
@@ -2569,6 +2611,10 @@ Installation:`;
 
       cancel_header() {
         this.show_header = false;
+      },
+      
+      cancel_access() {
+        this.show_access = false;
       },
 
       save_header() {

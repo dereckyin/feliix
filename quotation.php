@@ -1413,7 +1413,7 @@ header( 'location:index' );
             cursor: pointer;
         }
 
-        #header_dialog, #footer_dialog, #total_dialog {
+        #header_access, #header_dialog, #footer_dialog, #total_dialog {
             zoom: 85%;
         }
 
@@ -2524,6 +2524,49 @@ header( 'location:index' );
             </div>
 
             <div class="block fn">
+                <div class="popupblock">
+                    <?php
+                if ($test_manager[0]  == "1")
+                {
+                ?>
+                    <a id="status_fn1" class="fn1" :ref="'a_fn1'" @click="show_access = !show_access">Access</a>
+                    <?php
+                } else {
+                ?>
+                    <a>Header</a>
+                    <?php
+                }
+                ?>
+                    <div id="access_dialog" class="dialog fn1 show" :ref="'dlg_fn1'" v-show="show_access">
+                        <h6>Access</h6>
+                        <div class="formbox">
+                            <dl>
+                                <dt>Can be Viewed?</dt>
+                                <dd>
+                                    <select v-model="temp_can_view">
+                                        <option value="">Yes</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </dd>
+                                <dt>Can be Duplicated?</dt>
+                                <dd>
+                                    <select v-model="temp_can_duplicate">
+                                        <option value="">Yes</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </dd>
+
+                                <div class="btnbox">
+                                    <a class="btn small" @click="cancel_access()">Close</a>
+                                    <a class="btn small green" @click="save_access()">Save</a>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <div class="popupblock">
                     <?php
                 if ($test_manager[0]  == "1")

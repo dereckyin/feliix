@@ -44,6 +44,7 @@ var app = new Vue({
     inventory_checker : [],
     inventory_approver : [],
     frozen_office: "",
+    quotation_control: "",
   },
 
   created() {
@@ -198,7 +199,10 @@ var app = new Vue({
               });
               if (kind === 32 || kind === undefined)
               _this.frozen_office = res.data[0]["frozen_office"];
-
+              if (kind === 33 || kind === undefined)
+                _this.quotation_control = res.data[0]["quotation_control"].split(",").filter(function (el) {
+                  return el != "";
+                });
 
           },
           (err) => {
@@ -276,6 +280,7 @@ var app = new Vue({
       form_Data.append("inventory_checker", this.inventory_checker.toString());
       form_Data.append("inventory_approver", this.inventory_approver.toString());
       form_Data.append("frozen_office", this.frozen_office);
+      form_Data.append("quotation_control", this.quotation_control);
 
       axios({
         method: "post",
