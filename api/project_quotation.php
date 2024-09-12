@@ -64,12 +64,22 @@ else
                         FROM project_quotation pm 
                         left join user u on u.id = pm.create_id 
                         LEFT JOIN gcp_storage_file f ON f.batch_id = pm.id AND f.batch_type = 'quote' 
-                        where project_id =  " . $pid . "  and pm.status <> -1
+                        where project_id =  " . $pid . "  and pm.status <> -1 ";
+if(is_quotation_control($db, $username) == false)
+{
+    $sql = $sql . " and pm.can_view = '' ";
+}
+            $sql = $sql . "
                         union 
                         select 'p' type, pm.id, pm.title comment, pm.title filename, '' bucket, '' gcp_name, u.username, pm.created_at, '' final_quotation, pageless
                         from quotation pm
                         left join user u on u.id = pm.create_id 
-                        where pm.project_id = " . $pid . " and pm.status <> -1
+                        where pm.project_id = " . $pid . " and pm.status <> -1 ";
+if(is_quotation_control($db, $username) == false)
+{
+    $sql = $sql . " and pm.can_view = '' ";
+}
+            $sql = $sql . "
                         ) a
                     ORDER BY a.created_at desc ";
 
@@ -150,5 +160,17 @@ else
       }
 
 
+function is_quotation_control($db, $user_name)
+{
+    $access = false;
+
+    $query = "SELECT * FROM access_control WHERE quotation_control LIKE '%" . $user_name . "%' ";
+    $stmt = $db->prepare( $query );
+    $stmt->execute();
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $access = true;
+    }
+    return $access;
+}
 
 ?>
