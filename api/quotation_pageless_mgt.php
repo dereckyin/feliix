@@ -102,6 +102,12 @@ FROM quotation pm
     left join project_main p on pm.project_id = p.id
 where pm.status <> -1  and pageless = 'Y'  ";
 
+if(is_quotation_control($db, $username) == false)
+{
+    $query = $query . " and pm.can_view = '' ";
+    $query_cnt = $query_cnt . " and pm.can_view = '' ";
+}
+
 if($fpt != "")
 {
     $query = $query . " and c_user.username = '" . $fpt . "' ";
@@ -308,6 +314,18 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);
 
 
+function is_quotation_control($db, $user_name)
+{
+    $access = false;
+
+    $query = "SELECT * FROM access_control WHERE quotation_control LIKE '%" . $user_name . "%' ";
+    $stmt = $db->prepare( $query );
+    $stmt->execute();
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $access = true;
+    }
+    return $access;
+}
 
 
 function GetRecentPost($quotation_id, $db){
