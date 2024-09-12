@@ -66,10 +66,7 @@ else
                         left join user u on u.id = pm.create_id 
                         LEFT JOIN gcp_storage_file f ON f.batch_id = pm.id AND f.batch_type = 'quote' 
                         where project_id =  " . $pid . "  and pm.status <> -1 ";
-if(is_quotation_control($db, $username) == false)
-{
-    $sql = $sql . " and pm.can_view = '' ";
-}
+
             $sql = $sql . "
                         union 
                         select 'p' type, pm.id, pm.title comment, pm.title filename, '' bucket, '' gcp_name, u.username, pm.created_at, '' final_quotation, pageless
