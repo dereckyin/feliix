@@ -268,6 +268,16 @@ var app = new Vue({
         last_order_name : '',
         last_order_at : '',
         last_order_url : '',
+
+
+        show_access : false,
+        quotation_control : false,
+
+        temp_can_view : '',
+        can_view : '',
+        temp_can_duplicate: '',
+        can_duplicate: '',
+        
     },
   
     created() {
@@ -301,6 +311,7 @@ var app = new Vue({
       this.get_brands();
       this.get_signature();
       this.getTagGroup();
+      this.getQuotationControl();
     },
   
     computed: {
@@ -431,6 +442,37 @@ var app = new Vue({
     },
   
     methods: {
+      
+      getQuotationControl: function() {
+        var token = localStorage.getItem('token');
+        var form_Data = new FormData();
+        let _this = this;
+  
+        form_Data.append('jwt', token);
+  
+        axios({
+            method: 'get',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            url: 'api/quotation_control',
+            data: form_Data
+        })
+        .then(function(response) {
+            //handle success
+            _this.quotation_control = response.data.quotation_control;
+  
+        })
+        .catch(function(response) {
+            //handle error
+            Swal.fire({
+              text: JSON.stringify(response),
+              icon: 'error',
+              confirmButtonText: 'OK'
+            })
+        });
+      },
+
       getTagGroup: function() {
         let _this = this;
           
@@ -2570,6 +2612,10 @@ Installation:`;
       cancel_header() {
         this.show_header = false;
       },
+      
+      cancel_access() {
+        this.show_access = false;
+      },
 
       save_header() {
         this.show_header = false;
@@ -2587,6 +2633,16 @@ Installation:`;
         this.prepare_by_second_line = this.temp_prepare_by_second_line;
 
         this.header_save();
+        
+      },
+
+      save_access() {
+        this.show_access = false;
+
+        this.can_view = this.temp_can_view;
+        this.can_duplicate = this.temp_can_duplicate
+
+        this.access_save();
         
       },
 
@@ -2649,6 +2705,11 @@ Installation:`;
         // page
         this.pages = [];
         this.temp_pages = [];
+
+        this.can_view = '';
+        this.can_duplicate = '';
+        this.temp_can_view = '';
+        this.temp_can_duplicate = '';
 
       },
 
@@ -2743,7 +2804,8 @@ Installation:`;
               // sig
               _this.sig = _this.receive_records[0].sig_info;
 
-              
+              _this.can_view = _this.receive_records[0].can_view;
+              _this.can_duplicate = _this.receive_records[0].can_duplicate;
 
               // temp
               _this.id = _this.receive_records[0].id;
@@ -2767,6 +2829,8 @@ Installation:`;
               // product array
               _this.product_array = _this.receive_records[0].product_array;
               
+              _this.temp_can_view = _this.receive_records[0].can_view;
+              _this.temp_can_duplicate = _this.receive_records[0].can_duplicate;
             }
           })
           .catch(function(error) {
@@ -3080,6 +3144,95 @@ Installation:`;
         }
       
       },
+
+      
+      access_save : function() {
+        if (this.submit == true) return;
+
+        this.submit = true;
+  
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+        let _this = this;
+  
+        form_Data.append("jwt", token);
+ 
+        form_Data.append("id", this.id);
+
+        form_Data.append("can_view", this.can_view);
+        form_Data.append("can_duplicate", this.can_duplicate);
+          
+  
+        if(this.id == 0) {
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/quotation_access_insert",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              _this.id = response.data.id;
+              
+              Swal.fire({
+                html: response.data.message,
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            })
+            .catch(function(error) {
+              //handle error
+              Swal.fire({
+                text: JSON.stringify(error),
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            });
+        }
+
+        if(this.id != 0) {
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/quotation_access_update",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              Swal.fire({
+                html: response.data.message,
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            })
+            .catch(function(error) {
+              //handle error
+              Swal.fire({
+                text: JSON.stringify(error),
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+    
+              _this.reload();
+              _this.submit = false;
+            });
+        }
+      
+      },
+
 
       footer_save : function() {
         if (this.submit == true) return;

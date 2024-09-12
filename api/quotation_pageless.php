@@ -72,7 +72,9 @@ if (!isset($jwt)) {
                     show_t,
                     pixa_p,
                     show_p,
-                    1 page_count
+                    1 page_count,
+                    can_view,
+                    can_duplicate
                     FROM quotation
                     WHERE status <> -1 and id=$id";
 
@@ -147,6 +149,9 @@ if (!isset($jwt)) {
         // print
         $product_array = GetProductItems($pages, $row['id'], $db);
 
+        $can_view = $row['can_view'];
+        $can_duplicate = $row['can_duplicate'];
+
         $merged_results[] = array(
             "id" => $id,
             "first_line" => $first_line,
@@ -183,6 +188,9 @@ if (!isset($jwt)) {
             "subtotal_info_not_show_a" => $subtotal_info_not_show_a,
             "subtotal_info_not_show_b" => $subtotal_info_not_show_b,
 
+            "can_view" => $can_view,
+            "can_duplicate" => $can_duplicate,
+            
             "product_array" => $product_array,
         );
     }

@@ -5309,3 +5309,10 @@ CREATE TABLE IF NOT EXISTS `office_item_inventory_modify` (
 -- 20240902
 ALTER TABLE access_control
 ADD COLUMN `frozen_office` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20240912
+ALTER TABLE access_control
+ADD COLUMN `quotation_control` text COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE quotation ADD COLUMN can_view VARCHAR(2) DEFAULT '';
+ALTER TABLE quotation ADD COLUMN can_duplicate VARCHAR(2) DEFAULT '';
