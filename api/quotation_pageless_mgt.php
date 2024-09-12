@@ -26,6 +26,7 @@ else
         // decode jwt
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         $user_id = $decoded->data->id;
+        $username = $decoded->data->username;
     }
         // if decode fails, it means jwt is invalid
     catch (Exception $e){
