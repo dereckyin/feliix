@@ -115,7 +115,7 @@ var app = new Vue({
 
     tag_group : [],
 
-
+    brand_handler: '',
 
   },
 
@@ -1275,10 +1275,24 @@ $("#tag0102").selectpicker("refresh");
           form_Data.append("p3_qty", _this.p3_qty);
           form_Data.append("p3_id", _this.p3_id);
 
+          form_Data.append("brand_handler", _this.brand_handler);
+
           for (var i = 1; i < 4; i++) {
             let file = document.getElementById('photo' + i).files[0];
             if(typeof file !== 'undefined') 
               form_Data.append('photo' + i, file);
+          }
+
+          // ics
+          for (var i = 0; i < this.$refs.file_ics.files.length; i++) {
+            let file = this.$refs.file_ics.files[i];
+            form_Data.append("file_ics[" + i + "]", file);
+          }
+
+          // manual
+          for (var i = 0; i < this.$refs.file_manual.files.length; i++) {
+            let file = this.$refs.file_manual.files[i];
+            form_Data.append("file_manual[" + i + "]", file);
           }
 
           //for (var i = 0; i < this.$refs.file.files.length; i++) {
