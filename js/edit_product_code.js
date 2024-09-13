@@ -1550,6 +1550,11 @@ var app = new Vue({
               _this.get_records(_this.id);
               _this.submit = false;
 
+              var f_ics = _this.$refs.file_ics;
+              if(f_ics) f_ics.value = "";
+              var f_manual = _this.$refs.file_manual;
+              if(f_manual) f_manual.value = "";
+
             })
             .catch(function(error) {
               //handle error
