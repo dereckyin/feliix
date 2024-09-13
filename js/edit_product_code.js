@@ -1618,7 +1618,10 @@ var app = new Vue({
       this.variation2_custom = '';
       this.variation3_custom = '';
 
-      
+      var f_ics = this.$refs.file_ics;
+      if(f_ics) f_ics.value = "";
+      var f_manual = this.$refs.file_manual;
+      if(f_manual) f_manual.value = "";
 
       $("#variation_mode").bootstrapToggle("off");
       $("#accessory_mode").bootstrapToggle("off");
