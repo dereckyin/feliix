@@ -1034,7 +1034,7 @@ try {
                     IES File
                 </li>
                 <li class="additional_file">
-                    <input class="one_third" type="file" ref="file_ics" name="file_ics[]" multiple>
+                    <input class="one_third" type="file" ref="file_ics" name="file_ics[]" multiple @change="check_ics($event)">
 
                     <div class="list_attch" v-for="(item,index) in product_ics" :key="index">
                         <input type="checkbox" :id="'file' + item.id" v-model="item.is_checked">
@@ -1049,7 +1049,7 @@ try {
                     Manual / Supporting Attachment
                 </li>
                 <li class="additional_file">
-                    <input class="one_third" type="file" ref="file_manual" name="file_manual[]" multiple>
+                    <input class="one_third" type="file" ref="file_manual" name="file_manual[]" multiple @change="check_manual($event)">
 
                     <div class="list_attch" v-for="(item,index) in product_manual" :key="index">
                         <input type="checkbox" :id="'file' + item.id" v-model="item.is_checked">

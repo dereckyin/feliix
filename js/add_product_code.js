@@ -536,6 +536,77 @@ $("#tag0102").selectpicker("refresh");
         });
     },
 
+    check_ics(e)
+    {
+      // check extension and file size
+      let files = e.target.files;
+      for (var i = 0; i < files.length; i++)
+      {
+        let file = files[i];
+        if(file.name.split('.').pop() != 'ies')
+        {
+          Swal.fire({
+            text: "The extension of selected file need to be “.ies”",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
+          return;
+        }
+
+        if(file.size > 1024 * 1024 * 10)
+        {
+          Swal.fire({
+            text: "The size of selected file should be less than 10MB.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
+          return;
+        }
+      }
+    },
+
+    check_manual(e)
+    {
+      let files = e.target.files;
+      for (var i = 0; i < files.length; i++)
+      {
+        let file = files[i];
+
+        if(file.name.split('.').pop() != 'zip' && file.name.split('.').pop() != 'rar' && 
+          file.name.split('.').pop() != '7z' && file.name.split('.').pop() != 'pdf' && 
+          file.name.split('.').pop() != 'doc' && file.name.split('.').pop() != 'docx' && 
+          file.name.split('.').pop() != 'xls' && file.name.split('.').pop() != 'xlsx' && 
+          file.name.split('.').pop() != 'ppt' && file.name.split('.').pop() != 'pptx' && 
+          file.name.split('.').pop() != 'jpg' && file.name.split('.').pop() != 'jpeg' && 
+          file.name.split('.').pop() != 'png' && file.name.split('.').pop() != 'gif' && 
+          file.name.split('.').pop() != 'bmp' && file.name.split('.').pop() != 'tiff' && 
+          file.name.split('.').pop() != 'svg')
+        {
+          Swal.fire({
+            text: "Each selected file needs to be picture, Microsoft office document, pdf or compressed file.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
+          return;
+        }
+        
+        if(file.size > 1024 * 1024 * 10)
+        {
+          Swal.fire({
+            text: "The size of selected file should be less than 10MB.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
+          return;
+        }
+      }
+
+    },
+
     onFileChange(e, num) {
       const file = e.target.files[0];
 
