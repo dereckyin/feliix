@@ -153,8 +153,12 @@ else
                 $p3_id = $row['p3_id'];
                 $p3_qty = $row['p3_qty'];
 
+                $brand_handler = $row['brand_handler'];
 
                 $product = GetProduct($id, $db);
+
+                $product_ics = GetAttachment($id, 'product_ics', $db);
+                $product_manual = GetAttachment($id, 'product_manual', $db);
 
                 $variation1_value = [];
                 $variation2_value = [];
@@ -312,6 +316,11 @@ else
                                     "p3_code" => $p3_code,
                                     "p3_qty" => $p3_qty,
                                     "p3_id" => $p3_id,
+
+                                    "brand_handler" => $brand_handler,
+
+                                    "product_ics" => $product_ics,
+                                    "product_manual" => $product_manual,
 
             );
             }
@@ -748,6 +757,24 @@ function GetAccessoryInfomationDetail($cat_id, $product_id, $db){
 
     return $merged_results;
 
+}
+
+function GetAttachment($_id, $batch_type, $db)
+{
+    $sql = "select id, 1 is_checked, COALESCE(h.filename, '') filename, COALESCE(h.gcp_name, '') gcp_name
+            from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = '" . $batch_type . "'
+            order by h.created_at ";
+
+    $merged_results = array();
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = $row;
+    }
+
+    return $merged_results;
 }
 
 

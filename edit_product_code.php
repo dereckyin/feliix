@@ -888,7 +888,7 @@ try {
                 <li>
                     <input type="text" class="form-control one_half" v-model="brand">
                     <select class="form-control one_third" style="margin-left: 10px;" v-model="brand_handler">
-                        <option value="TW">Handled by Taiwan Office</option>
+                        <option value="">Handled by Taiwan Office</option>
                         <option value="PH">Handled by Philippines Office</option>
                     </select>
                 </li>
@@ -1034,9 +1034,9 @@ try {
                     IES File
                 </li>
                 <li class="additional_file">
-                    <input class="one_third" type="file" ref="file" name="file[]" multiple>
+                    <input class="one_third" type="file" ref="file_ics" name="file_ics[]" multiple>
 
-                    <div class="list_attch" v-for="(item,index) in item_list" :key="index">
+                    <div class="list_attch" v-for="(item,index) in product_ics" :key="index">
                         <input type="checkbox" :id="'file' + item.id" v-model="item.is_checked">
                         <label :for="'file' + item.id"><a class="attch" :href="baseURL + item.gcp_name"
                                             target="_blank">{{item.filename}}</a></label>
@@ -1049,9 +1049,9 @@ try {
                     Manual / Supporting Attachment
                 </li>
                 <li class="additional_file">
-                    <input class="one_third" type="file" ref="file" name="file[]" multiple>
+                    <input class="one_third" type="file" ref="file_manual" name="file_manual[]" multiple>
 
-                    <div class="list_attch" v-for="(item,index) in item_list" :key="index">
+                    <div class="list_attch" v-for="(item,index) in product_manual" :key="index">
                         <input type="checkbox" :id="'file' + item.id" v-model="item.is_checked">
                         <label :for="'file' + item.id"><a class="attch" :href="baseURL + item.gcp_name"
                                             target="_blank">{{item.filename}}</a></label>
