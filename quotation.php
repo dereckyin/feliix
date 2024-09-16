@@ -2524,6 +2524,10 @@ header( 'location:index' );
                 </div>
 
                 <div class="popupblock">
+                    <a id="" class="print" title="Export Whole Quotation into PDF" onclick="generate_pdf_test()"></a>
+                </div>
+
+                <div class="popupblock">
                     <a id="" class="specification" title="Export Specification Sheet into PDF" @click="specification_sheet()"></a>
                 </div>
 
@@ -3320,7 +3324,7 @@ header( 'location:index' );
 
     <div class="mainContent" style="overflow-x: auto; background-color: rgb(230,230,230)">
 
-        <div class="qn_page" v-for="(pg, index) in pages">
+        <div class="qn_page" v-for="(pg, index) in pages" id="qn_page">
 
             <div class="qn_header" v-if="show_title">
 
@@ -5366,10 +5370,103 @@ header( 'location:index' );
         app.show_title = true;
     };
 
+    function generatePDF() {
+        // Select all elements with the class 'pdf-section'
+        const sections = document.querySelectorAll('.qn_page');
+
+        // Create a new container to append sections for the PDF
+        const container = document.createElement('div');
+
+        // PDF page width in inches (assuming 'letter' size)
+        const pdfWidthInches = 8.5; // For A4 use 8.27 inches
+        const pixelPerInch = 96; // Standard for most screens
+
+        // Append each section to the container
+        sections.forEach(section => {
+            container.appendChild(section.cloneNode(true)); // Clone and append the content
+        });
+
+        // Set up html2pdf options
+        const opt = {
+            margin: 0.5,                        // Adjust margins as needed
+            filename: 'fitted-sections.pdf',     // Output file name
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,                       // Base scale to capture content
+                onclone: (clonedDoc) => {
+                    // Set the cloned document to auto width to ensure full capture
+                    clonedDoc.body.style.width = 'auto';
+                }
+            },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        // Use html2pdf to generate the PDF and scale the canvas to fit PDF width
+        html2pdf().from(container).toPdf().get('pdf').then((pdf) => {
+
+
+            // Adjust the canvas scale factor to fit the PDF page width
+            opt.html2canvas.scale = 2;
+
+            // Render the PDF with the scaled canvas
+            return html2pdf().from(container).set(opt).save();
+        });
+    }
+
+        async function generate_pdf_test() {
+            const { jsPDF } = window.jspdf;
+
+            const items = document.querySelectorAll('.qn_page');
+
+            const pdf = new jsPDF('', 'pt', 'a4');
+
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+
+                const canvas = await html2canvas(item, { proxy: "html2canvasproxy", useCORS: false, logging: true, allowTaint: true });
+
+                const contentWidth = canvas.width;
+                const contentHeight = canvas.height;
+
+                const pageHeight = contentWidth / 592.28 * 841.89;
+                let leftHeight = contentHeight;
+                let position = 0;
+                const imgWidth = 595.28;
+                const imgHeight = 592.28 / contentWidth * contentHeight;
+
+                while (leftHeight > 0) {
+                    const pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+                    pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight);
+
+                    leftHeight -= pageHeight;
+                    position -= 841.89;
+
+                    
+                    pdf.addPage();
+                    
+                }
+
+                
+            }
+
+            // remove last page
+            pdf.deletePage(pdf.internal.getNumberOfPages());
+
+            pdf.save('content.pdf');
+        }
+    </script>
+
 
 </script>
 <script defer src="js/npm/vue/dist/vue.js"></script>
 <script defer src="js/axios.min.js"></script>
 <script defer src="js/npm/sweetalert2@9.js"></script>
 <script defer src="js/quotation_v4.js"></script>
+<script src="js/canvas2image/canvas2image.js"></script>
+<script defer src="js/html2canvas/html2canvas.min.js"></script>
+<script defer src="js/html2pdf/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 </html>
