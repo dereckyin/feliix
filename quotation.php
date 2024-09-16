@@ -5453,7 +5453,7 @@ header( 'location:index' );
             // remove last page
             pdf.deletePage(pdf.internal.getNumberOfPages());
 
-            pdf.save('content.pdf');
+            pdf.save('quotation_' + app.quotation_no + '.pdf');
         }
     </script>
 
@@ -5463,10 +5463,7 @@ header( 'location:index' );
 <script defer src="js/axios.min.js"></script>
 <script defer src="js/npm/sweetalert2@9.js"></script>
 <script defer src="js/quotation_v4.js"></script>
-<script src="js/canvas2image/canvas2image.js"></script>
 <script defer src="js/html2canvas/html2canvas.min.js"></script>
-<script defer src="js/html2pdf/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 </html>

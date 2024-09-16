@@ -2593,6 +2593,10 @@ header( 'location:index' );
                 </div>
 
                 <div class="popupblock">
+                    <a id="" class="print" title="Export Whole Quotation into PDF" onclick="generate_pdf_test()"></a>
+                </div>
+
+                <div class="popupblock">
                     <a id="" class="specification" title="Export Specification Sheet into PDF" @click="specification_sheet()"></a>
                 </div>
 
@@ -5441,9 +5445,53 @@ header( 'location:index' );
     };
 
 
+
+    async function generate_pdf_test() {
+            const { jsPDF } = window.jspdf;
+
+            const items = document.querySelectorAll('.qn_page');
+
+            const pdf = new jsPDF('', 'pt', 'a4');
+
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+
+                const canvas = await html2canvas(item, { proxy: "html2canvasproxy", useCORS: false, logging: true, allowTaint: true });
+
+                const contentWidth = canvas.width;
+                const contentHeight = canvas.height;
+
+                const pageHeight = contentWidth / 592.28 * 841.89;
+                let leftHeight = contentHeight;
+                let position = 0;
+                const imgWidth = 595.28;
+                const imgHeight = 592.28 / contentWidth * contentHeight;
+
+                while (leftHeight > 0) {
+                    const pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+                    pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight);
+
+                    leftHeight -= pageHeight;
+                    position -= 841.89;
+
+                    if(leftHeight > 0) {
+                        pdf.addPage();
+                    }
+                    
+                }
+
+                
+            }
+
+            pdf.save('quotation_' + app.quotation_no + '.pdf');
+        }
+
 </script>
 <script defer src="js/npm/vue/dist/vue.js"></script>
 <script defer src="js/axios.min.js"></script>
 <script defer src="js/npm/sweetalert2@9.js"></script>
 <script defer src="js/quotation_pageless.js"></script>
+<script defer src="js/html2canvas/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </html>
