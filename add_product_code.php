@@ -338,6 +338,11 @@
         cursor: pointer;
     }
 
+    li.additional_file > input[type="file"] {
+        border-radius: 0.25rem;
+        color: #495057;
+    }
+
     .additem {
         width: 200px;
         height: 200px;
@@ -799,6 +804,12 @@
                     </li>
                     <li>
                         <input type="text" class="form-control one_half" v-model="brand">
+                        <select class="form-control one_third" style="margin-left: 10px;" v-model="brand_handler">
+                            <option value="">Handled by Taiwan Office</option>
+                            <option value="PH">Handled by Philippines Office</option>
+                        </select>
+
+                        
                     </li>
                 </ul>
 
@@ -934,6 +945,24 @@
                             <option value="">No</option>
                             <option value="Y">Yes</option>
                         </select>
+                    </li>
+                </ul>
+
+                <ul>
+                    <li>
+                        IES File
+                    </li>
+                    <li class="additional_file">
+                        <input class="one_third" type="file" ref="file_ics" name="file_ics[]" multiple  @change="check_ics($event)">
+                    </li>
+                </ul>
+
+                <ul>
+                    <li>
+                        Manual / Supporting Attachment
+                    </li>
+                    <li class="additional_file">
+                        <input class="one_third" type="file" ref="file_manual" name="file_manual[]" multiple  @change="check_manual($event)">
                     </li>
                 </ul>
 

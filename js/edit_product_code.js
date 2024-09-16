@@ -123,7 +123,10 @@ var app = new Vue({
     bulk_quoted_price_last_change:'',
 
     // show ntd price
-  
+    brand_handler: '',
+
+    product_ics: [],
+    product_manual : [],
 
     submit: false,
     tag_group : [],
@@ -349,7 +352,12 @@ var app = new Vue({
             _this.p3_qty = _this.record[0]['p3_qty'];
             _this.p3_id = _this.record[0]['p3_id'];
 
+            _this.brand_handler = _this.record[0]['brand_handler'];
+            _this.product_ics = _this.record[0]['product_ics'];
+            _this.product_manual = _this.record[0]['product_manual'];
+
             var select_items = _this.record[0]['tags'].split(',');
+
 
             //$("#tag01").selectpicker("refresh");
 
@@ -633,6 +641,84 @@ var app = new Vue({
       }
     },
 
+    check_ics(e)
+    {
+      // check extension and file size
+      let files = e.target.files;
+      for (var i = 0; i < files.length; i++)
+      {
+        let file = files[i];
+        if(file.name.split('.').pop() != 'ies')
+        {
+          Swal.fire({
+            text: "The extension of selected file need to be “.ies”",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+
+          e.target.value = '';
+          
+          return;
+        }
+
+        if(file.size > 1024 * 1024 * 10)
+        {
+          Swal.fire({
+            text: "The size of selected file should be less than 10MB.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+
+          e.target.value = '';
+
+          return;
+        }
+      }
+    },
+
+    check_manual(e)
+    {
+      let files = e.target.files;
+      for (var i = 0; i < files.length; i++)
+      {
+        let file = files[i];
+
+        if(file.name.split('.').pop() != 'zip' && file.name.split('.').pop() != 'rar' && 
+          file.name.split('.').pop() != '7z' && file.name.split('.').pop() != 'pdf' && 
+          file.name.split('.').pop() != 'doc' && file.name.split('.').pop() != 'docx' && 
+          file.name.split('.').pop() != 'xls' && file.name.split('.').pop() != 'xlsx' && 
+          file.name.split('.').pop() != 'ppt' && file.name.split('.').pop() != 'pptx' && 
+          file.name.split('.').pop() != 'jpg' && file.name.split('.').pop() != 'jpeg' && 
+          file.name.split('.').pop() != 'png' && file.name.split('.').pop() != 'gif' && 
+          file.name.split('.').pop() != 'bmp' && file.name.split('.').pop() != 'tiff' && 
+          file.name.split('.').pop() != 'svg')
+        {
+          Swal.fire({
+            text: "Each selected file needs to be picture, Microsoft office document, pdf or compressed file.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+
+          e.target.value = '';
+
+          return;
+        }
+        
+        if(file.size > 1024 * 1024 * 10)
+        {
+          Swal.fire({
+            text: "The size of selected file should be less than 10MB.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+
+          e.target.value = '';
+
+          return;
+        }
+      }
+
+    },
 
     onFileChange(e, num) {
       const file = e.target.files[0];
@@ -1145,6 +1231,76 @@ var app = new Vue({
         }
       }
 
+      if(this.sub_category == '10010000')
+      {
+
+        // check if file_ics file ext is .ics
+        for (var i = 0; i < this.$refs.file_ics.files.length; i++)
+          {
+            let file = this.$refs.file_ics.files[i];
+            if(file.name.split('.').pop() != 'ies')
+            {
+              Swal.fire({
+                text: "The extension of all selected files need to be “.ies”.",
+                icon: "warning",
+                confirmButtonText: "OK",
+              });
+              return;
+            }
+          }
+  
+          for (var i = 0; i < this.$refs.file_manual.files.length; i++)
+            {
+              let file = this.$refs.file_manual.files[i];
+              if(file.name.split('.').pop() != 'zip' && file.name.split('.').pop() != 'rar' && 
+                file.name.split('.').pop() != '7z' && file.name.split('.').pop() != 'pdf' && 
+                file.name.split('.').pop() != 'doc' && file.name.split('.').pop() != 'docx' && 
+                file.name.split('.').pop() != 'xls' && file.name.split('.').pop() != 'xlsx' && 
+                file.name.split('.').pop() != 'ppt' && file.name.split('.').pop() != 'pptx' && 
+                file.name.split('.').pop() != 'jpg' && file.name.split('.').pop() != 'jpeg' && 
+                file.name.split('.').pop() != 'png' && file.name.split('.').pop() != 'gif' && 
+                file.name.split('.').pop() != 'bmp' && file.name.split('.').pop() != 'tiff' && 
+                file.name.split('.').pop() != 'svg')
+              {
+                Swal.fire({
+                  text: "Each selected file needs to be picture, Microsoft office document, pdf or compressed file.",
+                  icon: "warning",
+                  confirmButtonText: "OK",
+                });
+                return;
+              }
+            }
+  
+          // check if file size < 10MB
+          for (var i = 0; i < this.$refs.file_ics.files.length; i++)
+          {
+            let file = this.$refs.file_ics.files[i];
+            if(file.size > 10 * 1024 * 1024)
+            {
+              Swal.fire({
+                text: "The size of each selected file needs to be lower than “10MB”.",
+                icon: "warning",
+                confirmButtonText: "OK",
+              });
+              return;
+            }
+          }
+  
+          for (var i = 0; i < this.$refs.file_manual.files.length; i++)
+            {
+              let file = this.$refs.file_manual.files[i];
+              if(file.size > 10 * 1024 * 1024)
+              {
+                Swal.fire({
+                  text: "The size of each selected file needs to be lower than “10MB”.",
+                  icon: "warning",
+                  confirmButtonText: "OK",
+                });
+                return;
+              }
+            }
+      }
+
       let show_confirm = true;
 
       if(this.code.trim() != '')
@@ -1412,6 +1568,8 @@ var app = new Vue({
             }
           }
 
+          form_Data.append("brand_handler", _this.brand_handler);
+
           form_Data.append("url1", _this.url1 === null ? "" : _this.url1);
           form_Data.append("url2", _this.url2 === null ? "" : _this.url2);
           form_Data.append("url3", _this.url3 === null ? "" : _this.url3);
@@ -1420,6 +1578,35 @@ var app = new Vue({
           //  let file = this.$refs.file.files[i];
           //   form_Data.append("files[" + i + "]", file);
           // }
+
+          var delete_ics = [];
+          for(var i = 0; i < this.record[0].product_ics.length; i++)
+          {
+            if(this.record[0].product_ics[i].is_checked === false)
+              delete_ics.push(this.record[0].product_ics[i].id);
+          }
+          form_Data.append("ics_items_to_delete", JSON.stringify(delete_ics));
+
+          var delete_manual = [];
+          for(var i = 0; i < this.record[0].product_manual.length; i++)
+          {
+            if(this.record[0].product_manual[i].is_checked === false)
+              delete_manual.push(this.record[0].product_manual[i].id);
+          }
+          form_Data.append("manual_items_to_delete", JSON.stringify(delete_manual));
+
+          // ics
+          for (var i = 0; i < this.$refs.file_ics.files.length; i++) {
+            let file = this.$refs.file_ics.files[i];
+            form_Data.append("file_ics[" + i + "]", file);
+          }
+
+          // manual
+          for (var i = 0; i < this.$refs.file_manual.files.length; i++) {
+            let file = this.$refs.file_manual.files[i];
+            form_Data.append("file_manual[" + i + "]", file);
+          }
+
 
           axios({
             method: "post",
@@ -1440,6 +1627,11 @@ var app = new Vue({
               //_this.reset();
               _this.get_records(_this.id);
               _this.submit = false;
+
+              var f_ics = _this.$refs.file_ics;
+              if(f_ics) f_ics.value = "";
+              var f_manual = _this.$refs.file_manual;
+              if(f_manual) f_manual.value = "";
 
             })
             .catch(function(error) {
@@ -1509,7 +1701,10 @@ var app = new Vue({
       this.variation2_custom = '';
       this.variation3_custom = '';
 
-      
+      var f_ics = this.$refs.file_ics;
+      if(f_ics) f_ics.value = "";
+      var f_manual = this.$refs.file_manual;
+      if(f_manual) f_manual.value = "";
 
       $("#variation_mode").bootstrapToggle("off");
       $("#accessory_mode").bootstrapToggle("off");

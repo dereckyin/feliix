@@ -418,6 +418,29 @@ try {
             cursor: pointer;
         }
 
+        li.additional_file > input[type="file"] {
+            border-radius: 0.25rem;
+            color: #495057;
+        }
+
+        li.additional_file > .list_attch {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        li.additional_file > .list_attch > input[type=checkbox]+Label::before {
+            color: var(--green01);
+            margin-bottom: 4px;
+        }
+
+        li.additional_file > .list_attch a.attch {
+            color: #25a2b8;
+            transition: .3s;
+            margin: 0 0 0 5px;
+            font-weight: 500;
+        }
+
         .additem {
             width: 200px;
             height: 200px;
@@ -864,6 +887,10 @@ try {
                 </li>
                 <li>
                     <input type="text" class="form-control one_half" v-model="brand">
+                    <select class="form-control one_third" style="margin-left: 10px;" v-model="brand_handler">
+                        <option value="">Handled by Taiwan Office</option>
+                        <option value="PH">Handled by Philippines Office</option>
+                    </select>
                 </li>
             </ul>
 
@@ -999,6 +1026,36 @@ try {
                         <option value="">No</option>
                         <option value="Y">Yes</option>
                     </select>
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    IES File
+                </li>
+                <li class="additional_file">
+                    <input class="one_third" type="file" ref="file_ics" name="file_ics[]" multiple @change="check_ics($event)">
+
+                    <div class="list_attch" v-for="(item,index) in product_ics" :key="index">
+                        <input type="checkbox" :id="'file' + item.id" v-model="item.is_checked">
+                        <label :for="'file' + item.id"><a class="attch" :href="baseURL + item.gcp_name"
+                                            target="_blank">{{item.filename}}</a></label>
+                    </div>
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    Manual / Supporting Attachment
+                </li>
+                <li class="additional_file">
+                    <input class="one_third" type="file" ref="file_manual" name="file_manual[]" multiple @change="check_manual($event)">
+
+                    <div class="list_attch" v-for="(item,index) in product_manual" :key="index">
+                        <input type="checkbox" :id="'file' + item.id" v-model="item.is_checked">
+                        <label :for="'file' + item.id"><a class="attch" :href="baseURL + item.gcp_name"
+                                            target="_blank">{{item.filename}}</a></label>
+                    </div>
                 </li>
             </ul>
 

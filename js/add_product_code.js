@@ -115,7 +115,7 @@ var app = new Vue({
 
     tag_group : [],
 
-
+    brand_handler: '',
 
   },
 
@@ -534,6 +534,77 @@ $("#tag0102").selectpicker("refresh");
         .catch(function(error) {
           console.log(error);
         });
+    },
+
+    check_ics(e)
+    {
+      // check extension and file size
+      let files = e.target.files;
+      for (var i = 0; i < files.length; i++)
+      {
+        let file = files[i];
+        if(file.name.split('.').pop() != 'ies')
+        {
+          Swal.fire({
+            text: "The extension of selected file need to be “.ies”",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
+          return;
+        }
+
+        if(file.size > 1024 * 1024 * 10)
+        {
+          Swal.fire({
+            text: "The size of selected file should be less than 10MB.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
+          return;
+        }
+      }
+    },
+
+    check_manual(e)
+    {
+      let files = e.target.files;
+      for (var i = 0; i < files.length; i++)
+      {
+        let file = files[i];
+
+        if(file.name.split('.').pop() != 'zip' && file.name.split('.').pop() != 'rar' && 
+          file.name.split('.').pop() != '7z' && file.name.split('.').pop() != 'pdf' && 
+          file.name.split('.').pop() != 'doc' && file.name.split('.').pop() != 'docx' && 
+          file.name.split('.').pop() != 'xls' && file.name.split('.').pop() != 'xlsx' && 
+          file.name.split('.').pop() != 'ppt' && file.name.split('.').pop() != 'pptx' && 
+          file.name.split('.').pop() != 'jpg' && file.name.split('.').pop() != 'jpeg' && 
+          file.name.split('.').pop() != 'png' && file.name.split('.').pop() != 'gif' && 
+          file.name.split('.').pop() != 'bmp' && file.name.split('.').pop() != 'tiff' && 
+          file.name.split('.').pop() != 'svg')
+        {
+          Swal.fire({
+            text: "Each selected file needs to be picture, Microsoft office document, pdf or compressed file.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
+          return;
+        }
+        
+        if(file.size > 1024 * 1024 * 10)
+        {
+          Swal.fire({
+            text: "The size of selected file should be less than 10MB.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
+          return;
+        }
+      }
+
     },
 
     onFileChange(e, num) {
@@ -1025,6 +1096,77 @@ $("#tag0102").selectpicker("refresh");
         }
       }
 
+      
+      if(this.sub_category == '10010000')
+        {
+  
+          // check if file_ics file ext is .ics
+          for (var i = 0; i < this.$refs.file_ics.files.length; i++)
+            {
+              let file = this.$refs.file_ics.files[i];
+              if(file.name.split('.').pop() != 'ies')
+              {
+                Swal.fire({
+                  text: "The extension of all selected files need to be “.ies”.",
+                  icon: "warning",
+                  confirmButtonText: "OK",
+                });
+                return;
+              }
+            }
+    
+            for (var i = 0; i < this.$refs.file_manual.files.length; i++)
+              {
+                let file = this.$refs.file_manual.files[i];
+                if(file.name.split('.').pop() != 'zip' && file.name.split('.').pop() != 'rar' && 
+                  file.name.split('.').pop() != '7z' && file.name.split('.').pop() != 'pdf' && 
+                  file.name.split('.').pop() != 'doc' && file.name.split('.').pop() != 'docx' && 
+                  file.name.split('.').pop() != 'xls' && file.name.split('.').pop() != 'xlsx' && 
+                  file.name.split('.').pop() != 'ppt' && file.name.split('.').pop() != 'pptx' && 
+                  file.name.split('.').pop() != 'jpg' && file.name.split('.').pop() != 'jpeg' && 
+                  file.name.split('.').pop() != 'png' && file.name.split('.').pop() != 'gif' && 
+                  file.name.split('.').pop() != 'bmp' && file.name.split('.').pop() != 'tiff' && 
+                  file.name.split('.').pop() != 'svg')
+                {
+                  Swal.fire({
+                    text: "Each selected file needs to be picture, Microsoft office document, pdf or compressed file.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                  });
+                  return;
+                }
+              }
+    
+            // check if file size < 10MB
+            for (var i = 0; i < this.$refs.file_ics.files.length; i++)
+            {
+              let file = this.$refs.file_ics.files[i];
+              if(file.size > 10 * 1024 * 1024)
+              {
+                Swal.fire({
+                  text: "The size of each selected file needs to be lower than “10MB”.",
+                  icon: "warning",
+                  confirmButtonText: "OK",
+                });
+                return;
+              }
+            }
+    
+            for (var i = 0; i < this.$refs.file_manual.files.length; i++)
+              {
+                let file = this.$refs.file_manual.files[i];
+                if(file.size > 10 * 1024 * 1024)
+                {
+                  Swal.fire({
+                    text: "The size of each selected file needs to be lower than “10MB”.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                  });
+                  return;
+                }
+              }
+        }
+
 
       let show_confirm = true;
 
@@ -1063,6 +1205,7 @@ $("#tag0102").selectpicker("refresh");
           }
         }
       }
+      
 
       if(!show_confirm)  return;
 
@@ -1275,10 +1418,24 @@ $("#tag0102").selectpicker("refresh");
           form_Data.append("p3_qty", _this.p3_qty);
           form_Data.append("p3_id", _this.p3_id);
 
+          form_Data.append("brand_handler", _this.brand_handler);
+
           for (var i = 1; i < 4; i++) {
             let file = document.getElementById('photo' + i).files[0];
             if(typeof file !== 'undefined') 
               form_Data.append('photo' + i, file);
+          }
+
+          // ics
+          for (var i = 0; i < this.$refs.file_ics.files.length; i++) {
+            let file = this.$refs.file_ics.files[i];
+            form_Data.append("file_ics[" + i + "]", file);
+          }
+
+          // manual
+          for (var i = 0; i < this.$refs.file_manual.files.length; i++) {
+            let file = this.$refs.file_manual.files[i];
+            form_Data.append("file_manual[" + i + "]", file);
           }
 
           //for (var i = 0; i < this.$refs.file.files.length; i++) {
@@ -1420,6 +1577,11 @@ $("#tag0102").selectpicker("refresh");
       if(f2) f2.value = "";
       var f3 = document.getElementById('photo3');
       if(f3) f3.value = "";
+
+      var f_ics = this.$refs.file_ics;
+      if(f_ics) f_ics.value = "";
+      var f_manual = this.$refs.file_manual;
+      if(f_manual) f_manual.value = "";
 
       this.p1_code = '';
       this.p1_qty = '';

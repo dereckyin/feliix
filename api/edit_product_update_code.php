@@ -56,6 +56,14 @@ $p3_code = (isset($_POST['p3_code']) ?  $_POST['p3_code'] : '');
 $p3_qty = (isset($_POST['p3_qty']) ?  $_POST['p3_qty'] : '');
 $p3_id = (isset($_POST['p3_id']) ?  $_POST['p3_id'] : '');
 
+$brand_handler = (isset($_POST['brand_handler']) ?  $_POST['brand_handler'] : '');
+
+$ics_items_to_delete = (isset($_POST['ics_items_to_delete']) ?  $_POST['ics_items_to_delete'] : "[]");
+$ics_items_array = json_decode($ics_items_to_delete,true);
+
+$manual_items_to_delete = (isset($_POST['manual_items_to_delete']) ?  $_POST['manual_items_to_delete'] : "[]");
+$manual_items_array = json_decode($manual_items_to_delete,true);
+
 if($p3_code == '')
 {
     $p3_qty = '';
@@ -298,6 +306,8 @@ else
             `p3_qty` = :p3_qty,
             `p3_id` = :p3_id,
 
+            `brand_handler` = :brand_handler,
+
             `updated_id` = :updated_id,
             `updated_at` = now() 
             where id = :id";
@@ -349,6 +359,7 @@ else
         $stmt->bindParam(':p3_qty', $p3_qty);
         $stmt->bindParam(':p3_id', $p3_id);
 
+        $stmt->bindParam(':brand_handler', $brand_handler);
 
         $stmt->bindParam(':updated_id', $user_id);
         $stmt->bindParam(':id', $id);
@@ -398,6 +409,294 @@ else
             $update_name = SaveImage('photo3', $batch_id, $batch_type, $user_id, $db, $conf);
             if($update_name != "")
                 UpdateImageName($update_name, 'photo3', $batch_id, $db);
+        }
+
+        
+        $batch_id = $last_id;
+        $batch_type = "product_ics";
+
+        try {
+            $total = count($_FILES['file_ics']);
+            // Loop through each file
+            for( $i=0 ; $i < $total ; $i++ ) {
+
+                if(isset($_FILES['file_ics']['name'][$i]))
+                {
+                    $image_name = $_FILES['file_ics']['name'][$i];
+                    $valid_extensions = array("jpg","jpeg","png","gif","pdf","docx","doc","xls","xlsx","ppt","pptx","zip","rar","7z","txt","dwg","skp","psd","ies");
+                    $extension = pathinfo($image_name, PATHINFO_EXTENSION);
+                    if (in_array(strtolower($extension), $valid_extensions)) 
+                    {
+                        //$upload_path = 'img/' . time() . '.' . $extension;
+
+                        $storage = new StorageClient([
+                            'projectId' => 'predictive-fx-284008',
+                            'keyFilePath' => $conf::$gcp_key
+                        ]);
+
+                        $bucket = $storage->bucket('feliiximg');
+
+                        $upload_name = time() . '_' . pathinfo($image_name, PATHINFO_FILENAME) . '.' . $extension;
+
+                        $file_size = filesize($_FILES['file_ics']['tmp_name'][$i]);
+                        $size = 0;
+
+                        $obj = $bucket->upload(
+                            fopen($_FILES['file_ics']['tmp_name'][$i], 'r'),
+                            ['name' => $upload_name]);
+
+                        $info = $obj->info();
+                        $size = $info['size'];
+
+                        if($size == $file_size && $file_size != 0 && $size != 0)
+                        {
+                            $query = "INSERT INTO gcp_storage_file
+                            SET
+                                batch_id = :batch_id,
+                                batch_type = :batch_type,
+                                filename = :filename,
+                                gcp_name = :gcp_name,
+
+                                create_id = :create_id,
+                                created_at = now()";
+
+                            // prepare the query
+                            $stmt = $db->prepare($query);
+                        
+                            // bind the values
+                            $stmt->bindParam(':batch_id', $batch_id);
+                            $stmt->bindParam(':batch_type', $batch_type);
+                            $stmt->bindParam(':filename', $image_name);
+                            $stmt->bindParam(':gcp_name', $upload_name);
+                
+                            $stmt->bindParam(':create_id', $user_id);
+
+                            try {
+                                // execute the query, also check if query was successful
+                                if ($stmt->execute()) {
+                                    $last_id = $db->lastInsertId();
+                                }
+                                else
+                                {
+                                    $arr = $stmt->errorInfo();
+                                    error_log($arr[2]);
+                                }
+                            }
+                            catch (Exception $e)
+                            {
+                                error_log($e->getMessage());
+                                $db->rollback();
+                                http_response_code(501);
+                                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                                die();
+                            }
+
+
+                            $message = 'Uploaded';
+                            $code = 0;
+                            $upload_id = $last_id;
+                            $image = $image_name;
+                        }
+                        else
+                        {
+                            $message = 'There is an error while uploading file';
+                            $db->rollback();
+                            http_response_code(501);
+                            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                            die();
+                            
+                        }
+                    }
+                    else
+                    {
+                        $message = 'Only Images or Office files allowed to upload';
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                        die();
+                    }
+                }
+
+            }
+        } catch (Exception $e) {
+            $db->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " Error uploading, Please use laptop to upload again."));
+            die();
+        }
+
+        $batch_type = "product_manual";
+
+        try {
+            $total = count($_FILES['file_manual']);
+            // Loop through each file
+            for( $i=0 ; $i < $total ; $i++ ) {
+
+                if(isset($_FILES['file_manual']['name'][$i]))
+                {
+                    $image_name = $_FILES['file_manual']['name'][$i];
+                    $valid_extensions = array("jpg","jpeg","png","gif","pdf","docx","doc","xls","xlsx","ppt","pptx","zip","rar","7z","txt","dwg","skp","psd","evo");
+                    $extension = pathinfo($image_name, PATHINFO_EXTENSION);
+                    if (in_array(strtolower($extension), $valid_extensions)) 
+                    {
+                        //$upload_path = 'img/' . time() . '.' . $extension;
+
+                        $storage = new StorageClient([
+                            'projectId' => 'predictive-fx-284008',
+                            'keyFilePath' => $conf::$gcp_key
+                        ]);
+
+                        $bucket = $storage->bucket('feliiximg');
+
+                        $upload_name = time() . '_' . pathinfo($image_name, PATHINFO_FILENAME) . '.' . $extension;
+
+                        $file_size = filesize($_FILES['file_manual']['tmp_name'][$i]);
+                        $size = 0;
+
+                        $obj = $bucket->upload(
+                            fopen($_FILES['file_manual']['tmp_name'][$i], 'r'),
+                            ['name' => $upload_name]);
+
+                        $info = $obj->info();
+                        $size = $info['size'];
+
+                        if($size == $file_size && $file_size != 0 && $size != 0)
+                        {
+                            $query = "INSERT INTO gcp_storage_file
+                            SET
+                                batch_id = :batch_id,
+                                batch_type = :batch_type,
+                                filename = :filename,
+                                gcp_name = :gcp_name,
+
+                                create_id = :create_id,
+                                created_at = now()";
+
+                            // prepare the query
+                            $stmt = $db->prepare($query);
+                        
+                            // bind the values
+                            $stmt->bindParam(':batch_id', $batch_id);
+                            $stmt->bindParam(':batch_type', $batch_type);
+                            $stmt->bindParam(':filename', $image_name);
+                            $stmt->bindParam(':gcp_name', $upload_name);
+                
+                            $stmt->bindParam(':create_id', $user_id);
+
+                            try {
+                                // execute the query, also check if query was successful
+                                if ($stmt->execute()) {
+                                    $last_id = $db->lastInsertId();
+                                }
+                                else
+                                {
+                                    $arr = $stmt->errorInfo();
+                                    error_log($arr[2]);
+                                }
+                            }
+                            catch (Exception $e)
+                            {
+                                error_log($e->getMessage());
+                                $db->rollback();
+                                http_response_code(501);
+                                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                                die();
+                            }
+
+
+                            $message = 'Uploaded';
+                            $code = 0;
+                            $upload_id = $last_id;
+                            $image = $image_name;
+                        }
+                        else
+                        {
+                            $message = 'There is an error while uploading file';
+                            $db->rollback();
+                            http_response_code(501);
+                            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                            die();
+                            
+                        }
+                    }
+                    else
+                    {
+                        $message = 'Only Images or Office files allowed to upload';
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                        die();
+                    }
+                }
+
+            }
+        } catch (Exception $e) {
+            $db->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " Error uploading, Please use laptop to upload again."));
+            die();
+        }
+
+        // items to delete
+        for ($i = 0; $i < count($ics_items_array); $i++) {
+            $query = "DELETE FROM gcp_storage_file
+                WHERE
+                    `id` = :_id";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':_id', $ics_items_array[$i]);
+   
+            try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
+        }
+
+        // items to delete
+        for ($i = 0; $i < count($manual_items_array); $i++) {
+            $query = "DELETE FROM gcp_storage_file
+                WHERE
+                    `id` = :_id";
+
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':_id', $manual_items_array[$i]);
+   
+            try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
         }
 
         $product_id = $last_id;
