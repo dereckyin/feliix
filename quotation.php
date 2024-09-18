@@ -2471,6 +2471,15 @@ header( 'location:index' );
             outline-color: transparent!important;
         }
 
+        @media screen and (max-width: 640px) {
+            .functionbar {
+                padding-top: 180px;
+            }
+
+            body.gray .mainContent {
+                padding-top: 325px;
+            }
+        }
 
         @media print {
             * {
