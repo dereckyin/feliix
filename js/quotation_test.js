@@ -2749,7 +2749,7 @@ Installation:`;
         let token = localStorage.getItem("accessToken");
   
         axios
-          .get("api/quotation", {
+          .get("api/quotation_test", {
               params,
               headers: { Authorization: `Bearer ${token}` },
             })
