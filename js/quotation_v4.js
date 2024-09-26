@@ -278,6 +278,7 @@ var app = new Vue({
         temp_can_duplicate: '',
         can_duplicate: '',
         
+        is_pdf : false,
     },
   
     created() {
@@ -3960,7 +3961,7 @@ Installation:`;
               // Hide the progress bar when the task is complete (100%)
               setTimeout(function() {
                   $('#progress-bar-container').fadeOut();  // Smooth fade out
-                  $('#export_pdf').attr('disabled', false);
+                  _this.pdf = false;
               }, 1000);  // Optional delay before hiding
           }
 
@@ -3969,7 +3970,10 @@ Installation:`;
 
       export_pdf() {
 
-        $('#export_pdf').attr('disabled', true);
+        if(this.is_pdf)
+          return;
+
+        this.is_pdf = true;
 
         let _this = this;
         axios({
