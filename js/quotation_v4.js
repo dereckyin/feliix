@@ -3950,7 +3950,7 @@ Installation:`;
         let _this = this;
         axios({
           method: "get",
-          url: "http://feliixload.myvnc.com/quotation_test?id=" + this.id,
+          url: "https://feliixload.myvnc.com/quotation_test?id=" + this.id,
           responseType: "blob",
         })
             .then(function(response) {

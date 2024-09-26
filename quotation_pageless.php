@@ -2593,7 +2593,7 @@ header( 'location:index' );
                 </div>
 
                 <div class="popupblock">
-                    <a id="" class="print" title="Export Whole Quotation into PDF" href="http://feliixload.myvnc.com/quotation_pageless_test?id=<?php echo $id; ?>"></a>
+                    <a id="" class="print" title="Export Whole Quotation into PDF" href="https://feliixload.myvnc.com/quotation_pageless_test?id=<?php echo $id; ?>"></a>
                 </div>
 
                 <div class="popupblock">
