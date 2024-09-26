@@ -3945,6 +3945,27 @@ Installation:`;
             });
       },
 
+      checkProgress() {
+        let _this = this;
+
+        $.get('https://feliixload.myvnc.com/progress', function(data) {
+            let progress = data.progress;
+            $('#progress-bar').css('width', progress + '%').text(progress + '%');
+
+            // Poll every 500ms if the task is not done
+            if (progress < 100) {
+                setTimeout(_this.checkProgress, 500);
+            }
+            else {
+              // Hide the progress bar when the task is complete (100%)
+              setTimeout(function() {
+                  $('#progress-bar-container').fadeOut();  // Smooth fade out
+              }, 1000);  // Optional delay before hiding
+          }
+
+        });
+    },
+
       export_pdf() {
 
         let _this = this;
@@ -3968,7 +3989,9 @@ Installation:`;
                 //handle error
                 console.log(response)
             });
-      
+
+            $('#progress-bar-container').show();
+            this.checkProgress();
       },
 
 

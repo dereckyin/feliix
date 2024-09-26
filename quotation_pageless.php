@@ -2536,6 +2536,23 @@ header( 'location:index' );
             outline-color: transparent!important;
         }
 
+        #progress-bar-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            height: 30px;
+            display: none;  /* Initially hidden */
+        }
+        #progress-bar {
+            width: 0;
+            height: 100%;
+            background-color: #4caf50;
+            text-align: center;
+            color: white;
+            line-height: 30px;
+            border-radius: 5px;
+        }
 
         @media print {
             * {
@@ -2578,6 +2595,10 @@ header( 'location:index' );
 
     <div class="mask" :ref="'mask'"></div>
 
+    <div id="progress-bar-container">
+        <div id="progress-bar">0%</div>
+    </div>
+    
     <!-- header -->
     <header class="noPrint">header</header>
     <!-- header end -->
