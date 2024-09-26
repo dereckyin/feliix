@@ -2452,8 +2452,10 @@ var app = new Vue({
               // Hide the progress bar when the task is complete (100%)
               setTimeout(function() {
                   $('#progress-bar-container').fadeOut();  // Smooth fade out
-                  _this.is_pdf = false;
+                  
               }, 1000);  // Optional delay before hiding
+
+              _this.is_pdf = false;
           }
 
         });
