@@ -2450,6 +2450,7 @@ var app = new Vue({
               // Hide the progress bar when the task is complete (100%)
               setTimeout(function() {
                   $('#progress-bar-container').fadeOut();  // Smooth fade out
+                  $('#export_pdf').attr('disabled', false);
               }, 1000);  // Optional delay before hiding
           }
 
@@ -2457,6 +2458,8 @@ var app = new Vue({
     },
 
       export_pdf() {
+
+        $('#export_pdf').attr('disabled', true);
 
         let _this = this;
         axios({

@@ -2598,7 +2598,7 @@ header( 'location:index' );
     <div id="progress-bar-container">
         <div id="progress-bar">0%</div>
     </div>
-    
+
     <!-- header -->
     <header class="noPrint">header</header>
     <!-- header end -->
@@ -2614,7 +2614,7 @@ header( 'location:index' );
                 </div>
 
                 <div class="popupblock">
-                    <a id="" class="print" title="Export Whole Quotation into PDF" @click="export_pdf()"></a>
+                    <a id="export_pdf" class="print" title="Export Whole Quotation into PDF" @click="export_pdf()"></a>
                 </div>
 
                 <div class="popupblock">
