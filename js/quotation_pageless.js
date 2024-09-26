@@ -2435,6 +2435,32 @@ var app = new Vue({
             });
       },
 
+      export_pdf() {
+
+        let _this = this;
+        axios({
+          method: "get",
+          url: "https://feliixload.myvnc.com/quotation_pageless_test?id=" + this.id,
+          responseType: "blob",
+        })
+            .then(function(response) {
+                  const url = window.URL.createObjectURL(new Blob([response.data]));
+                  const link = document.createElement('a');
+                  link.href = url;
+                 
+                    link.setAttribute('download', 'Quotation Export_' + _this.quotation_no + '.pdf');
+                 
+                  document.body.appendChild(link);
+                  link.click();
+  
+            })
+            .catch(function(response) {
+                //handle error
+                console.log(response)
+            });
+      
+      },
+
       cost_analysis() {
         if(this.name !== 'Dennis Lin' && this.name !== 'Ariel Lin' && this.name !== 'testmanager')
           return;
