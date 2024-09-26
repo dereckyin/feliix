@@ -2490,12 +2490,12 @@ var app = new Vue({
                 console.log(response)
             });
 
-            $('#progress-bar').css('width', 0 + '%').text(0 + '%');
+            $('#progress-bar').css('width', '5%').text(0 + '5%');
             $('#progress-bar-container').show();
             setTimeout(function() {
               _this.checkProgress();
              
-          }, 1500);  // Optional delay before hiding
+          }, 700);  // Optional delay before hiding
       
       },
 
