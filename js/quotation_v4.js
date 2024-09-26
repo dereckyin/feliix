@@ -3999,8 +3999,14 @@ Installation:`;
                 console.log(response)
             });
 
+            $('#progress-bar').css('width', 0 + '%').text(0 + '%');
             $('#progress-bar-container').show();
-            this.checkProgress();
+
+            setTimeout(function() {
+              _this.checkProgress();
+             
+          }, 1500);  // Optional delay before hiding
+            
       },
 
 
