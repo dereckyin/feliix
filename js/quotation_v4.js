@@ -3970,7 +3970,8 @@ Installation:`;
         });
     },
 
-      export_pdf() {
+
+      async export_pdf() {
 
         if(this.is_pdf)
           return;
@@ -3978,34 +3979,46 @@ Installation:`;
         this.is_pdf = true;
 
         let _this = this;
-        axios({
-          method: "get",
-          url: "https://feliixload.myvnc.com/quotation_test?id=" + this.id,
-          responseType: "blob",
-        })
-            .then(function(response) {
-                  const url = window.URL.createObjectURL(new Blob([response.data]));
-                  const link = document.createElement('a');
-                  link.href = url;
-                 
-                    link.setAttribute('download', 'Quotation Export_' + _this.quotation_no + '.pdf');
-                 
-                  document.body.appendChild(link);
-                  link.click();
-  
-            })
-            .catch(function(response) {
-                //handle error
-                console.log(response)
-            });
 
-            $('#progress-bar').css('width', '5%').text('5%');
-            $('#progress-bar-container').show();
+        const interval = setInterval(async () => {
+          const progressResponse = await fetch('https://feliixload.myvnc.com/is_progress');
+          const progressData = await progressResponse.json();
 
-            setTimeout(function() {
-              _this.checkProgress();
-             
-          }, 700);  // Optional delay before hiding
+          if (progressData.progress == false) {
+              clearInterval(interval); // Stop monitoring when complete
+
+              axios({
+                method: "get",
+                url: "https://feliixload.myvnc.com/quotation_test?id=" + this.id,
+                responseType: "blob",
+              })
+                  .then(function(response) {
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                       
+                          link.setAttribute('download', 'Quotation Export_' + _this.quotation_no + '.pdf');
+                       
+                        document.body.appendChild(link);
+                        link.click();
+        
+                  })
+                  .catch(function(response) {
+                      //handle error
+                      console.log(response)
+                  });
+      
+                  $('#progress-bar').css('width', '5%').text('5%');
+                  $('#progress-bar-container').show();
+      
+                  setTimeout(function() {
+                    _this.checkProgress();
+                   
+                }, 700);  // Optional delay before hiding
+          }
+      }, 1500); // Monitor every 500ms
+
+        
             
       },
 
