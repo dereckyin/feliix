@@ -3955,7 +3955,7 @@ Installation:`;
 
             // Poll every 500ms if the task is not done
             if (progress < 100) {
-                setTimeout(_this.checkProgress, 500);
+                setTimeout(_this.checkProgress, 1000);
             }
             else {
               // Hide the progress bar when the task is complete (100%)
@@ -3964,7 +3964,7 @@ Installation:`;
                  
               }, 1000);  // Optional delay before hiding
 
-              _this.is_pdf = false;
+              //_this.is_pdf = false;
           }
 
         });
