@@ -292,6 +292,8 @@ var app = new Vue({
         can_view : '',
         temp_can_duplicate: '',
         can_duplicate: '',
+
+        is_pdf : false,
     },
   
     created() {
@@ -2434,6 +2436,82 @@ var app = new Vue({
                 console.log(response)
             });
       },
+
+      checkProgress() {
+        let _this = this;
+
+        $.get('https://feliixload.myvnc.com/progress', function(data) {
+            let progress = data.progress;
+            $('#progress-bar').css('width', progress + '%').text(progress + '%');
+
+            // Poll every 500ms if the task is not done
+            if (progress < 100) {
+                setTimeout(_this.checkProgress, 1000);
+            }
+            else {
+              // Hide the progress bar when the task is complete (100%)
+              setTimeout(function() {
+                  $('#progress-bar-container').fadeOut();  // Smooth fade out
+                  
+              }, 1000);  // Optional delay before hiding
+
+              _this.is_pdf = false;
+          }
+
+        });
+    },
+
+    async export_pdf() {
+
+      if(this.is_pdf)
+        return;
+
+      this.is_pdf = true;
+
+      let _this = this;
+
+      const interval = setInterval(async () => {
+        const progressResponse = await fetch('https://feliixload.myvnc.com/is_progress');
+        const progressData = await progressResponse.json();
+
+        if (progressData.progress == false) {
+            clearInterval(interval); // Stop monitoring when complete
+
+            axios({
+              method: "get",
+              url: "https://feliixload.myvnc.com/quotation_pageless?id=" + this.id,
+              responseType: "blob",
+            })
+                .then(function(response) {
+                      const url = window.URL.createObjectURL(new Blob([response.data]));
+                      const link = document.createElement('a');
+                      link.href = url;
+                     
+                        link.setAttribute('download', 'Quotation Export_' + _this.quotation_no + '.pdf');
+                     
+                      document.body.appendChild(link);
+                      link.click();
+      
+                })
+                .catch(function(response) {
+                    //handle error
+                    console.log(response)
+                });
+    
+                $('#progress-bar').css('width', '5%').text('5%');
+                $('#progress-bar-container').show();
+    
+                setTimeout(function() {
+                  _this.checkProgress();
+                 
+              }, 700);  // Optional delay before hiding
+        }
+    }, 1500); // Monitor every 500ms
+
+      
+          
+    },
+
 
       cost_analysis() {
         if(this.name !== 'Dennis Lin' && this.name !== 'Ariel Lin' && this.name !== 'testmanager')

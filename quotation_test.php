@@ -1,91 +1,9 @@
 <?php
-$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
-$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
-if ( !isset( $jwt ) ) {
-  header( 'location:index' );
-}
-
-include_once 'api/config/core.php';
-include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
-include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
-include_once 'api/libs/php-jwt-master/src/SignatureInvalidException.php';
-include_once 'api/libs/php-jwt-master/src/JWT.php';
-include_once 'api/config/database.php';
-
-
-use \Firebase\JWT\JWT;
-
-$test_manager = "0";
-
-try {
-        // decode jwt
-        try {
-            // decode jwt
-            $decoded = JWT::decode($jwt, $key, array('HS256'));
-            $user_id = $decoded->data->id;
-            $username = $decoded->data->username;
-
-            if($decoded->data->limited_access == true)
-                header( 'location:index' );
-
-$GLOBALS['position'] = $decoded->data->position;
-$GLOBALS['department'] = $decoded->data->department;
-
-if($GLOBALS['department'] == 'Lighting' || $GLOBALS['department'] == 'Office' || $GLOBALS['department'] == 'Sales' || $GLOBALS['department'] == 'Engineering'){
-$test_manager = "1";
-}
-
-//  ('Kuan', 'Dennis Lin', 'dereck', 'Ariel Lin', 'Kristel Tan');
-if($user_id == 48 || $user_id == 2 || $user_id == 11 || $user_id == 6 ||  $user_id == 1 || $user_id == 3 || $user_id == 89 || $user_id == 129 || $user_id == 137 || $user_id == 138 || $user_id == 148)
-$test_manager = "1";
-
-$database = new Database();
-$db = $database->getConnection();
-
-$quotation_control = false;
-$query = "SELECT quotation_control FROM access_control WHERE quotation_control LIKE '%" . $username . "%' ";
-$stmt = $db->prepare( $query );
-$stmt->execute();
-while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-$quotation_control = true;
-}
-
-if(!$quotation_control)
-{
-    $id = (isset($_GET['id']) ?  $_GET['id'] : 0);
-    $query = "SELECT can_view FROM quotation WHERE id = " . $id;
-
-    $stmt = $db->prepare( $query );
-    $stmt->execute();
-    $can_view = '';
-    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $can_view = $row['can_view'];
-    }
-
-    if($can_view != "")
-        header( 'location:index' );
-
-}
-
-}
-
-
-catch (Exception $e){
-
-header( 'location:index' );
-}
-
-
-//if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
-//    header( 'location:index.php' );
-}
-// if decode fails, it means jwt is invalid
-catch (Exception $e){
-
-header( 'location:index' );
-}
+    $username = '';
+    $test_manager = "0";
 
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -155,10 +73,6 @@ header( 'location:index' );
     </script>
 
     <style>
-
-        body.gray {
-            counter-reset: PageNumber;
-        }
 
         body.gray header > .headerbox {
             background-color: #707071;
@@ -370,6 +284,7 @@ header( 'location:index' );
         #tb_product_list ul li.code {
             word-break: break-all;
         }
+
 
         #tb_product_list tbody tr.set_format1 td, #tb_product_list tbody tr.set_format2 td {
             background-color: rgba(255,255,0,0.1)!important;
@@ -606,13 +521,10 @@ header( 'location:index' );
 
         .qn_page {
             width: 1200px;
+            height: 1697px;
             background-color: white;
             position: relative;
-            overflow-x: auto;
-        }
-
-        .qn_page .qn_header_space {
-            height: 305px;
+            margin-bottom: 80px;
         }
 
         .qn_page .qn_header {
@@ -704,11 +616,7 @@ header( 'location:index' );
         }
 
         .qn_page .qn_body {
-            padding: 0 30px;
-        }
-
-        .qn_page .qn_footer_space {
-            height: 107px;
+            padding: 305px 30px 30px;
         }
 
         .qn_page .qn_footer {
@@ -911,7 +819,6 @@ header( 'location:index' );
             display: inline-block;
         }
 
-
         .area_total .tb_total {
             width: 100%;
         }
@@ -974,15 +881,44 @@ header( 'location:index' );
             margin-bottom: 30px;
         }
 
-        .tb_format1 td {
+
+        .tb_format1 th, .tb_format1 td {
             text-align: left;
             padding: 5px 20px;
             border-right: 2px solid #A0A0A0;
             border-bottom: 2px solid #A0A0A0;
         }
 
-        .tb_format1 tbody tr td:first-of-type {
+        .tb_format1 thead tr th:first-of-type,
+        .tb_format1 tbody tr td:first-of-type,
+        .tb_format1 tfoot tr td:first-of-type {
             border-left: 2px solid #A0A0A0;
+        }
+
+        .tb_format1 thead tr th.title {
+            border-top: 2px solid #A0A0A0;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: rgb(0, 117, 58);
+        }
+
+        .tb_format1 thead tr:nth-of-type(2) th {
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+
+        .tb_format1 tbody tr td img {
+            max-height: 90px;
+            max-width: 90px;
+        }
+
+        .tb_format1 tbody tr td.pic {
+            width: 125px;
+            text-align: center;
         }
 
         .tb_format1 tbody tr td {
@@ -991,14 +927,25 @@ header( 'location:index' );
             padding: 15px;
         }
 
-        .tb_format1 tbody tr td.pic {
-            width: 125px;
-            text-align: center;
+        .tb_format1 tfoot tr td:nth-of-type(1) {
+            border-right: none;
         }
 
-        .tb_format1 tbody tr td img {
-            max-height: 90px;
-            max-width: 90px;
+        .tb_format1 tfoot tr td:nth-of-type(2) {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: rgb(0, 117, 58);
+            text-align: right;
+            padding-right: 30px;
+        }
+
+        .tb_format1 tfoot tr td:nth-of-type(3) {
+            text-align: right;
+            font-size: 16px;
+            font-weight: 800;
+            color: rgb(0, 117, 58);
+            padding: 5px 15px;
         }
 
         .tb_format1 tbody tr td:nth-of-type(1) {
@@ -1083,104 +1030,45 @@ header( 'location:index' );
             font-weight: 500;
         }
 
-        .tb_format1 tbody tr.thead1 td.title {
-            border-top: 2px solid #A0A0A0;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            color: rgb(0, 117, 58);
-            padding: 5px 20px;
-        }
 
-        .tb_format1 tbody tr.thead2 td {
-            text-align: center;
-            font-weight: 600;
-            font-size: 16px;
-            padding: 5px 20px;
-        }
-
-        .tb_format1 tbody tr.tfoot1 td:nth-of-type(1) {
-            border-right: none;
-        }
-
-        .tb_format1 tbody tr.tfoot1 td:nth-of-type(2) {
-            font-size: 16px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            color: rgb(0, 117, 58);
-            text-align: right;
-            padding: 5px 30px 5px 15px;
-        }
-
-        .tb_format1 tbody tr.tfoot1 td:nth-of-type(3) {
-            text-align: right;
-            font-size: 16px;
-            font-weight: 800;
-            color: rgb(0, 117, 58);
-            padding: 5px 15px;
-        }
-
-        .tb_format1 tbody tr.thead2 td:nth-of-type(1), .tb_format1 tbody tr.desc1 td:nth-of-type(1) {
+        .tb_format1 thead tr:nth-of-type(2) td:nth-of-type(1), .tb_format1 tbody tr.desc1 td:nth-of-type(1) {
             width: 70px;
             text-align: center;
         }
 
-        .tb_format1 tbody tr.thead2 td:nth-last-of-type(3) {
-            width: 75px;
-        }
-
-        .tb_format1 tbody tr.desc1 td:nth-last-of-type(3) {
+        .tb_format1 thead tr:nth-of-type(2) td:nth-last-of-type(3), .tb_format1 tbody tr.desc1 td:nth-last-of-type(3) {
             width: 75px;
             text-align: center;
             height: 50px;
         }
 
-        .tb_format1 tbody tr.thead2 td:nth-last-of-type(2) {
-            width: 210px;
-        }
-
+        .tb_format1 thead tr:nth-of-type(2) td:nth-last-of-type(2),
         .tb_format1 tbody tr.desc1 td:nth-last-of-type(2) {
             width: 210px;
             text-align: right;
             height: 50px;
         }
 
-        .tb_format1 tbody tr.thead2 td:nth-last-of-type(1) {
-            width: 210px;
-        }
-
+        .tb_format1 thead tr:nth-of-type(2) td:nth-last-of-type(1),
         .tb_format1 tbody tr.desc1 td:nth-last-of-type(1) {
             width: 210px;
             text-align: right;
             height: 50px;
         }
 
-        .tb_format1.vat tbody tr.thead2 td:nth-last-of-type(4) {
+        .tb_format1.vat thead tr:nth-of-type(2) td:nth-last-of-type(4), .tb_format1.vat tbody tr.desc1 td:nth-last-of-type(4) {
             width: 75px;
-        }
-
-        .tb_format1.vat tbody tr.desc1 td:nth-last-of-type(4) {
-            width: 75px;
-            text-align: center;
+            text-align: right;
             height: 50px;
         }
 
-        .tb_format1.vat tbody tr.thead2 td:nth-last-of-type(3) {
-            width: 210px;
-        }
-
-        .tb_format1.vat tbody tr.desc1 td:nth-last-of-type(3) {
+        .tb_format1.vat thead tr:nth-of-type(2) td:nth-last-of-type(3), .tb_format1.vat tbody tr.desc1 td:nth-last-of-type(3) {
             width: 210px;
             text-align: right;
             height: 50px;
         }
 
-        .tb_format1.vat tbody tr.thead2 td:nth-last-of-type(2) {
-            width: 135px;
-        }
-
-        .tb_format1.vat tbody tr.desc1 td:nth-last-of-type(2) {
+        .tb_format1.vat thead tr:nth-of-type(2) td:nth-last-of-type(2), .tb_format1.vat tbody tr.desc1 td:nth-last-of-type(2) {
             width: 135px;
             text-align: right;
             height: 50px;
@@ -1207,6 +1095,7 @@ header( 'location:index' );
             margin-top: 8px;
         }
 
+
         .tb_format1 tbody tr.desc2 td div.picbox img {
             max-height: 120px;
             max-width: 220px;
@@ -1218,21 +1107,50 @@ header( 'location:index' );
             margin-bottom: 30px;
         }
 
-        .tb_format2 td {
+        .tb_format2 th, .tb_format2 td {
             text-align: left;
             padding: 5px 20px;
             border-right: 2px solid #A0A0A0;
             border-bottom: 2px solid #A0A0A0;
         }
 
-        .tb_format2 tbody tr td:first-of-type {
+        .tb_format2 thead tr th:first-of-type,
+        .tb_format2 tbody tr td:first-of-type,
+        .tb_format2 tfoot tr td:first-of-type {
             border-left: 2px solid #A0A0A0;
+        }
+
+        .tb_format2 thead tr th.title {
+            border-top: 2px solid #A0A0A0;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: rgb(0, 117, 58);
         }
 
         .tb_format2 tbody tr td {
             font-size: 14px;
             vertical-align: top;
             padding: 15px;
+        }
+
+        .tb_format2 tfoot tr td:nth-of-type(1) {
+            border-right: none;
+        }
+
+        .tb_format2 tfoot tr td:nth-of-type(2) {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: rgb(0, 117, 58);
+        }
+
+        .tb_format2 tfoot tr td:nth-of-type(3) {
+            text-align: right;
+            font-size: 16px;
+            font-weight: 800;
+            color: rgb(0, 117, 58);
         }
 
         .tb_format2 tbody tr td:nth-of-type(1) {
@@ -1327,44 +1245,16 @@ header( 'location:index' );
             text-align: right;
         }
 
-        .tb_format2 tbody tr.thead1 td.title {
-            border-top: 2px solid #A0A0A0;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            color: rgb(0, 117, 58);
-            padding: 5px 20px;
-        }
-
-        .tb_format2 tbody tr.tfoot1 td:nth-of-type(1) {
-            border-right: none;
-        }
-
-        .tb_format2 tbody tr.tfoot1 td:nth-of-type(2) {
-            font-size: 16px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            color: rgb(0, 117, 58);
-        }
-
-        .tb_format2 tbody tr.tfoot1 td:nth-of-type(3) {
-            text-align: right;
-            font-size: 16px;
-            font-weight: 800;
-            color: rgb(0, 117, 58);
-        }
-
-        .tb_format2 tbody tr.tfoot1 td:nth-last-of-type(1) {
+        .tb_format2 tfoot tr td:nth-last-of-type(1) {
             width: 210px;
             text-align: right;
             padding: 5px 15px;
         }
 
-        .tb_format2 tbody tr.tfoot1 td:nth-last-of-type(2) {
+        .tb_format2 tfoot tr td:nth-last-of-type(2) {
             width: 135px;
             text-align: right;
-            padding: 5px 30px 5px 15px;
+            padding-right: 30px;
         }
 
         .pagebox {
@@ -1454,10 +1344,6 @@ header( 'location:index' );
             width: 272px;
         }
 
-        .pagebox .content_box ul li:nth-of-type(1) > input:nth-of-type(4) {
-            width: 150px;
-        }
-
         .pagebox .content_box ul li:nth-of-type(1) input[type='checkbox'] {
             display: inline-block;
             margin-left: 20px;
@@ -1477,32 +1363,24 @@ header( 'location:index' );
             cursor: pointer;
         }
 
-        #header_access, #header_dialog, #footer_dialog, #total_dialog{
-            zoom: 80%;
+        #header_access, #header_dialog, #footer_dialog, #total_dialog {
+            zoom: 85%;
         }
 
         #page_dialog, #subtotal_dialog, #terms_dialog, #payment_dialog {
             min-width: 1000px;
             pointer-events: auto;
-            zoom: 80%;
+            zoom: 85%;
         }
 
         #signature_dialog {
             min-width: 700px;
             pointer-events: auto;
-            zoom: 80%;
+            zoom: 85%;
         }
 
         #total_dialog {
             pointer-events: auto;
-        }
-
-        #total_dialog div.formbox dt > input[type='number'] {
-            height: 30px;
-            border: 1px solid #707070;
-            font-size: 14px;
-            width: 100px;
-            margin: 5px 0;
         }
 
         #page_dialog h6 {
@@ -1713,14 +1591,6 @@ header( 'location:index' );
             width: 370px;
         }
 
-        #terms_dialog div.formbox dt > input[type='number'] {
-            height: 30px;
-            border: 1px solid #707070;
-            font-size: 14px;
-            width: 100px;
-            margin: 5px 0;
-        }
-
         .termsbox {
             margin: 10px 0 5px;
 
@@ -1814,14 +1684,6 @@ header( 'location:index' );
             width: 370px;
         }
 
-        #payment_dialog div.formbox dt > input[type='number'] {
-            height: 30px;
-            border: 1px solid #707070;
-            font-size: 14px;
-            width: 100px;
-            margin: 5px 0;
-        }
-
         #payment_dialog .termsbox .content_box ul li:nth-of-type(1) span {
             display: inline-block;
             width: 120px;
@@ -1836,6 +1698,7 @@ header( 'location:index' );
             width: calc(100% - 155px);
             margin: 5px 0;
         }
+
 
         .signaturebox {
             margin-bottom: 5px;
@@ -1987,14 +1850,6 @@ header( 'location:index' );
             width: 310px;
         }
 
-        #signature_dialog div.formbox dt > input[type='number'] {
-            height: 30px;
-            border: 1px solid #707070;
-            font-size: 14px;
-            width: 100px;
-            margin: 5px 0;
-        }
-
         .functionbar{
             position: fixed;
             z-index: 998;
@@ -2021,10 +1876,6 @@ header( 'location:index' );
             height: 30px;
             background-color: #00811e;
             position: relative;
-        }
-
-        .list_function.main a.print.purple {
-            background-color: mediumpurple;
         }
 
         .list_function.main a.print::after {
@@ -2540,24 +2391,6 @@ header( 'location:index' );
             outline-color: transparent!important;
         }
 
-        #progress-bar-container {
-            width: 100%;
-            background-color: #f3f3f3;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            height: 30px;
-            display: none;  /* Initially hidden */
-        }
-        #progress-bar {
-            width: 0;
-            height: 100%;
-            background-color: #4caf50;
-            text-align: center;
-            color: white;
-            line-height: 30px;
-            border-radius: 5px;
-        }
-
         @media screen and (max-width: 640px) {
             .functionbar {
                 padding-top: 180px;
@@ -2579,14 +2412,10 @@ header( 'location:index' );
             }
 
             .qn_page {
-                zoom: 93%;
+                zoom: 82%;
                 margin: 1px 0px 0px 7px;
                 page-break-after: always;
                 overflow-y: hidden;
-            }
-
-            .qn_page .qn_header, .qn_page .qn_footer {
-                position: fixed;
             }
 
             .noPrint {
@@ -2595,7 +2424,7 @@ header( 'location:index' );
         }
 
         @page {
-            size: A3 portrait;
+            size: A4 portrait;
             margin: 0;
         }
 
@@ -2609,17 +2438,13 @@ header( 'location:index' );
 
     <div class="mask" :ref="'mask'"></div>
 
-    <div id="progress-bar-container">
-        <div id="progress-bar">0%</div>
-    </div>
-
     <!-- header -->
     <header class="noPrint">header</header>
     <!-- header end -->
 
     <!-- Function Bar start-->
     <div class="functionbar noPrint">
-        <div class="list_function main noPrint">
+        <div class="list_function main">
 
             <div class="block">
                 <!-- print -->
@@ -2628,7 +2453,7 @@ header( 'location:index' );
                 </div>
 
                 <div class="popupblock">
-                    <a id="export_pdf" class="print purple" title="Export Whole Quotation into PDF" @click="export_pdf()"></a>
+                    <a id="" class="print" title="Export Whole Quotation into PDF" onclick="generate_pdf_test()"></a>
                 </div>
 
                 <div class="popupblock">
@@ -2660,7 +2485,6 @@ header( 'location:index' );
                 ?>
 
             </div>
-
 
             <div class="block fn">
                 <div class="popupblock" v-if="quotation_control && project_category == 'Office Systems'">
@@ -2694,6 +2518,7 @@ header( 'location:index' );
                         </div>
                     </div>
                 </div>
+
 
 
                 <div class="popupblock">
@@ -2795,22 +2620,34 @@ header( 'location:index' );
                     if ($test_manager[0]  == "1")
                     {
                     ?>
-                    <a id="project_fn2" class="fn2" :ref="'a_fn2'" @click="show_page = !show_page">Subtotal Block</a>
+                    <a id="project_fn2" class="fn2" :ref="'a_fn2'" @click="show_page = !show_page">Page</a>
                     <?php
                     } else {
                     ?>
-                    <a>Subtotal Block</a>
+                    <a>Page</a>
                     <?php
                     }
                     ?>
                     <div id="page_dialog" class="dialog fn2 show" :ref="'dlg_fn2'" v-show="show_page">
-                        <h6>Subtotal Block</h6>
+                        <h6>Page
+                            <a class="add_page" @click="add_page()"></a>
+                        </h6>
 
                         <div class="page_form">
 
-                            <!-- 在第五版的報價單中，因為會採用列印時瀏覽器自動分頁，所以原本需要使用者自行分頁的功能將移除掉，因此在第五版中當使用者建立Subtotal區塊時，Subtotal區塊的所在頁碼都直接設定為第一頁即可 -->
                             <div class="pagebox" v-for="(page, page_index) in temp_pages">
 
+                                <div class="title_box">
+                                    <ul>
+                                        <li>Page {{page_index + 1}}</li>
+                                        <li><i class="fas fa-arrow-alt-circle-up"
+                                               @click="page_up(page_index, page.id)"></i>
+                                            <i class="fas fa-arrow-alt-circle-down"
+                                               @click="page_down(page_index, page.id)"></i>
+                                            <i class="fas fa-trash-alt" @click="page_del(page.id)"></i>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <div class="function_box">
                                     <select :id="'block_type_' + page.id">
                                         <option value="A">Type-A Subtotal Block</option>
@@ -2826,15 +2663,21 @@ header( 'location:index' );
                                             Name: <input type="text" v-model="block.name"><br>
                                             Subtotal Amount: <input type="number" v-model="block.real_amount"> <input
                                                 type="checkbox" class="alone" value="1" v-model="block.not_show"> Not
-                                            Show "Subtotal Amount"<br>
-                                            Distance from Previous Block: <input type="number" v-model="block.pixa"> pixel
+                                            Show "Subtotal Amount"
                                         </li>
                                         <li>
                                             <i class="fas fa-arrow-alt-circle-up"
                                                @click="set_up(page.id, block_index, block.id)"></i>
-
                                             <i class="fas fa-arrow-alt-circle-down"
                                                @click="set_down(page.id, block_index, block.id)"></i>
+                                            <i class="fas fa-file-upload"
+                                               @click="set_up_page(page.id, page_index, block_index, block.id)"></i>
+                                            <i class="fas fa-file-download"
+                                               @click="set_down_page(page.id, page_index, block_index, block.id)"></i>
+                                            <!--
+                                            <i class="fas fa-save" @click="page_save()"></i>
+                                            -->
+
 
                                             <i class="fas fa-copy" @click="page_copy(page.id, block.id)"></i>
 
@@ -3046,16 +2889,17 @@ header( 'location:index' );
                         <h6>Total</h6>
 
                         <div class="formbox">
-                            <dl style="margin-bottom: 0px; border-bottom: 1px solid black;">
-                                <dt class="head">Choose whether to show the block of grand total in this document:</dt>
+                            <dl>
+                                <dt class="head">Choose where the block of total locates at:</dt>
                                 <dd>
-                                    <select v-model="show">
-                                        <option value="N">No</option>
-                                        <option value="">Yes</option>
+                                    <select v-model="total.page">
+                                        <option value="0"></option>
+                                        <option v-for="(page, page_index) in pages" :value="page.page">Page {{ page.page
+                                            }}
+                                        </option>
+
                                     </select>
                                 </dd>
-
-                                <dt class="head" v-if="show == ''">Distance from Previous Block: <input type="number" v-model="pixa"> pixel</dt>
                             </dl>
 
                             <dl>
@@ -3141,15 +2985,15 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <dl>
-                                <dt class="head">Choose whether to show the block of terms and condition in this document:</dt>
+                                <dt class="head">Choose where the block of terms and condition locates at:</dt>
                                 <dd>
-                                    <select v-model="show_t">
-                                        <option value="N">No</option>
-                                        <option value="">Yes</option>
+                                    <select v-model="term.page">
+                                        <option value="0"></option>
+                                        <option v-for="(page, page_index) in pages" :value="page.page">Page {{ page.page
+                                            }}
+                                        </option>
                                     </select>
                                 </dd>
-
-                                <dt class="head" v-if="show_t == ''">Distance from Previous Block: <input type="number" v-model="pixa_t"> pixel</dt>
                             </dl>
                         </div>
 
@@ -3209,15 +3053,15 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <dl>
-                                <dt class="head">Choose whether to show the block of payment terms in this document:</dt>
+                                <dt class="head">Choose where the block of payment terms locates at:</dt>
                                 <dd>
-                                    <select v-model="show_p">
-                                        <option value="N">No</option>
-                                        <option value="">Yes</option>
+                                    <select v-model="payment_term.page">
+                                        <option value="0"></option>
+                                        <option v-for="(page, page_index) in pages" :value="page.page">Page {{ page.page
+                                            }}
+                                        </option>
                                     </select>
                                 </dd>
-
-                                <dt class="head" v-if="show_p == ''">Distance from Previous Block: <input type="number" v-model="pixa_p"> pixel</dt>
                             </dl>
 
                             <dl>
@@ -3291,15 +3135,15 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <dl>
-                                <dt class="head">Choose whether to show the block of signature in this document:</dt>
+                                <dt class="head">Choose where the block of signature locates at:</dt>
                                 <dd>
-                                    <select v-model="show_s">
-                                    <option value="N">No</option>
-                                    <option value="">Yes</option>
+                                    <select v-model="sig.page">
+                                        <option value="0"></option>
+                                        <option v-for="(page, page_index) in pages" :value="page.page">Page {{ page.page
+                                            }}
+                                        </option>
                                     </select>
                                 </dd>
-
-                                <dt class="head" v-if="show_s == ''">Distance from Previous Block: <input type="number" v-model="pixa_s"> pixel</dt>
                             </dl>
                         </div>
 
@@ -3404,419 +3248,395 @@ header( 'location:index' );
 
     </div>
 
-    <!-- Function Bar end-->
 
+    <!-- Function Bar end-->
 
     <div class="mainContent" style="overflow-x: auto; background-color: rgb(230,230,230)">
 
-        <table class="qn_page">
+        <div class="qn_page" v-for="(pg, index) in pages" id="qn_page">
 
-            <thead>
-            <tr>
-                <td>
-                    <div class="qn_header_space">&nbsp;</div>
-                    <div class="qn_header" v-if="show_title">
+            <div class="qn_header" v-if="show_title">
 
-                        <div class="left_block">
+                <div class="left_block">
 
-                            <img class="logo" src="images/Feliix-Logo-Black.png">
+                    <img class="logo" src="images/Feliix-Logo-Black.png">
 
-                            <div class="qn_title">
-                                <div class="line1">{{ first_line }}</div>
-                                <div class="line2">{{ second_line }}</div>
-                            </div>
-
-                            <div class="project_category">
-                                <div class="line1">Architectural</div>
-                                <div class="line2">{{ project_category }} Quotation</div>
-                            </div>
-
-                        </div>
-
-                        <div class="right_block">
-
-                            <div class="qn_number_date">
-                                Quotation No.: <span class="qn_number">{{ quotation_no }}</span><br>
-                                Date: <span class="qn_date">{{ quotation_date }}</span>
-                            </div>
-
-                            <div class="qn_for">
-                                Prepared for:<br>
-                                <div class="line1">{{ prepare_for_first_line }}</div>
-                                <div class="line2">{{ prepare_for_second_line }}</div>
-                                <div class="line3">{{ prepare_for_third_line }}</div>
-                            </div>
-
-                            <div class="qn_by">
-                                <br>
-                                <div class="line1">{{ prepare_by_first_line }}</div>
-                                <div class="line2">{{ prepare_by_second_line }}</div>
-                            </div>
-
-                        </div>
-
+                    <div class="qn_title">
+                        <div class="line1">{{ first_line }}</div>
+                        <div class="line2">{{ second_line }}</div>
                     </div>
-                </td>
-            </tr>
-            </thead>
+
+                    <div class="project_category">
+                        <div class="line1">Architectural</div>
+                        <div class="line2">{{ project_category }} Quotation</div>
+                    </div>
+
+                </div>
+
+                <div class="right_block">
+
+                    <div class="qn_number_date">
+                        Quotation No.: <span class="qn_number">{{ quotation_no }}</span><br>
+                        Date: <span class="qn_date">{{ quotation_date }}</span>
+                    </div>
+
+                    <div class="qn_for">
+                        Prepared for:<br>
+                        <div class="line1">{{ prepare_for_first_line }}</div>
+                        <div class="line2">{{ prepare_for_second_line }}</div>
+                        <div class="line3">{{ prepare_for_third_line }}</div>
+                    </div>
+
+                    <div class="qn_by">
+                        <br>
+                        <div class="line1">{{ prepare_by_first_line }}</div>
+                        <div class="line2">{{ prepare_by_second_line }}</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="qn_body">
+
+                <div class="area_subtotal">
+
+                    <table :class="[tp.type == 'A' ? 'tb_format1' : 'tb_format2', product_vat == 'P' ? 'vat' : '']"
+                           v-for="(tp, index) in pg.types">
+                        <thead v-if="tp.type == 'A'">
+
+                        <tr>
+                            <th class="title" :colspan="product_vat == 'P' ? 7 : 6">{{ tp.name }}</th>
+                        </tr>
+
+                        <tr>
+                            <th>No</th>
+                            <th colspan="2">Description</th>
+                            <th>Qty.</th>
+                            <th>Product Price</th>
+                            <th v-if="product_vat == 'P'">12% VAT</th>
+                            <th>Amount</th>
+                        </tr>
+
+                        </thead>
+
+                        <thead v-if="tp.type == 'B'">
+
+                        <tr>
+                            <th class="title" :colspan="product_vat == 'P' ? 4 : 4">{{ tp.name }}</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody v-if="tp.type == 'A'">
+
+                        <template v-for="(bk, index) in tp.blocks">
+
+                        <tr class="desc1">
+
+                            <td rowspan="2" v-if="bk.type == 'image'">{{ bk.num }}</td>
+                            <td v-if="bk.type == '' || bk.type== 'noimage' ">{{ bk.num }}</td>
+
+                            <td rowspan="2" class="pic" v-if="bk.type == 'image'">
+                                <img v-show="bk.photo !== ''" :src=" bk.photo !== '' ? img_url + bk.photo : ''">
+                            </td>
+                            <td rowspan="2" v-if="bk.type == 'image'">
+                                <div :class="['pid', 'noPrint', (bk.status == -1 ? 'deleted' : '')]" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
+                                <div :class="['code', (bk.status == -1 ? 'deleted' : '')]">{{ bk.code }}</div>
+                                <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
+                                <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
+                            </td>
+                            <td v-if="bk.type == '' || bk.type== 'noimage'" colspan="2">
+                                <div :class="['pid', 'noPrint', (bk.status == -1 ? 'deleted' : '')]" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
+                                <div :class="['code', (bk.status == -1 ? 'deleted' : '')]">{{ bk.code }}</div>
+                                <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
+                                <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
+                            </td>
+                            <td><span class="numbers">{{ bk.qty !== undefined ? Math.floor(bk.qty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}</span>
+                            </td>
+                            <td><span class="numbers" v-if="bk.discount == 0">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                <span class="numbers deleted"
+                                      v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">₱ {{ (bk.price * bk.ratio  !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}<span
+                                        v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br
+                                        v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">
+                                <span class="numbers"
+                                      v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio - (bk.price * bk.ratio * (bk.discount / 100))).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                <span class="numbers"
+                                      v-if="bk.discount != 0 && (bk.discount == 100 || bk.amount == '0.00')">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                            </td>
+                            <td v-if="product_vat == 'P'"><span class="numbers" v-if="bk.discount == 0">₱ {{ bk.price * bk.ratio !== undefined ? (Number(bk.price * bk.ratio) * 0.12).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                <span class="numbers" v-if="bk.discount != 0 && bk.amount != '0.00'">₱ {{ bk.price * bk.ratio !== undefined ? (Number(bk.price * bk.ratio - (bk.price * bk.ratio * (bk.discount / 100))) * 0.12).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                                <span class="numbers" v-if="bk.discount != 0 && bk.amount == '0.00'">₱ {{ bk.price * bk.ratio !== undefined ? (Number(bk.price * bk.ratio) * 0.12).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
+                            </td>
+
+                            <td v-if="bk.amount != '0.00' && product_vat == 'P'">
+
+                                <span class="numbers">₱ {{ bk.amount !== undefined ? Number(bk.amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
+                            </td>
+                            <td v-if="bk.amount == '0.00' && product_vat == 'P'">
+                                <span class="numbers deleted">₱ {{ (bk.qty * bk.ratio * bk.price  !== undefined ? Number(bk.qty * bk.ratio * bk.price * 1.12).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
+                                <span class="numbers red">FREE AS PACKAGE!</span>
+                            </td>
 
 
-            <tbody>
-            <tr>
-                <td style="vertical-align: top;">
+                            <td v-if="bk.amount != '0.00' && product_vat !== 'P'">
 
-                    <div class="qn_body">
+                                <span class="numbers">₱ {{ bk.amount !== undefined ? Number(bk.amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
+                            </td>
+                            <td v-if="bk.amount == '0.00' && product_vat !== 'P'">
+                                <span class="numbers deleted">₱ {{ (bk.qty * bk.ratio * bk.price  !== undefined ? Number(bk.qty * bk.ratio * bk.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
+                                <span class="numbers red">FREE AS PACKAGE!</span>
+                            </td>
+                        </tr>
 
-                        <div class="area_subtotal">
+                        <tr class="desc2" v-if="bk.type == 'image'">
 
-                            <table :class="[tp.type == 'A' ? 'tb_format1' : 'tb_format2', product_vat == 'P' ? 'vat' : '']" v-bind:style="{ 'margin-top': (tp.pixa == '' ? 0 : tp.pixa) + 'px' }" 
-                                v-for="(tp, index) in pag.types">
+                            <td class="pic" colspan="3" v-if="!(product_vat == 'P')">
+                                <div class="notes">{{ bk.notes }}</div>
+                                <div class="picbox">
+                                    <img v-if="bk.photo2 != ''" :src="bk.url2">
+                                    <img v-if="bk.photo3 != ''" :src="bk.url3">
+                                </div>
+                            </td>
 
-                                <tbody>
+                            <td class="pic" colspan="4" v-if="(product_vat == 'P')">
+                                <div class="notes">{{ bk.notes }}</div>
+                                <div class="picbox">
+                                    <img v-if="bk.photo2 != ''" :src="bk.url2">
+                                    <img v-if="bk.photo3 != ''" :src="bk.url3">
+                                </div>
+                            </td>
 
-                                <!-- 表格標題列 -->
+                        </tr>
 
-                                <tr class="thead1" v-if="tp.type == 'A'">
-                                    <td class="title" :colspan="product_vat == 'P' ? 7 : 6">{{ tp.name }}</td>
-                                </tr>
+                        </template>
 
-                                <tr class="thead2" v-if="tp.type == 'A'">
-                                    <td>No</td>
-                                    <td colspan="2">Description</td>
-                                    <td>Qty.</td>
-                                    <td>Product Price</td>
-                                    <td v-if="product_vat == 'P'">12% VAT</td>
-                                    <td>Amount</td>
-                                </tr>
+                        </tbody>
 
-                                <tr class="thead1" v-if="tp.type == 'B'">
-                                    <td class="title" :colspan="product_vat == 'P' ? 4 : 4">{{ tp.name }}</td>
-                                </tr>
+                        <tbody v-if="tp.type == 'B'">
+                        <tr v-for="(bk, index) in tp.blocks">
+                            <td>{{ bk.num }}</td>
+                            <td colspan="2">
+                                <div :class="['pid', 'noPrint', (bk.status == -1 ? 'deleted' : '')]" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
+                                <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
+                                <div :class="['code', (bk.status == -1 ? 'deleted' : '')]">{{ bk.code }}</div>
+                                <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
+                                <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
+                            </td>
 
-                                <template v-for="(bk, index) in tp.blocks"  v-if="tp.type == 'A'">
-                                <!-- 表格內容物 -->
-
-                                <tr class="desc1">
-
-                                    <td rowspan="2" v-if="bk.type == 'image'">{{ bk.num }}</td>
-                                    <td v-if="bk.type == '' || bk.type== 'noimage' ">{{ bk.num }}</td>
-
-                                    <td rowspan="2" class="pic" v-if="bk.type == 'image'">
-                                        <img v-show="bk.photo !== ''" :src=" bk.photo !== '' ? img_url + bk.photo : ''">
-                                    </td>
-                                    <td rowspan="2" v-if="bk.type == 'image'">
-                                        <div :class="['pid', 'noPrint', (bk.status == -1 ? 'deleted' : '')]" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
-                                        <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
-                                        <div :class="['code', (bk.status == -1 ? 'deleted' : '')]">{{ bk.code }}</div>
-                                        <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
-                                        <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
-                                    </td>
-                                    <td v-if="bk.type == '' || bk.type== 'noimage'" colspan="2">
-                                        <div :class="['pid', 'noPrint', (bk.status == -1 ? 'deleted' : '')]" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
-                                        <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
-                                        <div :class="['code', (bk.status == -1 ? 'deleted' : '')]">{{ bk.code }}</div>
-                                        <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
-                                        <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
-                                    </td>
-                                    <td>
-                                        <span class="numbers">{{ bk.qty !== undefined ? Math.floor(bk.qty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="numbers" v-if="bk.discount == 0">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers deleted" v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">₱ {{ (bk.price * bk.ratio  !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}<span
-                                                v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount != 100 && bk.amount != '0.00')">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio - (bk.price * bk.ratio * (bk.discount / 100))).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="bk.discount != 0 && (bk.discount == 100 || bk.amount == '0.00')">₱ {{ bk.price * bk.ratio !== undefined ? Number(bk.price * bk.ratio).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                    </td>
-                                    <td v-if="product_vat == 'P'">
-                                        <span class="numbers" v-if="bk.discount == 0">₱ {{ bk.price * bk.ratio !== undefined ? (Number(bk.price * bk.ratio) * 0.12).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="bk.discount != 0 && bk.amount != '0.00'">₱ {{ bk.price * bk.ratio !== undefined ? (Number(bk.price * bk.ratio - (bk.price * bk.ratio * (bk.discount / 100))) * 0.12).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                        <span class="numbers" v-if="bk.discount != 0 && bk.amount == '0.00'">₱ {{ bk.price * bk.ratio !== undefined ? (Number(bk.price * bk.ratio) * 0.12).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }}</span>
-                                    </td>
-
-                                    <td v-if="bk.amount != '0.00' && product_vat == 'P'">
-                                        <span class="numbers">₱ {{ bk.amount !== undefined ? Number(bk.amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
-                                    </td>
-
-                                    <td v-if="bk.amount == '0.00' && product_vat == 'P'">
-                                        <span class="numbers deleted">₱ {{ (bk.qty * bk.ratio * bk.price  !== undefined ? Number(bk.qty * bk.ratio * bk.price * 1.12).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
-                                        <span class="numbers red">FREE AS PACKAGE!</span>
-                                    </td>
+                            <td v-if="bk.amount != '0.00' && product_vat == 'P'">
+                                <span class="numbers deleted" v-if="bk.discount != 0">₱ {{ (bk.ratio * bk.price  !== undefined ? (Number(bk.ratio * bk.price) * 1 ).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}<span
+                                        v-if="bk.discount != 0">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br
+                                    v-if="bk.discount != 0">
+                                <span class="numbers">₱ {{ bk.amount !== undefined ? (Number(bk.amount)).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
+                            </td>
+                            <td v-if="bk.amount == '0.00' && product_vat == 'P'">
+                                <span class="numbers deleted">₱ {{ (bk.ratio * bk.price  !== undefined ? (Number(bk.ratio * bk.price) * 1 ).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
+                                <span class="numbers red">FREE AS PACKAGE!</span>
+                            </td>
 
 
-                                    <td v-if="bk.amount != '0.00' && product_vat !== 'P'">
-                                        <span class="numbers">₱ {{ bk.amount !== undefined ? Number(bk.amount).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00' }} </span>
-                                    </td>
+                            <td v-if="bk.amount != '0.00' && product_vat !== 'P'">
+                                <span class="numbers deleted" v-if="bk.discount != 0">₱ {{ (bk.ratio * bk.price  !== undefined ? Number(bk.ratio * bk.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}<span
+                                        v-if="bk.discount != 0">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br
+                                    v-if="bk.discount != 0">
+                                <span class="numbers">₱ {{ bk.amount !== undefined ? Number(bk.amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
+                            </td>
+                            <td v-if="bk.amount == '0.00' && product_vat !== 'P'">
+                                <span class="numbers deleted">₱ {{ (bk.ratio * bk.price  !== undefined ? Number(bk.ratio * bk.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
+                                <span class="numbers red">FREE AS PACKAGE!</span>
+                            </td>
+                        </tr>
 
-                                    <td v-if="bk.amount == '0.00' && product_vat !== 'P'">
-                                        <span class="numbers deleted">₱ {{ (bk.qty * bk.ratio * bk.price  !== undefined ? Number(bk.qty * bk.ratio * bk.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
-                                        <span class="numbers red">FREE AS PACKAGE!</span>
-                                    </td>
-                                </tr>
+                        </tbody>
 
-                                <tr class="desc2" v-if="bk.type == 'image'">
+                        <tfoot v-if="tp.type == 'A' && tp.not_show != '1'">
+                        <tr>
+                            <td :colspan="product_vat == 'P' ? 5 : 4"></td>
+                            <td>SUBTOTAL</td>
+                            <td v-if="tp.real_amount == 0">₱ {{ tp.subtotal !== undefined ?
+                                Number(tp.subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
+                                "$1,") : '0.00' }}
+                            </td>
+                            <td v-if="tp.real_amount != 0">₱ {{ tp.real_amount !== undefined ?
+                                Number(tp.real_amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
+                                "$1,") : '0.00' }}
+                            </td>
+                        </tr>
 
-                                    <td class="pic" colspan="3" v-if="!(product_vat == 'P')">
-                                        <div class="notes">{{ bk.notes }}</div>
-                                        <div class="picbox">
-                                            <img v-if="bk.photo2 != ''" :src="bk.url2">
-                                            <img v-if="bk.photo3 != ''" :src="bk.url3">
-                                        </div>
-                                    </td>
+                        </tfoot>
 
-                                    <td class="pic" colspan="4" v-if="(product_vat == 'P')">
-                                        <div class="notes">{{ bk.notes }}</div>
-                                        <div class="picbox">
-                                            <img v-if="bk.photo2 != ''" :src="bk.url2">
-                                            <img v-if="bk.photo3 != ''" :src="bk.url3">
-                                        </div>
-                                    </td>
+                        <tfoot v-if="tp.type == 'B' && tp.not_show != '1'">
+                        <tr>
+                            <td :colspan="product_vat == 'P' ? 2 : 2"></td>
+                            <td>SUBTOTAL</td>
+                            <td v-if="tp.real_amount == 0">₱ {{ tp.subtotal !== undefined ?
+                                Number(tp.subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
+                                "$1,") : '0.00' }}
+                            </td>
+                            <td v-if="tp.real_amount != 0">₱ {{ tp.real_amount !== undefined ?
+                                Number(tp.real_amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
+                                "$1,") : '0.00' }}
+                            </td>
+                        </tr>
 
-                                </tr>
+                        </tfoot>
 
-                                </template>
+                    </table>
 
+                </div>
 
-                                <template v-if="tp.type == 'B'">
-                                <tr v-for="(bk, index) in tp.blocks">
-                                    <td>{{ bk.num }}</td>
-                                    <td colspan="2">
-                                        <div :class="['pid', 'noPrint', (bk.status == -1 ? 'deleted' : '')]" v-if="bk.pid != 0">{{ "ID: " + bk.pid }} <button class="last_order_history" v-if="bk.is_last_order != ''" @click="last_order_info(bk.is_last_order)">Last Order History</button></div>
-                                        <div class="moq noPrint" v-if="bk.moq != ''">{{ "MOQ: " + bk.moq }}</div>
-                                        <div :class="['code', (bk.status == -1 ? 'deleted' : '')]">{{ bk.code }}</div>
-                                        <div class="brief" style="white-space: pre-line;">{{ bk.desc }}</div>
-                                        <div class="listing" style="white-space: pre-line;">{{ bk.list }}</div>
-                                    </td>
+                <div class="area_total">
+                    <table class="tb_total" v-for="(tt, index) in pg.total">
+                        <tbody>
+                        <tr>
+                            <td :rowspan="(tt.vat == 'Y' && tt.discount !== '0' ? 3 :  2)">
+                                <div>Remarks: Quotation valid for <span class="valid_for">{{ tt.valid }}</span></div>
+                                <div></div>
+                            </td>
+                            <td>SUBTOTAL</td>
+                            <td><span class="numbers">₱ {{ subtotal !== undefined ? Number(subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
+                            </td>
+                        </tr>
 
-                                    <td v-if="bk.amount != '0.00' && product_vat == 'P'">
-                                        <span class="numbers deleted" v-if="bk.discount != 0">₱ {{ (bk.ratio * bk.price  !== undefined ? (Number(bk.ratio * bk.price) * 1 ).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}<span
-                                            v-if="bk.discount != 0">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0">
-                                        <span class="numbers">₱ {{ bk.amount !== undefined ? (Number(bk.amount)).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
-                                    </td>
+                        <tr class="total_discount" v-if="tt.discount !== '0'">
+                            <td>{{ tt.discount !== undefined ?
+                                Math.floor(tt.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}%
+                                DISCOUNT
+                            </td>
+                            <td><span class="numbers">₱ {{ (subtotal * tt.discount / 100) !== undefined ? (subtotal * tt.discount / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                            </td>
+                        </tr>
+                        <!--
+                                                <tr class="total_vat" v-if="tt.vat == 'Y'">
+                                                    <td>(12% VAT)</td>
+                                                    <td><span class="numbers">₱ {{ (subtotal * 12 / 100) !== undefined ? (subtotal * 12 / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span></td>
+                                                </tr>
+                            -->
+                        <tr class="total_vat" v-if="tt.vat == 'Y'">
+                            <td>(12% VAT)</td>
+                            <td><span class="numbers">₱ {{ ((subtotal_info_not_show_a * (100 - tt.discount) / 100) * 12 / 100) !== undefined ? ((subtotal_info_not_show_a * (100 - tt.discount) / 100) * 12 / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                            </td>
+                        </tr>
+                        </tbody>
 
-                                    <td v-if="bk.amount == '0.00' && product_vat == 'P'">
-                                        <span class="numbers deleted">₱ {{ (bk.ratio * bk.price  !== undefined ? (Number(bk.ratio * bk.price) * 1 ).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
-                                        <span class="numbers red">FREE AS PACKAGE!</span>
-                                    </td>
+                        <tfoot>
+                        <tr>
+                            <td><span class="total_discount" v-if="tt.show_vat == 'Y'">*price inclusive of VAT</span>
+                            </td>
+                            <td>GRAND TOTAL</td>
+                            <td v-if="tt.total != '0.00'">
+                                <span class="numbers deleted" v-if="tt.total != total.back_total">₱ {{ total.back_total !== "" ? Number(total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span><br
+                                    v-if="tt.total != total.back_total">
+                                <span class="numbers">₱ {{ tt.total !== "" ? Number(tt.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                            </td>
+                            <td v-if="tt.total == '0.00'">
+                                <span class="numbers">₱ {{ total.back_total !== "" ? Number(total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
 
+                <div class="area_terms">
+                    <div class="terms" v-for="(tt, index) in pg.term">
+                        <div class="title">{{ tt.title }}</div>
+                        <div class="brief" :style="tt.brief == '' ? 'white-space: pre-line; display: none;' : 'white-space: pre-line;'">{{ tt.brief }}</div>
+                        <div class="listing" style="white-space: pre-line;">{{ tt.list }}</div>
+                    </div>
+                </div>
 
-                                    <td v-if="bk.amount != '0.00' && product_vat !== 'P'">
-                                        <span class="numbers deleted" v-if="bk.discount != 0">₱ {{ (bk.ratio * bk.price  !== undefined ? Number(bk.ratio * bk.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}<span
-                                            v-if="bk.discount != 0">{{ bk.discount !== undefined ? Math.floor(bk.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}% OFF</span></span><br v-if="bk.discount != 0">
-                                        <span class="numbers">₱ {{ bk.amount !== undefined ? Number(bk.amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
-                                    </td>
-
-                                    <td v-if="bk.amount == '0.00' && product_vat !== 'P'">
-                                        <span class="numbers deleted">₱ {{ (bk.ratio * bk.price  !== undefined ? Number(bk.ratio * bk.price).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00') }}</span><br>
-                                        <span class="numbers red">FREE AS PACKAGE!</span>
-                                    </td>
-                                </tr>
-
-                                </template>
-
-                                <!-- 表格尾端，每一個 subtotal 小計金額的部分 -->
-                                <template v-if="tp.type == 'A' && tp.not_show != '1'">
-                                <tr class="tfoot1">
-                                    <td :colspan="product_vat == 'P' ? 5 : 4"></td>
-                                    <td>SUBTOTAL</td>
-                                    <td v-if="tp.real_amount == 0">₱ {{ tp.subtotal !== undefined ?
-                                        Number(tp.subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
-                                        "$1,") : '0.00' }}
-                                    </td>
-                                    <td v-if="tp.real_amount != 0">₱ {{ tp.real_amount !== undefined ?
-                                        Number(tp.real_amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
-                                        "$1,") : '0.00' }}
-                                    </td>
-                                </tr>
-
-                                </template>
-
-                                <template v-if="tp.type == 'B' && tp.not_show != '1'">
-                                <tr class="tfoot1">
-                                    <td :colspan="product_vat == 'P' ? 2 : 2"></td>
-                                    <td>SUBTOTAL</td>
-                                    <td v-if="tp.real_amount == 0">₱ {{ tp.subtotal !== undefined ?
-                                        Number(tp.subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
-                                        "$1,") : '0.00' }}
-                                    </td>
-                                    <td v-if="tp.real_amount != 0">₱ {{ tp.real_amount !== undefined ?
-                                        Number(tp.real_amount).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
-                                        "$1,") : '0.00' }}
-                                    </td>
-                                </tr>
-
-                                </template>
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-
-                        <div class="area_total" v-bind:style="{ 'margin-top': (show == '' ? pixa : 0) + 'px' }" v-if="show == ''">
-                            <table class="tb_total" v-for="(tt, index) in pag.total">
-                                <tbody>
-                                <tr>
-                                    <td :rowspan="(tt.vat == 'Y' && tt.discount !== '0' ? 3 :  2)">
-                                        <div>Remarks: Quotation valid for <span class="valid_for">{{ tt.valid }}</span></div>
-                                        <div></div>
-                                    </td>
-                                    <td>SUBTOTAL</td>
-                                    <td><span class="numbers">₱ {{ subtotal !== undefined ? Number(subtotal).toFixed(2).toLocaleString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : '0.00' }}</span>
-                                    </td>
-                                </tr>
-
-                                <tr class="total_discount" v-if="tt.discount !== '0'">
-                                    <td>{{ tt.discount !== undefined ?
-                                        Math.floor(tt.discount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "" }}%
-                                        DISCOUNT
-                                    </td>
-                                    <td><span class="numbers">₱ {{ (subtotal * tt.discount / 100) !== undefined ? (subtotal * tt.discount / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
-                                    </td>
-                                </tr>
-
-                                <!--
-                                <tr class="total_vat" v-if="tt.vat == 'Y'">
-                                        <td>(12% VAT)</td>
-                                        <td><span class="numbers">₱ {{ (subtotal * 12 / 100) !== undefined ? (subtotal * 12 / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span></td>
-                                </tr>
-                                -->
-
-                                <tr class="total_vat" v-if="tt.vat == 'Y'">
-                                    <td>(12% VAT)</td>
-                                    <td><span class="numbers">₱ {{ ((subtotal_info_not_show_a * (100 - tt.discount) / 100) * 12 / 100) !== undefined ? ((subtotal_info_not_show_a * (100 - tt.discount) / 100) * 12 / 100).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
-                                    </td>
-                                </tr>
-                                </tbody>
-
-                                <tfoot>
-                                <tr>
-                                    <td>
-                                        <span class="total_discount" v-if="tt.show_vat == 'Y'">*price inclusive of VAT</span>
-                                    </td>
-                                    <td>GRAND TOTAL</td>
-                                    <td v-if="tt.total != '0.00'">
-                                        <span class="numbers deleted" v-if="tt.total != total.back_total">₱ {{ total.back_total !== "" ? Number(total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span><br
-                                            v-if="tt.total != total.back_total">
-                                        <span class="numbers">₱ {{ tt.total !== "" ? Number(tt.total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
-                                    </td>
-                                    <td v-if="tt.total == '0.00'">
-                                        <span class="numbers">₱ {{ total.back_total !== "" ? Number(total.back_total).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00" }}</span>
-                                    </td>
-                                </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-
-
-
-                        <div class="area_terms" v-bind:style="{ 'margin-top': (show_t == '' ? pixa_t : 0) + 'px' }" v-if="show_t == ''">
-                            <div class="terms" v-for="(tt, index) in pag.term">
-                                <div class="title">{{ tt.title }}</div>
-                                <div class="brief" :style="tt.brief == '' ? 'white-space: pre-line; display: none;' : 'white-space: pre-line;'">{{ tt.brief }}</div>
-                                <div class="listing" style="white-space: pre-line;">{{ tt.list }}</div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="area_payment" v-bind:style="{ 'margin-top': (show_p == '' ? pixa_p : 0) + 'px' }" v-if="pag.payment_term !== undefined && show_p == ''">
-                            <table class="tb_payment">
-                                <tbody>
-                                <tr>
-                                    <td colspan="2">Payment Terms:</td>
-                                    <td>
-                                        <div>
-                                            <span v-for="(tt, index) in pag.payment_term.payment_method">{{ tt }}</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        {{ pag.payment_term.brief }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Notes:</td>
-                                    <td>
-                                        <b>For Cheque</b><br>
-                                        Kindly Address to<br>
-                                        Feliix Inc.
-                                    </td>
-                                    <td>
-                                        <b>For Bank Details for Wiring</b>
-
-                                        <div class="acount_info" v-for="(tt, index) in pag.payment_term.list">
-                                            <span class="account_name">{{ tt.bank_name }}</span>
-                                            <span>: </span>
-                                            <div class="first_line">
-                                                {{ tt.first_line }}
-                                            </div>
-                                            <div class="second_line">{{ tt.second_line }}</div>
-                                            <div class="third_line">{{ tt.third_line }}</div>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-
-                        <div class="area_conforme" v-bind:style="{ 'margin-top': (show_s == '' ? pixa_s : 0) + 'px' }" v-if="show_s == ''">
-                            <div class="conforme"
-                                v-if="(pag.sig != undefined ? pag.sig.item_client.length : 0)  + (pag.sig != undefined ?  pag.sig.item_company.length : 0) > 0">
-                                CONFORME
-                            </div>
-
-                            <div class="client_signature" v-if="(pag.sig != undefined ? pag.sig.item_client.length : 0) > 0">
-
-                                <div class="signature" v-for="(tt, index) in pag.sig.item_client">
-                                    <div class="pic"></div>
-                                    <div class="name">{{ tt.name }}</div>
-                                    <div class="line1">{{ tt.position }}</div>
-                                    <div class="line2">{{ tt.phone }}</div>
-                                    <div class="line3">{{ tt.email }}</div>
+                <div class="area_payment" v-if="pg.payment_term.page !== undefined">
+                    <table class="tb_payment">
+                        <tbody>
+                        <tr>
+                            <td colspan="2">Payment Terms:</td>
+                            <td>
+                                <div>
+                                    <span v-for="(tt, index) in pg.payment_term.payment_method">{{ tt }}</span>
                                 </div>
 
-                            </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                {{ pg.payment_term.brief }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Notes:</td>
+                            <td>
+                                <b>For Cheque</b><br>
+                                Kindly Address to<br>
+                                Feliix Inc.
+                            </td>
+                            <td>
+                                <b>For Bank Details for Wiring</b>
 
-                            <div class="company_signature" v-if="(pag.sig != undefined ? pag.sig.item_company.length : 0) > 0">
-
-                                <div class="signature" v-for="(tt, index) in pag.sig.item_company">
-                                    <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
-                                    <div class="name">{{ tt.name }}</div>
-                                    <div class="line1">{{ tt.position }}</div>
-                                    <div class="line2">{{ tt.phone }}</div>
-                                    <div class="line3">{{ tt.email }}</div>
+                                <div class="acount_info" v-for="(tt, index) in pg.payment_term.list">
+                                    <span class="account_name">{{ tt.bank_name }}</span>
+                                    <span>: </span>
+                                    <div class="first_line">
+                                        {{ tt.first_line }}
+                                    </div>
+                                    <div class="second_line">{{ tt.second_line }}</div>
+                                    <div class="third_line">{{ tt.third_line }}</div>
                                 </div>
-                            </div>
+
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="area_conforme" style="margin-top: 60px;">
+                    <div class="conforme"
+                         v-if="(pg.sig != undefined ? pg.sig.item_client.length : 0)  + (pg.sig != undefined ?  pg.sig.item_company.length : 0) > 0">
+                        CONFORME
+                    </div>
+
+                    <div class="client_signature" v-if="(pg.sig != undefined ? pg.sig.item_client.length : 0) > 0">
+
+                        <div class="signature" v-for="(tt, index) in pg.sig.item_client">
+                            <div class="pic"></div>
+                            <div class="name">{{ tt.name }}</div>
+                            <div class="line1">{{ tt.position }}</div>
+                            <div class="line2">{{ tt.phone }}</div>
+                            <div class="line3">{{ tt.email }}</div>
                         </div>
 
                     </div>
 
-                </td>
-            </tr>
-            </tbody>
+                    <div class="company_signature" v-if="(pg.sig != undefined ? pg.sig.item_company.length : 0) > 0">
 
-
-            <tfoot>
-            <tr>
-                <th>
-                    <div class="qn_footer_space">&nbsp;</div>
-
-                    <div class="qn_footer">
-                        <div class="foot_divider"></div>
-                        <div class="line1">{{ footer_first_line }}</div>
-                        <div class="line2">{{ footer_second_line }}</div>
-                        <div class="qn_page_number"></div>
+                        <div class="signature" v-for="(tt, index) in pg.sig.item_company">
+                            <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
+                            <div class="name">{{ tt.name }}</div>
+                            <div class="line1">{{ tt.position }}</div>
+                            <div class="line2">{{ tt.phone }}</div>
+                            <div class="line3">{{ tt.email }}</div>
+                        </div>
                     </div>
-                </th>
-            </tr>
-            </tfoot>
 
-        </table>
+                </div>
+
+            </div>
+
+            <div class="qn_footer">
+
+                <div class="foot_divider"></div>
+                <div class="line1">{{ footer_first_line }}</div>
+                <div class="line2">{{ footer_second_line }}</div>
+                <div class="qn_page_number">{{ index + 1 }}</div>
+
+            </div>
+
+        </div>
+
+
     </div>
 
 
@@ -3895,9 +3715,9 @@ header( 'location:index' );
                         <div class="pagenation">
                             <a class="prev" :disabled="product_page == 1" @click="pre_page(); filter_apply();">Prev
                                 10</a>
-                            <a class="page" v-for="pag in product_pages_10" @click="product_page=pag; filter_apply(pag);"
-                               v-bind:style="[pag == product_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{
-                                pag
+                            <a class="page" v-for="pg in product_pages_10" @click="product_page=pg; filter_apply(pg);"
+                               v-bind:style="[pg == product_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{
+                                pg
                                 }}</a>
                             <a class="next" :disabled="product_page == product_pages.length"
                                @click="nex_page(); filter_apply();">Next
@@ -3918,6 +3738,7 @@ header( 'location:index' );
                             </tr>
                             </thead>
                             <tbody>
+
                             <template v-for="(item, index) in displayedPosts">
                                 <!-- Product Set 子類別的產品，套用以下格式輸出到頁面上 -->
                                 <!-- set_format1 會套用在 Product Set 產品的主敘述，set_format2 會套用在 Product Set 產品的 Product1, Product 2, Product 3 -->
@@ -4246,7 +4067,6 @@ header( 'location:index' );
                             </tr>
 
                             </template>
-
 
                             </tbody>
                         </table>
@@ -5331,9 +5151,9 @@ header( 'location:index' );
                         <div class="pagenation">
                             <a class="prev" :disabled="product_page == 1" @click="pre_page(); filter_apply();">Prev
                                 10</a>
-                            <a class="page" v-for="pag in product_pages_10" @click="product_page=pag; filter_apply(pag);"
-                               v-bind:style="[pag == product_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{
-                                pag
+                            <a class="page" v-for="pg in product_pages_10" @click="product_page=pg; filter_apply(pg);"
+                               v-bind:style="[pg == product_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{
+                                pg
                                 }}</a>
                             <a class="next" :disabled="product_page == product_pages.length"
                                @click="nex_page(); filter_apply();">Next
@@ -5479,9 +5299,50 @@ header( 'location:index' );
         app.show_title = true;
     };
 
+    function generatePDF() {
+        // Select all elements with the class 'pdf-section'
+        const sections = document.querySelectorAll('.qn_page');
+
+        // Create a new container to append sections for the PDF
+        const container = document.createElement('div');
+
+        // PDF page width in inches (assuming 'letter' size)
+        const pdfWidthInches = 8.5; // For A4 use 8.27 inches
+        const pixelPerInch = 96; // Standard for most screens
+
+        // Append each section to the container
+        sections.forEach(section => {
+            container.appendChild(section.cloneNode(true)); // Clone and append the content
+        });
+
+        // Set up html2pdf options
+        const opt = {
+            margin: 0.5,                        // Adjust margins as needed
+            filename: 'fitted-sections.pdf',     // Output file name
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,                       // Base scale to capture content
+                onclone: (clonedDoc) => {
+                    // Set the cloned document to auto width to ensure full capture
+                    clonedDoc.body.style.width = 'auto';
+                }
+            },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        // Use html2pdf to generate the PDF and scale the canvas to fit PDF width
+        html2pdf().from(container).toPdf().get('pdf').then((pdf) => {
 
 
-    async function generate_pdf_test() {
+            // Adjust the canvas scale factor to fit the PDF page width
+            opt.html2canvas.scale = 2;
+
+            // Render the PDF with the scaled canvas
+            return html2pdf().from(container).set(opt).save();
+        });
+    }
+
+        async function generate_pdf_test() {
             const { jsPDF } = window.jspdf;
 
             const items = document.querySelectorAll('.qn_page');
@@ -5510,23 +5371,28 @@ header( 'location:index' );
                     leftHeight -= pageHeight;
                     position -= 841.89;
 
-                    if(leftHeight > 0) {
-                        pdf.addPage();
-                    }
+                    
+                    pdf.addPage();
                     
                 }
 
                 
             }
 
+            // remove last page
+            pdf.deletePage(pdf.internal.getNumberOfPages());
+
             pdf.save('quotation_' + app.quotation_no + '.pdf');
         }
+    </script>
+
 
 </script>
 <script defer src="js/npm/vue/dist/vue.js"></script>
 <script defer src="js/axios.min.js"></script>
 <script defer src="js/npm/sweetalert2@9.js"></script>
-<script defer src="js/quotation_pageless.js"></script>
+<script defer src="js/quotation_test.js"></script>
 <script defer src="js/html2canvas/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </html>
