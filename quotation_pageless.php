@@ -2554,6 +2554,16 @@ header( 'location:index' );
             border-radius: 5px;
         }
 
+        @media screen and (max-width: 640px) {
+            .functionbar {
+                padding-top: 180px;
+            }
+
+            body.gray .mainContent {
+                padding-top: 325px;
+            }
+        }
+
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
