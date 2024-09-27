@@ -3964,7 +3964,7 @@ Installation:`;
                  
               }, 1000);  // Optional delay before hiding
 
-              //_this.is_pdf = false;
+              _this.is_pdf = false;
           }
 
         });
