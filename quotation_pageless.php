@@ -2023,6 +2023,10 @@ header( 'location:index' );
             position: relative;
         }
 
+        .list_function.main a.print.purple {
+            background-color: mediumpurple;
+        }
+
         .list_function.main a.print::after {
             content: " ";
             background: url(images/ui/btn_print.svg);
@@ -2624,7 +2628,7 @@ header( 'location:index' );
                 </div>
 
                 <div class="popupblock">
-                    <a id="export_pdf" class="print" title="Export Whole Quotation into PDF" @click="export_pdf()"></a>
+                    <a id="export_pdf" class="print purple" title="Export Whole Quotation into PDF" @click="export_pdf()"></a>
                 </div>
 
                 <div class="popupblock">

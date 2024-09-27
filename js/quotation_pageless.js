@@ -2479,7 +2479,7 @@ var app = new Vue({
 
             axios({
               method: "get",
-              url: "https://feliixload.myvnc.com/quotation_pageless_test?id=" + this.id,
+              url: "https://feliixload.myvnc.com/quotation_pageless?id=" + this.id,
               responseType: "blob",
             })
                 .then(function(response) {
