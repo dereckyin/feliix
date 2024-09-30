@@ -101,6 +101,7 @@ if($jwt){
         $stmt->execute();
 
         $date_needed_array = [];
+        $currecny_array = [];
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $id = $row['id'];
@@ -117,6 +118,13 @@ if($jwt){
             
             $product = "";
             $product = GetProductMain($row['pid'], $row['v1'], $row['v2'], $row['v3'], $db);
+
+            $product_currency = GetProductCurrency($row['pid'], $db);
+            
+
+            if(in_array($product_currency, $currecny_array) == false)
+                $currecny_array[] = $product_currency;
+
 
             $brand = $row['brand'];
             $brand_other = $row['brand_other'];
@@ -197,6 +205,10 @@ if($jwt){
             "pid" => $row['pid'],
             );
         }
+
+        $currency_string = "";
+        sort($currecny_array);
+        $currecny_string = implode(' ', $currecny_array);
 
         $od_name = "";
         $stage_id = 0;
@@ -457,8 +469,8 @@ if($jwt){
             $sheet->setCellValue('D10', '品名/型號' . "\n" . 'CODE');
             $sheet->setCellValue('E10', '顏色/規格' . "\n" . 'COLOR/SPEC');
             $sheet->setCellValue('F10', '數量' . "\n" . 'QTY');
-            $sheet->setCellValue('G10', '單價' . "\n" . 'PRICE');
-            $sheet->setCellValue('H10', '總價' . "\n" . 'AMOUNT');
+            $sheet->setCellValue('G10', '單價' . "\n" . 'PRICE' . "\n" . '(' . $currecny_string . ')');
+            $sheet->setCellValue('H10', '總價' . "\n" . 'AMOUNT' . "\n" . '(' . $currecny_string . ')');
             $sheet->setCellValue('I10', '交期' . "\n" . 'DELIVERY');
             $sheet->setCellValue('J10', '寄送地址');
             $sheet->setCellValue('K10', '海運或空運');
@@ -598,7 +610,7 @@ if($jwt){
             $j = $i + 2;
             $sheet->mergeCells('B' . $i . ':E' . $j );
 
-            $sheet->setCellValue('F' . $i, '小計');
+            $sheet->setCellValue('F' . $i, '小計' . " " . '(' . $currecny_string . ')');
             $sheet->getStyle('F'. $i)->applyFromArray($center_style);
             $sheet->mergeCells('G' . $i . ':J' . $i);
 
@@ -625,7 +637,7 @@ if($jwt){
             $i++;
 
 
-            $sheet->setCellValue('F' . $i, '總計');
+            $sheet->setCellValue('F' . $i, '總計' . " " . '(' . $currecny_string . ')');
             $sheet->getStyle('F'. $i)->applyFromArray($center_style);
             $sheet->mergeCells('G' . $i . ':J' . $i);
 
@@ -1099,6 +1111,23 @@ function GetValue($str)
     $obj = explode('=>', $str);
 
     return isset($obj[1]) ? trim($obj[1]) : "";
+}
+
+function GetProductCurrency($id, $db)
+{
+    $sql = "SELECT currency FROM product_category WHERE id = ". $id . " and STATUS <> -1";
+    $currency = "";
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+        if($row['currency'] != '')
+            $currency = $row['currency'];
+    }
+
+    return $currency;
 }
 
 function GetProductMain($id, $v1, $v2, $v3, $db)
