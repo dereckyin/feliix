@@ -2493,6 +2493,17 @@ header( 'location:index' );
             border-radius: 5px;
         }
 
+        #export_pdf {
+            display: none;
+        }
+
+        @media screen and (max-width: 1050px) {
+
+            #export_pdf {
+                display: inline-block;
+            }
+        }
+
         @media screen and (max-width: 640px) {
             .functionbar {
                 padding-top: 180px;
