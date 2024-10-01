@@ -692,6 +692,42 @@
 
                 </div>
 
+                <div class="box-content">
+                    <ul>
+                        <li><b>View Cost Price of Lighting Product</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="cost_lighting" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(34)">Cancel</a>
+                        <a class="btn" @click="save(34)">Save</a>
+                    </div>
+
+                </div>
+
+                <div class="box-content">
+                    <ul>
+                        <li><b>View Cost Price of System Furniture Product</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="cost_furniture" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(35)">Cancel</a>
+                        <a class="btn" @click="save(35)">Save</a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

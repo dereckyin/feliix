@@ -117,6 +117,9 @@ var app = new Vue({
 
     brand_handler: '',
 
+    cost_lighting : false,
+    cost_furniture : false,
+
   },
 
   created() {
@@ -124,11 +127,13 @@ var app = new Vue({
     this.accessory_get_category_item();
     this.getUserName();
     this.getTagGroup();
+    this.getProductControl();
   },
 
   computed: {
     show_ntd : function() {
-      if(this.name.toLowerCase() ==='dereck' || this.name.toLowerCase() ==='ariel lin' || this.name.toLowerCase() ==='kuan' || this.name.toLowerCase() ==='testmanager')
+      // if(this.name.toLowerCase() ==='dereck' || this.name.toLowerCase() ==='ariel lin' || this.name.toLowerCase() ==='kuan' || this.name.toLowerCase() ==='testmanager')
+      if((this.cost_lighting == true && this.category == '10000000') || (this.cost_furniture == true && this.category == '20000000'))
        return true;
       else
       return false;
@@ -185,6 +190,38 @@ var app = new Vue({
   },
 
   methods: {
+
+    getProductControl: function() {
+      var token = localStorage.getItem('token');
+      var form_Data = new FormData();
+      let _this = this;
+
+      form_Data.append('jwt', token);
+
+      axios({
+          method: 'get',
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+          url: 'api/product_control',
+          data: form_Data
+      })
+      .then(function(response) {
+          //handle success
+          _this.cost_lighting = response.data.cost_lighting;
+          _this.cost_furniture = response.data.cost_furniture;
+
+      })
+      .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+      });
+    },
+
     
     auto_complete_product_code: async function(key) {
       let _this = this;
@@ -262,6 +299,18 @@ var app = new Vue({
 $("#tag01").selectpicker("refresh");
 $("#tag0102").selectpicker("refresh");
       console.log("edit category");
+
+      if(this.category == '10000000')
+      {
+        this.brand_handler = "";
+        this.currency = "NTD";
+      }
+
+      if(this.category == '20000000')
+      {
+        this.brand_handler = "PH";
+        this.currency = "PHP";
+      }
     },
 
     product_get_category_item: function() {
@@ -543,10 +592,41 @@ $("#tag0102").selectpicker("refresh");
       for (var i = 0; i < files.length; i++)
       {
         let file = files[i];
-        if(file.name.split('.').pop() != 'ies')
+        if(file.name.split('.').pop().toLowerCase() != 'ies')
         {
           Swal.fire({
             text: "The extension of selected file need to be “.ies”",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
+          return;
+        }
+
+        if(file.size > 1024 * 1024 * 10)
+        {
+          Swal.fire({
+            text: "The size of selected file should be less than 10MB.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
+          return;
+        }
+      }
+    },
+
+    check_skp(e)
+    {
+      // check extension and file size
+      let files = e.target.files;
+      for (var i = 0; i < files.length; i++)
+      {
+        let file = files[i];
+        if(file.name.split('.').pop().toLowerCase() != 'skp')
+        {
+          Swal.fire({
+            text: "The extension of selected file need to be “.skp",
             icon: "warning",
             confirmButtonText: "OK",
           });
@@ -1166,6 +1246,76 @@ $("#tag0102").selectpicker("refresh");
                 }
               }
         }
+
+        if(this.sub_category == '20000000')
+          {
+    
+            // check if file_skp file ext is .ics
+            for (var i = 0; i < this.$refs.file_skp.files.length; i++)
+              {
+                let file = this.$refs.file_skp.files[i];
+                if(file.name.split('.').pop().toLowerCase() != 'skp')
+                {
+                  Swal.fire({
+                    text: "The extension of all selected files need to be “.skp.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                  });
+                  return;
+                }
+              }
+      
+              for (var i = 0; i < this.$refs.file_manual.files.length; i++)
+                {
+                  let file = this.$refs.file_manual.files[i];
+                  if(file.name.split('.').pop() != 'zip' && file.name.split('.').pop() != 'rar' && 
+                    file.name.split('.').pop() != '7z' && file.name.split('.').pop() != 'pdf' && 
+                    file.name.split('.').pop() != 'doc' && file.name.split('.').pop() != 'docx' && 
+                    file.name.split('.').pop() != 'xls' && file.name.split('.').pop() != 'xlsx' && 
+                    file.name.split('.').pop() != 'ppt' && file.name.split('.').pop() != 'pptx' && 
+                    file.name.split('.').pop() != 'jpg' && file.name.split('.').pop() != 'jpeg' && 
+                    file.name.split('.').pop() != 'png' && file.name.split('.').pop() != 'gif' && 
+                    file.name.split('.').pop() != 'bmp' && file.name.split('.').pop() != 'tiff' && 
+                    file.name.split('.').pop() != 'svg')
+                  {
+                    Swal.fire({
+                      text: "Each selected file needs to be picture, Microsoft office document, pdf or compressed file.",
+                      icon: "warning",
+                      confirmButtonText: "OK",
+                    });
+                    return;
+                  }
+                }
+      
+              // check if file size < 10MB
+              for (var i = 0; i < this.$refs.file_skp.files.length; i++)
+              {
+                let file = this.$refs.file_skp.files[i];
+                if(file.size > 10 * 1024 * 1024)
+                {
+                  Swal.fire({
+                    text: "The size of each selected file needs to be lower than “10MB”.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                  });
+                  return;
+                }
+              }
+      
+              for (var i = 0; i < this.$refs.file_manual.files.length; i++)
+                {
+                  let file = this.$refs.file_manual.files[i];
+                  if(file.size > 10 * 1024 * 1024)
+                  {
+                    Swal.fire({
+                      text: "The size of each selected file needs to be lower than “10MB”.",
+                      icon: "warning",
+                      confirmButtonText: "OK",
+                    });
+                    return;
+                  }
+                }
+          }
 
 
       let show_confirm = true;

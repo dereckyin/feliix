@@ -44,7 +44,9 @@ var app = new Vue({
     inventory_checker : [],
     inventory_approver : [],
     frozen_office: "",
-    quotation_control: "",
+    quotation_control: [],
+    cost_lighting: [],
+    cost_furniture: [],
   },
 
   created() {
@@ -203,6 +205,14 @@ var app = new Vue({
                 _this.quotation_control = res.data[0]["quotation_control"].split(",").filter(function (el) {
                   return el != "";
                 });
+              if (kind === 34 || kind === undefined)
+                _this.cost_lighting = res.data[0]["cost_lighting"].split(",").filter(function (el) {
+                  return el != "";
+                });
+              if (kind === 35 || kind === undefined)
+                _this.cost_furniture = res.data[0]["cost_furniture"].split(",").filter(function (el) {
+                  return el != "";
+                });
 
           },
           (err) => {
@@ -281,6 +291,8 @@ var app = new Vue({
       form_Data.append("inventory_approver", this.inventory_approver.toString());
       form_Data.append("frozen_office", this.frozen_office);
       form_Data.append("quotation_control", this.quotation_control);
+      form_Data.append("cost_lighting", this.cost_lighting);
+      form_Data.append("cost_furniture", this.cost_furniture);
 
       axios({
         method: "post",
