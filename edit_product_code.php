@@ -903,7 +903,7 @@ try {
                 </li>
             </ul>
 
-            <ul class="NTD_price" v-show="show_ntd === true">
+            <ul class="NTD_price" v-if="show_ntd === true">
                 <li>
                     Currency of Cost Price
                 </li>
@@ -911,11 +911,12 @@ try {
                     <select class="form-control one_half" v-model="currency">
                         <option value="NTD">NTD</option>
                         <option value="USD">USD</option>
+                        <option value="PHP">PHP</option>
                     </select>
                 </li>
             </ul>
 
-            <ul class="NTD_price" v-show="show_ntd === true">
+            <ul class="NTD_price" v-if="show_ntd === true">
                 <li>
                     Cost Price
                 </li>
@@ -1029,7 +1030,7 @@ try {
                 </li>
             </ul>
 
-            <ul>
+            <ul v-if="category == '10000000'">
                 <li>
                     IES File
                 </li>
@@ -1037,6 +1038,21 @@ try {
                     <input class="one_third" type="file" ref="file_ics" name="file_ics[]" multiple @change="check_ics($event)">
 
                     <div class="list_attch" v-for="(item,index) in product_ics" :key="index">
+                        <input type="checkbox" :id="'file' + item.id" v-model="item.is_checked">
+                        <label :for="'file' + item.id"><a class="attch" :href="baseURL + item.gcp_name"
+                                            target="_blank">{{item.filename}}</a></label>
+                    </div>
+                </li>
+            </ul>
+
+            <ul v-if="category == '20000000'">
+                <li>
+                SketchUp File
+                </li>
+                <li class="additional_file">
+                    <input class="one_third" type="file" ref="file_skp" name="file_skp[]" multiple @change="check_skp($event)">
+
+                    <div class="list_attch" v-for="(item,index) in product_skp" :key="index">
                         <input type="checkbox" :id="'file' + item.id" v-model="item.is_checked">
                         <label :for="'file' + item.id"><a class="attch" :href="baseURL + item.gcp_name"
                                             target="_blank">{{item.filename}}</a></label>
@@ -1219,7 +1235,7 @@ try {
                         <input type="text" class="form-control" placeholder="Code" v-model="detail.code">
                         <input type="text" class="form-control" placeholder="Name" v-model="detail.name">
                         <input class="NTD_price form-control" type="text" class="form-control"
-                               placeholder="Additional Price (NTD)" v-model="detail.price_ntd" v-show="show_ntd === true">
+                               placeholder="Additional Price (NTD)" v-model="detail.price_ntd" v-if="show_ntd === true">
                         <input type="text" class="form-control" placeholder="Additional Price" v-model="detail.price">
                         <div>
                             <span @click="clear_accessory_item(detail.cat_id, detail.id)">x</span>
@@ -1345,7 +1361,7 @@ try {
                         <th>{{ variation2_text }}</th>
                         <th>{{ variation3_text }}</th>
                      <!--   <th>Code</th> -->
-                        <th class="NTD_price" v-show="show_ntd === true">Cost Price</th>
+                        <th class="NTD_price" v-if="show_ntd === true">Cost Price</th>
                         <th>Suggested Retail Price</th>
                         <th>Quoted Price</th>
                         <th>Image</th>
@@ -1360,7 +1376,7 @@ try {
                         <td>{{ item.v2 }}</td>
                         <td>{{ item.v3 }}</td>
                      <!--   <td><input type="text" class="form-control" v-model="item.code"></td> -->
-                        <td class="NTD_price" v-show="show_ntd === true">
+                        <td class="NTD_price" v-if="show_ntd === true">
                             <input type="number" class="form-control" v-model="item.price_ntd"  @change="product_price_ntd_changed(item.id)">
                             <input type="text" class="form-control updated_date" v-model="item.price_ntd_change">
                         </td>
@@ -1602,7 +1618,7 @@ try {
                             </td>
                         </tr>
 
-                        <tr class="NTD_price" v-show="show_ntd === true">
+                        <tr class="NTD_price" v-if="show_ntd === true">
                             <td><input class="alone" type="checkbox" value="1" v-model="price_ntd_checked"></td>
                             <td>Cost Price</td>
                             <td><input type="text" class="form-control" v-model='bulk_price_ntd'></td>
@@ -1615,7 +1631,7 @@ try {
                             </td>
                         </tr>
 
-                        <tr class="NTD_price" v-show="show_ntd === true">
+                        <tr class="NTD_price" v-if="show_ntd === true">
                             <td><input class="alone" type="checkbox" value="1" v-model="price_ntd_last_change_checked"></td>
                             <td>Last Updated</td>
                             <td><input type="date" class="form-control" v-model='bulk_price_ntd_last_change'></td>
