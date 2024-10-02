@@ -1577,10 +1577,22 @@ $("#tag0102").selectpicker("refresh");
           }
 
           // ics
-          for (var i = 0; i < this.$refs.file_ics.files.length; i++) {
-            let file = this.$refs.file_ics.files[i];
-            form_Data.append("file_ics[" + i + "]", file);
+          if(this.$refs.file_ics != undefined)
+          {
+            for (var i = 0; i < this.$refs.file_ics.files.length; i++) {
+              let file = this.$refs.file_ics.files[i];
+              form_Data.append("file_ics[" + i + "]", file);
+            }
           }
+
+          // skp
+          if(this.$refs.file_skp != undefined)
+            {
+              for (var i = 0; i < this.$refs.file_skp.files.length; i++) {
+                let file = this.$refs.file_skp.files[i];
+                form_Data.append("file_skp[" + i + "]", file);
+              }
+            }
 
           // manual
           for (var i = 0; i < this.$refs.file_manual.files.length; i++) {
@@ -1730,6 +1742,8 @@ $("#tag0102").selectpicker("refresh");
 
       var f_ics = this.$refs.file_ics;
       if(f_ics) f_ics.value = "";
+      var f_skp = this.$refs.file_skp;
+      if(f_skp) f_skp.value = "";
       var f_manual = this.$refs.file_manual;
       if(f_manual) f_manual.value = "";
 
