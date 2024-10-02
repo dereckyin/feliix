@@ -626,7 +626,7 @@ $("#tag0102").selectpicker("refresh");
         if(file.name.split('.').pop().toLowerCase() != 'skp')
         {
           Swal.fire({
-            text: "The extension of selected file need to be “.skp",
+            text: "The extension of all selected files need to be “.skp”.",
             icon: "warning",
             confirmButtonText: "OK",
           });
