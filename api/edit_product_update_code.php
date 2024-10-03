@@ -845,7 +845,7 @@ else
             }
         }
 
-        $product_id = $last_id;
+        $product_id = $batch_id;
 
         // delete accessory
         $query = "DELETE FROM accessory
