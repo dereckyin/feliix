@@ -691,7 +691,7 @@ var app = new Vue({
         if(file.name.split('.').pop().toLowerCase() != 'ies')
         {
           Swal.fire({
-            text: "The extension of selected file need to be “.ies”",
+            text: "The extension of all selected files need to be “.ies”.",
             icon: "warning",
             confirmButtonText: "OK",
           });
