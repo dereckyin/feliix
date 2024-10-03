@@ -567,7 +567,7 @@ else
 
 
 
-        $product_id = $last_id;
+        $product_id = $batch_id;
 
         // accessory
         for ($i = 0; $i < count($accessory_array); $i++) {
