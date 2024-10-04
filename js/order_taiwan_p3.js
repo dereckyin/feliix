@@ -452,6 +452,9 @@ var app = new Vue({
         last_have_spec : true,
 
         is_edit_dn : false,
+
+        cost_lighting : false,
+        cost_furniture : false,
     },
   
     created() {
@@ -512,6 +515,7 @@ var app = new Vue({
       this.getAccess();
       this.getOdMain();
       this.getTagGroup();
+      this.getProductControl();
     },
   
     computed: {
@@ -557,6 +561,37 @@ var app = new Vue({
     },
   
     methods: {
+      getProductControl: function() {
+        var token = localStorage.getItem('token');
+        var form_Data = new FormData();
+        let _this = this;
+  
+        form_Data.append('jwt', token);
+  
+        axios({
+            method: 'get',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            url: 'api/product_control',
+            data: form_Data
+        })
+        .then(function(response) {
+            //handle success
+            _this.cost_lighting = response.data.cost_lighting;
+            _this.cost_furniture = response.data.cost_furniture;
+  
+        })
+        .catch(function(response) {
+            //handle error
+            Swal.fire({
+              text: JSON.stringify(response),
+              icon: 'error',
+              confirmButtonText: 'OK'
+            })
+        });
+      },
+      
       getTagGroup: function() {
         let _this = this;
           

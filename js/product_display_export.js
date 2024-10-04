@@ -114,6 +114,8 @@ var app = new Vue({
     name :"",
     title: "",
     is_manager: "",
+    cost_lighting : false,
+    cost_furniture : false,
   },
 
   created() {
@@ -146,12 +148,13 @@ var app = new Vue({
 
     this.get_records(this.id);
     this.getUserName();
-
+    this.getProductControl();
   },
 
   computed: {
     show_ntd : function() {
-      if(this.name.toLowerCase() ==='dereck' || this.name.toLowerCase() ==='ariel lin' || this.name.toLowerCase() ==='kuan' || this.name.toLowerCase() ==='testmanager')
+      //if(this.name.toLowerCase() ==='dereck' || this.name.toLowerCase() ==='ariel lin' || this.name.toLowerCase() ==='kuan' || this.name.toLowerCase() ==='testmanager')
+      if((this.cost_lighting == true && this.category == 'Lighting') || (this.cost_furniture == true && this.category == 'Systems Furniture'))
        return true;
       else
       return false;
@@ -187,6 +190,36 @@ var app = new Vue({
   },
 
   methods: {
+    getProductControl: function() {
+      var token = localStorage.getItem('token');
+      var form_Data = new FormData();
+      let _this = this;
+
+      form_Data.append('jwt', token);
+
+      axios({
+          method: 'get',
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+          url: 'api/product_control',
+          data: form_Data
+      })
+      .then(function(response) {
+          //handle success
+          _this.cost_lighting = response.data.cost_lighting;
+          _this.cost_furniture = response.data.cost_furniture;
+
+      })
+      .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+      });
+    },
     chunk: function(arr, size, item) {
       var newArr = [];
       for (var i=0; i<arr.length; i+=size) {
