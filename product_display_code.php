@@ -958,32 +958,6 @@
             </div>
         </div>
 
-        <div class="middle_section" v-if="specification.length > 0 && category == 'Systems Furniture'">
-                <h5>Specification</h5>
-
-                <table>
-                    <tbody>
-                    <template v-for="(item, index) in specification">
-                        <tr>
-                            <td>
-                                {{item.k1}}
-                            </td>
-                            <td>
-                                {{item.v1}}
-                            </td>
-                            <td>
-                                {{item.k2}}
-                            </td>
-                            <td> {{item.v2}}</td>
-                        </tr>
-                    </template>
-
-                    </tbody>
-
-                </table>
-
-                </div>
-
         <div class="lower_section" v-if="((notes != null && notes != '') || description != '') && sub_category != '10020000'">
             <h5>Description</h5>
             <p style="white-space: break-spaces;">{{ description }}</p>
