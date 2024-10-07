@@ -146,6 +146,9 @@ var app = new Vue({
     last_have_spec : true,
     cost_lighting : false,
     cost_furniture : false,
+
+    attribute_list : [],
+
   },
 
   created() {
@@ -418,18 +421,18 @@ var app = new Vue({
 
        this.specification = [];
 
-      for(var i=0; i < this.special_infomation.length; i++)
+      for(var i=0; i < this.attribute_list.length; i++)
       {
-        if(this.special_infomation[i].value != "")
+        if(this.attribute_list[i].category != "")
         {
           if(k1 == "")
           {
-            k1 = this.special_infomation[i].category;
-            v1 = this.special_infomation[i].value;
+            k1 = this.attribute_list[i].category;
+            v1 = this.attribute_list[i].value.join(' ');
           }else if(k1 !== "" && k2 == "")
           {
-            k2 = this.special_infomation[i].category;
-            v2 = this.special_infomation[i].value;
+            k2 = this.attribute_list[i].category;
+            v2 = this.attribute_list[i].value.join(' ');
 
             obj = {k1: k1, v1: v1, k2: k2, v2: v2};
             this.specification.push(obj);
@@ -583,6 +586,8 @@ var app = new Vue({
             _this.phased_out_text = _this.record[0]['phased_out_text'];
 
             _this.product_set = _this.record[0]['product_set'];
+
+            _this.attribute_list = _this.record[0]['attribute_list'];
 
             for(var i = 0; i < _this.product_set.length; i++)
             {
