@@ -1634,6 +1634,65 @@ function GetProductSet($id, $qty, $db){
                     $variation3_custom = "";
                 }
 
+                $attribute_list = [];
+
+                if($special_info_json != null)
+                {
+                    for($i=0; $i<count($special_info_json); $i++)
+                    {
+                        $value = [];
+                        $_category = $special_info_json[$i]->category;
+
+                        if($special_info_json[$i]->value != "")
+                        {
+                            array_push($value, $special_info_json[$i]->value);
+                           
+                        }
+                        
+                        if($variation1_text == $special_info_json[$i]->category)
+                        {
+                            $value = $variation1_value;
+                        }
+                        if($variation2_text == $special_info_json[$i]->category)
+                        {
+                            $value = $variation2_value;
+                        }
+                        if($variation3_text == $special_info_json[$i]->category)
+                        {
+                            $value = $variation3_value;
+                        }
+
+                        if(count($value) > 0)
+                        {
+                            $attribute_list[] = array("category" => $special_info_json[$i]->category,
+                                           "value" => $value,
+                                        );
+                        }
+                    }
+                }
+
+                if($variation1 == "custom" && $variation1_custom != "1st Variation")
+                {
+                    $attribute_list[] = array("category" => $variation1_text,
+                                           "value" => $variation1_value,
+                                        );
+                }
+
+                if($variation2 == "custom" && $variation2_custom != "2nd Variation")
+                {
+                    $attribute_list[] = array("category" => $variation2_text,
+                                           "value" => $variation2_value,
+                                        );
+                }
+
+                if($variation3 == "custom" && $variation3_custom != "3rd Variation")
+                {
+                    $attribute_list[] = array("category" => $variation3_text,
+                                           "value" => $variation3_value,
+                                        );
+                }
+
+
                 $str_price_change = "";
                 if($max_price_change != "" || $min_price_change != "")
                 {
@@ -1735,6 +1794,7 @@ function GetProductSet($id, $qty, $db){
                                     "variation1_custom" => $variation1_custom,
                                     "variation2_custom" => $variation2_custom,
                                     "variation3_custom" => $variation3_custom,
+                                    "attribute_list" => $attribute_list,
                                     "accessory" => $accessory,
                                     "special_information" => $special_information,
                                     "accessory_information" => $accessory_information,
