@@ -1612,28 +1612,28 @@ var app = new Vue({
 
         this.specification = [];
  
-       for(var i=0; i < this.special_infomation.length; i++)
-       {
-         if(this.special_infomation[i].value != "")
-         {
-           if(k1 == "")
-           {
-             k1 = this.special_infomation[i].category;
-             v1 = this.special_infomation[i].value;
-           }else if(k1 !== "" && k2 == "")
-           {
-             k2 = this.special_infomation[i].category;
-             v2 = this.special_infomation[i].value;
- 
-             obj = {k1: k1, v1: v1, k2: k2, v2: v2};
-             this.specification.push(obj);
-             k1  = '';
-             k2  = '';
-             v1  = '';
-             v2  = '';
-           }
-         }
-       }
+        for(var i=0; i < this.attributes.length; i++)
+          {
+            if(this.attributes[i].category != "")
+            {
+              if(k1 == "")
+              {
+                k1 = this.attributes[i].category;
+                v1 = this.attributes[i].value.join(' ');
+              }else if(k1 !== "" && k2 == "")
+              {
+                k2 = this.attributes[i].category;
+                v2 = this.attributes[i].value.join(' ');
+    
+                obj = {k1: k1, v1: v1, k2: k2, v2: v2};
+                this.specification.push(obj);
+                k1  = '';
+                k2  = '';
+                v1  = '';
+                v2  = '';
+              }
+            }
+          }
  
        if(k1 == "" && this.product.moq !== "")
        {
