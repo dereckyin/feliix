@@ -108,11 +108,11 @@ $query_cnt = "SELECT count(*) cnt
                     left join project_main p on pm.project_id = p.id
                 where pm.status <> -1  ";
 
-if(is_quotation_control($db, $username) == false)
-{
-    $query = $query . " and pm.can_view = '' ";
-    $query_cnt = $query_cnt . " and pm.can_view = '' ";
-}
+if (is_quotation_control($db, $username) == false) {
+    // 沒有權限的情況
+    $query .= " and ((pm.can_view = '') or (pm.can_view = 'N' and pm.project_category = 'Lighting')) ";
+    $query_cnt .= " and ((pm.can_view = '') or (pm.can_view = 'N' and pm.project_category = 'Lighting')) ";
+} 
 
 if($all != "all")
 {

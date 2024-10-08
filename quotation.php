@@ -2604,7 +2604,7 @@ header( 'location:index' );
             </div>
 
             <div class="block fn">
-                <div class="popupblock" v-if="quotation_control && project_category == 'Office Systems'">
+                <div class="popupblock" v-if="quotation_control && project_category == 'Office Systems' ">
 
                     <a id="status_fn1" class="fn1" :ref="'a_fn1'" @click="show_access = !show_access">Access</a>
 
@@ -2619,13 +2619,13 @@ header( 'location:index' );
                                         <option value="N">No</option>
                                     </select>
                                 </dd>
-                                <dt>Can be Duplicated?</dt>
+                                <!-- <dt>Can be Duplicated?</dt>
                                 <dd>
                                     <select v-model="temp_can_duplicate">
                                         <option value="">Yes</option>
                                         <option value="N">No</option>
                                     </select>
-                                </dd>
+                                </dd> -->
 
                                 <div class="btnbox">
                                     <a class="btn small" @click="cancel_access()">Close</a>
@@ -2638,7 +2638,7 @@ header( 'location:index' );
 
 
 
-                <div class="popupblock">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
                     <?php
                 if ($test_manager[0]  == "1")
                 {
@@ -2696,7 +2696,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
                     <?php
                     if ($test_manager[0]  == "1")
                     {
@@ -2731,7 +2731,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
 
                     <?php
                     if ($test_manager[0]  == "1")
@@ -2820,7 +2820,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
 
                     <?php
                     if ($test_manager[0]  == "1")
@@ -2988,7 +2988,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
 
                     <?php
                     if ($test_manager[0]  == "1")
@@ -3082,7 +3082,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
 
                     <?php
                     if ($test_manager[0]  == "1")
@@ -3150,7 +3150,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
 
                     <?php
                     if ($test_manager[0]  == "1")
@@ -3232,7 +3232,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
 
                     <?php
                     if ($test_manager[0]  == "1")

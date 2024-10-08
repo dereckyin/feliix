@@ -1291,7 +1291,7 @@ else
 
 function EmailNotify($id, $db){
     $_record = GetProductCategory($id, $db);
-    if(count($_record) > 0)
+    if(count($_record) > 0 && $_record[0]['category'] != "20000000")
         product_notify("update", $_record[0]);
 }
 
