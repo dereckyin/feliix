@@ -423,7 +423,7 @@ var app = new Vue({
 
       for(var i=0; i < this.attribute_list.length; i++)
       {
-        if(this.attribute_list[i].category != "")
+        if(this.attribute_list[i].type != "custom")
         {
           if(k1 == "")
           {

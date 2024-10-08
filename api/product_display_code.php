@@ -526,6 +526,7 @@ else
                 {
                     for($i=0; $i<count($special_info_json); $i++)
                     {
+                        $custom = "";
                         $value = [];
                         $_category = $special_info_json[$i]->category;
 
@@ -538,20 +539,24 @@ else
                         if($variation1_text == $special_info_json[$i]->category)
                         {
                             $value = $variation1_value;
+                            $custom = "custom";
                         }
                         if($variation2_text == $special_info_json[$i]->category)
                         {
                             $value = $variation2_value;
+                            $custom = "custom";
                         }
                         if($variation3_text == $special_info_json[$i]->category)
                         {
                             $value = $variation3_value;
+                            $custom = "custom";
                         }
 
                         if(count($value) > 0)
                         {
                             $attribute_list[] = array("category" => $special_info_json[$i]->category,
                                            "value" => $value,
+                                           "type" => $custom,
                                         );
                         }
                     }
@@ -561,6 +566,7 @@ else
                 {
                     $attribute_list[] = array("category" => $variation1_text,
                                            "value" => $variation1_value,
+                                           "type" => "custom",
                                         );
                 }
 
@@ -568,6 +574,7 @@ else
                 {
                     $attribute_list[] = array("category" => $variation2_text,
                                            "value" => $variation2_value,
+                                           "type" => "custom",
                                         );
                 }
 
@@ -575,6 +582,7 @@ else
                 {
                     $attribute_list[] = array("category" => $variation3_text,
                                            "value" => $variation3_value,
+                                           "type" => "custom",
                                         );
                 }
 

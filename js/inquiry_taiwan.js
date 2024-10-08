@@ -1534,7 +1534,7 @@ out : "",
  
         for(var i=0; i < this.attributes.length; i++)
           {
-            if(this.attributes[i].category != "")
+            if(this.attributes[i].type != "custom")
             {
               if(k1 == "")
               {
