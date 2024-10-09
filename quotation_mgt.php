@@ -665,11 +665,11 @@ header( 'location:index' );
                         <li>{{receive_record.created_at}}<br>{{receive_record.created_by}}</li>
                         <li>{{receive_record.post[0].updated_at}}<br>{{receive_record.post[0].username}}</li>
                         <li>
-                            <button v-show="receive_record.is_edited == 1 && ((receive_record.project_category == 'Office Systems' && quotation_control == true) || receive_record.project_category == 'Lighting') " @click="editRow(receive_record)"><i
+                            <button v-show="receive_record.is_edited == 1 && ((receive_record.project_category == 'Office Systems' && quotation_control == true) || receive_record.project_category != 'Office Systems') " @click="editRow(receive_record)"><i
                                     class="fas fa-edit"></i></button>
-                            <button v-show="receive_record.is_edited == 1 && ((receive_record.project_category == 'Office Systems' && quotation_control == true) || receive_record.project_category == 'Lighting') "  @click="duplicateRow(receive_record)"><i
+                            <button v-show="receive_record.is_edited == 1 && ((receive_record.project_category == 'Office Systems' && quotation_control == true) || receive_record.project_category != 'Office Systems') "  @click="duplicateRow(receive_record)"><i
                                     class="fas fa-copy"></i></button>
-                            <button v-show="receive_record.is_edited == 1 && ((receive_record.project_category == 'Office Systems' && quotation_control == true) || receive_record.project_category == 'Lighting') " @click="deleteRow(receive_record)"><i
+                            <button v-show="receive_record.is_edited == 1 && ((receive_record.project_category == 'Office Systems' && quotation_control == true) || receive_record.project_category != 'Office Systems') " @click="deleteRow(receive_record)"><i
                                     class="fas fa-trash"></i></button>
                             <button v-show="receive_record.is_edited == 0" @click="confirmRow(receive_record)"><i
                                     class="fas fa-check"></i></button>
