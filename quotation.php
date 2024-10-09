@@ -2638,7 +2638,7 @@ header( 'location:index' );
 
 
 
-                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category != 'Office Systems' ">
                     <?php
                 if ($test_manager[0]  == "1")
                 {
@@ -2696,7 +2696,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category != 'Office Systems' ">
                     <?php
                     if ($test_manager[0]  == "1")
                     {
@@ -2731,7 +2731,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category != 'Office Systems' ">
 
                     <?php
                     if ($test_manager[0]  == "1")
@@ -2820,7 +2820,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category != 'Office Systems' ">
 
                     <?php
                     if ($test_manager[0]  == "1")
@@ -2988,7 +2988,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category != 'Office Systems' ">
 
                     <?php
                     if ($test_manager[0]  == "1")
@@ -3082,7 +3082,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category != 'Office Systems' ">
 
                     <?php
                     if ($test_manager[0]  == "1")
@@ -3150,7 +3150,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category != 'Office Systems' ">
 
                     <?php
                     if ($test_manager[0]  == "1")
@@ -3232,7 +3232,7 @@ header( 'location:index' );
                 </div>
 
 
-                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category == 'Lighting' ">
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category != 'Office Systems' ">
 
                     <?php
                     if ($test_manager[0]  == "1")
