@@ -353,7 +353,18 @@ var app = new Vue({
     },
   
     watch: {
-
+      show_access() {
+        if(this.show_access) {
+          this.show_header = false;
+          this.show_footer = false;
+          this.show_page = false;
+          this.show_subtotal = false;
+          this.show_total = false;
+          this.show_term = false;
+          this.show_payment_term = false;
+          this.show_signature = false;
+        }
+      },
       
   
       show_header() {
@@ -365,6 +376,7 @@ var app = new Vue({
           this.show_term = false;
           this.show_payment_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -377,6 +389,7 @@ var app = new Vue({
           this.show_term = false;
           this.show_payment_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -389,6 +402,7 @@ var app = new Vue({
           this.show_term = false;
           this.show_payment_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -400,6 +414,7 @@ var app = new Vue({
           this.show_total = false;
           this.show_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -412,6 +427,7 @@ var app = new Vue({
           this.show_term = false;
           this.show_payment_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -424,6 +440,7 @@ var app = new Vue({
           this.show_header = false;
           this.show_payment_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -436,6 +453,7 @@ var app = new Vue({
           this.show_header = false;
           this.show_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -448,6 +466,7 @@ var app = new Vue({
           this.show_term = false;
           this.show_payment_term = false;
           this.show_header = false;
+          this.show_access = false;
         }
       },
       
