@@ -279,6 +279,8 @@ var app = new Vue({
         can_duplicate: '',
         
         is_pdf : false,
+        cost_lighting : false,
+        cost_furniture : false,
     },
   
     created() {
@@ -313,6 +315,7 @@ var app = new Vue({
       this.get_signature();
       this.getTagGroup();
       this.getQuotationControl();
+      this.getProductControl();
     },
   
     computed: {
@@ -336,7 +339,18 @@ var app = new Vue({
   
     watch: {
 
-      
+      show_access() {
+        if(this.show_access) {
+          this.show_header = false;
+          this.show_footer = false;
+          this.show_page = false;
+          this.show_subtotal = false;
+          this.show_total = false;
+          this.show_term = false;
+          this.show_payment_term = false;
+          this.show_signature = false;
+        }
+      },
   
       show_header() {
         if(this.show_header) {
@@ -347,6 +361,7 @@ var app = new Vue({
           this.show_term = false;
           this.show_payment_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -359,6 +374,7 @@ var app = new Vue({
           this.show_term = false;
           this.show_payment_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -371,6 +387,7 @@ var app = new Vue({
           this.show_term = false;
           this.show_payment_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -382,6 +399,7 @@ var app = new Vue({
           this.show_total = false;
           this.show_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -394,6 +412,7 @@ var app = new Vue({
           this.show_term = false;
           this.show_payment_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -406,6 +425,7 @@ var app = new Vue({
           this.show_header = false;
           this.show_payment_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -418,6 +438,7 @@ var app = new Vue({
           this.show_header = false;
           this.show_term = false;
           this.show_signature = false;
+          this.show_access = false;
         }
       },
 
@@ -430,6 +451,7 @@ var app = new Vue({
           this.show_term = false;
           this.show_payment_term = false;
           this.show_header = false;
+          this.show_access = false;
         }
       },
       
@@ -443,6 +465,36 @@ var app = new Vue({
     },
   
     methods: {
+      getProductControl: function() {
+        var token = localStorage.getItem('token');
+        var form_Data = new FormData();
+        let _this = this;
+  
+        form_Data.append('jwt', token);
+  
+        axios({
+            method: 'get',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            url: 'api/product_control',
+            data: form_Data
+        })
+        .then(function(response) {
+            //handle success
+            _this.cost_lighting = response.data.cost_lighting;
+            _this.cost_furniture = response.data.cost_furniture;
+  
+        })
+        .catch(function(response) {
+            //handle error
+            Swal.fire({
+              text: JSON.stringify(response),
+              icon: 'error',
+              confirmButtonText: 'OK'
+            })
+        });
+      },
       
       getQuotationControl: function() {
         var token = localStorage.getItem('token');
@@ -748,6 +800,13 @@ var app = new Vue({
         list.replace(/\n+$/, "");
         sn = sn + 1;
 
+        description = "";
+        if(this.product.category == 'Systems Furniture')
+        {
+          description = list;
+          list = this.product.description;
+        }
+
         if(this.toggle_type == 'A')
         {
           item = {
@@ -769,7 +828,7 @@ var app = new Vue({
             srp: srp,
             discount: "0",
             amount: "",
-            desc: "",
+            desc: description,
             list: list,
             num:"",
             ratio:1.0,
@@ -798,7 +857,7 @@ var app = new Vue({
             ratio:1.0,
             discount: "0",
             amount: "",
-            desc: "",
+            desc: description,
             list: list,
             num:"",
             notes: "",
@@ -925,6 +984,13 @@ var app = new Vue({
 
         sn = sn + 1;
 
+        description = "";
+        if(this.product.category == 'Systems Furniture')
+        {
+          description = list;
+          list = this.product.description;
+        }
+
         if(this.toggle_type == 'A')
         {
           item = {
@@ -943,7 +1009,7 @@ var app = new Vue({
             srp: srp,
             discount: "0",
             amount: "",
-            desc: "",
+            desc: description,
             list: list,
             num:"",
             notes: "",
@@ -972,7 +1038,7 @@ var app = new Vue({
             ratio:1.0,
             discount: "0",
             amount: "",
-            desc: "",
+            desc: description,
             list: list,
             num:"",
             notes: "",
@@ -996,18 +1062,18 @@ var app = new Vue({
 
         this.specification = [];
  
-       for(var i=0; i < this.special_infomation.length; i++)
+       for(var i=0; i < this.attributes.length; i++)
        {
-         if(this.special_infomation[i].value != "")
+         if(this.attributes[i].type != "custom")
          {
            if(k1 == "")
            {
-             k1 = this.special_infomation[i].category;
-             v1 = this.special_infomation[i].value;
+             k1 = this.attributes[i].category;
+             v1 = this.attributes[i].value.join(' ');
            }else if(k1 !== "" && k2 == "")
            {
-             k2 = this.special_infomation[i].category;
-             v2 = this.special_infomation[i].value;
+             k2 = this.attributes[i].category;
+             v2 = this.attributes[i].value.join(' ');
  
              obj = {k1: k1, v1: v1, k2: k2, v2: v2};
              this.specification.push(obj);

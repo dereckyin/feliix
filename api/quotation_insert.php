@@ -68,6 +68,22 @@ else
         $decoded = JWT::decode($jwt, $key, array('HS256'));
 
         $user_id = $decoded->data->id;
+
+        if($project_id != 0 && $kind == '')
+            $info = GetProjectInfo($project_id, $db);
+
+        $can_view = "";
+        $project_category = "";
+        if($info == 1)  // Office Systems
+        {
+            $can_view = "N";
+            $project_category = "Office Systems";
+        }
+
+        if($info == 2)  // Lighting
+        {
+            $project_category = "Lighting";
+        }
   
         // now you can apply
         $uid = $user_id;
@@ -90,6 +106,7 @@ else
             `footer_first_line` = :footer_first_line,
             `footer_second_line` = :footer_second_line,
             `pageless` = :pageless,
+            `can_view` = :can_view,
             
             `status` = 0,
             `create_id` = :create_id,
@@ -115,6 +132,7 @@ else
         $stmt->bindParam(':footer_first_line', $footer_first_line);
         $stmt->bindParam(':footer_second_line', $footer_second_line);
         $stmt->bindParam(':pageless', $pageless);
+        $stmt->bindParam(':can_view', $can_view);
 
         $stmt->bindParam(':create_id', $user_id);
        
@@ -238,10 +256,10 @@ else
 
         }
 
-        if($add_term == 'y'){
+        if($add_term == 'y' && $project_id != 0 && $kind == ''){
             $project_category = GetProjectInfo($project_id, $db);
 
-            if($project_category == LIGHTING)
+            if($project_category == 2)
             {
                 $title = "Warranty";
                 $brief = "Terms and Condition";
