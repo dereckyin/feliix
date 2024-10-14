@@ -5318,6 +5318,10 @@ ALTER TABLE quotation ADD COLUMN can_view VARCHAR(2) DEFAULT '';
 ALTER TABLE quotation ADD COLUMN can_duplicate VARCHAR(2) DEFAULT '';
 
 -- 20240912
+ALTER TABLE product_category
+ADD COLUMN `brand_handler` varchar(64) COLLATE utf8mb4_unicode_ci default '';
+
+-- 20240912
 ALTER TABLE access_control
 ADD COLUMN `cost_lighting` text COLLATE utf8mb4_unicode_ci;
 
