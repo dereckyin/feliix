@@ -158,6 +158,7 @@ else
                 $product = GetProduct($id, $db);
 
                 $product_ics = GetAttachment($id, 'product_ics', $db);
+                $product_skp = GetAttachment($id, 'product_skp', $db);
                 $product_manual = GetAttachment($id, 'product_manual', $db);
 
                 $variation1_value = [];
@@ -320,6 +321,7 @@ else
                                     "brand_handler" => $brand_handler,
 
                                     "product_ics" => $product_ics,
+                                    "product_skp" => $product_skp,
                                     "product_manual" => $product_manual,
 
             );

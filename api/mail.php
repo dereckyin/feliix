@@ -16048,6 +16048,8 @@ function product_notify($action, $_record)
 
     $mail->IsHTML(true);
 
+    $receiver = "";
+
     //收件人名單內容
     if($_record["category"] == "20000000")
     {
@@ -16085,6 +16087,14 @@ function product_notify($action, $_record)
         {
             $receiver .= $list["username"] . ", ";
             $mail->AddAddress($list["email"], $list["username"]);
+        }
+
+        if($_record["brand"] == 'SEEDDESIGN' || $_record["brand"] == 'XCELLENT')
+        {
+            $receiver .= "Gian Miguel Osorio" . ", ";
+            $mail->AddAddress("gianm.feliix@gmail.com", "Gian Miguel Osorio");
+            $receiver .= "Ronnel B. Balmeo" . ", ";
+            $mail->AddAddress("ronnel@feliix.com", "Ronnel B. Balmeo");
         }
 
         $mail->AddAddress("ariel@feliix.com", "Ariel Lin");

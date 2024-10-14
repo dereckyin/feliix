@@ -126,10 +126,14 @@ var app = new Vue({
     brand_handler: '',
 
     product_ics: [],
+    product_skp: [],
     product_manual : [],
 
     submit: false,
     tag_group : [],
+
+    cost_lighting : false,
+    cost_furniture : false,
   },
 
   created() {
@@ -163,13 +167,15 @@ var app = new Vue({
     this.get_records(this.id);
     this.getUserName();
     //this.getTagGroup();
+    this.getProductControl();
 
   },
 
   computed: {
     show_ntd : function() {
-      if(this.name.toLowerCase() ==='dereck' || this.name.toLowerCase() ==='ariel lin' || this.name.toLowerCase() ==='kuan' || this.name.toLowerCase() ==='testmanager')
-       return true;
+      // if(this.name.toLowerCase() ==='dereck' || this.name.toLowerCase() ==='ariel lin' || this.name.toLowerCase() ==='kuan' || this.name.toLowerCase() ==='testmanager')
+      if((this.cost_lighting == true && this.category == '10000000') || (this.cost_furniture == true && this.category == '20000000'))
+        return true;
       else
       return false;
     }
@@ -199,6 +205,38 @@ var app = new Vue({
   },
 
   methods: {
+    
+    getProductControl: function() {
+      var token = localStorage.getItem('token');
+      var form_Data = new FormData();
+      let _this = this;
+
+      form_Data.append('jwt', token);
+
+      axios({
+          method: 'get',
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+          url: 'api/product_control',
+          data: form_Data
+      })
+      .then(function(response) {
+          //handle success
+          _this.cost_lighting = response.data.cost_lighting;
+          _this.cost_furniture = response.data.cost_furniture;
+
+      })
+      .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+      });
+    },
+
     getTagGroup: function() {
       let _this = this;
         
@@ -354,6 +392,7 @@ var app = new Vue({
 
             _this.brand_handler = _this.record[0]['brand_handler'];
             _this.product_ics = _this.record[0]['product_ics'];
+            _this.product_skp = _this.record[0]['product_skp'];
             _this.product_manual = _this.record[0]['product_manual'];
 
             var select_items = _this.record[0]['tags'].split(',');
@@ -641,6 +680,7 @@ var app = new Vue({
       }
     },
 
+    
     check_ics(e)
     {
       // check extension and file size
@@ -648,16 +688,14 @@ var app = new Vue({
       for (var i = 0; i < files.length; i++)
       {
         let file = files[i];
-        if(file.name.split('.').pop() != 'ies')
+        if(file.name.split('.').pop().toLowerCase() != 'ies')
         {
           Swal.fire({
-            text: "The extension of selected file need to be “.ies”",
+            text: "The extension of all selected files need to be “.ies”.",
             icon: "warning",
             confirmButtonText: "OK",
           });
-
           e.target.value = '';
-          
           return;
         }
 
@@ -668,9 +706,40 @@ var app = new Vue({
             icon: "warning",
             confirmButtonText: "OK",
           });
-
           e.target.value = '';
+          return;
+        }
+      }
+    },
 
+
+    
+    check_skp(e)
+    {
+      // check extension and file size
+      let files = e.target.files;
+      for (var i = 0; i < files.length; i++)
+      {
+        let file = files[i];
+        if(file.name.split('.').pop().toLowerCase() != 'skp')
+        {
+          Swal.fire({
+            text: "The extension of all selected files need to be “.skp”.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
+          return;
+        }
+
+        if(file.size > 1024 * 1024 * 10)
+        {
+          Swal.fire({
+            text: "The size of selected file should be less than 10MB.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          e.target.value = '';
           return;
         }
       }
@@ -1301,6 +1370,77 @@ var app = new Vue({
             }
       }
 
+      
+      if(this.sub_category == '20000000')
+        {
+  
+          // check if file_skp file ext is .ics
+          for (var i = 0; i < this.$refs.file_skp.files.length; i++)
+            {
+              let file = this.$refs.file_skp.files[i];
+              if(file.name.split('.').pop().toLowerCase() != 'skp')
+              {
+                Swal.fire({
+                  text: "The extension of all selected files need to be “.skp.",
+                  icon: "warning",
+                  confirmButtonText: "OK",
+                });
+                return;
+              }
+            }
+    
+            for (var i = 0; i < this.$refs.file_manual.files.length; i++)
+              {
+                let file = this.$refs.file_manual.files[i];
+                if(file.name.split('.').pop() != 'zip' && file.name.split('.').pop() != 'rar' && 
+                  file.name.split('.').pop() != '7z' && file.name.split('.').pop() != 'pdf' && 
+                  file.name.split('.').pop() != 'doc' && file.name.split('.').pop() != 'docx' && 
+                  file.name.split('.').pop() != 'xls' && file.name.split('.').pop() != 'xlsx' && 
+                  file.name.split('.').pop() != 'ppt' && file.name.split('.').pop() != 'pptx' && 
+                  file.name.split('.').pop() != 'jpg' && file.name.split('.').pop() != 'jpeg' && 
+                  file.name.split('.').pop() != 'png' && file.name.split('.').pop() != 'gif' && 
+                  file.name.split('.').pop() != 'bmp' && file.name.split('.').pop() != 'tiff' && 
+                  file.name.split('.').pop() != 'svg')
+                {
+                  Swal.fire({
+                    text: "Each selected file needs to be picture, Microsoft office document, pdf or compressed file.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                  });
+                  return;
+                }
+              }
+    
+            // check if file size < 10MB
+            for (var i = 0; i < this.$refs.file_skp.files.length; i++)
+            {
+              let file = this.$refs.file_skp.files[i];
+              if(file.size > 10 * 1024 * 1024)
+              {
+                Swal.fire({
+                  text: "The size of each selected file needs to be lower than “10MB”.",
+                  icon: "warning",
+                  confirmButtonText: "OK",
+                });
+                return;
+              }
+            }
+    
+            for (var i = 0; i < this.$refs.file_manual.files.length; i++)
+              {
+                let file = this.$refs.file_manual.files[i];
+                if(file.size > 10 * 1024 * 1024)
+                {
+                  Swal.fire({
+                    text: "The size of each selected file needs to be lower than “10MB”.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                  });
+                  return;
+                }
+              }
+        }
+
       let show_confirm = true;
 
       if(this.code.trim() != '')
@@ -1587,6 +1727,14 @@ var app = new Vue({
           }
           form_Data.append("ics_items_to_delete", JSON.stringify(delete_ics));
 
+          var delete_skp = [];
+          for(var i = 0; i < this.record[0].product_skp.length; i++)
+          {
+            if(this.record[0].product_skp[i].is_checked === false)
+              delete_skp.push(this.record[0].product_skp[i].id);
+          }
+          form_Data.append("skp_items_to_delete", JSON.stringify(delete_skp));
+
           var delete_manual = [];
           for(var i = 0; i < this.record[0].product_manual.length; i++)
           {
@@ -1596,9 +1744,21 @@ var app = new Vue({
           form_Data.append("manual_items_to_delete", JSON.stringify(delete_manual));
 
           // ics
-          for (var i = 0; i < this.$refs.file_ics.files.length; i++) {
-            let file = this.$refs.file_ics.files[i];
-            form_Data.append("file_ics[" + i + "]", file);
+          if(this.$refs.file_ics != undefined)
+          {
+            for (var i = 0; i < this.$refs.file_ics.files.length; i++) {
+              let file = this.$refs.file_ics.files[i];
+              form_Data.append("file_ics[" + i + "]", file);
+            }
+          }
+
+          // skp
+          if(this.$refs.file_skp != undefined)
+          {
+            for (var i = 0; i < this.$refs.file_skp.files.length; i++) {
+              let file = this.$refs.file_skp.files[i];
+              form_Data.append("file_skp[" + i + "]", file);
+            }
           }
 
           // manual
@@ -1630,6 +1790,8 @@ var app = new Vue({
 
               var f_ics = _this.$refs.file_ics;
               if(f_ics) f_ics.value = "";
+              var f_skp = _this.$refs.file_skp;
+              if(f_skp) f_skp.value = "";
               var f_manual = _this.$refs.file_manual;
               if(f_manual) f_manual.value = "";
 
@@ -1703,6 +1865,8 @@ var app = new Vue({
 
       var f_ics = this.$refs.file_ics;
       if(f_ics) f_ics.value = "";
+      var f_skp = this.$refs.file_skp;
+      if(f_skp) f_skp.value = "";
       var f_manual = this.$refs.file_manual;
       if(f_manual) f_manual.value = "";
 

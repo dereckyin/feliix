@@ -5320,6 +5320,7 @@ ALTER TABLE quotation ADD COLUMN can_duplicate VARCHAR(2) DEFAULT '';
 -- 20240912
 ALTER TABLE product_category
 ADD COLUMN `brand_handler` varchar(64) COLLATE utf8mb4_unicode_ci default '';
+
 -- 20240912
 ALTER TABLE access_control
 ADD COLUMN `cost_lighting` text COLLATE utf8mb4_unicode_ci;
@@ -5328,3 +5329,109 @@ ADD COLUMN `cost_lighting` text COLLATE utf8mb4_unicode_ci;
 ALTER TABLE access_control
 ADD COLUMN `cost_furniture` text COLLATE utf8mb4_unicode_ci;
 
+UPDATE product_category_attribute SET `category` = 'Workstations' WHERE cat_id = '20040000';
+UPDATE product_category_attribute SET `category` = 'Partitions' WHERE cat_id = '20050000';
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20060000', 2, 1, 'Accessories', 1, NOW());
+
+UPDATE product_category_attribute SET `status` = -1, updated_id = 1, updated_at = NOW() WHERE left(cat_id, 1) = '2' AND `level` = 3 AND `status` <> -1;
+
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030001', 3, 0, 'Type', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030002', 3, 0, 'Function', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030003', 3, 0, 'Dimensions', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030004', 3, 0, 'Side Table Dimensions', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030005', 3, 0, 'Dimension of Table Top', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030006', 3, 0, 'Material of Table Top', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030007', 3, 0, 'Finish of Table Top', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030008', 3, 0, 'Edging of Table Top', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030009', 3, 0, 'Modesty', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030010', 3, 0, 'Material of Modesty', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030011', 3, 0, 'Finish of Modesty', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030012', 3, 0, 'Available Color of Modesty', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030013', 3, 0, 'Type of Legs', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030014', 3, 0, 'Material of Legs', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030015', 3, 0, 'Finish of Legs', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030016', 3, 0, 'Available Color of Legs', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030017', 3, 0, 'Type of Grommet', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030018', 3, 0, 'Dimension of Grommet', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030019', 3, 0, 'Material of Grommet', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030020', 3, 0, 'Wiretray', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030021', 3, 0, 'Vertical Cable Management', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20030022', 3, 0, 'Others', 1, NOW());
+
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050001', 3, 0, 'Type', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050002', 3, 0, 'Width of Partition', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050003', 3, 0, 'Height of Partition', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050004', 3, 0, 'Material of Frames', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050005', 3, 0, 'Finish of Frames', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050006', 3, 0, 'Available Color of Frames', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050007', 3, 0, 'Material of Partition Panel', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050008', 3, 0, 'Finish of Partition Panel', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050009', 3, 0, 'Available Color of Partition Panel', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050010', 3, 0, 'Partition Brackets', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050011', 3, 0, 'Raceway', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050012', 3, 0, 'Electrical Outlet', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20050013', 3, 0, 'Others', 1, NOW());
+
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040001', 3, 0, 'Type', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040002', 3, 0, 'Configuration', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040003', 3, 0, 'Overall Dimension', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040004', 3, 0, 'Dimension of Table Top per User', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040005', 3, 0, 'Material of Table Top', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040006', 3, 0, 'Finish of Table Top', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040007', 3, 0, 'Edging of Table Top', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040008', 3, 0, 'Type of Legs', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040009', 3, 0, 'Material of Legs', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040010', 3, 0, 'Finish of Legs', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040011', 3, 0, 'Available Color of Legs', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040012', 3, 0, 'Type of Partition', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040013', 3, 0, 'Dimensions of Partition', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040014', 3, 0, 'Material of Partition', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040015', 3, 0, 'Finish of Partition', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040016', 3, 0, 'Material of Frame', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040017', 3, 0, 'Finish of Frame', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040018', 3, 0, 'Available Color of Frame', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040019', 3, 0, 'Type of Grommet', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040020', 3, 0, 'Dimension of Grommet', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040021', 3, 0, 'Material of Grommet', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040022', 3, 0, 'Wiretray', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040023', 3, 0, 'Vertical Cable Management', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040024', 3, 0, 'Electrical Outlet', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20040025', 3, 0, 'Others', 1, NOW());
+
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010001', 3, 0, 'Type', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010002', 3, 0, 'Dimension', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010003', 3, 0, 'Material of Body', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010004', 3, 0, 'Material of Shelf', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010005', 3, 0, 'Material of Door', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010006', 3, 0, 'Finish of Cabinet', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010007', 3, 0, 'Available Color', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010008', 3, 0, 'No. of Shelf', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010009', 3, 0, 'Adjustable Shelf', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010010', 3, 0, 'No. of Door', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010011', 3, 0, 'No. of Drawer', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010012', 3, 0, 'Type of Handle', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010013', 3, 0, 'Type of Lockset', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010014', 3, 0, 'Capacity', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010015', 3, 0, 'Center Divider', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20010016', 3, 0, 'Wheel Caster', 1, NOW());
+
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020001', 3, 0, 'Type', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020002', 3, 0, 'Function', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020003', 3, 0, 'Dimension of Overall', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020004', 3, 0, 'Dimension of Seat', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020005', 3, 0, 'Height of Seat', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020006', 3, 0, 'Headrest', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020007', 3, 0, 'Armrest', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020008', 3, 0, 'Material of Backrest', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020009', 3, 0, 'Available Color of Backrest', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020010', 3, 0, 'Material of Seat', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020011', 3, 0, 'Available Color of Seat', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020012', 3, 0, 'Type of Base', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020013', 3, 0, 'Material of Base', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20020014', 3, 0, 'Other Mechanism', 1, NOW());
+
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20060001', 3, 0, 'Type', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20060002', 3, 0, 'Dimension', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20060003', 3, 0, 'Material', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20060004', 3, 0, 'Finish', 1, NOW());
+INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20060005', 3, 0, 'Others', 1, NOW());

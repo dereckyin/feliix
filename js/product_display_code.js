@@ -144,6 +144,11 @@ var app = new Vue({
     last_order_at : '',
     last_order_url : '',
     last_have_spec : true,
+    cost_lighting : false,
+    cost_furniture : false,
+
+    attribute_list : [],
+
   },
 
   created() {
@@ -177,11 +182,13 @@ var app = new Vue({
     this.get_records(this.id);
     this.getUserName();
     this.load_print_option(this.id);
+    this.getProductControl();
   },
 
   computed: {
     show_ntd : function() {
-      if(this.name.toLowerCase() ==='dereck' || this.name.toLowerCase() ==='ariel lin' || this.name.toLowerCase() ==='kuan' || this.name.toLowerCase() ==='testmanager')
+      // if(this.name.toLowerCase() ==='dereck' || this.name.toLowerCase() ==='ariel lin' || this.name.toLowerCase() ==='kuan' || this.name.toLowerCase() ==='testmanager')
+      if((this.cost_lighting == true && this.category == 'Lighting') || (this.cost_furniture == true && this.category == 'Systems Furniture'))
        return true;
       else
       return false;
@@ -217,6 +224,37 @@ var app = new Vue({
   },
 
   methods: {
+    getProductControl: function() {
+      var token = localStorage.getItem('token');
+      var form_Data = new FormData();
+      let _this = this;
+
+      form_Data.append('jwt', token);
+
+      axios({
+          method: 'get',
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+          url: 'api/product_control',
+          data: form_Data
+      })
+      .then(function(response) {
+          //handle success
+          _this.cost_lighting = response.data.cost_lighting;
+          _this.cost_furniture = response.data.cost_furniture;
+
+      })
+      .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+      });
+    },
+
     toggle_price : function() {
       this.toggle = !this.toggle;
     },
@@ -383,18 +421,18 @@ var app = new Vue({
 
        this.specification = [];
 
-      for(var i=0; i < this.special_infomation.length; i++)
+      for(var i=0; i < this.attribute_list.length; i++)
       {
-        if(this.special_infomation[i].value != "")
+        if(this.attribute_list[i].type != "custom")
         {
           if(k1 == "")
           {
-            k1 = this.special_infomation[i].category;
-            v1 = this.special_infomation[i].value;
+            k1 = this.attribute_list[i].category;
+            v1 = this.attribute_list[i].value.join(' ');
           }else if(k1 !== "" && k2 == "")
           {
-            k2 = this.special_infomation[i].category;
-            v2 = this.special_infomation[i].value;
+            k2 = this.attribute_list[i].category;
+            v2 = this.attribute_list[i].value.join(' ');
 
             obj = {k1: k1, v1: v1, k2: k2, v2: v2};
             this.specification.push(obj);
@@ -548,6 +586,8 @@ var app = new Vue({
             _this.phased_out_text = _this.record[0]['phased_out_text'];
 
             _this.product_set = _this.record[0]['product_set'];
+
+            _this.attribute_list = _this.record[0]['attribute_list'];
 
             for(var i = 0; i < _this.product_set.length; i++)
             {

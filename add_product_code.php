@@ -822,19 +822,21 @@
                     </li>
                 </ul>
 
-                <ul class="NTD_price" v-show="show_ntd === true">
+                <ul class="NTD_price" v-if="show_ntd === true">
                     <li>
                         Currency of Cost Price
                     </li>
+                    <!-- 如果使用者選擇當前產品為 Category=Lighting，則系統會預設選 NTD 為成本價的幣種 Currency； 如果使用者選擇當前產品為 Category=Systems Furniture，則系統會預設選 PHP 為成本價的幣種 Currency -->
                     <li>
                         <select class="form-control one_half" v-model="currency">
                             <option value="NTD">NTD</option>
                             <option value="USD">USD</option>
+                            <option value="PHP">PHP</option>
                         </select>
                     </li>
                 </ul>
 
-                <ul class="NTD_price" v-show="show_ntd === true">
+                <ul class="NTD_price" v-if="show_ntd === true">
                     <li>
                         Cost Price
                     </li>
@@ -948,12 +950,23 @@
                     </li>
                 </ul>
 
-                <ul>
+                <!-- 如果使用者選擇當前產品為 Category=Lighting，則下面這個 IES Files 的<ul>結構會被製造出來； 如果使用者選擇當前產品為 Category=Systems Furniture，則下面這個 IES Files 的<ul>結構不會被製造出來 -->
+                <ul v-if="category == '10000000'">
                     <li>
                         IES File
                     </li>
                     <li class="additional_file">
                         <input class="one_third" type="file" ref="file_ics" name="file_ics[]" multiple  @change="check_ics($event)">
+                    </li>
+                </ul>
+
+                <!-- 如果使用者選擇當前產品為 Category=Lighting，則下面這個 SketchUp File 的<ul>結構不會被製造出來； 如果使用者選擇當前產品為 Category=Systems Furniture，則下面這個 SketchUp File 的<ul>結構會被製造出來 -->
+                <ul v-if="category == '20000000'">
+                    <li>
+                        SketchUp File
+                    </li>
+                    <li class="additional_file">
+                        <input class="one_third" type="file" ref="file_skp" name="file_skp[]" multiple  @change="check_skp($event)">
                     </li>
                 </ul>
 
@@ -1115,7 +1128,7 @@
                             <input type="text" class="form-control" placeholder="Name" v-model="detail.name">
                             <input class="NTD_price form-control" type="text" class="form-control"
                                 placeholder="Additional Price (NTD)" v-model="detail.price_ntd"
-                                v-show="show_ntd === true">
+                                v-if="show_ntd === true">
                             <input type="text" class="form-control" placeholder="Additional Price"
                                 v-model="detail.price">
                             <div>
@@ -1239,7 +1252,7 @@
                                 <th>{{ variation2_text }}</th>
                                 <th>{{ variation3_text }}</th>
                                 <!-- <th>Code</th> -->
-                                <th class="NTD_price" v-show="show_ntd === true">Cost Price</th>
+                                <th class="NTD_price" v-if="show_ntd === true">Cost Price</th>
                                 <th>Suggested Retail Price</th>
                                 <th>Quoted Price</th>
                                 <th>Image</th>
@@ -1254,7 +1267,7 @@
                                 <td>{{ item.v2 }}</td>
                                 <td>{{ item.v3 }}</td>
                                 <!--   <td><input type="text" class="form-control" v-model="item.code"></td> -->
-                                <td class="NTD_price" v-show="show_ntd === true"><input type="number"
+                                <td class="NTD_price" v-if="show_ntd === true"><input type="number"
                                         class="form-control" v-model="item.price_ntd"
                                         @change="product_price_ntd_changed(item.id)"><input type="text"
                                         class="form-control updated_date" v-model="item.price_ntd_change"></td>
@@ -1487,7 +1500,7 @@
                                     </td>
                                 </tr>
 
-                                <tr class="NTD_price" v-show="show_ntd === true">
+                                <tr class="NTD_price" v-if="show_ntd === true">
                                     <td><input class="alone" type="checkbox" value="1" v-model="price_ntd_checked"></td>
                                     <td>Cost Price</td>
                                     <td><input type="text" class="form-control" v-model='bulk_price_ntd'></td>
@@ -1500,7 +1513,7 @@
                                     </td>
                                 </tr>
 
-                                <tr class="NTD_price" v-show="show_ntd === true">
+                                <tr class="NTD_price" v-if="show_ntd === true">
                                     <td><input class="alone" type="checkbox" value="1"
                                             v-model="price_ntd_last_change_checked"></td>
                                     <td>Last Updated</td>

@@ -891,6 +891,7 @@ try {
                         </td>
 
                         <td>
+                        <span v-show="((cost_lighting == true && item.category == 'Lighting') || (cost_furniture == true && item.category == 'Systems Furniture')) && toggle == true">CP: {{ item.price_ntd }} <br v-if="item.str_price_ntd_change"> {{ item.str_price_ntd_change ?  item.str_price_ntd_change : '' }} <br></span>
                             <span>SRP: {{ item.price }}<br></span>
                             <span>QP: {{ item.quoted_price }}<br></span>
                         </td>
@@ -1027,7 +1028,7 @@ try {
 
                         </td>
                         <td>
-                            <span v-show="show_ntd == true && toggle == true">CP: {{ set.price_ntd }} <br v-if="set.str_price_ntd_change"> {{ set.str_price_ntd_change ?  set.str_price_ntd_change : '' }} <br></span>
+                            <span v-show="((cost_lighting == true && set.category == 'Lighting') || (cost_furniture == true && set.category == 'Systems Furniture')) && toggle == true">CP: {{ set.price_ntd }} <br v-if="set.str_price_ntd_change"> {{ set.str_price_ntd_change ?  set.str_price_ntd_change : '' }} <br></span>
                             <span>SRP: {{ set.price }} <br v-if="set.str_price_change"> {{ set.str_price_change ?  set.str_price_change : '' }} <br></span>
                             <span>QP: {{ set.quoted_price }} <br v-if="set.str_quoted_price_change"> {{ set.str_quoted_price_change ? set.str_quoted_price_change : '' }} <br></span>
                         </td>
@@ -1157,7 +1158,7 @@ try {
 
                         </td>
                         <td>
-                            <span v-show="show_ntd == true && toggle == true">CP: {{ item.price_ntd }} <br v-if="item.str_price_ntd_change"> {{ item.str_price_ntd_change ?  item.str_price_ntd_change : '' }} <br></span>
+                            <span v-show="((cost_lighting == true && item.category == 'Lighting') || (cost_furniture == true && item.category == 'Systems Furniture')) && toggle == true">CP: {{ item.price_ntd }} <br v-if="item.str_price_ntd_change"> {{ item.str_price_ntd_change ?  item.str_price_ntd_change : '' }} <br></span>
                             <span>SRP: {{ item.price }} <br v-if="item.str_price_change"> {{ item.str_price_change ?  item.str_price_change : '' }} <br></span>
                             <span>QP: {{ item.quoted_price }} <br v-if="item.str_quoted_price_change"> {{ item.str_quoted_price_change ? item.str_quoted_price_change : '' }} <br></span>
                         </td>

@@ -453,6 +453,9 @@ var app = new Vue({
         last_have_spec : true,
 
         is_edit_dn : false,
+
+        cost_lighting : false,
+        cost_furniture : false,
     },
   
     created() {
@@ -513,6 +516,7 @@ var app = new Vue({
       this.getAccess();
       this.getOdMain();
       this.getTagGroup();
+      this.getProductControl();
     },
   
     computed: {
@@ -558,6 +562,37 @@ var app = new Vue({
     },
   
     methods: {
+      getProductControl: function() {
+        var token = localStorage.getItem('token');
+        var form_Data = new FormData();
+        let _this = this;
+  
+        form_Data.append('jwt', token);
+  
+        axios({
+            method: 'get',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            url: 'api/product_control',
+            data: form_Data
+        })
+        .then(function(response) {
+            //handle success
+            _this.cost_lighting = response.data.cost_lighting;
+            _this.cost_furniture = response.data.cost_furniture;
+  
+        })
+        .catch(function(response) {
+            //handle error
+            Swal.fire({
+              text: JSON.stringify(response),
+              icon: 'error',
+              confirmButtonText: 'OK'
+            })
+        });
+      },
+      
       getTagGroup: function() {
         let _this = this;
           
@@ -2038,28 +2073,28 @@ var app = new Vue({
 
         this.specification = [];
  
-       for(var i=0; i < this.special_infomation.length; i++)
-       {
-         if(this.special_infomation[i].value != "")
-         {
-           if(k1 == "")
-           {
-             k1 = this.special_infomation[i].category;
-             v1 = this.special_infomation[i].value;
-           }else if(k1 !== "" && k2 == "")
-           {
-             k2 = this.special_infomation[i].category;
-             v2 = this.special_infomation[i].value;
- 
-             obj = {k1: k1, v1: v1, k2: k2, v2: v2};
-             this.specification.push(obj);
-             k1  = '';
-             k2  = '';
-             v1  = '';
-             v2  = '';
-           }
-         }
-       }
+        for(var i=0; i < this.attributes.length; i++)
+          {
+            if(this.attributes[i].type != "custom")
+            {
+              if(k1 == "")
+              {
+                k1 = this.attributes[i].category;
+                v1 = this.attributes[i].value.join(' ');
+              }else if(k1 !== "" && k2 == "")
+              {
+                k2 = this.attributes[i].category;
+                v2 = this.attributes[i].value.join(' ');
+    
+                obj = {k1: k1, v1: v1, k2: k2, v2: v2};
+                this.specification.push(obj);
+                k1  = '';
+                k2  = '';
+                v1  = '';
+                v2  = '';
+              }
+            }
+          }
  
        if(k1 == "" && this.product.moq !== "")
        {

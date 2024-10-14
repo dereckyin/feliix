@@ -958,7 +958,6 @@
             </div>
         </div>
 
-
         <div class="lower_section" v-if="((notes != null && notes != '') || description != '') && sub_category != '10020000'">
             <h5>Description</h5>
             <p style="white-space: break-spaces;">{{ description }}</p>
