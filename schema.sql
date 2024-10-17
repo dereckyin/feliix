@@ -5435,3 +5435,49 @@ INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, crea
 INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20060003', 3, 0, 'Material', 1, NOW());
 INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20060004', 3, 0, 'Finish', 1, NOW());
 INSERT INTO product_category_attribute(cat_id, `level`, `status`, category, create_id, created_at) VALUES('20060005', 3, 0, 'Others', 1, NOW());
+
+-- 20241017
+ALTER TABLE access_control
+ADD COLUMN `leadership_assessment` text COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `leadership_assessment` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `template_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `user_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `review_month`  varchar(20) DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  `user_complete_at` timestamp NULL,
+  `manager_complete_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `leadership_template` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `title_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `version`  varchar(512) DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `leadership_template_detail` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `template_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `type` int(11) DEFAULT 0 NOT NULL,
+  `order` int(11) DEFAULT 0 NOT NULL,
+  `category`  varchar(2048) DEFAULT '',
+  `criterion`  varchar(2048) DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
