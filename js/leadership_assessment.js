@@ -1,3 +1,4 @@
+
 var app = new Vue({
   el: "#app",
   data: {
@@ -79,6 +80,15 @@ var app = new Vue({
 
     date_created: "",
     date_finished: "",
+    leadership_assessment: false,
+    direct_access:[],
+    manager_access:[],
+    peer_access:[],
+    other_access:[],
+    outsider_name1:"",
+    outsider_email1:"",
+    outsider_name2:"",
+    outsider_email2:"",
   },
 
   created() {
@@ -115,6 +125,9 @@ var app = new Vue({
     this.getEmployees();
     this.getUserName();
     this.getLeaveCredit();
+    this.getLeadershipAssessmentControl();
+
+
   },
 
   computed: {
@@ -129,9 +142,9 @@ var app = new Vue({
   mounted() {},
 
   watch: {
-    employee() {
-      this.getTemplatesByTitle();
-    },
+    // employee() {
+    //   this.getTemplatesByTitle();
+    // },
     
     receive_records() {
       console.log("Vue watch receive_records");
@@ -150,6 +163,81 @@ var app = new Vue({
 
   methods: {
     
+    save_respondent() {
+      
+      let _this = this;
+
+      Swal.fire({
+        title: "Submit",
+        text: "Are you sure to submit? Once submitted, you cannot revise the evaluation result anymore.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.value) {
+          if (_this.submit == true) return;
+
+          _this.submit = true;
+
+
+          var token = localStorage.getItem("token");
+          var form_Data = new FormData();
+          form_Data.append("jwt", token);
+          form_Data.append("pid", _this.proof_id);
+
+          form_Data.append("direct_access", JSON.stringify(_this.direct_access));
+          form_Data.append("manager_access", JSON.stringify(_this.manager_access));
+          form_Data.append("peer_access", JSON.stringify(_this.peer_access));
+          form_Data.append("other_access", JSON.stringify(_this.other_access));
+          form_Data.append("outsider_name1", _this.outsider_name1);
+          form_Data.append("outsider_email1", _this.outsider_email1);
+          form_Data.append("outsider_name2", _this.outsider_name2);
+          form_Data.append("outsider_email2", _this.outsider_email2);
+
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/leadership_assessment_respondent_save",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              Swal.fire({
+                html: response.data.message,
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+
+              _this.reset();
+
+              window.jQuery(".mask").toggle();
+              window.jQuery("#Modal_4").toggle();
+
+            })
+            .catch(function(error) {
+              //handle error
+              Swal.fire({
+                text: JSON.stringify(error),
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+
+              _this.submit = false;
+
+              //_this.reset();
+            });
+
+            
+        } else {
+          return;
+        }
+      });
+    },
+
     search(pg) {
       this.filter_apply(pg);
     },
@@ -350,25 +438,56 @@ var app = new Vue({
       }
     },
 
-    add_review: function() {
-      if (
-        typeof this.employee.title_id == 'undefined' ||
-        typeof this.template.id == 'undefined'
-      ) {
+    execute: function() {
+      var record = this.shallowCopy(
+        this.receive_records.find((element) => element.id == this.proof_id)
+      );
+      
+      if(this.user_id != record.user_id)
+      {
         Swal.fire({
-          text: "Please enter the required fields",
+          text: "Only assessed employee is allowed to choose respondent for his/her leadership assessment.",
           icon: "warning",
           confirmButtonText: "OK",
         });
 
         return;
       }
+      else
+      {
+
+        this.outsider_name1 = record.outsider_name1;
+        this.outsider_email1 = record.outsider_email1;
+        this.outsider_name2 = record.outsider_name2;
+        this.outsider_email2 = record.outsider_email2;
+        
+
+        this.direct_access = JSON.parse(record.direct_access);
+        this.manager_access = JSON.parse(record.manager_access);
+        this.peer_access = JSON.parse(record.peer_access);
+        this.other_access = JSON.parse(record.other_access);
+
+        window.jQuery(".mask").toggle();
+        window.jQuery("#Modal_2").toggle();
+
+        setTimeout(() => {
+          $("#direct").selectpicker("refresh");
+          $("#manager").selectpicker("refresh");
+          $("#peer").selectpicker("refresh");
+          $("#other").selectpicker("refresh");
+        }, 500);
+
+        
+
+      }
+    },
+
+    add_review: function() {
 
       if (
-        this.review_month.trim() == "" && this.review_month_1.trim() == "" 
-      ) {
+        this.employee.trim() == '') {
         Swal.fire({
-          text: "Please enter the required fields",
+          text: "Please choose one employee to be assessed.",
           icon: "warning",
           confirmButtonText: "OK",
         });
@@ -386,24 +505,6 @@ var app = new Vue({
 
       form_Data.append("jwt", token);
       form_Data.append("user_id", this.employee.id);
-      if(this.month_type == 3)
-      {
-        form_Data.append("review_month", this.review_month);
-        form_Data.append("period", 3);
-      }
-      if(this.month_type == 2)
-      {
-        form_Data.append("review_month", this.review_month);
-        form_Data.append("period", 0);
-      }
-      if(this.month_type == 1)
-      {
-        form_Data.append("review_month", this.review_month_1);
-        form_Data.append("period", 1);
-      }
-
-      form_Data.append("template_id", this.template.id);
-
 
       axios({
         method: "post",
@@ -1006,83 +1107,38 @@ var app = new Vue({
       return can_save;
     },
 
+    getLeadershipAssessmentControl: function() {
+      var token = localStorage.getItem('token');
+      var form_Data = new FormData();
+      let _this = this;
+
+      form_Data.append('jwt', token);
+
+      axios({
+          method: 'get',
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+          url: 'api/leadership_assessment_control',
+          data: form_Data
+      })
+      .then(function(response) {
+          //handle success
+          _this.leadership_assessment = response.data.leadership_assessment;
+      })
+      .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+      });
+    },
+
     is_add_review_privilege() {
-      var can_save = false;
-
-      if(this.department.trim().toUpperCase() == 'SALES')
-      { 
-        if(this.title.trim().toUpperCase() == 'ASSISTANT SALES MANAGER')
-          can_save = true;
-
-        if(this.title.trim().toUpperCase() == 'SALES MANAGER')
-          can_save = true;
-      }
-
-      if(this.department.trim().toUpperCase() == 'LIGHTING')
-      { 
-        if(this.title.trim().toUpperCase() == 'LIGHTING MANAGER')
-          can_save = true;
-        if(this.title.trim().toUpperCase() == 'ASSISTANT LIGHTING MANAGER')
-          can_save = true;
-      }
-
-      if(this.department.trim().toUpperCase() == 'OFFICE')
-      { 
-        if(this.title.trim().toUpperCase() == 'OFFICE SYSTEMS MANAGER')
-          can_save = true;
-      }
-
-      if(this.department.trim().toUpperCase() == 'DESIGN')
-      { 
-        if(this.title.trim().toUpperCase() == 'ASSISTANT BRAND MANAGER')
-          can_save = true;
-
-        if(this.title.trim().toUpperCase() == 'BRAND MANAGER')
-          can_save = true;
-      }
-
-      if(this.department.trim().toUpperCase() == 'ENGINEERING')
-      { 
-        if(this.title.trim().toUpperCase() == 'ENGINEERING MANAGER')
-          can_save = true;
-      }
-
-      if(this.department.trim().toUpperCase() == 'ADMIN')
-      { 
-        if(this.title.trim().toUpperCase() == 'OPERATIONS MANAGER')
-          can_save = true;
-      }
-
-      if(this.department.trim().toUpperCase() == 'TW')
-      { 
-        if(this.title.trim().toUpperCase() == 'SUPPLY CHAIN MANAGER')
-          can_save = true;
-      }
-
-      if(this.department.trim() == '')
-      { 
-        if(this.title.trim().toUpperCase() == 'OWNER')
-          can_save = true;
-
-        if(this.title.trim().toUpperCase() == 'MANAGING DIRECTOR')
-          can_save = true;
-
-        if(this.title.trim().toUpperCase() == 'CHIEF ADVISOR')
-          can_save = true;
-      }
-
-      if(this.title.trim().toUpperCase() == 'VALUE DELIVERY MANAGER')
-          can_save = true;
-
-      if(this.title.trim().toUpperCase() == 'VALUE DELIVERY MANAGER')
-        can_save = true;
-
-      // if(this.username.trim().toUpperCase() == 'EDNEIL FERNANDEZ' || this.username.trim().toUpperCase() == 'AIZA EISMA')
-      // {
-      //   can_save = true;
-      // }
-      
-      return can_save;
+          
+      return this.leadership_assessment;
     },
 
 

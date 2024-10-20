@@ -47,32 +47,10 @@ if (!isset($jwt)) {
     $position = $decoded->data->position;
     $department = $decoded->data->department;
 
-    $access6 = false;
-
-    if(trim(strtoupper($department)) == 'ADMIN')
-    {
-        if(trim(strtoupper($position)) == 'OPERATIONS MANAGER')
-        {
-            $access6 = true;
-        }
-    }
-
-    if(trim($department) == '')
-    {
-        if(trim(strtoupper($position)) == 'OWNER' || trim(strtoupper($position)) == 'MANAGING DIRECTOR' || trim(strtoupper($position)) == 'CHIEF ADVISOR')
-        {
-            $access6 = true;
-        }
-    }
-
-    if(trim(strtoupper($position)) == 'VALUE DELIVERY MANAGER')
-    {
-        $access6 = true;
-    }
-
-
     $merged_results = array();
     $return_result = array();
+
+    $access6 = false;
 
     $query = "SELECT pr.id, 
                 pr.review_month, 
@@ -83,11 +61,19 @@ if (!isset($jwt)) {
                 pt.version,
                 pr.create_id,
                 pr.user_id,
+                pr.direct_access,
+                pr.manager_access,
+                pr.peer_access,
+                pr.other_access,
+                pr.outsider_name1,
+                pr.outsider_email1,
+                pr.outsider_name2,
+                pr.outsider_email2,
                 u.username manager,
                 u1.username employee, 
                 COALESCE(pr.user_complete_at, '') user_complete_at, 
                 COALESCE(pr.manager_complete_at, '') manager_complete_at,
-                COALESCE(pr.comment_done_at, '') comment_done_at
+                pr.created_at
                 FROM leadership_assessment pr
                 LEFT JOIN user u ON u.id = pr.create_id
                 LEFT JOIN user u1 ON u1.id = pr.user_id
@@ -96,24 +82,24 @@ if (!isset($jwt)) {
                 LEFT JOIN user_department ud ON ud.id = u1.apartment_id
               WHERE pr.status <> -1  " . ($id != 0 ? " and pr.id=$id" : ' ');
 
-    if($sdate != '')
-    {
-        $query .= " and pr.review_month >= '" . $sdate . "' ";
-    }
+    // if($sdate != '')
+    // {
+    //     $query .= " and pr.review_month >= '" . $sdate . "' ";
+    // }
 
-    if($edate != '')
-    {
-        $query .= " and case 
-                            when period = 3 then DATE_FORMAT(STR_TO_DATE(CONCAT(review_month, '-01'), '%Y-%m-%d') + INTERVAL 2 MONTH,'%Y-%m')
-                            when period = 0 then DATE_FORMAT(STR_TO_DATE(CONCAT(review_month, '-01'), '%Y-%m-%d') + INTERVAL 1 MONTH,'%Y-%m')
-                            when period = 1 then review_month
-                        end  <= '" . $edate . "' ";
-    }
+    // if($edate != '')
+    // {
+    //     $query .= " and case 
+    //                         when period = 3 then DATE_FORMAT(STR_TO_DATE(CONCAT(review_month, '-01'), '%Y-%m-%d') + INTERVAL 2 MONTH,'%Y-%m')
+    //                         when period = 0 then DATE_FORMAT(STR_TO_DATE(CONCAT(review_month, '-01'), '%Y-%m-%d') + INTERVAL 1 MONTH,'%Y-%m')
+    //                         when period = 1 then review_month
+    //                     end  <= '" . $edate . "' ";
+    // }
 
-    if($access6 != true)
-    {
-        $query .= " and (pr.create_id = " . $user_id . " or pr.user_id = " . $user_id . ") ";
-    }
+    // if($access6 != true)
+    // {
+    //     $query .= " and (pr.create_id = " . $user_id . " or pr.user_id = " . $user_id . ") ";
+    // }
 
     $query = $query . " order by pr.created_at desc ";
 
@@ -155,16 +141,25 @@ if (!isset($jwt)) {
         $version = $row['version'];
         $user_complete_at = $row['user_complete_at'];
         $manager_complete_at = $row['manager_complete_at'];
-        $comment_done_at = $row['comment_done_at'];
 
         $create_id = $row['create_id'];
         $user_id = $row['user_id'];
 
-        $status = "Nobody cares";
+        $manager_access = $row['manager_access'];
+        $peer_access = $row['peer_access'];
+        $direct_access = $row['direct_access'];
+        $other_access = $row['other_access'];
+
+        $outsider_name1 = $row['outsider_name1'];
+        $outsider_email1 = $row['outsider_email1'];
+        $outsider_name2 = $row['outsider_name2'];
+        $outsider_email2 = $row['outsider_email2'];
+
+        $created_at = $row['created_at'];
+
+        $status = "Choose respondent for leadership assessment";
         if($user_complete_at == "" && $manager_complete_at != "")
-            $status = "Lack of subordinate's opinion";
-        if($user_complete_at != "" && $manager_complete_at == "")
-            $status = "Lack of supervisor's opinion";
+            $status = "Assessed employee and respondents fill out survey";
         if($user_complete_at != "" && $manager_complete_at != "")
             $status = "Done";
 
@@ -194,13 +189,22 @@ if (!isset($jwt)) {
             "manager" => $manager,
             "create_id" => $create_id,
             "user_id" => $user_id,
+            "direct_access" => $direct_access,
+            "manager_access" => $manager_access,
+            "peer_access" => $peer_access,
+            "other_access" => $other_access,
+            "outsider_name1" => $outsider_name1,
+            "outsider_email1" => $outsider_email1,
+            "outsider_name2" => $outsider_name2,
+            "outsider_email2" => $outsider_email2,
             "user_complete_at" => $user_complete_at,
-            "comment_done_at" => $comment_done_at,
             "manager_complete_at" => $manager_complete_at,
             "status" => $status,
             "agenda" => $agenda,
             "agenda1" => $agenda1,
             "agenda2" => $agenda2,
+
+            "created_at" => $created_at,
         );
     }
 

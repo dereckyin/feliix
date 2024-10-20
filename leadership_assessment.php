@@ -113,6 +113,21 @@ header( 'location:index' );
             header( 'location:index' );
         }
 
+        $database = new Database();
+        $db = $database->getConnection();
+
+         // for users
+         $user_results = array();
+         $query = "SELECT username FROM user WHERE status = 1 ORDER BY username
+                         ";
+         $stmt = $db->prepare($query);
+         $stmt->execute();
+         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+             $user_results[] = array(
+                 "username" => $row['username'],
+             );
+         }
+
 
         //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
         //    header( 'location:index.php' );
@@ -876,13 +891,13 @@ header( 'location:index' );
                         <li>{{ record.status }}</li>
                         <li>{{ record.employee }}</li>
                         <li>{{ record.title }} ({{ record.department }})</li>
-                        <li class="content">{{ 被建立的年月日期 }} ~ {{ 最後一個完成評估的年月日期 }}</li>
+                        <li class="content">{{ record.created_at }} ~ {{ record.manager_complete_at }}</li>
                     </ul>
 
                 </div>
 
                 <div class="btnbox" style="display: flex; justify-content: center;">
-                    <a class="btn green" @click="execute()">Execute</a>
+                    <a class="btn green" @click="execute(record)">Execute</a>
                     <a class="btn green" @click="view()">View Result</a>
                     <a class="btn" style="color: rgb(255, 255, 255);" @click="remove()">Delete</a>
                 </div>
@@ -932,7 +947,7 @@ header( 'location:index' );
 
                         <div class="modal-header">
                             <h6>Choose Respondent for Your Leadership Assessment</h6>
-                            <a href="javascript: void(0)" onclick="ToggleModal(1)"><i class="fa fa-times fa-lg"
+                            <a href="javascript: void(0)" onclick="ToggleModal(2)"><i class="fa fa-times fa-lg"
                                                                                      aria-hidden="true"></i></a>
                         </div>
 
@@ -942,7 +957,7 @@ header( 'location:index' );
                                 <li><b>Direct Report</b></li>
                                 <li>
                                     <select class="selectpicker" multiple data-live-search="true" data-size="8"
-                                            data-width="100%" title="Please Choose Two Persons..." id="access" v-model="access">
+                                            data-width="100%" title="Please Choose Two Persons..." id="direct" v-model="direct_access">
 
                                         <?php foreach ($user_results as $user) { ?>
                                         <option value="<?php echo $user["username"]; ?>"><?php echo $user["username"]; ?></option>
@@ -955,7 +970,7 @@ header( 'location:index' );
                                 <li><b>Manager</b></li>
                                 <li>
                                     <select class="selectpicker" multiple data-live-search="true" data-size="8"
-                                            data-width="100%" title="Please Choose Two Persons..." id="access" v-model="access">
+                                            data-width="100%" title="Please Choose Two Persons..." id="manager" v-model="manager_access">
 
                                         <?php foreach ($user_results as $user) { ?>
                                         <option value="<?php echo $user["username"]; ?>"><?php echo $user["username"]; ?></option>
@@ -968,7 +983,7 @@ header( 'location:index' );
                                 <li><b>Peer</b></li>
                                 <li>
                                     <select class="selectpicker" multiple data-live-search="true" data-size="8"
-                                            data-width="100%" title="Please Choose Two Persons..." id="access" v-model="access">
+                                            data-width="100%" title="Please Choose Two Persons..." id="peer" v-model="peer_access">
 
                                         <?php foreach ($user_results as $user) { ?>
                                         <option value="<?php echo $user["username"]; ?>"><?php echo $user["username"]; ?></option>
@@ -981,7 +996,7 @@ header( 'location:index' );
                                 <li><b>Others (Choose from Selector or Input Name and E-MAIL)</b></li>
                                 <li>
                                     <select class="selectpicker" multiple data-live-search="true" data-size="8"
-                                            data-width="100%" title="Please Choose Two Persons..." id="access" v-model="access">
+                                            data-width="100%" title="Please Choose Two Persons..." id="other" v-model="other_access">
 
                                         <?php foreach ($user_results as $user) { ?>
                                         <option value="<?php echo $user["username"]; ?>"><?php echo $user["username"]; ?></option>
@@ -992,21 +1007,21 @@ header( 'location:index' );
 
                                 <li class="outsider_info">
                                     <span><b>Person 1</b></span>
-                                    <input type="text" placeholder="Name">
-                                    <input type="text" placeholder="E-Mail">
+                                    <input type="text" placeholder="Name" v-model="outsider_name1">
+                                    <input type="text" placeholder="E-Mail" v-model="outsider_email1">
                                 </li>
 
                                 <li class="outsider_info">
                                     <span><b>Person 2</b></span>
-                                    <input type="text" placeholder="Name">
-                                    <input type="text" placeholder="E-Mail">
+                                    <input type="text" placeholder="Name" v-model="outsider_name2">
+                                    <input type="text" placeholder="E-Mail" v-model="outsider_email2">
                                 </li>
                             </ul>
 
                         </div>
 
                         <div class="btnbox" style="padding-top: 0;">
-                            <a class="btn green" :disabled="submit == true" @click="">Submit</a>
+                            <a class="btn green" :disabled="submit == true" @click="save_respondent()">Submit</a>
                         </div>
 
                     </div>
@@ -1023,7 +1038,7 @@ header( 'location:index' );
 
                         <div class="modal-header">
                             <h6>Leadership Assessment</h6>
-                            <a href="javascript: void(0)" onclick="ToggleModal(1)"><i class="fa fa-times fa-lg"
+                            <a href="javascript: void(0)" onclick="ToggleModal(3)"><i class="fa fa-times fa-lg"
                                                                                      aria-hidden="true"></i></a>
                         </div>
 
