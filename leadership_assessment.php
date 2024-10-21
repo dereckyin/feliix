@@ -898,7 +898,7 @@ header( 'location:index' );
 
                 <div class="btnbox" style="display: flex; justify-content: center;">
                     <a class="btn green" @click="execute(record)">Execute</a>
-                    <a class="btn green" @click="view()">View Result</a>
+                    <a class="btn green" @click="view(record)">View Result</a>
                     <a class="btn" style="color: rgb(255, 255, 255);" @click="remove()">Delete</a>
                 </div>
 

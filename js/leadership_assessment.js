@@ -166,76 +166,115 @@ var app = new Vue({
     save_respondent() {
       
       let _this = this;
+      var len = 0;
+      var emails = [];
 
-      Swal.fire({
-        title: "Submit",
-        text: "Are you sure to submit? Once submitted, you cannot revise the evaluation result anymore.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
-      }).then((result) => {
-        if (result.value) {
-          if (_this.submit == true) return;
+      if(this.direct_access.length != 2 || this.manager_access.length != 2 || this.peer_access.length != 2)
+      {
+        Swal.fire({
+          text: "Please choose exactly two respondents for each category.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
 
-          _this.submit = true;
+        return;
+      }
 
+      // length of other_access + outsider_email1 + outsider_email2 need to be 2
+      if(this.outsider_email1.trim() != '')
+      {
+        emails.push(this.outsider_email1);
+        len += 1;
+      }
+      if(this.outsider_email2.trim() != '')
+      {
+        emails.push(this.outsider_email2);
+        len += 1;
+      }
 
-          var token = localStorage.getItem("token");
-          var form_Data = new FormData();
-          form_Data.append("jwt", token);
-          form_Data.append("pid", _this.proof_id);
+      if(this.other_access.length + len != 2)
+      {
+        Swal.fire({
+          text: "Please choose exactly two respondents for each category.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
 
-          form_Data.append("direct_access", JSON.stringify(_this.direct_access));
-          form_Data.append("manager_access", JSON.stringify(_this.manager_access));
-          form_Data.append("peer_access", JSON.stringify(_this.peer_access));
-          form_Data.append("other_access", JSON.stringify(_this.other_access));
-          form_Data.append("outsider_name1", _this.outsider_name1);
-          form_Data.append("outsider_email1", _this.outsider_email1);
-          form_Data.append("outsider_name2", _this.outsider_name2);
-          form_Data.append("outsider_email2", _this.outsider_email2);
+        return;
+      }
 
-          axios({
-            method: "post",
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            url: "api/leadership_assessment_respondent_save",
-            data: form_Data,
-          })
-            .then(function(response) {
-              //handle success
-              Swal.fire({
-                html: response.data.message,
-                icon: "info",
-                confirmButtonText: "OK",
-              });
+      emails.push(this.direct_access);
+      emails.push(this.manager_access);
+      emails.push(this.peer_access);
 
-              _this.reset();
-
-              window.jQuery(".mask").toggle();
-              window.jQuery("#Modal_4").toggle();
-
-            })
-            .catch(function(error) {
-              //handle error
-              Swal.fire({
-                text: JSON.stringify(error),
-                icon: "info",
-                confirmButtonText: "OK",
-              });
-
-              _this.submit = false;
-
-              //_this.reset();
-            });
-
-            
-        } else {
-          return;
-        }
+      // check duplicate email
+      var unique = emails.filter(function(elem, index, self) {
+        return index === self.indexOf(elem);
       });
+
+      if (emails.length != unique.length) {
+        Swal.fire({
+          text: "Please choose completely different people to be respondents.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+
+        return;
+      }
+
+      if (_this.submit == true) return;
+
+      _this.submit = true;
+
+      var token = localStorage.getItem("token");
+      var form_Data = new FormData();
+      form_Data.append("jwt", token);
+      form_Data.append("pid", _this.proof_id);
+
+      form_Data.append("direct_access", JSON.stringify(_this.direct_access));
+      form_Data.append("manager_access", JSON.stringify(_this.manager_access));
+      form_Data.append("peer_access", JSON.stringify(_this.peer_access));
+      form_Data.append("other_access", JSON.stringify(_this.other_access));
+      form_Data.append("outsider_name1", _this.outsider_name1);
+      form_Data.append("outsider_email1", _this.outsider_email1);
+      form_Data.append("outsider_name2", _this.outsider_name2);
+      form_Data.append("outsider_email2", _this.outsider_email2);
+
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        url: "api/leadership_assessment_respondent_save",
+        data: form_Data,
+      })
+        .then(function(response) {
+          //handle success
+          Swal.fire({
+            html: response.data.message,
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+
+          _this.reset();
+
+          window.jQuery(".mask").toggle();
+          window.jQuery("#Modal_2").toggle();
+
+        })
+        .catch(function(error) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(error),
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+
+          _this.submit = false;
+
+          //_this.reset();
+        });
+
     },
 
     search(pg) {
@@ -835,7 +874,7 @@ var app = new Vue({
       _this.proof_id = 0;
     },
 
-    view: function() {
+    view: function(record) {
       if (this.proof_id == 0) {
         Swal.fire({
           text: "Please select row to view",
@@ -843,7 +882,18 @@ var app = new Vue({
           confirmButtonText: "OK",
         });
         return;
-      } else {
+      } 
+      
+      if(record.status == 'Choose respondent for leadership assessment')
+      {
+        Swal.fire({
+          text: "No any result until now.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
 
       let _this = this;
       let _window = window;
@@ -961,7 +1011,7 @@ var app = new Vue({
         .catch(function(error) {
           console.log(error);
         });
-      }
+      
     },
 
     evalua: function() {
@@ -1143,6 +1193,17 @@ var app = new Vue({
 
 
     remove() {
+      if(this.leadership_assessment == false)
+      {
+        Swal.fire({
+          text: "You are not allowed to delete this leadership assessment record. ",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+
+        return;
+      }
+
       if (this.proof_id == 0) {
         Swal.fire({
           text: "Please select a record to delete",
@@ -1157,33 +1218,11 @@ var app = new Vue({
         this.receive_records.find((element) => element.id == this.proof_id)
       );
 
-      if(!this.can_delete(this.record.create_id))
-    {
-      Swal.fire({
-        text: "Permission denied. ",
-        icon: "warning",
-        confirmButtonText: "OK",
-      });
-
-      return;
-    };
-
-    if(this.record.status != "Nobody cares" || !this.can_delete(this.record.create_id))
-    {
-      Swal.fire({
-        text: "Partially or completely done performance evaluation cannot be deleted. ",
-        icon: "warning",
-        confirmButtonText: "OK",
-      });
-
-      return;
-    };
-
       let _this = this;
 
       Swal.fire({
         title: "Delete",
-        text: "Are you sure to delete?",
+        text: "Are you sure to delete this leadership assessment record?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

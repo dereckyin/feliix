@@ -71,6 +71,7 @@ if (!isset($jwt)) {
                 pr.outsider_email2,
                 u.username manager,
                 u1.username employee, 
+                pr.status,
                 COALESCE(pr.user_complete_at, '') user_complete_at, 
                 COALESCE(pr.manager_complete_at, '') manager_complete_at,
                 pr.created_at
@@ -157,24 +158,13 @@ if (!isset($jwt)) {
 
         $created_at = $row['created_at'];
 
-        $status = "Choose respondent for leadership assessment";
-        if($user_complete_at == "" && $manager_complete_at != "")
+        if($row['status'] == 0)
+            $status = "Choose respondent for leadership assessment";
+        if($row['status'] == 1)
             $status = "Assessed employee and respondents fill out survey";
-        if($user_complete_at != "" && $manager_complete_at != "")
+        if($row['status'] == 2)
             $status = "Done";
 
-        if($id != 0)
-        {
-            $agenda = GetAgenda($row['template_id'], 1, $db);
-            $agenda1 = GetAgenda($row['template_id'], 2, $db);
-            $agenda2 = GetAgenda($row['template_id'], 3, $db);
-        }
-        else
-        {
-            $agenda = [];
-            $agenda1 = [];
-            $agenda2 = [];
-        }
     
         $merged_results[] = array(
             "id" => $id,
@@ -200,9 +190,6 @@ if (!isset($jwt)) {
             "user_complete_at" => $user_complete_at,
             "manager_complete_at" => $manager_complete_at,
             "status" => $status,
-            "agenda" => $agenda,
-            "agenda1" => $agenda1,
-            "agenda2" => $agenda2,
 
             "created_at" => $created_at,
         );

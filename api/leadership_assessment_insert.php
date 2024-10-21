@@ -95,6 +95,7 @@ else
 
         $db->commit();
 
+        EmailNotify($user_id, $employee_id, $last_id);
         
         http_response_code(200);
         echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa") ));
@@ -109,6 +110,10 @@ else
         die();
 
     }
+}
+
+function EmailNotify($user_id, $employee_id, $last_id){
+    leadership_assessment_notify($user_id, $employee_id, $last_id);
 }
 
 function GetNextMonth($d)
