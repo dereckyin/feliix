@@ -24,6 +24,7 @@ var app = new Vue({
     edate: "",
 
     editing: false,
+    pid : "",
 
     // paging
     page: 1,
@@ -105,6 +106,9 @@ var app = new Vue({
           switch (tmp[0]) {
             case "kw":
               _this.keyword = decodeURI(tmp[1]);
+              break;
+            case "id":
+              _this.pid = decodeURI(tmp[1]);
               break;
             case "sdate":
               _this.sdate = decodeURI(tmp[1]);
@@ -524,7 +528,7 @@ var app = new Vue({
     add_review: function() {
 
       if (
-        this.employee.trim() == '') {
+        this.employee.username.trim() == '') {
         Swal.fire({
           text: "Please choose one employee to be assessed.",
           icon: "warning",
@@ -842,11 +846,23 @@ var app = new Vue({
     getLeaveCredit: function() {
       let _this = this;
 
-      const params = {
-        kw: _this.keyword,
-        sdate: _this.sdate,
-        edate: _this.edate,
-      };
+      if(this.pid != "")
+      {
+        var params = {
+          kw: _this.keyword,
+          sdate: _this.sdate,
+          edate: _this.edate,
+          pid: _this.pid,
+        };
+      }
+      else
+      {
+          var params = {
+            kw: _this.keyword,
+            sdate: _this.sdate,
+            edate: _this.edate,
+        }
+      }
 
       let token = localStorage.getItem("accessToken");
 
@@ -874,7 +890,7 @@ var app = new Vue({
       _this.proof_id = 0;
     },
 
-    view: function(record) {
+    view: function() {
       if (this.proof_id == 0) {
         Swal.fire({
           text: "Please select row to view",
@@ -883,6 +899,10 @@ var app = new Vue({
         });
         return;
       } 
+
+      var record = this.shallowCopy(
+        this.receive_records.find((element) => element.id == this.proof_id)
+      );
       
       if(record.status == 'Choose respondent for leadership assessment')
       {

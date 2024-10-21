@@ -16842,7 +16842,6 @@ function leadership_assessment_notify($user_id, $employee_id, $id)
     $mail->Subject = "[Leadership Assessment Notification] Please Choose Respondents for Your Leadership Assessment";
     $content =  "<p>Dear " . $checker1 . ",</p>";
     $content = $content . "<p>" . $requestor . " created the leadership assessment for you. Please choose respondents for your leadership assessment. </p>";
-    $content = $content . "<br/>";
     $content = $content . "<p>By clicking this link to view the target webpage:</p>";
     $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment</a>";
 

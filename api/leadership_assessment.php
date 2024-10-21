@@ -147,9 +147,17 @@ if (!isset($jwt)) {
         $user_id = $row['user_id'];
 
         $manager_access = $row['manager_access'];
+        if($manager_access == "")
+            $manager_access = "[]";
         $peer_access = $row['peer_access'];
+        if($peer_access == "")
+            $peer_access = "[]";
         $direct_access = $row['direct_access'];
+        if($direct_access == "")
+            $direct_access = "[]";
         $other_access = $row['other_access'];
+        if($other_access == "")
+            $other_access = "[]";
 
         $outsider_name1 = $row['outsider_name1'];
         $outsider_email1 = $row['outsider_email1'];
