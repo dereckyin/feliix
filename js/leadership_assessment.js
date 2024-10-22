@@ -187,12 +187,12 @@ var app = new Vue({
       // length of other_access + outsider_email1 + outsider_email2 need to be 2
       if(this.outsider_email1.trim() != '')
       {
-        emails.push(this.outsider_email1);
+        emails.push(this.outsider_email1.trim().toLowerCase());
         len += 1;
       }
       if(this.outsider_email2.trim() != '')
       {
-        emails.push(this.outsider_email2);
+        emails.push(this.outsider_email2.trim().toLowerCase());
         len += 1;
       }
 
@@ -211,25 +211,25 @@ var app = new Vue({
       {
         var email = this.employees.find((element) => element.username == this.direct_access[i]);
         if(email != undefined)
-          emails.push(email.email);
+          emails.push(email.email.trim().toLowerCase());
       }
       for(var i = 0; i < this.manager_access.length; i++)
       {
         var email = this.employees.find((element) => element.username == this.manager_access[i]);
         if(email != undefined)
-          emails.push(email.email);
+          emails.push(email.email.trim().toLowerCase());
       }
       for(var i = 0; i < this.peer_access.length; i++)
       {
         var email = this.employees.find((element) => element.username == this.peer_access[i]);
         if(email != undefined)
-          emails.push(email.email);
+          emails.push(email.email.trim().toLowerCase());
       }
       for(var i = 0; i < this.other_access.length; i++)
       {
         var email = this.employees.find((element) => element.username == this.other_access[i]);
         if(email != undefined)
-          emails.push(email.email);
+          emails.push(email.email.trim().toLowerCase());
       }
       
       // check duplicate email
