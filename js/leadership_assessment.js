@@ -207,11 +207,31 @@ var app = new Vue({
         return;
       }
 
-      emails.push(this.direct_access);
-      emails.push(this.manager_access);
-      emails.push(this.peer_access);
-      emails.push(this.other_access);
-
+      for(var i = 0; i < this.direct_access.length; i++)
+      {
+        var email = this.employees.find((element) => element.username == this.direct_access[i]);
+        if(email != undefined)
+          emails.push(email.email);
+      }
+      for(var i = 0; i < this.manager_access.length; i++)
+      {
+        var email = this.employees.find((element) => element.username == this.manager_access[i]);
+        if(email != undefined)
+          emails.push(email.email);
+      }
+      for(var i = 0; i < this.peer_access.length; i++)
+      {
+        var email = this.employees.find((element) => element.username == this.peer_access[i]);
+        if(email != undefined)
+          emails.push(email.email);
+      }
+      for(var i = 0; i < this.other_access.length; i++)
+      {
+        var email = this.employees.find((element) => element.username == this.other_access[i]);
+        if(email != undefined)
+          emails.push(email.email);
+      }
+      
       // check duplicate email
       var unique = emails.filter(function(elem, index, self) {
         return index === self.indexOf(elem);
