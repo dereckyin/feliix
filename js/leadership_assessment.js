@@ -24,7 +24,7 @@ var app = new Vue({
     edate: "",
 
     editing: false,
-    pid : "",
+    pid : 0,
 
     // paging
     page: 1,
@@ -401,7 +401,7 @@ var app = new Vue({
       }
 
       window.location.href =
-        "leadership_assessment?" + "sdate=" + _this.sdate + "&edate=" + _this.edate + "&kw=" + _this.keyword + "&pg=" + _this.page;
+        "leadership_assessment?" + "sdate=" + _this.sdate + "&edate=" + _this.edate + "&kw=" + _this.keyword + "&id=" + _this.pid + "&pg=" + _this.page;
     },
 
     on_grade_change:function(event) {
@@ -528,7 +528,7 @@ var app = new Vue({
     add_review: function() {
 
       if (
-        this.employee.username.trim() == '') {
+        this.employee.username == undefined || this.employee == '' ) {
         Swal.fire({
           text: "Please choose one employee to be assessed.",
           icon: "warning",
@@ -846,23 +846,12 @@ var app = new Vue({
     getLeaveCredit: function() {
       let _this = this;
 
-      if(this.pid != "")
-      {
-        var params = {
+      var params = {
           kw: _this.keyword,
           sdate: _this.sdate,
           edate: _this.edate,
-          pid: _this.pid,
+          id: _this.pid,
         };
-      }
-      else
-      {
-          var params = {
-            kw: _this.keyword,
-            sdate: _this.sdate,
-            edate: _this.edate,
-        }
-      }
 
       let token = localStorage.getItem("accessToken");
 

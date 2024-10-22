@@ -74,7 +74,7 @@ if (!isset($jwt)) {
                 pr.status,
                 COALESCE(pr.user_complete_at, '') user_complete_at, 
                 COALESCE(pr.manager_complete_at, '') manager_complete_at,
-                pr.created_at
+                DATE_FORMAT(pr.created_at, '%Y-%m-%d') created_at
                 FROM leadership_assessment pr
                 LEFT JOIN user u ON u.id = pr.create_id
                 LEFT JOIN user u1 ON u1.id = pr.user_id
