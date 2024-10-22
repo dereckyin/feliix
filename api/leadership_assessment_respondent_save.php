@@ -182,7 +182,7 @@ switch ($method) {
 }
 
 function EmailNotify($creat_id, $user_id, $last_id){
-    leadership_assessment_self_notify($creat_id, $user_id, $last_id);
+    leadership_assessment_self_notify($user_id, $creat_id, $last_id);
 }
 
 function EmailNotifyRegular($user_id, $email, $last_id){
