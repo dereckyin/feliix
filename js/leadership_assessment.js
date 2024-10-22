@@ -210,6 +210,7 @@ var app = new Vue({
       emails.push(this.direct_access);
       emails.push(this.manager_access);
       emails.push(this.peer_access);
+      emails.push(this.other_access);
 
       // check duplicate email
       var unique = emails.filter(function(elem, index, self) {

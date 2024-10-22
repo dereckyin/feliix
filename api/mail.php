@@ -16843,7 +16843,7 @@ function leadership_assessment_notify($user_id, $employee_id, $id)
     $content =  "<p>Dear " . $checker1 . ",</p>";
     $content = $content . "<p>" . $requestor . " created the leadership assessment for you. Please choose respondents for your leadership assessment. </p>";
     $content = $content . "<p>By clicking this link to view the target webpage:</p>";
-    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment</a>";
+    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment?id=" . $id . "</a>";
 
     $mail->MsgHTML($content);
     if($mail->Send()) {
@@ -16900,7 +16900,7 @@ function leadership_assessment_self_notify($creator_id, $employee_id, $id)
     $mail->Subject = "[Leadership Assessment Notification] Please Fill out Survey of Your Leadership Assessment";
     $content =  "<p>Dear " . $checker1 . ",</p>";
     $content = $content . "<p>Please fill out the survey of your Leadership assessment as soon as possible. By clicking this link to view the target webpage: </p>";
-    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment</a>";
+    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment?id=" . $id . "</a>";
 
     $mail->MsgHTML($content);
     if($mail->Send()) {
@@ -16955,7 +16955,7 @@ function leadership_assessment_respondent_notify($user_id, $employee_id, $id)
     $mail->Subject = "[Leadership Assessment Notification] Please Help Fill out Survey of " . $requestor . "'s Leadership Assessment";
     $content =  "<p>Dear " . $checker1 . ",</p>";
     $content = $content . "<p>" . $requestor . " has requested that you please rate him/her in Leadership Assessment. By clicking this link to view the target webpage: </p>";
-    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment</a>";
+    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment?id=" . $id . "</a>";
 
     $mail->MsgHTML($content);
     if($mail->Send()) {
@@ -17002,7 +17002,7 @@ function leadership_assessment_respondent_other_notify($email, $name, $employee_
     $mail->Subject = "[Leadership Assessment Notification] Please Help Fill out Survey of " . $requestor . "'s Leadership Assessment";
     $content =  "<p>Dear " . $name . ",</p>";
     $content = $content . "<p>" . $requestor . " has requested that you please rate him/her in Leadership Assessment. By clicking this link to view the target webpage: </p>";
-    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment</a>";
+    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment?id=" . $id . "</a>";
 
 
     $mail->MsgHTML($content);
