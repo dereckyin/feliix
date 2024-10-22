@@ -16859,7 +16859,7 @@ function leadership_assessment_notify($user_id, $employee_id, $id)
 }
 
 
-function leadership_assessment_self_notify($creator_id, $employee_id, $id)
+function leadership_assessment_self_notify($employee_id, $creator_id, $id)
 {
     $conf = new Conf();
 
@@ -16887,7 +16887,7 @@ function leadership_assessment_self_notify($creator_id, $employee_id, $id)
     }
     $requestor = rtrim($requestor, ", ");
 
-    $notifior = GetNotifiersByName($employee_id);
+    $notifior = GetNotifiers($employee_id);
     $checker1 = "";
     foreach($notifior as &$list)
     {
