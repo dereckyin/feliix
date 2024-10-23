@@ -888,7 +888,7 @@ header( 'location:index' );
                         <li>
                             <input type="radio" name="record_id" class="alone green" :value="record.id" v-model="proof_id">
                         </li>
-                        <li>{{ record.status }}</li>
+                        <li>{{ record.status_desc }}</li>
                         <li>{{ record.employee }}</li>
                         <li>{{ record.title }} ({{ record.department }})</li>
                         <li class="content">{{ record.created_at }} ~ {{ record.manager_complete_at }}</li>
@@ -1045,7 +1045,7 @@ header( 'location:index' );
 
                         <div class="box-content" style="border-bottom: none;">
 
-                            <div id="part1" style="display: none;">
+                            <div id="part1" v-show="period == 1">
                                 <div style="padding-left: 3px;">
                                     <p style="font-weight: 400; margin-bottom: 15px;">This assessment will take approximately 10 minutes to complete.</p>
                                     <p style="font-weight: 400; margin-bottom: 15px;">Today, you have been asked to rate {{username}}.</p>
@@ -1057,12 +1057,12 @@ header( 'location:index' );
                                 <div style="background: #FFF3CD; font-weight: 300; padding: 15px; border-radius: 5px; margin-top: 35px;">Note: If you are this leader&#39;s only direct manager, your scores will be shown separately; however, your open-ended comments will be combined with all others</div>
 
                                 <div style="margin-top: 15px;">
-                                    <a class="btn small blue">CONTINUE</a>
+                                    <a class="btn small blue" @click="to_next(2)">CONTINUE</a>
                                 </div>
                             </div>
 
 
-                            <div id="part2" style="display: none;">
+                            <div id="part2" v-show="period == 2">
                                 <div style="padding-left: 3px;">
                                     <p style="font-weight: 400; margin-bottom: 15px;">You will rate {{username}} on various behaviors by choosing a number, 1 through 7 to represent whether you agree that this person displays that particular attribute.</p>
 
@@ -1082,14 +1082,14 @@ header( 'location:index' );
 
                                         <ul class="question">
                                             <li>A good role model.</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 0</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 1</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 2</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 3</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 4</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 5</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 6</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 7</li>
+                                            <li><input type="radio" name="demo" class="alone green"> 0</li>
+                                            <li><input type="radio" name="demo" class="alone green"> 1</li>
+                                            <li><input type="radio" name="demo" class="alone green"> 2</li>
+                                            <li><input type="radio" name="demo" class="alone green"> 3</li>
+                                            <li><input type="radio" name="demo" class="alone green"> 4</li>
+                                            <li><input type="radio" name="demo" class="alone green"> 5</li>
+                                            <li><input type="radio" name="demo" class="alone green"> 6</li>
+                                            <li><input type="radio" name="demo" class="alone green"> 7</li>
                                         </ul>
 
                                     </div>
@@ -1102,12 +1102,12 @@ header( 'location:index' );
                                 </div>
 
                                 <div style="margin-top: 15px;">
-                                    <a class="btn small blue">CONTINUE</a>
+                                    <a class="btn small blue" @click="to_next(3)">CONTINUE</a>
                                 </div>
                             </div>
 
 
-                            <div id="part3" style="display: none;">
+                            <div id="part3" v-show="period == 3">
                                 <div style="padding-left: 3px;">
                                     <p style="font-weight: 400; margin-bottom: 15px;">In this Leadership Assessment, you will be considering your typical interaction/experience with this leader.</p>
                                     <p style="font-weight: 400; margin-bottom: 30px;">If you have not observed a particular item in the assessment:</p>
@@ -1117,14 +1117,14 @@ header( 'location:index' );
                                 </div>
 
                                 <div style="margin-top: 15px;">
-                                    <a class="btn small blue">CONTINUE</a>
+                                    <a class="btn small blue" @click="to_next(3)">CONTINUE</a>
                                 </div>
                             </div>
 
                             <!-- 問卷的 第一頁 到 第八頁，都會使用 part4 結構，然後一頁一頁進行，因此需要一個變數來記錄現在使用者進行到第幾頁 -->
-                            <div id="part4" style="display: none;">
+                            <div id="part4" v-show="period > 3 && period < 12">
                                 <div style="padding-left: 3px;">
-                                    <h3>Dennis Lin</h3>
+                                    <h3>{{ record.employee }}</h3>
                                     <p style="font-weight: 400; margin-bottom: 15px;">Please answer all questions then click at the bottom of page to move to the next page</p>
 
                                     <div>
@@ -1142,28 +1142,16 @@ header( 'location:index' );
                                         </ul>
 
                                         <!-- 會用以下的 ul 結構，來把每一頁的 8 個問題依照 page_sequence 依序列出來 -->
-                                        <ul class="question">
-                                            <li>A good role model.</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 0</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 1</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 2</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 3</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 4</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 5</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 6</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 7</li>
-                                        </ul>
-
-                                        <ul class="question">
-                                            <li>Demonstrate courage to do the right thing.</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 0</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 1</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 2</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 3</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 4</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 5</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 6</li>
-                                            <li><input type="radio" name="question_id" class="alone green"> 7</li>
+                                        <ul class="question"v-for="(item, index) in question">
+                                            <li>{{ item.question }}</li>
+                                            <li><input type="radio" :name="'question_' + item.id" class="alone green" value="0"> 0</li>
+                                            <li><input type="radio" :name="'question_' + item.id" class="alone green" value="1"> 1</li>
+                                            <li><input type="radio" :name="'question_' + item.id" class="alone green" value="2"> 2</li>
+                                            <li><input type="radio" :name="'question_' + item.id" class="alone green" value="3"> 3</li>
+                                            <li><input type="radio" :name="'question_' + item.id" class="alone green" value="4"> 4</li>
+                                            <li><input type="radio" :name="'question_' + item.id" class="alone green" value="5"> 5</li>
+                                            <li><input type="radio" :name="'question_' + item.id" class="alone green" value="6"> 6</li>
+                                            <li><input type="radio" :name="'question_' + item.id" class="alone green" value="7"> 7</li>
                                         </ul>
 
                                         <ul class="question footer">
@@ -1183,15 +1171,15 @@ header( 'location:index' );
                                 </div>
 
                                 <div class="button_area type2">
-                                    <div>Page 1 of 9</div>
-                                    <a class="btn small blue">CONTINUE</a>
+                                    <div>Page {{ period - 3 }} of 9</div>
+                                    <a class="btn small blue" @click="save_answer(period)">CONTINUE</a>
                                 </div>
                             </div>
 
                             <!-- 第九頁 格式和前面八頁不同，問卷的第九頁會使用 part5 結構 -->
                             <div id="part5" style="display: none;">
                                 <div style="padding-left: 3px;">
-                                    <h3>Dennis Lin</h3>
+                                    <h3>{{ record.employee }}</h3>
                                     <p style="font-weight: 400; margin-bottom: 15px;">The following open-ended questions complete this Leadership Assessment. Each question has a 2000 character limit.</p>
                                     <p style="font-weight: 400; margin-bottom: 15px;">If you do not wish to include written comments, leave the text boxes blank and click &quot;SUBMIT SURVEY.&quot;</p>
 
@@ -1806,6 +1794,7 @@ header( 'location:index' );
 
 <script>
     ELEMENT.locale(ELEMENT.lang.en)
+
 </script>
 
 <!-- import JavaScript -->

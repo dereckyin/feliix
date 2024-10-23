@@ -5491,3 +5491,99 @@ CREATE TABLE IF NOT EXISTS `leadership_template_detail` (
   `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `leadership_assessment_review` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `pid` bigint(20)  DEFAULT 0 NOT NULL,
+  `user_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `period` int(11)  DEFAULT 0,
+  `answer` JSON,
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+
+CREATE TABLE IF NOT EXISTS `leadership_assessment_questions` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `question`  varchar(512) DEFAULT '',
+  `page` int(11)  DEFAULT 0,
+  `sequence` int(11)  DEFAULT 0 NOT NULL,
+  `category`  varchar(128) DEFAULT '',
+  `css_class`  varchar(64) DEFAULT '',
+  `is_development`  varchar(10) DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('A good role model.', 1, 1, 'Position', 'cat5', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Demonstrates courage to do the right thing.', 1, 2, 'Position', 'cat5', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Competitive, wants to be the best.', 1, 3, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Keeps his/her word.', 1, 4, 'Position', 'cat5', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Exhibits an ability to learn from his/her mistakes.', 1, 5, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Recognizes and acknowledges his/her weaknesses.', 1, 6, 'Position', 'cat5', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Takes time to coach and develop others.', 1, 7, 'Permission', 'cat2', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Supports team goals over personal agenda.', 1, 8, 'Position', 'cat5', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Willing to trust others.', 2, 1, 'Position', 'cat5', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Demonstrates humility.', 2, 2, 'Position', 'cat5', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Prioritizes to meet key objectives.', 2, 3, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Demonstrates loyalty to the organization.', 2, 4, 'Position', 'cat5', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Treats people with respect.', 2, 5, 'Permission', 'cat2', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Good listener, seeks to understand.', 2, 6, 'Permission', 'cat2', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Decisive.', 2, 7, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Supportive of others.', 2, 8, 'Permission', 'cat2', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Cares about others.', 3, 1, 'Permission', 'cat2', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Demonstrates good business skills.', 3, 2, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Authentic, willing to be transparent.', 3, 3, 'Position', 'cat5', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Respects peoples'' differences.', 3, 4, 'Permission', 'cat2', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Builds relationships with peers.', 3, 5, 'Permission', 'cat2', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Allows people to do their jobs without micromanaging.', 3, 6, 'Permission', 'cat2', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Motivates and inspires others.', 3, 7, 'Permission', 'cat2', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Pays attention to others'' feelings.', 3, 8, 'Pinnacle-O', 'cat4', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Helps others adapt to change.', 4, 1, 'Permission', 'cat2', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Builds strong relationships with internal and external customers.', 4, 2, 'Permission', 'cat2', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Visionary, has strategic focus.', 4, 3, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Walk matches talk.', 4, 4, 'Position', 'cat5', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Approachable.', 4, 5, 'Permission', 'cat2', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Sets/enforces high standards.', 4, 6, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Takes action, initiates, proactive.', 4, 7, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Clearly communicates expectations.', 4, 8, 'Production', 'cat1', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Shares knowledge and information.', 5, 1, 'Position', 'cat5', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Defines and sets clear goals.', 5, 2, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Seeks to discover what is important to others.', 5, 3, 'Pinnacle-O', 'cat4', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Holds people accountable for performance.', 5, 4, 'Production', 'cat1', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Knowledgeable in career field.', 5, 5, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Recognizes and encourages talents in others.', 5, 6, 'Permission', 'cat2', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Innovative problem solver.', 5, 7, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Recognizes when others are discouraged.', 5, 8, 'Pinnacle-O', 'cat4', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Treats others fairly.', 6, 1, 'Position', 'cat5', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Allows others to be open about their frustrations without becoming defensive.', 6, 2, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Listens openly to others'' feedback about his/her performance.', 6, 3, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Seeks counsel from several sources in order to get other perspectives on his/her creative ideas.', 6, 4, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Displays a confident but non-threatening nature.', 6, 5, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Avoids trivializing the feelings of others.', 6, 6, 'Pinnacle-O', 'cat4', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Takes responsibility rather than blaming others when things are not going well.', 6, 7, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Seeks confirming evidence before making judgments about others.', 6, 8, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Forgives others when he/she is wronged.', 7, 1, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Sets boundaries for self by not getting inappropriately involved in the affairs of others.', 7, 2, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Admits when he/she is angry.', 7, 3, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Promotes his/her agenda without manipulating others.', 7, 4, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Responds appropriately when others need help.', 7, 5, 'Pinnacle-O', 'cat4', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Organized and well prepared.', 7, 6, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Gives difficult feedback in a way that communicates a genuine concern for the individual.', 7, 7, 'Pinnacle-O', 'cat4', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Uses objective analysis in planning.', 7, 8, 'Production', 'cat1', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Celebrates and rewards accomplishments of others in an appropriate manner.', 8, 1, 'Pinnacle-O', 'cat4', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Gives ongoing feedback.', 8, 2, 'Permission', 'cat2', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Maintains a positive attitude.', 8, 3, 'Pinnacle-S', 'cat3', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Treats others who challenge him/her with respect.', 8, 4, 'Pinnacle-O', 'cat4', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Acknowledges how others feel without immediately trying to change their feelings.', 8, 5, 'Pinnacle-O', 'cat4', '', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Sets appropriate boundaries with others by respectfully explaining what is and is not acceptable.', 8, 6, 'Pinnacle-O', 'cat4', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Helps others learn positive lessons from their mistakes.', 8, 7, 'Pinnacle-O', 'cat4', 'Y', 1, now());
+insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Trusts others without being naïve.', 8, 8, 'Pinnacle-O', 'cat4', '', 1, now());

@@ -167,11 +167,11 @@ if (!isset($jwt)) {
         $created_at = $row['created_at'];
 
         if($row['status'] == 0)
-            $status = "Choose respondent for leadership assessment";
+            $status_desc = "Choose respondent for leadership assessment";
         if($row['status'] == 1)
-            $status = "Assessed employee and respondents fill out survey";
+            $status_desc = "Assessed employee and respondents fill out survey";
         if($row['status'] == 2)
-            $status = "Done";
+            $status_desc = "Done";
 
     
         $merged_results[] = array(
@@ -197,8 +197,8 @@ if (!isset($jwt)) {
             "outsider_email2" => $outsider_email2,
             "user_complete_at" => $user_complete_at,
             "manager_complete_at" => $manager_complete_at,
-            "status" => $status,
-
+            "status" => $row['status'],
+            "status_desc" => $status_desc,
             "created_at" => $created_at,
         );
     }

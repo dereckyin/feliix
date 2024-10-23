@@ -1,4 +1,3 @@
-
 var app = new Vue({
   el: "#app",
   data: {
@@ -59,6 +58,7 @@ var app = new Vue({
     title: '',
     username:'',
     user_id:'',
+    email:'',
 
     // view
     views:{},
@@ -90,6 +90,11 @@ var app = new Vue({
     outsider_email1:"",
     outsider_name2:"",
     outsider_email2:"",
+
+    review: {},
+    period : 0,
+    question: [],
+    answers : [],
   },
 
   created() {
@@ -131,7 +136,7 @@ var app = new Vue({
     this.getLeaveCredit();
     this.getLeadershipAssessmentControl();
 
-
+    
   },
 
   computed: {
@@ -166,6 +171,112 @@ var app = new Vue({
   },
 
   methods: {
+
+    save_answer: function(period) {
+      let _this = this;
+      this.answers = [];
+
+      for(var i = 0; i < this.question.length; i++)
+      {
+        var grade = "";
+        var elements = document.getElementsByName("question_" + this.question[i].id);
+        for (var j = 0 ; j < elements.length; j++)
+        {
+            if (elements[j].checked)
+            {
+              grade = elements[j].value;
+              break;
+            }
+        }
+
+        if(grade == "")
+        {
+          Swal.fire({
+            text: "Please give the rating for each question.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+
+          return;
+        }
+
+        var obj = {
+          id: this.question[i].id,
+          grade: grade,
+        };
+
+        this.answers.push(obj);
+
+      }
+
+      
+      Swal.fire({
+        text: "Are you sure to go to the next page? Once you go to the next page, you are not allowed to change your ratings on this page.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.value) {
+          if (_this.submit == true) return;
+
+          _this.submit = true;
+
+
+          var token = localStorage.getItem("token");
+          var form_Data = new FormData();
+          form_Data.append("jwt", token);
+          form_Data.append("pid", _this.proof_id);
+
+          form_Data.append("commet6", _this.comment6);
+
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/leadership_assessment_update_comment",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              Swal.fire({
+                html: response.data.message,
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+
+              _this.reset();
+
+              window.jQuery(".mask").toggle();
+              window.jQuery("#Modal_4").toggle();
+
+            })
+            .catch(function(error) {
+              //handle error
+              Swal.fire({
+                text: JSON.stringify(error),
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+
+              _this.submit = false;
+
+              //_this.reset();
+            });
+
+            
+        } else {
+          return;
+        }
+      });
+      
+      },
+
+    to_save_answer: function(period) {
+      console.log("to_save_answer");
+    },
     
     save_respondent() {
       
@@ -394,6 +505,7 @@ var app = new Vue({
           _this.department = response.data.department;
           _this.title = response.data.title;
           _this.user_id = response.data.user_id;
+          _this.email = response.data.email;
         })
         .catch(function(response) {
           //handle error
@@ -502,12 +614,150 @@ var app = new Vue({
       }
     },
 
+
+    async getLeadershipAssessmentReview() {
+      let _this = this;
+      var token = localStorage.getItem("token");
+
+      var params = {
+        pid: _this.proof_id,
+        user_id: _this.user_id,
+      };
+   
+
+      var res = await axios({
+        method: "get",
+        headers: { Authorization: `Bearer ${token}` },
+        params,
+        url: "api/leadership_assessment_review",
+ 
+      })
+
+      this.review = res.data[0];
+      this.period = res.data[0].period;
+    },
+
+    to_next: async function(to_period) {
+      var token = localStorage.getItem("token");
+      var form_Data = new FormData();
+      let _this = this;
+
+      form_Data.append("jwt", token);
+
+      form_Data.append("pid", this.review.id);
+      // form_Data.append("block", JSON.stringify(temp_block));
+      form_Data.append("period", to_period);
+
+        let res = await axios({
+          method: 'post',
+          url: 'api/leadership_assessment_review_next',
+          data: form_Data,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        await _this.getLeadershipAssessmentReview();
+
+    },
+
+     get_questions: async function(step) {
+      let _this = this;
+      var token = localStorage.getItem("token");
+
+      var params = {
+        step: step,
+      };
+   
+
+      var res = await axios({
+        method: "get",
+        headers: { Authorization: `Bearer ${token}` },
+        params,
+        url: "api/leadership_assessment_questions",
+ 
+      })
+
+      this.question = res.data;
+    },
+      
+
+    async exeute_step() {
+      let _this = this;
+      await _this.getLeadershipAssessmentReview();
+      if(this.period > 3)
+        this.get_questions(this.period - 3);
+
+      window.jQuery(".mask").toggle();
+      window.jQuery("#Modal_3").toggle();
+
+    },
+
     execute: function() {
-      var record = this.shallowCopy(
+
+      this.record = this.shallowCopy(
         this.receive_records.find((element) => element.id == this.proof_id)
       );
-      
-      if(this.user_id != record.user_id)
+
+      this.outsider_name1 = this.record.outsider_name1;
+        this.outsider_email1 = this.record.outsider_email1;
+        this.outsider_name2 = this.record.outsider_name2;
+        this.outsider_email2 = this.record.outsider_email2;
+        
+
+        this.direct_access = JSON.parse(this.record.direct_access);
+        this.manager_access = JSON.parse(this.record.manager_access);
+        this.peer_access = JSON.parse(this.record.peer_access);
+        this.other_access = JSON.parse(this.record.other_access);
+
+        var is_respondent = false;
+
+        for(var i = 0; i < this.direct_access.length; i++)
+        {
+          var email = this.employees.find((element) => element.username == this.direct_access[i]);
+          if(email != undefined)
+            if(this.email.trim().toLowerCase() == email.email.trim().toLowerCase())
+              is_respondent = true;
+        }
+        for(var i = 0; i < this.manager_access.length; i++)
+        {
+          var email = this.employees.find((element) => element.username == this.manager_access[i]);
+          if(email != undefined)
+            if(this.email.trim().toLowerCase() == email.email.trim().toLowerCase())
+              is_respondent = true;
+        }
+        for(var i = 0; i < this.peer_access.length; i++)
+        {
+          var email = this.employees.find((element) => element.username == this.peer_access[i]);
+          if(email != undefined)
+            if(this.email.trim().toLowerCase() == email.email.trim().toLowerCase())
+              is_respondent = true;
+        }
+        for(var i = 0; i < this.other_access.length; i++)
+        {
+          var email = this.employees.find((element) => element.username == this.other_access[i]);
+          if(email != undefined)
+            if(this.email.trim().toLowerCase() == email.email.trim().toLowerCase())
+              is_respondent = true;
+        }
+        
+        if(this.outsider_email1.trim().toLowerCase() == this.email.trim().toLowerCase() || this.outsider_email2.trim().toLowerCase() == this.email.trim().toLowerCase())
+          is_respondent = true;
+        
+      if(this.record.status == '1' && is_respondent == false)
+      {
+        Swal.fire({
+          text: "Only assessed employee and chosen respondents are allowed to fill out survey of this leadership assessment record.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+      else if(this.record.status == '1' && is_respondent == true)
+      {
+        this.exeute_step();
+      }
+      else if(this.user_id != this.record.user_id)
       {
         Swal.fire({
           text: "Only assessed employee is allowed to choose respondent for his/her leadership assessment.",
@@ -519,17 +769,6 @@ var app = new Vue({
       }
       else
       {
-
-        this.outsider_name1 = record.outsider_name1;
-        this.outsider_email1 = record.outsider_email1;
-        this.outsider_name2 = record.outsider_name2;
-        this.outsider_email2 = record.outsider_email2;
-        
-
-        this.direct_access = JSON.parse(record.direct_access);
-        this.manager_access = JSON.parse(record.manager_access);
-        this.peer_access = JSON.parse(record.peer_access);
-        this.other_access = JSON.parse(record.other_access);
 
         window.jQuery(".mask").toggle();
         window.jQuery("#Modal_2").toggle();
@@ -914,7 +1153,7 @@ var app = new Vue({
         this.receive_records.find((element) => element.id == this.proof_id)
       );
       
-      if(record.status == 'Choose respondent for leadership assessment')
+      if(record.status == 0)
       {
         Swal.fire({
           text: "No any result until now.",
