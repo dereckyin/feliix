@@ -855,6 +855,9 @@ var app = new Vue({
         
         if(this.outsider_email1.trim().toLowerCase() == this.email.trim().toLowerCase() || this.outsider_email2.trim().toLowerCase() == this.email.trim().toLowerCase())
           is_respondent = true;
+      
+        if(this.record.user_id == this.user_id)
+          is_respondent = true;
         
       if(this.record.status == '1' && is_respondent == false)
       {
