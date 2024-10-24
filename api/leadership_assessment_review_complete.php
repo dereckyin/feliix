@@ -78,6 +78,7 @@ switch ($method) {
                     `answer` = :answer,
                     `updated_id` = :updated_id,
                     `updated_at` = now(),
+                    `status` = 1,
                     `user_complete_at` = now()
                     where id = :id";
 
@@ -110,9 +111,48 @@ switch ($method) {
                 die();
             }
 
+            // if there is 9 leadership_assessment_review, update leadership_assessment status to 1
+            $query = "select count(*) as cnt from leadership_assessment_review where status = 1 and pid = :pid";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':pid', $pid);
+
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($row['cnt'] == 9) {
+                $query = "update leadership_assessment
+                SET
+                    `status` = 2,
+                    `user_complete_at` = now()
+                    where id = :id";
+
+                // prepare the query
+                $stmt = $db->prepare($query);
+
+                // bind the values
+                $stmt->bindParam(':id', $pid);
+
+                // execute the query, also check if query was successful
+                try {
+                    // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        $arr = $stmt->errorInfo();
+                        error_log($arr[2]);
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                        die();
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+            }
 
             $db->commit();
-
 
 
             http_response_code(200);
