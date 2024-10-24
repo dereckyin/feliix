@@ -710,6 +710,7 @@ var app = new Vue({
       var params = {
         pid: _this.proof_id,
         user_id: _this.user_id,
+        email: _this.email,
       };
    
 
