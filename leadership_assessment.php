@@ -891,7 +891,7 @@ header( 'location:index' );
                         <li>{{ record.status_desc }}</li>
                         <li>{{ record.employee }}</li>
                         <li>{{ record.title }} ({{ record.department }})</li>
-                        <li class="content">{{ record.created_at }} ~ {{ record.manager_complete_at }}</li>
+                        <li class="content">{{ record.created_at }} ~ {{ record.user_complete_at }}</li>
                     </ul>
 
                 </div>

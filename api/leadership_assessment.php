@@ -71,7 +71,7 @@ if (!isset($jwt)) {
                 u.username manager,
                 u1.username employee, 
                 pr.status,
-                COALESCE(pr.user_complete_at, '') user_complete_at, 
+                COALESCE(DATE_FORMAT(pr.user_complete_at, '%Y-%m-%d'), '') user_complete_at, 
                 COALESCE(pr.manager_complete_at, '') manager_complete_at,
                 DATE_FORMAT(pr.created_at, '%Y-%m-%d') created_at
                 FROM leadership_assessment pr
