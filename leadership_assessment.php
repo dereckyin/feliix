@@ -1117,7 +1117,7 @@ header( 'location:index' );
                                 </div>
 
                                 <div style="margin-top: 15px;">
-                                    <a class="btn small blue" @click="to_next(3)">CONTINUE</a>
+                                    <a class="btn small blue" @click="to_next(4)">CONTINUE</a>
                                 </div>
                             </div>
 
@@ -1142,7 +1142,7 @@ header( 'location:index' );
                                         </ul>
 
                                         <!-- 會用以下的 ul 結構，來把每一頁的 8 個問題依照 page_sequence 依序列出來 -->
-                                        <ul class="question"v-for="(item, index) in question">
+                                        <ul class="question" v-for="(item, index) in question">
                                             <li>{{ item.question }}</li>
                                             <li><input type="radio" :name="'question_' + item.id" class="alone green" value="0"> 0</li>
                                             <li><input type="radio" :name="'question_' + item.id" class="alone green" value="1"> 1</li>
@@ -1177,7 +1177,7 @@ header( 'location:index' );
                             </div>
 
                             <!-- 第九頁 格式和前面八頁不同，問卷的第九頁會使用 part5 結構 -->
-                            <div id="part5" style="display: none;">
+                            <div id="part5" v-show="period == 12">
                                 <div style="padding-left: 3px;">
                                     <h3>{{ record.employee }}</h3>
                                     <p style="font-weight: 400; margin-bottom: 15px;">The following open-ended questions complete this Leadership Assessment. Each question has a 2000 character limit.</p>
@@ -1186,19 +1186,19 @@ header( 'location:index' );
                                     <div style="margin-top: 40px;">
                                         <ul class="open_ended">
                                             <li>What are this person&#39;s greatest strengths when it comes to relating to and leading others?</li>
-                                            <li><textarea></textarea></li>
+                                            <li><textarea v-model="comment1"></textarea></li>
                                         </ul>
 
                                         <ul class="open_ended">
                                             <li>
                                             What are this person&#39;s greatest struggles when it comes to relating to and leading others?</li>
-                                            <li><textarea></textarea></li>
+                                            <li><textarea v-model="comment2"></textarea></li>
                                         </ul>
 
                                         <ul class="open_ended">
                                             <li>
                                             What are this person&#39;s strengths and struggles in relation to Developing Others? (Any other comments you wiish to make can be put in this section also.)</li>
-                                            <li><textarea></textarea></li>
+                                            <li><textarea v-model="comment3"></textarea></li>
                                         </ul>
                                     </div>
 
@@ -1206,7 +1206,7 @@ header( 'location:index' );
 
                                 <div class="button_area type3">
                                     <div>Page 9 of 9</div>
-                                    <a class="btn small blue">SUBMIT SURVEY</a>
+                                    <a class="btn small blue" @click="complete_answer(period)">SUBMIT SURVEY</a>
                                 </div>
                             </div>
 

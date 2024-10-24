@@ -35,15 +35,17 @@ use \Firebase\JWT\JWT;
 if (!isset($jwt)) {
     http_response_code(401);
 
-    echo json_encode(array("message" => "Access denied1."));
+    echo json_encode(array("message" => "Access denied."));
     die();
 } else {
 
     // decode jwt
     $decoded = JWT::decode($jwt, $key, array('HS256'));
     $user_id = $decoded->data->id;
+    $user_email = $decoded->data->email;
 
     $pid = (isset($_GET['pid']) ?  $_GET['pid'] : 0);
+    $email = (isset($_GET['email']) ?  $_GET['email'] : '');
 
     $merged_results = array();
 
@@ -51,17 +53,39 @@ if (!isset($jwt)) {
 
     $query = "SELECT *
                 FROM leadership_assessment_review pr
-              WHERE pr.status <> -1  " . ($pid != 0 ? " and pr.pid=$pid" : ' ')  . ($user_id != 0 ? " and pr.user_id=$user_id" : ' ');
+              WHERE pr.status <> -1  " . ($pid != 0 ? " and pr.pid=$pid" : ' ')  . ($user_id != 0 ? " and pr.user_id=$user_id" : ' ') . ($email != '' ? " and pr.email='$email'" : ' ');
 
 
     $stmt = $db->prepare($query);
     $stmt->execute();
     $last_id = 0;
-    
+
+    // add 64 answers to json
+    // $answer_str = {"answer1": "", "answer2": "", ... "answer64": ""}
+    $answer_str = "{";
+    for($i = 1; $i <= 64; $i++)
+    {
+        $answer_str .= "\"answer" . $i . "\": \"0\", ";
+    }
+
+    for($i = 1; $i <= 3; $i++)
+    {
+        $answer_str .= "\"comment" . $i . "\": \"\", ";
+    }
+
+    $answer_str = rtrim($answer_str, ", ");
+    $answer_str .= "}";
+        
     if($stmt->rowCount() == 0)
     {
-        $query_insert = "insert into leadership_assessment_review(pid, user_id, period, answer, status, create_id) values($pid, $user_id, 1, '[]', 0, $user_id)";
+        $query_insert = "insert into leadership_assessment_review(pid, user_id, period, answer, status, email, create_id) values(:pid, :user_id, 1, :answer_str, 0, :email, :user_id)";
         $stmt = $db->prepare($query_insert);
+
+        $stmt->bindParam(':pid', $pid);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':answer_str', $answer_str);
+        $stmt->bindParam(':email', $user_email);
+
         $stmt->execute();
 
         $last_id = $db->lastInsertId();
@@ -73,7 +97,7 @@ if (!isset($jwt)) {
 
     if(count($merged_results) == 0)
     {
-        $merged_results[] = array("id" => $last_id, "pid" => $pid, "user_id" => $user_id, "period" => 1, "answer" => "[]", "status" => 0, "create_id" => $user_id);
+        $merged_results[] = array("id" => $last_id, "pid" => $pid, "user_id" => $user_id, "period" => 1, "answer" => $answer_str, "status" => 0, "email" => $user_email, "create_id" => $user_id);
     }
 
     echo json_encode($merged_results, JSON_UNESCAPED_SLASHES);

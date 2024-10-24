@@ -95,6 +95,7 @@ var app = new Vue({
     period : 0,
     question: [],
     answers : [],
+    review_answers: [],
   },
 
   created() {
@@ -172,9 +173,106 @@ var app = new Vue({
 
   methods: {
 
-    save_answer: function(period) {
+    complete_answer: async function(period) {
       let _this = this;
-      this.answers = [];
+
+      // if(this.comment1.trim() == "" || this.comment2.trim() == "" || this.comment3.trim() == "")
+      // {
+      //   Swal.fire({
+      //     text: "Please give the rating for each question.",
+      //     icon: "warning",
+      //     confirmButtonText: "OK",
+      //   });
+
+      //   return;
+      // }
+
+      var id = "comment1";
+      for (var key in this.answers) {
+        if(key == id)
+        {
+          this.answers[key] = this.comment1;
+          break;
+        }
+      }
+
+      id = "comment2";
+      for (var key in this.answers) {
+        if(key == id)
+        {
+          this.answers[key] = this.comment2;
+          break;
+        }
+      }
+
+      id = "comment3";
+      for (var key in this.answers) {
+        if(key == id)
+        {
+          this.answers[key] = this.comment3;
+          break;
+        }
+      }
+
+      Swal.fire({
+        text: "Are you sure to submit survey? Once you submit the survey, the survey becomes completed.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.value) {
+
+
+
+          var token = localStorage.getItem("token");
+          var form_Data = new FormData();
+          form_Data.append("jwt", token);
+          form_Data.append("pid", this.review.id);
+          form_Data.append("period", parseInt(period) + 1);
+          form_Data.append("answer", JSON.stringify(_this.answers));
+
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/leadership_assessment_review_complete",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              _this.getLeadershipAssessmentReview();
+              _this.get_questions(parseInt(period) - 2);
+
+              window.jQuery(".mask").toggle();
+              window.jQuery("#Modal_3").toggle();
+
+            })
+            .catch(function(error) {
+              //handle error
+              Swal.fire({
+                text: JSON.stringify(error),
+                icon: "info",
+                confirmButtonText: "OK",
+              });
+
+
+              //_this.reset();
+            });
+
+            
+        } else {
+          return;
+        }
+      });
+      
+      },
+
+    save_answer: async function(period) {
+      let _this = this;
+      this.answers = JSON.parse(this.review.answer);
 
       for(var i = 0; i < this.question.length; i++)
       {
@@ -200,16 +298,17 @@ var app = new Vue({
           return;
         }
 
-        var obj = {
-          id: this.question[i].id,
-          grade: grade,
-        };
+        var id = "answer" + this.question[i].id;
 
-        this.answers.push(obj);
-
+        for (var key in this.answers) {
+          if(key == id)
+          {
+            this.answers[key] = grade;
+            break;
+          }
+        }
       }
 
-      
       Swal.fire({
         text: "Are you sure to go to the next page? Once you go to the next page, you are not allowed to change your ratings on this page.",
         icon: "warning",
@@ -219,38 +318,28 @@ var app = new Vue({
         confirmButtonText: "Yes",
       }).then((result) => {
         if (result.value) {
-          if (_this.submit == true) return;
 
-          _this.submit = true;
 
 
           var token = localStorage.getItem("token");
           var form_Data = new FormData();
           form_Data.append("jwt", token);
-          form_Data.append("pid", _this.proof_id);
-
-          form_Data.append("commet6", _this.comment6);
+          form_Data.append("pid", this.review.id);
+          form_Data.append("period", parseInt(period) + 1);
+          form_Data.append("answer", JSON.stringify(_this.answers));
 
           axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
             },
-            url: "api/leadership_assessment_update_comment",
+            url: "api/leadership_assessment_review_update",
             data: form_Data,
           })
             .then(function(response) {
               //handle success
-              Swal.fire({
-                html: response.data.message,
-                icon: "info",
-                confirmButtonText: "OK",
-              });
-
-              _this.reset();
-
-              window.jQuery(".mask").toggle();
-              window.jQuery("#Modal_4").toggle();
+              _this.getLeadershipAssessmentReview();
+              _this.get_questions(parseInt(period) - 2);
 
             })
             .catch(function(error) {
@@ -261,7 +350,6 @@ var app = new Vue({
                 confirmButtonText: "OK",
               });
 
-              _this.submit = false;
 
               //_this.reset();
             });
@@ -634,6 +722,7 @@ var app = new Vue({
       })
 
       this.review = res.data[0];
+      this.answers = JSON.parse(this.review.answer);
       this.period = res.data[0].period;
     },
 
@@ -658,6 +747,8 @@ var app = new Vue({
         });
 
         await _this.getLeadershipAssessmentReview();
+        if(to_period > 3)
+          await this.get_questions(to_period - 3);
 
     },
 
@@ -679,14 +770,35 @@ var app = new Vue({
       })
 
       this.question = res.data;
+
+      var el = document.querySelectorAll('input');
+  
+      for (var i = 0, n=el.length; i < n; i++){
+          if (el[i].name.indexOf('question_')==0) {
+            el[i].checked = false; 
+          }
+        }
+      
     },
       
 
     async exeute_step() {
       let _this = this;
       await _this.getLeadershipAssessmentReview();
+
+      if(this.period > 12)
+      {
+        Swal.fire({
+          text: "You already filled out and submitted the survey.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+
+        return;
+      }
+
       if(this.period > 3)
-        this.get_questions(this.period - 3);
+        await this.get_questions(this.period - 3);
 
       window.jQuery(".mask").toggle();
       window.jQuery("#Modal_3").toggle();
@@ -757,7 +869,7 @@ var app = new Vue({
       {
         this.exeute_step();
       }
-      else if(this.user_id != this.record.user_id)
+      else if(this.record.status == '0' && this.user_id != this.record.user_id)
       {
         Swal.fire({
           text: "Only assessed employee is allowed to choose respondent for his/her leadership assessment.",
@@ -1163,6 +1275,16 @@ var app = new Vue({
         return;
       }
 
+      if(record.status == 1)
+      {
+        Swal.fire({
+          text: "No one is allowed to delete the ongoing leadership assessment record.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
 
       let _this = this;
       let _window = window;
@@ -1486,6 +1608,16 @@ var app = new Vue({
       this.record = this.shallowCopy(
         this.receive_records.find((element) => element.id == this.proof_id)
       );
+
+      if(this.record.status == 1)
+      {
+        Swal.fire({
+          text: "No one is allowed to delete the ongoing leadership assessment record.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
 
       let _this = this;
 

@@ -5496,6 +5496,7 @@ CREATE TABLE IF NOT EXISTS `leadership_assessment_review` (
   `id` bigint(20)  NOT NULL AUTO_INCREMENT,
   `pid` bigint(20)  DEFAULT 0 NOT NULL,
   `user_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci default '',
   `period` int(11)  DEFAULT 0,
   `answer` JSON,
   `status` int(11) DEFAULT 0,
@@ -5503,6 +5504,7 @@ CREATE TABLE IF NOT EXISTS `leadership_assessment_review` (
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
   `updated_id` int(11) DEFAULT 0,
   `updated_at` timestamp NULL,
+  `user_complete_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
