@@ -58,7 +58,6 @@ if (!isset($jwt)) {
                 pr.template_id,
                 ud.department,  
                 ut.title, 
-                pt.version,
                 pr.create_id,
                 pr.user_id,
                 pr.direct_access,
@@ -78,7 +77,6 @@ if (!isset($jwt)) {
                 FROM leadership_assessment pr
                 LEFT JOIN user u ON u.id = pr.create_id
                 LEFT JOIN user u1 ON u1.id = pr.user_id
-                LEFT JOIN leadership_template pt ON pr.template_id = pt.id
                 LEFT JOIN user_title ut ON ut.id = u1.title_id
                 LEFT JOIN user_department ud ON ud.id = u1.apartment_id
               WHERE pr.status <> -1  " . ($id != 0 ? " and pr.id=$id" : ' ');
@@ -139,7 +137,6 @@ if (!isset($jwt)) {
         $template_id = $row['template_id'];
         $employee = $row['employee'];
         $manager = $row['manager'];
-        $version = $row['version'];
         $user_complete_at = $row['user_complete_at'];
         $manager_complete_at = $row['manager_complete_at'];
 
@@ -182,7 +179,6 @@ if (!isset($jwt)) {
             "department" => $department,
             "template_id" => $template_id,
             "title" => $title,
-            "version" => $version,
             "employee" => $employee,
             "manager" => $manager,
             "create_id" => $create_id,
