@@ -230,6 +230,7 @@ var app = new Vue({
           var form_Data = new FormData();
           form_Data.append("jwt", token);
           form_Data.append("pid", this.review.id);
+          form_Data.append("record_id", this.review.pid);
           form_Data.append("period", parseInt(period) + 1);
           form_Data.append("answer", JSON.stringify(_this.answers));
 
@@ -248,6 +249,8 @@ var app = new Vue({
 
               window.jQuery(".mask").toggle();
               window.jQuery("#Modal_3").toggle();
+
+              _this.getLeaveCredit();
 
             })
             .catch(function(error) {

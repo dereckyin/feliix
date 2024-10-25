@@ -61,6 +61,7 @@ switch ($method) {
 
         $jwt = (isset($_POST['jwt']) ?  $_POST['jwt'] : null);
         $pid = (isset($_POST['pid']) ?  $_POST['pid'] : 0);
+        $record_id = (isset($_POST['record_id']) ?  $_POST['record_id'] : 0);
         $period = (isset($_POST['period']) ?  $_POST['period'] : 0);
         $answer = (isset($_POST['answer']) ?  $_POST['answer'] : '[]');
       
@@ -114,7 +115,7 @@ switch ($method) {
             // if there is 9 leadership_assessment_review, update leadership_assessment status to 1
             $query = "select count(*) as cnt from leadership_assessment_review where status = 1 and pid = :pid";
             $stmt = $db->prepare($query);
-            $stmt->bindParam(':pid', $pid);
+            $stmt->bindParam(':pid', $record_id);
 
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
