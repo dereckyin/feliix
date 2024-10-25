@@ -131,7 +131,7 @@ switch ($method) {
                 $stmt = $db->prepare($query);
 
                 // bind the values
-                $stmt->bindParam(':id', $pid);
+                $stmt->bindParam(':id', $record_id);
 
                 // execute the query, also check if query was successful
                 try {

@@ -1185,20 +1185,20 @@ header( 'location:index' );
 
                                     <div style="margin-top: 40px;">
                                         <ul class="open_ended">
-                                            <li>What are this person&#39;s greatest strengths when it comes to relating to and leading others?</li>
-                                            <li><textarea v-model="comment1"></textarea></li>
+                                            <li>What are this person&#39;s greatest strengths when it comes to relating to and leading others?<span> ({{comment1.length}}/{{ 2048 }})</span></li>
+                                            <li><textarea v-model="comment1" :maxlength="2048" show-word-limit></textarea></li>
                                         </ul>
 
                                         <ul class="open_ended">
                                             <li>
-                                            What are this person&#39;s greatest struggles when it comes to relating to and leading others?</li>
-                                            <li><textarea v-model="comment2"></textarea></li>
+                                            What are this person&#39;s greatest struggles when it comes to relating to and leading others?<span> ({{comment2.length}}/{{ 2048 }})</span></li>
+                                            <li><textarea v-model="comment2" :maxlength="2048" show-word-limit></textarea></li>
                                         </ul>
 
                                         <ul class="open_ended">
                                             <li>
-                                            What are this person&#39;s strengths and struggles in relation to Developing Others? (Any other comments you wiish to make can be put in this section also.)</li>
-                                            <li><textarea v-model="comment3"></textarea></li>
+                                            What are this person&#39;s strengths and struggles in relation to Developing Others? (Any other comments you wiish to make can be put in this section also.)<span> ({{comment3.length}}/{{ 2048 }})</span></li>
+                                            <li><textarea v-model="comment3" :maxlength="2048" show-word-limit></textarea></li>
                                         </ul>
                                     </div>
 

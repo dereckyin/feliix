@@ -187,6 +187,16 @@ var app = new Vue({
       //   return;
       // }
 
+      if(_this.check_comment_size(2048) != 0) 
+        {
+          Swal.fire({
+            text: "Text length cannot exceed " + max_length + " characters.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+
       var id = "comment1";
       for (var key in this.answers) {
         if(key == id)
@@ -886,6 +896,10 @@ var app = new Vue({
 
         return;
       }
+      else if(this.record.status == '2')
+      {
+        return;
+      }
       else
       {
 
@@ -970,13 +984,7 @@ var app = new Vue({
         checked = this.comment2.length;
       if(this.comment3.length > max_length)
         checked = this.comment3.length;
-      if(this.comment4.length > max_length)
-        checked = this.comment4.length;
-      if(this.comment5.length > max_length)
-        checked = this.comment5.length;
-      if(this.comment6.length > max_length)
-        checked = this.comment6.length;
-
+   
         return checked;
 
     },
@@ -1625,6 +1633,16 @@ var app = new Vue({
         });
         return;
       }
+
+      if(this.record.status == 2)
+        {
+          Swal.fire({
+            text: "No one is allowed to delete the completed leadership assessment record.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
 
       let _this = this;
 
