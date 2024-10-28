@@ -41,11 +41,12 @@ if (!isset($jwt)) {
 
     // decode jwt
     $decoded = JWT::decode($jwt, $key, array('HS256'));
-    $user_id = $decoded->data->id;
+    $uid = $decoded->data->id;
 
     $username = $decoded->data->username;
     $position = $decoded->data->position;
     $department = $decoded->data->department;
+    $user_email = $decoded->data->email;
 
     $merged_results = array();
     $return_result = array();
@@ -156,10 +157,34 @@ if (!isset($jwt)) {
         if($other_access == "")
             $other_access = "[]";
 
+        $access_type = "";
+        $manager_array = json_decode($manager_access);
+        $peer_array = json_decode($peer_access);
+        $direct_array = json_decode($direct_access);
+        $other_array = json_decode($other_access);
+
+        if(in_array($username, $manager_array))
+            $access_type = "manager";
+        if(in_array($username, $peer_array))
+            $access_type = "peer";
+        if(in_array($username, $direct_array))
+            $access_type = "direct";
+        if(in_array($username, $other_array))
+            $access_type = "other";
+        
         $outsider_name1 = $row['outsider_name1'];
         $outsider_email1 = $row['outsider_email1'];
+
+        if($outsider_name1 == "" && $user_email == $outsider_email1)
+            $access_type = "outsider";
+
         $outsider_name2 = $row['outsider_name2'];
         $outsider_email2 = $row['outsider_email2'];
+        if($outsider_name2 == "" && $user_email == $outsider_email2)
+            $access_type = "outsider";
+
+        if($uid == $create_id)
+            $access_type = "self";
 
         $created_at = $row['created_at'];
 
@@ -183,6 +208,7 @@ if (!isset($jwt)) {
             "manager" => $manager,
             "create_id" => $create_id,
             "user_id" => $user_id,
+            "access_type" => $access_type,
             "direct_access" => $direct_access,
             "manager_access" => $manager_access,
             "peer_access" => $peer_access,

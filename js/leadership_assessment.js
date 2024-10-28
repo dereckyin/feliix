@@ -242,6 +242,7 @@ var app = new Vue({
           form_Data.append("pid", this.review.id);
           form_Data.append("record_id", this.review.pid);
           form_Data.append("period", parseInt(period) + 1);
+          form_Data.append("access_type", JSON.stringify(_this.record.access_type));
           form_Data.append("answer", JSON.stringify(_this.answers));
 
           axios({

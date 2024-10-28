@@ -5563,3 +5563,21 @@ insert into leadership_assessment_questions(question, page, sequence, category, 
 insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Sets appropriate boundaries with others by respectfully explaining what is and is not acceptable.', 8, 6, 'Pinnacle-O', 'cat4', 'Y', 1, now());
 insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Helps others learn positive lessons from their mistakes.', 8, 7, 'Pinnacle-O', 'cat4', 'Y', 1, now());
 insert into leadership_assessment_questions(question, page, sequence, category, css_class, is_development, create_id, created_at) values('Trusts others without being naïve.', 8, 8, 'Pinnacle-O', 'cat4', '', 1, now());
+
+-- 20241028
+CREATE TABLE IF NOT EXISTS `leadership_assessment_answers` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `pid` bigint(20)  DEFAULT 0 NOT NULL,
+  `question_id` int(11)  DEFAULT 0,
+  `score` numeric(10,1) DEFAULT 0,
+  `type` varchar(64) DEFAULT '',
+  `category`  varchar(128) DEFAULT '',
+  `css_class`  varchar(64) DEFAULT '',
+  `is_development`  varchar(10) DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';

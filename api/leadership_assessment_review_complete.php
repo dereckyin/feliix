@@ -64,6 +64,7 @@ switch ($method) {
         $record_id = (isset($_POST['record_id']) ?  $_POST['record_id'] : 0);
         $period = (isset($_POST['period']) ?  $_POST['period'] : 0);
         $answer = (isset($_POST['answer']) ?  $_POST['answer'] : '[]');
+        $access_type = (isset($_POST['access_type']) ?  $_POST['access_type'] : '');
       
         if ($pid == 0) {
             http_response_code(401);
