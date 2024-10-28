@@ -64,6 +64,7 @@ switch ($method) {
         $record_id = (isset($_POST['record_id']) ?  $_POST['record_id'] : 0);
         $period = (isset($_POST['period']) ?  $_POST['period'] : 0);
         $answer = (isset($_POST['answer']) ?  $_POST['answer'] : '[]');
+        $answer_array = json_decode($answer, true);
         $access_type = (isset($_POST['access_type']) ?  $_POST['access_type'] : '');
       
         if ($pid == 0) {
@@ -112,6 +113,130 @@ switch ($method) {
                 echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                 die();
             }
+
+            // questionss
+            $query = "select id, category, css_class, is_development from leadership_assessment_questions where status <> -1";
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+
+            $questions = array();
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $questions[] = $row;
+            }
+
+            // pre_answer
+            $query = "select id, question_id, score, type from leadership_assessment_answers where pid = :id and type = :type and status <> -1";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':id', $record_id);
+            $stmt->bindParam(':type', $access_type);
+            $stmt->execute();
+
+            $pre_answer = array();
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $pre_answer[] = $row;
+            }
+            
+            foreach ($answer_array as $key => $value) {
+                if(substr($key, 0, 6) != "answer")
+                    continue;
+
+                $question_id = substr($key, 6);
+
+                $score = $value;
+                $category = "";
+                $css_class = "";
+                $is_development = "";
+                
+                foreach ($questions as $key => $value) {
+                    if ($value['id'] == $question_id) {
+                        $category = $value['category'];
+                        $css_class = $value['css_class'];
+                        $is_development = $value['is_development'];
+                        break;
+                    }
+                }
+
+                $pre_score = "";
+                $pre_id = 0;
+                foreach ($pre_answer as $key => $value) {
+                    if ($value['question_id'] == $question_id) {
+                        $pre_score = $value['score'];
+                        $pre_id = $value['id'];
+                        break;
+                    }
+                }
+
+                // if there is no pre_answer, insert
+                if ($pre_score == "") {
+                    $query = "insert into leadership_assessment_answers(pid, question_id, score, type, category, css_class, is_development, create_id, created_at) values(:pid, :question_id, :score, :type, :category, :css_class, :is_development, :create_id, now())";
+                    $stmt = $db->prepare($query);
+                    $stmt->bindParam(':pid', $record_id);
+                    $stmt->bindParam(':question_id', $question_id);
+                    $stmt->bindParam(':score', $score);
+                    $stmt->bindParam(':type', $access_type);
+                    $stmt->bindParam(':category', $category);
+                    $stmt->bindParam(':css_class', $css_class);
+                    $stmt->bindParam(':is_development', $is_development);
+                    $stmt->bindParam(':create_id', $user_id);
+
+                    try {
+                        // execute the query, also check if query was successful
+                        if (!$stmt->execute()) {
+                            $arr = $stmt->errorInfo();
+                            error_log($arr[2]);
+                            $db->rollback();
+                            http_response_code(501);
+                            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                            die();
+                        }
+                    } catch (Exception $e) {
+                        error_log($e->getMessage());
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                        die();
+                    }
+                } else {
+                    // if there is pre_answer, update
+                    $query = "update leadership_assessment_answers
+                    SET
+                        `score` = :score,
+                        `updated_id` = :updated_id,
+                        `updated_at` = now()
+                        where pid = :pid and question_id = :question_id and type = :type";
+
+                    
+                    $average = ($score + ($pre_score == 0 ? $score : $pre_score)) / ($score == 0 ? 1 : 2);
+
+                    $stmt = $db->prepare($query);
+                    $stmt->bindParam(':score', $average);
+                    $stmt->bindParam(':updated_id', $user_id);
+                    $stmt->bindParam(':pid', $record_id);
+                    $stmt->bindParam(':question_id', $question_id);
+                    $stmt->bindParam(':type', $access_type);
+
+                    try {
+                        // execute the query, also check
+
+                        if (!$stmt->execute()) {
+                            $arr = $stmt->errorInfo();
+                            error_log($arr[2]);
+                            $db->rollback();
+                            http_response_code(501);
+                            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                            die();
+                        }
+                    } catch (Exception $e) {
+                        error_log($e->getMessage());
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                        die();
+                    }
+                }
+
+            }
+
 
             // if there is 9 leadership_assessment_review, update leadership_assessment status to 1
             $query = "select count(*) as cnt from leadership_assessment_review where status = 1 and pid = :pid";

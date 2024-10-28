@@ -234,15 +234,13 @@ var app = new Vue({
       }).then((result) => {
         if (result.value) {
 
-
-
           var token = localStorage.getItem("token");
           var form_Data = new FormData();
           form_Data.append("jwt", token);
           form_Data.append("pid", this.review.id);
           form_Data.append("record_id", this.review.pid);
           form_Data.append("period", parseInt(period) + 1);
-          form_Data.append("access_type", JSON.stringify(_this.record.access_type));
+          form_Data.append("access_type", _this.record.access_type);
           form_Data.append("answer", JSON.stringify(_this.answers));
 
           axios({
@@ -262,6 +260,10 @@ var app = new Vue({
               window.jQuery("#Modal_3").toggle();
 
               _this.getLeaveCredit();
+
+              _this.comment1 = "";
+              _this.comment2 = "";
+              _this.comment3 = "";
 
             })
             .catch(function(error) {
