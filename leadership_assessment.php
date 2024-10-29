@@ -1279,20 +1279,20 @@ header( 'location:index' );
 
                                 <!-- 使用者在前段點擊某一個連結，則該名稱的 div 會顯示出來，而且其他名稱的 div 都會隱藏起來 -->
                                 <tr>
-                                    <td><a>PRODUCTION</a></td>
-                                    <td><a>PERMISSION</a></td>
-                                    <td><a>PINNACLE-SELF</a></td>
+                                    <td><a @click="set_section('PRODUCTION')">PRODUCTION</a></td>
+                                    <td><a @click="set_section('PERMISSION')">PERMISSION</a></td>
+                                    <td><a @click="set_section('PINNACLE-SELF')">PINNACLE-SELF</a></td>
                                 </tr>
 
                                 <tr>
-                                    <td><a>PINNACLE-OTHERS</a></td>
-                                    <td><a>POSITION</a></td>
-                                    <td><a>PEOPLE DEVELOPMENT</a></td>
+                                    <td><a @click="set_section('PINNACLE-OTHERS')">PINNACLE-OTHERS</a></td>
+                                    <td><a @click="set_section('POSITION')">POSITION</a></td>
+                                    <td><a @click="set_section('PEOPLE DEVELOPMENT')">PEOPLE DEVELOPMENT</a></td>
                                 </tr>
 
                                 <tr>
-                                    <td><a>WRITTEN COMMENTS</a></td>
-                                    <td><a>APPENDIX</a></td>
+                                    <td><a @click="set_section('WRITTEN COMMENTS')">WRITTEN COMMENTS</a></td>
+                                    <td><a @click="set_section('APPENDIX')">APPENDIX</a></td>
                                 </tr>
 
                                 </tbody>
@@ -1302,7 +1302,7 @@ header( 'location:index' );
 
 
                             <!-- 第一類別 Production -->
-                            <div class="category_result">
+                            <div class="category_result" v-if="section == 'PRODUCTION'">
 
                                 <div class="title cat1">PRODUCTION</div>
 
@@ -1379,7 +1379,7 @@ header( 'location:index' );
 
 
                             <!-- 第二類別 PERMISSION -->
-                            <div class="category_result">
+                            <div class="category_result" v-if="section == 'PERMISSION'">
 
                                 <div class="title cat2">PERMISSION</div>
 
@@ -1387,7 +1387,7 @@ header( 'location:index' );
 
                                 <p>At this level of leadership, people follow you because they have given you permission to develop a relationship with them. Great leaders inspire and motivate other leaders to perform with excellence. In order to motivate and produce the best results, a leader takes a genuine interest in others. Great leaders train, coach, mentor, encourage and empower! The scores in this level reflect your relationship competencies as part of your core leadership attributes.</p>
 
-                                <div class="graph">圖表</div>
+                                <canvas id="chart3" class="graph"></canvas>
 
                                 <p class="hint">The table shows each of the items in this category, ranked highest to lowest score based on Overall Average.</p>
 
@@ -1405,25 +1405,16 @@ header( 'location:index' );
                                     </thead>
 
                                     <tbody>
-                                    <tr>
-                                        <td>Knowledgeable in career field.</td>
-                                        <td>6.7</td>
-                                        <td>7.0</td>
-                                        <td>6.0</td>
-                                        <td>7.0</td>
-                                        <td>7.0</td>
-                                        <td>7.0</td>
+                                    <tr v-for="(item, indx) in section_answers">
+                                        <td>{{ item.question }}</td>
+                                        <td>{{ item.average }}</td>
+                                        <td>{{ item.direct }}</td>
+                                        <td>{{ item.manager }}</td>
+                                        <td>{{ item.peer }}</td>
+                                        <td>{{ item.other }}</td>
+                                        <td>{{ item.self }}</td>
                                     </tr>
 
-                                    <tr>
-                                        <td>Prioritizes to meet key objectives.</td>
-                                        <td>6.5</td>
-                                        <td>6.5</td>
-                                        <td>6.3</td>
-                                        <td>7.0</td>
-                                        <td>6.5</td>
-                                        <td>6.0</td>
-                                    </tr>
 
                                     </tbody>
 
@@ -1442,7 +1433,7 @@ header( 'location:index' );
 
 
                             <!-- 第三類別 PINNACLE-SELF -->
-                            <div class="category_result">
+                            <div class="category_result" v-if="section == 'PINNACLE-SELF'">
 
                                 <div class="title cat3">PINNACLE-SELF</div>
 
@@ -1503,7 +1494,7 @@ header( 'location:index' );
 
 
                             <!-- 第四類別 PINNACLE-OTHERS -->
-                            <div class="category_result">
+                            <div class="category_result" v-if="section == 'PINNACLE-OTHERS'">
 
                                 <div class="title cat4">PINNACLE-OTHERS</div>
 
@@ -1564,7 +1555,7 @@ header( 'location:index' );
 
 
                             <!-- 第五類別 POSITION -->
-                            <div class="category_result">
+                            <div class="category_result" v-if="section == 'POSITION'">
 
                                 <div class="title cat5">POSITION</div>
 
@@ -1627,7 +1618,7 @@ header( 'location:index' );
 
 
                             <!-- 第六類別 PEOPLE DEVELOPMENT -->
-                            <div class="category_result final">
+                            <div class="category_result final" v-if="section == 'PEOPLE DEVELOPMENT'">
 
                                 <div class="title cat6">PEOPLE DEVELOPMENT</div>
 
@@ -1693,7 +1684,7 @@ header( 'location:index' );
 
 
                             <!-- 手寫區結果 WRITTEN COMMENTS -->
-                            <div class="category_result final">
+                            <div class="category_result final" v-if="section == 'WRITTEN COMMENTS'">
 
                                 <div class="title">WRITTEN COMMENTS</div>
 
@@ -1720,7 +1711,7 @@ header( 'location:index' );
 
 
                             <!-- 附錄:總結區 APPENDIX -->
-                            <div class="category_result appendix">
+                            <div class="category_result appendix" v-if="section == 'APPENDIX'">
 
                                 <div class="title">APPENDIX --- Leadership Attributes Summary</div>
 
@@ -1800,4 +1791,5 @@ header( 'location:index' );
 <!-- import JavaScript -->
 <script src="js/element-ui@2.15.14/lib/index.js"></script>
 <script src="js/leadership_assessment.js"></script>
+<script src="js/chart/chart.js"></script>
 </html>

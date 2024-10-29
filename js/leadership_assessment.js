@@ -96,6 +96,11 @@ var app = new Vue({
     question: [],
     answers : [],
     review_answers: [],
+
+    section : '',
+    section_answers: [],
+    
+    chart3: null,
   },
 
   created() {
@@ -172,6 +177,125 @@ var app = new Vue({
   },
 
   methods: {
+
+    set_section: async function(section) {
+      
+      await this.getLeadershipAssessmentAnswer(section);
+
+      this.section = section;
+
+      setTimeout(() => {
+        this.load_chart(section);
+      }, 1000);
+      
+    },
+
+    load_chart(section) {
+      var labels = ['Overall', 'Direct Reports', 'Manager', 'Peer', 'Other', 'Self'];
+      var overall = 0;
+      var direct = 0;
+      var manager = 0;
+      var peer = 0;
+      var other = 0;
+      var self = 0;
+      
+      for(var i = 0; i < this.section_answers.length; i++)
+      {
+        overall += parseFloat(this.section_answers[i].average);
+        direct += parseFloat(this.section_answers[i].direct);
+        manager += parseFloat(this.section_answers[i].manager);
+        peer += parseFloat(this.section_answers[i].peer);
+        other += parseFloat(this.section_answers[i].other);
+        self += parseFloat(this.section_answers[i].self);
+      }
+
+      overall = (overall / this.section_answers.length).toFixed(1);
+      direct = (direct / this.section_answers.length).toFixed(1);
+      manager = (manager / this.section_answers.length).toFixed(1);
+      peer = (peer / this.section_answers.length).toFixed(1);
+      other = (other / this.section_answers.length).toFixed(1);
+      self = (self / this.section_answers.length).toFixed(1);
+
+      var data = {
+        labels: labels,
+        datasets: [{
+          data: [overall, direct, manager, peer, other, self],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)'
+          ],
+          borderWidth: 1
+        }]
+      }
+
+      if(this.chart3 != null)
+        this.chart3.destroy();
+
+      this.chart3 = new Chart(document.getElementById('chart3').getContext('2d'), {
+        type: 'bar',
+        labels: labels,
+        data: data,
+        options: {
+            indexAxis: 'y',
+            elements: {
+                bar: {
+                    borderWidth: 2,
+                }
+            },
+            responsive: true,
+            plugins: {
+                legend: {
+                  display: false
+                }
+            },
+            scales: {
+              x: {
+                min: 0,
+                max: 7
+              }
+          },
+          
+        },
+    });
+  },
+
+    getLeadershipAssessmentAnswer: function(section) {
+      let _this = this;
+      var token = localStorage.getItem("token");
+
+      params = {
+        id : _this.proof_id,
+        section: section,
+      };
+      
+      axios({
+        method: "get",
+        params,
+        headers: { Authorization: `Bearer ${token}` },
+        url: "api/leadership_assessment_answer",
+      })
+        .then(function(response) {
+          console.log(response.data);
+          _this.section_answers = response.data;
+        }
+        )
+        .catch(function(error) {
+          console.log(error);
+        }
+        );
+    },
 
     complete_answer: async function(period) {
       let _this = this;
@@ -1296,7 +1420,7 @@ var app = new Vue({
       if(record.status == 1)
       {
         Swal.fire({
-          text: "No one is allowed to delete the ongoing leadership assessment record.",
+          text: "No one is allowed to viw the ongoing leadership assessment record.",
           icon: "warning",
           confirmButtonText: "OK",
         });
@@ -1414,7 +1538,7 @@ var app = new Vue({
               _this.mag_avg2 = (m_score2 / m_cnt2).toFixed(1);
 
             _window.jQuery(".mask").toggle();
-            _window.jQuery("#Modal_3").toggle();
+            _window.jQuery("#Modal_4").toggle();
           }
         })
         .catch(function(error) {
