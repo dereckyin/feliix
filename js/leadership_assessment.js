@@ -256,15 +256,36 @@ var app = new Vue({
             },
             responsive: true,
             plugins: {
+                title: {
+                    display: true,
+                    text: section,
+                    padding: {
+                        top: 10,
+                        bottom: 30
+                    },
+                    font : {
+                      size: 32,
+                    },
+                    color : '#36A2EB'
+                },
+              
                 legend: {
-                  display: false
-                }
+                  display: false,
+                  labels: {
+                    fontSize: 20,
+                    fontColor: '#595d6e',
+                  }
+                },
+                tooltips: {
+                  enabled: false
+                },
             },
             scales: {
               x: {
                 min: 0,
                 max: 7
-              }
+              },
+              
           },
           
         },
