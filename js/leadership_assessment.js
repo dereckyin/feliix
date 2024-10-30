@@ -99,6 +99,8 @@ var app = new Vue({
 
     section : '',
     section_answers: [],
+    section_answers_comment1: [],
+    section_answers_comment2: [],
     
     overall_avg : 0,
 
@@ -183,6 +185,21 @@ var app = new Vue({
   },
 
   methods: {
+    set_comment: async function(section) {
+      
+      await this.getLeadershipAssessmentComment(section);
+
+      this.section = section;
+
+    },
+
+    set_appendix: async function(section) {
+      
+      await this.getLeadershipAssessmentAnswer(section);
+
+      this.section = section;
+
+    },
 
     set_section: async function(section) {
       
@@ -332,6 +349,32 @@ var app = new Vue({
         .then(function(response) {
           console.log(response.data);
           _this.section_answers = response.data;
+        }
+        )
+        .catch(function(error) {
+          console.log(error);
+        }
+        );
+    },
+
+    getLeadershipAssessmentComment: function() {
+      let _this = this;
+      var token = localStorage.getItem("token");
+
+      params = {
+        id : _this.proof_id,
+      };
+      
+      axios({
+        method: "get",
+        params,
+        headers: { Authorization: `Bearer ${token}` },
+        url: "api/leadership_assessment_answer_comment",
+      })
+        .then(function(response) {
+          console.log(response.data);
+          _this.section_answers_comment1 = response.data.comment1;
+          _this.section_answers_comment2 = response.data.comment2;
         }
         )
         .catch(function(error) {

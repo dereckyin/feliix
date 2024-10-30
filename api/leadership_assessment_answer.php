@@ -47,7 +47,7 @@ if (!isset($jwt)) {
 
     $query = "SELECT question_id, score, `type`, category
                 FROM leadership_assessment_answers pr
-              WHERE pr.status <> -1 and pr.pid = " . $id . " and " . $filter . " order by question_id";
+              WHERE pr.status <> -1 and pr.pid = " . $id . "  " . $filter . " order by question_id";
 
     $stmt = $db->prepare($query);
     $stmt->execute();
@@ -59,7 +59,7 @@ if (!isset($jwt)) {
     $pivot = sort_and_group_by_type($merged_results);
 
     $questions = array();
-    $query = "SELECT id, question, css_class, category FROM leadership_assessment_questions pr where pr.`status` <> -1 and " . $filter . " order by pr.id";
+    $query = "SELECT id, question, css_class, category FROM leadership_assessment_questions pr where pr.`status` <> -1 " . $filter . " order by pr.id";
 
     $stmt = $db->prepare($query);
     $stmt->execute();
@@ -185,17 +185,19 @@ function get_category($section)
     $filer = "";
 
     if($section == 'PRODUCTION')
-        $filer = " pr.category = 'Production' ";
+        $filer = " and pr.category = 'Production' ";
     if($section == 'PERMISSION')
-        $filer = " pr.category = 'Permission' ";
+        $filer = " and pr.category = 'Permission' ";
     if($section == 'PINNACLE-SELF')
-        $filer = " pr.category = 'Pinnacle-S' ";
+        $filer = " and pr.category = 'Pinnacle-S' ";
     if($section == 'PINNACLE-OTHERS')
-        $filer = " pr.category = 'Pinnacle-O' ";
+        $filer = " and pr.category = 'Pinnacle-O' ";
     if($section == 'POSITION')
-        $filer = " pr.category = 'Position' ";
+        $filer = " and pr.category = 'Position' ";
     if($section == 'PEOPLE DEVELOPMENT')
-        $filer = " pr.is_development = 'Y' ";
+        $filer = " and pr.is_development = 'Y' ";
+    if($section == 'APPENDIX')
+        $filer = "  ";
 
     return $filer;
 }

@@ -1291,8 +1291,8 @@ header( 'location:index' );
                                 </tr>
 
                                 <tr>
-                                    <td><a @click="set_section('WRITTEN COMMENTS')">WRITTEN COMMENTS</a></td>
-                                    <td><a @click="set_section('APPENDIX')">APPENDIX</a></td>
+                                    <td><a @click="set_comment('WRITTEN COMMENTS')">WRITTEN COMMENTS</a></td>
+                                    <td><a @click="set_appendix('APPENDIX')">APPENDIX</a></td>
                                 </tr>
 
                                 </tbody>
@@ -1630,18 +1630,14 @@ header( 'location:index' );
                                 <h5>What are this person's greatest strengths when it comes to relating to and leading others?</h5>
 
                                 <ul>
-                                    <li>plans ahead, a visionary, particular to details, good listener, straight forward, reliable, honest. Willingness to do an extra mile. Objective in giving possible solutions for work needed to be accomplished</li>
-                                    <li>handling concerns of colleagues, an active listener letting other feels understood and giving suggestions and comments, helping others to understand their job and it's importance for the team, identifying underlying issues in a team</li>
-                                    <li>{{ anwser }}</li>
+                                    <li v-for="(item, idx) in section_answers_comment1">{{ item }}</li>
                                 </ul>
 
                                 <!-- 第二題手寫題題目 -->
                                 <h5>What are this person's greatest struggles when it comes to relating to and leading others?</h5>
 
                                 <ul>
-                                    <li>plans ahead, a visionary, particular to details, good listener, straight forward, reliable, honest. Willingness to do an extra mile. Objective in giving possible solutions for work needed to be accomplished</li>
-                                    <li>handling concerns of colleagues, an active listener letting other feels understood and giving suggestions and comments, helping others to understand their job and it's importance for the team, identifying underlying issues in a team</li>
-                                    <li>{{ anwser }}</li>
+                                    <li v-for="(item, idx) in section_answers_comment2">{{ item }}</li>
                                 </ul>
 
                             </div>
@@ -1665,27 +1661,13 @@ header( 'location:index' );
 
                                     <tbody>
                                     <!-- 排名 1到10 的，Rank需要套用 class="gray"，Category欄位需要套用該項目所屬目錄的顏色 cat1...cat6 -->
-                                    <tr>
-                                        <td class="gray">1</td>
-                                        <td>Treats people with respect.</td>
-                                        <td class="cat2">Permission</td>
-                                        <td>6.8</td>
+                                    <tr v-for="(item, idx) in section_answers">
+                                        <td :class="[(idx > 53 || idx < 10 ? 'gray' : '')]">{{ idx + 1 }}</td>
+                                        <td>{{ item.question }}</td>
+                                        <td :class="[ item.css_class ]">{{ item.category }}</td>
+                                        <td>{{ item.average }}</td>
                                     </tr>
 
-                                    <tr>
-                                        <td>11</td>
-                                        <td>Forgives others when he/she is wronged.</td>
-                                        <td>Pinnacle-S</td>
-                                        <td>6.5</td>
-                                    </tr>
-
-                                    <!-- 排名 55到64 的，Rank需要套用 class="gray"，Category欄位需要套用該項目所屬目錄的顏色 cat1...cat6 -->
-                                    <tr>
-                                        <td class="gray">55</td>
-                                        <td>Avoids trivializing the feelings of others.</td>
-                                        <td class="cat5">Position</td>
-                                        <td>5.9</td>
-                                    </tr>
 
                                     </tbody>
 
