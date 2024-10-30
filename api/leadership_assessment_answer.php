@@ -169,7 +169,7 @@ function sort_and_group_by_type($data)
             $divisor++;
         }
 
-        $result[$key]['average'] = $sum / $divisor;
+        $result[$key]['average'] = number_format($sum / $divisor, 1, '.', '');
     }
 
     // order by highest average score

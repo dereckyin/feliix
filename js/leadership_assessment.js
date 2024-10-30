@@ -100,7 +100,13 @@ var app = new Vue({
     section : '',
     section_answers: [],
     
-    chart3: null,
+    overall_avg : 0,
+
+
+    chart: null,
+
+    other1 : "",
+    other2 : "",
   },
 
   created() {
@@ -185,12 +191,23 @@ var app = new Vue({
       this.section = section;
 
       setTimeout(() => {
-        this.load_chart(section);
-      }, 1000);
+        if(section == 'PRODUCTION')
+          this.load_chart('chart1', 'PRODUCTION SCORES *', '65, 144, 76', '#41904c');
+        if(section == 'PERMISSION')
+          this.load_chart('chart2', 'PERMISSION SCORES *', '222, 186, 64', '#dfba40');
+        if(section == 'PINNACLE-SELF')
+          this.load_chart('chart3', 'PINNACLE SCORES - SELF *', '40, 66, 148', '#284294');
+        if(section == 'PINNACLE-OTHERS')
+          this.load_chart('chart4', 'PINNACLE SCORES - OTHERS *', '40, 107, 236', '#286bec');
+        if(section == 'POSITION')
+          this.load_chart('chart5', 'POSITION SCORES *', '177, 44, 40', '#b02c28');
+        if(section == 'PEOPLE DEVELOPMENT')
+          this.load_chart('chart6', 'DEVELOPS OTHERS SCORES *', '95, 50, 139', '#5f328b');
+      }, 500);
       
     },
 
-    load_chart(section) {
+    load_chart( chart_id, title, main_color, title_color) {
       var labels = ['Overall', 'Direct Reports', 'Manager', 'Peer', 'Other', 'Self'];
       var overall = 0;
       var direct = 0;
@@ -216,34 +233,37 @@ var app = new Vue({
       other = (other / this.section_answers.length).toFixed(1);
       self = (self / this.section_answers.length).toFixed(1);
 
+      this.overall_avg = overall;
+
       var data = {
         labels: labels,
         datasets: [{
           data: [overall, direct, manager, peer, other, self],
           backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 205, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)'
+            'rgba('+ main_color + ', 0.8)',
+            'rgba(148, 148, 148, 0.8)',
+            'rgba(148, 148, 148, 0.8)',
+            'rgba(148, 148, 148, 0.8)',
+            'rgba(148, 148, 148, 0.8)',
+            'rgba(57, 35, 107, 0.8)'
           ],
           borderColor: [
-            'rgb(255, 99, 132)',
-            'rgb(255, 159, 64)',
-            'rgb(255, 205, 86)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)'
+            'rgb('+ main_color + ')',
+            'rgb(148, 148, 148)',
+            'rgb(148, 148, 148)',
+            'rgb(148, 148, 148)',
+            'rgb(148, 148, 148)',
+            'rgb(57, 35, 107)'
           ],
           borderWidth: 1
         }]
       }
 
-      if(this.chart3 != null)
-        this.chart3.destroy();
+      if(this.chart != null)
+        this.chart.destroy();
+     
 
-      this.chart3 = new Chart(document.getElementById('chart3').getContext('2d'), {
+      var new_chart = new Chart(document.getElementById(chart_id).getContext('2d'), {
         type: 'bar',
         labels: labels,
         data: data,
@@ -258,7 +278,7 @@ var app = new Vue({
             plugins: {
                 title: {
                     display: true,
-                    text: section,
+                    text: title,
                     padding: {
                         top: 10,
                         bottom: 30
@@ -266,7 +286,7 @@ var app = new Vue({
                     font : {
                       size: 32,
                     },
-                    color : '#36A2EB'
+                    color : title_color
                 },
               
                 legend: {
@@ -290,6 +310,8 @@ var app = new Vue({
           
         },
     });
+
+      this.chart = new_chart;
   },
 
     getLeadershipAssessmentAnswer: function(section) {
@@ -1452,119 +1474,147 @@ var app = new Vue({
       let _this = this;
       let _window = window;
 
-      const params = {
-        id: this.proof_id,
-      };
+      this.record = this.shallowCopy(
+        this.receive_records.find((element) => element.id == this.proof_id)
+      );
 
-      let token = localStorage.getItem("accessToken");
+      this.outsider_name1 = this.record.outsider_name1;
+      this.outsider_email1 = this.record.outsider_email1;
+      this.outsider_name2 = this.record.outsider_name2;
+      this.outsider_email2 = this.record.outsider_email2;
 
-      axios
-        .get("api/performance_evaluate", {
-          params,
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then(function(response) {
-          console.log(response.data);
-          _this.record = response.data;
-          if (_this.record.length > 0) {
-            _this.views = _this.record[0];
+      this.direct_access = JSON.parse(this.record.direct_access);
+      this.manager_access = JSON.parse(this.record.manager_access);
+      this.peer_access = JSON.parse(this.record.peer_access);
+      this.other_access = JSON.parse(this.record.other_access);
 
-            var e_score = 0.0;
-            var m_score = 0.0;
-            var e_cnt = 0;
-            var m_cnt = 0;
-            for(var i = 0; i < _this.views.agenda.length; i++)
-            {
-              if(_this.views.agenda[i].emp_score != -1)
-              {
-                e_score += parseInt((_this.views.agenda[i].emp_score) === '' ? "0" : _this.views.agenda[i].emp_score);
-                e_cnt += 1;
-              }
+      this.other1 = this.other_access[0];
+      this.other2 = this.other_access[1];
+
+      if(this.outsider_name1 != '')
+      {
+        if(this.other1 == '')
+          this.other1 = this.outsider_name1;
+        else
+          this.other2 = this.outsider_name1;
+      }
+
+      if(this.outsider_name2 != '')
+        this.other2 = this.outsider_name2;
+
+      // const params = {
+      //   id: this.proof_id,
+      // };
+
+      // let token = localStorage.getItem("accessToken");
+
+      // axios
+      //   .get("api/performance_evaluate", {
+      //     params,
+      //     headers: { Authorization: `Bearer ${token}` },
+      //   })
+      //   .then(function(response) {
+      //     console.log(response.data);
+      //     _this.record = response.data;
+      //     if (_this.record.length > 0) {
+      //       _this.views = _this.record[0];
+
+      //       var e_score = 0.0;
+      //       var m_score = 0.0;
+      //       var e_cnt = 0;
+      //       var m_cnt = 0;
+      //       for(var i = 0; i < _this.views.agenda.length; i++)
+      //       {
+      //         if(_this.views.agenda[i].emp_score != -1)
+      //         {
+      //           e_score += parseInt((_this.views.agenda[i].emp_score) === '' ? "0" : _this.views.agenda[i].emp_score);
+      //           e_cnt += 1;
+      //         }
               
-              if(_this.views.agenda[i].mag_score != -1)
-              {
-                m_score += parseInt((_this.views.agenda[i].mag_score) === '' ? "0" : _this.views.agenda[i].mag_score);
-                m_cnt += 1;
-              }
-            }
+      //         if(_this.views.agenda[i].mag_score != -1)
+      //         {
+      //           m_score += parseInt((_this.views.agenda[i].mag_score) === '' ? "0" : _this.views.agenda[i].mag_score);
+      //           m_cnt += 1;
+      //         }
+      //       }
 
-            if(e_cnt === 0)
-              _this.emp_avg = 0;
-            else
-              _this.emp_avg = (e_score / e_cnt).toFixed(1);
+      //       if(e_cnt === 0)
+      //         _this.emp_avg = 0;
+      //       else
+      //         _this.emp_avg = (e_score / e_cnt).toFixed(1);
 
-            if(m_cnt === 0)
-              _this.mag_avg = 0;
-            else
-              _this.mag_avg = (m_score / m_cnt).toFixed(1);
+      //       if(m_cnt === 0)
+      //         _this.mag_avg = 0;
+      //       else
+      //         _this.mag_avg = (m_score / m_cnt).toFixed(1);
             
 
-            var e_score1 = 0.0;
-            var m_score1 = 0.0;
-            var e_cnt1 = 0;
-            var m_cnt1 = 0;
-            for(var i = 0; i < _this.views.agenda1.length; i++)
-            {
-              if(_this.views.agenda1[i].emp_score != -1)
-              {
-                e_score1 += parseInt((_this.views.agenda1[i].emp_score) === '' ? "0" : _this.views.agenda1[i].emp_score);
-                e_cnt1 += 1;
-              }
+      //       var e_score1 = 0.0;
+      //       var m_score1 = 0.0;
+      //       var e_cnt1 = 0;
+      //       var m_cnt1 = 0;
+      //       for(var i = 0; i < _this.views.agenda1.length; i++)
+      //       {
+      //         if(_this.views.agenda1[i].emp_score != -1)
+      //         {
+      //           e_score1 += parseInt((_this.views.agenda1[i].emp_score) === '' ? "0" : _this.views.agenda1[i].emp_score);
+      //           e_cnt1 += 1;
+      //         }
               
-              if(_this.views.agenda1[i].mag_score != -1)
-              {
-                m_score1 += parseInt((_this.views.agenda1[i].mag_score) === '' ? "0" : _this.views.agenda1[i].mag_score);
-                m_cnt1 += 1;
-              }
-            }
+      //         if(_this.views.agenda1[i].mag_score != -1)
+      //         {
+      //           m_score1 += parseInt((_this.views.agenda1[i].mag_score) === '' ? "0" : _this.views.agenda1[i].mag_score);
+      //           m_cnt1 += 1;
+      //         }
+      //       }
 
-            if(e_cnt1 === 0)
-              _this.emp_avg1 = 0;
-            else
-              _this.emp_avg1 = (e_score1 / e_cnt1).toFixed(1);
+      //       if(e_cnt1 === 0)
+      //         _this.emp_avg1 = 0;
+      //       else
+      //         _this.emp_avg1 = (e_score1 / e_cnt1).toFixed(1);
 
-            if(m_cnt1 === 0)
-              _this.mag_avg1 = 0;
-            else
-              _this.mag_avg1 = (m_score1 / m_cnt1).toFixed(1);
+      //       if(m_cnt1 === 0)
+      //         _this.mag_avg1 = 0;
+      //       else
+      //         _this.mag_avg1 = (m_score1 / m_cnt1).toFixed(1);
 
 
-            var e_score2 = 0.0;
-            var m_score2 = 0.0;
-            var e_cnt2 = 0;
-            var m_cnt2 = 0;
-            for(var i = 0; i < _this.views.agenda2.length; i++)
-            {
-              if(_this.views.agenda2[i].emp_score != -1)
-              {
-                e_score2 += parseInt((_this.views.agenda2[i].emp_score) === '' ? "0" : _this.views.agenda2[i].emp_score);
-                e_cnt2 += 1;
-              }
+      //       var e_score2 = 0.0;
+      //       var m_score2 = 0.0;
+      //       var e_cnt2 = 0;
+      //       var m_cnt2 = 0;
+      //       for(var i = 0; i < _this.views.agenda2.length; i++)
+      //       {
+      //         if(_this.views.agenda2[i].emp_score != -1)
+      //         {
+      //           e_score2 += parseInt((_this.views.agenda2[i].emp_score) === '' ? "0" : _this.views.agenda2[i].emp_score);
+      //           e_cnt2 += 1;
+      //         }
               
-              if(_this.views.agenda2[i].mag_score != -1)
-              {
-                m_score2 += parseInt((_this.views.agenda2[i].mag_score) === '' ? "0" : _this.views.agenda2[i].mag_score);
-                m_cnt2 += 1;
-              }
-            }
+      //         if(_this.views.agenda2[i].mag_score != -1)
+      //         {
+      //           m_score2 += parseInt((_this.views.agenda2[i].mag_score) === '' ? "0" : _this.views.agenda2[i].mag_score);
+      //           m_cnt2 += 1;
+      //         }
+      //       }
 
-            if(e_cnt2 === 0)
-              _this.emp_avg2 = 0;
-            else
-              _this.emp_avg2 = (e_score2 / e_cnt2).toFixed(1);
+      //       if(e_cnt2 === 0)
+      //         _this.emp_avg2 = 0;
+      //       else
+      //         _this.emp_avg2 = (e_score2 / e_cnt2).toFixed(1);
 
-            if(m_cnt2 === 0)
-              _this.mag_avg2 = 0;
-            else
-              _this.mag_avg2 = (m_score2 / m_cnt2).toFixed(1);
+      //       if(m_cnt2 === 0)
+      //         _this.mag_avg2 = 0;
+      //       else
+      //         _this.mag_avg2 = (m_score2 / m_cnt2).toFixed(1);
 
             _window.jQuery(".mask").toggle();
             _window.jQuery("#Modal_4").toggle();
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+          // }
+        // })
+        // .catch(function(error) {
+        //   console.log(error);
+        // });
       
     },
 
