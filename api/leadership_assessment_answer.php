@@ -124,7 +124,7 @@ function sort_and_group_by_type($data)
 
         if ($item['type'] == 'direct') {
             $direct = $item['score'];
-        } else if ($item['type'] == ',anager') {
+        } else if ($item['type'] == 'manager') {
             $manager = $item['score'];
         } else if ($item['type'] == 'peer') {
             $peer = $item['score'];
