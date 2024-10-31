@@ -1112,7 +1112,7 @@ var app = new Vue({
       else if(this.record.status == '2')
       {
         Swal.fire({
-          text: "This leadership assessment record already completed. Action of °ßExecute°® is not allowed and no need.",
+          text: "This leadership assessment record already completed. Action of ‚ÄúExecute‚Äù is not allowed and no need.",
           icon: "warning",
           confirmButtonText: "OK",
         });
