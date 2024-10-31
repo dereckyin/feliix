@@ -1111,6 +1111,11 @@ var app = new Vue({
       }
       else if(this.record.status == '2')
       {
+        Swal.fire({
+          text: "This leadership assessment record already completed. Action of ¡§Execute¡¨ is not allowed and no need.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
         return;
       }
       else
@@ -1512,6 +1517,16 @@ var app = new Vue({
         });
         return;
       }
+
+      if(record.status == 2 && record.user_id != this.user_id)
+        {
+          Swal.fire({
+            text: "Only assessed employee and chosen respondents are allowed to view the result of this leadership assessment record.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
 
 
       let _this = this;
