@@ -1306,7 +1306,7 @@ header( 'location:index' );
 
                                 <div class="title cat1">PRODUCTION</div>
 
-                                <h5>Overall Average {{ overall_avg }}</h5>
+                                <h5>Overall Average: {{ overall_avg }} Direct Report: {{ direct_report }} Manager: {{ manager }} Peer: {{ peer }} Others: {{ other }} Self: {{ self }}</h5>
 
                                 <p>The third level of leadership is about getting results with a team. Every organization, and therefore every leader, must achieve results in order to grow and expand. Results-oriented behaviors include setting the vision, thinking strategically, making decisions and initiating action to achieve that vision. Producing results in the production level means casting the vision and holding others accountable. In this level, people follow you because of what you've done for the organization.</p>
 
@@ -1363,7 +1363,7 @@ header( 'location:index' );
 
                                 <div class="title cat2">PERMISSION</div>
 
-                                <h5>Overall Average {{ overall_avg }}</h5>
+                                <h5>Overall Average: {{ overall_avg }} Direct Report: {{ direct_report }} Manager: {{ manager }} Peer: {{ peer }} Others: {{ other }} Self: {{ self }}</h5>
 
                                 <p>At this level of leadership, people follow you because they have given you permission to develop a relationship with them. Great leaders inspire and motivate other leaders to perform with excellence. In order to motivate and produce the best results, a leader takes a genuine interest in others. Great leaders train, coach, mentor, encourage and empower! The scores in this level reflect your relationship competencies as part of your core leadership attributes.</p>
 
@@ -1417,7 +1417,7 @@ header( 'location:index' );
 
                                 <div class="title cat3">PINNACLE-SELF</div>
 
-                                <h5>Overall Average {{ overall_avg }}</h5>
+                                <h5>Overall Average: {{ overall_avg }} Direct Report: {{ direct_report }} Manager: {{ manager }} Peer: {{ peer }} Others: {{ other }} Self: {{ self }}</h5>
 
                                 <canvas id="chart3" class="graph"></canvas>
 
@@ -1468,7 +1468,7 @@ header( 'location:index' );
 
                                 <div class="title cat4">PINNACLE-OTHERS</div>
 
-                                <h5>Overall Average {{ overall_avg }}</h5>
+                                <h5>Overall Average: {{ overall_avg }} Direct Report: {{ direct_report }} Manager: {{ manager }} Peer: {{ peer }} Others: {{ other }} Self: {{ self }}</h5>
 
                                 <canvas id="chart4" class="graph"></canvas>
 
@@ -1519,7 +1519,7 @@ header( 'location:index' );
 
                                 <div class="title cat5">POSITION</div>
 
-                                <h5>Overall Average {{ overall_avg }}</h5>
+                                <h5>Overall Average: {{ overall_avg }} Direct Report: {{ direct_report }} Manager: {{ manager }} Peer: {{ peer }} Others: {{ other }} Self: {{ self }}</h5>
 
                                 <p>This is the first level of leadership where people follow you because they have to – because of the position you hold. You serve in your position because of the promise you have shown as a leader. Others are watching you in this level to see if the walk matches the talk. The items below provide feedback on how you are perceived relating to areas like trustworthiness and commitment to the team, as well as how you are viewed as a role model. The scores in this level provide a reflection of how others view your attitude towards them individually and as a team.</p>
 
@@ -1572,7 +1572,7 @@ header( 'location:index' );
 
                                 <div class="title cat6">PEOPLE DEVELOPMENT</div>
 
-                                <h5>Overall Average {{ overall_avg }}</h5>
+                                <h5>Overall Average: {{ overall_avg }} Direct Report: {{ direct_report }} Manager: {{ manager }} Peer: {{ peer }} Others: {{ other }} Self: {{ self }}</h5>
 
                                 <p>Great leaders embrace developing others both personally and professionally. Highly effective leaders realize that time invested in developing others has an immeasurable impact on leading organizational success and employee satisfaction. Using the other levels of leadership (Position, Permission and Production) together helps leaders effectively develop others. At this level of leadership, you use your experience and knowledge to reproduce your own skills in the lives of others. When you do this, people follow you because of what you've done for them.</p>
 

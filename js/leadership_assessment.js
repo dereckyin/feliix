@@ -103,7 +103,11 @@ var app = new Vue({
     section_answers_comment2: [],
     
     overall_avg : 0,
-
+    direct_report : 0,
+    manager : 0,
+    peer : 0,
+    other : 0,
+    self : 0,
 
     chart: null,
 
@@ -251,6 +255,11 @@ var app = new Vue({
       self = (self / this.section_answers.length).toFixed(1);
 
       this.overall_avg = overall;
+      this.direct_report = direct;
+      this.manager = manager;
+      this.peer = peer;
+      this.other = other;
+      this.self = self;
 
       var data = {
         labels: labels,
