@@ -96,10 +96,9 @@ if (!isset($jwt)) {
     //                     end  <= '" . $edate . "' ";
     // }
 
-    // if($access6 != true)
-    // {
-    //     $query .= " and (pr.create_id = " . $user_id . " or pr.user_id = " . $user_id . ") ";
-    // }
+
+        $query .= " and (pr.user_id = " . $uid . " or pr.direct_access like '%" . $username . "%' or pr.manager_access like '%" . $username . "%' or pr.peer_access like '%" . $username . "%' or pr.other_access like '%" . $username . "%') ";
+
 
     $query = $query . " order by pr.created_at desc ";
 
