@@ -16,7 +16,7 @@ use Google\Cloud\Storage\StorageClient;
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-$token = (isset($_POST['token']) ?  $_POST['token'] : '');
+$token = (isset($_POST['token']) ?  $_POST['token'] : null);
 
 if (!isset($token)) {
     http_response_code(401);

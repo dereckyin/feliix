@@ -7,7 +7,7 @@ header("Access-Control-Allow-Methods: *");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$token = (isset($_GET['token']) ?  $_GET['token'] : '');
+$token = (isset($_GET['token']) ?  $_GET['token'] : null);
 
 
 include_once 'config/core.php';
