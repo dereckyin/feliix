@@ -16971,7 +16971,7 @@ function leadership_assessment_respondent_notify($user_id, $employee_id, $id)
 }
 
 
-function leadership_assessment_respondent_other_notify($email, $name, $employee_id, $id)
+function leadership_assessment_respondent_other_notify($email, $name, $employee_id, $id, $token)
 {
     $conf = new Conf();
 
@@ -17002,7 +17002,7 @@ function leadership_assessment_respondent_other_notify($email, $name, $employee_
     $mail->Subject = "[Leadership Assessment Notification] Please Help Fill out Survey of " . $requestor . "'s Leadership Assessment";
     $content =  "<p>Dear " . $name . ",</p>";
     $content = $content . "<p>" . $requestor . " has requested that you please rate him/her in Leadership Assessment. By clicking this link to view the target webpage: </p>";
-    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment?id=" . $id . "</a>";
+    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment_standalone?token=" . $token . "'>https://feliix.myvnc.com/leadership_assessment_standalone?token=" . $token . "</a>";
 
 
     $mail->MsgHTML($content);

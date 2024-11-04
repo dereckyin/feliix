@@ -1,10 +1,4 @@
 <?php
-$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
-$uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
-if ( !isset( $jwt ) ) {
-  header( 'location:index' );
-}
-
 include_once 'api/config/core.php';
 include_once 'api/libs/php-jwt-master/src/BeforeValidException.php';
 include_once 'api/libs/php-jwt-master/src/ExpiredException.php';
@@ -15,22 +9,9 @@ include_once 'api/config/database.php';
 
 use \Firebase\JWT\JWT;
 
+$test_manager = "0";
+
 try {
-        // decode jwt
-        try {
-            // decode jwt
-            $decoded = JWT::decode($jwt, $key, array('HS256'));
-            $user_id = $decoded->data->id;
-            $username = $decoded->data->username;
-
-            $position = $decoded->data->position;
-            $department = $decoded->data->department;
-            
-        }
-        catch (Exception $e){
-
-            header( 'location:index' );
-        }
 
         $database = new Database();
         $db = $database->getConnection();
@@ -759,7 +740,7 @@ try {
 <div class="bodybox">
     <div class="mask" :ref="'mask'" style="display:none"></div>
     <!-- header -->
-    <header>header</header>
+  
     <!-- header end -->
     <div id="app" class="mainContent">
         <!-- tags js在 main.js -->
@@ -1629,6 +1610,6 @@ try {
 
 <!-- import JavaScript -->
 <script src="js/element-ui@2.15.14/lib/index.js"></script>
-<script src="js/leadership_assessment.js"></script>
+<script src="js/leadership_assessment_standalone.js"></script>
 <script src="js/chart/chart.js"></script>
 </html>

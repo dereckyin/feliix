@@ -9,6 +9,7 @@ include_once 'libs/php-jwt-master/src/ExpiredException.php';
 include_once 'libs/php-jwt-master/src/SignatureInvalidException.php';
 include_once 'libs/php-jwt-master/src/JWT.php';
 require_once '../vendor/autoload.php';
+include_once 'config/conf.php';
 
 include_once 'mail.php';
 
@@ -190,7 +191,19 @@ function EmailNotifyRegular($user_id, $email, $last_id){
 }
 
 function EmailNotifyOther($email, $name, $employee_id, $last_id){
-    leadership_assessment_respondent_other_notify($email, $name, $employee_id, $last_id);
+    $issuedAt   = new DateTimeImmutable();
+    $expire     = $issuedAt->modify('+24 hours')->getTimestamp(); 
+
+    $token = array(
+           "name" => $name,
+           "email" => $email,
+           "id" => $last_id,
+           
+    );
+
+    $token = passport_encrypt(json_encode($token));
+
+    leadership_assessment_respondent_other_notify($email, $name, $employee_id, $last_id, $token);
 }
 
 
