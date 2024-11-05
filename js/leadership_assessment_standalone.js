@@ -1103,6 +1103,9 @@ var app = new Vue({
           icon: "warning",
           confirmButtonText: "OK",
         });
+
+        window.open('','_self').close();
+
         return;
       }
       else
