@@ -1099,7 +1099,7 @@ var app = new Vue({
       else if(this.record.status == '2')
       {
         Swal.fire({
-          text: "This leadership assessment record already completed. Action of “Execute” is not allowed and no need.",
+          text: "You already filled out and submitted the survey.",
           icon: "warning",
           confirmButtonText: "OK",
         });

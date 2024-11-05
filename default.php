@@ -160,7 +160,7 @@ $(function(){
             <div class="mainContent" style="text-align: center;">
                 <!-- mainContent為動態內容包覆的內容區塊 -->
 
-                <div class="banner1" <?php if($date % 3 != 0) echo('style="display:none;"'); ?>>
+                <div class="banner1" <?php if($date % 4 != 0) echo('style="display:none;"'); ?>>
                     <img src="images/action_and_word.png" height="auto" width="90%"/>
                     <!--
                         <div style="font-size:5vw; font-weight: bold;">Wear Mask</div>
@@ -175,12 +175,16 @@ $(function(){
                     -->
                 </div>
 
-                <div class="banner2" <?php if($date % 3 != 1) echo('style="display:none;"'); ?>>
+                <div class="banner2" <?php if($date % 4 != 1) echo('style="display:none;"'); ?>>
                     <img src="images/communication.jpg" height="auto" width="96%"/>
                 </div>
 
-                <div class="banner3" <?php if($date % 3 != 2) echo('style="display:none;"'); ?>>
+                <div class="banner3" <?php if($date % 4 != 2) echo('style="display:none;"'); ?>>
                     <img src="images/S__7733280.jpg" height="auto" width="85%"/>
+                </div>
+
+                <div class="banner4" <?php if($date % 4 != 3) echo('style="display:none;"'); ?>>
+                    <img src="images/S__3907658.jpg" height="auto" width="85%"/>
                 </div>
             </div>
         </div>
