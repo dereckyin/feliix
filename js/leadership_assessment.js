@@ -1520,7 +1520,7 @@ var app = new Vue({
       if(record.status == 1)
       {
         Swal.fire({
-          text: "No one is allowed to viw the ongoing leadership assessment record.",
+          text: "Until assessed employee and all respondents finish filling out survey, result can be viewed.",
           icon: "warning",
           confirmButtonText: "OK",
         });

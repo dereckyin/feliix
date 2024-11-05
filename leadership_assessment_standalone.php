@@ -948,7 +948,7 @@ try {
                             <div id="part1" v-show="period == 1">
                                 <div style="padding-left: 3px;">
                                     <p style="font-weight: 400; margin-bottom: 15px;">This assessment will take approximately 10 minutes to complete.</p>
-                                    <p style="font-weight: 400; margin-bottom: 15px;">Today, you have been asked to rate {{username}}.</p>
+                                    <p style="font-weight: 400; margin-bottom: 15px;">Today, you have been asked to rate {{record.employee}}.</p>
                                     <p style="font-weight: 400; margin-bottom: 15px;">This survey is designed to provide an evaluation of this individual&#39;s behaviors as he/she leads and relates to others. Please answer the following questions as accurately as possible. Your responses to the questions will be submitted anonymously and combined with other raters&#39; scores for reporting purposes.</p>
                                     <p style="font-weight: 400; margin-bottom: 15px;">Thank you for your time.</p>
                                     <p style="font-weight: 400; margin-bottom: 15px;">Please click &lt;CONTINUE&gt;.</p>
@@ -964,7 +964,7 @@ try {
 
                             <div id="part2" v-show="period == 2">
                                 <div style="padding-left: 3px;">
-                                    <p style="font-weight: 400; margin-bottom: 15px;">You will rate {{username}} on various behaviors by choosing a number, 1 through 7 to represent whether you agree that this person displays that particular attribute.</p>
+                                    <p style="font-weight: 400; margin-bottom: 15px;">You will rate {{record.employee}} on various behaviors by choosing a number, 1 through 7 to represent whether you agree that this person displays that particular attribute.</p>
 
                                     <div style="margin-bottom: 15px;">
 
