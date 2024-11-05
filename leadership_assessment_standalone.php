@@ -13,8 +13,48 @@ $test_manager = "0";
 
 try {
 
+        $token = isset($_GET['token']) ? $_GET['token'] : null;
+        if (!isset($token)) {
+            http_response_code(401);
+        
+            echo "Access denied";
+            die();
+        }
+        
+        // You already filled out and submitted the survey.
+        try {
+
+            $decoded = passport_decrypt($token);
+            $data = json_decode($decoded);
+            $email = $data->email;
+            $pid = $data->id;
+        }
+        // if decode fails, it means jwt is invalid
+        catch (Exception $e) {
+    
+            http_response_code(401);
+    
+            echo "Access denied";
+            die();
+        }
+
         $database = new Database();
         $db = $database->getConnection();
+
+        $query = "SELECT * FROM leadership_assessment_review WHERE pid = :pid and email = :email ORDER BY username";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':pid', $pid);
+        $stmt->bindParam(':email', $email);
+
+        $stmt->execute();
+        
+        $num = $stmt->rowCount();
+        if($num > 0) {
+            http_response_code(401);
+    
+            echo "You already filled out and submitted the survey.";
+            die();
+        }
 
          // for users
          $user_results = array();
