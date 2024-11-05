@@ -41,7 +41,7 @@ try {
         $database = new Database();
         $db = $database->getConnection();
 
-        $query = "SELECT * FROM leadership_assessment_review WHERE pid = :pid and email = :email ORDER BY username";
+        $query = "SELECT * FROM leadership_assessment_review WHERE pid = :pid and email = :email ";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':pid', $pid);
         $stmt->bindParam(':email', $email);
