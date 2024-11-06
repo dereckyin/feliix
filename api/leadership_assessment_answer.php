@@ -163,7 +163,7 @@ function sort_and_group_by_type($data)
             $sum += $value['other'];
             $divisor++;
         }
-        if ($value['self'] != 0) 
+        // if ($value['self'] != 0) 
         // {
         //     $sum += $value['self'];
         //     $divisor++;
