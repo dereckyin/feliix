@@ -170,45 +170,45 @@ function sort_and_group_by_type($data)
     foreach ($result as $key => $value) {
         $divisor = 0;
         $sum = 0;
-        if ($value['direct1'] != 0) 
+        if ((int)$value['direct1'] != 0) 
         {
             $sum += $value['direct1'];
             $divisor++;
         }
-        if ($value['direct2'] != 0) 
+        if ((int)$value['direct2'] != 0) 
         {
             $sum += $value['direct2'];
             $divisor++;
         }
 
-        if ($value['manager1'] != 0) 
+        if ((int)$value['manager1'] != 0) 
         {
             $sum += $value['manager1'];
             $divisor++;
         }
-        if ($value['manager2'] != 0) 
+        if ((int)$value['manager2'] != 0) 
         {
             $sum += $value['manager2'];
             $divisor++;
         }
 
-        if ($value['peer1'] != 0) 
+        if ((int)$value['peer1'] != 0) 
         {
             $sum += $value['peer1'];
             $divisor++;
         }
-        if ($value['peer2'] != 0) 
+        if ((int)$value['peer2'] != 0) 
         {
             $sum += $value['peer2'];
             $divisor++;
         }
 
-        if ($value['other1'] != 0) 
+        if ((int)$value['other1'] != 0) 
         {
             $sum += $value['other1'];
             $divisor++;
         }
-        if ($value['other2'] != 0) 
+        if ((int)$value['other2'] != 0) 
         {
             $sum += $value['other2'];
             $divisor++;
