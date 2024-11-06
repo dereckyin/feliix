@@ -164,10 +164,10 @@ function sort_and_group_by_type($data)
             $divisor++;
         }
         if ($value['self'] != 0) 
-        {
-            $sum += $value['self'];
-            $divisor++;
-        }
+        // {
+        //     $sum += $value['self'];
+        //     $divisor++;
+        // }
 
         $result[$key]['average'] = number_format($sum / $divisor, 1, '.', '');
     }
