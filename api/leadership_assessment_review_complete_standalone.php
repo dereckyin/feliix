@@ -174,11 +174,12 @@ switch ($method) {
 
                 // if there is no pre_answer, insert
                 if ($pre_score == "") {
-                    $query = "insert into leadership_assessment_answers(pid, question_id, score, type, category, css_class, is_development, create_id, created_at) values(:pid, :question_id, :score, :type, :category, :css_class, :is_development, :create_id, now())";
+                    $query = "insert into leadership_assessment_answers(pid, question_id, score, score1, type, category, css_class, is_development, create_id, created_at) values(:pid, :question_id, :score, :score1, :type, :category, :css_class, :is_development, :create_id, now())";
                     $stmt = $db->prepare($query);
                     $stmt->bindParam(':pid', $record_id);
                     $stmt->bindParam(':question_id', $question_id);
                     $stmt->bindParam(':score', $score);
+                    $stmt->bindParam(':score1', $score);
                     $stmt->bindParam(':type', $access_type);
                     $stmt->bindParam(':category', $category);
                     $stmt->bindParam(':css_class', $css_class);
@@ -207,6 +208,7 @@ switch ($method) {
                     $query = "update leadership_assessment_answers
                     SET
                         `score` = :score,
+                        `score2` = :score2,
                         `updated_id` = :updated_id,
                         `updated_at` = now()
                         where pid = :pid and question_id = :question_id and type = :type";
@@ -216,6 +218,7 @@ switch ($method) {
 
                     $stmt = $db->prepare($query);
                     $stmt->bindParam(':score', $average);
+                    $stmt->bindParam(':score2', $score);
                     $stmt->bindParam(':updated_id', $user_id);
                     $stmt->bindParam(':pid', $record_id);
                     $stmt->bindParam(':question_id', $question_id);

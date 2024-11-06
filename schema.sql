@@ -5581,3 +5581,6 @@ CREATE TABLE IF NOT EXISTS `leadership_assessment_answers` (
   `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+alter table leadership_assessment_answers add column `score1` int(11) default 0;
+alter table leadership_assessment_answers add column `score2` int(11) default 0;

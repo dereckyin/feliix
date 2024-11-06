@@ -45,7 +45,7 @@ if (!isset($jwt)) {
     // get category
     $filter = get_category($section);
 
-    $query = "SELECT question_id, score, `type`, category
+    $query = "SELECT question_id, score, score1, score2, `type`, category
                 FROM leadership_assessment_answers pr
               WHERE pr.status <> -1 and pr.pid = " . $id . "  " . $filter . " order by question_id";
 
@@ -97,6 +97,16 @@ function sort_and_group_by_type($data)
     $peer = 0;
     $other = 0;
     $self = 0;
+
+    $direct1 = 0;
+    $direct2 = 0;
+    $manager1 = 0;
+    $manager2 = 0;
+    $peer1 = 0;
+    $peer2 = 0;
+    $other1 = 0;
+    $other2 = 0;
+
     $type = "";
     $category = "";
 
@@ -110,13 +120,23 @@ function sort_and_group_by_type($data)
         }
 
         if ($question_id != $item['question_id']) {
-            $result[] = array('question_id' => $question_id, 'direct' => $direct, 'manager' => $manager, 'peer' => $peer, 'other' => $other, 'self' => $self, 'type' => $type, 'category' => $category);
+            $result[] = array('question_id' => $question_id, 'direct' => $direct, 'manager' => $manager, 'peer' => $peer, 'other' => $other, 'self' => $self, 'type' => $type, 'category' => $category, 'direct1' => $direct1, 'direct2' => $direct2, 'manager1' => $manager1, 'manager2' => $manager2, 'peer1' => $peer1, 'peer2' => $peer2, 'other1' => $other1, 'other2' => $other2);
 
             $question_id = $item['question_id'];
             $direct = 0;
             $manager = 0;
             $peer = 0;
             $other = 0;
+
+            $direct1 = 0;
+            $direct2 = 0;
+            $manager1 = 0;
+            $manager2 = 0;
+            $peer1 = 0;
+            $peer2 = 0;
+            $other1 = 0;
+            $other2 = 0;
+
             $self = 0;
             $type = $item['type'];
             $category = $item['category'];
@@ -124,43 +144,73 @@ function sort_and_group_by_type($data)
 
         if ($item['type'] == 'direct') {
             $direct = $item['score'];
+            $direct1 = $item['score1'];
+            $direct2 = $item['score2'];
         } else if ($item['type'] == 'manager') {
             $manager = $item['score'];
+            $manager1 = $item['score1'];
+            $manager2 = $item['score2'];
         } else if ($item['type'] == 'peer') {
             $peer = $item['score'];
+            $peer1 = $item['score1'];
+            $peer2 = $item['score2'];
         } else if ($item['type'] == 'other') {
             $other = $item['score'];
+            $other1 = $item['score1'];
+            $other2 = $item['score2'];
         } else if ($item['type'] == 'self') {
             $self = $item['score'];
         }
 
-
     }
 
-    $result[] = array('question_id' => $question_id, 'direct' => $direct, 'manager' => $manager, 'peer' => $peer, 'other' => $other, 'self' => $self, 'type' => $type, 'category' => $category);
+    $result[] = array('question_id' => $question_id, 'direct' => $direct, 'manager' => $manager, 'peer' => $peer, 'other' => $other, 'self' => $self, 'type' => $type, 'category' => $category, 'direct1' => $direct1, 'direct2' => $direct2, 'manager1' => $manager1, 'manager2' => $manager2, 'peer1' => $peer1, 'peer2' => $peer2, 'other1' => $other1, 'other2' => $other2);
 
     // add average score
     foreach ($result as $key => $value) {
         $divisor = 0;
         $sum = 0;
-        if ($value['direct'] != 0) 
+        if ($value['direct1'] != 0) 
         {
-            $sum += $value['direct'];
+            $sum += $value['direct1'];
             $divisor++;
         }
-        if ($value['manager'] != 0) 
+        if ($value['direct2'] != 0) 
         {
-            $sum += $value['manager'];
+            $sum += $value['direct2'];
             $divisor++;
         }
-        if ($value['peer'] != 0) 
+
+        if ($value['manager1'] != 0) 
         {
-            $sum += $value['peer'];
+            $sum += $value['manager1'];
             $divisor++;
         }
-        if ($value['other'] != 0) 
+        if ($value['manager2'] != 0) 
         {
-            $sum += $value['other'];
+            $sum += $value['manager2'];
+            $divisor++;
+        }
+
+        if ($value['peer1'] != 0) 
+        {
+            $sum += $value['peer1'];
+            $divisor++;
+        }
+        if ($value['peer2'] != 0) 
+        {
+            $sum += $value['peer2'];
+            $divisor++;
+        }
+
+        if ($value['other1'] != 0) 
+        {
+            $sum += $value['other1'];
+            $divisor++;
+        }
+        if ($value['other2'] != 0) 
+        {
+            $sum += $value['other2'];
             $divisor++;
         }
         // if ($value['self'] != 0) 

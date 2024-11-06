@@ -1522,6 +1522,7 @@ try {
                                         <td>{{ item.peer }}</td>
                                         <td>{{ item.other }}</td>
                                         <td>{{ item.self }}</td>
+                                        <td style="color: black;">{{ item.category }}</td>
                                     </tr>
 
                                     </tbody>
