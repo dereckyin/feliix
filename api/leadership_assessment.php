@@ -182,7 +182,7 @@ if (!isset($jwt)) {
         if($outsider_name2 == "" && $user_email == $outsider_email2)
             $access_type = "outsider";
 
-        if($uid == $create_id)
+        if($uid == $user_id)
             $access_type = "self";
 
         $created_at = $row['created_at'];
