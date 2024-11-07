@@ -1522,7 +1522,7 @@ try {
                                         <td>{{ item.peer }}</td>
                                         <td>{{ item.other }}</td>
                                         <td>{{ item.self }}</td>
-                                        <td :class="[(indx > 53 || indx < 10 ? item.css_class : '')]">{{ item.category }}</td>
+                                        <td :class="[ item.css_class ]">{{ item.category }}</td>
                                     </tr>
 
                                     </tbody>
@@ -1584,7 +1584,7 @@ try {
                                     <tr v-for="(item, idx) in section_answers">
                                         <td :class="[(idx > 53 || idx < 10 ? 'gray' : '')]">{{ idx + 1 }}</td>
                                         <td>{{ item.question }}</td>
-                                        <td :class="[ item.css_class ]">{{ item.category }}</td>
+                                        <td :class="[(idx > 53 || idx < 10 ? item.css_class : '')]">{{ item.category }}</td>
                                         <td>{{ item.average }}</td>
                                     </tr>
 
