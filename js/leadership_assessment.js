@@ -247,12 +247,12 @@ var app = new Vue({
         self += parseFloat(this.section_answers[i].self);
       }
 
-      overall = (overall / this.section_answers.length).toFixed(2);
-      direct = (direct / this.section_answers.length).toFixed(2);
-      manager = (manager / this.section_answers.length).toFixed(2);
-      peer = (peer / this.section_answers.length).toFixed(2);
-      other = (other / this.section_answers.length).toFixed(2);
-      self = (self / this.section_answers.length).toFixed(2);
+      overall = (overall / this.section_answers.length).toFixed(1);
+      direct = (direct / this.section_answers.length).toFixed(1);
+      manager = (manager / this.section_answers.length).toFixed(1);
+      peer = (peer / this.section_answers.length).toFixed(1);
+      other = (other / this.section_answers.length).toFixed(1);
+      self = (self / this.section_answers.length).toFixed(1);
 
       this.overall_avg = overall;
       this.direct_report = direct;

@@ -1522,7 +1522,7 @@ try {
                                         <td>{{ item.peer }}</td>
                                         <td>{{ item.other }}</td>
                                         <td>{{ item.self }}</td>
-                                        <td :class="[ item.css_class ]">{{ item.category }}</td>
+                                        <td :class="[(indx > 53 || indx < 10 ? item.css_class : '')]">{{ item.category }}</td>
                                     </tr>
 
                                     </tbody>
