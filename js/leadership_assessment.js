@@ -217,9 +217,9 @@ var app = new Vue({
         if(section == 'PERMISSION')
           this.load_chart('chart2', 'PERMISSION SCORES *', '222, 186, 64', '#dfba40');
         if(section == 'PINNACLE-SELF')
-          this.load_chart('chart3', 'PINNACLE SCORES - SELF *', '40, 66, 148', '#284294');
+          this.load_chart('chart3', 'PINNACLE-SELF SCORES *', '40, 66, 148', '#284294');
         if(section == 'PINNACLE-OTHERS')
-          this.load_chart('chart4', 'PINNACLE SCORES - OTHERS *', '40, 107, 236', '#286bec');
+          this.load_chart('chart4', 'PINNACLE-OTHERS SCORES *', '40, 107, 236', '#286bec');
         if(section == 'POSITION')
           this.load_chart('chart5', 'POSITION SCORES *', '177, 44, 40', '#b02c28');
         if(section == 'PEOPLE DEVELOPMENT')
@@ -247,12 +247,12 @@ var app = new Vue({
         self += parseFloat(this.section_answers[i].self);
       }
 
-      overall = (overall / this.section_answers.length).toFixed(1);
-      direct = (direct / this.section_answers.length).toFixed(1);
-      manager = (manager / this.section_answers.length).toFixed(1);
-      peer = (peer / this.section_answers.length).toFixed(1);
-      other = (other / this.section_answers.length).toFixed(1);
-      self = (self / this.section_answers.length).toFixed(1);
+      overall = (overall / this.section_answers.length).toFixed(2);
+      direct = (direct / this.section_answers.length).toFixed(2);
+      manager = (manager / this.section_answers.length).toFixed(2);
+      peer = (peer / this.section_answers.length).toFixed(2);
+      other = (other / this.section_answers.length).toFixed(2);
+      self = (self / this.section_answers.length).toFixed(2);
 
       this.overall_avg = overall;
       this.direct_report = direct;
