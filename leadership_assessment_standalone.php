@@ -317,7 +317,7 @@ try {
         }
 
         ul.question li > input.alone.green[type=radio]::before {
-            font-size: 15px;
+            font-size: 18px;
             margin-right: 3px;
         }
 
