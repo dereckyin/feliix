@@ -39,6 +39,8 @@ if (!isset($jwt)) {
     die();
 } else {
 
+    
+
     // decode jwt
     $decoded = JWT::decode($jwt, $key, array('HS256'));
     $uid = $decoded->data->id;
@@ -52,6 +54,9 @@ if (!isset($jwt)) {
     $return_result = array();
 
     $access6 = false;
+
+    // is leadership_assessment
+    $access6 = GetAccess("leadership_assessment", $username, $db);
 
     $query = "SELECT pr.id, 
                 pr.review_month, 
@@ -96,8 +101,11 @@ if (!isset($jwt)) {
     //                     end  <= '" . $edate . "' ";
     // }
 
-
-        $query .= " and (pr.user_id = " . $uid . " or pr.direct_access like '%" . $username . "%' or pr.manager_access like '%" . $username . "%' or pr.peer_access like '%" . $username . "%' or pr.other_access like '%" . $username . "%') ";
+    if($access6 == false)
+    {
+        $query .= " and ((pr.user_id = " . $uid . " or pr.direct_access like '%" . $username . "%' or pr.manager_access like '%" . $username . "%' or pr.peer_access like '%" . $username . "%' or pr.other_access like '%" . $username . "%') and pr.status = 1) ";
+        $query .= " or (pr.create_id = " . $uid . " and pr.status = 2) ";
+    }
 
 
     $query = $query . " order by pr.created_at desc ";
@@ -291,4 +299,16 @@ function GetAgenda($tid, $type, $db){
     }
 
     return $merged_results;
+}
+
+function GetAccess($field, $username, $db){
+    $access = false;
+
+    $query = "SELECT * FROM access_control WHERE ". $field . " LIKE '%" . $username . "%' ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $access = true;
+        }
+    return $access;
 }
