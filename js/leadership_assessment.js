@@ -1520,7 +1520,7 @@ var app = new Vue({
       if(record.status == 1 && record.user_id != this.user_id && this.leadership_assessment == false)
       {
         Swal.fire({
-          text: "Until assessed employee and all respondents finish filling out survey, result can be viewed.",
+          text: "Due to confidential reason, only the assessed employee is allowed to view the survey result.",
           icon: "warning",
           confirmButtonText: "OK",
         });
