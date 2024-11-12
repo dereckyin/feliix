@@ -104,7 +104,7 @@ if (!isset($jwt)) {
     if($access6 == false)
     {
         $query .= " and ((pr.user_id = " . $uid . " or pr.direct_access like '%" . $username . "%' or pr.manager_access like '%" . $username . "%' or pr.peer_access like '%" . $username . "%' or pr.other_access like '%" . $username . "%') and pr.status = 1) ";
-        $query .= " or (pr.create_id = " . $uid . " and pr.status = 2) ";
+        $query .= " or (pr.user_id = " . $uid . " and pr.status = 2) ";
     }
 
 
