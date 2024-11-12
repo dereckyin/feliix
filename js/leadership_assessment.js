@@ -1517,7 +1517,7 @@ var app = new Vue({
         return;
       }
 
-      if(record.status == 1 && (record.user_id != this.user_id && this.leadership_assessment == false))
+      if(record.status == 1 && record.user_id != this.user_id && this.leadership_assessment == false)
       {
         Swal.fire({
           text: "Until assessed employee and all respondents finish filling out survey, result can be viewed.",
@@ -1527,7 +1527,7 @@ var app = new Vue({
         return;
       }
 
-      if(record.status == 2 && record.user_id != this.user_id)
+      if(record.status == 2 && record.user_id != this.user_id && this.leadership_assessment == false)
         {
           Swal.fire({
             text: "Only assessed employee and chosen respondents are allowed to view the result of this leadership assessment record.",
