@@ -1864,16 +1864,7 @@ var app = new Vue({
 
 
     remove() {
-      if(this.leadership_assessment == false)
-      {
-        Swal.fire({
-          text: "You are not allowed to delete this leadership assessment record. ",
-          icon: "warning",
-          confirmButtonText: "OK",
-        });
-
-        return;
-      }
+    
 
       if (this.proof_id == 0) {
         Swal.fire({
@@ -1908,6 +1899,17 @@ var app = new Vue({
           });
           return;
         }
+
+        if(this.leadership_assessment == false)
+          {
+            Swal.fire({
+              text: "You are not allowed to delete this leadership assessment record. ",
+              icon: "warning",
+              confirmButtonText: "OK",
+            });
+    
+            return;
+          }
 
       let _this = this;
 
