@@ -1517,7 +1517,7 @@ var app = new Vue({
         return;
       }
 
-      if(record.status == 1)
+      if(record.status == 1 && (record.user_id != this.user_id && this.leadership_assessment == false))
       {
         Swal.fire({
           text: "Until assessed employee and all respondents finish filling out survey, result can be viewed.",

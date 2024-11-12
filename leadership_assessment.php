@@ -127,6 +127,7 @@ try {
             } else if (target == 4) {
                 $("#Modal_4").toggle();
             }
+             
         }
     </script>
 
@@ -1195,7 +1196,7 @@ try {
                         <!-- Result of Leadship Assessment start -->
                         <div class="box-content" style="border-bottom: none;">
 
-                            <table class="table_of_contents">
+                            <table class="table_of_contents" v-show="record.status == 2">
 
                                 <thead>
                                 <tr>
@@ -1655,10 +1656,6 @@ try {
 
 
             </div>
-
-
-
-
 
         </div>
     </div>
