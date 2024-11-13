@@ -728,6 +728,24 @@
 
                 </div>
 
+                <div class="box-content">
+                    <ul>
+                        <li><b>Create and Delete (Leadership Assessment)</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="leadership_assessment" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(36)">Cancel</a>
+                        <a class="btn" @click="save(36)">Save</a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

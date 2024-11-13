@@ -46,6 +46,7 @@ $frozen_office = (isset($_POST['frozen_office']) ?  $_POST['frozen_office'] : ''
 $quotation_control = (isset($_POST['quotation_control']) ?  $_POST['quotation_control'] : '');
 $cost_lighting = (isset($_POST['cost_lighting']) ?  $_POST['cost_lighting'] : '');
 $cost_furniture = (isset($_POST['cost_furniture']) ?  $_POST['cost_furniture'] : '');
+$leadership_assessment = (isset($_POST['leadership_assessment']) ?  $_POST['leadership_assessment'] : '');
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -71,7 +72,7 @@ if (!isset($jwt)) {
     if ($action == 1) {
         //select all
         try {
-            $query = "SELECT payess1, payess2, payess3, salary payess4, salary_mgt payess5, salary_slip_mgt payess6, payess7, payess8, access1, access2, access3, access4, access5, access6, access7, knowledge, vote1, vote2, schedule_confirm, halfday, tag_management, soa, transmittal, edit_emp, edit_basic, office_items, office_item_approve, office_item_release, limited_access, inventory_checker, inventory_approver, frozen_office, quotation_control, cost_lighting, cost_furniture from access_control where id = 1";
+            $query = "SELECT payess1, payess2, payess3, salary payess4, salary_mgt payess5, salary_slip_mgt payess6, payess7, payess8, access1, access2, access3, access4, access5, access6, access7, knowledge, vote1, vote2, schedule_confirm, halfday, tag_management, soa, transmittal, edit_emp, edit_basic, office_items, office_item_approve, office_item_release, limited_access, inventory_checker, inventory_approver, frozen_office, quotation_control, cost_lighting, cost_furniture, leadership_assessment from access_control where id = 1";
 
             $stmt = $db->prepare($query);
             $stmt->execute();
@@ -123,7 +124,8 @@ if (!isset($jwt)) {
                             frozen_office = :frozen_office,
                             quotation_control = :quotation_control,
                             cost_lighting = :cost_lighting,
-                            cost_furniture = :cost_furniture
+                            cost_furniture = :cost_furniture,
+                            leadership_assessment = :leadership_assessment
                         where id = :id";
 
             // prepare the query
@@ -167,6 +169,7 @@ if (!isset($jwt)) {
             $quotation_control = htmlspecialchars(strip_tags($quotation_control));
             $cost_lighting = htmlspecialchars(strip_tags($cost_lighting));
             $cost_furniture = htmlspecialchars(strip_tags($cost_furniture));
+            $leadership_assessment = htmlspecialchars(strip_tags($leadership_assessment));
             
             // bind the values
             $stmt->bindParam(':id', $id);
@@ -205,6 +208,7 @@ if (!isset($jwt)) {
             $stmt->bindParam(':quotation_control', $quotation_control);
             $stmt->bindParam(':cost_lighting', $cost_lighting);
             $stmt->bindParam(':cost_furniture', $cost_furniture);
+            $stmt->bindParam(':leadership_assessment', $leadership_assessment);
 
             try {
                 // execute the query, also check if query was successful

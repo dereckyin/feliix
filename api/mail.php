@@ -131,14 +131,7 @@ function batch_performance_evaluate_adm_notify_mail($s_date, $e_date, $dead_date
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -211,14 +204,7 @@ function batch_performance_evaluate_adm_notify_mail_single($s_date, $dead_date, 
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -292,14 +278,7 @@ function batch_performance_evaluate_emp_notify_mail($s_date, $e_date, $dead_date
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -373,14 +352,7 @@ function batch_performance_evaluate_emp_notify_mail_single($s_date, $dead_date, 
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -455,14 +427,7 @@ function batch_performance_review_notify_mail($_name, $_email, $s_date, $e_date)
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
  
@@ -505,14 +470,7 @@ function send_review_mail_adm($s_date, $e_date, $adm_id, $emp_id, $dead_date){
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
     
@@ -582,14 +540,7 @@ function send_review_mail_adm_single($s_date, $adm_id, $emp_id, $dead_date){
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
     
@@ -658,14 +609,7 @@ function send_review_mail($s_date, $e_date, $adm_id, $emp_id, $dead_date){
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -736,14 +680,7 @@ function send_review_mail_single($s_date, $adm_id, $emp_id, $dead_date){
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
     
@@ -815,14 +752,7 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -1306,14 +1236,7 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -1562,14 +1485,7 @@ function send_pay_notify_mail($name, $email1,  $leaver, $projectname, $remark, $
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -1628,14 +1544,7 @@ function sendMail($name, $email1, $appove_hash, $reject_hash, $leave_info, $leav
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -1686,14 +1595,7 @@ function send_schedule_notify_mail($last_id, $project, $creator, $_date, $_time,
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -1756,14 +1658,7 @@ function send_schedule_edit_mail($last_id, $project, $creator, $_date, $_time, $
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -1833,14 +1728,7 @@ function send_schedule_edit_goodby_mail($last_id, $project, $creator, $_date, $_
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -1898,14 +1786,7 @@ function send_schedule_del_mail($last_id, $project, $creator, $_date, $_time, $s
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -1973,14 +1854,7 @@ function send_meeting_notify_mail($name, $email1, $subject, $creator, $attendee,
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -2035,14 +1909,7 @@ function send_meeting_modified_mail($name, $email1, $subject, $creator, $attende
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -2097,14 +1964,7 @@ function send_meeting_delete_mail($name, $email1, $subject, $creator, $attendee,
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -2177,14 +2037,7 @@ function void_expense_mail($request_no, $applicant, $user_name, $user_email, $de
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -2280,14 +2133,7 @@ function reject_expense_mail($request_no, $user_name, $requestor, $requestor_ema
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -2365,14 +2211,7 @@ function send_liquidate_mail($request_no,
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -2467,14 +2306,7 @@ function send_expense_mail($request_no,  $applicant, $requestor, $requestor_emai
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -2524,14 +2356,7 @@ function batch_liquidate_notify_mail($request_no, $user_name, $user_email, $depa
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -2590,14 +2415,7 @@ function task_notify_admin_c($request_type,  $project_name, $task_name, $task_st
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -2729,14 +2547,7 @@ function task_notify_admin_d($request_type, $task_status, $task_name, $stages_st
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -2865,14 +2676,7 @@ function task_notify_admin_sl($request_type, $task_status, $task_name, $stages_s
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -3022,14 +2826,7 @@ function task_notify_admin_sv($request_type, $task_status, $task_name, $stages_s
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -3166,14 +2963,7 @@ function task_notify_admin_o($request_type, $task_status, $task_name, $stages_st
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -3302,14 +3092,7 @@ function task_notify_admin_l($request_type, $task_status, $task_name, $stages_st
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -3434,14 +3217,7 @@ function stage_close_notify($project_creator_id, $project_id, $project_name, $st
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
     
     $mail = SetupMail($mail, $conf);
 
@@ -3523,14 +3299,7 @@ function stage_order_close_notify($project_creator_id, $project_id, $project_nam
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
     
@@ -3604,14 +3373,7 @@ function task_notify_admin($request_type, $task_status, $task_name, $stages_stat
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -3757,14 +3519,7 @@ function task_notify($request_type, $project_name, $task_name, $stages_status, $
     $mail->Encoding = 'base64';
 
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -3890,14 +3645,7 @@ function task_notify_r($request_type, $project_name, $task_name, $stages_status,
     $mail->Encoding = 'base64';
 
     
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
     
@@ -4023,14 +3771,7 @@ function task_notify_order($request_type, $project_name, $task_name, $stages_sta
     $mail->Encoding = 'base64';
 
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -4165,14 +3906,7 @@ function task_notify_inquiry($request_type, $project_name, $task_name, $stages_s
     $mail->Encoding = 'base64';
 
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -4317,14 +4051,7 @@ function task_notify_type_order($request_type, $project_name, $task_name, $stage
     $mail->Encoding = 'base64';
 
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -4437,14 +4164,7 @@ function batch_date_start_company_notify_mail($user_array)
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -4523,14 +4243,7 @@ function task_notify_type_inquiry($request_type, $project_name, $task_name, $sta
     $mail->Encoding = 'base64';
 
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -4719,14 +4432,7 @@ function message_notify_dept($request_type, $project_name, $task_name, $stages, 
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -4843,14 +4549,7 @@ function message_notify_r($request_type, $project_name, $task_name, $stages, $cr
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -4984,14 +4683,7 @@ function message_notify($request_type, $project_name, $task_name, $stages, $crea
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -5109,14 +4801,7 @@ function task_notify01_admin($old_status, $task_status, $revisor, $task_name, $c
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -5218,14 +4903,7 @@ function task_notify01_admin_sl($old_status, $task_status, $revisor, $task_name,
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -5305,14 +4983,7 @@ function task_notify01_admin_sv($old_status, $task_status, $revisor, $task_name,
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -5393,14 +5064,7 @@ function task_notify01_admin_d($old_status, $task_status, $revisor, $task_name, 
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -5481,14 +5145,7 @@ function task_notify01_admin_o($old_status, $task_status, $revisor, $task_name, 
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -5569,14 +5226,7 @@ function task_notify01_admin_l($old_status, $task_status, $revisor, $task_name, 
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -5660,14 +5310,7 @@ function task_notify01($old_status, $task_status, $project_name, $task_name, $st
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -5789,14 +5432,7 @@ function task_notify01_r($old_status, $task_status, $project_name, $task_name, $
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -5915,14 +5551,7 @@ function task_notify01_order($old_status, $task_status, $project_name, $task_nam
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -6043,14 +5672,7 @@ function task_notify01_inquiry($old_status, $task_status, $project_name, $task_n
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -6172,14 +5794,7 @@ function task_notify01_type_order($old_status, $task_status, $project_name, $tas
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -6310,14 +5925,7 @@ function task_notify01_type_inquiry($old_status, $task_status, $project_name, $t
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -6450,14 +6058,7 @@ function task_notify02($old_status, $task_status, $project_name, $task_name, $st
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -6587,14 +6188,7 @@ function task_notify02_r($old_status, $task_status, $project_name, $task_name, $
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -6723,14 +6317,7 @@ function task_notify02_order($old_status, $task_status, $project_name, $task_nam
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -6860,14 +6447,7 @@ function task_notify02_inquiry($old_status, $task_status, $project_name, $task_n
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -6996,14 +6576,7 @@ function task_notify02_type_order($old_status, $task_status, $project_name, $tas
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -7142,14 +6715,7 @@ function task_notify02_type_inquiry($old_status, $task_status, $project_name, $t
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -7473,14 +7039,7 @@ function project01_notify_mail($request_type, $project_name, $username, $created
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -7560,14 +7119,7 @@ function project02_stage_notify_mail($stage_name, $project_name, $username, $cre
     $mail->Encoding = 'base64';
 
     
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -7659,14 +7211,7 @@ function project03_stage_client_task_notify_mail($project_name, $username, $crea
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -7724,14 +7269,7 @@ function project02_status_change_notify_mail($project_name, $project_category, $
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
     $mail = SetupMail($mail, $conf);
 
     $mail->IsHTML(true);
@@ -7818,14 +7356,7 @@ function send_salary_slip(  $start_date,
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -7883,14 +7414,7 @@ function send_salary_slip_withdraw(
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -7948,14 +7472,7 @@ function send_salary_slip_confirm(
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -8150,14 +7667,7 @@ function send_pay_reminder_mail_new($name, $email1,  $leaver, $projectname, $rem
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -8342,14 +7852,7 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -8756,14 +8259,7 @@ function order_notification_warehouse($name, $access,  $access_cc, $project_name
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -9081,14 +8577,7 @@ function mockup_notification($name, $access,  $access_cc, $project_name, $serial
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -9364,14 +8853,7 @@ function mockup_notification_warehouse($name, $access,  $access_cc, $project_nam
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -9586,14 +9068,7 @@ function inquiry_partial_complete_notification($name, $access,  $access_cc, $pro
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -9731,14 +9206,7 @@ function inquiry_notification($name, $access,  $access_cc, $project_name, $seria
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -9905,14 +9373,7 @@ function inquiry_notification_reply($name, $access,  $access_cc, $project_name, 
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -10118,14 +9579,7 @@ function knowledge_add_notification($name, $name_at, $access, $access_cc, $title
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -10251,14 +9705,7 @@ function batch_voting_system_notify_mail($access, $access_cc, $topic_name, $crea
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -10381,14 +9828,7 @@ function order_type_notification($name, $access,  $access_cc, $project_name, $se
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -10663,14 +10103,7 @@ function order_type_notification_warehouse($name, $access,  $access_cc, $project
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -10888,14 +10321,7 @@ function order_sample_notification($name, $access,  $access_cc, $project_name, $
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -11169,14 +10595,7 @@ function order_notification02($name, $access,  $access_cc, $project_name, $seria
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -11720,14 +11139,7 @@ function mockup_notification02($name, $access,  $access_cc, $project_name, $seri
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -12279,14 +11691,7 @@ function order_sample_notification02($name, $access,  $access_cc, $project_name,
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -12723,14 +12128,7 @@ function order_sample_delievery_notification($name, $access,  $access_cc, $proje
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -12997,14 +12395,7 @@ function order_stock_delievery_notification($name, $access,  $access_cc, $projec
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -13213,14 +12604,7 @@ function order_notification03($name, $access,  $access_cc, $project_name, $seria
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -13557,14 +12941,7 @@ function mockup_notification03($name, $access,  $access_cc, $project_name, $seri
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -13848,14 +13225,7 @@ function order_type_notification03($name, $access,  $access_cc, $project_name, $
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -14138,14 +13508,7 @@ function order_notification03Access7($name, $access,  $access_cc, $project_name,
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -14491,14 +13854,7 @@ function mockup_notification03Access7($name, $access,  $access_cc, $project_name
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -14794,14 +14150,7 @@ function order_type_notification03Access7($name, $access,  $access_cc, $project_
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -15097,14 +14446,7 @@ function tag_group_notification($name, $user_id, $items)
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
     $mail->IsHTML(true);
@@ -15283,14 +14625,7 @@ function tag_notification($name, $user_id, $tag_group, $items)
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
     $mail->IsHTML(true);
@@ -15469,14 +14804,7 @@ function order_notification04($name, $access,  $access_cc, $project_name, $seria
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -15658,14 +14986,7 @@ function mockup_notification04($name, $access,  $access_cc, $project_name, $seri
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -15847,14 +15168,7 @@ function order_type_notification04($name, $access,  $access_cc, $project_name, $
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -16035,14 +15349,7 @@ function product_notify($action, $_record)
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -16712,14 +16019,7 @@ function send_car_approval_mail_1($to, $cc, $project, $creator, $date_check, $ti
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -16792,14 +16092,7 @@ function send_car_request_mail_2($to, $cc, $project, $creator, $date_check, $tim
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -16863,14 +16156,7 @@ function withdraw_car_approval_mail_3($to, $cc, $project, $creator, $date_check,
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -16942,14 +16228,7 @@ function withdraw_car_request_mail_4($to, $cc, $project, $creator, $date_check, 
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -17015,14 +16294,7 @@ function delete_car_approval_mail_5($to, $cc, $project, $creator, $date_check, $
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -17094,14 +16366,7 @@ function delete_car_request_mail_6($to, $cc, $project, $creator, $date_check, $t
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -17488,14 +16753,7 @@ function employee_data_sheet_notification($requestor)
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
 
-    // $mail->SMTPDebug  = 0;
-    // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "ssl";
-    // $mail->Port       = 465;
-    // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = $conf::$mail_host;
-    // $mail->Username   = $conf::$mail_username;
-    // $mail->Password   = $conf::$mail_password;
+    
 
     $mail = SetupMail($mail, $conf);
 
@@ -17542,6 +16800,223 @@ function employee_data_sheet_notification($requestor)
     }
 }
 
+function leadership_assessment_notify($user_id, $employee_id, $id)
+{
+    $conf = new Conf();
+
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->Mailer = "smtp";
+    $mail->CharSet = 'UTF-8';
+    $mail->Encoding = 'base64';
+
+    
+
+    $mail = SetupMail($mail, $conf);
+
+    $mail->IsHTML(true);
+
+    $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
+    $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
+
+    $notifior = array();
+    $notifior = GetNotifiers($user_id);
+    $requestor = "";
+    foreach($notifior as &$list)
+    {
+        $mail->AddCC($list["email"], $list["username"]);
+        $requestor .= $list["username"] . ", ";
+    }
+    $requestor = rtrim($requestor, ", ");
+
+    $notifior = GetNotifiers($employee_id);
+    $checker1 = "";
+    foreach($notifior as &$list)
+    {
+        $mail->AddAddress($list["email"], $list["username"]);
+        $checker1 .= $list["username"] . ", ";
+    }
+
+    $checker1 = rtrim($checker1, ", ");
+
+    $mail->Subject = "[Leadership Assessment Notification] Please Choose Respondents for Your Leadership Assessment";
+    $content =  "<p>Dear " . $checker1 . ",</p>";
+    $content = $content . "<p>" . $requestor . " created the leadership assessment for you. Please choose respondents for your leadership assessment. </p>";
+    $content = $content . "<p>By clicking this link to view the target webpage:</p>";
+    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment?id=" . $id . "</a>";
+
+    $mail->MsgHTML($content);
+    if($mail->Send()) {
+        logMail($requestor, $content);
+        return true;
+//        echo "Error while sending Email.";
+//        var_dump($mail);
+    } else {
+        logMail($requestor, $mail->ErrorInfo . $content);
+        return false;
+//        echo "Email sent successfully";
+    }
+}
+
+
+function leadership_assessment_self_notify($employee_id, $creator_id, $id)
+{
+    $conf = new Conf();
+
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->Mailer = "smtp";
+    $mail->CharSet = 'UTF-8';
+    $mail->Encoding = 'base64';
+
+
+    $mail = SetupMail($mail, $conf);
+
+    $mail->IsHTML(true);
+
+    $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
+    $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
+
+    $notifior = array();
+    $notifior = GetNotifiers($creator_id);
+    $requestor = "";
+    foreach($notifior as &$list)
+    {
+        $mail->AddCC($list["email"], $list["username"]);
+        $requestor .= $list["username"] . ", ";
+    }
+    $requestor = rtrim($requestor, ", ");
+
+    $notifior = GetNotifiers($employee_id);
+    $checker1 = "";
+    foreach($notifior as &$list)
+    {
+        $mail->AddAddress($list["email"], $list["username"]);
+        $checker1 .= $list["username"] . ", ";
+    }
+
+    $checker1 = rtrim($checker1, ", ");
+
+    $mail->Subject = "[Leadership Assessment Notification] Please Fill out Survey of Your Leadership Assessment";
+    $content =  "<p>Dear " . $checker1 . ",</p>";
+    $content = $content . "<p>Please fill out the survey of your Leadership assessment as soon as possible. By clicking this link to view the target webpage: </p>";
+    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment?id=" . $id . "</a>";
+
+    $mail->MsgHTML($content);
+    if($mail->Send()) {
+        logMail($requestor, $content);
+        return true;
+//        echo "Error while sending Email.";
+//        var_dump($mail);
+    } else {
+        logMail($requestor, $mail->ErrorInfo . $content);
+        return false;
+//        echo "Email sent successfully";
+    }
+}
+
+function leadership_assessment_respondent_notify($user_id, $employee_id, $id)
+{
+    $conf = new Conf();
+
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->Mailer = "smtp";
+    $mail->CharSet = 'UTF-8';
+    $mail->Encoding = 'base64';
+
+    $mail = SetupMail($mail, $conf);
+
+    $mail->IsHTML(true);
+
+    $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
+    $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
+
+    $notifior = array();
+    $notifior = GetNotifiers($user_id);
+    $requestor = "";
+    foreach($notifior as &$list)
+    {
+        $mail->AddCC($list["email"], $list["username"]);
+        $requestor .= $list["username"] . ", ";
+    }
+    $requestor = rtrim($requestor, ", ");
+
+    $notifior = GetNotifiersByName($employee_id);
+    $checker1 = "";
+    foreach($notifior as &$list)
+    {
+        $mail->AddAddress($list["email"], $list["username"]);
+        $checker1 .= $list["username"] . ", ";
+    }
+
+    $checker1 = rtrim($checker1, ", ");
+
+    $mail->Subject = "[Leadership Assessment Notification] Please Help Fill out Survey of " . $requestor . "'s Leadership Assessment";
+    $content =  "<p>Dear " . $checker1 . ",</p>";
+    $content = $content . "<p>" . $requestor . " has requested that you please rate him/her in Leadership Assessment. By clicking this link to view the target webpage: </p>";
+    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment?id=" . $id . "'>https://feliix.myvnc.com/leadership_assessment?id=" . $id . "</a>";
+
+    $mail->MsgHTML($content);
+    if($mail->Send()) {
+        logMail($requestor, $content);
+        return true;
+//        echo "Error while sending Email.";
+//        var_dump($mail);
+    } else {
+        logMail($requestor, $mail->ErrorInfo . $content);
+        return false;
+//        echo "Email sent successfully";
+    }
+}
+
+
+function leadership_assessment_respondent_other_notify($email, $name, $employee_id, $id, $token)
+{
+    $conf = new Conf();
+
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->Mailer = "smtp";
+    $mail->CharSet = 'UTF-8';
+    $mail->Encoding = 'base64';
+
+    $mail = SetupMail($mail, $conf);
+
+    $mail->IsHTML(true);
+
+    $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
+    $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
+
+    $mail->AddAddress($email, $name);
+
+    $notifior = array();
+    $notifior = GetNotifiers($employee_id);
+    $requestor = "";
+    foreach($notifior as &$list)
+    {
+        $mail->AddCC($list["email"], $list["username"]);
+        $requestor .= $list["username"] . ", ";
+    }
+    $requestor = rtrim($requestor, ", ");
+    $mail->Subject = "[Leadership Assessment Notification] Please Help Fill out Survey of " . $requestor . "'s Leadership Assessment";
+    $content =  "<p>Dear " . $name . ",</p>";
+    $content = $content . "<p>" . $requestor . " has requested that you please rate him/her in Leadership Assessment. By clicking this link to view the target webpage: </p>";
+    $content = $content . "<a href='https://feliix.myvnc.com/leadership_assessment_standalone?token=" . $token . "'>https://feliix.myvnc.com/leadership_assessment_standalone?id=" . $id . "</a>";
+
+
+    $mail->MsgHTML($content);
+    if($mail->Send()) {
+        logMail($requestor, $content);
+        return true;
+//        echo "Error while sending Email.";
+//        var_dump($mail);
+    } else {
+        logMail($requestor, $mail->ErrorInfo . $content);
+        return false;
+//        echo "Email sent successfully";
+    }
+}
 
 function _rawurlencode($string) {
     $string = rawurlencode($string);

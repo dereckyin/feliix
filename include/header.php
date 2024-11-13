@@ -373,6 +373,7 @@ try {
             <li class="sec02">
                 <a class="uni">Performance<br>Evaluation</a>
                 <a class="list" href="performance_dashboard">Performance Evaluation</a>
+                <a class="list" href="leadership_assessment">Leadership Assessment</a>
             </li>
             <?php 
                 if($access1 == true || $access2 == true || $access3 == true || $access4 == true || $access8 == true || $access9 == true || $access10 == true)
