@@ -713,7 +713,7 @@ if (!isset($jwt)) {
 
             if($status == '1')
             {
-                $sql = "select ck.sid
+                $sql = "select ck.sid, ck.feliix
                             from car_calendar_check ck
                         where 1 = 1
                         and ck.car_use = :car_use 
@@ -734,6 +734,7 @@ if (!isset($jwt)) {
                     // $stmt1->execute();
 
                     // while ($row_feliix = $stmt1->fetch(PDO::FETCH_ASSOC)) {
+                    if($row['feliix'] == 0)
                         $auto_pass = false;
                     // }
                 }
