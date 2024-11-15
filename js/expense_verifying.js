@@ -393,7 +393,19 @@ var app = new Vue({
         });
     },
 
-    detail: function() {
+    get_lastest_record_status : async function(id) {
+      // get api/expense_status
+      let status = await axios.get("api/expense_status", {
+        params: {
+          id: id
+        }
+      });
+
+      return status.data;
+    },
+
+
+    detail: async function() {
       let _this = this;
 
       //let favorite = [];
@@ -419,13 +431,42 @@ var app = new Vue({
       this.record = this.shallowCopy(
         this.receive_records.find((element) => element.id == this.proof_id)
       );
+
+      var status = await this.get_lastest_record_status(this.proof_id);
+
+      if(status != '8')
+      {
+        await Swal.fire({
+          text: 'The status of the chosen expense application has changed and was not "For Verify". System will refresh the content of the table.',
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+
+        this.getLeaveCredit();
+        return;
+      }
       
-      this.reject_reason = "";
-      this.view_detail = true;
+        this.reject_reason = "";
+        this.view_detail = true;
+      
     },
 
-    approve_op: function() {
+    approve_op: async function() {
       let _this = this;
+
+      var status = await this.get_lastest_record_status(this.proof_id);
+
+      if(status != '8')
+      {
+        await Swal.fire({
+          text: 'The status of the chosen expense application has changed and was not "For Verify". System will refresh the content of the table.',
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+
+        this.getLeaveCredit();
+        return;
+      }
 
       if (this.proof_id < 1) {
         Swal.fire({
