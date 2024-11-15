@@ -426,7 +426,7 @@ var app = new Vue({
 
       var status = await this.get_lastest_record_status(this.proof_id);
 
-      if(status != 2 && status != 3)
+      if(status != 1 && status != 2)
         {
           await Swal.fire({
             text: 'The status of the chosen expense application has changed and was not "For Check". System will refresh the content of the table',
@@ -453,7 +453,7 @@ var app = new Vue({
 
       var status = await this.get_lastest_record_status(this.proof_id);
 
-      if(status != 2 && status != 3)
+      if(status != 1 && status != 2)
         {
           await Swal.fire({
             text: 'The status of the chosen expense application has changed and was not "For Check". System will refresh the content of the table',
