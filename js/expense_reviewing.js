@@ -383,7 +383,7 @@ var app = new Vue({
       if(status != 3 && status != 4 && status != -3)
         {
           await Swal.fire({
-            text: 'The status of the chosen expense application has changed and was not "For Review". System will refresh the content of the table',
+            text: 'The status of the chosen expense application has changed and was not "For Review". System will refresh the content of the table.',
             icon: "warning",
             confirmButtonText: "OK",
           });
@@ -404,7 +404,7 @@ var app = new Vue({
       if(status != 3 && status != 4 && status != -3)
         {
           await Swal.fire({
-            text: 'The status of the chosen expense application has changed and was not "For Review". System will refresh the content of the table',
+            text: 'The status of the chosen expense application has changed and was not "For Review". System will refresh the content of the table.',
             icon: "warning",
             confirmButtonText: "OK",
           });
@@ -462,7 +462,7 @@ var app = new Vue({
       if(status != 3 && status != 4 && status != -3)
         {
           await Swal.fire({
-            text: 'The status of the chosen expense application has changed and was not "For Review". System will refresh the content of the table',
+            text: 'The status of the chosen expense application has changed and was not "For Review". System will refresh the content of the table.',
             icon: "warning",
             confirmButtonText: "OK",
           });

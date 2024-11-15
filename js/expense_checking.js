@@ -429,7 +429,7 @@ var app = new Vue({
       if(status != 1 && status != 2)
         {
           await Swal.fire({
-            text: 'The status of the chosen expense application has changed and was not "For Check". System will refresh the content of the table',
+            text: 'The status of the chosen expense application has changed and was not "For Check". System will refresh the content of the table.',
             icon: "warning",
             confirmButtonText: "OK",
           });
@@ -456,7 +456,7 @@ var app = new Vue({
       if(status != 1 && status != 2)
         {
           await Swal.fire({
-            text: 'The status of the chosen expense application has changed and was not "For Check". System will refresh the content of the table',
+            text: 'The status of the chosen expense application has changed and was not "For Check". System will refresh the content of the table.',
             icon: "warning",
             confirmButtonText: "OK",
           });

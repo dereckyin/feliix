@@ -641,7 +641,7 @@ var app = new Vue({
       if(status != 5)
         {
           await Swal.fire({
-            text: 'The status of the chosen expense application has changed and was not "For Release". System will refresh the content of the table',
+            text: 'The status of the chosen expense application has changed and was not "For Release". System will refresh the content of the table.',
             icon: "warning",
             confirmButtonText: "OK",
           });
@@ -685,7 +685,7 @@ var app = new Vue({
       if(status != 5)
         {
           await Swal.fire({
-            text: 'The status of the chosen expense application has changed and was not "For Release". System will refresh the content of the table',
+            text: 'The status of the chosen expense application has changed and was not "For Release". System will refresh the content of the table.',
             icon: "warning",
             confirmButtonText: "OK",
           });
@@ -766,7 +766,7 @@ var app = new Vue({
       if(status != 5)
         {
           await Swal.fire({
-            text: 'The status of the chosen expense application has changed and was not "For Release". System will refresh the content of the table',
+            text: 'The status of the chosen expense application has changed and was not "For Release". System will refresh the content of the table.',
             icon: "warning",
             confirmButtonText: "OK",
           });
@@ -827,7 +827,7 @@ var app = new Vue({
       if(status != 5)
         {
           await Swal.fire({
-            text: 'The status of the chosen expense application has changed and was not "For Release". System will refresh the content of the table',
+            text: 'The status of the chosen expense application has changed and was not "For Release". System will refresh the content of the table.',
             icon: "warning",
             confirmButtonText: "OK",
           });
