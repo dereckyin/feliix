@@ -5584,3 +5584,7 @@ CREATE TABLE IF NOT EXISTS `leadership_assessment_answers` (
 
 alter table leadership_assessment_answers add column `score1` int(11) default 0;
 alter table leadership_assessment_answers add column `score2` int(11) default 0;
+
+-- 20241115
+ALTER TABLE product
+ADD COLUMN `4th_variation` TEXT COLLATE utf8mb4_unicode_ci AFTER `3th_variation`;

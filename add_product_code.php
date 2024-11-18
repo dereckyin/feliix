@@ -571,6 +571,37 @@
         width: 600px;
     }
 
+    #modal_bulk_apply,
+    #modal_edit_name,
+    #modal_quick_assign,
+    #modal_quick_assign2_4 {
+        position: fixed;
+        top: 30px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        z-index: 2;
+    }
+
+    #modal_bulk_apply>.modal-content,
+    #modal_edit_name>.modal-content,
+    #modal_quick_assign>.modal-content,
+    #modal_quick_assign2_4>.modal-content {
+        width: 700px;
+        max-height: calc(100vh - 60px);
+        margin: auto;
+        border: 3px solid #E2E2E2;
+        padding: 25px 20px 20px;
+        background-color: white;
+        overflow-y: auto;
+    }
+
+    #modal_bulk_apply>.modal-content,
+    #modal_quick_assign>.modal-content,
+    #modal_quick_assign2_4>.modal-content {
+        width: 600px;
+    }
+
     .custom-modal-header {
         color: #808080;
         border-bottom: 2px solid #E2E2E2;
@@ -1228,6 +1259,31 @@
                     </li>
                 </ul>
 
+                
+                <ul class="variation_list">
+                    <li>
+                        <h6>4th Variation</h6>
+                        <select class="form-control" v-model="variation4"
+                            :disabled="variation1 == '' || variation2 == '' || variation3 == ''">
+                            <option value="">Select a value</option>
+                            <option v-for="(item, index) in special_infomation" :value="item.category"
+                                :key="item.category">{{ item.category }}</option>
+
+                            <option value="custom">Custom</option>
+                        </select>
+
+                        <input type="text" class="form-control" :disabled="variation4 !== 'custom'"
+                            v-model="variation4_custom">
+                    </li>
+
+                    <li>
+                        <h6 style="text-align: center;">Options</h6>
+                        <input type="text" data-role="tagsinput" id="variation4_value"
+                            :disabled="variation1 == '' || variation2 == '' || variation3 == ''">
+                        <i class="fas fa-hand-pointer" @click="get_special_infomation_detail_variantion4()"></i>
+                    </li>
+                </ul>
+
                 <button class="btn btn-success" @click="generate_product_variants">Generate Product Variants</button>
             </div>
 
@@ -1251,6 +1307,7 @@
                                 <th>{{ variation1_text }}</th>
                                 <th>{{ variation2_text }}</th>
                                 <th>{{ variation3_text }}</th>
+                                <th>{{ variation4_text }}</th>
                                 <!-- <th>Code</th> -->
                                 <th class="NTD_price" v-if="show_ntd === true">Cost Price</th>
                                 <th>Suggested Retail Price</th>
@@ -1266,6 +1323,7 @@
                                 <td>{{ item.v1 }}</td>
                                 <td>{{ item.v2 }}</td>
                                 <td>{{ item.v3 }}</td>
+                                <td>{{ item.v4 }}</td>
                                 <!--   <td><input type="text" class="form-control" v-model="item.code"></td> -->
                                 <td class="NTD_price" v-if="show_ntd === true"><input type="number"
                                         class="form-control" v-model="item.price_ntd"
@@ -1464,7 +1522,45 @@
                 </div>
             </div>
 
+            <div id="modal_quick_assign2_4" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
 
+                    <div class="custom-modal-header">
+                        <h5>Quickly Assign Attribute's Value</h5>
+                        <i class="fa fa-times fa-lg" aria-hidden="true"
+                            onclick=" (function(){ $('.mask').toggle(); $('#modal_quick_assign2_4').toggle(); return false;})();return false;"></i>
+                    </div>
+
+                    <div>
+                        <table id="tb_quick_assign2" class="table_template">
+                            <thead>
+                                <tr>
+                                    <th>Frequently Used Options</th>
+                                    <th>Check</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr v-for="(item, index) in special_infomation_detail">
+                                    <td>{{ item.option }}</td>
+                                    <td><input class="alone" type="checkbox" name="apply_special_infomation_4"
+                                            :value="item.option"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <div class="btnbox">
+                            <button class="btn btn-secondary"
+                                onclick=" (function(){ $('.mask').toggle(); $('#modal_quick_assign2_4').toggle(); return false;})();return false;">Cancel</button>
+                            <button class="btn btn-primary"
+                                @click="apply_special_infomation_detail_variantion4">Apply</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
 
 
