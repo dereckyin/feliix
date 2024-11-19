@@ -75,10 +75,10 @@ else
         if ($stmt->execute()) {
             $last_id = $db->lastInsertId();
 
-            $query = "INSERT INTO product (category_id, 1st_variation, 2rd_variation, 3th_variation, 
+            $query = "INSERT INTO product (category_id, 1st_variation, 2rd_variation, 3th_variation, 4th_variation,
             `code`, photo, price_ntd, price, price_ntd_change, price_change, enabled, 
             quoted_price, quoted_price_change, `status`, create_id, product_id)
-            SELECT category_id, 1st_variation, 2rd_variation, 3th_variation, 
+            SELECT category_id, 1st_variation, 2rd_variation, 3th_variation, 4th_variation,
             `code`, photo, price_ntd, price, price_ntd_change, price_change, enabled, 
             quoted_price, quoted_price_change, `status`, create_id, " . $last_id . " FROM product
             where product_id = :id";
