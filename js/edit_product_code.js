@@ -620,6 +620,7 @@ var app = new Vue({
                 k1: this.variation1_text,
                 k2: this.variation2_text,
                 k3: this.variation3_text,
+                k4: this.variation4_text,
                 v1: variation1_value[i],
                 v2: variation2_value[j],
                 v3: variation3_value[k],
