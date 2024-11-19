@@ -623,6 +623,7 @@ var app = new Vue({
                 v1: variation1_value[i],
                 v2: variation2_value[j],
                 v3: variation3_value[k],
+                v4: variation4_value[l],
                 url: pre_url,
                 file: {
                   name: "",
