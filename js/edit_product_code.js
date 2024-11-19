@@ -1652,9 +1652,11 @@ var app = new Vue({
             let k1 = this.variation_product[i].k1;
             let k2 = this.variation_product[i].k2;
             let k3 = this.variation_product[i].k3;
+            let k4 = this.variation_product[i].k4;
             let v1 = this.variation_product[i].v1;
             let v2 = this.variation_product[i].v2;
             let v3 = this.variation_product[i].v3;
+            let v4 = this.variation_product[i].v4;
             let price = this.variation_product[i].price;
             let price_ntd = this.variation_product[i].price_ntd;
             let price_change = this.variation_product[i].price_change;
@@ -1694,9 +1696,11 @@ var app = new Vue({
               k1: k1,
               k2: k2,
               k3: k3,
+              k4: k4,
               v1: v1,
               v2: v2,
               v3: v3,
+              v4: v4,
               price: price,
               price_ntd: price_ntd,
               price_change: price_change,
