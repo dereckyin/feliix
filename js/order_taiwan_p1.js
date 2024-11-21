@@ -1399,7 +1399,7 @@ var app = new Vue({
               v1:this.v1,
               v2:this.v2,
               v3:this.v3,
-              V4:this.v4,
+              v4:this.v4,
               btn2:"1",
             };
 
@@ -1566,7 +1566,7 @@ var app = new Vue({
             v1: this.v1,
             v2: this.v2,
             v3: this.v3,
-            V4: this.v4,
+            v4: this.v4,
             shipping_way:"",
               shipping_number:"",
             status:"",
@@ -2332,7 +2332,7 @@ var app = new Vue({
                 v1:item.v1,
                 v2:item.v2,
                 v3:item.v3,
-                V4:item.V4,
+                v4:item.v4,
                 ps_var:item.ps_var,
                 status:item.status,
                 notes:[],
@@ -2428,7 +2428,7 @@ var app = new Vue({
                 v1:"",
                 v2:"",
                 v3:"",
-                V4:"",
+                v4:"",
                 shipping_way:"",
               shipping_number:"",
                 status:"",
@@ -3371,7 +3371,7 @@ check_all_set(){
 
   for(var i=0; i < this.product_set.length; i++){
     let item_product = this.shallowCopy(
-      this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+      this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
     )
 
     if(item_product.id != undefined)
@@ -3521,7 +3521,7 @@ add_with_image_set_select(all) {
       v1: "",
       v2: "",
       v3: "",
-      V4: "",
+      v4: "",
       btn2:"1",
 
       ps_var : sets,
@@ -3681,7 +3681,7 @@ add_without_image_set_select(all) {
       v1: "",
       v2: "",
       v3: "",
-      V4: "",
+      v4: "",
       shipping_way:"",
       shipping_number:"",
       status:"",
@@ -3981,7 +3981,7 @@ item = {
   v1: all == 'all' ? '' : set.v1,
     v2: all == 'all' ? '' : set.v2,
     v3: all == 'all' ? '' : set.v3,
-    V4: all == 'all' ? '' : set.v4,
+    v4: all == 'all' ? '' : set.v4,
   btn2:"1",
 };
 
@@ -4070,7 +4070,7 @@ if(all == 'all')
   k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
   k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
   k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
-  K4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
+  k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
 
   if(k1 !== '')
     list += set.variation1 === "custom" ? set.variation1_custom : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
