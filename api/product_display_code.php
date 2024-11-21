@@ -463,6 +463,8 @@ else
                 $variation2_custom = $variation2_text;
                 $variation3 = 'custom';
                 $variation3_custom = $variation3_text;
+                $variation4 = 'custom';
+                $variation4_custom = $variation4_text;
                 
 
                 for($i = 0; $i < count($special_information); $i++)
@@ -518,6 +520,12 @@ else
                     $variation3_custom = "";
                 }
 
+                if($variation4_text == "4th Variation")
+                {
+                    $variation4 = "";
+                    $variation4_custom = "";
+                }
+
                 // test 
                 if($variation1_text == "")
                 {
@@ -535,6 +543,12 @@ else
                 {
                     $variation3 = "";
                     $variation3_custom = "";
+                }
+
+                if($variation4_text == "")
+                {
+                    $variation4 = "";
+                    $variation4_custom = "";
                 }
 
                 $attribute_list = [];
@@ -565,6 +579,11 @@ else
                         if($variation3_text == $special_info_json[$i]->category)
                         {
                             $value = $variation3_value;
+                            $custom = "custom";
+                        }
+                        if($variation4_text == $special_info_json[$i]->category)
+                        {
+                            $value = $variation4_value;
                             $custom = "custom";
                         }
 
@@ -598,6 +617,14 @@ else
                 {
                     $attribute_list[] = array("category" => $variation3_text,
                                            "value" => $variation3_value,
+                                           "type" => "custom",
+                                        );
+                }
+
+                if($variation4 == "custom" && $variation4_custom != "4th Variation")
+                {
+                    $attribute_list[] = array("category" => $variation4_text,
+                                           "value" => $variation4_value,
                                            "type" => "custom",
                                         );
                 }
