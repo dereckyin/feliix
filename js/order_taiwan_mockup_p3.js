@@ -3418,12 +3418,13 @@ var app = new Vue({
       var v1 = this.p_item_product.v1;
       var v2 = this.p_item_product.v2;
       var v3 = this.p_item_product.v3;
+      var v4 = this.p_item_product.v4;
 
       form_Data.append('id', this.p_id);
       form_Data.append('v1', v1);
       form_Data.append('v2', v2);
       form_Data.append('v3', v3);
-
+      form_Data.append('v4', v4);
 
       axios({
         method: "post",
