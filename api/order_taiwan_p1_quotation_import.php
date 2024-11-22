@@ -104,6 +104,7 @@ switch ($method) {
                     `v1` = :v1,
                     `v2` = :v2,
                     `v3` = :v3,
+                    `v4` = :v4,
                     `ps_var` = :ps_var,
                     `status` = 0,
                     `status_at` = now(),
@@ -136,16 +137,16 @@ switch ($method) {
                 $date_needed =  '';
                 $pid = isset($block_array[$i]['pid']) ? $block_array[$i]['pid'] : 0;
 
-
                 $v1 = isset($block_array[$i]['v1']) ? $block_array[$i]['v1'] : '';
                 $v2 = isset($block_array[$i]['v2']) ? $block_array[$i]['v2'] : '';
                 $v3 = isset($block_array[$i]['v3']) ? $block_array[$i]['v3'] : '';
+                $v4 = isset($block_array[$i]['v4']) ? $block_array[$i]['v4'] : '';
 
                 $ps_var = isset($block_array[$i]['ps_var']) ? $block_array[$i]['ps_var'] : [];
                 $json_ps_var = json_encode($ps_var);
 
                 // check if normal product
-                $is_normal = IsNormalProduct($pid, $v1, $v2, $v3, $db);
+                $is_normal = IsNormalProduct($pid, $v1, $v2, $v3, $v4, $db);
 
                 // bind the values
                 $stmt->bindParam(':od_id', $od_id);
@@ -168,6 +169,7 @@ switch ($method) {
                 $stmt->bindParam(':v1', $v1);
                 $stmt->bindParam(':v2', $v2);
                 $stmt->bindParam(':v3', $v3);
+                $stmt->bindParam(':v4', $v4);
 
                 $stmt->bindParam(':ps_var', $json_ps_var);
 
@@ -331,6 +333,7 @@ function GetBlocks($qid, $db){
         v1,
         v2,
         v3,
+        v4,
         ps_var,
         listing,
         num,
@@ -365,6 +368,7 @@ function GetBlocks($qid, $db){
         $v1 = $row['v1'];
         $v2 = $row['v2'];
         $v3 = $row['v3'];
+        $v4 = $row['v4'];
 
         $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
 
@@ -393,6 +397,7 @@ function GetBlocks($qid, $db){
             "v1" => $v1,
             "v2" => $v2,
             "v3" => $v3,
+            "v4" => $v4,
             "ps_var" => $ps_var,
             "list" => $listing,
           
@@ -465,6 +470,7 @@ function GetQuotationItems($qid, $db){
                 $v1 = $row['v1'];
                 $v2 = $row['v2'];
                 $v3 = $row['v3'];
+                $v4 = $row['v4'];
                 //$ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
                 $ps_var = $row['ps_var'];
                 $listing = $row['list'];
@@ -492,6 +498,7 @@ function GetQuotationItems($qid, $db){
                     "v1" => $v1,
                     "v2" => $v2,
                     "v3" => $v3,
+                    "v4" => $v4,
                     "ps_var" => $ps_var,
                     "list" => $listing,
                     
@@ -568,7 +575,7 @@ function GetBrandInfo($pid, $db)
     return $brand;
 }
 
-function IsNormalProduct($pid, $v1, $v2, $v3, $db){
+function IsNormalProduct($pid, $v1, $v2, $v3, $v4, $db){
     $is_normal = 0;
     $variation_mode = 0;
 
@@ -599,7 +606,7 @@ function IsNormalProduct($pid, $v1, $v2, $v3, $db){
    
     }
 
-    if($variation_mode == 1 && $v1 == '' && $v2 == '' && $v3 == '')
+    if($variation_mode == 1 && $v1 == '' && $v2 == '' && $v3 == '' && $v4 == '')
         $is_normal = 1;
 
     return $is_normal;
