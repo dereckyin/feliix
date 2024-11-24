@@ -510,6 +510,19 @@
                                 </option>
                             </select>
                         </li>
+                        <li v-if="it.variation4_value[0] !== '' && it.variation4_value[0] !== undefined">
+                            {{ it.variation4 !== 'custom' ? it.variation4 + ': ' : it.variation4_custom + ': ' }}
+                            <template v-for="(item, index) in it.variation4_value">{{ (index + 1 !== it.variation4_value.length) ?
+                                item + ', ' : item}}
+                            </template>
+                        </li>
+                        <li v-show="it.variation4_value[0] !== '' && it.variation4_value[0] !== undefined">
+                            <select class="form-control" v-model="it.v4" @change="change_v(it)">
+                                <option value=""></option>
+                                <option v-for="(item, index) in it.variation4_value" :value="item" :key="item">{{item}}
+                                </option>
+                            </select>
+                        </li>
 
                         <template v-for="(item, index) in it.accessory_infomation" v-if="it.show_accessory">
                             <li>{{ item.category }}</li>

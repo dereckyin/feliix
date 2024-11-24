@@ -4109,6 +4109,18 @@ header( 'location:index' );
                                         </option>
                                     </select>
                                 </li>
+                                <li v-if="product.variation4_value[0] !== '' && product.variation4_value[0] !== undefined">
+                                    {{ product.variation4 !== 'custom' ? product.variation4 : product.variation4_custom
+                                    }}
+                                </li>
+                                <li v-show="product.variation4_value[0] !== '' && product.variation4_value[0] !== undefined">
+                                    <select class="form-control" v-model="v4" @change="change_v()">
+                                        <option value=""></option>
+                                        <option v-for="(item, index) in product.variation4_value" :value="item"
+                                                :key="item">{{item}}
+                                        </option>
+                                    </select>
+                                </li>
 
                                 <template v-for="(item, index) in product.accessory_infomation" v-if="show_accessory">
                                     <li>{{ item.category }}</li>

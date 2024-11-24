@@ -1316,10 +1316,12 @@ function GetProductCategory($id, $db){
         $variation1_value = [];
         $variation2_value = [];
         $variation3_value = [];
+        $variation4_value = [];
 
         $variation1_text = "";
         $variation2_text = "";
         $variation3_text = "";
+        $variation4_text = "";
 
         if(count($product) > 0)
         {
