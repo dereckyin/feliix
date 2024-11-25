@@ -4639,13 +4639,13 @@ Installation:`;
       k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
 
       if(k1 !== '')
-        list += set.variation1 === "custom" ? set.variation1_custom : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+        list += set.variation1 === "custom" ? set.variation1_custom + ': ' + set.variation1_value.join(', ') + "\n" : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
       if(k2 !== '')
-        list += set.variation2 === "custom" ? set.variation2_custom : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+        list += set.variation2 === "custom" ? set.variation2_custom + ': ' + set.variation2_value.join(', ') + "\n" : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
       if(k3 !== '')
-        list += set.variation3 === "custom" ? set.variation3_custom : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+        list += set.variation3 === "custom" ? set.variation3_custom + ': ' + set.variation3_value.join(', ') + "\n" : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
       if(k4 !== '')
-        list += set.variation4 === "custom" ? set.variation4_custom : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
+        list += set.variation4 === "custom" ? set.variation4_custom + ': ' + set.variation4_value.join(', ') + "\n" : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
 
       photo = set.photo1;
       photo2 = set.photo2;
@@ -4843,13 +4843,13 @@ Installation:`;
       k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
 
       if(k1 !== '')
-        list += set.variation1 === "custom" ? set.variation1_custom : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+        list += set.variation1 === "custom" ? set.variation1_custom + ': ' + set.variation1_value.join(', ') + "\n" : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
       if(k2 !== '')
-        list += set.variation2 === "custom" ? set.variation2_custom : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+        list += set.variation2 === "custom" ? set.variation2_custom + ': ' + set.variation2_value.join(', ') + "\n" : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
       if(k3 !== '')
-        list += set.variation3 === "custom" ? set.variation3_custom : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+        list += set.variation3 === "custom" ? set.variation3_custom + ': ' + set.variation3_value.join(', ') + "\n" : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
       if(k4 !== '')
-        list += set.variation4 === "custom" ? set.variation4_custom : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
+        list += set.variation4 === "custom" ? set.variation4_custom + ': ' + set.variation4_value.join(', ') + "\n" : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
 
       photo = set.photo1;
 
