@@ -12135,7 +12135,7 @@ function order_sample_delievery_notification($name, $access,  $access_cc, $proje
         // $notifior = GetAccessNotifiersByDepartment("Admin");
         // foreach($notifior as &$list)
         // {
-        //     if( $list["username"] == 'Gina Donato' || $list["username"] == 'Ronnie Fernando Dela Cruz'){
+        //     if( $list["username"] == 'Gina Donato' || $list["username"] == 'Marie Kayla Patricia Dequina'){
         //         $receiver .= $list["username"] . ", ";
         //         $mail->AddAddress($list["email"], $list["username"]);
         //     }
