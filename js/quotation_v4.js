@@ -4949,7 +4949,7 @@ Installation:`;
       if(k3 !== '')
         list += set.variation3 === "custom" ? set.variation3_custom : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
       if(k4 !== '')
-        list += set.variation4 === "custom" ? set.variation4_custom : set.variation4 + ': ' + set.variation4_value.join(', ') +
+        list += set.variation4 === "custom" ? set.variation4_custom : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
 
       photo = set.photo1;
 
