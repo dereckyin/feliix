@@ -75,6 +75,7 @@ if($jwt){
             v1,
             v2,
             v3,
+            v4,
             shipping_way,
             shipping_number,
             shipping_vendor,
@@ -117,7 +118,7 @@ if($jwt){
             $confirm_text = GetConfirmText($confirm, $db);
             
             $product = "";
-            $product = GetProductMain($row['pid'], $row['v1'], $row['v2'], $row['v3'], $db);
+            $product = GetProductMain($row['pid'], $row['v1'], $row['v2'], $row['v3'], $row['v4'], $db);
 
             $product_currency = GetProductCurrency($row['pid'], $db);
             
@@ -1132,7 +1133,7 @@ function GetProductCurrency($id, $db)
     return $currency;
 }
 
-function GetProductMain($id, $v1, $v2, $v3, $db)
+function GetProductMain($id, $v1, $v2, $v3, $v4, $db)
 {
     $sql = "SELECT * FROM product_category WHERE id = ". $id . " and STATUS <> -1";
     $merged_results = array();
@@ -1147,7 +1148,7 @@ function GetProductMain($id, $v1, $v2, $v3, $db)
         if($row['price_ntd'] != '')
             $price_ntd = $row['price_ntd'];
        
-        $product = GetProduct($id, $v1, $v2, $v3, $db);
+        $product = GetProduct($id, $v1, $v2, $v3, $v4, $db);
         if($product != '')
             $price_ntd = $product;
     }
@@ -1155,7 +1156,7 @@ function GetProductMain($id, $v1, $v2, $v3, $db)
     return $price_ntd;
 }
 
-function GetProduct($id,$pv1, $pv2, $pv3, $db){
+function GetProduct($id,$pv1, $pv2, $pv3, $pv4, $db){
     $sql = "SELECT *, CONCAT('https://storage.googleapis.com/feliiximg/' , photo) url FROM product WHERE product_id = ". $id . " and STATUS <> -1";
 
     $merged_results = array();
@@ -1168,9 +1169,11 @@ function GetProduct($id,$pv1, $pv2, $pv3, $db){
         $k1 = GetKey($row['1st_variation']);
         $k2 = GetKey($row['2rd_variation']);
         $k3 = GetKey($row['3th_variation']);
+        $k4 = GetKey($row['4th_variation']);
         $v1 = GetValue($row['1st_variation']);
         $v2 = GetValue($row['2rd_variation']);
         $v3 = GetValue($row['3th_variation']);
+        $v4 = GetValue($row['4th_variation']);
         $checked = '';
         $code = $row['code'];
         $price = $row['price'];
@@ -1193,9 +1196,11 @@ function GetProduct($id,$pv1, $pv2, $pv3, $db){
                                     "k1" => $k1, 
                                     "k2" => $k2, 
                                     "k3" => $k3, 
+                                    "k4" => $k4,
                                     "v1" => $v1, 
                                     "v2" => $v2, 
                                     "v3" => $v3, 
+                                    "v4" => $v4,
                                     "checked" => $checked, 
                                     "code" => $code, 
                                     "price" => $price, 
@@ -1220,7 +1225,7 @@ function GetProduct($id,$pv1, $pv2, $pv3, $db){
     // find in merged_results with v1, v2 and v3
     $price_ntd = "";
     foreach($merged_results as $item) {
-        if($item['v1'] == $pv1 && $item['v2'] == $pv2 && $item['v3'] == $pv3) {
+        if($item['v1'] == $pv1 && $item['v2'] == $pv2 && $item['v3'] == $pv3 && $item['v4'] == $pv4) {
             if($item['price_ntd'] != '')
                 $price_ntd = $item['price_ntd'];
         }

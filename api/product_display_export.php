@@ -87,6 +87,7 @@ else
                         $product['v1'] = $item['v1'];
                         $product['v2'] = $item['v2'];
                         $product['v3'] = $item['v3'];
+                        $product['v4'] = $item['v4'];
 
                         if($product['photo1'] != '')
                         {
@@ -558,9 +559,11 @@ function GetProduct($id, $db, $currency){
         $k1 = GetKey($row['1st_variation']);
         $k2 = GetKey($row['2rd_variation']);
         $k3 = GetKey($row['3th_variation']);
+        $k4 = GetKey($row['4th_variation']);
         $v1 = GetValue($row['1st_variation']);
         $v2 = GetValue($row['2rd_variation']);
         $v3 = GetValue($row['3th_variation']);
+        $v4 = GetValue($row['4th_variation']);
         $checked = '';
         $code = $row['code'];
         $price = $row['price'];
@@ -585,9 +588,11 @@ function GetProduct($id, $db, $currency){
                                     "k1" => $k1, 
                                     "k2" => $k2, 
                                     "k3" => $k3, 
+                                    "k4" => $k4,
                                     "v1" => $v1, 
                                     "v2" => $v2, 
                                     "v3" => $v3, 
+                                    "v4" => $v4,
                                     "checked" => $checked, 
                                     "code" => $code, 
                                     "price" => $price, 

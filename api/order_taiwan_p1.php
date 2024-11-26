@@ -69,6 +69,7 @@ if (!isset($jwt)) {
                     v1,
                     v2,
                     v3,
+                    v4,
                     ps_var,
                     eta,
                     date_send,
@@ -171,6 +172,7 @@ if (!isset($jwt)) {
         $v1 = $row['v1'];
         $v2 = $row['v2'];
         $v3 = $row['v3'];
+        $v4 = $row['v4'];
 
         $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
 
@@ -223,6 +225,7 @@ if (!isset($jwt)) {
             "v1" => $v1,
             "v2" => $v2,
             "v3" => $v3,
+            "v4" => $v4,
             "ps_var" => $ps_var,
             "eta" => $eta,
             "date_send" => $date_send, 

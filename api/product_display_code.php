@@ -275,6 +275,8 @@ else
                             $params .= ", " . str_replace("=>", " = ", $product[$i]['2rd_variation']);
                         if($product[$i]['3th_variation'] != "=>")
                             $params .= ", " . str_replace("=>", " = ", $product[$i]['3th_variation']);
+                        if($product[$i]['4th_variation'] != "=>")
+                            $params .= ", " . str_replace("=>", " = ", $product[$i]['4th_variation']);
 
                         $is_last_order_product .= "(" . $order_sn++ . ") " . $params . ": <br>" . substr($product[$i]['last_order_at'], 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $product[$i]['last_order_name'] . "</a><br><br>";
                     }
@@ -931,6 +933,7 @@ function GetProduct($id, $db, $currency){
                                     "1st_variation" => $fir,
                                     "2rd_variation" => $sec,
                                     "3th_variation" => $thi,
+                                    "4th_variation" => $fou,
                                     "checked" => $checked, 
                                     "code" => $code, 
                                     "price" => $price, 
@@ -1397,6 +1400,7 @@ function GetProductSet($id, $qty, $db){
             $variation1_text = "1st Variation";
             $variation2_text = "2nd Variation";
             $variation3_text = "3rd Variation";
+            $variation4_text = "4th Variation";
 
             $special_infomation = [];
             $accessory_information = [];

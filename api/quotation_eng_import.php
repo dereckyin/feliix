@@ -191,6 +191,7 @@ function GetBlocks($qid, $db){
         v1,
         v2,
         v3,
+        v4,
         ps_var,
         listing,
         num,
@@ -223,6 +224,7 @@ function GetBlocks($qid, $db){
         $v1 = $row['v1'];
         $v2 = $row['v2'];
         $v3 = $row['v3'];
+        $v4 = $row['v4'];
         $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
         $listing = $row['listing'];
     
@@ -247,6 +249,7 @@ function GetBlocks($qid, $db){
             "v1" => $v1,
             "v2" => $v2,
             "v3" => $v3,
+            "v4" => $v4,
             "ps_var" => $ps_var,
             "list" => $listing,
           
@@ -317,6 +320,7 @@ function GetQuotationItems($qid, $db){
                 $v1 = $row['v1'];
                 $v2 = $row['v2'];
                 $v3 = $row['v3'];
+                $v4 = $row['v4'];
                 //$ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
                 $ps_var = $row['ps_var'];
                 $listing = $row['list'];
@@ -342,6 +346,7 @@ function GetQuotationItems($qid, $db){
                     "v1" => $v1,
                     "v2" => $v2,
                     "v3" => $v3,
+                    "v4" => $v4,
                     "ps_var" => $ps_var,
                     "list" => $listing,
                     
@@ -418,7 +423,7 @@ function GetBrandInfo($pid, $db)
     return $brand;
 }
 
-function IsNormalProduct($pid, $v1, $v2, $v3, $db){
+function IsNormalProduct($pid, $v1, $v2, $v3, $v4, $db){
     $is_normal = 0;
     $variation_mode = 0;
 
@@ -449,7 +454,7 @@ function IsNormalProduct($pid, $v1, $v2, $v3, $db){
    
     }
 
-    if($variation_mode == 1 && $v1 == '' && $v2 == '' && $v3 == '')
+    if($variation_mode == 1 && $v1 == '' && $v2 == '' && $v3 == '' && $v4 == '')
         $is_normal = 1;
 
     return $is_normal;

@@ -986,6 +986,7 @@ function GetBlocks($qid, $db){
         v1,
         v2,
         v3,
+        v4,
         ps_var,
         listing,
         num,
@@ -1023,10 +1024,11 @@ function GetBlocks($qid, $db){
         $v1 = $row['v1'];
         $v2 = $row['v2'];
         $v3 = $row['v3'];
+        $v4 = $row['v4'];
         $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
         $listing = $row['listing'];
 
-        $srp = GetProductPrice($row['pid'], $row['v1'], $row['v2'], $row['v3'], $db);
+        $srp = GetProductPrice($row['pid'], $row['v1'], $row['v2'], $row['v3'], $row['v4'], $db);
 
         $last_order_name = "";
         $last_order_at = "";
@@ -1078,6 +1080,7 @@ function GetBlocks($qid, $db){
             "v1" => $v1,
             "v2" => $v2,
             "v3" => $v3,
+            "v4" => $v4,
             "ps_var" => $ps_var,
             "list" => $listing,
             "srp" => $srp,
@@ -1093,12 +1096,13 @@ function GetBlocks($qid, $db){
     return $merged_results;
 }
 
-function GetProducts($pid, $v1, $v2, $v3, $db)  {
+function GetProducts($pid, $v1, $v2, $v3, $v4, $db)  {
 
     $query = "SELECT price,
             1st_variation,
             2rd_variation,
-            3th_variation
+            3th_variation,
+            4th_variation
         FROM   product
         WHERE  product_id = " . $pid . "
         AND `status` <> -1 
@@ -1112,14 +1116,16 @@ function GetProducts($pid, $v1, $v2, $v3, $db)  {
     $val1 = "";
     $val2 = "";
     $val3 = "";
+    $val4 = "";
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $price = $row['price'];
         $val1 = GetValue($row['1st_variation']);
         $val2 = GetValue($row['2rd_variation']);
         $val3 = GetValue($row['3th_variation']);
+        $val4 = GetValue($row['4th_variation']);
 
-        if($val1 == $v1 && $val2 == $v2 && $val3 == $v3)
+        if($val1 == $v1 && $val2 == $v2 && $val3 == $v3 && $val4 == $v4)
             break;
     }
 
@@ -1137,14 +1143,14 @@ function GetValue($str)
     return isset($obj[1]) ? $obj[1] : "";
 }
 
-function GetProductPrice($pid, $v1, $v2, $v3, $db)
+function GetProductPrice($pid, $v1, $v2, $v3, $v4, $db)
 {
     $srp = 0;
     $p_srp = 0;
 
-    if($v1 != '' || $v2 != '' || $v3 != '')
-     $p_srp = GetProducts($pid, $v1, $v2, $v3, $db);
-
+    if($v1 != '' || $v2 != '' || $v3 != '' || $v4 != '')
+        $p_srp = GetProducts($pid, $v1, $v2, $v3, $v4, $db);
+    
     if($p_srp > 0)
     {
         $srp = $p_srp;
@@ -1237,6 +1243,7 @@ function GetProductItems($pages, $q_id, $db)
                 $v1 = $row['v1'];
                 $v2 = $row['v2'];
                 $v3 = $row['v3'];
+                $v4 = $row['v4'];
                 // $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
                 $listing = $row['list'];
             
@@ -1263,6 +1270,7 @@ function GetProductItems($pages, $q_id, $db)
                     "v1" => $v1,
                     "v2" => $v2,
                     "v3" => $v3,
+                    "v4" => $v4,
                     "list" => $listing,
                 );
                 
@@ -1388,6 +1396,8 @@ function GetProductMain($id, $db){
                     $params .= ", " . str_replace("=>", " = ", $product[$i]['2rd_variation']);
                 if($product[$i]['3th_variation'] != "=>")
                     $params .= ", " . str_replace("=>", " = ", $product[$i]['3th_variation']);
+                if($product[$i]['4th_variation'] != "=>")
+                    $params .= ", " . str_replace("=>", " = ", $product[$i]['4th_variation']);
 
                 $is_last_order_product .= "(" . $order_sn++ . ") " . $params . ": <br>" . substr($product[$i]['last_order_at'], 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $product[$i]['last_order_name'] . "</a><br><br>";
             }
@@ -1464,6 +1474,7 @@ function GetProduct($id, $db){
         $fir = $row['1st_variation'];
         $sec = $row['2rd_variation'];
         $thi = $row['3th_variation'];
+        $fth = $row['4th_variation'];
 
         $checked = '';
         $code = $row['code'];
@@ -1515,6 +1526,7 @@ function GetProduct($id, $db){
                                     "1st_variation" => $fir,
                                     "2rd_variation" => $sec,
                                     "3th_variation" => $thi,
+                                    "4th_variation" => $fth,
 
                                     "checked" => $checked, 
                                     "code" => $code, 

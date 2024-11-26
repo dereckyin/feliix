@@ -164,6 +164,8 @@ function GetProductCategory($id, $db){
         $variation2_custom = $variation2_text;
         $variation3 = 'custom';
         $variation3_custom = $variation3_text;
+        $variation4 = 'custom';
+        $variation4_custom = $variation4_text;
 
         for($i = 0; $i < count($special_information); $i++)
         {
@@ -354,9 +356,11 @@ function GetProduct($id, $db){
         $k1 = GetKey($row['1st_variation']);
         $k2 = GetKey($row['2rd_variation']);
         $k3 = GetKey($row['3th_variation']);
+        $k4 = GetKey($row['4th_variation']);
         $v1 = GetValue($row['1st_variation']);
         $v2 = GetValue($row['2rd_variation']);
         $v3 = GetValue($row['3th_variation']);
+        $v4 = GetValue($row['4th_variation']);
         $checked = '';
         $code = $row['code'];
         $price = $row['price'];
@@ -380,9 +384,11 @@ function GetProduct($id, $db){
                                     "k1" => $k1, 
                                     "k2" => $k2, 
                                     "k3" => $k3, 
+                                    "k4" => $k4,
                                     "v1" => $v1, 
                                     "v2" => $v2, 
                                     "v3" => $v3, 
+                                    "v4" => $v4,
                                     "checked" => $checked, 
                                     "code" => $code, 
                                     "price" => $price, 
