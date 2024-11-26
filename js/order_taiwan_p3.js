@@ -3609,6 +3609,7 @@ var app = new Vue({
           _this.p_v1 = "";
           _this.p_v2 = "";
           _this.p_v3 = "";
+          _this.p_v4 = "";
 
           _this.p_change_v();
 

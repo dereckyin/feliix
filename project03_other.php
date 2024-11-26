@@ -66,7 +66,7 @@ try {
         || $position == 'Engineering Manager'
         || $position == 'Sales Manager'
         || $position == 'Cost Planning Engineer'
-        || trim($GLOBALS['username']) == 'Cristina Matining')
+        || trim($GLOBALS['username']) == 'Gwendolyn Sarmiento')
         $order_menu = "1";
 }
 // if decode fails, it means jwt is invalid
