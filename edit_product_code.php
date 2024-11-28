@@ -1030,6 +1030,15 @@ try {
                 </li>
             </ul>
 
+            <ul>
+                <li>
+                    Phased Out
+                </li>
+                <li>
+                    <li><input type="text" class="selectpicker" data-role="tagsinput" id="replacement_product"></li>
+                </li>
+            </ul>
+
             <ul v-if="category == '10000000'">
                 <li>
                     IES File

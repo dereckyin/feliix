@@ -123,6 +123,9 @@ var app = new Vue({
     cost_lighting : false,
     cost_furniture : false,
 
+    // replacement
+    replacement_id: "",
+
   },
 
   created() {
@@ -1131,6 +1134,33 @@ $("#tag0102").selectpicker("refresh");
         return;
       }
 
+      let replacement_product = $('#replacement_product').val();
+      let replacement = replacement_product.split(",");
+
+      let err = '';
+      let replacement_data = [];
+      this.replacement_id = "";
+
+      for (let index = 0; index < replacement.length; ++index) {
+        const element = replacement[index];
+
+        replacement_data = await this.is_code_existed(element.trim());
+        if(replacement_data.length > 0)
+          this.replacement_id += replacement_data[0].id + ",";
+        else
+          err = err + element.trim() + '<br> ';
+      }
+
+      if(err.trim() != '')
+      {
+        Swal.fire({
+          html: "The code of replacement product doesn’t exist.<br>" + err.trim(),
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
       if(this.sub_category == '10020000')
       {
         if(this.p1_code.trim() == '' || this.p2_code.trim() == '')
@@ -1168,6 +1198,8 @@ $("#tag0102").selectpicker("refresh");
           });
           return;
         }
+
+        
   
         let p1_data = [];
         let p2_data = [];
@@ -1620,6 +1652,10 @@ $("#tag0102").selectpicker("refresh");
           let related_product = $('#related_product').val();
           form_Data.append("related_product", related_product);
 
+          let replacement_product = $('#replacement_product').val();
+          form_Data.append("replacement_product", replacement_product);
+          form_Data.append("replacement_ids", _this.replacement_id);
+
           form_Data.append("notes", _this.notes);
 
           form_Data.append("accessory_mode", _this.accessory_mode === true || _this.accessory_mode === "1" ? 1 : 0);
@@ -1774,6 +1810,7 @@ $("#tag0102").selectpicker("refresh");
       $('#variation4_value').tagsinput('removeAll');
 
       $('#related_product').tagsinput('removeAll');
+      $('#replacement_product').tagsinput('removeAll');
 
       this.variation1_custom = '';
       this.variation2_custom = '';

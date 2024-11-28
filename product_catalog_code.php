@@ -300,6 +300,14 @@ try {
             border-radius: 10px;
         }
 
+        #tb_product_list tbody tr td:nth-of-type(3) ul li span.phasedout_replacement {
+            background-color: orange;
+            color: white;
+            padding: 0px 5px 3px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
         #tb_product_list tbody tr td:nth-of-type(4) ul:last-of-type {
             border-bottom: none;
         }
@@ -916,7 +924,9 @@ try {
                         <td>
                             <ul v-if="set.out == 'Y'">
                             <li>
+                                    <!-- 依據這個停產的產品是否有 Replacement Product 的資料，沒有資料則用第一個 <span>，有資料則用二個 <span> -->
                                     <span class="phasedout">Phased Out</span>
+                                    <span class="phasedout_replacement">Phased Out</span>
                             </li>
                             <li></li>
                             </ul>
@@ -1046,7 +1056,9 @@ try {
                         <td>
                             <ul v-if="item.out == 'Y'">
                             <li>
+                                    <!-- 依據這個停產的產品是否有 Replacement Product 的資料，沒有資料則用第一個 <span>，有資料則用二個 <span> -->
                                     <span class="phasedout">Phased Out</span>
+                                    <span class="phasedout_replacement">Phased Out</span>
                             </li>
                             <li></li>
                             </ul>

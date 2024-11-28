@@ -981,6 +981,13 @@
                     </li>
                 </ul>
 
+                <ul>
+                    <li>
+                        Replacement Product<br>(for phased-out or deleted product)
+                    </li>
+                        <li><input type="text" value="" data-role="tagsinput" id="replacement_product"></li>
+                </ul>
+
                 <!-- 如果使用者選擇當前產品為 Category=Lighting，則下面這個 IES Files 的<ul>結構會被製造出來； 如果使用者選擇當前產品為 Category=Systems Furniture，則下面這個 IES Files 的<ul>結構不會被製造出來 -->
                 <ul v-if="category == '10000000'">
                     <li>
