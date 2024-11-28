@@ -5601,6 +5601,7 @@ ALTER TABLE price_comparison_item ADD COLUMN v4 VARCHAR(255) DEFAULT '' AFTER `v
 CREATE TABLE IF NOT EXISTS `product_replacement` (
   `id` bigint(20)  NOT NULL AUTO_INCREMENT,
   `product_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `replacement_id` bigint(20)  DEFAULT 0 NOT NULL,
   `code` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `status` int(11) DEFAULT 0,
   `create_id` int(11) DEFAULT 0,

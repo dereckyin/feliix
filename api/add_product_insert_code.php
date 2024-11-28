@@ -25,7 +25,8 @@ $description = (isset($_POST['description']) ?  $_POST['description'] : '');
 $notes = (isset($_POST['notes']) ? $_POST['notes'] : '');
 $related_product = (isset($_POST['related_product']) ? $_POST['related_product'] : '');
 $replacement_product = (isset($_POST['replacement_product']) ? $_POST['replacement_product'] : '');
-$replacement_ids = (isset($_POST['replacement_ids']) ? $_POST['replacement_ids'] : '');
+$replacement_json = (isset($_POST['replacement_json']) ? $_POST['replacement_json'] : []);
+$replacement_array = json_decode($replacement_json, true);
 
 $out = (isset($_POST['out'])) ? $_POST['out'] : '';
 
@@ -319,8 +320,8 @@ else
         insert_relative_product($last_id, $related_product, $db);
 
         // update other related_product
-        if($replacement_ids != '')
-            update_replacement_ids_in_product_category($last_id, $replacement_ids, $db);
+        if(count($replacement_array) > 0)
+            update_replacement_ids_in_product_category($last_id, $replacement_array, $db);
 
         $batch_id = $last_id;
         $batch_type = "product_photo";
@@ -1878,9 +1879,7 @@ function update_relative_ids($id_array, $me_id, $me_code, $db) {
 
 }
 
-function update_replacement_ids_in_product_category($id, $related_product, $db) {
-
-    $id_array = explode(',', $related_product);
+function update_replacement_ids_in_product_category($id, $id_array, $db) {
 
     $query = "DELETE FROM product_replacement WHERE product_id = :id";
     $stmt = $db->prepare($query);
@@ -1890,10 +1889,11 @@ function update_replacement_ids_in_product_category($id, $related_product, $db) 
     // loop to insert 
     for($i = 0; $i < count($id_array); $i++)
     {
-        $query = "INSERT INTO product_replacement SET product_id = :id, code = :code";
+        $query = "INSERT INTO product_replacement SET product_id = :id, replacement_id = :replacement_id, code = :code";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':code', $id_array[$i]);
+        $stmt->bindParam(':replacement_id', $id_array[$i]['id']);
+        $stmt->bindParam(':code', $id_array[$i]['code']);
         $stmt->execute();
     }
 }

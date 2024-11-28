@@ -124,7 +124,7 @@ var app = new Vue({
     cost_furniture : false,
 
     // replacement
-    replacement_id: "",
+    replacement_json: [],
 
   },
 
@@ -1135,18 +1135,23 @@ $("#tag0102").selectpicker("refresh");
       }
 
       let replacement_product = $('#replacement_product').val();
+      
       let replacement = replacement_product.split(",");
+
+      replacement = replacement.filter(function (el) {
+        return el != "";
+      });
 
       let err = '';
       let replacement_data = [];
-      this.replacement_id = "";
+      this.replacement_id = [];
 
       for (let index = 0; index < replacement.length; ++index) {
         const element = replacement[index];
 
         replacement_data = await this.is_code_existed(element.trim());
         if(replacement_data.length > 0)
-          this.replacement_id += replacement_data[0].id + ",";
+          this.replacement_json.push({code: element.trim(), id: replacement_data[0].id});
         else
           err = err + element.trim() + '<br> ';
       }
@@ -1654,7 +1659,7 @@ $("#tag0102").selectpicker("refresh");
 
           let replacement_product = $('#replacement_product').val();
           form_Data.append("replacement_product", replacement_product);
-          form_Data.append("replacement_ids", _this.replacement_id.slice(0, -1));
+          form_Data.append("replacement_json", JSON.stringify(_this.replacement_json));
 
           form_Data.append("notes", _this.notes);
 
