@@ -2000,7 +2000,14 @@ header( 'location:index' );
             outline-color: transparent!important;
         }
 
-
+        #tb_product_list ul li:nth-of-type(1) span.phasedout_replacement {
+            background-color: orange;
+            color: white;
+            padding: 0px 5px 3px;
+            border-radius: 10px;
+            cursor: pointer;	
+        }
+        
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
@@ -2597,10 +2604,14 @@ header( 'location:index' );
                                         <img :src="img_url + set.photo1" v-if="set.photo1"></a>
                                     </td>
                                     <td>
-                                        <ul v-if="set.out == 'Y'">
-                                            <li>
-                                                <span class="phasedout">Phased Out</span>
-                                            </li>
+                                    <ul v-if="set.out == 'Y' || set.replacement_product.length > 0 || (set.status == -1 && set.replacement_product.length > 0)">
+                            <li>
+                                    <!-- 依據這個停產的產品是否有 Replacement Product 的資料，沒有資料則用第一個 <span>，有資料則用二個 <span> -->
+                                    <span class="phasedout" v-if="set.replacement_product.length == 0">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="set.status != -1 && set.replacement_product.length > 0" @click="replacement_info(set.replacement_text)">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="set.status == -1 && set.replacement_product.length > 0" @click="replacement_info(set.replacement_text)">Deleted</span>
+                            </li>
+
                                             <li></li>
                                         </ul>
                                         <ul>
@@ -2726,10 +2737,13 @@ header( 'location:index' );
                                             :src="img_url + item.photo1" v-if="item.photo1 !== ''">
                                     </td>
                                     <td>
-                                        <ul v-if="item.out == 'Y'">
-                                            <li>
-                                                <span class="phasedout">Phased Out</span>
-                                            </li>
+                                    <ul v-if="item.out == 'Y' || item.replacement_product.length > 0 || (item.status == -1 && item.replacement_product.length > 0)">
+                            <li>
+                                    <!-- 依據這個停產的產品是否有 Replacement Product 的資料，沒有資料則用第一個 <span>，有資料則用二個 <span> -->
+                                    <span class="phasedout" v-if="item.replacement_product.length == 0">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="item.status != -1 && item.replacement_product.length > 0" @click="replacement_info(item.replacement_text)">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="item.status == -1 && item.replacement_product.length > 0" @click="replacement_info(item.replacement_text)">Deleted</span>
+                            </li>
                                             <li></li>
                                         </ul>
                                         <ul>

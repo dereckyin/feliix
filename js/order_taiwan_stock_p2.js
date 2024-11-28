@@ -998,6 +998,14 @@ var app = new Vue({
         });
       },
 
+      replacement_info: function(info) {
+        Swal.fire({
+          title: "<i>Replacement Product:</i>", 
+          html: info,  
+          confirmButtonText: "Close", 
+        });
+      },
+
       add_with_image(all) {
 
         var photo = "";

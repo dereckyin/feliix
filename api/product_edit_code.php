@@ -121,6 +121,7 @@ else
                 $price = $row['price'];
                 $description = $row['description'];
                 $related_product = GetRelatedProduct($id, $db);
+                $replacement_product = GetReplacementProduct($id, $db);
                 $out = $row['out'];
                 $notes = $row['notes'];
                 $photo1 = $row['photo1'];
@@ -322,6 +323,7 @@ else
                                     "accessory_information" => $accessory_information,
                                     "sub_category_item" => $sub_category_item,
                                     "related_product" => $related_product,
+                                    "replacement_product" => $replacement_product,
                                     "out" => $out,
                                     "notes" => $notes,
                                     "moq" => $moq,
@@ -670,6 +672,29 @@ function GetLevel3($cat_id, $db){
 
 function GetRelatedProduct($id, $db){
     $sql = "SELECT code FROM product_related WHERE product_id = '". $id . "' and STATUS <> -1";
+
+    $sql = $sql . " ORDER BY code ";
+
+    $merged_results = "";
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results .= $row['code'] . ",";
+    }
+
+    if($merged_results != "")
+    {
+        $merged_results = substr($merged_results, 0, strlen($merged_results) - 1);
+    }
+
+    return $merged_results;
+
+}
+
+function GetReplacementProduct($id, $db){
+    $sql = "SELECT code FROM product_replacement WHERE product_id = '". $id . "' and STATUS <> -1";
 
     $sql = $sql . " ORDER BY code ";
 

@@ -4071,6 +4071,14 @@ Installation:`;
         });
       },
 
+      replacement_info: function(info) {
+        Swal.fire({
+          title: "<i>Replacement Product:</i>", 
+          html: info,  
+          confirmButtonText: "Close", 
+        });
+      },
+
       getAccess: function() {
         var token = localStorage.getItem('token');
         var form_Data = new FormData();

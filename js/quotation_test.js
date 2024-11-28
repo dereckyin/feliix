@@ -3949,6 +3949,14 @@ Installation:`;
         });
       },
 
+      replacement_info: function(info) {
+        Swal.fire({
+          title: "<i>Replacement Product:</i>", 
+          html: info,  
+          confirmButtonText: "Close", 
+        });
+      },
+
       export_excel() {
         var token = localStorage.getItem("token");
         var form_Data = new FormData();

@@ -1032,11 +1032,9 @@ try {
 
             <ul>
                 <li>
-                    Phased Out
+                Replacement Product<br>(for phased-out or deleted product)
                 </li>
-                <li>
                     <li><input type="text" class="selectpicker" data-role="tagsinput" id="replacement_product"></li>
-                </li>
             </ul>
 
             <ul v-if="category == '10000000'">

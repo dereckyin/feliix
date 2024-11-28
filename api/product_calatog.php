@@ -84,10 +84,11 @@ else
           case 'GET':
             $merged_results = array();
 
-            $query_cnt = "SELECT count(*) cnt FROM product_category p  WHERE  p.STATUS <> -1 ";
+            $query_cnt = "SELECT count(*) cnt FROM product_category p  left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1 or (p.status = -1 and (select count(*) from product_replacement pr where pr.product_id = p.id) > 0)  ";
 
-            // product main
-            $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1";
+            // product main join product_replacement if p.Status -1 and product_replacement has data
+            $sql = "SELECT p.*, cu.username created_name, uu.username updated_name, (select count(*) from product_replacement pr where pr.product_id = p.id) replacement_cnt FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1 or (p.status = -1 and (select count(*) from product_replacement pr where pr.product_id = p.id) > 0) ";
+            // $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1";
 
             if (!empty($_GET['page'])) {
                 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -351,6 +352,8 @@ else
                 $special_infomation = [];
                 $accessory_information = [];
                 $related_product = [];
+                $replacement_product = [];
+                $replacement_cnt = $row['replacement_cnt'];
 
                 $sub_cateory_item = [];
 
@@ -399,6 +402,9 @@ else
                 $srp_min = $row['srp_min'];
 
                 $product = GetProduct($id, $db);
+
+                if($replacement_cnt > 0)
+                    $replacement_product = GetReplacementProduct($id, $db);
 
                 $product_set_1 = [];
                 $product_set_2 = [];
@@ -537,6 +543,16 @@ else
                         {
                             $phased_out_text .= "<br/>";
                         }
+                    }
+                }
+
+                $replacement_text = "";
+                if($replacement_cnt > 0)
+                {
+                    for($i = 0; $i < count($replacement_product); $i++)
+                    {
+                        $cn = $i + 1;
+                        $replacement_text .= "(" . $cn . ") " . $replacement_product[$i]["code"] . " (ID: " . $replacement_product[$i]["replacement_id"] . ")<br>";
                     }
                 }
                 
@@ -1206,7 +1222,13 @@ else
                                     "phased_out_info" => $phased_out_info,
                                     "phased_out_text" => $phased_out_text,
 
+                                    "replacement_cnt" => $replacement_cnt,
+                                    "replacement_product" => $replacement_product,
+                                    "replacement_text" => $replacement_text,
+
                                     "phased_out_text1" => $phased_out_text1,
+
+                                    "replacement_text" => $replacement_text,
                                     
                                     "product_set" => $product_set,
 
@@ -1297,6 +1319,8 @@ function GetProduct($id, $db){
         else
             $url = '';
 
+        $replacement_product = GetReplacementProduct($id, $db);
+
         $quoted_price = $row['quoted_price'];
         $quoted_price_change = $row['quoted_price_change'] != '' ? substr($row['quoted_price_change'], 0, 10) : '';
 
@@ -1363,6 +1387,8 @@ function GetProduct($id, $db){
                                     "last_order_at" => substr($last_order_at,0, 10),
                                     "last_order_url" => $last_order_url,
                                     "last_have_spec" => true,
+
+                                    "replacement_product" => $replacement_product,
 
             );
     }
@@ -2048,6 +2074,8 @@ function GetProductSetContent($id, $db){
 
         $phased_out_cnt = $row['phased_out_cnt'];
 
+        $replacement_product = GetReplacementProduct($id, $db);
+
         $phased_out_info = [];
         $phased_out_text = "";
         if($phased_out_cnt > 0)
@@ -2614,6 +2642,8 @@ function GetProductSetContent($id, $db){
                             "phased_out_info" => $phased_out_info,
                             "phased_out_text" => $phased_out_text,
 
+                            "replacement_product" => $replacement_product,
+
                             "out" => $out,
                             "phased_out_cnt" => $phased_out_cnt,
 
@@ -2687,5 +2717,27 @@ function getOrderInfo($od_id, $db)
 
     return $merged_results;
 }
+
+function GetReplacementProduct($id, $db){
+    $sql = "SELECT replacement_id, code FROM product_replacement WHERE product_id = '". $id . "' and STATUS <> -1";
+
+    $sql = $sql . " ORDER BY code ";
+
+    $merged_results = [];
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = array(  "replacement_id" => $row['replacement_id'], 
+                                    "code" => $row['code'],
+                                   
+            );
+    }
+
+    return $merged_results;
+
+}
+
 
 ?>

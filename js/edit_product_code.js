@@ -138,6 +138,10 @@ var app = new Vue({
 
     cost_lighting : false,
     cost_furniture : false,
+
+    // replacement
+    replacement_json: [],
+
   },
 
   created() {
@@ -422,7 +426,14 @@ var app = new Vue({
             {
               $('#related_product').tagsinput('add', related_product[i]);
             }
-            //$('#related_product').selectpicker('refresh');
+
+            $('#replacement_product').tagsinput('removeAll');
+            var replacement_product = _this.record[0]['replacement_product'].split(',');
+            for(var i=0; i<replacement_product.length; i++)
+            {
+              $('#replacement_product').tagsinput('add', replacement_product[i]);
+            }
+            //$('#replacement_product').selectpicker('refresh');
          
             if(_this.variation_mode == 1)
                 $("#variation_mode").bootstrapToggle("on");
@@ -1262,7 +1273,38 @@ var app = new Vue({
         return;
       }
 
+      let replacement_product = $('#replacement_product').val();
       
+      let replacement = replacement_product.split(",");
+
+      replacement = replacement.filter(function (el) {
+        return el != "";
+      });
+
+      let err = '';
+      let replacement_data = [];
+      this.replacement_id = [];
+
+      for (let index = 0; index < replacement.length; ++index) {
+        const element = replacement[index];
+
+        replacement_data = await this.is_code_existed(element.trim());
+        if(replacement_data.length > 0)
+          this.replacement_json.push({code: element.trim(), id: replacement_data[0].id});
+        else
+          err = err + element.trim() + '<br> ';
+      }
+
+      if(err.trim() != '')
+      {
+        Swal.fire({
+          html: "The code of replacement product doesn’t exist.<br>" + err.trim(),
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
       if(this.sub_category == '10020000')
       {
         if(this.p1_code.trim() == '' || this.p2_code.trim() == '')
@@ -1760,6 +1802,7 @@ var app = new Vue({
 
           let related_product = $('#related_product').val();
           form_Data.append("related_product", related_product);
+          form_Data.append("replacement_json", JSON.stringify(_this.replacement_json));
 
           form_Data.append("accessory_mode", _this.accessory_mode === true || _this.accessory_mode === "1" ? 1 : 0);
           form_Data.append("variation_mode", _this.variation_mode === true || _this.variation_mode === "1" ? 1 : 0);

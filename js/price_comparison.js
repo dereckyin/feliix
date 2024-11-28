@@ -4123,6 +4123,14 @@ Installation:`;
         });
       },
 
+      replacement_info: function(info) {
+        Swal.fire({
+          title: "<i>Replacement Product:</i>", 
+          html: info,  
+          confirmButtonText: "Close", 
+        });
+      },
+
       last_order_info: function(info) {
         Swal.fire({
           title: "<h2><i>Last Order History</i></h2><br>",

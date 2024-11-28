@@ -922,11 +922,12 @@ try {
                             <a target="_blank" :href="'product_display_code?id='+set.id"><img :src="baseURL + set.photo1" v-if="set.photo1"></a>
                         </td>
                         <td>
-                            <ul v-if="set.out == 'Y'">
+                            <ul v-if="set.out == 'Y' || set.replacement_product.length > 0 || (set.status == -1 && set.replacement_product.length > 0)">
                             <li>
                                     <!-- 依據這個停產的產品是否有 Replacement Product 的資料，沒有資料則用第一個 <span>，有資料則用二個 <span> -->
-                                    <span class="phasedout">Phased Out</span>
-                                    <span class="phasedout_replacement">Phased Out</span>
+                                    <span class="phasedout" v-if="set.replacement_product.length == 0">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="set.status != -1 && set.replacement_product.length > 0" @click="replacement_info(set.replacement_text)">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="set.status == -1 && set.replacement_product.length > 0" @click="replacement_info(set.replacement_text)">Deleted</span>
                             </li>
                             <li></li>
                             </ul>
@@ -1054,11 +1055,12 @@ try {
                             <a target="_blank" :href="'product_display_code?id='+item.id"><img :src="baseURL + item.photo1" v-if="item.photo1"></a>
                         </td>
                         <td>
-                            <ul v-if="item.out == 'Y'">
+                            <ul v-if="item.out == 'Y' || item.replacement_product.length > 0 || (item.status == -1 && item.replacement_product.length > 0)">
                             <li>
                                     <!-- 依據這個停產的產品是否有 Replacement Product 的資料，沒有資料則用第一個 <span>，有資料則用二個 <span> -->
-                                    <span class="phasedout">Phased Out</span>
-                                    <span class="phasedout_replacement">Phased Out</span>
+                                    <span class="phasedout" v-if="item.replacement_product.length == 0">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="item.status != -1 && item.replacement_product.length > 0" @click="replacement_info(item.replacement_text)">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="item.status == -1 && item.replacement_product.length > 0" @click="replacement_info(item.replacement_text)">Deleted</span>
                             </li>
                             <li></li>
                             </ul>
@@ -1176,12 +1178,12 @@ try {
                         </td>
                         <!-- <td></td> -->
                         <td>
-                            <button id="edit01" @click="btnEditClick(item.id)"><i class="fas fa-edit"></i>
+                            <button id="edit01" @click="btnEditClick(item.id)" v-if="item.status != -1"><i class="fas fa-edit"></i>
                             </button>
 
-                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="name == 'dereck' || name == 'Dennis Lin' || name == 'Ariel Lin' || name == 'Kelvin Garcia' || name == 'Cristina Matining'"><i class="fas fa-copy"></i></button>
+                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="(name == 'dereck' || name == 'Dennis Lin' || name == 'Ariel Lin' || name == 'Kelvin Garcia' || name == 'Cristina Matining') && item.status != -1"><i class="fas fa-copy"></i></button>
 
-                            <button @click="btnDelClick(item.id)"><i class="fas fa-times"></i></button>
+                            <button @click="btnDelClick(item.id)" v-if="item.status != -1"><i class="fas fa-times"></i></button>
 
                         </td>
                     </tr>

@@ -1390,6 +1390,14 @@ header( 'location:index' );
             outline-color: transparent!important;
         }
 
+        #tb_product_list ul li:nth-of-type(1) span.phasedout_replacement {
+            background-color: orange;
+            color: white;
+            padding: 0px 5px 3px;
+            border-radius: 10px;
+            cursor: pointer;	
+        }
+
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
