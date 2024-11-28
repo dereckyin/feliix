@@ -1654,7 +1654,7 @@ $("#tag0102").selectpicker("refresh");
 
           let replacement_product = $('#replacement_product').val();
           form_Data.append("replacement_product", replacement_product);
-          form_Data.append("replacement_ids", _this.replacement_id);
+          form_Data.append("replacement_ids", _this.replacement_id.slice(0, -1));
 
           form_Data.append("notes", _this.notes);
 
