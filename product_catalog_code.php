@@ -354,6 +354,14 @@ try {
             border-radius: 10px;
         }
 
+        #tb_product_list tbody td span.phasedout_replacement {
+            background-color: orange;
+            color: white;
+            padding: 0px 5px 3px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
         #tb_product_list tbody td div.phasedout_variant {
             text-align: left;
             color: red;
