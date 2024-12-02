@@ -1275,7 +1275,7 @@ var app = new Vue({
 
       let replacement = [];
       let replacement_product = $('#replacement_product').val();
-      if(replacement_product != 'undefined')
+      if(replacement_product != undefined)
       {
         replacement = replacement_product.split(",");
         replacement = replacement.filter(function (el) {

@@ -1134,13 +1134,16 @@ $("#tag0102").selectpicker("refresh");
         return;
       }
 
+      let replacement = [];
       let replacement_product = $('#replacement_product').val();
       
-      let replacement = replacement_product.split(",");
-
-      replacement = replacement.filter(function (el) {
-        return el != "";
-      });
+      if(replacement_product != undefined)
+      {
+        replacement = replacement_product.split(",");
+        replacement = replacement.filter(function (el) {
+          return el != "";
+        });
+      }
 
       let err = '';
       let replacement_data = [];
