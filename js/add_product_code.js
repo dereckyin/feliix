@@ -1712,10 +1712,14 @@ $("#tag0102").selectpicker("refresh");
             }
 
           // manual
-          for (var i = 0; i < this.$refs.file_manual.files.length; i++) {
-            let file = this.$refs.file_manual.files[i];
-            form_Data.append("file_manual[" + i + "]", file);
+          if(this.$refs.file_manual != undefined)
+          {
+            for (var i = 0; i < this.$refs.file_manual.files.length; i++) {
+              let file = this.$refs.file_manual.files[i];
+              form_Data.append("file_manual[" + i + "]", file);
+            }
           }
+          
 
           //for (var i = 0; i < this.$refs.file.files.length; i++) {
           //  let file = this.$refs.file.files[i];

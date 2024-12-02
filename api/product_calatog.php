@@ -1228,8 +1228,6 @@ else
 
                                     "phased_out_text1" => $phased_out_text1,
 
-                                    "replacement_text" => $replacement_text,
-                                    
                                     "product_set" => $product_set,
 
                                     "product_set_cnt" => $product_set_cnt,
@@ -1321,6 +1319,16 @@ function GetProduct($id, $db){
 
         $replacement_product = GetReplacementProduct($id, $db);
 
+        $replacement_text = "";
+        if(count($replacement_product) > 0)
+        {
+            for($i = 0; $i < count($replacement_product); $i++)
+            {
+                $cn = $i + 1;
+                $replacement_text .= "(" . $cn . ") " . $replacement_product[$i]["code"] . " (ID: " . $replacement_product[$i]["replacement_id"] . ")<br>";
+            }
+        }
+
         $quoted_price = $row['quoted_price'];
         $quoted_price_change = $row['quoted_price_change'] != '' ? substr($row['quoted_price_change'], 0, 10) : '';
 
@@ -1389,6 +1397,7 @@ function GetProduct($id, $db){
                                     "last_have_spec" => true,
 
                                     "replacement_product" => $replacement_product,
+                                    "replacement_text" => $replacement_text,
 
             );
     }
@@ -2076,6 +2085,16 @@ function GetProductSetContent($id, $db){
 
         $replacement_product = GetReplacementProduct($id, $db);
 
+        $replacement_text = "";
+        if(count($replacement_product) > 0)
+        {
+            for($i = 0; $i < count($replacement_product); $i++)
+            {
+                $cn = $i + 1;
+                $replacement_text .= "(" . $cn . ") " . $replacement_product[$i]["code"] . " (ID: " . $replacement_product[$i]["replacement_id"] . ")<br>";
+            }
+        }
+
         $phased_out_info = [];
         $phased_out_text = "";
         if($phased_out_cnt > 0)
@@ -2643,6 +2662,7 @@ function GetProductSetContent($id, $db){
                             "phased_out_text" => $phased_out_text,
 
                             "replacement_product" => $replacement_product,
+                            "replacement_text" => $replacement_text,
 
                             "out" => $out,
                             "phased_out_cnt" => $phased_out_cnt,
