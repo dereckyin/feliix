@@ -3953,7 +3953,7 @@ header( 'location:index' );
                                         <img :src="img_url + set.photo1" v-if="set.photo1"></a>
                                     </td>
                                     <td>
-                                        <<ul v-if="(set.out == 'Y' && set.replacement_product.length > 0) || (set.status == -1 && set.replacement_product.length > 0)">
+                                        <<ul v-if="set.out == 'Y' || (set.out == 'Y' && set.replacement_product.length > 0) || (set.status == -1 && set.replacement_product.length > 0)">
                             <li>
                                     <!-- 依據這個停產的產品是否有 Replacement Product 的資料，沒有資料則用第一個 <span>，有資料則用二個 <span> -->
                                     <span class="phasedout" v-if="set.replacement_product.length == 0">Phased Out</span>
@@ -4085,7 +4085,7 @@ header( 'location:index' );
                                         :src="img_url + item.photo1" v-if="item.photo1 !== ''">
                                 </td>
                                 <td>
-                                <ul v-if="(item.out == 'Y' && item.replacement_product.length > 0) || (item.status == -1 && item.replacement_product.length > 0)">
+                                <ul v-if="item.out == 'Y' || (item.out == 'Y' && item.replacement_product.length > 0) || (item.status == -1 && item.replacement_product.length > 0)">
                             <li>
                                     <!-- 依據這個停產的產品是否有 Replacement Product 的資料，沒有資料則用第一個 <span>，有資料則用二個 <span> -->
                                     <span class="phasedout" v-if="item.replacement_product.length == 0">Phased Out</span>
