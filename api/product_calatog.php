@@ -84,10 +84,10 @@ else
           case 'GET':
             $merged_results = array();
 
-            $query_cnt = "SELECT count(*) cnt FROM product_category p  left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1 or (p.status = -1 and (select count(*) from product_replacement pr where pr.product_id = p.id) > 0)  ";
+            $query_cnt = "SELECT count(*) cnt FROM product_category p  left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  (p.STATUS <> -1 or (p.status = -1 and (select count(*) from product_replacement pr where pr.product_id = p.id) > 0))  ";
 
             // product main join product_replacement if p.Status -1 and product_replacement has data
-            $sql = "SELECT p.*, cu.username created_name, uu.username updated_name, (select count(*) from product_replacement pr where pr.product_id = p.id) replacement_cnt FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1 or (p.status = -1 and (select count(*) from product_replacement pr where pr.product_id = p.id) > 0) ";
+            $sql = "SELECT p.*, cu.username created_name, uu.username updated_name, (select count(*) from product_replacement pr where pr.product_id = p.id) replacement_cnt FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  (p.STATUS <> -1 or (p.status = -1 and (select count(*) from product_replacement pr where pr.product_id = p.id) > 0)) ";
             // $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1";
 
             if (!empty($_GET['page'])) {
@@ -1904,7 +1904,7 @@ function GetProductSetContent($id, $db){
     $merged_results = array();
 
     // product main
-    $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1 or (p.status = -1 and (select count(*) from product_replacement pr where pr.product_id = p.id) > 0) ";
+    $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  (p.STATUS <> -1 or (p.status = -1 and (select count(*) from product_replacement pr where pr.product_id = p.id) > 0)) ";
 
 
 
