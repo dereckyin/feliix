@@ -2417,7 +2417,7 @@ header( 'location:index' );
 
                                     <!-- 如果這個 Product Set 產品有 Product1 和 Product 2，則 rowspan=3；如果這個 Product Set 產品有 Product1 和 Product 2 和 Product 3，則 rowspan=4 -->
                                     <td :rowspan="item.product_set_cnt + 1">
-                                        <button id="edit01" @click="btnEditClick(item)"><i aria-hidden="true" class="fas fa-caret-right"></i></button>
+                                        <button id="edit01" @click="btnEditClick(item)" v-if="item.status != -1"><i aria-hidden="true" class="fas fa-caret-right"></i></button>
                                     </td>
                                 </tr>
 
@@ -2669,7 +2669,7 @@ header( 'location:index' );
                                 <span>QP: {{ item.quoted_price }} <br v-if="item.str_quoted_price_change"> {{ item.str_quoted_price_change ? item.str_quoted_price_change : '' }}<br></span>
                             </td>
                             <td>
-                                <button id="edit01" @click="btnEditClick(item)"><i aria-hidden="true" 
+                                <button id="edit01" @click="btnEditClick(item)" v-if="item.status != -1"><i aria-hidden="true" 
                                                                                    class="fas fa-caret-right"></i>
                                 </button>
                             </td>

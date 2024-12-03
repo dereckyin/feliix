@@ -295,6 +295,7 @@ var app = new Vue({
         attributes:[],
 
         toggle_type:'',
+        toggle: false,
 
         groupedItems : [],
 

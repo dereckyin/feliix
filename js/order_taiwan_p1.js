@@ -237,6 +237,7 @@ var app = new Vue({
         attributes:[],
 
         toggle_type:'A',
+        toggle: false,
 
         groupedItems : [],
 

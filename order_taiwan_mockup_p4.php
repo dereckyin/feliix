@@ -2153,7 +2153,7 @@ header( 'location:index' );
                                 <span>QP: {{ item.quoted_price }} <br v-if="item.str_quoted_price_change"> {{ item.str_quoted_price_change ? item.str_quoted_price_change : '' }}<br></span>
                             </td>
                             <td>
-                                <button id="edit01" @click="btnEditClick(item)"><i aria-hidden="true" 
+                                <button id="edit01" @click="btnEditClick(item)" v-if="item.status != -1"><i aria-hidden="true" 
                                                                                    class="fas fa-caret-right"></i>
                                 </button>
                             </td>
