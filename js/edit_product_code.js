@@ -63,17 +63,21 @@ var app = new Vue({
     variation1: "",
     variation2: "",
     variation3: "",
+    variation4: "",
     variation1_custom: "",
     variation2_custom: "",
     variation3_custom: "",
+    variation4_custom: "",
 
     variation1_text: "1st Variation",
     variation2_text: "2nd Variation",
     variation3_text: "3rd Variation",
+    variation4_text: "4th Variation",
 
     variation1_value: [],
     variation2_value: [],
     variation3_value: [],
+    variation4_value: [],
 
     variation_product: [],
 
@@ -134,6 +138,10 @@ var app = new Vue({
 
     cost_lighting : false,
     cost_furniture : false,
+
+    // replacement
+    replacement_json: [],
+
   },
 
   created() {
@@ -314,6 +322,10 @@ var app = new Vue({
       {
         $('#variation3_value').tagsinput('add', this.variation3_value[i]);
       }
+      for(var i=0; i<this.variation4_value.length; i++)
+      {
+        $('#variation4_value').tagsinput('add', this.variation4_value[i]);
+      }
     },
 
     set_special_attributes() {
@@ -414,7 +426,14 @@ var app = new Vue({
             {
               $('#related_product').tagsinput('add', related_product[i]);
             }
-            //$('#related_product').selectpicker('refresh');
+
+            $('#replacement_product').tagsinput('removeAll');
+            var replacement_product = _this.record[0]['replacement_product'].split(',');
+            for(var i=0; i<replacement_product.length; i++)
+            {
+              $('#replacement_product').tagsinput('add', replacement_product[i]);
+            }
+            //$('#replacement_product').selectpicker('refresh');
          
             if(_this.variation_mode == 1)
                 $("#variation_mode").bootstrapToggle("on");
@@ -434,18 +453,22 @@ var app = new Vue({
             _this.variation1_text = _this.record[0]['variation1_text'];
             _this.variation2_text = _this.record[0]['variation2_text'];
             _this.variation3_text = _this.record[0]['variation3_text'];
+            _this.variation4_text = _this.record[0]['variation4_text'];
 
             _this.variation1_value = _this.record[0]['variation1_value'];
             _this.variation2_value = _this.record[0]['variation2_value'];
             _this.variation3_value = _this.record[0]['variation3_value'];
+            _this.variation4_value = _this.record[0]['variation4_value'];
 
             _this.variation1 = _this.record[0]['variation1'];
             _this.variation2 = _this.record[0]['variation2'];
             _this.variation3 = _this.record[0]['variation3'];
+            _this.variation4 = _this.record[0]['variation4'];
 
             _this.variation1_custom = _this.record[0]['variation1_custom'];
             _this.variation2_custom = _this.record[0]['variation2_custom'];
             _this.variation3_custom = _this.record[0]['variation3_custom'];
+            _this.variation4_custom = _this.record[0]['variation4_custom'];
             
             _this.set_up_variants();
 
@@ -477,6 +500,8 @@ var app = new Vue({
         this.variation2 === "custom" ? this.variation2_custom : this.variation2;
       this.variation3_text =
         this.variation3 === "custom" ? this.variation3_custom : this.variation3;
+      this.variation4_text =
+        this.variation4 === "custom" ? this.variation4_custom : this.variation4;
 
       let variation1_value = document
         .getElementById("variation1_value")
@@ -487,6 +512,9 @@ var app = new Vue({
       let variation3_value = document
         .getElementById("variation3_value")
         .value.split(",");
+      let variation4_value = document
+        .getElementById("variation4_value")
+        .value.split(",");
 
       let variation_product_preserved = JSON.parse(JSON.stringify(this.variation_product));
 
@@ -496,114 +524,138 @@ var app = new Vue({
       for (let i = 0; i < variation1_value.length; i++) {
         for (let j = 0; j < variation2_value.length; j++) {
           for (let k = 0; k < variation3_value.length; k++) {
-            sn = sn + 1;
+            for (let l = 0; l < variation4_value.length; l++) {
+              sn = sn + 1;
 
-            pre_url = "";
-            pre_price_ntd = "";
-            pre_price = "";
-            pre_price_change = "";
-            pre_price_ntd_change = "";
-            pre_price_org = "";
-            pre_price_ntd_org = "";
-            pre_photo = "";
-            pre_quoted_price = "";
-            pre_quoted_price_org = "";
-            pre_quoted_price_change = "";
+              pre_url = "";
+              pre_price_ntd = "";
+              pre_price = "";
+              pre_price_change = "";
+              pre_price_ntd_change = "";
+              pre_price_org = "";
+              pre_price_ntd_org = "";
+              pre_photo = "";
+              pre_quoted_price = "";
+              pre_quoted_price_org = "";
+              pre_quoted_price_change = "";
 
-            
-            for(let m=0; m<variation_product_preserved.length; m++)
-            {
-              if(variation_product_preserved[m].k1 != '' && variation_product_preserved[m].k2 != '' && variation_product_preserved[m].k3 != '')
+              
+              for(let m=0; m<variation_product_preserved.length; m++)
               {
-                if(variation_product_preserved[m].v1 == variation1_value[i] && variation_product_preserved[m].v2 == variation2_value[j] && variation_product_preserved[m].v3 == variation3_value[k])
+                if(variation_product_preserved[m].k1 != '' && variation_product_preserved[m].k2 != '' && variation_product_preserved[m].k3 != '' && variation_product_preserved[m].k4 != '')
                 {
-                  pre_url = variation_product_preserved[m].url;
-                  pre_price_ntd = variation_product_preserved[m].price_ntd;
-                  pre_price = variation_product_preserved[m].price;
-                  pre_price_change = variation_product_preserved[m].price_change;
-                  pre_price_ntd_change = variation_product_preserved[m].price_ntd_change;
-                  pre_price_org = variation_product_preserved[m].price_org;
-                  pre_price_ntd_org = variation_product_preserved[m].price_ntd_org;
-                  pre_photo = variation_product_preserved[m].photo;
-                  pre_quoted_price = variation_product_preserved[m].quoted_price;
-                  pre_quoted_price_org = variation_product_preserved[m].quoted_price_org;
-                  pre_quoted_price_change = variation_product_preserved[m].quoted_price_change;
-  
-                  break;
+                  if(variation_product_preserved[m].v1 == variation1_value[i] && variation_product_preserved[m].v2 == variation2_value[j] && variation_product_preserved[m].v3 == variation3_value[k] && variation_product_preserved[m].v4 == variation4_value[l])
+                  {
+                    pre_url = variation_product_preserved[m].url;
+                    pre_price_ntd = variation_product_preserved[m].price_ntd;
+                    pre_price = variation_product_preserved[m].price;
+                    pre_price_change = variation_product_preserved[m].price_change;
+                    pre_price_ntd_change = variation_product_preserved[m].price_ntd_change;
+                    pre_price_org = variation_product_preserved[m].price_org;
+                    pre_price_ntd_org = variation_product_preserved[m].price_ntd_org;
+                    pre_photo = variation_product_preserved[m].photo;
+                    pre_quoted_price = variation_product_preserved[m].quoted_price;
+                    pre_quoted_price_org = variation_product_preserved[m].quoted_price_org;
+                    pre_quoted_price_change = variation_product_preserved[m].quoted_price_change;
+    
+                    break;
+                  }
+                }
+
+                if(variation_product_preserved[m].k1 != '' && variation_product_preserved[m].k2 != '' && variation_product_preserved[m].k3 != '' && variation_product_preserved[m].k4 == '')
+                {
+                  if(variation_product_preserved[m].v1 == variation1_value[i] && variation_product_preserved[m].v2 == variation2_value[j] && variation_product_preserved[m].v3 == variation3_value[k])
+                  {
+                    pre_url = variation_product_preserved[m].url;
+                    pre_price_ntd = variation_product_preserved[m].price_ntd;
+                    pre_price = variation_product_preserved[m].price;
+                    pre_price_change = variation_product_preserved[m].price_change;
+                    pre_price_ntd_change = variation_product_preserved[m].price_ntd_change;
+                    pre_price_org = variation_product_preserved[m].price_org;
+                    pre_price_ntd_org = variation_product_preserved[m].price_ntd_org;
+                    pre_photo = variation_product_preserved[m].photo;
+                    pre_quoted_price = variation_product_preserved[m].quoted_price;
+                    pre_quoted_price_org = variation_product_preserved[m].quoted_price_org;
+                    pre_quoted_price_change = variation_product_preserved[m].quoted_price_change;
+    
+                    break;
+                  }
+                }
+
+                if(variation_product_preserved[m].k1 != '' && variation_product_preserved[m].k2 != '' && variation_product_preserved[m].k3 == '' && variation_product_preserved[m].k4 == '')
+                {
+                  if(variation_product_preserved[m].v1 == variation1_value[i] && variation_product_preserved[m].v2 == variation2_value[j])
+                  {
+                    pre_url = variation_product_preserved[m].url;
+                    pre_price_ntd = variation_product_preserved[m].price_ntd;
+                    pre_price = variation_product_preserved[m].price;
+                    pre_price_change = variation_product_preserved[m].price_change;
+                    pre_price_ntd_change = variation_product_preserved[m].price_ntd_change;
+                    pre_price_org = variation_product_preserved[m].price_org;
+                    pre_price_ntd_org = variation_product_preserved[m].price_ntd_org;
+                    pre_photo = variation_product_preserved[m].photo;
+                    pre_quoted_price = variation_product_preserved[m].quoted_price;
+                    pre_quoted_price_org = variation_product_preserved[m].quoted_price_org;
+                    pre_quoted_price_change = variation_product_preserved[m].quoted_price_change;
+    
+                    break;
+                  }
+                }
+
+                if(variation_product_preserved[m].k1 != '' && variation_product_preserved[m].k2 == '' && variation_product_preserved[m].k3 == '' && variation_product_preserved[m].k4 == '')
+                {
+                  if(variation_product_preserved[m].v1 == variation1_value[i])
+                  {
+                    pre_url = variation_product_preserved[m].url;
+                    pre_price_ntd = variation_product_preserved[m].price_ntd;
+                    pre_price = variation_product_preserved[m].price;
+                    pre_price_change = variation_product_preserved[m].price_change;
+                    pre_price_ntd_change = variation_product_preserved[m].price_ntd_change;
+                    pre_price_org = variation_product_preserved[m].price_org;
+                    pre_price_ntd_org = variation_product_preserved[m].price_ntd_org;
+                    pre_photo = variation_product_preserved[m].photo;
+                    pre_quoted_price = variation_product_preserved[m].quoted_price;
+                    pre_quoted_price_org = variation_product_preserved[m].quoted_price_org;
+                    pre_quoted_price_change = variation_product_preserved[m].quoted_price_change;
+    
+                    break;
+                  }
                 }
               }
 
-              if(variation_product_preserved[m].k1 != '' && variation_product_preserved[m].k2 != '' && variation_product_preserved[m].k3 == '')
-              {
-                if(variation_product_preserved[m].v1 == variation1_value[i] && variation_product_preserved[m].v2 == variation2_value[j])
-                {
-                  pre_url = variation_product_preserved[m].url;
-                  pre_price_ntd = variation_product_preserved[m].price_ntd;
-                  pre_price = variation_product_preserved[m].price;
-                  pre_price_change = variation_product_preserved[m].price_change;
-                  pre_price_ntd_change = variation_product_preserved[m].price_ntd_change;
-                  pre_price_org = variation_product_preserved[m].price_org;
-                  pre_price_ntd_org = variation_product_preserved[m].price_ntd_org;
-                  pre_photo = variation_product_preserved[m].photo;
-                  pre_quoted_price = variation_product_preserved[m].quoted_price;
-                  pre_quoted_price_org = variation_product_preserved[m].quoted_price_org;
-                  pre_quoted_price_change = variation_product_preserved[m].quoted_price_change;
-  
-                  break;
-                }
-              }
+              
 
-              if(variation_product_preserved[m].k1 != '' && variation_product_preserved[m].k2 == '' && variation_product_preserved[m].k3 == '')
-              {
-                if(variation_product_preserved[m].v1 == variation1_value[i])
-                {
-                  pre_url = variation_product_preserved[m].url;
-                  pre_price_ntd = variation_product_preserved[m].price_ntd;
-                  pre_price = variation_product_preserved[m].price;
-                  pre_price_change = variation_product_preserved[m].price_change;
-                  pre_price_ntd_change = variation_product_preserved[m].price_ntd_change;
-                  pre_price_org = variation_product_preserved[m].price_org;
-                  pre_price_ntd_org = variation_product_preserved[m].price_ntd_org;
-                  pre_photo = variation_product_preserved[m].photo;
-                  pre_quoted_price = variation_product_preserved[m].quoted_price;
-                  pre_quoted_price_org = variation_product_preserved[m].quoted_price_org;
-                  pre_quoted_price_change = variation_product_preserved[m].quoted_price_change;
-  
-                  break;
-                }
-              }
+              variation_item = {
+                id: sn,
+                checked: 0,
+                k1: this.variation1_text,
+                k2: this.variation2_text,
+                k3: this.variation3_text,
+                k4: this.variation4_text,
+                v1: variation1_value[i],
+                v2: variation2_value[j],
+                v3: variation3_value[k],
+                v4: variation4_value[l],
+                url: pre_url,
+                file: {
+                  name: "",
+                },
+                code: "",
+                price_ntd: pre_price_ntd,
+                price: pre_price,
+                price_change: pre_price_change,
+                price_ntd_change: pre_price_ntd_change,
+                price_org : pre_price_org,
+                price_ntd_org : pre_price_ntd_org,
+                photo: pre_photo,
+                status: "1",
+                quoted_price: pre_quoted_price,
+                quoted_price_org: pre_quoted_price_org,
+                quoted_price_change: pre_quoted_price_change,
+              };
+
+              this.variation_product.push(variation_item);
             }
-
-            
-
-            variation_item = {
-              id: sn,
-              checked: 0,
-              k1: this.variation1_text,
-              k2: this.variation2_text,
-              k3: this.variation3_text,
-              v1: variation1_value[i],
-              v2: variation2_value[j],
-              v3: variation3_value[k],
-              url: pre_url,
-              file: {
-                name: "",
-              },
-              code: "",
-              price_ntd: pre_price_ntd,
-              price: pre_price,
-              price_change: pre_price_change,
-              price_ntd_change: pre_price_ntd_change,
-              price_org : pre_price_org,
-              price_ntd_org : pre_price_ntd_org,
-              photo: pre_photo,
-              status: "1",
-              quoted_price: pre_quoted_price,
-              quoted_price_org: pre_quoted_price_org,
-              quoted_price_change: pre_quoted_price_change,
-            };
-
-            this.variation_product.push(variation_item);
           }
         }
       }
@@ -896,6 +948,17 @@ var app = new Vue({
       window.jQuery("#modal_quick_assign2_3").toggle();
     },
 
+    get_special_infomation_detail_variantion4: function() {
+      if(this.variation4 == "" || this.variation4 == "custom") 
+        return;
+      this.special_infomation_detail = this.shallowCopy(
+        this.special_infomation.find((element) => element.category == this.variation4)
+      ).detail[0];
+
+      window.jQuery(".mask").toggle();
+      window.jQuery("#modal_quick_assign2_4").toggle();
+    },
+
     apply_special_infomation_detail: function(cat_id, option) {
       this.$refs[cat_id][0].value = option;
 
@@ -975,6 +1038,31 @@ var app = new Vue({
 
       window.jQuery(".mask").toggle();
       window.jQuery("#modal_quick_assign2_3").toggle();
+
+      //$('variation3_value').tagsinput('refresh');
+    },
+
+    apply_special_infomation_detail_variantion4: function() {
+      var checkboxes = document.getElementsByName("apply_special_infomation_4");
+      
+      checkboxes.forEach(function(box) {
+        if (box.checked) 
+        {
+          $('#variation4_value').tagsinput('add', box.value);
+          box.checked = false;
+        }
+      })
+
+      // let variation_value = document
+      //   .getElementById("variation3_value")
+      //   .value.split(",");
+
+      // variation_value.push(values);
+
+      // document.getElementById("variation3_value").value = variation_value.join(",");
+
+      window.jQuery(".mask").toggle();
+      window.jQuery("#modal_quick_assign2_4").toggle();
 
       //$('variation3_value').tagsinput('refresh');
     },
@@ -1185,7 +1273,40 @@ var app = new Vue({
         return;
       }
 
-      
+      let replacement = [];
+      let replacement_product = $('#replacement_product').val();
+      if(replacement_product != undefined)
+      {
+        replacement = replacement_product.split(",");
+        replacement = replacement.filter(function (el) {
+          return el != "";
+        });
+      }
+
+      let err = '';
+      let replacement_data = [];
+      this.replacement_id = [];
+
+      for (let index = 0; index < replacement.length; ++index) {
+        const element = replacement[index];
+
+        replacement_data = await this.is_code_existed(element.trim());
+        if(replacement_data.length > 0)
+          this.replacement_json.push({code: element.trim(), id: replacement_data[0].id});
+        else
+          err = err + element.trim() + '<br> ';
+      }
+
+      if(err.trim() != '')
+      {
+        Swal.fire({
+          html: "The code of replacement product doesn’t exist.<br>" + err.trim(),
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
       if(this.sub_category == '10020000')
       {
         if(this.p1_code.trim() == '' || this.p2_code.trim() == '')
@@ -1576,9 +1697,11 @@ var app = new Vue({
             let k1 = this.variation_product[i].k1;
             let k2 = this.variation_product[i].k2;
             let k3 = this.variation_product[i].k3;
+            let k4 = this.variation_product[i].k4;
             let v1 = this.variation_product[i].v1;
             let v2 = this.variation_product[i].v2;
             let v3 = this.variation_product[i].v3;
+            let v4 = this.variation_product[i].v4;
             let price = this.variation_product[i].price;
             let price_ntd = this.variation_product[i].price_ntd;
             let price_change = this.variation_product[i].price_change;
@@ -1618,9 +1741,11 @@ var app = new Vue({
               k1: k1,
               k2: k2,
               k3: k3,
+              k4: k4,
               v1: v1,
               v2: v2,
               v3: v3,
+              v4: v4,
               price: price,
               price_ntd: price_ntd,
               price_change: price_change,
@@ -1679,6 +1804,7 @@ var app = new Vue({
 
           let related_product = $('#related_product').val();
           form_Data.append("related_product", related_product);
+          form_Data.append("replacement_json", JSON.stringify(_this.replacement_json));
 
           form_Data.append("accessory_mode", _this.accessory_mode === true || _this.accessory_mode === "1" ? 1 : 0);
           form_Data.append("variation_mode", _this.variation_mode === true || _this.variation_mode === "1" ? 1 : 0);
@@ -1762,9 +1888,12 @@ var app = new Vue({
           }
 
           // manual
-          for (var i = 0; i < this.$refs.file_manual.files.length; i++) {
-            let file = this.$refs.file_manual.files[i];
-            form_Data.append("file_manual[" + i + "]", file);
+          if(this.$refs.file_manual != undefined)
+          {
+            for (var i = 0; i < this.$refs.file_manual.files.length; i++) {
+              let file = this.$refs.file_manual.files[i];
+              form_Data.append("file_manual[" + i + "]", file);
+            }
           }
 
 
@@ -1847,7 +1976,9 @@ var app = new Vue({
       this.variation1_text = '';
       this.variation2_text = '';
       this.variation3_text = '';
+      this.variation4_text = '';
 
+      this.variation4 = '';
       this.variation3 = '';
       this.variation2 = '';
       this.variation1 = '';
@@ -1858,10 +1989,13 @@ var app = new Vue({
       $('#variation2_value').tagsinput('removeAll');
       this.variation3_value = '';
       $('#variation3_value').tagsinput('removeAll');
+      this.variation4_value = '';
+      $('#variation4_value').tagsinput('removeAll');
 
       this.variation1_custom = '';
       this.variation2_custom = '';
       this.variation3_custom = '';
+      this.variation4_custom = '';
 
       var f_ics = this.$refs.file_ics;
       if(f_ics) f_ics.value = "";

@@ -75,17 +75,21 @@ var app = new Vue({
     variation1: "",
     variation2: "",
     variation3: "",
+    variation4: "",
     variation1_custom: "",
     variation2_custom: "",
     variation3_custom: "",
+    variation4_custom: "",
 
     variation1_text: "1st Variation",
     variation2_text: "2nd Variation",
     variation3_text: "3rd Variation",
+    variation4_text: "4th Variation",
 
     variation1_value: [],
     variation2_value: [],
     variation3_value: [],
+    variation4_value: [],
 
     variation_product: [],
 
@@ -98,6 +102,7 @@ var app = new Vue({
     v1:"",
     v2:"",
     v3:"",
+    v4:"",
 
     // bulk insert
     code_checked:'',
@@ -345,7 +350,7 @@ var app = new Vue({
 
     change_v(){
       let item_product = this.shallowCopy(
-        this.variation_product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3)
+        this.variation_product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3 && element.v4 == this.v4)
       )
 
       if(item_product.id != undefined)
@@ -502,6 +507,10 @@ var app = new Vue({
       {
         $('#variation3_value').tagsinput('add', this.variation3_value[i]);
       }
+      for(var i=0; i<this.variation4_value.length; i++)
+      {
+        $('#variation4_value').tagsinput('add', this.variation4_value[i]);
+      }
 
       
     },
@@ -623,10 +632,12 @@ var app = new Vue({
             _this.variation1_text = _this.record[0]['variation1_text'];
             _this.variation2_text = _this.record[0]['variation2_text'];
             _this.variation3_text = _this.record[0]['variation3_text'];
+            _this.variation4_text = _this.record[0]['variation4_text'];
 
             _this.variation1_value = _this.record[0]['variation1_value'];
             _this.variation2_value = _this.record[0]['variation2_value'];
             _this.variation3_value = _this.record[0]['variation3_value'];
+            _this.variation4_value = _this.record[0]['variation4_value'];
 
             _this.related_product = _this.record[0]['related_product'];
             _this.chunk(_this.related_product, 4);
@@ -634,10 +645,12 @@ var app = new Vue({
             _this.variation1 = _this.record[0]['variation1'];
             _this.variation2 = _this.record[0]['variation2'];
             _this.variation3 = _this.record[0]['variation3'];
+            _this.variation4 = _this.record[0]['variation4'];
 
             _this.variation1_custom = _this.record[0]['variation1_custom'];
             _this.variation2_custom = _this.record[0]['variation2_custom'];
             _this.variation3_custom = _this.record[0]['variation3_custom'];
+            _this.variation4_custom = _this.record[0]['variation4_custom'];
             
             _this.set_up_variants();
             _this.set_up_specification();
@@ -994,6 +1007,17 @@ var app = new Vue({
       window.jQuery("#modal_quick_assign2_3").toggle();
     },
 
+    get_special_infomation_detail_variantion4: function() {
+      if(this.variation4 == "" || this.variation4 == "custom") 
+        return;
+      this.special_infomation_detail = this.shallowCopy(
+        this.special_infomation.find((element) => element.category == this.variation4)
+      ).detail[0];
+
+      window.jQuery(".mask").toggle();
+      window.jQuery("#modal_quick_assign2_3").toggle();
+    },
+
     apply_special_infomation_detail: function(cat_id, option) {
       this.$refs[cat_id][0].value = option;
 
@@ -1073,6 +1097,32 @@ var app = new Vue({
 
       window.jQuery(".mask").toggle();
       window.jQuery("#modal_quick_assign2_3").toggle();
+
+      //$('variation3_value').tagsinput('refresh');
+    },
+
+    
+    apply_special_infomation_detail_variantion4: function() {
+      var checkboxes = document.getElementsByName("apply_special_infomation_4");
+      
+      checkboxes.forEach(function(box) {
+        if (box.checked) 
+        {
+          $('#variation4_value').tagsinput('add', box.value);
+          box.checked = false;
+        }
+      })
+
+      // let variation_value = document
+      //   .getElementById("variation3_value")
+      //   .value.split(",");
+
+      // variation_value.push(values);
+
+      // document.getElementById("variation3_value").value = variation_value.join(",");
+
+      window.jQuery(".mask").toggle();
+      window.jQuery("#modal_quick_assign2_4").toggle();
 
       //$('variation3_value').tagsinput('refresh');
     },
@@ -1199,7 +1249,7 @@ var app = new Vue({
 
   change_v_set(set){
     let item_product = this.shallowCopy(
-      set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
+      set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
     )
 
     if(item_product.id != undefined)
@@ -1273,7 +1323,7 @@ var app = new Vue({
 
     for(var i=0; i < this.product_set.length; i++){
       let item_product = this.shallowCopy(
-        this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+        this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
       )
 
       if(item_product.id != undefined)

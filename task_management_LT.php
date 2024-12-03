@@ -60,7 +60,7 @@ try {
         }
     }
 
-    if(trim(strtoupper($username)) == 'DERECK' || trim(strtoupper($username)) == 'CRISTINA MATINING')
+    if(trim(strtoupper($username)) == 'DERECK' || trim(strtoupper($username)) == 'GWENDOLYN SARMIENTO')
     {
         $access6 = true;
     }

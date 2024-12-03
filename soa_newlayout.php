@@ -2043,6 +2043,13 @@ header( 'location:index' );
             outline-color: transparent!important;
         }
 
+        #tb_product_list ul li:nth-of-type(1) span.phasedout_replacement {
+            background-color: orange;
+            color: white;
+            padding: 0px 5px 3px;
+            border-radius: 10px;
+            cursor: pointer;	
+        }
 
         @media print {
             * {
@@ -3280,7 +3287,7 @@ header( 'location:index' );
                                         <span>QP: {{ item.quoted_price }} <br v-if="item.str_quoted_price_change"> {{ item.str_quoted_price_change ? item.str_quoted_price_change : '' }}<br></span>
                                     </td>
                                     <td>
-                                        <button id="edit01" @click="btnEditClick(item)"><i aria-hidden="true"
+                                        <button id="edit01" @click="btnEditClick(item)" v-if="item.status != -1"><i aria-hidden="true"
                                                                                            class="fas fa-caret-right"></i>
                                         </button>
                                     </td>
@@ -3677,6 +3684,19 @@ header( 'location:index' );
                                         <select class="form-control" v-model="v3" @change="change_v()">
                                             <option value=""></option>
                                             <option v-for="(item, index) in product.variation3_value" :value="item"
+                                                    :key="item">{{item}}
+                                            </option>
+                                        </select>
+                                    </li>
+                                    <li v-if="product.variation4_value[0] !== '' && product.variation4_value[0] !== undefined">
+                                        {{ product.variation4 !== 'custom' ? product.variation4 :
+                                        product.variation4_custom
+                                        }}
+                                    </li>
+                                    <li v-show="product.variation4_value[0] !== '' && product.variation4_value[0] !== undefined">
+                                        <select class="form-control" v-model="v4" @change="change_v()">
+                                            <option value=""></option>
+                                            <option v-for="(item, index) in product.variation4_value" :value="item"
                                                     :key="item">{{item}}
                                             </option>
                                         </select>

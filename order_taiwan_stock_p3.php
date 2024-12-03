@@ -1523,6 +1523,13 @@ header( 'location:index' );
             outline-color: transparent!important;
         }
 
+        #tb_product_list ul li:nth-of-type(1) span.phasedout_replacement {
+            background-color: orange;
+            color: white;
+            padding: 0px 5px 3px;
+            border-radius: 10px;
+            cursor: pointer;	
+        }
 
         @media print {
             * {
@@ -2410,7 +2417,7 @@ header( 'location:index' );
 
                                     <!-- 如果這個 Product Set 產品有 Product1 和 Product 2，則 rowspan=3；如果這個 Product Set 產品有 Product1 和 Product 2 和 Product 3，則 rowspan=4 -->
                                     <td :rowspan="item.product_set_cnt + 1">
-                                        <button id="edit01" @click="btnEditClick(item)"><i aria-hidden="true" class="fas fa-caret-right"></i></button>
+                                        <button id="edit01" @click="btnEditClick(item)" v-if="item.status != -1"><i aria-hidden="true" class="fas fa-caret-right"></i></button>
                                     </td>
                                 </tr>
 
@@ -2421,10 +2428,14 @@ header( 'location:index' );
                                         <img :src="img_url + set.photo1" v-if="set.photo1"></a>
                                     </td>
                                     <td>
-                                        <ul v-if="set.out == 'Y'">
-                                            <li>
-                                                <span class="phasedout">Phased Out</span>
-                                            </li>
+                                    <ul v-if="set.out == 'Y' || (set.out == 'Y' && set.replacement_product.length > 0) || (set.status == -1 && set.replacement_product.length > 0)">
+                            <li>
+                                    <!-- 依據這個停產的產品是否有 Replacement Product 的資料，沒有資料則用第一個 <span>，有資料則用二個 <span> -->
+                                    <span class="phasedout" v-if="set.replacement_product.length == 0">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="set.status != -1 && set.replacement_product.length > 0" @click="replacement_info(set.replacement_text)">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="set.status == -1 && set.replacement_product.length > 0" @click="replacement_info(set.replacement_text)">Deleted</span>
+                            </li>
+
                                             <li></li>
                                         </ul>
                                         <ul>
@@ -2550,10 +2561,13 @@ header( 'location:index' );
                                     :src="img_url + item.photo1" v-if="item.photo1 !== ''">
                             </td>
                             <td>
-                                <ul v-if="item.out == 'Y'">
-                                    <li>
-                                        <span class="phasedout">Phased Out</span>
-                                    </li>
+                            <ul v-if="item.out == 'Y' || (item.out == 'Y' && item.replacement_product.length > 0) || (item.status == -1 && item.replacement_product.length > 0)">
+                            <li>
+                                    <!-- 依據這個停產的產品是否有 Replacement Product 的資料，沒有資料則用第一個 <span>，有資料則用二個 <span> -->
+                                    <span class="phasedout" v-if="item.replacement_product.length == 0">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="item.status != -1 && item.replacement_product.length > 0" @click="replacement_info(item.replacement_text)">Phased Out</span>
+                                    <span class="phasedout_replacement" v-if="item.status == -1 && item.replacement_product.length > 0" @click="replacement_info(item.replacement_text)">Deleted</span>
+                            </li>
                                     <li></li>
                                 </ul>
                                 <ul>
@@ -2655,7 +2669,7 @@ header( 'location:index' );
                                 <span>QP: {{ item.quoted_price }} <br v-if="item.str_quoted_price_change"> {{ item.str_quoted_price_change ? item.str_quoted_price_change : '' }}<br></span>
                             </td>
                             <td>
-                                <button id="edit01" @click="btnEditClick(item)"><i aria-hidden="true" 
+                                <button id="edit01" @click="btnEditClick(item)" v-if="item.status != -1"><i aria-hidden="true" 
                                                                                    class="fas fa-caret-right"></i>
                                 </button>
                             </td>
@@ -2820,6 +2834,16 @@ header( 'location:index' );
                                 <select class="form-control" v-model="set.v3" @change="change_v_set(set)">
                                     <option value=""></option>
                                     <option v-for="(item, index) in set.variation3_value" :value="item" :key="item">{{item}}
+                                    </option>
+                                </select>
+                            </li>
+                            <li v-if="set.variation4_value[0] !== '' && set.variation4_value[0] !== undefined">
+                                {{ set.variation4 !== 'custom' ? set.variation4 + ': ' : set.variation4_custom + ': ' }} <template v-for="(item, index) in set.variation4_value">{{ (index + 1 !== set.variation4_value.length) ? item + ', ' : item}} </template>
+                            </li>
+                            <li v-show="set.variation4_value[0] !== '' && set.variation4_value[0] !== undefined">
+                                <select class="form-control" v-model="set.v4" @change="change_v_set(set)">
+                                    <option value=""></option>
+                                    <option v-for="(item, index) in set.variation4_value" :value="item" :key="item">{{item}}
                                     </option>
                                 </select>
                             </li>
@@ -3040,6 +3064,18 @@ header( 'location:index' );
                                         <select class="form-control" v-model="set.v3" @change="change_v_set(set)">
                                             <option value=""></option>
                                             <option v-for="(item, index) in set.variation3_value" :value="item"
+                                                    :key="item">{{item}}
+                                            </option>
+                                        </select>
+                                    </li>
+                                    <li v-if="set.variation4_value[0] !== '' && set.variation4_value[0] !== undefined">
+                                        {{ set.variation4 !== 'custom' ? set.variation4 : set.variation4_custom
+                                        }}
+                                    </li>
+                                    <li v-show="set.variation4_value[0] !== '' && set.variation4_value[0] !== undefined">
+                                        <select class="form-control" v-model="set.v4" @change="change_v_set(set)">
+                                            <option value=""></option>
+                                            <option v-for="(item, index) in set.variation4_value" :value="item"
                                                     :key="item">{{item}}
                                             </option>
                                         </select>
@@ -3462,6 +3498,18 @@ header( 'location:index' );
                                     </option>
                                 </select>
                             </li>
+                            <li v-if="product.variation4_value[0] !== '' && product.variation4_value[0] !== undefined">
+                                {{ product.variation4 !== 'custom' ? product.variation4 : product.variation4_custom
+                                }}
+                            </li>
+                            <li v-show="product.variation4_value[0] !== '' && product.variation4_value[0] !== undefined">
+                                <select class="form-control" v-model="v4" @change="change_v()">
+                                    <option value=""></option>
+                                    <option v-for="(item, index) in product.variation4_value" :value="item"
+                                            :key="item">{{item}}
+                                    </option>
+                                </select>
+                            </li>
 
                             <template v-for="(item, index) in product.accessory_infomation" v-if="show_accessory">
                                 <li>{{ item.category }}</li>
@@ -3794,6 +3842,18 @@ header( 'location:index' );
                                 <select class="form-control" v-model="p_v3" @change="p_change_v()">
                                     <option value=""></option>
                                     <option v-for="(item, index) in p_product.variation3_value" :value="item"
+                                            :key="item">{{item}}
+                                    </option>
+                                </select>
+                            </li>
+                            <li v-if="p_product.variation4_value[0] !== '' && p_product.variation4_value[0] !== undefined">
+                                {{ p_product.variation4 !== 'custom' ? p_product.variation4 : p_product.variation4_custom
+                                }}
+                            </li>
+                            <li v-show="p_product.variation4_value[0] !== '' && p_product.variation4_value[0] !== undefined">
+                                <select class="form-control" v-model="p_v4" @change="p_change_v()">
+                                    <option value=""></option>
+                                    <option v-for="(item, index) in p_product.variation4_value" :value="item"
                                             :key="item">{{item}}
                                     </option>
                                 </select>

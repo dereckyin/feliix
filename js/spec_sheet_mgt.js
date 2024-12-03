@@ -545,6 +545,14 @@ var app = new Vue({
       });
     },
 
+    replacement_info: function(info) {
+      Swal.fire({
+        title: "<i>Replacement Product:</i>", 
+        html: info,  
+        confirmButtonText: "Close", 
+      });
+    },
+
     btnDelClick: function(id) {
       let _this = this;
 

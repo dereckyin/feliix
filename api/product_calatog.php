@@ -84,10 +84,11 @@ else
           case 'GET':
             $merged_results = array();
 
-            $query_cnt = "SELECT count(*) cnt FROM product_category p  WHERE  p.STATUS <> -1 ";
+            $query_cnt = "SELECT count(*) cnt FROM product_category p  left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  (p.STATUS <> -1 or (p.status = -1 and (select count(*) from product_replacement pr where pr.product_id = p.id) > 0))  ";
 
-            // product main
-            $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1";
+            // product main join product_replacement if p.Status -1 and product_replacement has data
+            $sql = "SELECT p.*, cu.username created_name, uu.username updated_name, (select count(*) from product_replacement pr where pr.product_id = p.id) replacement_cnt FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  (p.STATUS <> -1 or (p.status = -1 and (select count(*) from product_replacement pr where pr.product_id = p.id) > 0)) ";
+            // $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1";
 
             if (!empty($_GET['page'])) {
                 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -346,10 +347,13 @@ else
                 $variation1_text = "1st Variation";
                 $variation2_text = "2nd Variation";
                 $variation3_text = "3rd Variation";
+                $variation4_text = "4th Variation";
 
                 $special_infomation = [];
                 $accessory_information = [];
                 $related_product = [];
+                $replacement_product = [];
+                $replacement_cnt = $row['replacement_cnt'];
 
                 $sub_cateory_item = [];
 
@@ -398,6 +402,9 @@ else
                 $srp_min = $row['srp_min'];
 
                 $product = GetProduct($id, $db);
+
+                if($replacement_cnt > 0)
+                    $replacement_product = GetReplacementProduct($id, $db);
 
                 $product_set_1 = [];
                 $product_set_2 = [];
@@ -456,6 +463,8 @@ else
                             $key_value_text .= $product[$i]['k2'] . " = " . $product[$i]['v2'] . ", ";
                         if($product[$i]['v3'] != "")
                             $key_value_text .= $product[$i]['k3'] . " = " . $product[$i]['v3'] . ", ";
+                        if($product[$i]['v4'] != "")
+                            $key_value_text .= $product[$i]['k4'] . " = " . $product[$i]['v4'] . ", ";
 
                         $key_value_text = substr($key_value_text, 0, -2);
                         
@@ -487,6 +496,8 @@ else
                             $params .= ", " . str_replace("=>", " = ", $product[$i]['2rd_variation']);
                         if($product[$i]['3th_variation'] != "=>")
                             $params .= ", " . str_replace("=>", " = ", $product[$i]['3th_variation']);
+                        if($product[$i]['4th_variation'] != "=>")
+                            $params .= ", " . str_replace("=>", " = ", $product[$i]['4th_variation']);
 
                         $is_last_order_product .= "(" . $order_sn++ . ") " . $params . ": <br>" . substr($product[$i]['last_order_at'], 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $product[$i]['last_order_name'] . "</a><br><br>";
                     }
@@ -524,6 +535,7 @@ else
                         $phased_out_text .= "(" . $cn . ") " . ($phased_out_info[$i]["1st_variation"] != "=>" ? str_replace('=>', ' = ', $phased_out_info[$i]["1st_variation"]) . ", " : "");
                         $phased_out_text .= ($phased_out_info[$i]["2rd_variation"] != "=>" ? str_replace('=>', ' = ', $phased_out_info[$i]["2rd_variation"]) . ", " : "");
                         $phased_out_text .= ($phased_out_info[$i]["3th_variation"] != "=>" ? str_replace('=>', ' = ', $phased_out_info[$i]["3th_variation"]) . ", " : "");
+                        $phased_out_text .= ($phased_out_info[$i]["4th_variation"] != "=>" ? str_replace('=>', ' = ', $phased_out_info[$i]["4th_variation"]) . ", " : "");
 
                         $phased_out_text = rtrim($phased_out_text, ", ");
 
@@ -531,6 +543,16 @@ else
                         {
                             $phased_out_text .= "<br/>";
                         }
+                    }
+                }
+
+                $replacement_text = "";
+                if($replacement_cnt > 0)
+                {
+                    for($i = 0; $i < count($replacement_product); $i++)
+                    {
+                        $cn = $i + 1;
+                        $replacement_text .= "(" . $cn . ") " . $replacement_product[$i]["code"] . " (ID: " . $replacement_product[$i]["replacement_id"] . ")<br>";
                     }
                 }
                 
@@ -883,16 +905,19 @@ else
                 $variation1_value = [];
                 $variation2_value = [];
                 $variation3_value = [];
+                $variation4_value = [];
 
                 if(count($product) > 0)
                 {
                     $variation1_text = $product[0]['k1'];
                     $variation2_text = $product[0]['k2'];
                     $variation3_text = $product[0]['k3'];
+                    $variation4_text = $product[0]['k4'];
 
                     $variation1_value = [];
                     $variation2_value = [];
                     $variation3_value = [];
+                    $variation4_value = [];
 
                     for($i = 0; $i < count($product); $i++)
                     {
@@ -907,6 +932,10 @@ else
                         if (!in_array($product[$i]['v3'],$variation3_value))
                         {
                             array_push($variation3_value,$product[$i]['v3']);
+                        }
+                        if (!in_array($product[$i]['v4'],$variation4_value))
+                        {
+                            array_push($variation4_value,$product[$i]['v4']);
                         }
                     }
                 }
@@ -925,6 +954,8 @@ else
                 $variation2_custom = $variation2_text;
                 $variation3 = 'custom';
                 $variation3_custom = $variation3_text;
+                $variation4 = 'custom';
+                $variation4_custom = $variation4_text;
 
                 for($i = 0; $i < count($special_information); $i++)
                 {
@@ -950,6 +981,12 @@ else
                                 $variation3 = $variation3_text;
                                 $variation3_custom = "";
                             }
+
+                            if($lv3[$j]['category'] == $variation4_text)
+                            {
+                                $variation4 = $variation4_text;
+                                $variation4_custom = "";
+                            }
                         }
                     }
                    
@@ -971,6 +1008,12 @@ else
                 {
                     $variation3 = "";
                     $variation3_custom = "";
+                }
+
+                if($variation4_text == "")
+                {
+                    $variation4 = "";
+                    $variation4_custom = "";
                 }
 
                 $attribute_list = [];
@@ -1001,6 +1044,11 @@ else
                         if($variation3_text == $special_info_json[$i]->category)
                         {
                             $value = $variation3_value;
+                            $custom = "custom";
+                        }
+                        if($variation4_text == $special_info_json[$i]->category)
+                        {
+                            $value = $variation4_value;
                             $custom = "custom";
                         }
 
@@ -1034,6 +1082,14 @@ else
                 {
                     $attribute_list[] = array("category" => $variation3_text,
                                            "value" => $variation3_value,
+                                           "type" => "custom",
+                                        );
+                }
+
+                if($variation4 == "custom" && $variation4_custom != "4th Variation")
+                {
+                    $attribute_list[] = array("category" => $variation4_text,
+                                           "value" => $variation4_value,
                                            "type" => "custom",
                                         );
                 }
@@ -1128,15 +1184,19 @@ else
                                     "variation1_text" => $variation1_text,
                                     "variation2_text" => $variation2_text,
                                     "variation3_text" => $variation3_text,
+                                    "variation4_text" => $variation4_text,
                                     "variation1_value" => $variation1_value,
                                     "variation2_value" => $variation2_value,
                                     "variation3_value" => $variation3_value,
+                                    "variation4_value" => $variation4_value,
                                     "variation1" => $variation1,
                                     "variation2" => $variation2,
                                     "variation3" => $variation3,
+                                    "variation4" => $variation4,
                                     "variation1_custom" => $variation1_custom,
                                     "variation2_custom" => $variation2_custom,
                                     "variation3_custom" => $variation3_custom,
+                                    "variation4_custom" => $variation4_custom,
                                     "attribute_list" => $attribute_list,
                                     "sub_category_item" => $sub_category_item,
                                     "special_information" => $special_information,
@@ -1162,8 +1222,12 @@ else
                                     "phased_out_info" => $phased_out_info,
                                     "phased_out_text" => $phased_out_text,
 
+                                    "replacement_cnt" => $replacement_cnt,
+                                    "replacement_product" => $replacement_product,
+                                    "replacement_text" => $replacement_text,
+
                                     "phased_out_text1" => $phased_out_text1,
-                                    
+
                                     "product_set" => $product_set,
 
                                     "product_set_cnt" => $product_set_cnt,
@@ -1226,13 +1290,16 @@ function GetProduct($id, $db){
         $k1 = GetKey($row['1st_variation']);
         $k2 = GetKey($row['2rd_variation']);
         $k3 = GetKey($row['3th_variation']);
+        $k4 = GetKey($row['4th_variation']);
         $v1 = GetValue($row['1st_variation']);
         $v2 = GetValue($row['2rd_variation']);
         $v3 = GetValue($row['3th_variation']);
+        $v4 = GetValue($row['4th_variation']);
 
         $fir = $row['1st_variation'];
         $sec = $row['2rd_variation'];
         $thi = $row['3th_variation'];
+        $fth = $row['4th_variation'];
 
         $checked = '';
         $code = $row['code'];
@@ -1249,6 +1316,18 @@ function GetProduct($id, $db){
             $url = $row['url'];
         else
             $url = '';
+
+        $replacement_product = GetReplacementProduct($id, $db);
+
+        $replacement_text = "";
+        if(count($replacement_product) > 0)
+        {
+            for($i = 0; $i < count($replacement_product); $i++)
+            {
+                $cn = $i + 1;
+                $replacement_text .= "(" . $cn . ") " . $replacement_product[$i]["code"] . " (ID: " . $replacement_product[$i]["replacement_id"] . ")<br>";
+            }
+        }
 
         $quoted_price = $row['quoted_price'];
         $quoted_price_change = $row['quoted_price_change'] != '' ? substr($row['quoted_price_change'], 0, 10) : '';
@@ -1283,12 +1362,15 @@ function GetProduct($id, $db){
                                     "k1" => $k1, 
                                     "k2" => $k2, 
                                     "k3" => $k3, 
+                                    "k4" => $k4,
                                     "v1" => $v1, 
                                     "v2" => $v2, 
                                     "v3" => $v3, 
+                                    "v4" => $v4,
                                     "1st_variation" => $fir,
                                     "2rd_variation" => $sec,
                                     "3th_variation" => $thi,
+                                    "4th_variation" => $fth,
 
                                     "checked" => $checked, 
                                     "code" => $code, 
@@ -1313,6 +1395,9 @@ function GetProduct($id, $db){
                                     "last_order_at" => substr($last_order_at,0, 10),
                                     "last_order_url" => $last_order_url,
                                     "last_have_spec" => true,
+
+                                    "replacement_product" => $replacement_product,
+                                    "replacement_text" => $replacement_text,
 
             );
     }
@@ -1641,6 +1726,8 @@ function GetRelatedProductCode($id, $db){
                     $key_value_text .= $product[$i]['k2'] . " = " . $product[$i]['v2'] . ", ";
                 if($product[$i]['v3'] != "")
                     $key_value_text .= $product[$i]['k3'] . " = " . $product[$i]['v3'] . ", ";
+                if($product[$i]['v4'] != "")
+                    $key_value_text .= $product[$i]['k4'] . " = " . $product[$i]['v4'] . ", ";
 
                 $key_value_text = substr($key_value_text, 0, -2);
 
@@ -1817,7 +1904,7 @@ function GetProductSetContent($id, $db){
     $merged_results = array();
 
     // product main
-    $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  p.STATUS <> -1";
+    $sql = "SELECT p.*, cu.username created_name, uu.username updated_name FROM product_category p left join `user` cu on cu.id = p.create_id left join `user` uu on uu.id = p.updated_id WHERE  (p.STATUS <> -1 or (p.status = -1 and (select count(*) from product_replacement pr where pr.product_id = p.id) > 0)) ";
 
 
 
@@ -1865,6 +1952,7 @@ function GetProductSetContent($id, $db){
         $variation1_text = "1st Variation";
         $variation2_text = "2nd Variation";
         $variation3_text = "3rd Variation";
+        $variation4_text = "4th Variation";
 
         $special_infomation = [];
         $accessory_information = [];
@@ -1936,6 +2024,8 @@ function GetProductSetContent($id, $db){
                     $key_value_text .= $product[$i]['k2'] . " = " . $product[$i]['v2'] . ", ";
                 if($product[$i]['v3'] != "")
                     $key_value_text .= $product[$i]['k3'] . " = " . $product[$i]['v3'] . ", ";
+                if($product[$i]['v4'] != "")
+                    $key_value_text .= $product[$i]['k4'] . " = " . $product[$i]['v4'] . ", ";
 
                 $key_value_text = substr($key_value_text, 0, -2);
                 
@@ -1964,6 +2054,8 @@ function GetProductSetContent($id, $db){
                     $params .= ", " . str_replace("=>", " = ", $product[$i]['2rd_variation']);
                 if($product[$i]['3th_variation'] != "=>")
                     $params .= ", " . str_replace("=>", " = ", $product[$i]['3th_variation']);
+                if($product[$i]['4th_variation'] != "=>")
+                    $params .= ", " . str_replace("=>", " = ", $product[$i]['4th_variation']);
 
                 $is_last_order_product .= "(" . $order_sn++ . ") " . $params . ": <br>" . substr($product[$i]['last_order_at'], 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $product[$i]['last_order_name'] . "</a><br><br>";
             }
@@ -1991,6 +2083,18 @@ function GetProductSetContent($id, $db){
 
         $phased_out_cnt = $row['phased_out_cnt'];
 
+        $replacement_product = GetReplacementProduct($id, $db);
+
+        $replacement_text = "";
+        if(count($replacement_product) > 0)
+        {
+            for($i = 0; $i < count($replacement_product); $i++)
+            {
+                $cn = $i + 1;
+                $replacement_text .= "(" . $cn . ") " . $replacement_product[$i]["code"] . " (ID: " . $replacement_product[$i]["replacement_id"] . ")<br>";
+            }
+        }
+
         $phased_out_info = [];
         $phased_out_text = "";
         if($phased_out_cnt > 0)
@@ -2002,6 +2106,7 @@ function GetProductSetContent($id, $db){
                 $phased_out_text .= "(" . $cn . ") " . ($phased_out_info[$i]["1st_variation"] != "=>" ? str_replace('=>', ' = ', $phased_out_info[$i]["1st_variation"]) . ", " : "");
                 $phased_out_text .= ($phased_out_info[$i]["2rd_variation"] != "=>" ? str_replace('=>', ' = ', $phased_out_info[$i]["2rd_variation"]) . ", " : "");
                 $phased_out_text .= ($phased_out_info[$i]["3th_variation"] != "=>" ? str_replace('=>', ' = ', $phased_out_info[$i]["3th_variation"]) . ", " : "");
+                $phased_out_text .= ($phased_out_info[$i]["4th_variation"] != "=>" ? str_replace('=>', ' = ', $phased_out_info[$i]["4th_variation"]) . ", " : "");
 
                 $phased_out_text = rtrim($phased_out_text, ", ");
 
@@ -2249,16 +2354,19 @@ function GetProductSetContent($id, $db){
         $variation1_value = [];
         $variation2_value = [];
         $variation3_value = [];
+        $variation4_value = [];
 
         if(count($product) > 0)
         {
             $variation1_text = $product[0]['k1'];
             $variation2_text = $product[0]['k2'];
             $variation3_text = $product[0]['k3'];
+            $variation4_text = $product[0]['k4'];
 
             $variation1_value = [];
             $variation2_value = [];
             $variation3_value = [];
+            $variation4_value = [];
 
             for($i = 0; $i < count($product); $i++)
             {
@@ -2273,6 +2381,10 @@ function GetProductSetContent($id, $db){
                 if (!in_array($product[$i]['v3'],$variation3_value))
                 {
                     array_push($variation3_value,$product[$i]['v3']);
+                }
+                if (!in_array($product[$i]['v4'],$variation4_value))
+                {
+                    array_push($variation4_value,$product[$i]['v4']);
                 }
             }
         }
@@ -2291,6 +2403,8 @@ function GetProductSetContent($id, $db){
         $variation2_custom = $variation2_text;
         $variation3 = 'custom';
         $variation3_custom = $variation3_text;
+        $variation4 = 'custom';
+        $variation4_custom = $variation4_text;
 
         for($i = 0; $i < count($special_information); $i++)
         {
@@ -2316,6 +2430,12 @@ function GetProductSetContent($id, $db){
                         $variation3 = $variation3_text;
                         $variation3_custom = "";
                     }
+
+                    if($lv3[$j]['category'] == $variation4_text)
+                    {
+                        $variation4 = $variation4_text;
+                        $variation4_custom = "";
+                    }
                 }
             }
            
@@ -2337,6 +2457,12 @@ function GetProductSetContent($id, $db){
         {
             $variation3 = "";
             $variation3_custom = "";
+        }
+
+        if($variation4_text == "")
+        {
+            $variation4 = "";
+            $variation4_custom = "";
         }
 
         $attribute_list = [];
@@ -2364,6 +2490,10 @@ function GetProductSetContent($id, $db){
                 if($variation3_text == $special_info_json[$i]->category)
                 {
                     $value = $variation3_value;
+                }
+                if($variation4_text == $special_info_json[$i]->category)
+                {
+                    $value = $variation4_value;
                 }
 
                 if(count($value) > 0)
@@ -2395,6 +2525,14 @@ function GetProductSetContent($id, $db){
                                    "value" => $variation3_value,
                                 );
         }
+
+        if($variation4 == "custom" && $variation4_custom != "4th Variation")
+        {
+            $attribute_list[] = array("category" => $variation4_text,
+                                   "value" => $variation4_value,
+                                );
+        }
+
 
         $moq = $row['moq'];
 
@@ -2486,15 +2624,19 @@ function GetProductSetContent($id, $db){
                             "variation1_text" => $variation1_text,
                             "variation2_text" => $variation2_text,
                             "variation3_text" => $variation3_text,
+                            "variation4_text" => $variation4_text,
                             "variation1_value" => $variation1_value,
                             "variation2_value" => $variation2_value,
                             "variation3_value" => $variation3_value,
+                            "variation4_value" => $variation4_value,
                             "variation1" => $variation1,
                             "variation2" => $variation2,
                             "variation3" => $variation3,
+                            "variation4" => $variation4,
                             "variation1_custom" => $variation1_custom,
                             "variation2_custom" => $variation2_custom,
                             "variation3_custom" => $variation3_custom,
+                            "variation4_custom" => $variation4_custom,
                             "attribute_list" => $attribute_list,
                             "sub_category_item" => $sub_category_item,
                             "special_information" => $special_information,
@@ -2518,6 +2660,9 @@ function GetProductSetContent($id, $db){
                             "phased_out_cnt" => $phased_out_cnt,
                             "phased_out_info" => $phased_out_info,
                             "phased_out_text" => $phased_out_text,
+
+                            "replacement_product" => $replacement_product,
+                            "replacement_text" => $replacement_text,
 
                             "out" => $out,
                             "phased_out_cnt" => $phased_out_cnt,
@@ -2592,5 +2737,27 @@ function getOrderInfo($od_id, $db)
 
     return $merged_results;
 }
+
+function GetReplacementProduct($id, $db){
+    $sql = "SELECT replacement_id, code FROM product_replacement WHERE product_id = '". $id . "' and STATUS <> -1";
+
+    $sql = $sql . " ORDER BY code ";
+
+    $merged_results = [];
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = array(  "replacement_id" => $row['replacement_id'], 
+                                    "code" => $row['code'],
+                                   
+            );
+    }
+
+    return $merged_results;
+
+}
+
 
 ?>

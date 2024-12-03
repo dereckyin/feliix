@@ -184,11 +184,12 @@ function UpdateProduct($od_id, $item, $od_name,  $db)
     $v1 = $item['v1'];
     $v2 = $item['v2'];
     $v3 = $item['v3'];
+    $v4 = $item['v4'];
     $ps_var = $item['ps_var'];
 
-    if($v1 != '' || $v2 != '' || $v3 != '')
+    if($v1 != '' || $v2 != '' || $v3 != '' || $v4 != '')
     {
-        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'stocks', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' ";
+        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'stocks', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' and 4th_variation like '%" . $v4 . "' ";
         // prepare the query
         $stmt = $db->prepare($query);
 
@@ -237,6 +238,8 @@ function UpdateProduct($od_id, $item, $od_name,  $db)
                     $v2 = $value;
                 else if($v3 == "")
                     $v3 = $value;
+                else if($v4 == "")
+                    $v4 = $value;
             }
             else if($key == 'id')
             {
@@ -244,7 +247,7 @@ function UpdateProduct($od_id, $item, $od_name,  $db)
             }
         }
 
-        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'stocks', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' ";
+        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'stocks', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' and 4th_variation like '%" . $v4 . "' ";
         // prepare the query
         $stmt = $db->prepare($query);
 
@@ -260,7 +263,7 @@ function UpdateProduct($od_id, $item, $od_name,  $db)
 
     }
 
-    if($v1 == '' && $v2 == '' && $v3 == '' && count($ps_var) == 0)
+    if($v1 == '' && $v2 == '' && $v3 == '' && $v4 == '' && count($ps_var) == 0)
     {
         // update product_category
         $pid = $item['pid'];

@@ -24,6 +24,9 @@ $moq = (isset($_POST['moq']) ?  $_POST['moq'] : '');
 $description = (isset($_POST['description']) ?  $_POST['description'] : '');
 $notes = (isset($_POST['notes']) ? $_POST['notes'] : '');
 $related_product = (isset($_POST['related_product']) ? $_POST['related_product'] : '');
+$replacement_product = (isset($_POST['replacement_product']) ? $_POST['replacement_product'] : '');
+$replacement_json = (isset($_POST['replacement_json']) ? $_POST['replacement_json'] : []);
+$replacement_array = json_decode($replacement_json, true);
 
 $out = (isset($_POST['out'])) ? $_POST['out'] : '';
 
@@ -315,6 +318,10 @@ else
         // update other related_product
         update_relative_ids($related_product, $last_id, $code, $db);
         insert_relative_product($last_id, $related_product, $db);
+
+        // update other related_product
+        if(count($replacement_array) > 0)
+            update_replacement_ids_in_product_category($last_id, $replacement_array, $db);
 
         $batch_id = $last_id;
         $batch_type = "product_photo";
@@ -778,9 +785,11 @@ else
             $k1 = $variation_array[$i]['k1'];
             $k2 = $variation_array[$i]['k2'];
             $k3 = $variation_array[$i]['k3'];
+            $k4  = $variation_array[$i]['k4'];
             $v1 = $variation_array[$i]['v1'];
             $v2 = $variation_array[$i]['v2'];
             $v3 = $variation_array[$i]['v3'];
+            $v4 = $variation_array[$i]['v4'];
             $price = $variation_array[$i]['price'];
             $price_change = $variation_array[$i]['price_change'];
             $quoted_price = $variation_array[$i]['quoted_price'];
@@ -793,6 +802,7 @@ else
             $st_variation = $k1 . '=>' . $v1;
             $rd_variation = $k2 . '=>' . $v2;
             $th_variation = $k3 . '=>' . $v3;
+            $ft_variation = $k4 . '=>' . $v4;
     
             $query = "INSERT INTO product
             SET
@@ -801,6 +811,7 @@ else
                 `1st_variation` = :1st_variation,
                 `2rd_variation` = :2rd_variation,
                 `3th_variation` = :3th_variation,
+                `4th_variation` = :4th_variation,
                 `code` = :code, ";
                 if($price_ntd != '' && !is_null($price_ntd))
                 {
@@ -854,6 +865,7 @@ else
             $stmt->bindParam(':1st_variation', $st_variation);
             $stmt->bindParam(':2rd_variation', $rd_variation);
             $stmt->bindParam(':3th_variation', $th_variation);
+            $stmt->bindParam(':4th_variation', $ft_variation);
             $stmt->bindParam(':code', $code);
             if($price_ntd != '' && !is_null($price_ntd))
             {
@@ -1045,20 +1057,24 @@ function GetProductCategory($id, $db){
         $variation1_value = [];
         $variation2_value = [];
         $variation3_value = [];
+        $variation4_value = [];
 
         $variation1_text = "";
         $variation2_text = "";
         $variation3_text = "";
+        $variation4_text = "";
 
         if(count($product) > 0)
         {
             $variation1_text = $product[0]['k1'];
             $variation2_text = $product[0]['k2'];
             $variation3_text = $product[0]['k3'];
+            $variation4_text = $product[0]['k4'];
 
             $variation1_value = [];
             $variation2_value = [];
             $variation3_value = [];
+            $variation4_value = [];
 
             for($i = 0; $i < count($product); $i++)
             {
@@ -1073,6 +1089,10 @@ function GetProductCategory($id, $db){
                 if (!in_array($product[$i]['v3'],$variation3_value))
                 {
                     array_push($variation3_value,$product[$i]['v3']);
+                }
+                if (!in_array($product[$i]['v4'],$variation4_value))
+                {
+                    array_push($variation4_value,$product[$i]['v4']);
                 }
             }
         }
@@ -1090,6 +1110,8 @@ function GetProductCategory($id, $db){
         $variation2_custom = $variation2_text;
         $variation3 = 'custom';
         $variation3_custom = $variation3_text;
+        $variation4 = 'custom';
+        $variation4_custom = $variation4_text;
 
         for($i = 0; $i < count($special_information); $i++)
         {
@@ -1115,6 +1137,12 @@ function GetProductCategory($id, $db){
                         $variation3 = $variation3_text;
                         $variation3_custom = "";
                     }
+
+                    if($lv3[$j]['category'] == $variation4_text)
+                    {
+                        $variation4 = $variation4_text;
+                        $variation4_custom = "";
+                    }
                 }
             }
             
@@ -1136,6 +1164,12 @@ function GetProductCategory($id, $db){
         {
             $variation3 = "";
             $variation3_custom = "";
+        }
+
+        if($variation4_text == "")
+        {
+            $variation4 = "";
+            $variation4_custom = "";
         }
 
         $attribute_list = [];
@@ -1163,6 +1197,10 @@ function GetProductCategory($id, $db){
                 if($variation3_text == $special_info_json[$i]->category)
                 {
                     $value = $variation3_value;
+                }
+                if($variation4_text == $special_info_json[$i]->category)
+                {
+                    $value = $variation4_value;
                 }
 
                 if(count($value) > 0)
@@ -1195,6 +1233,14 @@ function GetProductCategory($id, $db){
                                    "value" => $variation3_value,
                                 );
         }
+
+        if($variation4 == "custom" && $variation4_custom != "4th Variation")
+        {
+            $attribute_list[] = array("category" => $variation4_text,
+                                   "value" => $variation4_value,
+                                );
+        }
+
 
         $merged_results[] = array( "id" => $row["id"],
                             "category" => $row["category"],
@@ -1253,9 +1299,11 @@ function GetProduct($id, $db){
         $k1 = GetKey($row['1st_variation']);
         $k2 = GetKey($row['2rd_variation']);
         $k3 = GetKey($row['3th_variation']);
+        $k4 = GetKey($row['4th_variation']);
         $v1 = GetValue($row['1st_variation']);
         $v2 = GetValue($row['2rd_variation']);
         $v3 = GetValue($row['3th_variation']);
+        $v4 = GetValue($row['4th_variation']);
         $checked = '';
         $code = $row['code'];
         $price = $row['price'];
@@ -1279,9 +1327,11 @@ function GetProduct($id, $db){
                                     "k1" => $k1, 
                                     "k2" => $k2, 
                                     "k3" => $k3, 
+                                    "k4" => $k4,
                                     "v1" => $v1, 
                                     "v2" => $v2, 
                                     "v3" => $v3, 
+                                    "v4" => $v4,
                                     "checked" => $checked, 
                                     "code" => $code, 
                                     "price" => $price, 
@@ -1827,6 +1877,25 @@ function update_relative_ids($id_array, $me_id, $me_code, $db) {
         }
     }
 
+}
+
+function update_replacement_ids_in_product_category($id, $id_array, $db) {
+
+    $query = "DELETE FROM product_replacement WHERE product_id = :id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+
+    // loop to insert 
+    for($i = 0; $i < count($id_array); $i++)
+    {
+        $query = "INSERT INTO product_replacement SET product_id = :id, replacement_id = :replacement_id, code = :code";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':replacement_id', $id_array[$i]['id']);
+        $stmt->bindParam(':code', $id_array[$i]['code']);
+        $stmt->execute();
+    }
 }
 
 function update_relative_ids_in_product_category($id, $related_product, $db) {

@@ -5584,3 +5584,29 @@ CREATE TABLE IF NOT EXISTS `leadership_assessment_answers` (
 
 alter table leadership_assessment_answers add column `score1` int(11) default 0;
 alter table leadership_assessment_answers add column `score2` int(11) default 0;
+
+-- 20241115
+ALTER TABLE product
+ADD COLUMN `4th_variation` TEXT COLLATE utf8mb4_unicode_ci AFTER `3th_variation`;
+
+ALTER TABLE od_item ADD COLUMN v4 VARCHAR(255) DEFAULT '' AFTER `v3`;
+ALTER TABLE iq_item ADD COLUMN v4 VARCHAR(255) DEFAULT '' AFTER `v3`;
+ALTER TABLE quotation_page_type_block ADD COLUMN v4 VARCHAR(255) DEFAULT '' AFTER `v3`;
+ALTER TABLE transmittal_page_type_block ADD COLUMN v4 VARCHAR(255) DEFAULT '' AFTER `v3`;
+ALTER TABLE soa_quotation_page_type_block ADD COLUMN v4 VARCHAR(255) DEFAULT '' AFTER `v3`;
+ALTER TABLE approval_form_quotation_page_type_block ADD COLUMN v4 VARCHAR(255) DEFAULT '' AFTER `v3`;
+ALTER TABLE price_comparison_item ADD COLUMN v4 VARCHAR(255) DEFAULT '' AFTER `v3`;
+
+-- 2024/11/27 replacement
+CREATE TABLE IF NOT EXISTS `product_replacement` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `product_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `replacement_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `code` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';

@@ -200,12 +200,14 @@ var app = new Vue({
         variation1_value:[],
         variation2_value: [],
         variation3_value: [],
+        variation4_value: [],
     
         variation_product: [],
 
         v1:"",
         v2:"",
         v3:"",
+        v4:"",
 
         accessory_infomation: [],
 
@@ -235,6 +237,7 @@ var app = new Vue({
         attributes:[],
 
         toggle_type:'A',
+        toggle: false,
 
         groupedItems : [],
 
@@ -380,17 +383,21 @@ var app = new Vue({
         p_variation1: "",
         p_variation2: "",
         p_variation3: "",
+        p_variation4: "",
         p_variation1_custom: "",
         p_variation2_custom: "",
         p_variation3_custom: "",
+        p_variation4_custom: "",
 
         p_variation1_text: "1st Variation",
         p_variation2_text: "2nd Variation",
         p_variation3_text: "3rd Variation",
+        p_variation4_text: "4th Variation",
 
         p_variation1_value: [],
         p_variation2_value: [],
         p_variation3_value: [],
+        p_variation4_value: [],
 
         p_variation_product: [],
 
@@ -403,6 +410,7 @@ var app = new Vue({
         p_v1:"",
         p_v2:"",
         p_v3:"",
+        p_v4:"",
 
         // bulk insert
         p_code_checked:'',
@@ -1641,7 +1649,7 @@ var app = new Vue({
 
       change_v(){
         let item_product = this.shallowCopy(
-          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3)
+          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3 && element.v4 == this.v4)
         )
   
         if(item_product.id != undefined)
@@ -1723,6 +1731,14 @@ var app = new Vue({
         });
       },
 
+      replacement_info: function(info) {
+        Swal.fire({
+          title: "<i>Replacement Product:</i>", 
+          html: info,  
+          confirmButtonText: "Close", 
+        });
+      },
+
       last_order_info: function(info) {
         Swal.fire({
           title: "<h2><i>Last Order History</i></h2><br>",
@@ -1740,7 +1756,7 @@ var app = new Vue({
         let _this = this;
 
         let item_product = this.shallowCopy(
-          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3)
+          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3 && element.v4 == this.v4)
         )
 
         if(this.product.product.length > 0 && item_product.id == undefined && all != 'all') {
@@ -1760,6 +1776,8 @@ var app = new Vue({
               list += (item_product.k2 + ': ' + item_product.v2) + "\n";
             if(this.v3 != "")
               list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+            if(this.v4 != "")
+              list += (item_product.k4 + ': ' + item_product.v4) + "\n";
         }
         else
         {
@@ -1772,17 +1790,20 @@ var app = new Vue({
         if(all == 'all')
         {
           list = "";
-          var k1, k2, k3;
+          var k1, k2, k3, k4;
           k1 = this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1;
           k2 = this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2;
           k3 = this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3;
+          k4 = this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4;
 
           if(k1 !== '')
-            list += this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1 + ': ' + this.product.variation1_value.join(', ') + "\n";
+            list += (this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1) + ': ' + this.product.variation1_value.join(', ') + "\n";
           if(k2 !== '')
-            list += this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2 + ': ' + this.product.variation2_value.join(', ') + "\n";
+            list += (this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2) + ': ' + this.product.variation2_value.join(', ') + "\n";
           if(k3 !== '')
-            list += this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3 + ': ' + this.product.variation3_value.join(', ') + "\n";
+            list += (this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3) + ': ' + this.product.variation3_value.join(', ') + "\n";
+          if(k4 !== '')
+            list += (this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4) + ': ' + this.product.variation4_value.join(', ') + "\n";
 
           photo = this.product.photo1;
           if(this.product.srp !== null || this.product.srp_quoted !== null)
@@ -1854,6 +1875,7 @@ var app = new Vue({
               v1:this.v1,
               v2:this.v2,
               v3:this.v3,
+              v4:this.v4,
               status:"3",
               btn2:"1",
               notes:[]
@@ -1900,7 +1922,7 @@ var app = new Vue({
         let _this = this;
 
         let item_product = this.shallowCopy(
-          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3)
+          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3 && element.v4 == this.v4)
         )
 
         if(this.product.product.length > 0 && item_product.id == undefined && all != 'all') {
@@ -1920,6 +1942,8 @@ var app = new Vue({
               list += (item_product.k2 + ': ' + item_product.v2) + "\n";
             if(this.v3 != "")
               list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+            if(this.v4 != "")
+              list += (item_product.k4 + ': ' + item_product.v4) + "\n";
         }
         else
         {
@@ -1932,17 +1956,20 @@ var app = new Vue({
         if(all == 'all')
         {
           list = "";
-          var k1, k2, k3;
+          var k1, k2, k3, k4;
           k1 = this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1;
           k2 = this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2;
           k3 = this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3;
+          k4 = this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4;
 
           if(k1 !== '')
-            list += this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1 + ': ' + this.product.variation1_value.join(', ') + "\n";
+            list += (this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1) + ': ' + this.product.variation1_value.join(', ') + "\n";
           if(k2 !== '')
-            list += this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2 + ': ' + this.product.variation2_value.join(', ') + "\n";
+            list += (this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2) + ': ' + this.product.variation2_value.join(', ') + "\n";
           if(k3 !== '')
-            list += this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3 + ': ' + this.product.variation3_value.join(', ') + "\n";
+            list += (this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3) + ': ' + this.product.variation3_value.join(', ') + "\n";
+          if(k4 !== '')
+            list += (this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4) + ': ' + this.product.variation4_value.join(', ') + "\n";
 
           photo = this.product.photo1;
 
@@ -2015,6 +2042,7 @@ var app = new Vue({
             v1:this.v1,
             v2:this.v2,
             v3:this.v3,
+            v4:this.v4,
             status:"3",
             btn2:"1",
             notes:[]
@@ -2140,7 +2168,10 @@ var app = new Vue({
         {
           $('#variation3_value').tagsinput('add', this.product.variation3_value[i]);
         }
-  
+        for(var i=0; i<this.product.variation4_value.length; i++)
+        {
+          $('#variation4_value').tagsinput('add', this.product.variation4_value[i]);
+        }
         
       },
 
@@ -2199,6 +2230,7 @@ var app = new Vue({
         this.v1 = "";
         this.v2 = "";
         this.v3 = "";
+        this.v4 = "";
 
         this.out = product.out;
         this.out_cnt = product.phased_out_cnt;
@@ -2787,6 +2819,7 @@ var app = new Vue({
                 v1:item.v1,
                 v2:item.v2,
                 v3:item.v3,
+                v4:item.v4,
                 ps_var:item.ps_var,
                 status:item.status,
                 notes:[]
@@ -2886,6 +2919,7 @@ var app = new Vue({
                 v1:"",
                 v2:"",
                 v3:"",
+                v4:"",
                 status:"3",
                 notes:[]
               };
@@ -3344,7 +3378,7 @@ var app = new Vue({
 
     p_change_v(){
       let item_product = this.shallowCopy(
-        this.p_product.product.find((element) => element.v1 == this.p_v1 && element.v2 == this.p_v2 && element.v3 == this.p_v3)
+        this.p_product.product.find((element) => element.v1 == this.p_v1 && element.v2 == this.p_v2 && element.v3 == this.p_v3 && element.v4 == this.p_v4)
       )
 
       if(item_product.id != undefined)
@@ -3414,12 +3448,13 @@ var app = new Vue({
       var v1 = this.p_item_product.v1;
       var v2 = this.p_item_product.v2;
       var v3 = this.p_item_product.v3;
+      var v4 = this.p_item_product.v4;
 
       form_Data.append('id', this.p_id);
       form_Data.append('v1', v1);
       form_Data.append('v2', v2);
       form_Data.append('v3', v3);
-
+      form_Data.append('v4', v4);
 
       axios({
         method: "post",
@@ -3561,10 +3596,12 @@ var app = new Vue({
           _this.p_variation1_text = _this.p_record[0]['variation1_text'];
           _this.p_variation2_text = _this.p_record[0]['variation2_text'];
           _this.p_variation3_text = _this.p_record[0]['variation3_text'];
+          _this.p_variation4_text = _this.p_record[0]['variation4_text'];
 
           _this.p_variation1_value = _this.p_record[0]['variation1_value'];
           _this.p_variation2_value = _this.p_record[0]['variation2_value'];
           _this.p_variation3_value = _this.p_record[0]['variation3_value'];
+          _this.p_variation4_value = _this.p_record[0]['variation4_value'];
 
           _this.p_related_product = _this.p_record[0]['related_product'];
           _this.p_chunk(_this.p_related_product, 4);
@@ -3572,10 +3609,12 @@ var app = new Vue({
           _this.p_variation1 = _this.p_record[0]['variation1'];
           _this.p_variation2 = _this.p_record[0]['variation2'];
           _this.p_variation3 = _this.p_record[0]['variation3'];
+          _this.p_variation4 = _this.p_record[0]['variation4'];
 
           _this.p_variation1_custom = _this.p_record[0]['variation1_custom'];
           _this.p_variation2_custom = _this.p_record[0]['variation2_custom'];
           _this.p_variation3_custom = _this.p_record[0]['variation3_custom'];
+          _this.p_variation4_custom = _this.p_record[0]['variation4_custom'];
           
           _this.p_set_up_variants();
           _this.p_set_up_specification();
@@ -3583,6 +3622,7 @@ var app = new Vue({
           _this.p_v1 = "";
           _this.p_v2 = "";
           _this.p_v3 = "";
+          _this.p_v4 = "";
 
           _this.p_change_v();
 
@@ -3614,7 +3654,10 @@ var app = new Vue({
       {
         $('#variation3_value').tagsinput('add', this.p_variation3_value[i]);
       }
-
+      for(var i=0; i<this.p_variation4_value.length; i++)
+      {
+        $('#variation4_value').tagsinput('add', this.p_variation4_value[i]);
+      }
       
     },
 
@@ -3720,7 +3763,7 @@ PhaseOutAlert_set(phased_out_text){
 
 change_v_set(set){
   let item_product = this.shallowCopy(
-    set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
+    set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
   )
 
   if(item_product.id != undefined)
@@ -3791,7 +3834,7 @@ check_all_set(){
 
   for(var i=0; i < this.product_set.length; i++){
     let item_product = this.shallowCopy(
-      this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+      this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
     )
 
     if(item_product.id != undefined)
@@ -3834,7 +3877,7 @@ add_with_image_set_select(all) {
 
   for(var i=0; i < this.product_set.length; i++){
     let item_product = this.shallowCopy(
-      this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+      this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
     )
 
     var list_g = "";
@@ -3882,6 +3925,10 @@ add_with_image_set_select(all) {
       if(item_product.v3 != ""){
         list += (item_product.k3 + ': ' + item_product.v3) + "\n";
         ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+      }
+      if(item_product.v4 != ""){
+        list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+        ps_var += (item_product.k4 + ': ' + item_product.v4) + "\n";
       }
 
       sets.push(ps_var);
@@ -3936,6 +3983,7 @@ add_with_image_set_select(all) {
       v1: "",
       v2: "",
       v3: "",
+      v4: "",
 
       ps_var : sets,
     };
@@ -3994,7 +4042,7 @@ add_without_image_set_select(all) {
 
   for(var i=0; i < this.product_set.length; i++){
     let item_product = this.shallowCopy(
-      this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+      this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
     )
 
     var list_g = "";
@@ -4037,6 +4085,10 @@ add_without_image_set_select(all) {
       if(item_product.v3 != ""){
         list += (item_product.k3 + ': ' + item_product.v3) + "\n";
         ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+      }
+      if(item_product.v4 != ""){
+        list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+        ps_var += (item_product.k4 + ': ' + item_product.v4) + "\n";
       }
 
       sets.push(ps_var);
@@ -4092,6 +4144,7 @@ add_without_image_set_select(all) {
       v1: "",
       v2: "",
       v3: "",
+      v4: "",
 
       ps_var : sets,
     };
@@ -4224,7 +4277,7 @@ var srp = 0;
 let _this = this;
 
 let item_product = this.shallowCopy(
-  set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
+  set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
 )
 
 if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
@@ -4249,6 +4302,8 @@ if(item_product.id != undefined)
       list += (item_product.k2 + ': ' + item_product.v2) + "\n";
     if(set.v3 != "")
       list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+    if(set.v4 != "")
+      list += (item_product.k4 + ': ' + item_product.v4) + "\n";
 }
 else
 {
@@ -4264,17 +4319,20 @@ else
 if(all == 'all')
 {
   list = "";
-  var k1, k2, k3;
+  var k1, k2, k3, k4;
   k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
   k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
   k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
+  k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
 
   if(k1 !== '')
-    list += set.variation1 === "custom" ? set.variation1_custom : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+    list += (set.variation1 === "custom" ? set.variation1_custom : set.variation1) + ': ' + set.variation1_value.join(', ') + "\n";
   if(k2 !== '')
-    list += set.variation2 === "custom" ? set.variation2_custom : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+    list += (set.variation2 === "custom" ? set.variation2_custom : set.variation2) + ': ' + set.variation2_value.join(', ') + "\n";
   if(k3 !== '')
-    list += set.variation3 === "custom" ? set.variation3_custom : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+    list += (set.variation3 === "custom" ? set.variation3_custom : set.variation3) + ': ' + set.variation3_value.join(', ') + "\n";
+  if(k4 !== '')
+    list += (set.variation4 === "custom" ? set.variation4_custom : set.variation4) + ': ' + set.variation4_value.join(', ') + "\n";
 
   photo = set.photo1;
   photo2 = set.photo2;
@@ -4380,6 +4438,7 @@ item = {
   v1: all == 'all' ? '' : set.v1,
     v2: all == 'all' ? '' : set.v2,
     v3: all == 'all' ? '' : set.v3,
+    v4: all == 'all' ? '' : set.v4,
 };
 
 items.push(item);
@@ -4427,7 +4486,7 @@ var srp = 0;
 let _this = this;
 
 let item_product = this.shallowCopy(
-  set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
+  set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
 )
 
 if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
@@ -4448,6 +4507,8 @@ if(item_product.id != undefined)
       list += (item_product.k2 + ': ' + item_product.v2) + "\n";
     if(set.v3 != "")
       list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+    if(set.v4 != "")
+      list += (item_product.k4 + ': ' + item_product.v4) + "\n";
 }
 else
 {
@@ -4461,17 +4522,20 @@ else
 if(all == 'all')
 {
   list = "";
-  var k1, k2, k3;
+  var k1, k2, k3, k4;
   k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
   k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
   k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
+  k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
 
   if(k1 !== '')
-    list += set.variation1 === "custom" ? set.variation1_custom : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+    list += (set.variation1 === "custom" ? set.variation1_custom : set.variation1) + ': ' + set.variation1_value.join(', ') + "\n";
   if(k2 !== '')
-    list += set.variation2 === "custom" ? set.variation2_custom : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+    list += (set.variation2 === "custom" ? set.variation2_custom : set.variation2) + ': ' + set.variation2_value.join(', ') + "\n";
   if(k3 !== '')
-    list += set.variation3 === "custom" ? set.variation3_custom : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+    list += (set.variation3 === "custom" ? set.variation3_custom : set.variation3) + ': ' + set.variation3_value.join(', ') + "\n";
+  if(k4 !== '')
+    list += (set.variation4 === "custom" ? set.variation4_custom : set.variation4) + ': ' + set.variation4_value.join(', ') + "\n";
 
   photo = set.photo1;
 
@@ -4567,6 +4631,7 @@ item = {
     v1: all == 'all' ? '' : set.v1,
     v2: all == 'all' ? '' : set.v2,
     v3: all == 'all' ? '' : set.v3,
+    v4: all == 'all' ? '' : set.v4,
     status:"3",
             btn2:"1",
             notes:[]

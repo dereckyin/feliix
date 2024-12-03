@@ -209,6 +209,7 @@ switch ($method) {
                     `v1` = :v1,
                     `v2` = :v2,
                     `v3` = :v3,
+                    `v4` = :v4,
                     `ps_var` = :ps_var,
                     `pid` = :pid,
                     `status` = 0,
@@ -248,6 +249,7 @@ switch ($method) {
                 $v1 = $temp_block_a['v1'];
                 $v2 = $temp_block_a['v2'];
                 $v3 = $temp_block_a['v3'];
+                $v4 = $temp_block_a['v4'];
 
                 $ps_var = isset($temp_block_a['ps_var']) ? $temp_block_a['ps_var'] : [];
                 $json_ps_var = json_encode($ps_var);
@@ -282,6 +284,7 @@ switch ($method) {
                 $stmt->bindParam(':v1', $v1);
                 $stmt->bindParam(':v2', $v2);
                 $stmt->bindParam(':v3', $v3);
+                $stmt->bindParam(':v4', $v4);
                 $stmt->bindParam(':ps_var', $json_ps_var);
                 $stmt->bindParam(':pid', $pid);
 

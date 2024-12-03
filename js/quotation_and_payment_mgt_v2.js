@@ -1391,7 +1391,7 @@ var app = new Vue({
           can_save = true;
       }
 
-      if(this.username.trim() == 'Ronnie Fernando Dela Cruz')
+      if(this.username.trim() == 'Marie Kayla Patricia Dequina')
       can_save = true;
       
       if(this.username.trim() == this.record.username.trim())
@@ -1472,7 +1472,7 @@ var app = new Vue({
           can_save = true;
       }
 
-      if(this.username.trim() == 'Ronnie Fernando Dela Cruz')
+      if(this.username.trim() == 'Marie Kayla Patricia Dequina')
       can_save = true;
     
       return can_save;

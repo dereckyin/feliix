@@ -661,6 +661,17 @@
                             </select>
                         </li>
 
+                        <li v-if="set.variation4_value[0] !== '' && set.variation4_value[0] !== undefined">
+                            {{ set.variation4 !== 'custom' ? set.variation4 + ': ' : set.variation4_custom + ': ' }} <template v-for="(item, index) in set.variation4_value">{{ (index + 1 !== set.variation4_value.length) ? item + ', ' : item}} </template>
+                        </li>
+                        <li v-show="set.variation4_value[0] !== '' && set.variation4_value[0] !== undefined">
+                            <select class="form-control" v-model="set.v4" @change="change_v_set(set)">
+                                <option value=""></option>
+                                <option v-for="(item, index) in set.variation4_value" :value="item" :key="item">{{item}}
+                                </option>
+                            </select>
+                        </li>
+
                         <template v-for="(item, index) in set.accessory_infomation" v-if="show_accessory">
                             <li>{{ item.category }}</li>
                             <li>
@@ -864,6 +875,16 @@
                         <select class="form-control" v-model="v3" @change="change_v()">
                             <option value=""></option>
                             <option v-for="(item, index) in variation3_value" :value="item" :key="item">{{item}}
+                            </option>
+                        </select>
+                    </li>
+                    <li v-if="variation4_value[0] !== '' && variation4_value[0] !== undefined">
+                        {{ variation4 !== 'custom' ? variation4 + ': ' : variation4_custom + ': ' }} <template v-for="(item, index) in variation4_value">{{ (index + 1 !== variation4_value.length) ? item + ', ' : item}} </template>
+                    </li>
+                    <li v-show="variation4_value[0] !== '' && variation4_value[0] !== undefined">
+                        <select class="form-control" v-model="v4" @change="change_v()">
+                            <option value=""></option>
+                            <option v-for="(item, index) in variation4_value" :value="item" :key="item">{{item}}
                             </option>
                         </select>
                     </li>

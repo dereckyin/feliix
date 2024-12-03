@@ -251,12 +251,14 @@ var app = new Vue({
         variation1_value:[],
         variation2_value: [],
         variation3_value: [],
+        variation4_value: [],
     
         variation_product: [],
 
         v1:"",
         v2:"",
         v3:"",
+        v4:"",
 
         accessory_infomation: [],
 
@@ -287,6 +289,7 @@ var app = new Vue({
         attributes:[],
 
         toggle_type:'',
+        toggle: false,
 
         groupedItems : [],
 
@@ -678,7 +681,7 @@ var app = new Vue({
         var srp = 0;
 
         let item_product = this.shallowCopy(
-          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3)
+          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3 && element.v4 == this.v4)
         )
 
         if(this.product.product.length > 0 && item_product.id == undefined && all != 'all') {
@@ -703,6 +706,8 @@ var app = new Vue({
               list += (item_product.k2 + ': ' + item_product.v2) + "\n";
             if(this.v3 != "")
               list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+            if(this.v4 != "")
+              list += (item_product.k4 + ': ' + item_product.v4) + "\n";
         }
         else
         {
@@ -718,17 +723,20 @@ var app = new Vue({
         if(all == 'all')
         {
           list = "";
-          var k1, k2, k3;
+          var k1, k2, k3, k4;
           k1 = this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1;
           k2 = this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2;
           k3 = this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3;
+          k4 = this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4;
 
           if(k1 !== '')
-            list += this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1 + ': ' + this.product.variation1_value.join(', ') + "\n";
+            list += (this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1) + ': ' + this.product.variation1_value.join(', ') + "\n";
           if(k2 !== '')
-            list += this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2 + ': ' + this.product.variation2_value.join(', ') + "\n";
+            list += (this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2) + ': ' + this.product.variation2_value.join(', ') + "\n";
           if(k3 !== '')
-            list += this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3 + ': ' + this.product.variation3_value.join(', ') + "\n";
+            list += (this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3) + ': ' + this.product.variation3_value.join(', ') + "\n";
+          if(k4 !== '')
+            list += (this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4) + ': ' + this.product.variation4_value.join(', ') + "\n";
 
           photo = this.product.photo1;
           photo2 = this.product.photo2;
@@ -816,6 +824,7 @@ var app = new Vue({
             v1: all == 'all' ? '' : this.v1,
             v2: all == 'all' ? '' : this.v2,
             v3: all == 'all' ? '' : this.v3,
+            v4: all == 'all' ? '' : this.v4,
           };
         }
 
@@ -844,6 +853,7 @@ var app = new Vue({
             v1: all == 'all' ? '' : this.v1,
             v2: all == 'all' ? '' : this.v2,
             v3: all == 'all' ? '' : this.v3,
+            v4: all == 'all' ? '' : this.v4,
           };
         }
 
@@ -861,7 +871,7 @@ var app = new Vue({
         var srp = 0;
 
         let item_product = this.shallowCopy(
-          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3)
+          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3 && element.v4 == this.v4)
         )
 
         if(this.product.product.length > 0 && item_product.id == undefined && all != 'all') {
@@ -882,6 +892,8 @@ var app = new Vue({
               list += (item_product.k2 + ': ' + item_product.v2) + "\n";
             if(this.v3 != "")
               list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+            if(this.v4 != "")
+              list += (item_product.k4 + ': ' + item_product.v4) + "\n";
         }
         else
         {
@@ -895,17 +907,20 @@ var app = new Vue({
         if(all == 'all')
         {
           list = "";
-          var k1, k2, k3;
+          var k1, k2, k3, k4;
           k1 = this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1;
           k2 = this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2;
           k3 = this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3;
+          k4 = this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4;
 
           if(k1 !== '')
-            list += this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1 + ': ' + this.product.variation1_value.join(', ') + "\n";
+            list += (this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1) + ': ' + this.product.variation1_value.join(', ') + "\n";
           if(k2 !== '')
-            list += this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2 + ': ' + this.product.variation2_value.join(', ') + "\n";
+            list += (this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2) + ': ' + this.product.variation2_value.join(', ') + "\n";
           if(k3 !== '')
-            list += this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3 + ': ' + this.product.variation3_value.join(', ') + "\n";
+            list += (this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3) + ': ' + this.product.variation3_value.join(', ') + "\n";
+          if(k4 !== '')
+            list += (this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4) + ': ' + this.product.variation4_value.join(', ') + "\n";
 
           photo = this.product.photo1;
 
@@ -989,6 +1004,7 @@ var app = new Vue({
             v1: all == 'all' ? '' : this.v1,
             v2: all == 'all' ? '' : this.v2,
             v3: all == 'all' ? '' : this.v3,
+            v4: all == 'all' ? '' : this.v4,
           };
         }
 
@@ -1017,6 +1033,7 @@ var app = new Vue({
             v1: all == 'all' ? '' : this.v1,
             v2: all == 'all' ? '' : this.v2,
             v3: all == 'all' ? '' : this.v3,
+            v4: all == 'all' ? '' : this.v4,
           };
         }
 
@@ -1228,6 +1245,7 @@ var app = new Vue({
             _this.v1 = "";
             _this.v2 = "";
             _this.v3 = "";
+            _this.v4 = "";
     
             _this.chunk(_this.related_product, 4);
     
@@ -1297,6 +1315,7 @@ var app = new Vue({
         this.v1 = "";
         this.v2 = "";
         this.v3 = "";
+        this.v4 = "";
 
         this.out = product.out;
         this.out_cnt = product.phased_out_cnt;
@@ -1331,6 +1350,10 @@ var app = new Vue({
         for(var i=0; i<this.product.variation3_value.length; i++)
         {
           $('#variation3_value').tagsinput('add', this.product.variation3_value[i]);
+        }
+        for(var i=0; i<this.product.variation4_value.length; i++)
+        {
+          $('#variation4_value').tagsinput('add', this.product.variation4_value[i]);
         }
   
         
@@ -3974,7 +3997,7 @@ Installation:`;
 
       change_v(){
         let item_product = this.shallowCopy(
-          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3)
+          this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3 && element.v4 == this.v4)
         )
   
         if(item_product.id != undefined)
@@ -4044,6 +4067,14 @@ Installation:`;
       phased_out_info: function(info) {
         Swal.fire({
           title: "<i>Phased-out Variants:</i>", 
+          html: info,  
+          confirmButtonText: "Close", 
+        });
+      },
+
+      replacement_info: function(info) {
+        Swal.fire({
+          title: "<i>Replacement Product:</i>", 
           html: info,  
           confirmButtonText: "Close", 
         });
@@ -4163,7 +4194,7 @@ Installation:`;
   
     change_v_set(set){
       let item_product = this.shallowCopy(
-        set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
+        set.variation_product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
       )
     
       if(item_product.id != undefined)
@@ -4234,7 +4265,7 @@ Installation:`;
     
       for(var i=0; i < this.product_set.length; i++){
         let item_product = this.shallowCopy(
-          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
         )
     
         if(item_product.id != undefined)
@@ -4276,7 +4307,7 @@ Installation:`;
     
       for(var i=0; i < this.product_set.length; i++){
         let item_product = this.shallowCopy(
-          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
         )
 
         var list_g = "";
@@ -4323,6 +4354,10 @@ Installation:`;
           if(item_product.v3 != ""){
             list += (item_product.k3 + ': ' + item_product.v3) + "\n";
             ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+          }
+          if(item_product.v4 != ""){
+            list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+            ps_var += (item_product.k4 + ': ' + item_product.v4) + "\n";
           }
 
           sets.push(ps_var);
@@ -4386,6 +4421,7 @@ Installation:`;
               v1: "",
               v2: "",
               v3: "",
+              v4: "",
 
               ps_var : sets,
             };
@@ -4416,6 +4452,7 @@ Installation:`;
               v1: "",
               v2: "",
               v3: "",
+              v4: "",
 
               ps_var : sets,
             };
@@ -4447,7 +4484,7 @@ Installation:`;
     
       for(var i=0; i < this.product_set.length; i++){
         let item_product = this.shallowCopy(
-          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3)
+          this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
         )
 
         var list_g = "";
@@ -4490,6 +4527,10 @@ Installation:`;
           if(item_product.v3 != ""){
             list += (item_product.k3 + ': ' + item_product.v3) + "\n";
             ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+          }
+          if(item_product.v4 != ""){
+            list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+            ps_var += (item_product.k4 + ': ' + item_product.v4) + "\n";
           }
 
           sets.push(ps_var);
@@ -4552,6 +4593,7 @@ Installation:`;
               v1: "",
               v2: "",
               v3: "",
+              v4: "",
 
               ps_var : sets,
             };
@@ -4582,6 +4624,7 @@ Installation:`;
               v1: "",
               v2: "",
               v3: "",
+              v4: "",
 
               ps_var : sets,
             };
@@ -4686,7 +4729,7 @@ Installation:`;
     var srp = 0;
 
     let item_product = this.shallowCopy(
-      set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
+      set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
     )
 
     if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
@@ -4711,6 +4754,8 @@ Installation:`;
           list += (item_product.k2 + ': ' + item_product.v2) + "\n";
         if(set.v3 != "")
           list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+        if(set.v4 != "")
+          list += (item_product.k4 + ': ' + item_product.v4) + "\n";
     }
     else
     {
@@ -4726,17 +4771,20 @@ Installation:`;
     if(all == 'all')
     {
       list = "";
-      var k1, k2, k3;
+      var k1, k2, k3, k4;
       k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
       k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
       k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
+      k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
 
       if(k1 !== '')
-        list += set.variation1 === "custom" ? set.variation1_custom : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+        list += set.variation1 === "custom" ? set.variation1_custom + ': ' + set.variation1_value.join(', ') + "\n" : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
       if(k2 !== '')
-        list += set.variation2 === "custom" ? set.variation2_custom : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+        list += set.variation2 === "custom" ? set.variation2_custom + ': ' + set.variation2_value.join(', ') + "\n" : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
       if(k3 !== '')
-        list += set.variation3 === "custom" ? set.variation3_custom : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+        list += set.variation3 === "custom" ? set.variation3_custom + ': ' + set.variation3_value.join(', ') + "\n" : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+      if(k4 !== '')
+        list += set.variation4 === "custom" ? set.variation4_custom + ': ' + set.variation4_value.join(', ') + "\n" : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
 
       photo = set.photo1;
       photo2 = set.photo2;
@@ -4844,6 +4892,7 @@ Installation:`;
         v1: all == 'all' ? '' : set.v1,
         v2: all == 'all' ? '' : set.v2,
         v3: all == 'all' ? '' : set.v3,
+        v4: all == 'all' ? '' : set.v4,
       };
     }
 
@@ -4872,6 +4921,7 @@ Installation:`;
         v1: all == 'all' ? '' : set.v1,
         v2: all == 'all' ? '' : set.v2,
         v3: all == 'all' ? '' : set.v3,
+        v4: all == 'all' ? '' : set.v4,
       };
     }
 
@@ -4889,7 +4939,7 @@ Installation:`;
     var srp = 0;
 
     let item_product = this.shallowCopy(
-      set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3)
+      set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
     )
 
     if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
@@ -4910,6 +4960,8 @@ Installation:`;
           list += (item_product.k2 + ': ' + item_product.v2) + "\n";
         if(set.v3 != "")
           list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+        if(set.v4 != "")
+          list += (item_product.k4 + ': ' + item_product.v4) + "\n";
     }
     else
     {
@@ -4923,17 +4975,20 @@ Installation:`;
     if(all == 'all')
     {
       list = "";
-      var k1, k2, k3;
+      var k1, k2, k3, k4;
       k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
       k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
       k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
+      k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
 
       if(k1 !== '')
-        list += set.variation1 === "custom" ? set.variation1_custom : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+        list += set.variation1 === "custom" ? set.variation1_custom + ': ' + set.variation1_value.join(', ') + "\n" : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
       if(k2 !== '')
-        list += set.variation2 === "custom" ? set.variation2_custom : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+        list += set.variation2 === "custom" ? set.variation2_custom + ': ' + set.variation2_value.join(', ') + "\n" : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
       if(k3 !== '')
-        list += set.variation3 === "custom" ? set.variation3_custom : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+        list += set.variation3 === "custom" ? set.variation3_custom + ': ' + set.variation3_value.join(', ') + "\n" : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+      if(k4 !== '')
+        list += set.variation4 === "custom" ? set.variation4_custom + ': ' + set.variation4_value.join(', ') + "\n" : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
 
       photo = set.photo1;
 
@@ -5037,6 +5092,7 @@ Installation:`;
         v1: all == 'all' ? '' : set.v1,
         v2: all == 'all' ? '' : set.v2,
         v3: all == 'all' ? '' : set.v3,
+        v4: all == 'all' ? '' : set.v4,
       };
     }
 
@@ -5065,6 +5121,7 @@ Installation:`;
         v1: all == 'all' ? '' : set.v1,
         v2: all == 'all' ? '' : set.v2,
         v3: all == 'all' ? '' : set.v3,
+        v4: all == 'all' ? '' : set.v4,
       };
     }
 

@@ -111,20 +111,24 @@ function GetProductCategory($id, $db){
         $variation1_value = [];
         $variation2_value = [];
         $variation3_value = [];
+        $variation4_value = [];
 
         $variation1_text = "";
         $variation2_text = "";
         $variation3_text = "";
+        $variation4_text = "";
 
         if(count($product) > 0)
         {
             $variation1_text = $product[0]['k1'];
             $variation2_text = $product[0]['k2'];
             $variation3_text = $product[0]['k3'];
+            $variation4_text = $product[0]['k4'];
 
             $variation1_value = [];
             $variation2_value = [];
             $variation3_value = [];
+            $variation4_value = [];
 
             for($i = 0; $i < count($product); $i++)
             {
@@ -139,6 +143,10 @@ function GetProductCategory($id, $db){
                 if (!in_array($product[$i]['v3'],$variation3_value))
                 {
                     array_push($variation3_value,$product[$i]['v3']);
+                }
+                if (!in_array($product[$i]['v4'],$variation4_value))
+                {
+                    array_push($variation4_value,$product[$i]['v4']);
                 }
             }
         }
@@ -156,6 +164,8 @@ function GetProductCategory($id, $db){
         $variation2_custom = $variation2_text;
         $variation3 = 'custom';
         $variation3_custom = $variation3_text;
+        $variation4 = 'custom';
+        $variation4_custom = $variation4_text;
 
         for($i = 0; $i < count($special_information); $i++)
         {
@@ -181,6 +191,12 @@ function GetProductCategory($id, $db){
                         $variation3 = $variation3_text;
                         $variation3_custom = "";
                     }
+
+                    if($lv3[$j]['category'] == $variation4_text)
+                    {
+                        $variation4 = $variation4_text;
+                        $variation4_custom = "";
+                    }
                 }
             }
             
@@ -202,6 +218,12 @@ function GetProductCategory($id, $db){
         {
             $variation3 = "";
             $variation3_custom = "";
+        }
+
+        if($variation4_text == "")
+        {
+            $variation4 = "";
+            $variation4_custom = "";
         }
 
         $attribute_list = [];
@@ -229,6 +251,10 @@ function GetProductCategory($id, $db){
                 if($variation3_text == $special_info_json[$i]->category)
                 {
                     $value = $variation3_value;
+                }
+                if($variation4_text == $special_info_json[$i]->category)
+                {
+                    $value = $variation4_value;
                 }
 
                 if(count($value) > 0)
@@ -259,6 +285,13 @@ function GetProductCategory($id, $db){
         {
             $attribute_list[] = array("category" => $variation3_text,
                                    "value" => $variation3_value,
+                                );
+        }
+
+        if($variation4 == "custom" && $variation4_custom != "4th Variation")
+        {
+            $attribute_list[] = array("category" => $variation4_text,
+                                   "value" => $variation4_value,
                                 );
         }
 
@@ -323,9 +356,11 @@ function GetProduct($id, $db){
         $k1 = GetKey($row['1st_variation']);
         $k2 = GetKey($row['2rd_variation']);
         $k3 = GetKey($row['3th_variation']);
+        $k4 = GetKey($row['4th_variation']);
         $v1 = GetValue($row['1st_variation']);
         $v2 = GetValue($row['2rd_variation']);
         $v3 = GetValue($row['3th_variation']);
+        $v4 = GetValue($row['4th_variation']);
         $checked = '';
         $code = $row['code'];
         $price = $row['price'];
@@ -349,9 +384,11 @@ function GetProduct($id, $db){
                                     "k1" => $k1, 
                                     "k2" => $k2, 
                                     "k3" => $k3, 
+                                    "k4" => $k4,
                                     "v1" => $v1, 
                                     "v2" => $v2, 
                                     "v3" => $v3, 
+                                    "v4" => $v4,
                                     "checked" => $checked, 
                                     "code" => $code, 
                                     "price" => $price, 
