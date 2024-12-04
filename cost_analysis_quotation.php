@@ -1214,7 +1214,7 @@ function GetProductItems($pages, $q_id, $db)
 
                 if($pid != 0)
                 {
-                    $product = GetProducts($row['pid'], $v1, $v2, $v3, $db);
+                    $product = GetProducts($row['pid'], $v1, $v2, $v3, $v4, $db);
                 }
             
                 $type == "" ? "" : "image";
