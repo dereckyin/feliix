@@ -118,7 +118,7 @@ if($jwt){
             $confirm_text = GetConfirmText($confirm, $db);
             
             $product = "";
-            $product = GetProductMain($row['pid'], $row['v1'], $row['v2'], $row['v3'], $db);
+            $product = GetProductMain($row['pid'], $row['v1'], $row['v2'], $row['v3'], $row['v4'], $db);
 
             $product_currency = GetProductCurrency($row['pid'], $db);
             
