@@ -63,6 +63,7 @@ if (!isset($jwt)) {
                     prepare_by_second_line,
                     footer_first_line,
                     footer_second_line,
+                    pageless,
                     (SELECT COUNT(*) FROM quotation_page WHERE quotation_id = quotation.id and quotation_page.status <> -1) page_count
                     FROM quotation
                     WHERE status <> -1 and id=$id";
@@ -91,12 +92,15 @@ if (!isset($jwt)) {
     $stmt = $db->prepare($query);
     $stmt->execute();
 
+    $vat = "";
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id = $row['id'];
 
-        $pages = GetPages($row['id'], $db);
+        $pages = GetPages($row['id'], $db, $row['pageless']);
         // print
         $product_array = GetProductItems($pages, $row['id'], $db);
+
+        $vat = $pages[0]['total'][0]['vat'];
 
     }
 
@@ -140,18 +144,21 @@ if (!isset($jwt)) {
                 $sheet->setCellValue('B1', 'ID');
                 $sheet->setCellValue('C1', 'Qty');
                 $sheet->setCellValue('D1', 'Product Price');
-                $sheet->setCellValue('E1', 'Amount');
-                $sheet->setCellValue('F1', '');
+
+                $sheet->setCellValue('E1', 'Vat');
+                $sheet->setCellValue('F1', 'Amount');
                 $sheet->setCellValue('G1', '');
-                $sheet->setCellValue('H1', 'CP價格幣種');
-                $sheet->setCellValue('I1', 'CP價格日期');
-                $sheet->setCellValue('J1', 'CP價格');
-                $sheet->setCellValue('K1', 'SRP價格日期');
-                $sheet->setCellValue('L1', 'SRP價格');
-                $sheet->setCellValue('M1', '');
+                $sheet->setCellValue('H1', '');
+                $sheet->setCellValue('I1', 'CP價格幣種');
+                $sheet->setCellValue('J1', 'CP價格日期');
+                $sheet->setCellValue('K1', 'CP價格');
+                $sheet->setCellValue('L1', 'SRP價格日期');
+                $sheet->setCellValue('M1', 'SRP價格');
                 $sheet->setCellValue('N1', '');
-                $sheet->setCellValue('O1', 'SRP比例');
-                $sheet->setCellValue('P1', 'QP比例');
+                $sheet->setCellValue('O1', '');
+                $sheet->setCellValue('P1', 'SRP比例');
+                $sheet->setCellValue('Q1', 'QP比例');
+
     
                 $sheet->getColumnDimension('A')->setWidth(13.82);
                 $sheet->getColumnDimension('B')->setWidth(13.82);
@@ -169,6 +176,7 @@ if (!isset($jwt)) {
                 $sheet->getColumnDimension('N')->setWidth(18.82);
                 $sheet->getColumnDimension('O')->setWidth(18.82);
                 $sheet->getColumnDimension('P')->setWidth(18.82);
+                $sheet->getColumnDimension('Q')->setWidth(18.82);
     
                 $i = 2;
                 foreach($product_array as $row)
@@ -190,7 +198,15 @@ if (!isset($jwt)) {
                     else
                         $price = $row['price'];
                     $sheet->setCellValue('D' . $i, $price);
-                    $sheet->setCellValue('E' . $i, $row['amount']);
+
+                    if($vat == 'P')
+                        $sheet->setCellValue('E' . $i, round($price * 0.12, 2));
+                    elseif($vat == 'Y')
+                        $sheet->setCellValue('E' . $i, round($row['amount'] * 0.12, 2));
+                    else
+                        $sheet->setCellValue('E' . $i, 0);
+
+                    $sheet->setCellValue('F' . $i, $row['amount']);
 
                     if($row['pid'] != '0')
                     {
@@ -234,11 +250,11 @@ if (!isset($jwt)) {
                             $price_ntd_change = substr($price_ntd_change, 0, -2);
                             $currency = substr($currency, 0, -2);
 
-                            $sheet->setCellValue('J' . $i, $price);
-                            $sheet->setCellValue('I' . $i, $price_change);
-                            $sheet->setCellValue('H' . $i, $currency);
-                            $sheet->setCellValue('K' . $i, $price_changek);
-                            $sheet->setCellValue('L' . $i, $pricel);
+                            $sheet->setCellValue('K' . $i, $price);
+                            $sheet->setCellValue('J' . $i, $price_change);
+                            $sheet->setCellValue('I' . $i, $currency);
+                            $sheet->setCellValue('L' . $i, $price_changek);
+                            $sheet->setCellValue('M' . $i, $pricel);
                         }
                         else
                         {
@@ -246,41 +262,41 @@ if (!isset($jwt)) {
     
                             if($product['currency'] == "")
                             {
-                                $sheet->setCellValue('J' . $i, $product['price']);
-                                $sheet->setCellValue('I' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
+                                $sheet->setCellValue('K' . $i, $product['price']);
+                                $sheet->setCellValue('J' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
                             }
                             else
                             {
-                                $sheet->setCellValue('J' . $i, $product['price_ntd']);
-                                $sheet->setCellValue('I' . $i, $product['price_ntd_change'] != '' ? substr($product['price_ntd_change'], 0, 10) : '');
+                                $sheet->setCellValue('K' . $i, $product['price_ntd']);
+                                $sheet->setCellValue('J' . $i, $product['price_ntd_change'] != '' ? substr($product['price_ntd_change'], 0, 10) : '');
                             }
     
     
-                            $sheet->setCellValue('H' . $i, $product['currency']);
+                            $sheet->setCellValue('I' . $i, $product['currency']);
                             
-                            $sheet->setCellValue('K' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
-                            $sheet->setCellValue('L' . $i, $product['price']);
+                            $sheet->setCellValue('L' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
+                            $sheet->setCellValue('M' . $i, $product['price']);
     
                             if($product['price'] != 0 && $product['currency'] == "")
                             {
-                                $sheet->setCellValue('O' . $i, round($product['price'] / $product['price'], 2));
-                                $sheet->setCellValue('P' . $i, round($price / $product['price'], 2));
+                                $sheet->setCellValue('P' . $i, round($product['price'] / $product['price'], 2));
+                                $sheet->setCellValue('Q' . $i, round($price / $product['price'], 2));
                             }
                             
                             if($product['price_ntd'] != 0 && $product['currency'] != "")
                             {
-                                $sheet->setCellValue('O' . $i, round($product['price'] / $product['price_ntd'], 2));
-                                $sheet->setCellValue('P' . $i, round($price / $product['price_ntd'], 2));
+                                $sheet->setCellValue('P' . $i, round($product['price'] / $product['price_ntd'], 2));
+                                $sheet->setCellValue('Q' . $i, round($price / $product['price_ntd'], 2));
                             }
                         }
                     }
 
-                    // $sheet->getStyle('A' . $i . ':' . 'P' . $i)->applyFromArray($styleArray);
+                    // $sheet->getStyle('A' . $i . ':' . 'Q' . $i)->applyFromArray($styleArray);
                     $i++;
                 }
             
-                $sheet->getStyle('A1:' . 'P1')->getFont()->setBold(true);
-                $sheet->getStyle('A1:' . 'P' . --$i)->applyFromArray($styleArray);
+                $sheet->getStyle('A1:' . 'Q1')->getFont()->setBold(true);
+                $sheet->getStyle('A1:' . 'Q' . --$i)->applyFromArray($styleArray);
     
                 ob_end_clean();
     
@@ -311,7 +327,7 @@ function GetSubtotal($ary)
     return $total;
 }
 
-function GetPages($qid, $db){
+function GetPages($qid, $db, $pageless){
     $query = "
         SELECT id,
             page
@@ -331,7 +347,7 @@ function GetPages($qid, $db){
         $id = $row['id'];
         $page = $row['page'];
         $type = GetTypes($id, $db);
-        $total = GetTotal($qid, $page, $db);
+        $total = GetTotal($qid, $page, $db, $pageless);
         $term = GetTerm($qid, $page, $db);
         $payment_term = GetPaymentTerm($qid, $page, $db);
         $sig = GetSig($qid, $page, $db);
@@ -350,7 +366,7 @@ function GetPages($qid, $db){
     return $merged_results;
 }
 
-function GetTotal($qid, $page, $db){
+function GetTotal($qid, $page, $db, $pageless){
     $query = "
         SELECT 
         `page`,
@@ -360,8 +376,10 @@ function GetTotal($qid, $page, $db){
         valid,
         total
         FROM   quotation_total
-        WHERE  quotation_id = " . $qid . "
-        AND  page = " . $page . "
+        WHERE  quotation_id = " . $qid;
+    if($pageless != 'Y')
+        $query .= " AND  page = " . $page;
+    $query .= "
         AND `status` <> -1 
         ORDER BY id
     ";
