@@ -1323,7 +1323,7 @@ function GetProductItems($pages, $q_id, $db)
     return $return_result;
 }
 
-function GetProduct($id, $v1, $v2, $v3, $db)
+function GetProduct($id, $v1, $v2, $v3, $v4, $db)
 {
     $pid = 0;
 
