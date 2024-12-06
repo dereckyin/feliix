@@ -211,31 +211,35 @@ if (!isset($jwt)) {
                     $sheet->setCellValue('C' . $i, $row['qty']);
 
                     $discount = $row['discount'];
+                    $ratio = $row['ratio'];
+                    if($ratio == '')
+                        $ratio = 1;
+
                     if($discount != "0")
                     {
                         if($discount == 100)
-                            $price = $row['price'];
+                            $price = round($row['price'] * $ratio, 2);
                         else
-                            $price = round($row['price'] * (100 - $discount) / 100, 2);
+                            $price = round($row['price'] * $ratio * (100 - $discount) / 100, 2);
                     }
                     else
-                        $price = $row['price'];
+                        $price = round($row['price'] * $ratio, 2);
 
                     $sheet->setCellValue('D' . $i, $price);
 
                     if($vat == 'P')
                     {
                         if($discount == 100)
-                            $sheet->setCellValue('E' . $i, round($row['price'] * 0.12, 2));
+                            $sheet->setCellValue('E' . $i, round($row['price']  * 0.12, 2));
                         else
-                            $sheet->setCellValue('E' . $i, round($price * 0.12, 2));
+                            $sheet->setCellValue('E' . $i, round($price  * 0.12, 2));
                     }
                     elseif($vat == 'Y')
                     {
                         if($discount == 100)
-                            $sheet->setCellValue('E' . $i, round($row['price'] * 0.12, 2));
+                            $sheet->setCellValue('E' . $i, round($row['price'] * $ratio * 0.12, 2));
                         else
-                            $sheet->setCellValue('E' . $i, round($price * 0.12, 2));
+                            $sheet->setCellValue('E' . $i, round($price * $ratio * 0.12, 2));
                     }
 
 
@@ -330,8 +334,8 @@ if (!isset($jwt)) {
                     {
                         $sheet->setCellValue('E' . $i, $row['amount']);
 
-                        if($vat == 'Y')
-                            $sheet->setCellValue('E' . $i, round($row['amount'] * 1.12, 2));
+                        // if($vat == 'Y')
+                        //     $sheet->setCellValue('E' . $i, round($row['amount'] * 1.12, 2));
                     
     
                         if($row['pid'] != '0')
@@ -1347,6 +1351,7 @@ function GetProductItems($pages, $q_id, $db)
                 $discount = $row['discount'];
                 $amount = $row['amount'];
                 $description = $row['desc'];
+                $ratio = $row['ratio'];
                 $v1 = $row['v1'];
                 $v2 = $row['v2'];
                 $v3 = $row['v3'];
@@ -1380,6 +1385,7 @@ function GetProductItems($pages, $q_id, $db)
                     "pid" => $pid,
                     "price" => $price,
                     "discount" => $discount,
+                    "ratio" => $ratio,
                     "amount" => $amount,
                     "desc" => $description,
                     "v1" => $v1,
@@ -1410,6 +1416,7 @@ function GetProductItems($pages, $q_id, $db)
                 "pid" => $pid,
                 "price" => $price,
                 "discount" => $discount,
+                "ratio" => $ratio,
                 "amount" => $amount,
                 "desc" => $description,
                 "v1" => $v1,
