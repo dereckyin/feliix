@@ -145,19 +145,37 @@ if (!isset($jwt)) {
                 $sheet->setCellValue('C1', 'Qty');
                 $sheet->setCellValue('D1', 'Product Price');
 
-                $sheet->setCellValue('E1', 'Vat');
-                $sheet->setCellValue('F1', 'Amount');
-                $sheet->setCellValue('G1', '');
-                $sheet->setCellValue('H1', '');
-                $sheet->setCellValue('I1', 'CP價格幣種');
-                $sheet->setCellValue('J1', 'CP價格日期');
-                $sheet->setCellValue('K1', 'CP價格');
-                $sheet->setCellValue('L1', 'SRP價格日期');
-                $sheet->setCellValue('M1', 'SRP價格');
-                $sheet->setCellValue('N1', '');
-                $sheet->setCellValue('O1', '');
-                $sheet->setCellValue('P1', 'SRP比例');
-                $sheet->setCellValue('Q1', 'QP比例');
+                if($vat == 'P')
+                {
+                    $sheet->setCellValue('E1', 'Vat');
+                    $sheet->setCellValue('F1', 'Amount');
+                    $sheet->setCellValue('G1', '');
+                    $sheet->setCellValue('H1', '');
+                    $sheet->setCellValue('I1', 'CP價格幣種');
+                    $sheet->setCellValue('J1', 'CP價格日期');
+                    $sheet->setCellValue('K1', 'CP價格');
+                    $sheet->setCellValue('L1', 'SRP價格日期');
+                    $sheet->setCellValue('M1', 'SRP價格');
+                    $sheet->setCellValue('N1', '');
+                    $sheet->setCellValue('O1', '');
+                    $sheet->setCellValue('P1', 'SRP比例');
+                    $sheet->setCellValue('Q1', 'QP比例');
+                }
+                else
+                {
+                    $sheet->setCellValue('E1', 'Amount');
+                    $sheet->setCellValue('F1', '');
+                    $sheet->setCellValue('G1', '');
+                    $sheet->setCellValue('H1', 'CP價格幣種');
+                    $sheet->setCellValue('I1', 'CP價格日期');
+                    $sheet->setCellValue('J1', 'CP價格');
+                    $sheet->setCellValue('K1', 'SRP價格日期');
+                    $sheet->setCellValue('L1', 'SRP價格');
+                    $sheet->setCellValue('M1', '');
+                    $sheet->setCellValue('N1', '');
+                    $sheet->setCellValue('O1', 'SRP比例');
+                    $sheet->setCellValue('P1', 'QP比例');
+                }
 
     
                 $sheet->getColumnDimension('A')->setWidth(13.82);
@@ -197,96 +215,190 @@ if (!isset($jwt)) {
                         $price = round($row['price'] * (100 - $discount) / 100, 2);
                     else
                         $price = $row['price'];
+
                     $sheet->setCellValue('D' . $i, $price);
 
                     if($vat == 'P')
                         $sheet->setCellValue('E' . $i, round($price * 0.12, 2));
                     elseif($vat == 'Y')
-                        $sheet->setCellValue('E' . $i, round($row['amount'] * 0.12, 2));
-                    else
-                        $sheet->setCellValue('E' . $i, 0);
+                        $sheet->setCellValue('E' . $i, round($price * 0.12, 2));
 
-                    $sheet->setCellValue('F' . $i, $row['amount']);
 
-                    if($row['pid'] != '0')
+                    if($vat == 'P')
                     {
-                        if(count($row['ps_var']) > 0)
-                        {
-                            $products = GetProductSet($row['ps_var'], $db);
-
-                            $price = "";
-                            $price_change = "";
-                            $price_ntd = "";
-                            $price_ntd_change = "";
-                            $currency = "";
-                            $price_changek = "";
-                            $pricel = "";
-                            
-                            foreach($products as $product)
-                            {
-                                if($product['currency'] == "")
-                                {
-                                    $price .= $product['price'] . " + ";
-                                    $price_change .= ($product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '') . " + ";
-                                }
-                                else
-                                {
-                                    $price .= $product['price_ntd'] . " + ";
-                                    $price_change .= ($product['price_ntd_change'] != '' ? substr($product['price_ntd_change'], 0, 10) : '') . " + ";
-                                }
-
-                                if($product['currency'] != "")
-                                    $currency .= $product['currency'] . " + ";
-
-                                $price_changek .= ($product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '') . " + ";
-                                $pricel .= $product['price'] . " + ";
-                            }
-                            
-                            $price = substr($price, 0, -2);
-                            $pricel = substr($pricel, 0, -2);
-                            $price_change = substr($price_change, 0, -2);
-                            $price_changek = substr($price_changek, 0, -2);
-                            $price_ntd = substr($price_ntd, 0, -2);
-                            $price_ntd_change = substr($price_ntd_change, 0, -2);
-                            $currency = substr($currency, 0, -2);
-
-                            $sheet->setCellValue('K' . $i, $price);
-                            $sheet->setCellValue('J' . $i, $price_change);
-                            $sheet->setCellValue('I' . $i, $currency);
-                            $sheet->setCellValue('L' . $i, $price_changek);
-                            $sheet->setCellValue('M' . $i, $pricel);
-                        }
-                        else
-                        {
-                            $product = $row['product'];
+                        $sheet->setCellValue('F' . $i, $row['amount']);
     
-                            if($product['currency'] == "")
+                        if($row['pid'] != '0')
+                        {
+                            if(count($row['ps_var']) > 0)
                             {
-                                $sheet->setCellValue('K' . $i, $product['price']);
-                                $sheet->setCellValue('J' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
+                                $products = GetProductSet($row['ps_var'], $db);
+    
+                                $price = "";
+                                $price_change = "";
+                                $price_ntd = "";
+                                $price_ntd_change = "";
+                                $currency = "";
+                                $price_changek = "";
+                                $pricel = "";
+                                
+                                foreach($products as $product)
+                                {
+                                    if($product['currency'] == "")
+                                    {
+                                        $price .= $product['price'] . " + ";
+                                        $price_change .= ($product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '') . " + ";
+                                    }
+                                    else
+                                    {
+                                        $price .= $product['price_ntd'] . " + ";
+                                        $price_change .= ($product['price_ntd_change'] != '' ? substr($product['price_ntd_change'], 0, 10) : '') . " + ";
+                                    }
+    
+                                    if($product['currency'] != "")
+                                        $currency .= $product['currency'] . " + ";
+    
+                                    $price_changek .= ($product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '') . " + ";
+                                    $pricel .= $product['price'] . " + ";
+                                }
+                                
+                                $price = substr($price, 0, -2);
+                                $pricel = substr($pricel, 0, -2);
+                                $price_change = substr($price_change, 0, -2);
+                                $price_changek = substr($price_changek, 0, -2);
+                                $price_ntd = substr($price_ntd, 0, -2);
+                                $price_ntd_change = substr($price_ntd_change, 0, -2);
+                                $currency = substr($currency, 0, -2);
+    
+                                $sheet->setCellValue('K' . $i, $price);
+                                $sheet->setCellValue('J' . $i, $price_change);
+                                $sheet->setCellValue('I' . $i, $currency);
+                                $sheet->setCellValue('L' . $i, $price_changek);
+                                $sheet->setCellValue('M' . $i, $pricel);
                             }
                             else
                             {
-                                $sheet->setCellValue('K' . $i, $product['price_ntd']);
-                                $sheet->setCellValue('J' . $i, $product['price_ntd_change'] != '' ? substr($product['price_ntd_change'], 0, 10) : '');
+                                $product = $row['product'];
+        
+                                if($product['currency'] == "")
+                                {
+                                    $sheet->setCellValue('K' . $i, $product['price']);
+                                    $sheet->setCellValue('J' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
+                                }
+                                else
+                                {
+                                    $sheet->setCellValue('K' . $i, $product['price_ntd']);
+                                    $sheet->setCellValue('J' . $i, $product['price_ntd_change'] != '' ? substr($product['price_ntd_change'], 0, 10) : '');
+                                }
+        
+        
+                                $sheet->setCellValue('I' . $i, $product['currency']);
+                                
+                                $sheet->setCellValue('L' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
+                                $sheet->setCellValue('M' . $i, $product['price']);
+        
+                                if($product['price'] != 0 && $product['currency'] == "")
+                                {
+                                    $sheet->setCellValue('P' . $i, round($product['price'] / $product['price'], 2));
+                                    $sheet->setCellValue('Q' . $i, round($price / $product['price'], 2));
+                                }
+                                
+                                if($product['price_ntd'] != 0 && $product['currency'] != "")
+                                {
+                                    $sheet->setCellValue('P' . $i, round($product['price'] / $product['price_ntd'], 2));
+                                    $sheet->setCellValue('Q' . $i, round($price / $product['price_ntd'], 2));
+                                }
                             }
+                        }
+                    }
+                    else
+                    {
+                        $sheet->setCellValue('E' . $i, $row['amount']);
+
+                        if($vat == 'Y')
+                            $sheet->setCellValue('E' . $i, round($row['amount'] * 1.12, 2));
+                    
     
-    
-                            $sheet->setCellValue('I' . $i, $product['currency']);
-                            
-                            $sheet->setCellValue('L' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
-                            $sheet->setCellValue('M' . $i, $product['price']);
-    
-                            if($product['price'] != 0 && $product['currency'] == "")
+                        if($row['pid'] != '0')
+                        {
+                            if(count($row['ps_var']) > 0)
                             {
-                                $sheet->setCellValue('P' . $i, round($product['price'] / $product['price'], 2));
-                                $sheet->setCellValue('Q' . $i, round($price / $product['price'], 2));
+                                $products = GetProductSet($row['ps_var'], $db);
+    
+                                $price = "";
+                                $price_change = "";
+                                $price_ntd = "";
+                                $price_ntd_change = "";
+                                $currency = "";
+                                $price_changek = "";
+                                $pricel = "";
+                                
+                                foreach($products as $product)
+                                {
+                                    if($product['currency'] == "")
+                                    {
+                                        $price .= $product['price'] . " + ";
+                                        $price_change .= ($product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '') . " + ";
+                                    }
+                                    else
+                                    {
+                                        $price .= $product['price_ntd'] . " + ";
+                                        $price_change .= ($product['price_ntd_change'] != '' ? substr($product['price_ntd_change'], 0, 10) : '') . " + ";
+                                    }
+    
+                                    if($product['currency'] != "")
+                                        $currency .= $product['currency'] . " + ";
+    
+                                    $price_changek .= ($product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '') . " + ";
+                                    $pricel .= $product['price'] . " + ";
+                                }
+                                
+                                $price = substr($price, 0, -2);
+                                $pricel = substr($pricel, 0, -2);
+                                $price_change = substr($price_change, 0, -2);
+                                $price_changek = substr($price_changek, 0, -2);
+                                $price_ntd = substr($price_ntd, 0, -2);
+                                $price_ntd_change = substr($price_ntd_change, 0, -2);
+                                $currency = substr($currency, 0, -2);
+    
+                                $sheet->setCellValue('K' . $i, $price);
+                                $sheet->setCellValue('J' . $i, $price_change);
+                                $sheet->setCellValue('I' . $i, $currency);
+                                $sheet->setCellValue('L' . $i, $price_changek);
+                                $sheet->setCellValue('M' . $i, $pricel);
                             }
-                            
-                            if($product['price_ntd'] != 0 && $product['currency'] != "")
+                            else
                             {
-                                $sheet->setCellValue('P' . $i, round($product['price'] / $product['price_ntd'], 2));
-                                $sheet->setCellValue('Q' . $i, round($price / $product['price_ntd'], 2));
+                                $product = $row['product'];
+        
+                                if($product['currency'] == "")
+                                {
+                                    $sheet->setCellValue('J' . $i, $product['price']);
+                                    $sheet->setCellValue('I' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
+                                }
+                                else
+                                {
+                                    $sheet->setCellValue('J' . $i, $product['price_ntd']);
+                                    $sheet->setCellValue('I' . $i, $product['price_ntd_change'] != '' ? substr($product['price_ntd_change'], 0, 10) : '');
+                                }
+        
+        
+                                $sheet->setCellValue('H' . $i, $product['currency']);
+                                
+                                $sheet->setCellValue('K' . $i, $product['price_change'] != '' ? substr($product['price_change'], 0, 10) : '');
+                                $sheet->setCellValue('L' . $i, $product['price']);
+        
+                                if($product['price'] != 0 && $product['currency'] == "")
+                                {
+                                    $sheet->setCellValue('O' . $i, round($product['price'] / $product['price'], 2));
+                                    $sheet->setCellValue('P' . $i, round($price / $product['price'], 2));
+                                }
+                                
+                                if($product['price_ntd'] != 0 && $product['currency'] != "")
+                                {
+                                    $sheet->setCellValue('O' . $i, round($product['price'] / $product['price_ntd'], 2));
+                                    $sheet->setCellValue('P' . $i, round($price / $product['price_ntd'], 2));
+                                }
                             }
                         }
                     }
