@@ -212,16 +212,31 @@ if (!isset($jwt)) {
 
                     $discount = $row['discount'];
                     if($discount != "0")
-                        $price = round($row['price'] * (100 - $discount) / 100, 2);
+                    {
+                        if($discount == 100)
+                            $price = $row['price'];
+                        else
+                            $price = round($row['price'] * (100 - $discount) / 100, 2);
+                    }
                     else
                         $price = $row['price'];
 
                     $sheet->setCellValue('D' . $i, $price);
 
                     if($vat == 'P')
-                        $sheet->setCellValue('E' . $i, round($price * 0.12, 2));
+                    {
+                        if($discount == 100)
+                            $sheet->setCellValue('E' . $i, round($row['price'] * 0.12, 2));
+                        else
+                            $sheet->setCellValue('E' . $i, round($price * 0.12, 2));
+                    }
                     elseif($vat == 'Y')
-                        $sheet->setCellValue('E' . $i, round($price * 0.12, 2));
+                    {
+                        if($discount == 100)
+                            $sheet->setCellValue('E' . $i, round($row['price'] * 0.12, 2));
+                        else
+                            $sheet->setCellValue('E' . $i, round($price * 0.12, 2));
+                    }
 
 
                     if($vat == 'P')
