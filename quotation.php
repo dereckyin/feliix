@@ -594,7 +594,7 @@ header( 'location:index' );
             width: 100%;
             height: 100%;
             top: 0;
-            z-index: 1;
+            z-index: 100;
             display: none;
         }
 
@@ -2611,7 +2611,7 @@ header( 'location:index' );
 
             </div>
 
-            <div class="block fn">
+            <div class="block fn" id="menu">
                 <div class="popupblock" v-if="quotation_control && project_category == 'Office Systems' ">
 
                     <a id="status_fn1" class="fn1" :ref="'a_fn1'" @click="show_access = !show_access">Access</a>
