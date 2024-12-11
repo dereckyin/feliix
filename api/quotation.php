@@ -28,6 +28,8 @@ use Google\Cloud\Storage\StorageClient;
 
 use \Firebase\JWT\JWT;
 
+$logFile = 'quotation.log';
+
 if (!isset($jwt)) {
     http_response_code(401);
 
@@ -80,6 +82,8 @@ if (!isset($jwt)) {
 
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id = $row['id'];
@@ -178,6 +182,9 @@ function GetSubTotalInfo($qid, $db)
     $stmt = $db->prepare($query);
     $stmt->execute();
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+
     $merged_results = [];
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -203,6 +210,9 @@ function GetSubTotalInfoNotShowA($qid, $db)
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -231,6 +241,9 @@ function GetSubTotalInfoNotShowB($qid, $db)
     $stmt = $db->prepare($query);
     $stmt->execute();
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+
     $merged_results = [];
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -255,6 +268,9 @@ function GetSubTotalNoVat($qid, $db)
     $stmt = $db->prepare($query);
     $stmt->execute();
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+
     $merged_results = [];
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -276,9 +292,15 @@ function GetSubTotalNoVatA($qid, $db)
             WHERE `status` <> -1 and type_id in (select id from quotation_page_type where quotation_id = " . $qid . " and not_show = '' and block_type = 'A' and status <> -1)
     ";
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+    
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -305,6 +327,9 @@ function GetSubTotalNoVatB($qid, $db)
     $stmt = $db->prepare($query);
     $stmt->execute();
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+
     $merged_results = [];
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -328,6 +353,9 @@ function GetSubTotalNoVatNotShow($qid, $db)
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -361,6 +389,9 @@ function GetBlockNames($qid, $db){
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -419,6 +450,9 @@ function GetPages($qid, $db){
     $stmt = $db->prepare($query);
     $stmt->execute();
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+
     $merged_results = [];
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -463,6 +497,9 @@ function GetTotal($qid, $page, $db){
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
     
@@ -510,6 +547,9 @@ function GetTerm($qid, $page, $db){
     $stmt = $db->prepare($query);
     $stmt->execute();
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+
     $merged_results = [];
     
 
@@ -550,6 +590,9 @@ function GetPaymentTerm($qid, $page, $db){
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
     
@@ -599,6 +642,9 @@ function GetSigInfo($qid, $db)
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     $item_client = [];
     $item_company = [];
@@ -687,6 +733,9 @@ function GetSig($qid, $page, $db)
     $stmt = $db->prepare($query);
     $stmt->execute();
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+
     $item_client = [];
     $item_company = [];
 
@@ -769,6 +818,9 @@ function GetTermInfo($qid, $db)
     $stmt = $db->prepare($query);
     $stmt->execute();
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+
     $item = [];
 
     $merged_results = [];
@@ -828,6 +880,9 @@ function GetPaymentTermInfo($qid, $db)
 
     $item = [];
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+
     $merged_results = [];
     
     $id = 0;
@@ -880,6 +935,9 @@ function GetTotalInfo($qid, $db){
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
     
@@ -936,6 +994,9 @@ function GetTypes($qid, $db){
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
     
@@ -1001,6 +1062,9 @@ function GetBlocks($qid, $db){
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -1112,6 +1176,9 @@ function GetProducts($pid, $v1, $v2, $v3, $v4, $db)  {
     $stmt = $db->prepare($query);
     $stmt->execute();
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+
     $price = 0;
     $val1 = "";
     $val2 = "";
@@ -1148,6 +1215,9 @@ function GetProductPrice($pid, $v1, $v2, $v3, $v4, $db)
     $srp = 0;
     $p_srp = 0;
 
+    if($pid == 0)
+        return 0;
+
     if($v1 != '' || $v2 != '' || $v3 != '' || $v4 != '')
         $p_srp = GetProducts($pid, $v1, $v2, $v3, $v4, $db);
     
@@ -1169,6 +1239,9 @@ function GetProductPrice($pid, $v1, $v2, $v3, $v4, $db)
         // prepare the query
         $stmt = $db->prepare($query);
         $stmt->execute();
+
+        global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if($row !== false)
@@ -1195,6 +1268,9 @@ function GetQuotationExport($q_id, $db)
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
 
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if($row !== false)
@@ -1318,6 +1394,9 @@ function GetProductId($code, $db)
     $stmt = $db->prepare($query);
     $stmt->execute();
 
+    global $logFile;
+    file_put_contents($logFile, $query, FILE_APPEND);
+
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if($row !== false)
     {
@@ -1335,6 +1414,9 @@ function getOrderInfo($od_id, $db)
 
     $stmt = $db->prepare( $sql );
     $stmt->execute();
+    
+    global $logFile;
+    file_put_contents($logFile, $sql, FILE_APPEND);
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $merged_results = $row;
@@ -1353,6 +1435,9 @@ function GetProductMain($id, $db){
 
     $stmt = $db->prepare( $sql );
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $sql, FILE_APPEND);
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
@@ -1467,6 +1552,9 @@ function GetProduct($id, $db){
 
     $stmt = $db->prepare( $sql );
     $stmt->execute();
+
+    global $logFile;
+    file_put_contents($logFile, $sql, FILE_APPEND);
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id = $row['id'];

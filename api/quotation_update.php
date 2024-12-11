@@ -499,6 +499,33 @@ switch ($method) {
                 }  
             }
 
+            // insert quotation_update_log
+            $previous_data = "[]";
+            $query = "INSERT INTO quotation_update_log(quotation_id, user_id, `action`, previous_data, current_data, attachment, create_id, created_at) values(:quotation_id, :user_id, 'page_save', :previous_data, :current_data, '', :create_id, now())";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':quotation_id', $last_id);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':previous_data', $previous_data);
+            $stmt->bindParam(':current_data', $pages);
+            $stmt->bindParam(':create_id', $user_id);
+            try {
+                if (!$stmt->execute()) {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
+
+            
             $db->commit();
 
             http_response_code(200);
