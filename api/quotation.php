@@ -83,7 +83,7 @@ if (!isset($jwt)) {
     $stmt = $db->prepare($query);
     $stmt->execute();
 
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id = $row['id'];
@@ -183,7 +183,7 @@ function GetSubTotalInfo($qid, $db)
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -212,7 +212,7 @@ function GetSubTotalInfoNotShowA($qid, $db)
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -242,7 +242,7 @@ function GetSubTotalInfoNotShowB($qid, $db)
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -269,7 +269,7 @@ function GetSubTotalNoVat($qid, $db)
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -293,14 +293,14 @@ function GetSubTotalNoVatA($qid, $db)
     ";
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
     
     // prepare the query
     $stmt = $db->prepare($query);
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -328,7 +328,7 @@ function GetSubTotalNoVatB($qid, $db)
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -355,7 +355,7 @@ function GetSubTotalNoVatNotShow($qid, $db)
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -391,7 +391,7 @@ function GetBlockNames($qid, $db){
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -451,7 +451,7 @@ function GetPages($qid, $db){
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -499,7 +499,7 @@ function GetTotal($qid, $page, $db){
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
     
@@ -548,7 +548,7 @@ function GetTerm($qid, $page, $db){
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
     
@@ -592,7 +592,7 @@ function GetPaymentTerm($qid, $page, $db){
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
     
@@ -644,7 +644,7 @@ function GetSigInfo($qid, $db)
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $item_client = [];
     $item_company = [];
@@ -734,7 +734,7 @@ function GetSig($qid, $page, $db)
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $item_client = [];
     $item_company = [];
@@ -819,7 +819,7 @@ function GetTermInfo($qid, $db)
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $item = [];
 
@@ -881,7 +881,7 @@ function GetPaymentTermInfo($qid, $db)
     $item = [];
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
     
@@ -937,7 +937,7 @@ function GetTotalInfo($qid, $db){
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
     
@@ -996,7 +996,7 @@ function GetTypes($qid, $db){
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
     
@@ -1064,7 +1064,7 @@ function GetBlocks($qid, $db){
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $merged_results = [];
 
@@ -1177,7 +1177,7 @@ function GetProducts($pid, $v1, $v2, $v3, $v4, $db)  {
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $price = 0;
     $val1 = "";
@@ -1241,7 +1241,7 @@ function GetProductPrice($pid, $v1, $v2, $v3, $v4, $db)
         $stmt->execute();
 
         global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if($row !== false)
@@ -1270,7 +1270,7 @@ function GetQuotationExport($q_id, $db)
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if($row !== false)
@@ -1395,7 +1395,7 @@ function GetProductId($code, $db)
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $query, FILE_APPEND);
+    //file_put_contents($logFile, $query, FILE_APPEND);
 
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if($row !== false)
@@ -1416,7 +1416,7 @@ function getOrderInfo($od_id, $db)
     $stmt->execute();
     
     global $logFile;
-    file_put_contents($logFile, $sql, FILE_APPEND);
+    //file_put_contents($logFile, $sql, FILE_APPEND);
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $merged_results = $row;
@@ -1437,7 +1437,7 @@ function GetProductMain($id, $db){
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $sql, FILE_APPEND);
+    //file_put_contents($logFile, $sql, FILE_APPEND);
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
@@ -1554,7 +1554,7 @@ function GetProduct($id, $db){
     $stmt->execute();
 
     global $logFile;
-    file_put_contents($logFile, $sql, FILE_APPEND);
+    //file_put_contents($logFile, $sql, FILE_APPEND);
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id = $row['id'];

@@ -78,6 +78,7 @@ switch ($method) {
         $pageless = (isset($_POST['pageless']) ?  $_POST['pageless'] : '');
 
         $pages = (isset($_POST['pages']) ?  $_POST['pages'] : '[]');
+        $pre_pages = (isset($_POST['pre_pages']) ?  $_POST['pre_pages'] : '[]');
         $pages_array = json_decode($pages,true);
 
 
@@ -500,12 +501,11 @@ switch ($method) {
             }
 
             // insert quotation_update_log
-            $previous_data = "[]";
             $query = "INSERT INTO quotation_update_log(quotation_id, user_id, `action`, previous_data, current_data, attachment, create_id, created_at) values(:quotation_id, :user_id, 'page_save', :previous_data, :current_data, '', :create_id, now())";
             $stmt = $db->prepare($query);
             $stmt->bindParam(':quotation_id', $last_id);
             $stmt->bindParam(':user_id', $user_id);
-            $stmt->bindParam(':previous_data', $previous_data);
+            $stmt->bindParam(':previous_data', $pre_pages);
             $stmt->bindParam(':current_data', $pages);
             $stmt->bindParam(':create_id', $user_id);
             try {
