@@ -2819,8 +2819,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="show_page = false">Close</a>
-                                <a class="btn small green" @click="page_save_pre()">Save</a>
+                                <a class="btn small" @click="show_page = false"  v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="page_save_pre()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
@@ -2987,8 +2987,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="subtotal_close()">Close</a>
-                                <a class="btn small green" @click="subtotal_save()" v-if="is_load">Save</a>
+                                <a class="btn small" @click="subtotal_close()" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="subtotal_save()" v-if="is_load">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
