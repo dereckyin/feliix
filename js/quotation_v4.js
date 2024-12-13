@@ -241,6 +241,7 @@ var app = new Vue({
         attributes:[],
 
         toggle_type:'',
+        toggle : false,
 
         groupedItems : [],
 
@@ -285,7 +286,7 @@ var app = new Vue({
         cost_furniture : false,
     },
   
-    created() {
+    async created()  {
       let _this = this;
       let uri = window.location.href.split("?");
       if (uri.length >= 2) {
@@ -310,7 +311,6 @@ var app = new Vue({
         });
       }
       
-      this.getRecord();
       this.get_product_records();
       this.getUserName();
       this.get_brands();
@@ -318,6 +318,7 @@ var app = new Vue({
       this.getTagGroup();
       this.getQuotationControl();
       this.getProductControl();
+      await this.getRecord();
     },
   
     computed: {
@@ -2077,6 +2078,9 @@ var app = new Vue({
         if (this.submit == true) return;
 
         this.submit = true;
+
+        $("#menu").css("visibility", "hidden");
+        $(".mask").toggle();
   
         var token = localStorage.getItem("token");
         var form_Data = new FormData();
@@ -2127,6 +2131,10 @@ var app = new Vue({
             _this.block_value = [];
             _this.submit = false;
 
+            await this.reload();
+            $(".mask").toggle();
+            $("#menu").css("visibility", "visible");
+
             Swal.fire({
               html: res.data.message,
               icon: "info",
@@ -2142,19 +2150,37 @@ var app = new Vue({
             confirmButtonText: "OK",
           });
 
+          $(".mask").toggle();
+            $("#menu").css("visibility", "visible");
             _this.submit = false;
         }
 
-        this.reload();
-
         },
 
-      subtotal_save() {
+      async subtotal_save() {
         if(this.block_value.id == undefined)
           return;
 
         if(this.check_value() == false)
           return;
+
+        if (this.submit == true) return;
+        this.submit = true;
+
+        await this.get_latest_record();
+
+        this.submit = false;
+
+        // check if this.temp_pages and this.temp_pages_verify identical
+        if(JSON.stringify(this.pages ) != JSON.stringify(this.temp_pages_verify))
+        {
+          Swal.fire({
+            text: "This quotation has been modified by other user. Please reload the page and try again.",
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
 
         var _id = this.block_value.id;
         var _type = this.block_value.type;
@@ -2166,13 +2192,13 @@ var app = new Vue({
         if(_type == "A" && this.temp_block_a.length >= 0) {
           type.block_a = this.temp_block_a;
 
-          this.subtotal_save_changes(this.id, _id, this.temp_block_a);
+          await this.subtotal_save_changes(this.id, _id, this.temp_block_a);
         }
 
         if(_type == "B" && this.temp_block_b.length >= 0) {
           type.block_b = this.temp_block_b;
 
-          this.subtotal_save_changes(this.id, _id, this.temp_block_b);
+          await this.subtotal_save_changes(this.id, _id, this.temp_block_b);
         }
         
         
@@ -2824,7 +2850,7 @@ Installation:`;
         },
 
 
-      getRecord: function() {
+      getRecord: async function() {
         let _this = this;
 
         if(_this.id == 0)
@@ -2836,7 +2862,7 @@ Installation:`;
   
         let token = localStorage.getItem("accessToken");
   
-        axios
+        await axios
           .get("api/quotation", {
               params,
               headers: { Authorization: `Bearer ${token}` },
@@ -3483,7 +3509,14 @@ Installation:`;
         let empty = true;
         // check if page is empty
 
+        if (this.submit == true) return;
+        this.submit = true;
+
+
         await this.get_latest_record();
+        
+
+        this.submit = false;
 
         // check if this.temp_pages and this.temp_pages_verify identical
         if(JSON.stringify(this.pages ) != JSON.stringify(this.temp_pages_verify))
@@ -3493,6 +3526,7 @@ Installation:`;
             icon: "info",
             confirmButtonText: "OK",
           });
+          
           return;
         }
 
@@ -3508,6 +3542,8 @@ Installation:`;
         
         if(empty)
         {
+    
+
           Swal.fire({
             title: "WARNING",
             text: "If click yes, all the pages and subtotal blocks will be erased.",
@@ -3523,14 +3559,20 @@ Installation:`;
           });
         }
         else
-          _this.page_save();
+        {
+
+          await _this.page_save();
+        }
         },
 
-      page_save : function() {
+      page_save : async function() {
       
         if (this.submit == true) return;
 
         this.submit = true;
+
+        $("#menu").css("visibility", "hidden");
+        $(".mask").toggle();
   
         var token = localStorage.getItem("token");
         var form_Data = new FormData();
@@ -3555,79 +3597,93 @@ Installation:`;
         form_Data.append("footer_second_line", this.footer_second_line);
 
         form_Data.append("pages", JSON.stringify(this.temp_pages));
+        form_Data.append("pre_pages", JSON.stringify(this.temp_pages_verify));
           
   
         if(this.id == 0) {
-          axios({
-            method: "post",
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            url: "api/quotation_insert",
-            data: form_Data,
-          })
-            .then(function(response) {
-              //handle success
-              _this.id = response.data.id;
-              
+
+          try {
+            let res = await axios({
+              method: 'post',
+              url: 'api/quotation_insert',
+              data: form_Data,
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
+
+            if(res.status == 200){
+
+              _this.submit = false;
+
+              await this.reload();
+              $(".mask").toggle();
+              $("#menu").css("visibility", "visible");
+
               Swal.fire({
-                html: response.data.message,
+                html: res.data.message,
                 icon: "info",
                 confirmButtonText: "OK",
               });
-    
-              _this.reload();
-              _this.submit = false;
-            })
-            .catch(function(error) {
-              //handle error
+            } 
+          } catch (err) {
+              console.log(err)
               Swal.fire({
                 text: JSON.stringify(error),
                 icon: "info",
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
-              _this.submit = false;
-            });
+              $(".mask").toggle();
+                $("#menu").css("visibility", "visible");
+                _this.submit = false;
+            }
+        
         }
 
         if(this.id != 0) {
-          axios({
-            method: "post",
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            url: "api/quotation_update",
-            data: form_Data,
-          })
-            .then(function(response) {
-              //handle success
+
+          try {
+            let res = await axios({
+              method: 'post',
+              url: 'api/quotation_update',
+              data: form_Data,
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
+
+            if(res.status == 200){
+
+              _this.submit = false;
+
+              await this.reload();
+              $(".mask").toggle();
+              $("#menu").css("visibility", "visible");
+
               Swal.fire({
-                html: response.data.message,
+                html: res.data.message,
                 icon: "info",
                 confirmButtonText: "OK",
               });
-    
-              _this.reload();
-              _this.submit = false;
-            })
-            .catch(function(error) {
-              //handle error
+            } 
+          } catch (err) {
+              console.log(err)
               Swal.fire({
                 text: JSON.stringify(error),
                 icon: "info",
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
-              _this.submit = false;
-            });
+              $(".mask").toggle();
+                $("#menu").css("visibility", "visible");
+                _this.submit = false;
+            }
         }
       
       },
 
-      reload : function() {
+      reload : async function() {
         this.close_all();
 
         this.is_load = false;
@@ -3638,7 +3694,7 @@ Installation:`;
           this.filter_apply();
         }
         else
-          this.getRecord();
+          await this.getRecord();
       },
 
       product_catalog_a() {

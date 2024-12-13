@@ -5610,3 +5610,20 @@ CREATE TABLE IF NOT EXISTS `product_replacement` (
   `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 2024/12/10 quotation_update_log
+CREATE TABLE IF NOT EXISTS `quotation_update_log` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `quotation_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `user_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `action` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `previous_data` JSON,
+  `current_data` JSON,
+  `attachment` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
