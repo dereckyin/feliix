@@ -263,10 +263,14 @@ try {
         }
 
         #tb_product_list tbody tr td:nth-of-type(5) {
-            width: 220px;
+            width: 210px;
         }
 
         #tb_product_list tbody tr td:nth-of-type(6) {
+            width: 150px;
+        }
+
+        #tb_product_list tbody tr td:nth-of-type(7) {
             width: 100px;
         }
 
@@ -285,12 +289,23 @@ try {
             padding-bottom: 3px;
         }
 
-        #tb_product_list tbody tr td:nth-of-type(6) button {
+        #tb_product_list tbody tr td span.stock_qty {
+            background-color: yellowgreen;
+            color: #fff;
+            font-size: 14px;
+            display: inline-block;
+            font-weight: 600;
+            border-radius: 5px;
+            margin: 3px 0 13px;
+            padding: 1px 15px 2px;
+            cursor: pointer;
+        }
+
+        #tb_product_list tbody tr td:nth-of-type(7) button {
             border: 2px solid black;
             width: 34px;
             box-sizing: border-box;
             padding: 6px
-
         }
 
         #tb_product_list tbody tr td:nth-of-type(3) ul li span.phasedout{
@@ -421,10 +436,14 @@ try {
         }
 
         #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) {
+            width: 150px!important;
+        }
+
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(5) {
             width: 100px!important;
         }
 
-        #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) button {
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(5) button {
             border: 2px solid black;
             width: 34px;
             box-sizing: border-box;
@@ -813,11 +832,11 @@ try {
 
                     <th>Information</th>
 
-                    <th >Specification</th>
+                    <th>Specification</th>
 
-                    <th >Price</th>
+                    <th>Price</th>
 
-                   <!-- <th >Stock</th> -->
+                    <th>Inventory Status</th>
 
                     <th>Action</th>
 
@@ -907,10 +926,12 @@ try {
                         </td>
 
                         <td>
-                        <span v-show="((cost_lighting == true && item.category == 'Lighting') || (cost_furniture == true && item.category == 'Systems Furniture')) && toggle == true">CP: {{ item.price_ntd }} <br v-if="item.str_price_ntd_change"> {{ item.str_price_ntd_change ?  item.str_price_ntd_change : '' }} <br></span>
+                            <span v-show="((cost_lighting == true && item.category == 'Lighting') || (cost_furniture == true && item.category == 'Systems Furniture')) && toggle == true">CP: {{ item.price_ntd }} <br v-if="item.str_price_ntd_change"> {{ item.str_price_ntd_change ?  item.str_price_ntd_change : '' }} <br></span>
                             <span>SRP: {{ item.price }}<br></span>
                             <span>QP: {{ item.quoted_price }}<br></span>
                         </td>
+
+                        <td></td>
 
                         <!-- 如果這個 Product Set 產品有 Product1 和 Product 2，則 rowspan=3；如果這個 Product Set 產品有 Product1 和 Product 2 和 Product 3，則 rowspan=4 -->
                         <td :rowspan="item.product_set_cnt + 1">
@@ -1051,6 +1072,15 @@ try {
                             <span>SRP: {{ set.price }} <br v-if="set.str_price_change"> {{ set.str_price_change ?  set.str_price_change : '' }} <br></span>
                             <span>QP: {{ set.quoted_price }} <br v-if="set.str_quoted_price_change"> {{ set.str_quoted_price_change ? set.str_quoted_price_change : '' }} <br></span>
                         </td>
+
+                        <td>
+                            Incoming<br>
+                            <span class="stock_qty">20</span><br>
+                            Project-Locked<br>
+                            <span class="stock_qty">10</span><br>
+                            Freely Usable<br>
+                            <span class="stock_qty">5</span>
+                        </td>
                     </tr>
 
 
@@ -1184,7 +1214,16 @@ try {
                             <span>SRP: {{ item.price }} <br v-if="item.str_price_change"> {{ item.str_price_change ?  item.str_price_change : '' }} <br></span>
                             <span>QP: {{ item.quoted_price }} <br v-if="item.str_quoted_price_change"> {{ item.str_quoted_price_change ? item.str_quoted_price_change : '' }} <br></span>
                         </td>
-                        <!-- <td></td> -->
+
+                        <td>
+                            Incoming<br>
+                            <span class="stock_qty">20</span><br>
+                            Project-Locked<br>
+                            <span class="stock_qty">10</span><br>
+                            Freely Usable<br>
+                            <span class="stock_qty">5</span>
+                        </td>
+
                         <td>
                             <button id="edit01" @click="btnEditClick(item.id)" v-if="item.status != -1"><i class="fas fa-edit"></i>
                             </button>
