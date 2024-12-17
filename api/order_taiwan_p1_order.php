@@ -291,7 +291,6 @@ function UpdateProductQty($od_id, $item, $db)
     $qty_str = $item['qty'];
     $backup_qty = 0;
     $backup_qty_str = $item['backup_qty'];
-    $org_incoming_qty = 0;
     $org_incoming_element = [];
 
     $new_incoming_qty = 0;
@@ -313,7 +312,6 @@ function UpdateProductQty($od_id, $item, $db)
     if($num > 0)
     {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $org_incoming_qty = $row['incoming_qty'];
         if($row['incoming_element'] != '')
             $org_incoming_element = json_decode($row['incoming_element'], true);
         else
@@ -324,7 +322,6 @@ function UpdateProductQty($od_id, $item, $db)
 
     if($backup_qty_str != '') $backup_qty = preg_replace('/[^0-9]/', '', $backup_qty_str);
 
-    $new_incoming_qty = $org_incoming_qty + $qty + $backup_qty;
     // update new incoming element, if existed, update the qty else add new element
     $found = false;
     foreach($org_incoming_element as $element)
@@ -333,15 +330,21 @@ function UpdateProductQty($od_id, $item, $db)
         {
             $element['qty'] = $qty;
             $element['backup_qty'] = $backup_qty;
-            $new_incoming_qty = $qty + $backup_qty;
+            $new_incoming_qty += $qty + $backup_qty;
             $found = true;
         }
-
+        else
+        {
+            $new_incoming_qty += $element['qty'] + $element['backup_qty'];
+        }
         $new_incoming_element[] = $element;
     }
 
     if($found == false)
+    {
+        $new_incoming_qty += $qty + $backup_qty;
         $new_incoming_element[] = array('od_id' => $od_id, 'qty' => $qty, 'backup_qty' => $backup_qty, 'v1' => $v1, 'v2' => $v2, 'v3' => $v3, 'v4' => $v4, 'ps_var' => $ps_var, 'order_date' => date("Y-m-d H:i:s"));
+    }
     else
     {
         $new_incoming_element = $org_incoming_element;
@@ -353,5 +356,4 @@ function UpdateProductQty($od_id, $item, $db)
     $stmt->bindParam(':incoming_element', json_encode($new_incoming_element));
     $stmt->bindParam(':pid', $pid);
     $stmt->execute();
-
 }
