@@ -122,11 +122,11 @@ switch ($method) {
             $charge = (isset($items[$i]['charge']) ?  $items[$i]['charge'] : '');
 
             // update product qty
-            if($pre_charge == '' && $charge == '1' && $confirm == 'O')
-                RemoveProductQty($od_id, $items[$i], $db);
+            if($pre_charge == '' && $charge == '1' && $confirm == 'O' && $items[$i]['pid'] != 0)
+                RemoveProductQty($o_id, $items[$i], $db);
 
-            if($pre_charge == '1' && $charge == '' && $confirm == 'O')
-                UpdateProductQty($od_id, $items[$i], $db);
+            if($pre_charge == '1' && $charge == false && $confirm == 'O' && $items[$i]['pid'] != 0)
+                UpdateProductQty($o_id, $items[$i], $db);
 
             $id = $items[$i]['id'];
 
