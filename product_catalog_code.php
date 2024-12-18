@@ -1075,7 +1075,7 @@ try {
 
                         <td>
                             Incoming<br>
-                            <span class="stock_qty">20</span><br>
+                            <span class="stock_qty" @click="incoming_qty_info(set.incoming_html)">{{ set.incoming_qty }}</span><br>
                             Project-Locked<br>
                             <span class="stock_qty">10</span><br>
                             Freely Usable<br>
@@ -1217,7 +1217,7 @@ try {
 
                         <td>
                             Incoming<br>
-                            <span class="stock_qty">20</span><br>
+                            <span class="stock_qty" @click="incoming_qty_info(item.incoming_html)">{{ item.incoming_qty }}</span><br>
                             Project-Locked<br>
                             <span class="stock_qty">10</span><br>
                             Freely Usable<br>

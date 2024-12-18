@@ -403,6 +403,59 @@ else
 
                 $product = GetProduct($id, $db);
 
+                // 20241218 for incoming qty
+                $incoming_qty = $row['incoming_qty'];
+                $incoming_element = $row['incoming_element'];
+                $incoming_html = "";
+                $order_sn = 1;
+
+                if($incoming_element != "")
+                {
+                    $incoming_element_json = json_decode($incoming_element, true);
+
+                    for($i = 0; $i < count($incoming_element_json); $i++)
+                    {
+                        $key_value_text = "";
+                        for($j = 0; $j < count($product); $j++)
+                        {
+                            if($product[$j]['v1'] == $incoming_element_json[$i]['v1'] && $product[$j]['v2'] == $incoming_element_json[$i]['v2'] && $product[$j]['v3'] == $incoming_element_json[$i]['v3'] && $product[$j]['v4'] == $incoming_element_json[$i]['v4'])
+                            {
+                                if($product[$j]['v1'] != "")
+                                    $key_value_text .= $product[$j]['k1'] . " = " . $product[$j]['v1'] . ", ";
+                                if($product[$j]['v2'] != "")
+                                    $key_value_text .= $product[$j]['k2'] . " = " . $product[$j]['v2'] . ", ";
+                                if($product[$j]['v3'] != "")
+                                    $key_value_text .= $product[$j]['k3'] . " = " . $product[$j]['v3'] . ", ";
+                                if($product[$j]['v4'] != "")
+                                    $key_value_text .= $product[$j]['k4'] . " = " . $product[$j]['v4'] . ", ";
+
+                                $key_value_text = substr($key_value_text, 0, -2);
+                                
+                                break;
+                            }
+
+                        }
+
+                        $order_info = getOrderInfo($incoming_element_json[$i]['od_id'], $db);
+
+                        if($order_info["order_type"] == "taiwan")
+                            $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $incoming_element_json[$i]['od_id'];
+                        
+                        if($order_info["order_type"] == "mockup")
+                            $url = "https://feliix.myvnc.com/order_taiwan_mockup_p3?id=" . $incoming_element_json[$i]['od_id'];
+                        
+                        if($order_info["order_type"] == "sample")
+                            $url = "https://feliix.myvnc.com/order_taiwan_sample_p3?id=" . $incoming_element_json[$i]['od_id'];
+                        
+                        if($order_info["order_type"] == "stock")
+                            $url = "https://feliix.myvnc.com/order_taiwan_stock_p3?id=" . $incoming_element_json[$i]['od_id'];
+
+
+                        $is_last_order_main = "<a href='" . $url . "' target='_blank'>" . $order_info["serial_name"] . " " . $order_info["od_name"] . "</a><br>";
+                        $incoming_html .= "(" . $order_sn++ . ") Ordered Date: " . substr($incoming_element_json[$i]['order_date'], 0, 10) . ", Qty: " . ($incoming_element_json[$i]['qty'] + $incoming_element_json[$i]['backup_qty'])  . " <br> " .  $key_value_text . " <br> " . $is_last_order_main .  "<br>";
+                    }
+                }
+
                 if($replacement_cnt > 0)
                     $replacement_product = GetReplacementProduct($id, $db);
 
@@ -1238,6 +1291,11 @@ else
                                     "last_order_at" => substr($last_order_at,0, 10),
                                     "last_order_url" => "",
                                     "last_have_spec" => true,
+
+                                    "incoming_qty" => $incoming_qty,
+                                    "incoming_element" => $incoming_element,
+                                    "incoming_html" => $incoming_html,
+
 
                 );
             }
@@ -2724,7 +2782,7 @@ function tofloat($numberString) {
 
 function getOrderInfo($od_id, $db)
 {
-    $sql = "select order_type, serial_name, status from od_main WHERE id = ". $od_id;
+    $sql = "select order_type, serial_name, status, od_name from od_main WHERE id = ". $od_id;
 
     $merged_results = array();
 
