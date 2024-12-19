@@ -106,7 +106,7 @@ switch ($method) {
                 // update product qty
                 if($pre_confirm == 'O' && $confirm != 'O')
                     RemoveProductQty($od_id, $items_array[$i], $db);
-                else if($pre_confirm != 'O' && $confirm == 'O')
+                if($confirm == 'O')
                     UpdateProductQty($od_id, $block_array[$i], $db);
 
                 // insert quotation_page_type_block
