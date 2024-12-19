@@ -834,10 +834,7 @@ function UpdateProductQty($od_id, $item, $db)
         $new_incoming_qty += $qty + $backup_qty;
         $new_incoming_element[] = array('od_id' => $od_id, 'qty' => $qty, 'backup_qty' => $backup_qty, 'v1' => $v1, 'v2' => $v2, 'v3' => $v3, 'v4' => $v4, 'ps_var' => $ps_var, 'order_date' => date("Y-m-d H:i:s"), 'order_type' => 'taiwan');
     }
-    else
-    {
-        $new_incoming_element = $org_incoming_element;
-    }
+
 
     $sql = "update product_category set incoming_qty = :incoming_qty, incoming_element = :incoming_element where id = :pid ";
     $stmt = $db->prepare($sql);
