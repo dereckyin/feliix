@@ -413,9 +413,9 @@ else
                 {
                     $incoming_element_json = json_decode($incoming_element, true);
 
-                    // order by order_date desc
+                    // order by order_date asc
                     usort($incoming_element_json, function($a, $b) {
-                        return strtotime($b['order_date']) - strtotime($a['order_date']);
+                        return strtotime($a['order_date']) - strtotime($b['order_date']);
                     });
 
                     for($i = 0; $i < count($incoming_element_json); $i++)
