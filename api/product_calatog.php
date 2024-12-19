@@ -413,6 +413,11 @@ else
                 {
                     $incoming_element_json = json_decode($incoming_element, true);
 
+                    // order by order_date desc
+                    usort($incoming_element_json, function($a, $b) {
+                        return strtotime($b['order_date']) - strtotime($a['order_date']);
+                    });
+
                     for($i = 0; $i < count($incoming_element_json); $i++)
                     {
                         $key_value_text = "";
