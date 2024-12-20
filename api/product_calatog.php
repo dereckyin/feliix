@@ -1137,14 +1137,14 @@ else
 
                         }
 
-                        if($key_value_text == "")
-                        {
-                            // $key_value_text = $attribute_list to string
-                            for($j = 0; $j < count($attribute_list); $j++)
-                            {
-                                $key_value_text .= $attribute_list[$j]['category'] . " = " . implode(', ', $attribute_list[$j]['value']) . ", ";
-                            }
-                        }
+                        // if($key_value_text == "")
+                        // {
+                        //     // $key_value_text = $attribute_list to string
+                        //     for($j = 0; $j < count($attribute_list); $j++)
+                        //     {
+                        //         $key_value_text .= $attribute_list[$j]['category'] . " = " . implode(', ', $attribute_list[$j]['value']) . ", ";
+                        //     }
+                        // }
 
                         $order_info = getOrderInfo($incoming_element_json[$i]['od_id'], $db);
 
