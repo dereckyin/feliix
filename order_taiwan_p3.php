@@ -1670,6 +1670,7 @@ header( 'location:index' );
                         <th colspan="2">Description</th>
                         <th>Qty Needed</th>
                         <th>Backup Qty</th>
+                        <th>Unit</th>
                         <th style="display: none;">Amount</th>
                         <th>Date Needed by Client</th>
                         <th>Notes</th>
@@ -1782,6 +1783,15 @@ header( 'location:index' );
                 </div>
                 <div class="write_block" v-if="item.is_edit">
                     <input type="text" v-model="item.backup_qty">
+                </div>
+            </td>
+
+            <td>
+                <div class="read_block" v-if="!item.is_edit">
+                {{ item.unit }}
+                </div>
+                <div class="write_block" v-if="item.is_edit">
+                    <input type="text" v-model="item.unit">
                 </div>
             </td>
 

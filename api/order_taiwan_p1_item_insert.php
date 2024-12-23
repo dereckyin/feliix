@@ -97,6 +97,7 @@ switch ($method) {
                     `listing` = :listing,
                     `qty` = :qty,
                     `backup_qty` = :backup_qty,
+                    `unit` = :unit,
                     `srp` = :srp,
                     `date_needed` = :date_needed,
                     `pid` = :pid,
@@ -130,6 +131,7 @@ switch ($method) {
 
                 $qty = isset($block_array[$i]['qty']) ? $block_array[$i]['qty'] : '';
                 $backup_qty = isset($block_array[$i]['backup_qty']) ? $block_array[$i]['backup_qty'] : '';
+                $unit = isset($block_array[$i]['unit']) ? $block_array[$i]['unit'] : '';
                 $srp = isset($block_array[$i]['srp']) ? $block_array[$i]['srp'] : '';
                 $date_needed = isset($block_array[$i]['date_needed']) ? $block_array[$i]['date_needed'] : '';
                 $pid = isset($block_array[$i]['pid']) ? $block_array[$i]['pid'] : '';
@@ -162,6 +164,7 @@ switch ($method) {
                 $stmt->bindParam(':listing', $listing);
                 $stmt->bindParam(':qty', $qty);
                 $stmt->bindParam(':backup_qty', $backup_qty);
+                $stmt->bindParam(':unit', $unit);
                 $stmt->bindParam(':srp', $srp);
                 $stmt->bindParam(':date_needed', $date_needed);
                 $stmt->bindParam(':pid', $pid);

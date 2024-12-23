@@ -1401,6 +1401,7 @@ var app = new Vue({
             listing:"",
               qty:"",
               backup_qty:"",
+              unit:"",
               srp:price,
               date_needed:"",
               pid: this.product.id,
@@ -1572,6 +1573,7 @@ var app = new Vue({
             listing:"",
             qty:"",
             backup_qty:"",
+            unit:"",
             srp:price,
             date_needed:"",
             pid: this.product.id,
@@ -2318,6 +2320,16 @@ var app = new Vue({
         },
 
         confirmItem(item) {
+          // qty and backup_qty must be numeric or space
+          if((item.qty.trim() != "" && /^[\d ]*$/.test(item.qty.trim())) || (item.backup_qty.trim() == "" && /^[\d ]*$/.test(item.backup_qty.trim()))) {
+            Swal.fire({
+              text: 'Valid value for columns "Qty Needed" and "Backup Qty" is blank or numbers. It cannot include texts.',
+              icon: "warning",
+              confirmButtonText: "OK",
+            });
+
+            return;
+          }
             item.is_edit = false;
             let _this = this;
 
@@ -2338,6 +2350,7 @@ var app = new Vue({
                 listing:item.listing,
                 qty:item.qty,
                 backup_qty:item.backup_qty,
+                unit:item.unit,
                 srp:item.srp,
                 date_needed:item.date_needed,
                 pid:item.pid,
@@ -2434,6 +2447,7 @@ var app = new Vue({
                 listing:"",
                 qty:"",
                 backup_qty:"",
+                unit:"",
                 srp:"",
                 date_needed:"",
                 pid:0,
@@ -3526,6 +3540,7 @@ add_with_image_set_select(all) {
       listing:"",
       qty:"",
       backup_qty:"",
+      unit:"",
       srp:srp,
       date_needed:"",
       pid: this.product.id,
@@ -3690,6 +3705,7 @@ add_without_image_set_select(all) {
       listing:"",
       qty:"",
       backup_qty:"",
+      unit:"",
       srp:srp,
       date_needed:"",
       pid: this.product.id,
@@ -3986,6 +4002,7 @@ item = {
   listing:"",
   qty:set.qty,
   backup_qty:"",
+  unit:"",
   srp:price,
   date_needed:"",
   pid: set.id,
@@ -4184,6 +4201,7 @@ item = {
     listing:"",
     qty:set.qty,
     backup_qty:"",
+    unit:"",
     srp:price,
     date_needed:"",
     pid: set.id,

@@ -5634,3 +5634,6 @@ ADD COLUMN `incoming_qty` int(11) DEFAULT 0;
 
 ALTER TABLE product_category
 ADD COLUMN `incoming_element` JSON;
+
+ALTER TABLE od_item
+ADD COLUMN `unit` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' AFTER `backup_qty`;

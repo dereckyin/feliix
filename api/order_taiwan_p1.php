@@ -60,6 +60,7 @@ if (!isset($jwt)) {
                     listing,
                     qty,
                     backup_qty,
+                    unit,
                     srp,
                     date_needed,
                     shipping_way,
@@ -145,6 +146,7 @@ if (!isset($jwt)) {
         $listing = $row['listing'];
         $qty = $row['qty'];
         $backup_qty = $row['backup_qty'];
+        $unit = $row['unit'];
         $srp = $row['srp'];
         $date_needed = $row['date_needed'];
         $shipping_way = $row['shipping_way'];
@@ -216,6 +218,7 @@ if (!isset($jwt)) {
             "listing" => $listing,
             "qty" => $qty,
             "backup_qty" => $backup_qty,
+            "unit" => $unit,
             "srp" => $srp,
             "date_needed" => $date_needed,
             "shipping_way" => $shipping_way,
