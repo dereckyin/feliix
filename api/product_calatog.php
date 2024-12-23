@@ -2609,8 +2609,74 @@ function GetProductSetContent($id, $db){
                                 );
         }
 
-
         $moq = $row['moq'];
+
+        // 20241218 for incoming qty
+        $incoming_qty = $row['incoming_qty'];
+        $incoming_element = $row['incoming_element'];
+        $incoming_html = "";
+        $order_sn = 1;
+
+        if($incoming_element != "")
+        {
+            $incoming_element_json = json_decode($incoming_element, true);
+
+            // order by order_date asc
+            usort($incoming_element_json, function($a, $b) {
+                return strtotime($a['order_date']) - strtotime($b['order_date']);
+            });
+
+            for($i = 0; $i < count($incoming_element_json); $i++)
+            {
+                $key_value_text = "";
+                for($j = 0; $j < count($product); $j++)
+                {
+                    if($product[$j]['v1'] == $incoming_element_json[$i]['v1'] && $product[$j]['v2'] == $incoming_element_json[$i]['v2'] && $product[$j]['v3'] == $incoming_element_json[$i]['v3'] && $product[$j]['v4'] == $incoming_element_json[$i]['v4'])
+                    {
+                        if($product[$j]['v1'] != "")
+                            $key_value_text .= $product[$j]['k1'] . " = " . $product[$j]['v1'] . ", ";
+                        if($product[$j]['v2'] != "")
+                            $key_value_text .= $product[$j]['k2'] . " = " . $product[$j]['v2'] . ", ";
+                        if($product[$j]['v3'] != "")
+                            $key_value_text .= $product[$j]['k3'] . " = " . $product[$j]['v3'] . ", ";
+                        if($product[$j]['v4'] != "")
+                            $key_value_text .= $product[$j]['k4'] . " = " . $product[$j]['v4'] . ", ";
+
+                        $key_value_text = substr($key_value_text, 0, -2);
+                        
+                        break;
+                    }
+
+                }
+
+                // if($key_value_text == "")
+                // {
+                //     // $key_value_text = $attribute_list to string
+                //     for($j = 0; $j < count($attribute_list); $j++)
+                //     {
+                //         $key_value_text .= $attribute_list[$j]['category'] . " = " . implode(', ', $attribute_list[$j]['value']) . ", ";
+                //     }
+                // }
+
+                $order_info = getOrderInfo($incoming_element_json[$i]['od_id'], $db);
+
+                if($order_info["order_type"] == "taiwan")
+                    $url = "https://feliix.myvnc.com/order_taiwan_p3?id=" . $incoming_element_json[$i]['od_id'];
+                
+                if($order_info["order_type"] == "mockup")
+                    $url = "https://feliix.myvnc.com/order_taiwan_mockup_p3?id=" . $incoming_element_json[$i]['od_id'];
+                
+                if($order_info["order_type"] == "sample")
+                    $url = "https://feliix.myvnc.com/order_taiwan_sample_p3?id=" . $incoming_element_json[$i]['od_id'];
+                
+                if($order_info["order_type"] == "stock")
+                    $url = "https://feliix.myvnc.com/order_taiwan_stock_p3?id=" . $incoming_element_json[$i]['od_id'];
+
+
+                $is_last_order_main = "<a href='" . $url . "' target='_blank'>" . $order_info["serial_name"] . " " . $order_info["od_name"] . "</a><br>";
+                $incoming_html .= "(" . $order_sn++ . ") Ordered Date: " . substr($incoming_element_json[$i]['order_date'], 0, 10) . ", Qty: " . ($incoming_element_json[$i]['qty'] + $incoming_element_json[$i]['backup_qty'])  . " <br> " .  $key_value_text . " <br> " . $is_last_order_main .  "<br>";
+            }
+        }
 
         $str_price_change = "";
         if($max_price_change != "" || $min_price_change != "")
@@ -2748,6 +2814,10 @@ function GetProductSetContent($id, $db){
                             "last_order" => $last_order,
                             "last_order_name" => $last_order_name,
                             "is_last_order" => $is_last_order,
+
+                            "incoming_qty" => $incoming_qty,
+                            "incoming_element" => $incoming_element,
+                            "incoming_html" => $incoming_html,
 
         );
     }
