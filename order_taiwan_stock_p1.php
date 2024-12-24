@@ -600,14 +600,19 @@ header( 'location:index' );
         }
 
         .block.A .tb_order thead tr th:nth-of-type(8), .block.A .tb_order tbody tr td:nth-of-type(9) {
+            min-width: 130px;
+        }
+
+
+        .block.A .tb_order thead tr th:nth-of-type(9), .block.A .tb_order tbody tr td:nth-of-type(10) {
             min-width: 180px;
         }
 
-        .block.A .tb_order thead tr th:nth-of-type(9), .block.A .tb_order tbody tr td:nth-of-type(10) {
+        .block.A .tb_order thead tr th:nth-of-type(10), .block.A .tb_order tbody tr td:nth-of-type(11) {
             min-width: 200px;
         }
 
-        .block.A .tb_order thead tr th:nth-of-type(10), .block.A .tb_order tbody tr td:nth-of-type(11) {
+        .block.A .tb_order thead tr th:nth-of-type(11), .block.A .tb_order tbody tr td:nth-of-type(12) {
             min-width: 450px;
         }
 
