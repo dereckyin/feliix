@@ -2680,9 +2680,8 @@ header( 'location:index' );
 
             </div>
 
-
-            <div class="block fn">
-                <div class="popupblock" v-if="quotation_control && project_category == 'Office Systems'">
+            <div class="block fn" id="menu">
+                <div class="popupblock" v-if="quotation_control && project_category == 'Office Systems' ">
 
                     <a id="status_fn1" class="fn1" :ref="'a_fn1'" @click="show_access = !show_access">Access</a>
 
@@ -2870,8 +2869,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="show_page = false">Close</a>
-                                <a class="btn small green" @click="page_save_pre()">Save</a>
+                                <a class="btn small" @click="show_page = false"  v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="page_save_pre()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
@@ -3038,8 +3037,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="subtotal_close()">Close</a>
-                                <a class="btn small green" @click="subtotal_save()" v-if="is_load">Save</a>
+                                <a class="btn small" @click="subtotal_close()" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="subtotal_save()" v-if="is_load">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
