@@ -2320,7 +2320,7 @@ var app = new Vue({
 
         confirmItem(item) {
           // qty and backup_qty must be numeric or space
-          if((item.qty.trim() != "" && /^[\d ]*$/.test(item.qty.trim()) == false) || (item.backup_qty.trim() == "" && /^[\d ]*$/.test(item.backup_qty.trim()) == false)) {
+          if((item.qty.trim() != "" && /^\d*[1-9]+\d*$/.test(item.qty.trim()) == false) || (item.backup_qty.trim() == "" && /^\d*[1-9]+\d*$/.test(item.backup_qty.trim()) == false)) {
             Swal.fire({
               text: 'Valid value for columns "Qty Needed" and "Backup Qty" is blank or numbers. It cannot include texts.',
               icon: "warning",
