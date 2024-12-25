@@ -71,7 +71,7 @@ for($i=0; $i<count($items_array); $i++)
     $item_id = $items_array[$i]['id'];
     $item_status = $items_array[$i]['confirm'];
 
-    if($item_status == 'C' || $item_status == 'O')
+    if($item_status == 'C' || $item_status == 'O' || $item_status == 'E')
     {
         array_push($c_items, $items_array[$i]);
     }
