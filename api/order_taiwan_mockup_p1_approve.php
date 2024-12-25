@@ -249,6 +249,17 @@ function GetAccess7($db, $uid)
     return $row['access7'];
 }
 
+function GetPreviousConfirm($db, $od_id, $item_id)
+{
+    $query = "SELECT confirm FROM od_item WHERE od_id = :od_id AND id = :id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':od_id', $od_id);
+    $stmt->bindParam(':id', $item_id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['confirm'];
+}
+
 function RemoveProductQty($od_id, $item, $db)
 {
     $pid = $item['pid'];
