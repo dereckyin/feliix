@@ -2513,7 +2513,7 @@ header( 'location:index' );
 
             </div>
 
-            <div class="block fn">
+            <div class="block fn" id="menu">
                 <div class="popupblock">
                     <?php
                 if ($test_manager[0]  == "1")
@@ -2563,8 +2563,8 @@ header( 'location:index' );
                                     <input type="text" placeholder="Second Line" v-model="temp_prepare_by_second_line">
                                 </dd>
                                 <div class="btnbox">
-                                    <a class="btn small" @click="cancel_header()">Close</a>
-                                    <a class="btn small green" @click="save_header()">Save</a>
+                                    <a class="btn small" @click="cancel_header()" v-if="submit == false">Close</a>
+                                    <a class="btn small green" @click="save_header()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                                 </div>
                             </dl>
                         </div>
@@ -2598,8 +2598,8 @@ header( 'location:index' );
                                     <input type="text" v-model="temp_footer_second_line">
                                 </dd>
                                 <div class="btnbox">
-                                    <a class="btn small" @click="cancel_footer()">Close</a>
-                                    <a class="btn small green" @click="save_footer()">Save</a>
+                                    <a class="btn small" @click="cancel_footer()" v-if="submit == false">Close</a>
+                                    <a class="btn small green" @click="save_footer()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                                 </div>
                             </dl>
                         </div>
@@ -2685,8 +2685,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="show_requirements = false">Close</a>
-                                <a class="btn small green" @click="requirements_save_pre()">Save</a>
+                                <a class="btn small" @click="show_requirements = false" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="requirements_save_pre()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
@@ -2772,8 +2772,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="subtotal_close()">Close</a>
-                                <a class="btn small green" @click="subtotal_save()" v-if="is_load">Save</a>
+                                <a class="btn small" @click="subtotal_close()" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="subtotal_save()" v-if="is_load">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
@@ -2870,8 +2870,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="show_installation = false">Close</a>
-                                <a class="btn small green" @click="subtotal_save_installation()">Save</a>
+                                <a class="btn small" @click="show_installation = false" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="subtotal_save_installation()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
@@ -2960,8 +2960,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="show_consumables = false">Close</a>
-                                <a class="btn small green" @click="consumalbe_save_pre()">Save</a>
+                                <a class="btn small" @click="show_consumables = false" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="consumalbe_save_pre()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
@@ -3041,8 +3041,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="close_detail_consumables()">Close</a>
-                                <a class="btn small green" @click="subtotal_save_consumable()" v-if="is_load_consumable">Save</a>
+                                <a class="btn small" @click="close_detail_consumables()" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="subtotal_save_consumable()" v-if="is_load_consumable">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
@@ -3143,8 +3143,8 @@ header( 'location:index' );
                             </dl>
 
                             <div class="btnbox">
-                                <a class="btn small" @click="close_total()">Close</a>
-                                <a class="btn small green" @click="save_total()">Save</a>
+                                <a class="btn small" @click="close_total()" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="save_total()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
@@ -3211,8 +3211,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="close_term()">Close</a>
-                                <a class="btn small green" @click="term_save()">Save</a>
+                                <a class="btn small" @click="close_term()" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="term_save()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
@@ -3293,8 +3293,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="close_payment_term()">Close</a>
-                                <a class="btn small green" @click="payment_term_save()">Save</a>
+                                <a class="btn small" @click="close_payment_term()" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="payment_term_save()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
@@ -3422,8 +3422,8 @@ header( 'location:index' );
 
                         <div class="formbox">
                             <div class="btnbox">
-                                <a class="btn small" @click="close_sig()">Close</a>
-                                <a class="btn small green" @click="sig_save()">Save</a>
+                                <a class="btn small" @click="close_sig()" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="sig_save()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
                             </div>
                         </div>
 
