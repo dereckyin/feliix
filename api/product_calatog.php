@@ -1164,7 +1164,7 @@ else
                         $total_qty += is_numeric($incoming_element_json[$i]['backup_qty']) ? $incoming_element_json[$i]['backup_qty'] : 0;
         
                         $is_last_order_main = "<a href='" . $url . "' target='_blank'>" . $order_info["serial_name"] . " " . $order_info["od_name"] . "</a><br>";
-                        $incoming_html .= "(" . $order_sn++ . ") Ordered Date: " . substr($incoming_element_json[$i]['order_date'], 0, 10) . ", Qty: " . $total_qty  . " <br> " .  $key_value_text . " <br> " . $is_last_order_main .  "<br>";
+                        $incoming_html .= "(" . $order_sn++ . ") Ordered Date: " . substr($incoming_element_json[$i]['order_date'], 0, 10) . ", Qty: " . $total_qty  . " <br> " . ($key_value_text != "" ? $key_value_text . " <br> " : "") . $is_last_order_main .  "<br>";
                     }
                 }
 
@@ -2678,7 +2678,7 @@ function GetProductSetContent($id, $db){
                 $total_qty += is_numeric($incoming_element_json[$i]['backup_qty']) ? $incoming_element_json[$i]['backup_qty'] : 0;
 
                 $is_last_order_main = "<a href='" . $url . "' target='_blank'>" . $order_info["serial_name"] . " " . $order_info["od_name"] . "</a><br>";
-                $incoming_html .= "(" . $order_sn++ . ") Ordered Date: " . substr($incoming_element_json[$i]['order_date'], 0, 10) . ", Qty: " . $total_qty  . " <br> " .  $key_value_text . " <br> " . $is_last_order_main .  "<br>";
+                $incoming_html .= "(" . $order_sn++ . ") Ordered Date: " . substr($incoming_element_json[$i]['order_date'], 0, 10) . ", Qty: " . $total_qty  . " <br> " . ($key_value_text != "" ? $key_value_text . " <br> " : "") . $is_last_order_main .  "<br>";
             }
         }
 
