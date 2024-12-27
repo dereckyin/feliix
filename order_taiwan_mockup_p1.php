@@ -602,7 +602,6 @@ try {
             min-width: 130px;
         }
 
-
         .block.A .tb_order thead tr th:nth-of-type(9), .block.A .tb_order tbody tr td:nth-of-type(10) {
             min-width: 180px;
         }

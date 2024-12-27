@@ -595,8 +595,8 @@ header( 'location:index' );
             min-width: 400px;
         }
 
-        .block.C .tb_order tbody tr td:nth-of-type(7) {
-            min-width: 400px;
+        .block.C .tb_order thead tr th:nth-of-type(6), .block.C .tb_order tbody tr td:nth-of-type(7) {
+            min-width: 130px;
         }
 
         .block.C .tb_order thead tr th:nth-of-type(7), .block.C .tb_order tbody tr td:nth-of-type(8) {

@@ -289,7 +289,8 @@ try {
             padding-bottom: 3px;
         }
 
-        #tb_product_list tbody tr td span.stock_qty {
+        #tb_product_list tbody tr td span.stock_qty,
+        #tb_product_list tbody tr td span.stock_qty_ware {
             background-color: yellowgreen;
             color: #fff;
             font-size: 14px;
@@ -299,6 +300,10 @@ try {
             margin: 3px 0 13px;
             padding: 1px 15px 2px;
             cursor: pointer;
+        }
+
+        #tb_product_list tbody tr td span.stock_qty_ware {
+            background-color: #5bc0de;
         }
 
         #tb_product_list tbody tr td:nth-of-type(7) button {
@@ -1076,10 +1081,12 @@ try {
                         <td>
                             Incoming<br>
                             <span class="stock_qty" @click="incoming_qty_info(set.incoming_html)">{{ set.incoming_qty }}</span><br>
+                            <!--
                             Project-Locked<br>
-                            <span class="stock_qty">10</span><br>
+                            <span class="stock_qty_ware">10</span><br>
                             Freely Usable<br>
-                            <span class="stock_qty">5</span>
+                            <span class="stock_qty_ware">5</span>
+                            -->
                         </td>
                     </tr>
 
@@ -1218,10 +1225,12 @@ try {
                         <td>
                             Incoming<br>
                             <span class="stock_qty" @click="incoming_qty_info(item.incoming_html)">{{ item.incoming_qty }}</span><br>
+                            <!--
                             Project-Locked<br>
-                            <span class="stock_qty">10</span><br>
+                            <span class="stock_qty_ware">10</span><br>
                             Freely Usable<br>
-                            <span class="stock_qty">5</span>
+                            <span class="stock_qty_ware">5</span>
+                            -->
                         </td>
 
                         <td>
