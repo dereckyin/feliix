@@ -36,7 +36,7 @@ if (!isset($jwt)) {
             $access7 = true;
         }
        
-        if($username == "Kristel Tan" || $username == "Kuan" || $username == "Dennis Lin" || $username == "Marie Kayla Patricia Dequina" || $username == "Gina Donato" || $username == "dereck" || $username == "Aiza Eisma")
+        if($username == "Kristel Tan" || $username == "Kuan" || $username == "Dennis Lin" || $username == "Marie Kayla Patricia Dequina" || $username == "Gina Donato" || $username == "dereck" || $username == "Aiza Eisma" || $username == "Johmar Maximo")
         {
             $access7 = true;
         }

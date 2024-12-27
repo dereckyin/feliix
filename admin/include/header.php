@@ -235,7 +235,7 @@ try {
             $dashboard = true;
         }
        
-        if($username == "Kristel Tan" || $username == "Kuan" || $username == "Dennis Lin" || $username == "Marie Kayla Patricia Dequina" || $username == "Gina Donato" || $username == "Aiza Eisma")
+        if($username == "Kristel Tan" || $username == "Kuan" || $username == "Dennis Lin" || $username == "Marie Kayla Patricia Dequina" || $username == "Gina Donato" || $username == "Aiza Eisma" || $username == "Johmar Maximo")
         {
             $dashboard = true;
         }
