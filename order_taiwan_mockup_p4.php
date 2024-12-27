@@ -546,14 +546,18 @@ header( 'location:index' );
         }
 
         .block.D .tb_order thead tr th:nth-of-type(10), .block.D .tb_order tbody tr td:nth-of-type(11) {
-            min-width: 180px;
+            min-width: 130px;
         }
 
         .block.D .tb_order thead tr th:nth-of-type(11), .block.D .tb_order tbody tr td:nth-of-type(12) {
-            min-width: 200px;
+            min-width: 180px;
         }
 
         .block.D .tb_order thead tr th:nth-of-type(12), .block.D .tb_order tbody tr td:nth-of-type(13) {
+            min-width: 200px;
+        }
+
+        .block.D .tb_order thead tr th:nth-of-type(13), .block.D .tb_order tbody tr td:nth-of-type(14) {
             min-width: 450px;
         }
 
@@ -561,24 +565,24 @@ header( 'location:index' );
             min-width: 120px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(14) {
+        .block.D .tb_order tbody tr td:nth-of-type(15) {
             min-width: 450px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(15) {
+        .block.D .tb_order tbody tr td:nth-of-type(16) {
             min-width: 220px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(16),
         .block.D .tb_order tbody tr td:nth-of-type(17),
-        .block.D .tb_order tbody tr td:nth-of-type(18) {
+        .block.D .tb_order tbody tr td:nth-of-type(18),
+        .block.D .tb_order tbody tr td:nth-of-type(19) {
             min-width: 180px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(19),
         .block.D .tb_order tbody tr td:nth-of-type(20),
         .block.D .tb_order tbody tr td:nth-of-type(21),
-        .block.D .tb_order tbody tr td:nth-of-type(22) {
+        .block.D .tb_order tbody tr td:nth-of-type(22),
+        .block.D .tb_order tbody tr td:nth-of-type(23) {
             min-width: 400px;
         }
 
@@ -1502,6 +1506,7 @@ header( 'location:index' );
                         <th colspan="2">Description</th>
                         <th>Qty Needed</th>
                         <th>Backup Qty</th>
+                        <th>Unit</th>
                         <th style="display: none;">Amount</th>
                         <th>Date Needed by Client</th>
                         <th>Notes</th>
@@ -1616,6 +1621,15 @@ header( 'location:index' );
                 </div>
                 <div class="write_block" v-if="item.is_edit">
                     <input type="text" v-model="item.backup_qty">
+                </div>
+            </td>
+
+            <td>
+                <div class="read_block" v-if="!item.is_edit">
+                {{ item.unit }}
+                </div>
+                <div class="write_block" v-if="item.is_edit">
+                    <input type="text" v-model="item.unit">
                 </div>
             </td>
 

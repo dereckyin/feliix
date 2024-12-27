@@ -391,7 +391,7 @@ var app = new Vue({
         cost_furniture : false,
     },
   
-    created() {
+    async created() {
       let _this = this;
       let uri = window.location.href.split("?");
       if (uri.length >= 2) {
@@ -416,7 +416,6 @@ var app = new Vue({
         });
       }
       
-      this.getRecord();
       this.get_product_records();
       this.getUserName();
       this.get_brands();
@@ -428,6 +427,7 @@ var app = new Vue({
       this.getUsers();
       this.getCreators();
       this.getProductControl();
+      await this.getRecord();
     },
   
     computed: {
@@ -2332,7 +2332,7 @@ var app = new Vue({
             _this.submit = false;
         }
 
-        this.reload();
+        await this.reload();
       
       
       },
@@ -2394,7 +2394,7 @@ var app = new Vue({
             _this.submit = false;
         }
 
-        this.reload();
+        await this.reload();
   
       
       },
@@ -2526,7 +2526,7 @@ var app = new Vue({
             _this.submit = false;
         }
 
-        this.reload();
+        await this.reload();
   
       
       },
@@ -2689,7 +2689,7 @@ var app = new Vue({
         form_Data.append("show", this.show);
         form_Data.append("pageless", 'Y');
       
-        axios({
+        await axios({
           method: "post",
           headers: {
             "Content-Type": "multipart/form-data",
@@ -2697,7 +2697,7 @@ var app = new Vue({
           url: "api/quotation_eng_total_insert",
           data: form_Data,
         })
-          .then(function(response) {
+          .then(async function(response) {
             //handle success
             //_this.id = response.data.id;
             
@@ -2707,10 +2707,10 @@ var app = new Vue({
               confirmButtonText: "OK",
             });
   
-            _this.reload();
+            await _this.reload();
             _this.submit = false;
           })
-          .catch(function(error) {
+          .catch(async function(error) {
             //handle error
             Swal.fire({
               text: JSON.stringify(error),
@@ -2718,7 +2718,7 @@ var app = new Vue({
               confirmButtonText: "OK",
             });
   
-            _this.reload();
+           await _this.reload();
             _this.submit = false;
           });
       
@@ -2790,7 +2790,7 @@ var app = new Vue({
             _this.submit = false;
         }
 
-        this.reload();
+        await this.reload();
 
         },
 
@@ -2909,7 +2909,7 @@ var app = new Vue({
             _this.submit = false;
         }
 
-        this.reload();
+        await this.reload();
 
         },
 
@@ -2943,7 +2943,7 @@ var app = new Vue({
         form_Data.append("block", JSON.stringify(this.temp_installation));
 
         if(this.id == 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -2951,7 +2951,7 @@ var app = new Vue({
             url: "api/quotation_eng_installation_insert",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               _this.id = response.data.id;
               
@@ -2961,10 +2961,10 @@ var app = new Vue({
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -2972,13 +2972,13 @@ var app = new Vue({
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+             await _this.reload();
               _this.submit = false;
             });
         }
 
         if(this.id != 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -2986,7 +2986,7 @@ var app = new Vue({
             url: "api/quotation_eng_installation_update",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               Swal.fire({
                 html: response.data.message,
@@ -2994,10 +2994,10 @@ var app = new Vue({
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+             await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3005,7 +3005,7 @@ var app = new Vue({
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
@@ -3846,9 +3846,7 @@ Installation:`;
         this.show_header = false;
       },
 
-      save_header() {
-        this.show_header = false;
-
+      async save_header(){
         this.first_line = this.temp_first_line;
         this.second_line = this.temp_second_line;
         this.project_category = this.temp_project_category;
@@ -3861,7 +3859,8 @@ Installation:`;
         this.prepare_by_first_line = this.temp_prepare_by_first_line;
         this.prepare_by_second_line = this.temp_prepare_by_second_line;
 
-        this.header_save();
+        await this.header_save();
+        this.show_header = false;
         
       },
 
@@ -3869,14 +3868,12 @@ Installation:`;
         this.show_footer = false;
       },
 
-      save_footer() {
-        this.show_footer = false;
-
+      async save_footer() {
         this.footer_first_line = this.temp_footer_first_line;
         this.footer_second_line = this.temp_footer_second_line;
 
-        this.footer_save();
-        
+        await this.footer_save();
+        this.show_footer = false;
       },
 
       reset: function() {
@@ -3926,7 +3923,7 @@ Installation:`;
         this.temp_pages = [];
       },
 
-      getRecord: function() {
+      getRecord: async function() {
         let _this = this;
 
         if(_this.id == 0)
@@ -3938,7 +3935,7 @@ Installation:`;
   
         let token = localStorage.getItem("accessToken");
   
-        axios
+        await axios
           .get("api/quotation_eng_pageless", {
               params,
               headers: { Authorization: `Bearer ${token}` },
@@ -4604,7 +4601,7 @@ Installation:`;
 
         await this.page_copy_save(this.id, obj_id + 1, new_blocks, obj);
 
-        this.reload();
+        await this.reload();
       },
 
       del_block: function(pid, eid) {
@@ -4615,7 +4612,7 @@ Installation:`;
         }
       },
 
-      header_save : function() {
+      header_save : async function() {
         if (this.submit == true) return;
 
         this.submit = true;
@@ -4639,7 +4636,7 @@ Installation:`;
         form_Data.append("prepare_by_second_line", this.prepare_by_second_line);
   
         if(this.id == 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -4647,7 +4644,7 @@ Installation:`;
             url: "api/quotation_eng_header_insert",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               _this.id = response.data.id;
               
@@ -4657,10 +4654,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -4668,13 +4665,13 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
 
         if(this.id != 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -4682,7 +4679,7 @@ Installation:`;
             url: "api/quotation_eng_header_update",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               Swal.fire({
                 html: response.data.message,
@@ -4690,10 +4687,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -4701,14 +4698,14 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
       
       },
 
-      footer_save : function() {
+      footer_save : async function() {
         if (this.submit == true) return;
 
         this.submit = true;
@@ -4725,7 +4722,7 @@ Installation:`;
         form_Data.append("footer_second_line", this.footer_second_line);
   
         if(this.id == 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -4733,7 +4730,7 @@ Installation:`;
             url: "api/quotation_eng_footer_insert",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               _this.id = response.data.id;
               
@@ -4743,10 +4740,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -4754,13 +4751,13 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
 
         if(this.id != 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -4768,7 +4765,7 @@ Installation:`;
             url: "api/quotation_eng_footer_update",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               Swal.fire({
                 html: response.data.message,
@@ -4776,10 +4773,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -4787,7 +4784,7 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
@@ -4877,7 +4874,7 @@ Installation:`;
 
         let res = await axios({ 
           method: 'get', 
-          url: 'api/quotation_pageless', 
+          url: 'api/quotation_eng_pageless', 
           params,
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -4898,7 +4895,7 @@ Installation:`;
         
         if(empty)
         {
-          Swal.fire({
+          const alert =  await Swal.fire({
             title: "WARNING",
             text: "If click yes, all the requirements will be erased.",
             icon: "warning",
@@ -4906,20 +4903,23 @@ Installation:`;
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes",
-          }).then((result) => {
-            if (result.value) {
-              _this.requirements_save();
-            }
           });
+          
+          if(alert.value == true)
+            await _this.requirements_save();
+            
         }
         else
-          _this.requirements_save();
+          await _this.requirements_save();
         },
 
-        requirements_save : function() {
+        requirements_save : async function() {
         if (this.submit == true) return;
 
         this.submit = true;
+
+        $("#menu").css("visibility", "hidden");
+        $(".mask").toggle();
   
         var token = localStorage.getItem("token");
         var form_Data = new FormData();
@@ -4946,71 +4946,84 @@ Installation:`;
         form_Data.append("general_requirement", JSON.stringify(this.temp_general_requirement));
 
         if(this.id == 0) {
-          axios({
-            method: "post",
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            url: "api/quotation_eng_requirements_insert",
-            data: form_Data,
-          })
-            .then(function(response) {
-              //handle success
-              _this.id = response.data.id;
-              
+
+          try {
+            let res = await axios({
+              method: 'post',
+              url: 'api/quotation_eng_requirements_insert',
+              data: form_Data,
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
+
+            if(res.status == 200){
+
+              _this.submit = false;
+
+              await this.reload();
+              $(".mask").toggle();
+              $("#menu").css("visibility", "visible");
+
               Swal.fire({
-                html: response.data.message,
+                html: res.data.message,
                 icon: "info",
                 confirmButtonText: "OK",
               });
-    
-              _this.reload();
-              _this.submit = false;
-            })
-            .catch(function(error) {
-              //handle error
+            } 
+          } catch (err) {
+              console.log(err)
               Swal.fire({
                 text: JSON.stringify(error),
                 icon: "info",
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
-              _this.submit = false;
-            });
+              $(".mask").toggle();
+                $("#menu").css("visibility", "visible");
+                _this.submit = false;
+            }
+        
         }
 
         if(this.id != 0) {
-          axios({
-            method: "post",
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            url: "api/quotation_eng_requirements_update",
-            data: form_Data,
-          })
-            .then(function(response) {
-              //handle success
+    
+          try {
+            let res = await axios({
+              method: 'post',
+              url: 'api/quotation_eng_requirements_update',
+              data: form_Data,
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
+
+            if(res.status == 200){
+
+              _this.submit = false;
+
+              await this.reload();
+              $(".mask").toggle();
+              $("#menu").css("visibility", "visible");
+
               Swal.fire({
-                html: response.data.message,
+                html: res.data.message,
                 icon: "info",
                 confirmButtonText: "OK",
               });
-    
-              _this.reload();
-              _this.submit = false;
-            })
-            .catch(function(error) {
-              //handle error
+            } 
+          } catch (err) {
+              console.log(err)
               Swal.fire({
                 text: JSON.stringify(error),
                 icon: "info",
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
-              _this.submit = false;
-            });
+              $(".mask").toggle();
+                $("#menu").css("visibility", "visible");
+                _this.submit = false;
+            }
         }
       
       },
@@ -5029,7 +5042,7 @@ Installation:`;
         
         if(empty)
         {
-          Swal.fire({
+          const alert = await Swal.fire({
             title: "WARNING",
             text: "If click yes, all the consumable will be erased.",
             icon: "warning",
@@ -5037,20 +5050,22 @@ Installation:`;
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes",
-          }).then((result) => {
-            if (result.value) {
-              _this.consumable_save();
-            }
           });
+          
+          if(alert.value == true)
+              await _this.consumable_save();
         }
         else
-          _this.consumable_save();
+          await _this.consumable_save();
         },
 
-        consumable_save : function() {
+        consumable_save : async function() {
         if (this.submit == true) return;
 
         this.submit = true;
+
+        $("#menu").css("visibility", "hidden");
+        $(".mask").toggle();
   
         var token = localStorage.getItem("token");
         var form_Data = new FormData();
@@ -5077,78 +5092,90 @@ Installation:`;
         form_Data.append("consumable", JSON.stringify(this.temp_consumable));
 
         if(this.id == 0) {
-          axios({
-            method: "post",
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            url: "api/quotation_eng_consumable_insert",
-            data: form_Data,
-          })
-            .then(function(response) {
-              //handle success
-              _this.id = response.data.id;
-              
+
+          try {
+            let res = await axios({
+              method: 'post',
+              url: 'api/quotation_eng_consumable_insert',
+              data: form_Data,
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
+
+            if(res.status == 200){
+
+              _this.submit = false;
+
+              await this.reload();
+              $(".mask").toggle();
+              $("#menu").css("visibility", "visible");
+
               Swal.fire({
-                html: response.data.message,
+                html: res.data.message,
                 icon: "info",
                 confirmButtonText: "OK",
               });
-    
-              _this.reload();
-              _this.submit = false;
-            })
-            .catch(function(error) {
-              //handle error
+            } 
+          } catch (err) {
+              console.log(err)
               Swal.fire({
                 text: JSON.stringify(error),
                 icon: "info",
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
-              _this.submit = false;
-            });
+              $(".mask").toggle();
+                $("#menu").css("visibility", "visible");
+                _this.submit = false;
+            }
+
         }
 
         if(this.id != 0) {
-          axios({
-            method: "post",
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            url: "api/quotation_eng_consumable_update",
-            data: form_Data,
-          })
-            .then(function(response) {
-              //handle success
-              Swal.fire({
-                html: response.data.message,
-                icon: "info",
-                confirmButtonText: "OK",
+            try {
+              let res = await axios({
+                method: 'post',
+                url: 'api/quotation_eng_consumable_update',
+                data: form_Data,
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
               });
-    
-              _this.reload();
-              _this.submit = false;
-            })
-            .catch(function(error) {
-              //handle error
-              Swal.fire({
-                text: JSON.stringify(error),
-                icon: "info",
-                confirmButtonText: "OK",
-              });
-    
-              _this.reload();
-              _this.submit = false;
-            });
+  
+              if(res.status == 200){
+  
+                _this.submit = false;
+  
+                await this.reload();
+                $(".mask").toggle();
+                $("#menu").css("visibility", "visible");
+  
+                Swal.fire({
+                  html: res.data.message,
+                  icon: "info",
+                  confirmButtonText: "OK",
+                });
+              } 
+            } catch (err) {
+                console.log(err)
+                Swal.fire({
+                  text: JSON.stringify(error),
+                  icon: "info",
+                  confirmButtonText: "OK",
+                });
+      
+                $(".mask").toggle();
+                  $("#menu").css("visibility", "visible");
+                  _this.submit = false;
+              }
         }
       
       },
 
 
 
-      reload : function() {
+      reload : async function() {
         this.close_all();
 
         this.is_load = false;
@@ -5160,7 +5187,7 @@ Installation:`;
           this.filter_apply();
         }
         else
-          this.getRecord();
+          await this.getRecord();
       },
 
       electrical_catalog() {

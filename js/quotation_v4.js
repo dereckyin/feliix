@@ -1768,7 +1768,7 @@ var app = new Vue({
             _this.submit = false;
         }
 
-        this.reload();
+        await this.reload();
       
       
       },
@@ -1827,7 +1827,7 @@ var app = new Vue({
             _this.submit = false;
         }
 
-        this.reload();
+        await this.reload();
   
       
       },
@@ -1882,7 +1882,7 @@ var app = new Vue({
             _this.submit = false;
         }
 
-        this.reload();
+        await this.reload();
   
       
       },
@@ -2039,7 +2039,7 @@ var app = new Vue({
         form_Data.append("valid", this.total.valid);
         form_Data.append("total", this.total.total);
       
-        axios({
+        await axios({
           method: "post",
           headers: {
             "Content-Type": "multipart/form-data",
@@ -2047,7 +2047,7 @@ var app = new Vue({
           url: "api/quotation_total_insert",
           data: form_Data,
         })
-          .then(function(response) {
+          .then( async function(response) {
             //handle success
             //_this.id = response.data.id;
             
@@ -2057,10 +2057,10 @@ var app = new Vue({
               confirmButtonText: "OK",
             });
   
-            _this.reload();
+            await _this.reload();
             _this.submit = false;
           })
-          .catch(function(error) {
+          .catch(async function(error) {
             //handle error
             Swal.fire({
               text: JSON.stringify(error),
@@ -2068,7 +2068,7 @@ var app = new Vue({
               confirmButtonText: "OK",
             });
   
-            _this.reload();
+            await _this.reload();
             _this.submit = false;
           });
       
@@ -2731,8 +2731,8 @@ Installation:`;
         this.show_access = false;
       },
 
-      save_header() {
-        this.show_header = false;
+      async save_header() {
+        
 
         this.first_line = this.temp_first_line;
         this.second_line = this.temp_second_line;
@@ -2746,7 +2746,8 @@ Installation:`;
         this.prepare_by_first_line = this.temp_prepare_by_first_line;
         this.prepare_by_second_line = this.temp_prepare_by_second_line;
 
-        this.header_save();
+        await this.header_save();
+        this.show_header = false;
         
       },
 
@@ -2764,13 +2765,14 @@ Installation:`;
         this.show_footer = false;
       },
 
-      save_footer() {
-        this.show_footer = false;
+      async save_footer() {
+        
 
         this.footer_first_line = this.temp_footer_first_line;
         this.footer_second_line = this.temp_footer_second_line;
 
-        this.footer_save();
+        await this.footer_save();
+        this.show_footer = false;
         
       },
 
@@ -3154,7 +3156,7 @@ Installation:`;
 
         await this.page_copy_save(this.id, obj_id + 1, new_blocks, obj);
 
-        this.reload();
+        await this.reload();
       },
 
       del_block: function(pid, eid) {
@@ -3165,7 +3167,7 @@ Installation:`;
         }
       },
 
-      header_save : function() {
+      header_save : async function() {
         if (this.submit == true) return;
 
         this.submit = true;
@@ -3190,7 +3192,7 @@ Installation:`;
     
   
         if(this.id == 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -3198,7 +3200,7 @@ Installation:`;
             url: "api/quotation_header_insert",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               _this.id = response.data.id;
               
@@ -3208,10 +3210,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3219,13 +3221,13 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
 
         if(this.id != 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -3233,7 +3235,7 @@ Installation:`;
             url: "api/quotation_header_update",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               Swal.fire({
                 html: response.data.message,
@@ -3241,10 +3243,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3252,7 +3254,7 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
@@ -3286,7 +3288,7 @@ Installation:`;
             url: "api/quotation_access_insert",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               _this.id = response.data.id;
               
@@ -3296,10 +3298,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3307,7 +3309,7 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+             await _this.reload();
               _this.submit = false;
             });
         }
@@ -3321,7 +3323,7 @@ Installation:`;
             url: "api/quotation_access_update",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               Swal.fire({
                 html: response.data.message,
@@ -3329,10 +3331,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3340,7 +3342,7 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
@@ -3348,7 +3350,7 @@ Installation:`;
       },
 
 
-      footer_save : function() {
+      footer_save :async function() {
         if (this.submit == true) return;
 
         this.submit = true;
@@ -3366,7 +3368,7 @@ Installation:`;
           
   
         if(this.id == 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -3374,7 +3376,7 @@ Installation:`;
             url: "api/quotation_footer_insert",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               _this.id = response.data.id;
               
@@ -3384,10 +3386,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+             await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3395,13 +3397,13 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+             await _this.reload();
               _this.submit = false;
             });
         }
 
         if(this.id != 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -3409,7 +3411,7 @@ Installation:`;
             url: "api/quotation_footer_update",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               Swal.fire({
                 html: response.data.message,
@@ -3417,10 +3419,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+             await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3428,7 +3430,7 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+             await _this.reload();
               _this.submit = false;
             });
         }
@@ -3542,9 +3544,7 @@ Installation:`;
         
         if(empty)
         {
-    
-
-          Swal.fire({
+            const alert =  await Swal.fire({
             title: "WARNING",
             text: "If click yes, all the pages and subtotal blocks will be erased.",
             icon: "warning",
@@ -3552,11 +3552,10 @@ Installation:`;
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes",
-          }).then((result) => {
-            if (result.value) {
-              _this.page_save();
-            }
           });
+          
+          if(alert.value == true)
+              await _this.page_save();
         }
         else
         {

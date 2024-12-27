@@ -98,6 +98,7 @@ switch ($method) {
                     `listing` = :listing,
                     `qty` = :qty,
                     `backup_qty` = '',
+                    `unit` = '',
                     `srp` = :srp,
                     `date_needed` = :date_needed,
                     `pid` = :pid,

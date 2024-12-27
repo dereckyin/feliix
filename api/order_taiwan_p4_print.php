@@ -82,6 +82,7 @@ if($jwt){
             listing,
             qty,
             backup_qty,
+            unit,
             srp,
             date_needed,
             shipping_way,
@@ -131,6 +132,7 @@ if($jwt){
         $listing = $row['listing'];
         $qty = $row['qty'];
         $backup_qty = $row['backup_qty'];
+        $unit = $row['unit'];
         $srp = $row['srp'];
         $date_needed = $row['date_needed'];
         $shipping_way = $row['shipping_way'];
@@ -172,6 +174,7 @@ if($jwt){
         "listing" => $listing,
         "qty" => $qty,
         "backup_qty" => $backup_qty,
+        "unit" => $unit,
         "srp" => $srp,
         "date_needed" => $date_needed,
         "shipping_way" => $shipping_way,
@@ -449,10 +452,10 @@ if($jwt){
                 $sheet->getStyle('G'. $i)->getAlignment()->setWrapText(true);
                 $sheet->getStyle('G'. $i)->applyFromArray($normal_style);
 
-                $sheet->setCellValue('H' . $i, $row['qty']);
+                $sheet->setCellValue('H' . $i, $row['qty'] . " " . $row['unit']);
                 $sheet->getStyle('H'. $i)->applyFromArray($center_style);
 
-                $sheet->setCellValue('I' . $i, $row['backup_qty']);
+                $sheet->setCellValue('I' . $i, $row['backup_qty'] . " " . $row['unit']);
                 $sheet->getStyle('I'. $i)->applyFromArray($center_style);
 
                 // $sheet->setCellValue('M' . $i, ($row['srp'] != '' ? "₱ " . $row['srp'] : ''));

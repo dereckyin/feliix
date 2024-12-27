@@ -109,6 +109,25 @@ switch ($method) {
        
         for($i=0; $i<count($items); $i++) {
 
+            // get previous block confirm
+            $query = "select confirm, charge from od_item where id = :id";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':id', $items[$i]['id']);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $pre_charge = $row['charge'];
+
+            $confirm = (isset($items[$i]['confirm']) ?  $items[$i]['confirm'] : '');
+            $charge = (isset($items[$i]['charge']) ?  $items[$i]['charge'] : '');
+
+            // update product qty
+            if($pre_charge == '' && $charge == '1' && $confirm == 'O' && $items[$i]['pid'] != 0)
+                RemoveProductQty($o_id, $items[$i], $db);
+
+            if($pre_charge == '1' && $charge == false && $confirm == 'O' && $items[$i]['pid'] != 0)
+                UpdateProductQty($o_id, $items[$i], $db);
+
             $id = $items[$i]['id'];
 
             $pre_item = GetShipping($id, $db);
@@ -749,4 +768,126 @@ function UpdateImageRealNameVariation($sn, $upload_name, $batch_id, $db){
         echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
         die();
     }
+}
+
+
+function UpdateProductQty($od_id, $item, $db)
+{
+    $pid = $item['pid'];
+    $qty = 0;
+    $qty_str = $item['qty'];
+    $backup_qty = 0;
+    $backup_qty_str = $item['backup_qty'];
+    $org_incoming_element = [];
+
+    $new_incoming_qty = 0;
+    $new_incoming_element = [];
+
+    $v1 = $item['v1'];
+    $v2 = $item['v2'];
+    $v3 = $item['v3'];
+    $v4 = $item['v4'];
+    $ps_var = $item['ps_var'];
+
+    // check the original qty
+    $sql = "select incoming_qty, incoming_element from product_category where id = :pid ";
+    
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':pid', $pid);
+    $stmt->execute();
+    $num = $stmt->rowCount();
+    if($num > 0)
+    {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($row['incoming_element'] != '')
+            $org_incoming_element = json_decode($row['incoming_element'], true);
+        else
+            $org_incoming_element = [];
+    }
+
+    if($qty_str != '') $qty = preg_replace('/[^0-9]/', '', $qty_str);
+
+    if($backup_qty_str != '') $backup_qty = preg_replace('/[^0-9]/', '', $backup_qty_str);
+
+    // update new incoming element, if existed, update the qty else add new element
+    $found = false;
+    foreach($org_incoming_element as $element)
+    {
+        if($element['od_id'] == $od_id && $element['v1'] == $v1 && $element['v2'] == $v2 && $element['v3'] == $v3 && $element['v4'] == $v4 && $element['ps_var'] == $ps_var)
+        {
+            $element['qty'] = $qty;
+            $element['backup_qty'] = $backup_qty;
+            $new_incoming_qty += $qty + $backup_qty;
+            $found = true;
+        }
+        else
+        {
+            $new_incoming_qty += $element['qty'] + $element['backup_qty'];
+        }
+        $new_incoming_element[] = $element;
+    }
+
+    if($found == false)
+    {
+        $new_incoming_qty += $qty + $backup_qty;
+        $new_incoming_element[] = array('od_id' => $od_id, 'qty' => $qty, 'backup_qty' => $backup_qty, 'v1' => $v1, 'v2' => $v2, 'v3' => $v3, 'v4' => $v4, 'ps_var' => $ps_var, 'order_date' => date("Y-m-d H:i:s"), 'order_type' => 'taiwan');
+    }
+
+    $sql = "update product_category set incoming_qty = :incoming_qty, incoming_element = :incoming_element where id = :pid ";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':incoming_qty', $new_incoming_qty);
+    $stmt->bindParam(':incoming_element', json_encode($new_incoming_element));
+    $stmt->bindParam(':pid', $pid);
+    $stmt->execute();
+}
+
+function RemoveProductQty($od_id, $item, $db)
+{
+    $pid = $item['pid'];
+    $org_incoming_element = [];
+
+    $new_incoming_qty = 0;
+    $new_incoming_element = [];
+
+    $v1 = $item['v1'];
+    $v2 = $item['v2'];
+    $v3 = $item['v3'];
+    $v4 = $item['v4'];
+    $ps_var = $item['ps_var'];
+
+    // check the original qty
+    $sql = "select incoming_qty, incoming_element from product_category where id = :pid ";
+    
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':pid', $pid);
+    $stmt->execute();
+    $num = $stmt->rowCount();
+    if($num > 0)
+    {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($row['incoming_element'] != '')
+            $org_incoming_element = json_decode($row['incoming_element'], true);
+        else
+            $org_incoming_element = [];
+    }
+
+    foreach($org_incoming_element as $element)
+    {
+        if($element['od_id'] == $od_id && $element['v1'] == $v1 && $element['v2'] == $v2 && $element['v3'] == $v3 && $element['v4'] == $v4 && $element['ps_var'] == $ps_var)
+        {
+            $found = true;
+        }
+        else
+        {
+            $new_incoming_qty += $element['qty'] + $element['backup_qty'];
+            $new_incoming_element[] = $element;
+        }
+    }
+
+    $sql = "update product_category set incoming_qty = :incoming_qty, incoming_element = :incoming_element where id = :pid ";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':incoming_qty', $new_incoming_qty);
+    $stmt->bindParam(':incoming_element', json_encode($new_incoming_element));
+    $stmt->bindParam(':pid', $pid);
+    $stmt->execute();
 }

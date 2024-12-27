@@ -5627,3 +5627,13 @@ CREATE TABLE IF NOT EXISTS `quotation_update_log` (
   `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 2024/12/16 product_category stock
+ALTER TABLE product_category
+ADD COLUMN `incoming_qty` int(11) DEFAULT 0;
+
+ALTER TABLE product_category
+ADD COLUMN `incoming_element` JSON;
+
+ALTER TABLE od_item
+ADD COLUMN `unit` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' AFTER `backup_qty`;

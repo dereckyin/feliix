@@ -301,7 +301,7 @@ var app = new Vue({
         cost_furniture : false,
     },
   
-    created() {
+    async created()  {
       let _this = this;
       let uri = window.location.href.split("?");
       if (uri.length >= 2) {
@@ -326,7 +326,6 @@ var app = new Vue({
         });
       }
       
-      this.getRecord();
       this.get_product_records();
       this.getUserName();
       this.get_brands();
@@ -334,6 +333,7 @@ var app = new Vue({
       this.getTagGroup();
       this.getQuotationControl();
       this.getProductControl();
+      await this.getRecord();
     },
   
     computed: {
@@ -1755,7 +1755,7 @@ var app = new Vue({
             _this.submit = false;
         }
 
-        this.reload();
+        await this.reload();
       
       
       },
@@ -1818,7 +1818,7 @@ var app = new Vue({
             _this.submit = false;
         }
 
-        this.reload();
+        await this.reload();
   
       
       },
@@ -1903,7 +1903,7 @@ var app = new Vue({
             _this.submit = false;
         }
 
-        this.reload();
+        await this.reload();
   
       
       },
@@ -2065,7 +2065,7 @@ var app = new Vue({
         form_Data.append("show", this.show);
         form_Data.append("pageless", 'Y');
       
-        axios({
+        await axios({
           method: "post",
           headers: {
             "Content-Type": "multipart/form-data",
@@ -2073,7 +2073,7 @@ var app = new Vue({
           url: "api/quotation_total_insert",
           data: form_Data,
         })
-          .then(function(response) {
+          .then(async function(response) {
             //handle success
             //_this.id = response.data.id;
             
@@ -2083,10 +2083,10 @@ var app = new Vue({
               confirmButtonText: "OK",
             });
   
-            _this.reload();
+            await _this.reload();
             _this.submit = false;
           })
-          .catch(function(error) {
+          .catch(async function(error) {
             //handle error
             Swal.fire({
               text: JSON.stringify(error),
@@ -2094,7 +2094,7 @@ var app = new Vue({
               confirmButtonText: "OK",
             });
   
-            _this.reload();
+            await _this.reload();
             _this.submit = false;
           });
       
@@ -2104,6 +2104,9 @@ var app = new Vue({
         if (this.submit == true) return;
 
         this.submit = true;
+
+        $("#menu").css("visibility", "hidden");
+        $(".mask").toggle();
   
         var token = localStorage.getItem("token");
         var form_Data = new FormData();
@@ -2155,6 +2158,10 @@ var app = new Vue({
             _this.block_value = [];
             _this.submit = false;
 
+            await this.reload();
+            $(".mask").toggle();
+            $("#menu").css("visibility", "visible");
+
             Swal.fire({
               html: res.data.message,
               icon: "info",
@@ -2170,19 +2177,37 @@ var app = new Vue({
             confirmButtonText: "OK",
           });
 
+          $(".mask").toggle();
+            $("#menu").css("visibility", "visible");
             _this.submit = false;
         }
 
-        this.reload();
-
         },
 
-      subtotal_save() {
+      async subtotal_save() {
         if(this.block_value.id == undefined)
           return;
 
         if(this.check_value() == false)
           return;
+
+        if (this.submit == true) return;
+        this.submit = true;
+
+        await this.get_latest_record();
+
+        this.submit = false;
+
+        // check if this.temp_pages and this.temp_pages_verify identical
+        if(JSON.stringify(this.pages ) != JSON.stringify(this.temp_pages_verify))
+        {
+          Swal.fire({
+            text: "This quotation has been modified by other user. Please reload the page and try again.",
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
 
         var _id = this.block_value.id;
         var _type = this.block_value.type;
@@ -2194,13 +2219,13 @@ var app = new Vue({
         if(_type == "A" && this.temp_block_a.length >= 0) {
           type.block_a = this.temp_block_a;
 
-          this.subtotal_save_changes(this.id, _id, this.temp_block_a);
+          await this.subtotal_save_changes(this.id, _id, this.temp_block_a);
         }
 
         if(_type == "B" && this.temp_block_b.length >= 0) {
           type.block_b = this.temp_block_b;
 
-          this.subtotal_save_changes(this.id, _id, this.temp_block_b);
+          await this.subtotal_save_changes(this.id, _id, this.temp_block_b);
         }
         
         
@@ -2867,8 +2892,8 @@ Installation:`;
         this.show_access = false;
       },
 
-      save_header() {
-        this.show_header = false;
+      async save_header() {
+        
 
         this.first_line = this.temp_first_line;
         this.second_line = this.temp_second_line;
@@ -2882,7 +2907,8 @@ Installation:`;
         this.prepare_by_first_line = this.temp_prepare_by_first_line;
         this.prepare_by_second_line = this.temp_prepare_by_second_line;
 
-        this.header_save();
+        await this.header_save();
+        this.show_header = false;
         
       },
 
@@ -2900,13 +2926,14 @@ Installation:`;
         this.show_footer = false;
       },
 
-      save_footer() {
-        this.show_footer = false;
+      async save_footer() {
+        
 
         this.footer_first_line = this.temp_footer_first_line;
         this.footer_second_line = this.temp_footer_second_line;
 
-        this.footer_save();
+        await this.footer_save();
+        this.show_footer = false;
         
       },
 
@@ -2962,7 +2989,7 @@ Installation:`;
         this.temp_can_duplicate = '';
       },
 
-      getRecord: function() {
+      getRecord: async function() {
         let _this = this;
 
         if(_this.id == 0)
@@ -2974,7 +3001,7 @@ Installation:`;
   
         let token = localStorage.getItem("accessToken");
   
-        axios
+        await axios
           .get("api/quotation_pageless", {
               params,
               headers: { Authorization: `Bearer ${token}` },
@@ -3279,7 +3306,7 @@ Installation:`;
 
         await this.page_copy_save(this.id, obj_id + 1, new_blocks, obj);
 
-        this.reload();
+        await this.reload();
       },
 
       del_block: function(pid, eid) {
@@ -3290,7 +3317,7 @@ Installation:`;
         }
       },
 
-      header_save : function() {
+      header_save : async function() {
         if (this.submit == true) return;
 
         this.submit = true;
@@ -3316,7 +3343,7 @@ Installation:`;
         form_Data.append("pageless", 'Y');
   
         if(this.id == 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -3324,7 +3351,7 @@ Installation:`;
             url: "api/quotation_header_insert",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               _this.id = response.data.id;
               
@@ -3334,10 +3361,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3345,13 +3372,13 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
 
         if(this.id != 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -3359,7 +3386,7 @@ Installation:`;
             url: "api/quotation_header_update",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               Swal.fire({
                 html: response.data.message,
@@ -3367,10 +3394,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3378,7 +3405,7 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
@@ -3412,7 +3439,7 @@ Installation:`;
             url: "api/quotation_access_insert",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               _this.id = response.data.id;
               
@@ -3422,10 +3449,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3433,7 +3460,7 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
@@ -3447,7 +3474,7 @@ Installation:`;
             url: "api/quotation_access_update",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               Swal.fire({
                 html: response.data.message,
@@ -3455,10 +3482,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3466,7 +3493,7 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
@@ -3474,7 +3501,7 @@ Installation:`;
       },
 
 
-      footer_save : function() {
+      footer_save :async function() {
         if (this.submit == true) return;
 
         this.submit = true;
@@ -3492,7 +3519,7 @@ Installation:`;
         form_Data.append("pageless", 'Y');
   
         if(this.id == 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -3500,7 +3527,7 @@ Installation:`;
             url: "api/quotation_footer_insert",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               _this.id = response.data.id;
               
@@ -3510,10 +3537,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3521,13 +3548,13 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
 
         if(this.id != 0) {
-          axios({
+          await axios({
             method: "post",
             headers: {
               "Content-Type": "multipart/form-data",
@@ -3535,7 +3562,7 @@ Installation:`;
             url: "api/quotation_footer_update",
             data: form_Data,
           })
-            .then(function(response) {
+            .then(async function(response) {
               //handle success
               Swal.fire({
                 html: response.data.message,
@@ -3543,10 +3570,10 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             })
-            .catch(function(error) {
+            .catch(async function(error) {
               //handle error
               Swal.fire({
                 text: JSON.stringify(error),
@@ -3554,7 +3581,7 @@ Installation:`;
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
+              await _this.reload();
               _this.submit = false;
             });
         }
@@ -3658,7 +3685,14 @@ Installation:`;
         let empty = true;
         // check if page is empty
 
+        if (this.submit == true) return;
+        this.submit = true;
+
+
         await this.get_latest_record();
+        
+
+        this.submit = false;
 
         // check if this.temp_pages and this.temp_pages_verify identical
         if(JSON.stringify(this.pages ) != JSON.stringify(this.temp_pages_verify))
@@ -3683,7 +3717,7 @@ Installation:`;
         
         if(empty)
         {
-          Swal.fire({
+            const alert =  await Swal.fire({
             title: "WARNING",
             text: "If click yes, all the pages and subtotal blocks will be erased.",
             icon: "warning",
@@ -3691,20 +3725,26 @@ Installation:`;
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes",
-          }).then((result) => {
-            if (result.value) {
-              _this.page_save();
-            }
           });
+          
+          if(alert.value == true)
+              await _this.page_save();
         }
         else
-          _this.page_save();
+        {
+
+          await _this.page_save();
+        }
         },
 
-      page_save : function() {
+      page_save : async function() {
+      
         if (this.submit == true) return;
 
         this.submit = true;
+
+        $("#menu").css("visibility", "hidden");
+        $(".mask").toggle();
   
         var token = localStorage.getItem("token");
         var form_Data = new FormData();
@@ -3730,78 +3770,93 @@ Installation:`;
 
         form_Data.append("pages", JSON.stringify(this.temp_pages));
         form_Data.append("pageless", 'Y');
+        form_Data.append("pre_pages", JSON.stringify(this.temp_pages_verify));
+
   
         if(this.id == 0) {
-          axios({
-            method: "post",
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            url: "api/quotation_insert",
-            data: form_Data,
-          })
-            .then(function(response) {
-              //handle success
-              _this.id = response.data.id;
-              
+
+          try {
+            let res = await axios({
+              method: 'post',
+              url: 'api/quotation_insert',
+              data: form_Data,
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
+
+            if(res.status == 200){
+
+              _this.submit = false;
+
+              await this.reload();
+              $(".mask").toggle();
+              $("#menu").css("visibility", "visible");
+
               Swal.fire({
-                html: response.data.message,
+                html: res.data.message,
                 icon: "info",
                 confirmButtonText: "OK",
               });
-    
-              _this.reload();
-              _this.submit = false;
-            })
-            .catch(function(error) {
-              //handle error
+            } 
+          } catch (err) {
+              console.log(err)
               Swal.fire({
                 text: JSON.stringify(error),
                 icon: "info",
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
-              _this.submit = false;
-            });
+              $(".mask").toggle();
+                $("#menu").css("visibility", "visible");
+                _this.submit = false;
+            }
+        
         }
 
         if(this.id != 0) {
-          axios({
-            method: "post",
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            url: "api/quotation_update",
-            data: form_Data,
-          })
-            .then(function(response) {
-              //handle success
+
+          try {
+            let res = await axios({
+              method: 'post',
+              url: 'api/quotation_update',
+              data: form_Data,
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
+
+            if(res.status == 200){
+
+              _this.submit = false;
+
+              await this.reload();
+              $(".mask").toggle();
+              $("#menu").css("visibility", "visible");
+
               Swal.fire({
-                html: response.data.message,
+                html: res.data.message,
                 icon: "info",
                 confirmButtonText: "OK",
               });
-    
-              _this.reload();
-              _this.submit = false;
-            })
-            .catch(function(error) {
-              //handle error
+            } 
+          } catch (err) {
+              console.log(err)
               Swal.fire({
                 text: JSON.stringify(error),
                 icon: "info",
                 confirmButtonText: "OK",
               });
     
-              _this.reload();
-              _this.submit = false;
-            });
+              $(".mask").toggle();
+                $("#menu").css("visibility", "visible");
+                _this.submit = false;
+            }
         }
       
       },
 
-      reload : function() {
+      reload : async function() {
         this.close_all();
 
         this.is_load = false;
@@ -3812,7 +3867,7 @@ Installation:`;
           this.filter_apply();
         }
         else
-          this.getRecord();
+          await this.getRecord();
       },
 
       product_catalog_a() {
