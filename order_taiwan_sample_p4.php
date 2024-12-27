@@ -537,6 +537,10 @@ header( 'location:index' );
             min-width: 400px;
         }
 
+        .block.D .tb_order thead tr th:nth-of-type(8), .block.D .tb_order tbody tr td:nth-of-type(9) {
+            min-width: 130px;
+        }
+
         .block.D .tb_order thead tr th:nth-of-type(9), .block.D .tb_order tbody tr td:nth-of-type(10) {
             min-width: 130px;
         }
@@ -546,18 +550,14 @@ header( 'location:index' );
         }
 
         .block.D .tb_order thead tr th:nth-of-type(11), .block.D .tb_order tbody tr td:nth-of-type(12) {
-            min-width: 130px;
-        }
-
-        .block.D .tb_order thead tr th:nth-of-type(12), .block.D .tb_order tbody tr td:nth-of-type(13) {
             min-width: 180px;
         }
 
-        .block.D .tb_order thead tr th:nth-of-type(13), .block.D .tb_order tbody tr td:nth-of-type(14) {
+        .block.D .tb_order thead tr th:nth-of-type(12), .block.D .tb_order tbody tr td:nth-of-type(13) {
             min-width: 200px;
         }
 
-        .block.D .tb_order thead tr th:nth-of-type(14), .block.D .tb_order tbody tr td:nth-of-type(15) {
+        .block.D .tb_order thead tr th:nth-of-type(13), .block.D .tb_order tbody tr td:nth-of-type(14) {
             min-width: 450px;
         }
 
@@ -565,24 +565,24 @@ header( 'location:index' );
             min-width: 120px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(16) {
+        .block.D .tb_order tbody tr td:nth-of-type(15) {
             min-width: 450px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(17) {
+        .block.D .tb_order tbody tr td:nth-of-type(16) {
             min-width: 220px;
         }
 
+        .block.D .tb_order tbody tr td:nth-of-type(17),
         .block.D .tb_order tbody tr td:nth-of-type(18),
-        .block.D .tb_order tbody tr td:nth-of-type(19),
-        .block.D .tb_order tbody tr td:nth-of-type(20) {
+        .block.D .tb_order tbody tr td:nth-of-type(19) {
             min-width: 180px;
         }
 
+        .block.D .tb_order tbody tr td:nth-of-type(20),
         .block.D .tb_order tbody tr td:nth-of-type(21),
         .block.D .tb_order tbody tr td:nth-of-type(22),
-        .block.D .tb_order tbody tr td:nth-of-type(23),
-        .block.D .tb_order tbody tr td:nth-of-type(24) {
+        .block.D .tb_order tbody tr td:nth-of-type(23) {
             min-width: 400px;
         }
 
