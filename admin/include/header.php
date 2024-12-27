@@ -428,7 +428,14 @@ try {
             ?>
             <li class="red01" style="border: 3px solid var(--red01);">
                 <a class="uni">Report<br>Section</a>
+                <?php 
+                    if($access5 == true || $access7 == true)
+                    {
+                ?>
                 <a class="list" href="../expense_application_report">Expense Application Tracker</a>
+                <?php 
+                    }
+                ?>
                 <?php 
                     if($access7 == true)
                     {
