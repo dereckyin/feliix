@@ -1249,6 +1249,17 @@ var app = new Vue({
           });
         
       },
+
+      incoming_qty_info: function(info) {
+        if(info == '')
+          return;
+        
+        Swal.fire({
+          title: "<i>Incoming Qty</i>", 
+          html: info,  
+          confirmButtonText: "Close", 
+        });
+      },
       
       phased_out_info: function(info) {
         Swal.fire({

@@ -287,19 +287,23 @@ header( 'location:index' );
         }
 
         #tb_product_list tbody tr td:nth-of-type(2) {
-            width: 420px;
+            width: 380px;
             padding-right: 20px
         }
 
         #tb_product_list tbody tr td:nth-of-type(3) {
-            width: 460px;
+            width: 430px;
         }
 
         #tb_product_list tbody tr td:nth-of-type(4) {
-            width: 220px;
+            width: 210px;
         }
 
         #tb_product_list tbody tr td:nth-of-type(5) {
+            width: 150px;
+        }
+
+        #tb_product_list tbody tr td:nth-of-type(6) {
             width: 80px;
         }
 
@@ -318,7 +322,24 @@ header( 'location:index' );
             padding-bottom: 3px;
         }
 
-        #tb_product_list tbody tr td:nth-of-type(5) button {
+        #tb_product_list tbody tr td span.stock_qty,
+        #tb_product_list tbody tr td span.stock_qty_ware {
+            background-color: yellowgreen;
+            color: #fff;
+            font-size: 14px;
+            display: inline-block;
+            font-weight: 600;
+            border-radius: 5px;
+            margin: 3px 0 13px;
+            padding: 1px 15px 2px;
+            cursor: pointer;
+        }
+
+        #tb_product_list tbody tr td span.stock_qty_ware {
+            background-color: #5bc0de;
+        }
+
+        #tb_product_list tbody tr td:nth-of-type(6) button {
             border: 2px solid black;
             width: 34px;
             height: 34px;
@@ -397,11 +418,11 @@ header( 'location:index' );
             width: 220px!important;
         }
 
-        #tb_product_list tbody tr.set_format1 > td:nth-of-type(3) {
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) {
             width: 80px!important;
         }
 
-        #tb_product_list tbody tr.set_format1 > td:nth-of-type(3) button {
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) button {
             border: 2px solid black;
             width: 34px;
             box-sizing: border-box;
@@ -3859,6 +3880,7 @@ header( 'location:index' );
                                 <th>Information</th>
                                 <th>Specification</th>
                                 <th>Price</th>
+                                <th>Inventory Status</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -3939,6 +3961,8 @@ header( 'location:index' );
                                         <span>SRP: {{ item.price }}<br></span>
                                         <span>QP: {{ item.quoted_price }}<br></span>
                                     </td>
+
+                                    <td></td>
 
                                     <!-- 如果這個 Product Set 產品有 Product1 和 Product 2，則 rowspan=3；如果這個 Product Set 產品有 Product1 和 Product 2 和 Product 3，則 rowspan=4 -->
                                     <td :rowspan="item.product_set_cnt + 1">
@@ -4074,6 +4098,17 @@ header( 'location:index' );
                                         <span>SRP: {{ set.price }} <br v-if="set.str_price_change"> {{ set.str_price_change ?  set.str_price_change : '' }} <br></span>
                                         <span>QP: {{ set.quoted_price }} <br v-if="set.str_quoted_price_change"> {{ set.str_quoted_price_change ? set.str_quoted_price_change : '' }} <br></span>
                                     </td>
+
+                                    <td>
+                                        Incoming<br>
+                                        <span class="stock_qty" @click="incoming_qty_info(set.incoming_html)">{{ set.incoming_qty }}</span><br>
+                                        <!--
+                                        Project-Locked<br>
+                                        <span class="stock_qty_ware">10</span><br>
+                                        Freely Usable<br>
+                                        <span class="stock_qty_ware">5</span>
+                                        -->
+                                    </td>
                                 </tr>
 
 
@@ -4189,6 +4224,16 @@ header( 'location:index' );
                                     <span v-show="((cost_lighting == true && item.category == 'Lighting') || (cost_furniture == true && item.category == 'Systems Furniture'))">CP: {{ item.price_ntd }} <br v-if="item.str_price_ntd_change"> {{ item.str_price_ntd_change ?  item.str_price_ntd_change : '' }}<br></span>
                                     <span>SRP: {{ item.price }}<br v-if="item.str_price_change"> {{ item.str_price_change ?  item.str_price_change : '' }}<br></span>
                                     <span>QP: {{ item.quoted_price }} <br v-if="item.str_quoted_price_change"> {{ item.str_quoted_price_change ? item.str_quoted_price_change : '' }}<br></span>
+                                </td>
+                                <td>
+                                    Incoming<br>
+                                    <span class="stock_qty" @click="incoming_qty_info(item.incoming_html)">{{ item.incoming_qty }}</span><br>
+                                    <!--
+                                    Project-Locked<br>
+                                    <span class="stock_qty_ware">10</span><br>
+                                    Freely Usable<br>
+                                    <span class="stock_qty_ware">5</span>
+                                    -->
                                 </td>
                                 <td>
                                     <button id="edit01" @click="btnEditClick(item)" v-if="item.status != -1"><i aria-hidden="true"
