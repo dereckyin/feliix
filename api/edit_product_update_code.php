@@ -246,6 +246,11 @@ else
                 //else
                 //    $query .= "`price_ntd_change` = now(), ";
             }
+            else
+            {
+                if($price_ntd_change != '')
+                    $query .= "`price_ntd_change` = STR_TO_DATE('" . $price_ntd_change . "', '%Y-%m-%d'), ";
+            }
             
             if($price != $price_org)
             {
@@ -264,6 +269,11 @@ else
                 //else
                 //    $query .= "`price_change` = now(), ";
             }
+            else
+            {
+                if($price_change != '')
+                    $query .= "`price_change` = STR_TO_DATE('" . $price_change . "', '%Y-%m-%d'), ";
+            }
 
             if($quoted_price != $quoted_price_org)
             {
@@ -281,6 +291,11 @@ else
                 //}
                 //else
                 //    $query .= "`quoted_price_change` = now(), ";
+            }
+            else
+            {
+                if($quoted_price_change != '')
+                    $query .= "`quoted_price_change` = STR_TO_DATE('" . $quoted_price_change . "', '%Y-%m-%d'), ";
             }
 
             if($url1 == '')
