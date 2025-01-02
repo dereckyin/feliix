@@ -2053,7 +2053,7 @@ var app = new Vue({
 
           if (this.special_remark.trim() == '') {
             Swal.fire({
-              text: 'Desccription is required, please input the content.',
+              text: 'Description is required, please input the content.',
               icon: 'warning',
               confirmButtonText: 'OK'
             })
