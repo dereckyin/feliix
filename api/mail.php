@@ -15402,7 +15402,7 @@ function product_notify($action, $_record)
 
     if( $action == "delete" ){
         // 刪除者名字 放入 cc收件人名單名字
-        $notifior = GetNotifiers($_record["updated_id"]);
+        $notifior = GetNotifiers($_record["deleted_id"]);
         foreach($notifior as &$list)
         {
             $receiver .= $list["username"] . ", ";
@@ -15432,7 +15432,7 @@ function product_notify($action, $_record)
     if( $action == "update" )
         $mail->Subject = "[Product Notification] " . $_record["updator"] . " revised an existing product in Product Database";
     if( $action == "delete" )
-        $mail->Subject = "[Product Notification] " . $_record["updator"] . " deleted an existing product in Product Database";
+        $mail->Subject = "[Product Notification] " . $_record["deletor"] . " deleted an existing product in Product Database";
 
 
 
@@ -15456,7 +15456,7 @@ if( $action == "add" )
 if( $action == "update" )
     $content = $content . $_record["updator"] . " revised an existing product in Product Database. Below is the details of the product after revision:";
 if( $action == "delete" )
-    $content = $content . $_record["updator"] . " deleted an existing product in Product Database. Below is the details of the product:";
+    $content = $content . $_record["deletor"] . " deleted an existing product in Product Database. Below is the details of the product:";
 
 $content = $content . '
                     </td>
@@ -16976,24 +16976,24 @@ function _rawurlencode($string) {
 
 function SetupMail($mail, $conf)
 {
-    $mail->SMTPDebug  = 0;
-    $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = "ssl";
-    $mail->Port       = 465;
-    $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf::$mail_host;
-    $mail->Username   = $conf::$mail_username;
-    $mail->Password   = $conf::$mail_password;
-
-
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "tls";
-    // $mail->Port       = 587;
+    // $mail->SMTPSecure = "ssl";
+    // $mail->Port       = 465;
     // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = 'smtp.ethereal.email';
-    // $mail->Username   = 'jermey.wilkinson@ethereal.email';
-    // $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
+    // $mail->Host       = $conf::$mail_host;
+    // $mail->Username   = $conf::$mail_username;
+    // $mail->Password   = $conf::$mail_password;
+
+
+    $mail->SMTPDebug  = 0;
+    $mail->SMTPAuth   = true;
+    $mail->SMTPSecure = "tls";
+    $mail->Port       = 587;
+    $mail->SMTPKeepAlive = true;
+    $mail->Host       = 'smtp.ethereal.email';
+    $mail->Username   = 'jermey.wilkinson@ethereal.email';
+    $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
 
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
