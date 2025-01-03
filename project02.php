@@ -1553,7 +1553,8 @@ if ($access6 == true) {
                     </ul>
                     <ul>
                         <li class="morespace">
-                            <div v-for='(receive_record, index) in project_specials'>• {{ receive_record.comment }} <br v-if="receive_record.items.length > 0">
+                            <div v-for='(receive_record, index) in project_specials'>
+                                <div style="white-space: break-spaces;">• {{ receive_record.comment }}</div>
                                 <span v-for="item in receive_record.items">
                                         <a :href="baseURL + item.bucket + '\\' + item.gcp_name" target="_blank"
                                            class="attch">{{item.filename}}</a>
