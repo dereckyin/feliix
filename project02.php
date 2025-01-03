@@ -28,12 +28,26 @@ try {
         // decode jwt
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         $user_id = $decoded->data->id;
+        $username = $decoded->data->username;
 
-$GLOBALS['position'] = $decoded->data->position;
-$GLOBALS['department'] = $decoded->data->department;
+        $GLOBALS['position'] = $decoded->data->position;
+        $GLOBALS['department'] = $decoded->data->department;
 
-if($decoded->data->limited_access == true)
+        if($decoded->data->limited_access == true)
                 header( 'location:index' );
+
+        $database = new Database();
+        $db = $database->getConnection();
+
+        $special_agreement = false;
+
+        $query = "SELECT * FROM access_control WHERE special_agreement LIKE '%" . $username . "%' ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $special_agreement = true;
+        }
+
 
 $position = $decoded->data->position;
 $department = $decoded->data->department;
@@ -200,6 +214,7 @@ header('location:index');
             dialogshow($('.list_function a.fn6'), $('.list_function .dialog.fn6'));
             dialogshow($('.list_function a.fn7'), $('.list_function .dialog.fn7'));
             dialogshow($('.list_function a.fn8'), $('.list_function .dialog.fn8'));
+            dialogshow($('.list_function a.fn10'), $('.list_function .dialog.fn10'));
 
             $('header').click(function () {
                 dialogclear()
@@ -348,6 +363,24 @@ header('location:index');
         div.red a {
             color: red!important;
         }
+
+        .dialog.left {
+            left: unset;
+            right: 12px;
+        }
+
+        .dialog.left::before {
+            border-color: transparent var(--fth04) transparent transparent;
+            left: unset;
+            right: -5px;
+        }
+
+        .dialog.left::after {
+            border-color: transparent #fff transparent transparent;
+            left: unset;
+            right: 0;
+        }
+       
     </style>
 
 </head>
@@ -1184,7 +1217,66 @@ header('location:index');
                 <div class="popupblock">
                     <a id="status_fn9" class="fn9" @click="apply_for_expense()">Apply Expense</a>
                 </div>
+<?php if ($special_agreement == true) { ?>
+                <div class="popupblock">
+                    <a id="status_fn10" class="fn10" :ref="'a_fn10'">Special Agreement</a>
+                    <div id="special_dialog" class="dialog left fn10" :ref="'dlg_fn10'">
+                        <h6>Special Agreement:</h6>
+                        <div class="formbox">
+                            <dl>
+                                <dt class="head">Description:</dt>
+                                <dd><textarea name="" id="" v-model="special_remark"></textarea></dd>
 
+                                <dt></dt>
+                                <dd style="display: flex; justify-content: flex_start;">
+                                    <span style="color: green; font-size: 14px; font-weight: 500; padding-bottom: 5px; margin-right:10px;">Files: </span>
+                                    <div class="pub-con" ref="bg">
+                                        <div class="input-zone">
+                                            <span class="upload-des">choose file</span>
+                                            <input class="input" type="file" name="special_file" value placeholder="choose file"
+                                                   ref="special_file" v-show="special_canSub" @change="special_changeFile()" multiple/>
+                                        </div>
+                                    </div>
+                                </dd>
+                                <dd>
+                                    <div class="browser_group">
+
+                                        <div class="pad">
+                                            <div class="file-list">
+                                                <div class="file-item" v-for="(item,index) in special_fileArray" :key="index">
+                                                    <p>
+                                                        {{item.name}}
+                                                        <span @click="special_deleteFile(index)" v-show="item.progress==0"
+                                                              class="upload-delete"><i class="fas fa-backspace"></i>
+                                                            </span>
+                                                    </p>
+                                                    <div class="progress-container" v-show="item.progress!=0">
+                                                        <div class="progress-wrapper">
+                                                            <div class="progress-progress"
+                                                                 :style="'width:'+item.progress*100+'%'"></div>
+                                                        </div>
+                                                        <div class="progress-rate">
+                                                            <span v-if="item.progress!=1">{{(item.progress*100).toFixed(0)}}%</span>
+                                                            <span v-else><i class="fas fa-check-circle"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="btnbox">
+                                                <a class="btn small" @click="special_clear">Cancel</a>
+                                                <a class="btn small green" @click="special_create">Save</a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </dd>
+
+
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+<?php } ?>
             </div>
         </div>
         <div class="block left">
@@ -1454,7 +1546,27 @@ if ($access6 == true) {
                         </li>
                     </ul>
                 </div>
-
+<?php if ($special_agreement == true) { ?>
+                <div class="tablebox lv2a">
+                    <ul class="head">
+                        <li style="text-align: center !important;">Special Agreement</li>
+                    </ul>
+                    <ul>
+                        <li class="morespace">
+                            <div v-for='(receive_record, index) in project_specials'>
+                                <div style="white-space: break-spaces;">• {{ receive_record.comment }}</div>
+                                <span v-for="item in receive_record.items">
+                                        <a :href="baseURL + item.bucket + '\\' + item.gcp_name" target="_blank"
+                                           class="attch">{{item.filename}}</a>
+                                    </span>
+                                <br>
+                                ({{ receive_record.username }} at {{ receive_record.created_at }})
+                                <br>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+<?php } ?>
             </div>
 
             <div class="Info_B" style="display: none;">

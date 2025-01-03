@@ -15402,7 +15402,7 @@ function product_notify($action, $_record)
 
     if( $action == "delete" ){
         // 刪除者名字 放入 cc收件人名單名字
-        $notifior = GetNotifiers($_record["updated_id"]);
+        $notifior = GetNotifiers($_record["deleted_id"]);
         foreach($notifior as &$list)
         {
             $receiver .= $list["username"] . ", ";
@@ -15432,7 +15432,7 @@ function product_notify($action, $_record)
     if( $action == "update" )
         $mail->Subject = "[Product Notification] " . $_record["updator"] . " revised an existing product in Product Database";
     if( $action == "delete" )
-        $mail->Subject = "[Product Notification] " . $_record["updator"] . " deleted an existing product in Product Database";
+        $mail->Subject = "[Product Notification] " . $_record["deletor"] . " deleted an existing product in Product Database";
 
 
 
@@ -15456,7 +15456,7 @@ if( $action == "add" )
 if( $action == "update" )
     $content = $content . $_record["updator"] . " revised an existing product in Product Database. Below is the details of the product after revision:";
 if( $action == "delete" )
-    $content = $content . $_record["updator"] . " deleted an existing product in Product Database. Below is the details of the product:";
+    $content = $content . $_record["deletor"] . " deleted an existing product in Product Database. Below is the details of the product:";
 
 $content = $content . '
                     </td>

@@ -5637,3 +5637,22 @@ ADD COLUMN `incoming_element` JSON;
 
 ALTER TABLE od_item
 ADD COLUMN `unit` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' AFTER `backup_qty`;
+
+-- 2024/12/31 special_agreement
+ALTER TABLE access_control
+ADD COLUMN `special_agreement` text COLLATE utf8mb4_unicode_ci;
+
+-- project special agreement
+CREATE TABLE IF NOT EXISTS `project_special` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `project_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `batch_id` int(11) DEFAULT 0 NOT NULL,
+  `final_approve` int(11) DEFAULT 0 NOT NULL,
+  `remark` varchar(2048) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
