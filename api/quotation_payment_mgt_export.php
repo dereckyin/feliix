@@ -450,6 +450,8 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $billing_name = $row['billing_name'];
 
     //$quote_file_string = GetQuoteFileString($row['id'], $db);
+
+    /*
     $amount = GetAmountRecords($row['id'], $db);
     
     $payment_amount = 0;
@@ -466,10 +468,10 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $payment_amount = null;
     if($down_payment_amount == 0)
         $down_payment_amount = null;
+    */
 
-
-    // $payment_amount = GetPaymentAmount($row['id'], $db); //
-    // $down_payment_amount = GetDownPaymentAmount($row['id'], $db); //
+    $payment_amount = GetPaymentAmount($row['id'], $db); //
+    $down_payment_amount = GetDownPaymentAmount($row['id'], $db); //
 
     $apply_for_petty = 0;
     $apply_for_petty_commission = 0;
