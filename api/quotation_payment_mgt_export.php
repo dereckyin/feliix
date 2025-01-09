@@ -984,7 +984,7 @@ function GetAmountRecords($project_id, $db){
     $records = [];
     $query = "
         SELECT 
-            pm.amount
+            pm.amount, kind
         FROM   project_proof pm
         WHERE  project_id = " . $project_id . "
             AND pm.status = 1
