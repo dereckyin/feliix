@@ -519,7 +519,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $updated_at = $row['updated_at'];
     $stage = $row['stage'];
     // $quote = GetQuote($row['id'], $db);
-    // $payment = GetPayment($row['id'], $db);
+    $payment = GetPayment($row['id'], $db);
 
     // $client_po = GetClientPO($row['id'], $db);
     // $client_other = GetClientOther($row['id'], $db);
@@ -580,7 +580,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         // "client_other" => $client_other,
         // "client_po_file" => $client_po_files,
         // "client_other_file" => $client_other_files,
-        // "payment" => $payment,
+        "payment" => $payment,
         // "down_pay_amount" => $down_pay_amount,
         // "down_pay_date" => $down_pay_date,
         // "full_pay_amount" => $full_pay_amount,
