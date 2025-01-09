@@ -405,8 +405,9 @@ else
                 }
             }
 
-            // Apply without approval
-            if($leave_type == 'D' || $head_of_department == 1)
+            // 20250109 halfday planning only bose approval
+             // Apply without approval
+            if(($leave_type == 'D' || $head_of_department == 1) && $leave_type != "H")
             {
                 $ret = false;
                 $ret = $afl->approval($id, $user_id);
@@ -440,6 +441,12 @@ else
             $first_approver = 0;
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $first_approver = 1;
+            }
+
+            // 20250109 halfday planning only bose approval
+            if($leave_type == 'H')
+            {
+                $first_approver = 0;
             }
 
             if($first_approver == 1)
@@ -558,6 +565,14 @@ else
 
             $appove_hash = $conf::$mail_ip . "api/leave_record_approval_hash?p=" . base64url_encode(passport_encrypt($par_approve));
             $reject_hash = $conf::$mail_ip . "api/leave_record_approval_hash?p=" . base64url_encode(passport_encrypt($par_reject));
+
+            // 20250109 halfday planning only bose approval
+            if($leave_type == 'Manager Halfday Planning')
+            {
+                $mail_name = "Kuan";
+                $mail_email = "kuan@feliix.com";
+                $mail_id = "3";
+            }
 
             sendMail($mail_name, $mail_email, $appove_hash, $reject_hash, $leav_msg, $leaver, $department, $app_time, $leave_type, $start_time, $end_time, $leave_length, $reason, $imgurl);
 
