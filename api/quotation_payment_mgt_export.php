@@ -467,6 +467,11 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             if($value['kind'] == 0)
                 $down_payment_amount += $value['amount'];
         }
+
+        if($payment_amount == 0)
+            $payment_amount = null;
+        if($down_payment_amount == 0)
+            $down_payment_amount = null;
     }
 
     // $payment_amount = GetPaymentAmount($row['id'], $db); //
@@ -984,7 +989,7 @@ function GetAmountRecords($project_id, $db){
     $records = [];
     $query = "
         SELECT 
-            pm.amount, kind
+            pm.amount, pm.kind
         FROM   project_proof pm
         WHERE  project_id = " . $project_id . "
             AND pm.status = 1
