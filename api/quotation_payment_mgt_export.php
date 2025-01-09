@@ -451,7 +451,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
     //$quote_file_string = GetQuoteFileString($row['id'], $db);
 
-    /*
+    
     $amount = GetAmountRecords($row['id'], $db);
     
     $payment_amount = 0;
@@ -468,10 +468,10 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $payment_amount = null;
     if($down_payment_amount == 0)
         $down_payment_amount = null;
-    */
+    
 
-    $payment_amount = GetPaymentAmount($row['id'], $db); //
-    $down_payment_amount = GetDownPaymentAmount($row['id'], $db); //
+    // $payment_amount = GetPaymentAmount($row['id'], $db); //
+    // $down_payment_amount = GetDownPaymentAmount($row['id'], $db); //
 
     $apply_for_petty = 0;
     $apply_for_petty_commission = 0;
@@ -523,7 +523,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $payment = GetPayment($row['id'], $db);
 
     // $client_po = GetClientPO($row['id'], $db);
-    // $client_other = GetClientOther($row['id'], $db);
+    $client_other = GetClientOther($row['id'], $db);
 
     // $client_po_files = GetClientPOFile($row['id'], $db);
     // $client_other_files = GetClientOtherFile($row['id'], $db);
@@ -799,7 +799,7 @@ function GetFinalQuote($project_id, $db){
 function GetApplyForPettyRecord($project_id, $db)
 {
     $sql = "SELECT  Coalesce(ap.amount_verified, 0) amount_verified, ap.request_type,
-                        Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = ap.id AND pl.`status` <> -1), 0) amount_applied
+                        Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = ap.id AND pl.`status` <> -1), 0) amount_applied, info_category, info_sub_category
                     FROM apply_for_petty ap 
                     where project_name1 = (SELECT project_name FROM project_main WHERE id = " . $project_id . ") 
                     and ap.status = 9";
@@ -820,7 +820,7 @@ function GetApplyForPettyRecord($project_id, $db)
 function GetApplyForPetty($project_id, $db)
 {
     $sql = "SELECT  Coalesce(ap.amount_verified, 0) amount_verified, ap.request_type,
-                        Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = ap.id AND pl.`status` <> -1), 0) amount_applied, info_category, info_sub_category
+                        Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = ap.id AND pl.`status` <> -1), 0) amount_applied
                     FROM apply_for_petty ap 
                     where project_name1 = (SELECT project_name FROM project_main WHERE id = " . $project_id . ") 
                     and ap.status = 9";
@@ -996,7 +996,7 @@ function GetAmountRecords($project_id, $db){
     $stmt->execute();
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $records[] = $row['amount'];
+        $records[] = $row;
     }
 
     return $records;
