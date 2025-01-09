@@ -454,8 +454,8 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     
     $amount = GetAmountRecords($row['id'], $db);
     
-    $payment_amount = 0;
-    $down_payment_amount = 0;
+    $payment_amount = null;
+    $down_payment_amount = null;
     foreach($amount as $value)
     {
         if($value['kind'] == 1)
@@ -463,12 +463,6 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         if($value['kind'] == 0)
             $down_payment_amount += $value['amount'];
     }
-
-    if($payment_amount == 0)
-        $payment_amount = null;
-    if($down_payment_amount == 0)
-        $down_payment_amount = null;
-    
 
     // $payment_amount = GetPaymentAmount($row['id'], $db); //
     // $down_payment_amount = GetDownPaymentAmount($row['id'], $db); //
