@@ -487,13 +487,11 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             if($value['request_type'] == "2")
                 $apply_for_petty_commission += $value['amount_applied'];
         }
-        else
-        {
-            if($value['request_type'] == "1")
-                $apply_for_petty += $value['amount_verified'];
-            if($value['request_type'] == "2")
-                $apply_for_petty += $value['amount_applied'];
-        }
+
+        if($value['request_type'] == "1")
+            $apply_for_petty += $value['amount_verified'];
+        if($value['request_type'] == "2")
+            $apply_for_petty += $value['amount_applied'];
     }
     // $apply_for_petty = GetApplyForPetty($row['id'], $db); //
 

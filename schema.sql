@@ -5656,3 +5656,7 @@ CREATE TABLE IF NOT EXISTS `project_special` (
   `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 2025/01/09 product_category stock
+CREATE INDEX price_record_project_name_is_enabled_idx ON price_record(project_name(512), is_enabled);
+CREATE INDEX project_proof_project_id_status_kind_idx ON project_proof(project_id, `status`, kind);
