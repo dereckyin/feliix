@@ -68,6 +68,7 @@ if (!isset($jwt)) {
                         'Value Delivery Manager',
                         'Chief Advisor',
                         'Managing Director',
+                        'Engineering Manager',
                         'Owner'
                         ) ";
 
