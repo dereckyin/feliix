@@ -64,7 +64,7 @@ if(trim(strtoupper($department)) == 'SALES')
 {
 if(trim(strtoupper($position)) == 'SALES MANAGER')
 {
-$access6 = true;
+$access5 = true;
 }
 }
 
@@ -96,7 +96,7 @@ if(trim(strtoupper($department)) == 'ENGINEERING')
 {
 if(trim(strtoupper($position)) == "ENGINEERING MANAGER")
 {
-$access6 = true;
+$access5 = true;
 }
 }
 
@@ -104,7 +104,7 @@ if(trim(strtoupper($department)) == 'ADMIN')
 {
 if(trim(strtoupper($position)) == 'OPERATIONS MANAGER')
 {
-$access6 = true;
+$access5 = true;
 }
 }
 
