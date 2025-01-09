@@ -451,28 +451,22 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
     //$quote_file_string = GetQuoteFileString($row['id'], $db);
     $amount = GetAmountRecords($row['id'], $db);
-    if(count($amount) == 0)
+    
+    $payment_amount = 0;
+    $down_payment_amount = 0;
+    foreach($amount as $value)
     {
-        $payment_amount = null;
-        $down_payment_amount = null;
+        if($value['kind'] == 1)
+            $payment_amount += $value['amount'];
+        if($value['kind'] == 0)
+            $down_payment_amount += $value['amount'];
     }
-    else
-    {
-        $payment_amount = 0;
-        $down_payment_amount = 0;
-        foreach($amount as $value)
-        {
-            if($value['kind'] == 1)
-                $payment_amount += $value['amount'];
-            if($value['kind'] == 0)
-                $down_payment_amount += $value['amount'];
-        }
 
-        if($payment_amount == 0)
-            $payment_amount = null;
-        if($down_payment_amount == 0)
-            $down_payment_amount = null;
-    }
+    if($payment_amount == 0)
+        $payment_amount = null;
+    if($down_payment_amount == 0)
+        $down_payment_amount = null;
+
 
     // $payment_amount = GetPaymentAmount($row['id'], $db); //
     // $down_payment_amount = GetDownPaymentAmount($row['id'], $db); //
