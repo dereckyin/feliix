@@ -57,7 +57,7 @@ $(function(){
         width: 100%;
         display:inline;
     }
-
+    
     .block .tablebox2.group1,
     .block .tablebox2.group2,
     .block .tablebox2.group3,
@@ -165,6 +165,17 @@ $(function(){
         background: rgba(253, 183, 47, 0.7);
         text-align: center;
         padding: 3px 0 4px;
+    }
+
+    .block .tablebox2.group1 ul li:nth-of-type(2),
+    .block .tablebox2.group2 ul li:nth-of-type(2),
+    .block .tablebox2.group3 ul li:nth-of-type(2),
+    .block .tablebox2.group4 ul li:nth-of-type(2),
+    .block .tablebox2.group5 ul li:nth-of-type(2),
+    .block .tablebox2.group6 ul li:nth-of-type(2),
+    .block .tablebox2.group7 ul li:nth-of-type(2)
+     {
+        min-width: 132.5px;
     }
 
 </style>
