@@ -2294,8 +2294,10 @@ var app = new Vue({
         });
     },
 
-    order_export: function() {
+    order_export: async function() {
       var token = localStorage.getItem("token");
+
+      $('.mask').toggle();
 
       let _this = this;
     
@@ -2330,7 +2332,7 @@ var app = new Vue({
         size: _this.perPage,
       };
 
-      axios({
+      await axios({
         method: "post",
         url: "api/quotation_payment_mgt_export",
         params,
@@ -2348,6 +2350,9 @@ var app = new Vue({
         })
         .catch(function(response) {
           console.log(response);
+        })
+        .finally(() => {
+          $('.mask').toggle();
         });
     },
   },

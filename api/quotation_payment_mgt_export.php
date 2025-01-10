@@ -449,13 +449,48 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $tax_withheld = $row['tax_withheld'];
     $billing_name = $row['billing_name'];
 
-    $quote_file_string = GetQuoteFileString($row['id'], $db);
+    //$quote_file_string = GetQuoteFileString($row['id'], $db);
 
-    $payment_amount = GetPaymentAmount($row['id'], $db);
-    $down_payment_amount = GetDownPaymentAmount($row['id'], $db);
+    
+    $amount = GetAmountRecords($row['id'], $db);
+    
+    $payment_amount = null;
+    $down_payment_amount = null;
+    foreach($amount as $value)
+    {
+        if($value['kind'] == 1)
+            $payment_amount += $value['amount'];
+        if($value['kind'] == 0)
+            $down_payment_amount += $value['amount'];
+    }
 
-    $apply_for_petty = GetApplyForPetty($row['id'], $db);
-    $apply_for_petty_commission = GetApplyForPettyCommition($row['id'], $db);
+    // $payment_amount = GetPaymentAmount($row['id'], $db); //
+    // $down_payment_amount = GetDownPaymentAmount($row['id'], $db); //
+
+    $apply_for_petty = 0;
+    $apply_for_petty_commission = 0;
+
+    $apply_for_petty_record = GetApplyForPettyRecord($row['id'], $db);
+
+    foreach($apply_for_petty_record as $value)
+    {
+        if($value['info_category'] == 'Projects' && $value['info_sub_category'] == 'Commission')
+        {
+            if($value['request_type'] == "1")
+                $apply_for_petty_commission += $value['amount_verified'];
+            if($value['request_type'] == "2")
+                $apply_for_petty_commission += $value['amount_applied'];
+        }
+
+        if($value['request_type'] == "1")
+            $apply_for_petty += $value['amount_verified'];
+        if($value['request_type'] == "2")
+            $apply_for_petty += $value['amount_applied'];
+    }
+    // $apply_for_petty = GetApplyForPetty($row['id'], $db); //
+
+
+    // $apply_for_petty_commission = GetApplyForPettyCommition($row['id'], $db); //
 
     $ar = null;
     if($final_amount != null)
@@ -476,26 +511,26 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $created_at = $row['created_at'];
     $updated_at = $row['updated_at'];
     $stage = $row['stage'];
-    $quote = GetQuote($row['id'], $db);
+    // $quote = GetQuote($row['id'], $db);
     $payment = GetPayment($row['id'], $db);
 
-    $client_po = GetClientPO($row['id'], $db);
+    // $client_po = GetClientPO($row['id'], $db);
     $client_other = GetClientOther($row['id'], $db);
 
-    $client_po_files = GetClientPOFile($row['id'], $db);
-    $client_other_files = GetClientOtherFile($row['id'], $db);
+    // $client_po_files = GetClientPOFile($row['id'], $db);
+    // $client_other_files = GetClientOtherFile($row['id'], $db);
 
-    $final_quotation = GetFinalQuote($row['id'], $db);
+    // $final_quotation = GetFinalQuote($row['id'], $db);
 
-    $apply_for_petty = GetApplyForPetty($row['id'], $db);
+    //$apply_for_petty = GetApplyForPetty($row['id'], $db);
 
-    $down_pay_amount = RetriveDownPaymentAmount($payment);
-    $down_pay_date = RetriveDownPaymentDate($payment);
+    // $down_pay_amount = RetriveDownPaymentAmount($payment);
+    // $down_pay_date = RetriveDownPaymentDate($payment);
 
-    $full_pay_amount = RetrivePaymentAmount($payment);
-    $full_pay_date = RetrivePaymentDate($payment);
+    // $full_pay_amount = RetrivePaymentAmount($payment);
+    // $full_pay_date = RetrivePaymentDate($payment);
 
-    $invoice = RetrieveInvoice($payment);
+    // $invoice = RetrieveInvoice($payment);
     
     // client_other's Dte of sub
     $date_data_submission = "";
@@ -523,7 +558,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "payment_amount" => $payment_amount,
         "down_payment_amount" => $down_payment_amount,
         "ar" => $ar,
-        "final_quotation" => $final_quotation,
+        // "final_quotation" => $final_quotation,
         "special" => $special,
         "username" => $username,
         "created_at" => $created_at,
@@ -533,17 +568,17 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "tax_withheld" => $tax_withheld,
         "net_amount" => ($final_amount - $tax_withheld == 0 ? "" : $final_amount - $tax_withheld),
         "billing_name" => $billing_name,
-        "quote" => $quote,
-        "client_po" => $client_po,
-        "client_other" => $client_other,
-        "client_po_file" => $client_po_files,
-        "client_other_file" => $client_other_files,
+        // "quote" => $quote,
+        // "client_po" => $client_po,
+        // "client_other" => $client_other,
+        // "client_po_file" => $client_po_files,
+        // "client_other_file" => $client_other_files,
         "payment" => $payment,
-        "down_pay_amount" => $down_pay_amount,
-        "down_pay_date" => $down_pay_date,
-        "full_pay_amount" => $full_pay_amount,
-        "full_pay_date" => $full_pay_date,
-        "invoice" => $invoice,
+        // "down_pay_amount" => $down_pay_amount,
+        // "down_pay_date" => $down_pay_date,
+        // "full_pay_amount" => $full_pay_amount,
+        // "full_pay_date" => $full_pay_date,
+        // "invoice" => $invoice,
         "pm" => $pm,
         "dpm" => $dpm,
         "expense" => $expense,
@@ -753,6 +788,27 @@ function GetFinalQuote($project_id, $db){
     return $merged_results;
 }
 
+function GetApplyForPettyRecord($project_id, $db)
+{
+    $sql = "SELECT  Coalesce(ap.amount_verified, 0) amount_verified, ap.request_type,
+                        Coalesce((select SUM(pl.price * pl.qty) from petty_list pl WHERE pl.petty_id = ap.id AND pl.`status` <> -1), 0) amount_applied, info_category, info_sub_category
+                    FROM apply_for_petty ap 
+                    where project_name1 = (SELECT project_name FROM project_main WHERE id = " . $project_id . ") 
+                    and ap.status = 9";
+
+    $merged_results = array();
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = $row;
+    }
+
+    return $merged_results;
+}
+
+
 function GetApplyForPetty($project_id, $db)
 {
     $sql = "SELECT  Coalesce(ap.amount_verified, 0) amount_verified, ap.request_type,
@@ -915,6 +971,27 @@ function GetQuote($project_id, $db){
     }
 
     return $merged_results;
+}
+
+function GetAmountRecords($project_id, $db){
+    $records = [];
+    $query = "
+        SELECT 
+            pm.amount, pm.kind
+        FROM   project_proof pm
+        WHERE  project_id = " . $project_id . "
+            AND pm.status = 1
+    ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $records[] = $row;
+    }
+
+    return $records;
 }
 
 function GetPaymentAmount($project_id, $db){
