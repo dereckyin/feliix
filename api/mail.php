@@ -771,8 +771,8 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
     if($category == '1')
         $mail->AddAddress('johmar@feliix.com', 'Johmar Maximo');
 
-    if($category == '2')
-        $mail->AddAddress('nestor@feliix.com', 'Nestor Rosales');
+    //if($category == '2')
+        //$mail->AddAddress('nestor@feliix.com', 'Nestor Rosales');
 
     $mail->AddCC('kuan@feliix.com', 'Kuan');
     $mail->AddCC('kristel@feliix.com', 'Kristel Tan');
@@ -1295,8 +1295,8 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
     if($category == '1')
         $mail->AddAddress('johmar@feliix.com', 'Johmar Maximo');
 
-    if($category == '2')
-        $mail->AddAddress('nestor@feliix.com', 'Nestor Rosales');
+    //if($category == '2')
+        //$mail->AddAddress('nestor@feliix.com', 'Nestor Rosales');
 
     $pay = "Full Payment";
     if($kind == 0)
@@ -1494,8 +1494,8 @@ function send_pay_notify_mail($name, $email1,  $leaver, $projectname, $remark, $
     if($category == '1')
         $mail->AddAddress('johmar@feliix.com', 'Johmar Maximo');
 
-    if($category == '2')
-        $mail->AddAddress('nestor@feliix.com', 'Nestor Rosales');
+    //if($category == '2')
+        //$mail->AddAddress('nestor@feliix.com', 'Nestor Rosales');
 
     $mail->AddCC('kuan@feliix.com', 'Kuan');
     $mail->AddCC('kristel@feliix.com', 'Kristel Tan');
