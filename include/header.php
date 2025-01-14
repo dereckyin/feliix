@@ -30,9 +30,9 @@ use \Firebase\JWT\JWT;
     $limited_access = false;
 
     $access_office_item = true;
+    
 
-
-    $pic_url = "man6.jpg";
+$pic_url = "man6.jpg";
 
 try {
         // decode jwt
@@ -150,6 +150,8 @@ try {
         if($user_id == 1 || $user_id == 2 || $user_id == 3 || $user_id == 6 || $user_id == 41 || $user_id == 88 || $user_id == 146 || $user_id == 190 )
             $access5 = true;
 
+
+        
         // QOUTE AND PAYMENT Management
         if(trim(strtoupper($department)) == 'SALES')
         {
@@ -395,7 +397,7 @@ try {
             ?>
 
             <?php
-                if($access12 == true)
+                if($access12 == true || $access13 == true)
                 {
             ?>
             <li class="cyan01" style="border: 3px solid var(--cyan01);">
