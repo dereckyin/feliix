@@ -1342,6 +1342,7 @@ var app = new Vue({
     app.name == "Aiza Eisma" ||
     app.name == "Kristel Tan" ||
     app.name == "Alleah Belmonte" ||
+    app.name == "Bea Claudine M. Zara" ||
 app.name == "Charlenne Cosejo" ||
 app.name == "Ranel Villanueva" ||
 app.name == "Michael Angelo Noveros" ||
@@ -2080,6 +2081,7 @@ var initial = async (_id) =>  {
         app.name == "Aiza Eisma" ||
         app.name == "Kristel Tan" ||
         app.name == "Alleah Belmonte" ||
+        app.name == "Bea Claudine M. Zara" ||
 	app.name == "Charlenne Cosejo" ||
 	app.name == "Ranel Villanueva" ||
 	app.name == "Michael Angelo Noveros" ||
@@ -3049,6 +3051,7 @@ $(document).on("click", "#btn_cancel", async function () {
         app.name == "Aiza Eisma" ||
         app.name == "Kristel Tan" ||
         app.name == "Alleah Belmonte" ||
+        app.name == "Bea Claudine M. Zara" ||
 	app.name == "Charlenne Cosejo" ||
 	app.name == "Ranel Villanueva" ||
 	app.name == "Michael Angelo Noveros" ||
