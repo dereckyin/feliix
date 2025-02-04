@@ -135,31 +135,31 @@ if($jwt){
                     {
                         $i = $i + 1;
                         $sheet->setCellValue('A' . $i, $rp['username']);
-                        $sheet->setCellValue('B' . $i, '2,200,000.00');
+                        $sheet->setCellValue('B' . $i, '6,600,000.00');
                         $sheet->setCellValue('C' . $i, $low['catagory']);
                         $sheet->setCellValue('D' . $i, $low['project_name']);
                         $sheet->setCellValue('E' . $i, number_format((float)$low['amount'], 2, '.', ''));
-                        //$sheet->setCellValue('F' . $i, number_format(2200000.00 - (float)$rp['subtotal'], 2, '.', ''));
-                        //$sheet->setCellValue('G' . $i, 2200000.00 - (float)$rp['subtotal'] <= 0 ? 'Achieved Monthly Quota' : '');
+                        //$sheet->setCellValue('F' . $i, number_format(6600000.00 - (float)$rp['subtotal'], 2, '.', ''));
+                        //$sheet->setCellValue('G' . $i, 6600000.00 - (float)$rp['subtotal'] <= 0 ? 'Achieved Monthly Quota' : '');
                     }
 
                     foreach ($rp['o_catagory'] as $oow)
                     {
                         $i = $i + 1;
                         $sheet->setCellValue('A' . $i, $rp['username']);
-                        $sheet->setCellValue('B' . $i, '2,200,000.00');
+                        $sheet->setCellValue('B' . $i, '6,600,000.00');
                         $sheet->setCellValue('C' . $i, 'Office Systems');
                         $sheet->setCellValue('D' . $i, $oow['project_name']);
                         $sheet->setCellValue('E' . $i, number_format((float)$oow['amount'], 2, '.', ''));
-                        //$sheet->setCellValue('F' . $i, number_format(2200000.00 - (float)$rp['subtotal'], 2, '.', ''));
-                        //$sheet->setCellValue('G' . $i, 2200000.00 - (float)$rp['subtotal'] <= 0 ? 'Achieved Monthly Quota' : '');
+                        //$sheet->setCellValue('F' . $i, number_format(6600000.00 - (float)$rp['subtotal'], 2, '.', ''));
+                        //$sheet->setCellValue('G' . $i, 6600000.00 - (float)$rp['subtotal'] <= 0 ? 'Achieved Monthly Quota' : '');
                     }
 
                     $i = $i + 1;
                     $sheet->setCellValue('D' . $i, "Sub Total:");
                     $sheet->setCellValue('E' . $i, number_format((float)$rp['subtotal'], 2, '.', ''));
-                    $sheet->setCellValue('F' . $i, number_format(2200000.00 - (float)$rp['subtotal'], 2, '.', ''));
-                    $sheet->setCellValue('G' . $i, 2200000.00 - (float)$rp['subtotal'] <= 0 ? 'Achieved Monthly Quota' : '');
+                    $sheet->setCellValue('F' . $i, number_format(6600000.00 - (float)$rp['subtotal'], 2, '.', ''));
+                    $sheet->setCellValue('G' . $i, 6600000.00 - (float)$rp['subtotal'] <= 0 ? 'Achieved Monthly Quota' : '');
 
                     $sheet->getStyle('A' . $i . ':' . 'G' . $i)->getFont()->setBold(true);
 
