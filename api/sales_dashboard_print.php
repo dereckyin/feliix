@@ -126,8 +126,19 @@ if($jwt){
                 $sheet->setCellValue('E'. $i, 'Collected Payments');
                 $sheet->setCellValue('F'. $i, 'Remaining Amount to Quota');
                 $sheet->setCellValue('G'. $i, 'Remark');
+
+                $sheet->getColumnDimension('A')->setWidth(32);
+                $sheet->getColumnDimension('B')->setWidth(22);
+                $sheet->getColumnDimension('C')->setWidth(22);
+                $sheet->getColumnDimension('D')->setWidth(56);
+                $sheet->getColumnDimension('E')->setWidth(24);
+                $sheet->getColumnDimension('F')->setWidth(28);
+                $sheet->getColumnDimension('G')->setWidth(32);
     
                 $sheet->getStyle('A' . $i . ':' . 'G' . $i)->getFont()->setBold(true);
+                $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
+
+                $total = 0;
 
                 foreach($row['report'] as $rp)
                 {
@@ -141,6 +152,7 @@ if($jwt){
                         $sheet->setCellValue('E' . $i, number_format((float)$low['amount'], 2, '.', ''));
                         //$sheet->setCellValue('F' . $i, number_format($quota - (float)$rp['subtotal'], 2, '.', ''));
                         //$sheet->setCellValue('G' . $i, $quota - (float)$rp['subtotal'] <= 0 ? 'Achieved Monthly Quota' : '');
+                        $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                     }
 
                     foreach ($rp['o_catagory'] as $oow)
@@ -153,6 +165,7 @@ if($jwt){
                         $sheet->setCellValue('E' . $i, number_format((float)$oow['amount'], 2, '.', ''));
                         //$sheet->setCellValue('F' . $i, number_format($quota - (float)$rp['subtotal'], 2, '.', ''));
                         //$sheet->setCellValue('G' . $i, $quota - (float)$rp['subtotal'] <= 0 ? 'Achieved Monthly Quota' : '');
+                        $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
                     }
 
                     $i = $i + 1;
@@ -162,6 +175,7 @@ if($jwt){
                     $sheet->setCellValue('G' . $i, ($row['date'] > '2025/01' ? 6600000 : 2200000) - (float)$rp['subtotal'] <= 0 ? 'Achieved Monthly Quota' : '');
 
                     $sheet->getStyle('A' . $i . ':' . 'G' . $i)->getFont()->setBold(true);
+                    $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
 
                     $total = $total + (float)$rp['subtotal'];
                 }
@@ -171,7 +185,7 @@ if($jwt){
                 $sheet->setCellValue('E' . $i, number_format($total, 2, '.', ''));
               
                 $sheet->getStyle('A' . $i . ':' . 'J' . $i)->getFont()->setBold(true);
-                //$sheet->getStyle('A'. $i. ':' . 'J' . $i)->applyFromArray($styleArray);
+                $sheet->getStyle('A'. $i. ':' . 'G' . $i)->applyFromArray($styleArray);
 
                 $i = $i + 2;
             }
