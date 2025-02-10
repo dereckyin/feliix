@@ -943,7 +943,7 @@ try {
                             <button id="edit01" @click="btnEditClick(item.id)"><i class="fas fa-edit"></i>
                             </button>
 
-                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="name == 'dereck' || name == 'Dennis Lin' || name == 'Ariel Lin' || name == 'Kelvin Garcia' || name == 'Cristina Matining'"><i class="fas fa-copy"></i></button>
+                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="name == 'dereck' || name == 'Dennis Lin' || name == 'Ariel Lin' || name == 'Gwendolyn Sarmiento'"><i class="fas fa-copy"></i></button>
 
                             <button @click="btnDelClick(item.id)"><i class="fas fa-times"></i></button>
 
@@ -1237,7 +1237,7 @@ try {
                             <button id="edit01" @click="btnEditClick(item.id)" v-if="item.status != -1"><i class="fas fa-edit"></i>
                             </button>
 
-                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="(name == 'dereck' || name == 'Dennis Lin' || name == 'Ariel Lin' || name == 'Kelvin Garcia' || name == 'Cristina Matining') && item.status != -1"><i class="fas fa-copy"></i></button>
+                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="(name == 'dereck' || name == 'Dennis Lin' || name == 'Ariel Lin' || name == 'Gwendolyn Sarmiento') && item.status != -1"><i class="fas fa-copy"></i></button>
 
                             <button @click="btnDelClick(item.id)" v-if="item.status != -1"><i class="fas fa-times"></i></button>
 
