@@ -109,7 +109,7 @@ else
                 $query_cnt = $query_cnt . " and (p.sub_category = '" . $sc . "') ";
             }
 
-            $sql = $sql . " order by p.id ";
+            $sql = $sql . " order by p.id desc";
 
             if (!empty($_GET['size'])) {
                 $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
