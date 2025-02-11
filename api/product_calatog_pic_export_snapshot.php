@@ -86,7 +86,7 @@ switch ($method) {
             // Save the image to a temporary file
             $tempFileName = tempnam(sys_get_temp_dir(), 'img_') . '.jpg';
             file_put_contents($tempFileName, $fileData);
-            $zip->addFile($tempFileName, "snapshot_{$item_id}.jpg"); // Add to ZIP
+            $zip->addFile($tempFileName, "{$item_id}.jpg"); // Add to ZIP
         }
 
         $zip->close();
