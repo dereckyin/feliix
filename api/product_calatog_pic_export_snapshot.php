@@ -1,6 +1,6 @@
 <?php
-
-error_reporting(E_ALL);
+ob_start();
+//error_reporting(E_ALL);
 ini_set('display_errors', 1);
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 include_once 'config/core.php';
@@ -89,7 +89,8 @@ switch ($method) {
             $zip->addFile($tempFileName, "{$item_id}.jpg"); // Add to ZIP
         }
 
-        $zip->close();
+        if($zip->close() == false) exit("error");
+	ob_clean();
 
         // Set headers to download the ZIP file
         header('Content-Type: application/zip');
