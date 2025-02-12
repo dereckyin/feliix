@@ -1,7 +1,7 @@
 <?php
 ob_start();
-error_reporting(E_ALL);
-
+//error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include_once 'api/config/database.php';
 include_once 'api/config/conf.php';
 
@@ -265,7 +265,7 @@ $table->addCell(8500, ['borderSize' => 6])->addText($start_time);
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Related Project:", array('bold' => true));
-$table->addCell(8500, ['borderSize' => 6])->addText($related_project);
+$table->addCell(8500, ['borderSize' => 6])->addText(htmlspecialchars($related_project));
 
 $table->addRow();
 $table->addCell(2000, ['borderSize' => 6])->addText("Sales Executive:", array('bold' => true));
@@ -389,7 +389,7 @@ $fontStyle->setSize(13);
 // $myTextElement = $section->addText('"Believe you can and you\'re halfway there." (Theodor Roosevelt)');
 //$myTextElement->setFontStyle($fontStyle);
 
-ob_end_clean();
+// ob_end_clean();
 // Saving the document as OOXML file...
 $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007', $download = true);
 
@@ -442,18 +442,22 @@ if(trim($products_to_bring_files) != "")
 
     $zip->close();
 
+    ob_clean();
+
     header('Content-Type: application/zip');
     header("Content-Disposition: attachment; filename='schedule.zip'");
     header('Content-Length: ' . filesize($zipname));
     header("Content-Transfer-Encoding: Binary");
-    while (ob_get_level()) {
-        ob_end_clean();
-      }
+    //while (ob_get_level()) {
+    //    ob_end_clean();
+    //  }
     readfile($zipname);
     exit;
 }
 else
 {
+    ob_clean();
+    
     header("Content-Disposition: attachment; filename=schedule.docx");
 
     header('Cache-Control: max-age=0');
