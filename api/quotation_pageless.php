@@ -942,8 +942,8 @@ function GetPaymentTermInfo($qid, $db)
     
     $id = 0;
     $page = 0;
-    $payment_method = 'Cash; Cheque; Credit Card; Bank Wiring;';
-    $brief = '50% Downpayment & another 50% balance a day before the delivery';
+    $payment_method = 'Cash; Cheque; Credit Card; Bank Wiring; GCash';
+    $brief = '50% Down payment upon order confirmation, 50% Balance upon delivery';
     $list = '[{"id":"0", "bank_name": "BDO", "first_line":"Acct. Name: Feliix Inc. Acct no: 006910116614", "second_line":"Branch: V.A Rufino", "third_line":""}, {"id":"1", "bank_name": "SECURITY BANK", "first_line":"Acct. Name: Feliix Inc. Acct no: 0000018155245", "second_line":"Swift code: SETCPHMM", "third_line":"Address: 512 Edsa near Corner Urbano Plata St., Caloocan City"}]';
 
     $item = json_decode($list, TRUE); 

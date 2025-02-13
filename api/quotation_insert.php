@@ -263,17 +263,17 @@ else
             {
                 $title = "Warranty";
                 $brief = "Terms and Condition";
-                $list = "【*1 year warranty for Feliix EL, Feliix ST, Feliix YD, Feliix TYG and Feliix SB Decorative】
-【*1 year warranty for Feliix DANCELIGHT】
-【*2 years warranty for Feliix HG】
-【*2 years warranty for Feliix SB】
-【*2 years warranty for Feliix GD】
-【*3 years warranty for Feliix TONS】
-【*3 years warranty for Feliix COLORS】
-【*3 years warranty for Feliix LEDOUX】
-【*5 years warranty for Feliix Decorative (Xcellent & Seed Design)】
-【*Does not cover defects resulting from normal wear, improper use, or improper installation which does not conform to the installation instructions.】
-【*Warranty is null and void when tampered/seal is broken】";
+                $list = "1-Year Warranty : Feliix EL, ST, YD, SB Decorative, Dancelight
+
+2-Year Warranty : Feliix HG, SB, GD
+
+3-Year Warranty : Feliix Tons, Colors, Ledoux
+
+5-Year Warranty : Feliix Decorative: Xcellent & SEED Design
+
+*Warranty period commences from the date of delivery
+
+*Does not cover defects arising from normal wear and tear, misuse, or improper installation that does not conform to the manufacturer's installation instructions.";
 
                 $query = "INSERT INTO quotation_term
                 SET
@@ -315,33 +315,31 @@ else
                     die();
                 }
 
-                $title = "Purchased Order";
+                $title = "Delivery & Lead Time";
                 $brief = "Terms and Condition";
-                $list = '"FELIIX SB"
-【*LEAD TIME; 60-90 Days; VTRIM ITEMS (1-2 Weeks); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+                $list = 'On-Stock Products: Within 7 business days from receipt of down payment
 
-"FELIIX DL"
-【*LEAD TIME; 30-45 Days (seaship); 1-2 Weeks (airship); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+Indent - General & Decorative Lighting:
+30-45 business days for production upon receipt of down payment.
+30 days for sea freight, or 15 days for air freight (with additional cost)
 
-"FELIIX CL"
-【*LEAD TIME; 30-45 Days (seaship); 1-2 Weeks (airship); 60-90 Days (If NO Stocks); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+Indent - Customized Lighting:
+60 business days for production upon receipt of down payment.
+30 days for sea freight, or 15 days for air freight (with additional cost)
 
-"FELIIX TONS | FELIIX HG | FELIIX LD | FELIIX ST | FELIIX GD"
-【*LEAD TIME; 60-90 Days; changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+Delivery Charges
 
-"FELIIX XL | FELIIX SD"
-【*LEAD TIME; 30-45 Days (seaship); 1-2 Weeks (airship); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+Free delivery within Metro Manila
+Delivery charges applies for areas outside Metro Manila
 
-"FELIIX YD"
-【*LEAD TIME; 30-45 Days (EXCEPT Dimmable); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+Notes:
 
-"FELIIX WH"
-【*LEAD TIME; 30-45 Days (EXCEPT 4 Circuit Trackbar); changes, will depend on the availability of stocks(Starts upon receiving the downpayment)】
+1. All customized items must be approved and signed by the client/designer prior to production
+2. Installation of lighting products is subject to additional charges, except for Feliix Decorative Xcellent and SEED Design products
 
-【*50% Downpayment before processing the items, 50% upon delivery】
-【*We accept credit cards for 6 month to pay without any interest】
-【*Custom items- approval of specs by client and/or designer】
-【*Installation of items is not part of the service unless requested by client for additional cost.】';
+3. The client is responsible for providing the necessary wiring depending on lighting/dimming protocol:
+- Phase Dimming - 2 wires (Line, Neutral) + 1 Ground
+- 0/1-10V Dimming or DALI - 4 wires (Line, Neutral, 2 TF wires) + 1 Ground';
 
                 $query = "INSERT INTO quotation_term
                 SET
@@ -385,10 +383,7 @@ else
 
                 $title = "Disclaimer";
                 $brief = "";
-                $list = "Feliix Inc. is not responsible for specification and layout revisions that may affect lux outcomes, unless it is a proposal produced and approved by the company itself.
-
-*Need 4 wires for (0/1-10V) Dimmable
-*Need 5 wires for (0/1-10V) Dimmable with Ground included";
+                $list = "Feliix Inc. is not held responsible for any deviations in lux levels resulting from changes to product specifications or lighting layout, unless these changes were proposed and approved by Feliix Inc. and collaboration with clients or designers.";
 
                 $query = "INSERT INTO quotation_term
                 SET

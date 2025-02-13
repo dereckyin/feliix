@@ -3764,7 +3764,7 @@ header( 'location:index' );
                             <table class="tb_payment">
                                 <tbody>
                                 <tr>
-                                    <td colspan="2">Payment Terms:</td>
+                                    <td colspan="2">Mode of Payment:</td>
                                     <td>
                                         <div>
                                             <span v-for="(tt, index) in pag.payment_term.payment_method">{{ tt }}</span>
