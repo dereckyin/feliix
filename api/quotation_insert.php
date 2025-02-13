@@ -262,7 +262,7 @@ else
             if($project_category == 2)
             {
                 $title = "Warranty";
-                $brief = "Terms and Condition";
+                $brief = "Terms and Conditions";
                 $list = "1-Year Warranty : Feliix EL, ST, YD, SB Decorative, Dancelight
 
 2-Year Warranty : Feliix HG, SB, GD
@@ -316,7 +316,7 @@ else
                 }
 
                 $title = "Delivery & Lead Time";
-                $brief = "Terms and Condition";
+                $brief = "Terms and Conditions";
                 $list = '【On-Stock Products】
 Within 7 business days from receipt of down payment
 

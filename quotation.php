@@ -3122,16 +3122,16 @@ header( 'location:index' );
                     <?php
                     } else {
                     ?>
-                    <a>Terms and Condition</a>
+                    <a>Terms and Conditions</a>
                     <?php
                     }
                     ?>
                     <div id="terms_dialog" class="dialog fn2 show" :ref="'dlg_fn2'" v-show="show_term">
-                        <h6>Terms and Condition</h6>
+                        <h6>Terms and Conditions</h6>
 
                         <div class="formbox">
                             <dl>
-                                <dt class="head">Choose where the block of terms and condition locates at:</dt>
+                                <dt class="head">Choose where the block of terms and conditions locates at:</dt>
                                 <dd>
                                     <select v-model="term.page">
                                         <option value="0"></option>
