@@ -3167,20 +3167,20 @@ header( 'location:index' );
                     {
                     ?>
                     <a id="project_fn2" class="fn2" :ref="'a_fn2'" @click="show_term = !show_term">Terms and
-                        Condition</a>
+                        Conditions</a>
                     <?php
                     } else {
                     ?>
-                    <a>Terms and Condition</a>
+                    <a>Terms and Conditions</a>
                     <?php
                     }
                     ?>
                     <div id="terms_dialog" class="dialog fn2 show" :ref="'dlg_fn2'" v-show="show_term">
-                        <h6>Terms and Condition</h6>
+                        <h6>Terms and Conditions</h6>
 
                         <div class="formbox">
                             <dl>
-                                <dt class="head">Choose whether to show the block of terms and condition in this document:</dt>
+                                <dt class="head">Choose whether to show the block of terms and conditions in this document:</dt>
                                 <dd>
                                     <select v-model="show_t">
                                         <option value="N">No</option>

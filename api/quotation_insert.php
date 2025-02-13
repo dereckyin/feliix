@@ -262,7 +262,7 @@ else
             if($project_category == 2)
             {
                 $title = "Warranty";
-                $brief = "Terms and Condition";
+                $brief = "Terms and Conditions";
                 $list = "1-Year Warranty : Feliix EL, ST, YD, SB Decorative, Dancelight
 
 2-Year Warranty : Feliix HG, SB, GD
@@ -316,26 +316,67 @@ else
                 }
 
                 $title = "Delivery & Lead Time";
-                $brief = "Terms and Condition";
-                $list = 'On-Stock Products: Within 7 business days from receipt of down payment
+                $brief = "Terms and Conditions";
+                $list = '【On-Stock Products】
+Within 7 business days from receipt of down payment
 
-Indent - General & Decorative Lighting:
+【General & Decorative Lighting】
 30-45 business days for production upon receipt of down payment.
 30 days for sea freight, or 15 days for air freight (with additional cost)
 
-Indent - Customized Lighting:
+【Customized Lighting】
 60 business days for production upon receipt of down payment.
 30 days for sea freight, or 15 days for air freight (with additional cost)
 
 Delivery Charges
+- Free delivery within Metro Manila
+- Delivery charges applies for areas outside Metro Manila';
 
-Free delivery within Metro Manila
-Delivery charges applies for areas outside Metro Manila
+                $query = "INSERT INTO quotation_term
+                SET
+                    `quotation_id` = :quotation_id,
+                    `page` = 0,
+                    `title` = :title,
+                    `brief` = :brief,
+                    `list` = :list,
+                    `status` = 0,
+                    `create_id` = :create_id,
+                    `created_at` = now()";
 
-Notes:
+                // prepare the query
+                $stmt = $db->prepare($query);
+                // bind the values
+                $stmt->bindParam(':quotation_id', $last_id);
+                $stmt->bindParam(':title', $title);
+                $stmt->bindParam(':brief', $brief);
+                $stmt->bindParam(':list', $list);
+            
+                $stmt->bindParam(':create_id', $user_id);
+            
 
-1. All customized items must be approved and signed by the client/designer prior to production
-2. Installation of lighting products is subject to additional charges, except for Feliix Decorative Xcellent and SEED Design products
+                try {
+                    // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        $arr = $stmt->errorInfo();
+                        error_log($arr[2]);
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+                        die();
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+
+                $title = "Notes";
+                $brief = "";
+                $list = '1. All customized items must be approved and signed by the client/designer prior to production.
+
+2. Installation of lighting products is subject to additional charges, except for Feliix Decorative Xcellent and SEED Design products.
 
 3. The client is responsible for providing the necessary wiring depending on lighting/dimming protocol:
 - Phase Dimming - 2 wires (Line, Neutral) + 1 Ground
@@ -403,9 +444,9 @@ Notes:
                 $stmt->bindParam(':title', $title);
                 $stmt->bindParam(':brief', $brief);
                 $stmt->bindParam(':list', $list);
-            
+
                 $stmt->bindParam(':create_id', $user_id);
-            
+
 
                 try {
                     // execute the query, also check if query was successful
