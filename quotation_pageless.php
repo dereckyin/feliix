@@ -3167,7 +3167,7 @@ header( 'location:index' );
                     {
                     ?>
                     <a id="project_fn2" class="fn2" :ref="'a_fn2'" @click="show_term = !show_term">Terms and
-                        Condition</a>
+                        Conditions</a>
                     <?php
                     } else {
                     ?>
