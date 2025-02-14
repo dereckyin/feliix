@@ -438,7 +438,7 @@ background-color: #94BABB;
 
                             <tr v-for="(it, j) in item.o_catagory">
                                 <td v-if="item.l_catagory.length == 0 && j==0" :rowspan="item.l_catagory.length + item.o_catagory.length">{{ item.username }}</td>
-                                <td v-if="item.l_catagory.length == 0 && j==0" :rowspan="item.l_catagory.length + item.o_catagory.length">(record.date > '2025/01' ? '6,600,000.00' : '2,200,000.00')</td>
+                                <td v-if="item.l_catagory.length == 0 && j==0" :rowspan="item.l_catagory.length + item.o_catagory.length">{{ (record.date > '2025/01' ? '6,600,000.00' : '2,200,000.00') }}</td>
                                     <td v-if="j == 0" :rowspan="item.o_catagory.length">Office Systems</td>
                                     <td>{{ it.project_name }}</td>
                                     <!-- 下面這各td要放的是: 這個月份收到的 down payment 和 full payment 的加總金額 -->
