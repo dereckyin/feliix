@@ -1226,7 +1226,7 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
 
 // }
 
-function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remark, $subtime, $category, $kind, $special, $final_amount)
+function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remark, $subtime, $category, $kind, $special, $final_amount, $bid)
 {
     $conf = new Conf();
 
@@ -1451,7 +1451,7 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
                         <tr>
                             <td style="font-size: 16px; padding: 5px 0 0 5px; line-height: 1.5;">
                                 Please log on to Feliix >> Admin Section >> Verify and Review to review the downpayment proof.<br>';
-    $content = $content . 'URL:  <a href="' . $conf::$mail_ip . '">' . $conf::$mail_ip . '</a> ';
+    $content = $content . 'URL:  <a href="' . $conf::$mail_ip . 'downpayment_proof?id=' . $bid . '">' . $conf::$mail_ip . '</a> ';
     $content = $content . '</td>
                         </tr>
                         </tbody>
@@ -17009,24 +17009,23 @@ function _rawurlencode($string) {
 
 function SetupMail($mail, $conf)
 {
-    $mail->SMTPDebug  = 0;
-    $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = "ssl";
-    $mail->Port       = 465;
-    $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf::$mail_host;
-    $mail->Username   = $conf::$mail_username;
-    $mail->Password   = $conf::$mail_password;
-
-
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "tls";
-    // $mail->Port       = 587;
+    // $mail->SMTPSecure = "ssl";
+    // $mail->Port       = 465;
     // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = 'smtp.ethereal.email';
-    // $mail->Username   = 'jermey.wilkinson@ethereal.email';
-    // $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
+    // $mail->Host       = $conf::$mail_host;
+    // $mail->Username   = $conf::$mail_username;
+    // $mail->Password   = $conf::$mail_password;
+
+    $mail->SMTPDebug  = 0;
+    $mail->SMTPAuth   = true;
+    $mail->SMTPSecure = "tls";
+    $mail->Port       = 587;
+    $mail->SMTPKeepAlive = true;
+    $mail->Host       = 'smtp.ethereal.email';
+    $mail->Username   = 'jermey.wilkinson@ethereal.email';
+    $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
 
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;

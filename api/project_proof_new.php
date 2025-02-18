@@ -263,5 +263,5 @@ function SendNotifyMail($bid)
         $final_amount = $row['final_amount'];
     }
 
-    send_pay_notify_mail_new($leaver, $email1, $leaver, $project_name, $remark, $subtime, $category, $kind, $special, $final_amount);
+    send_pay_notify_mail_new($leaver, $email1, $leaver, $project_name, $remark, $subtime, $category, $kind, $special, $final_amount, $bid);
 }

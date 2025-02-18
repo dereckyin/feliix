@@ -16,9 +16,9 @@ var app = new Vue({
   },
 
   created () {
-    this.setCookie("jwt", '');
-    this.setCookie("uid", '');
-    localStorage.token = '';
+    // this.setCookie("jwt", '');
+    // this.setCookie("uid", '');
+    // localStorage.token = '';
   },
 
   watch: {
@@ -58,8 +58,8 @@ var app = new Vue({
             })
           }
           else{
-            _this.setCookie("jwt", response.data['jwt']);
-            _this.setCookie("uid", response.data['uid']);
+            _this.setCookie("jwt", response.data['jwt'], 2);
+            _this.setCookie("uid", response.data['uid'], 2);
             localStorage.token = response.data['jwt'];
 
             var url = _this.getCookie("userurl");
