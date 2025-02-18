@@ -2,6 +2,7 @@
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 $uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
 if ( !isset( $jwt ) ) {
+    setcookie("userurl", $_SERVER['REQUEST_URI']);
   header( 'location:index' );
 }
 
@@ -22,7 +23,10 @@ try {
             $decoded = JWT::decode($jwt, $key, array('HS256'));
             $user_id = $decoded->data->id;
 
-            if($decoded->data->limited_access == true)
+            $limited_access = false;
+            isset($decoded->data->limited_access) ? $limited_access = $decoded->data->limited_access : $limited_access = false;
+
+            if($limited_access == true)
                 header( 'location:index' );
             
             // 1. 針對 Verify and Review的內容，只有 1st Approver 和 2nd Approver有權限可以進入和看到
@@ -244,7 +248,7 @@ $(function(){
                     </ul>
                     <ul v-for='(record, index) in displayedRecord' :key="index">
                         <li>
-                            <input type="radio" name="record_id" class="alone black" :value="record.id" @click="detail(record.id)">
+                            <input type="radio" name="record_id" class="alone black" :value="record.id" @click="detail(record.id)" v-model="proof_id">
                         </li>
                        
                         <li>{{ record.created_at }}</li>

@@ -211,9 +211,9 @@ if($content_type == '2' && $status == '2')
     $table2->addRow();
     $table2->addCell(2000, ['borderSize' => 6])->addText("Time:", array('bold' => true));
     $TextRun = $table2->addCell(8500, ['borderSize' => 6])->addTextRun();
-    $TextRun->addText($check_tout);
+    $TextRun->addText(htmlspecialchars($check_tout));
     $TextRun->addText(" to ");
-    $TextRun->addText($check_tin);
+    $TextRun->addText(htmlspecialchars($check_tin));
 
     $table2->addRow();
     $table2->addCell(2000, ['borderSize' => 6])->addText("Assigned Car:", array('bold' => true));
@@ -528,7 +528,7 @@ else
 
         // add text line together
         foreach ($strArr as $v) {
-            $cell->addText($v);
+            $cell->addText(htmlspecialchars($v));
         }
        
     }
