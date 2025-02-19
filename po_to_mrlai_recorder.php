@@ -78,7 +78,7 @@ header( 'location:index' );
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Recorder of PO to Mr. Lai</title>
+    <title>Recorder of PO from Office Team</title>
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/hierarchy-select.min.css" type="text/css">
     <link rel="stylesheet" href="css/vue-select.css" type="text/css">

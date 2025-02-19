@@ -221,7 +221,7 @@
 
                 <div class="box-content">
                     <ul>
-                        <li><b>Recorder of PO to Mr. Lai</b></li>
+                        <li><b>Recorder of PO from Office Team</b></li>
                         <br>
                         <li>
                             <div>
