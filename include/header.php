@@ -389,7 +389,7 @@ try {
                 <?=($access3 == true) ? '<a class="list" href="expense_recorder">Expense Recorder</a>' : '' ?>
                 <?=($access8 == true) ? '<a class="list" href="salary_recorder">Salary Recorder</a>' : '' ?>
                 <?=($access9 == true) ? '<a class="list" href="store_sales_recorder">Store Sales Recorder</a>' : '' ?>
-                <?=($access10 == true) ? '<a class="list" href="po_to_mrlai_recorder">Recorder of PO to Mr. Lai</a>' : '' ?>
+                <?=($access10 == true) ? '<a class="list" href="po_to_mrlai_recorder">Recorder of PO from Office Team</a>' : '' ?>
                 <?=($office_item_approver_releaser == true) ? '<a class="list" href="office_item_reviewing">Office Item Application Review</a>' : '' ?>
             </li>
             <?php 
