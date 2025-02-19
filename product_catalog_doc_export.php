@@ -1142,6 +1142,15 @@ $merged_results = array();
                 );
             }
 
+$filename = "0_0";
+if(count($merged_results) > 0)
+{
+    $id_start = $merged_results[0]['id'];
+    $id_end = $merged_results[count($merged_results) - 1]['id'];
+
+    $filename = $id_start . "_" . $id_end;
+}
+
 
 // Creating the new document...
 $phpWord = new PhpOffice\PhpWord\PhpWord();
@@ -1229,7 +1238,7 @@ ob_end_clean();
 $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007', $download = true);
 
 
-header("Content-Disposition: attachment; filename=schedule.docx");
+header("Content-Disposition: attachment; filename=" . $filename . ".docx");
 
 header('Cache-Control: max-age=0');
 // If you're serving to IE 9, then the following may be needed
