@@ -1713,6 +1713,11 @@ var app = new Vue({
             let quoted_price_change = this.variation_product[i].quoted_price_change;
             let photo = this.variation_product[i].photo;
 
+            let last_order = this.variation_product[i].last_order;
+            let last_order_name = this.variation_product[i].last_order_name;
+            let last_order_at = this.variation_product[i].last_order_at;
+            let last_order_type = this.variation_product[i].last_order_type;
+
             let status = this.variation_product[i].status;
 
             if((price * 1.15 > quoted_price) && _this.category == '10000000')
@@ -1757,6 +1762,10 @@ var app = new Vue({
               quoted_price_change: quoted_price_change,
               photo: photo,
               status: status,
+              last_order: last_order,
+              last_order_name: last_order_name,
+              last_order_at: last_order_at,
+              last_order_type: last_order_type
             };
 
             variation.push(obj);

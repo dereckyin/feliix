@@ -1047,6 +1047,12 @@ else
                 $price_ntd_org = $variation_array[$i]['price_ntd_org'];
                 $photo = $variation_array[$i]['photo'];
                 $enabled = $variation_array[$i]['status'];
+
+                $last_order = $variation_array[$i]['last_order'];
+                $last_order_name = $variation_array[$i]['last_order_name'];
+                $last_order_at = $variation_array[$i]['last_order_at'];
+                $last_order_type = $variation_array[$i]['last_order_type'];
+
                 $category_id = '';
 
                 $st_variation = $k1 . '=>' . $v1;
@@ -1127,6 +1133,11 @@ else
                     }
 
                     $query .= "`enabled` = :enabled,
+
+                    `last_order` = :last_order,
+                    `last_order_name` = :last_order_name,
+                    `last_order_at` = :last_order_at,
+                    `last_order_type` = :last_order_type,
                     
                     `status` = 0,
                     `create_id` = :create_id,
@@ -1156,6 +1167,12 @@ else
                 {
                     $stmt->bindParam(':quoted_price', $quoted_price);
                 }
+
+                $stmt->bindParam(':last_order', $last_order);
+                $stmt->bindParam(':last_order_name', $last_order_name);
+                $stmt->bindParam(':last_order_at', $last_order_at);
+                $stmt->bindParam(':last_order_type', $last_order_type);
+
                 $stmt->bindParam(':enabled', $enabled);
                 $stmt->bindParam(':create_id', $uid);
 

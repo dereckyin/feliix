@@ -413,6 +413,11 @@ function GetProduct($id, $db){
         $quoted_price = $row['quoted_price'];
         $quoted_price_change = $row['quoted_price_change'];
 
+        $last_order = $row['last_order'];
+        $last_order_name = $row['last_order_name'];
+        $last_order_at = $row['last_order_at'];
+        $last_order_type = $row['last_order_type'];
+
         $status = $row['enabled'];
         $photo = trim($row['photo']);
         if($photo != '')
@@ -443,6 +448,11 @@ function GetProduct($id, $db){
                                     "status" => $status, 
                                     "url" => $url, 
                                     "photo" => $photo, 
+
+                                    "last_order" => $last_order,
+                                    "last_order_name" => $last_order_name,
+                                    "last_order_at" => $last_order_at,
+                                    "last_order_type" => $last_order_type,
                                    
                                     "file" => array( "value" => ''),
                                    
