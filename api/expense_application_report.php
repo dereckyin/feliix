@@ -12,7 +12,7 @@ include_once 'libs/php-jwt-master/src/JWT.php';
 use \Firebase\JWT\JWT;
 
 $method = $_SERVER['REQUEST_METHOD'];
-
+$apartment_id = 0;
 
 if (!isset($jwt)) {
     http_response_code(401);
@@ -24,6 +24,8 @@ if (!isset($jwt)) {
         // decode jwt
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         $user_id = $decoded->data->id;
+
+        $apartment_id = $decoded->data->apartment_id;
         //if(!$decoded->data->is_admin)
         //{
         //  http_response_code(401);
@@ -136,6 +138,13 @@ switch ($method) {
                 LEFT JOIN user u ON u.id = pm.payable_to 
                 LEFT JOIN user p ON p.id = pm.uid 
                 where 1=1 ";
+
+// Sale = 1, Lighting = 2, Office = 3, Engineering = 5
+if($apartment_id == 1 || $apartment_id == 2 || $apartment_id == 3 || $apartment_id == 5)
+{
+    $sql = $sql . " and p.apartment_id = " . $apartment_id . " ";
+    $query_cnt = $query_cnt . " and p.apartment_id = " . $apartment_id . " ";
+}
 
 if($id != "" && $id != "0")
 {
