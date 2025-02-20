@@ -346,8 +346,14 @@ header( 'location:index' );
                                 <li>
                                     <select class="form-control"  v-model="company">
                                         <option></option>
+                                        <option>Buildrite</option>
                                         <option>HFNAC</option>
+                                        <option>Mandaue Foam / PhilFoam Furnishing Industries, Inc.</option>
                                         <option>Muebles De Oficina</option>
+                                        <option>Office Essentials</option>
+                                        <option>Queens Arts and Trends Corp</option>
+                                        <option>Sylpauljoyce Corporation</option>
+                                        <option>Other (Specify in Notes)</option>
                                     </select>
                                 </li>
                             </ul>
@@ -525,8 +531,15 @@ header( 'location:index' );
 
             <select style="width: 10vw; margin-left: 1vw;" v-model="comp">
                 <option value="">All Companies</option>
+                <option></option>
+                <option>Buildrite</option>
                 <option>HFNAC</option>
+                <option>Mandaue Foam / PhilFoam Furnishing Industries, Inc.</option>
                 <option>Muebles De Oficina</option>
+                <option>Office Essentials</option>
+                <option>Queens Arts and Trends Corp</option>
+                <option>Sylpauljoyce Corporation</option>
+                <option>Other (Specify in Notes)</option>
             </select>
 
             <input type="text" v-model="keyword" style="width:15vw; margin-left:1vw;"

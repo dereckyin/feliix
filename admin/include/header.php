@@ -146,8 +146,8 @@ try {
         if($user_id == 1 || $user_id == 4 || $user_id == 6 || $user_id == 2 || $user_id == 41 || $user_id == 3 || $user_id == 9 || $user_id == 87 || $user_id == 99 || $user_id == 190 || $user_id == 143 || $user_id == 146 || $user_id == 154)
             $access3 = true;
 
-        // // 5. 針對 Expense Application Report 的內容，權限控管如下
-        if($user_id == 1 || $user_id == 2 || $user_id == 3 || $user_id == 6 || $user_id == 41 || $user_id == 88 || $user_id == 89 || $user_id == 146 || $user_id == 190 )
+        // 5. 針對 Expense Application Report 的內容，權限控管如下
+        if($user_id == 1 || $user_id == 2 || $user_id == 3 || $user_id == 6 || $user_id == 41 || $user_id == 88 || $user_id == 89 || $user_id == 95 || $user_id == 146 || $user_id == 179 || $user_id == 190 )
             $access5 = true;
 
         
