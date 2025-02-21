@@ -64,6 +64,7 @@ if (!isset($jwt)) {
                     prepare_for_third_line,
                     prepare_by_first_line,
                     prepare_by_second_line,
+                    prepare_by_third_line,
                     footer_first_line,
                     footer_second_line,
                     pixa_s,
@@ -114,6 +115,7 @@ if (!isset($jwt)) {
         $prepare_for_third_line = $row['prepare_for_third_line'];
         $prepare_by_first_line = $row['prepare_by_first_line'];
         $prepare_by_second_line = $row['prepare_by_second_line'];
+        $prepare_by_third_line = $row['prepare_by_third_line'];
         $footer_first_line = $row['footer_first_line'];
         $footer_second_line = $row['footer_second_line'];
 
@@ -130,6 +132,7 @@ if (!isset($jwt)) {
         $block_names = GetBlockNames($row['id'], $db);
         $total_info = GetTotalInfo($row['id'], $db);
         $term_info = GetTermInfo($row['id'], $db);
+        $slogan_info = GetSloganInfo($row['id'], $db);
         $payment_term_info = GetPaymentTermInfo($row['id'], $db);
         $sig_info = GetSigInfo($row['id'], $db);
 
@@ -164,6 +167,7 @@ if (!isset($jwt)) {
             "prepare_for_third_line" => $prepare_for_third_line,
             "prepare_by_first_line" => $prepare_by_first_line,
             "prepare_by_second_line" => $prepare_by_second_line,
+            "prepare_by_third_line" => $prepare_by_third_line,
             "footer_first_line" => $footer_first_line,
             "footer_second_line" => $footer_second_line,
 
@@ -180,6 +184,7 @@ if (!isset($jwt)) {
             "total_info" => $total_info,
             "term_info" => $term_info,
             "payment_term_info" => $payment_term_info,
+            "slogan_info" => $slogan_info,
             "sig_info" => $sig_info,
             "subtotal_info" => $subtotal_info,
          
@@ -537,6 +542,7 @@ function GetPages($qid, $db){
         $type = GetTypes($id, $db);
         $total = GetTotal($qid, $page, $db);
         $term = GetTerm($qid, $page, $db);
+        $slogan = GetSlogan($qid, $page, $db);
         $payment_term = GetPaymentTerm($qid, $page, $db);
         $sig = GetSig($qid, $page, $db);
   
@@ -546,6 +552,7 @@ function GetPages($qid, $db){
             "types" => $type,
             "total" => $total,
             "term" => $term,
+            "slogan" => $slogan,
             "payment_term" => $payment_term,
             "sig" => $sig,
         );
@@ -640,6 +647,39 @@ function GetTerm($qid, $page, $db){
     }
 
     return $merged_results;
+}
+
+function GetSlogan($qid, $page, $db){
+    $query = "
+        SELECT id,
+        `page`,
+        border
+        FROM   quotation_slogan
+        WHERE  quotation_id = " . $qid . "
+        and page = " . $page . "
+        AND `status` <> -1 
+        ORDER BY id
+    ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $slogan = "";
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $id = $row['id'];
+        $page = $row['page'];
+        $border = $row['border'];
+
+        if($page == 1)
+            $slogan = "Y";
+
+        if($border != '')
+            $slogan = $border;
+    }
+
+    return $slogan;
 }
 
 
@@ -911,6 +951,54 @@ function GetTermInfo($qid, $db)
         "page" => $page,
         "item" => $item,
                
+    );
+
+    return $merged_results;
+}
+
+function GetSloganInfo($qid, $db)
+{
+    $query = "
+        SELECT 
+        id,
+        `page`,
+        border
+        FROM   quotation_slogan
+        WHERE  quotation_id = " . $qid . "
+        AND `status` <> -1 
+        ORDER BY id
+    ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $item = [];
+
+    $merged_results = [];
+    
+    $id = 0;
+    $page = 0;
+    $border = '';
+
+  
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $id = $row['id'];
+        $page = $row['page'];
+        $border = $row['border'];
+       
+        $item[] = array(
+            "id" => $id,
+            "page" => $page,
+            "border" => $border,
+          
+        );
+        
+    }
+
+    $merged_results = array(
+        "page" => $page,
+        "item" => $item,
     );
 
     return $merged_results;

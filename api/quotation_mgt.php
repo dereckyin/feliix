@@ -371,6 +371,8 @@ function GetRecentPost($quotation_id, $db){
     UNION all
               SELECT username, p.created_at updated_at FROM quotation_term p LEFT JOIN user u ON p.create_id = u.id  WHERE p.quotation_id = " . $quotation_id . " and p.status <> -1  
     UNION all
+              SELECT username, p.created_at updated_at FROM quotation_slogan p LEFT JOIN user u ON p.create_id = u.id  WHERE p.quotation_id = " . $quotation_id . " and p.status <> -1  
+    UNION all
               SELECT username, p.created_at updated_at FROM quotation_signature p LEFT JOIN user u ON p.create_id = u.id  WHERE p.quotation_id = " . $quotation_id . " and p.status <> -1  
     UNION all
               SELECT username, p.created_at updated_at FROM quotation_payment_term p LEFT JOIN user u ON p.create_id = u.id  WHERE p.quotation_id = " . $quotation_id . " and p.status <> -1  
