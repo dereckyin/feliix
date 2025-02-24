@@ -821,7 +821,7 @@ else
                 if(count($pro_price_ntd) == 1)
                 {
                     $pro_price_ntd[0] = $pro_price_ntd[0] + 0;
-                    $s_price_ntd = $currency . " " . number_format($pro_price_ntd[0]);
+                    $s_price_ntd = $currency . " " . formatPrice($pro_price_ntd[0]);
                 }
                 if(count($pro_price_ntd) > 1)
                 {
@@ -836,7 +836,7 @@ else
                     }
                     $b = $b + 0;
                     $e = $e + 0;
-                    $s_price_ntd = $currency . " " . number_format($b) . " ~ " . $currency . " " . number_format($e);
+                    $s_price_ntd = $currency . " " . formatPrice($b) . " ~ " . $currency . " " . formatPrice($e);
                 }
 
                 $s_price_quoted = "";
@@ -2382,7 +2382,7 @@ function GetProductSetContent($id, $db){
         if(count($pro_price_ntd) == 1)
         {
             $pro_price_ntd[0] = $pro_price_ntd[0] + 0;
-            $s_price_ntd = $currency . " " . number_format($pro_price_ntd[0]);
+            $s_price_ntd = $currency . " " . formatPrice($pro_price_ntd[0]);
         }
         if(count($pro_price_ntd) > 1)
         {
@@ -2397,7 +2397,7 @@ function GetProductSetContent($id, $db){
             }
             $b = $b + 0;
             $e = $e + 0;
-            $s_price_ntd = $currency . " " . number_format($b) . " ~ " . $currency . " " . number_format($e);
+            $s_price_ntd = $currency . " " . formatPrice($b) . " ~ " . $currency . " " . formatPrice($e);
         }
 
         $s_price_quoted = "";
