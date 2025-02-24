@@ -1554,6 +1554,9 @@ function GetProductMain($id, $db){
                 $order_info = getOrderInfo($product[$i]['last_order'], $db);
                 $url = "";
 
+                if(!isset($order_info["order_type"]))
+                    continue;
+
                 if($order_info["order_type"] == "taiwan")
                     $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $product[$i]['last_order'];
                 
@@ -1586,6 +1589,9 @@ function GetProductMain($id, $db){
         {
             $order_info = getOrderInfo($last_order, $db);
             $url = "";
+
+            if(!isset($order_info["order_type"]))
+                continue;
 
             if($order_info["order_type"] == "taiwan")
                 $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
