@@ -1554,21 +1554,20 @@ function GetProductMain($id, $db){
                 $order_info = getOrderInfo($product[$i]['last_order'], $db);
                 $url = "";
 
-                if(!isset($order_info["order_type"]))
-                    continue;
-
-                if($order_info["order_type"] == "taiwan")
+                if(isset($order_info["order_type"]))
+                {
+                    if($order_info["order_type"] == "taiwan")
                     $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $product[$i]['last_order'];
                 
-                if($order_info["order_type"] == "mockup")
-                    $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $product[$i]['last_order'];
-                
-                if($order_info["order_type"] == "sample")
-                    $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $product[$i]['last_order'];
-                
-                if($order_info["order_type"] == "stock")
-                    $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $product[$i]['last_order'];
-
+                    if($order_info["order_type"] == "mockup")
+                        $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $product[$i]['last_order'];
+                    
+                    if($order_info["order_type"] == "sample")
+                        $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $product[$i]['last_order'];
+                    
+                    if($order_info["order_type"] == "stock")
+                        $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $product[$i]['last_order'];
+                }
 
                 $params = str_replace("=>", " = ", $product[$i]['1st_variation']);
                 if($product[$i]['2rd_variation'] != "=>")
@@ -1590,20 +1589,20 @@ function GetProductMain($id, $db){
             $order_info = getOrderInfo($last_order, $db);
             $url = "";
 
-            if(!isset($order_info["order_type"]))
-                continue;
-
-            if($order_info["order_type"] == "taiwan")
+            if(isset($order_info["order_type"]))
+            {
+                if($order_info["order_type"] == "taiwan")
                 $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
             
-            if($order_info["order_type"] == "mockup")
-                $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
-            
-            if($order_info["order_type"] == "sample")
-                $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
-            
-            if($order_info["order_type"] == "stock")
-                $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
+                if($order_info["order_type"] == "mockup")
+                    $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
+                
+                if($order_info["order_type"] == "sample")
+                    $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
+                
+                if($order_info["order_type"] == "stock")
+                    $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
+            }
 
             $last_order_url = $url;
 
@@ -1685,10 +1684,12 @@ function GetProduct($id, $db){
         $last_order_at = $row['last_order_at'];
 
         if($last_order != "")
+        {
+            $order_info = getOrderInfo($last_order, $db);
+            $last_order_url = "";
+
+            if(isset($order_info["order_type"]))
             {
-                $order_info = getOrderInfo($last_order, $db);
-                $last_order_url = "";
-    
                 if($order_info["order_type"] == "taiwan")
                     $last_order_url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
                 
@@ -1701,10 +1702,11 @@ function GetProduct($id, $db){
                 if($order_info["order_type"] == "stock")
                     $last_order_url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
             }
-            else
-            {
-                $last_order_url = "";
-            }
+        }
+        else
+        {
+            $last_order_url = "";
+        }
 
         $merged_results[] = array(  "id" => $id, 
   
