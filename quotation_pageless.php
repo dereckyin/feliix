@@ -3272,7 +3272,7 @@ header( 'location:index' );
                                 <dd>
                                     <select v-model="slogan.border">
                                         <option value="Y">Yes</option>
-                                        <option value="N">No</option>
+                                        <option value="">No</option>
                                     </select>
                                 </dd>
                             </dl>
@@ -3619,7 +3619,7 @@ header( 'location:index' );
 
                             <div class="project_category font_M">
                                 <!-- 下面的{{}}要顯示的值，如果是 project_category == 'Office Systems'，則{{ }}需要顯示 SystemsFurniture;如果是 project_category == 'Lighting'，則{{ }}需要顯示 Lighting -->
-                                {{ project_category }}
+                                {{ project_category == 'Office Systems' ? 'SystemsFurniture' : project_category }}
                             </div>
 
                             <div class="qn_number_date">
@@ -3887,7 +3887,7 @@ header( 'location:index' );
                                                                                        
 
                         <!-- 如果使用者在表單中選擇不要上框線，則在下面的 div 中需要加入 no_top_border 到 class 裡面 -->
-                        <div :class="[pag.slogan == 'N' ? 'area_slogan no_top_border' : 'area_slogan']" v-if="pag.slogan == 'Y' || pag.slogan == 'N'">
+                        <div :class="[pag.slogan == 'Y' ? 'area_slogan' : 'area_slogan no_top_border']" v-if="pag.slogan == 'Y' || pag.slogan == 'N'">
 
                             <hr>
                             <div class="slogan_text">DELIVERING THE RESULTS AT THE CHEAPEST PRICE</div>

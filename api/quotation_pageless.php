@@ -673,7 +673,12 @@ function GetSlogan($qid, $page, $db){
         $border = $row['border'];
 
         if($page == 1)
-            $slogan = "Y";
+        {
+            if($border == 'Y')
+                $slogan = "Y";
+            else
+                $slogan = "N";
+        }
 
         if($border != '')
             $slogan = $border;

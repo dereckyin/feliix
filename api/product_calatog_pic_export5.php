@@ -649,7 +649,7 @@ else
                 if(count($pro_price_ntd) == 1)
                 {
                     $pro_price_ntd[0] = $pro_price_ntd[0] + 0;
-                    $s_price_ntd = $currency . " " . number_format($pro_price_ntd[0]);
+                    $s_price_ntd = $currency . " " . formatPrice($pro_price_ntd[0]);
                 }
                 if(count($pro_price_ntd) > 1)
                 {
@@ -664,7 +664,7 @@ else
                     }
                     $b = $b + 0;
                     $e = $e + 0;
-                    $s_price_ntd = $currency . " " . number_format($b) . " ~ " . $currency . " " . number_format($e);
+                    $s_price_ntd = $currency . " " . formatPrice($b) . " ~ " . $currency . " " . formatPrice($e);
                 }
 
                 $s_price_quoted = "";
@@ -702,7 +702,7 @@ else
                     $price = $s_price;
 
                 if($s_price_ntd == "")
-                    $price_ntd = $currency . " " .  number_format($price_ntd);
+                    $price_ntd = $currency . " " .  formatPrice($price_ntd);
                 else
                     $price_ntd = $s_price_ntd; 
 
@@ -2227,7 +2227,7 @@ function GetProductSetContent($id, $db){
         if(count($pro_price_ntd) == 1)
         {
             $pro_price_ntd[0] = $pro_price_ntd[0] + 0;
-            $s_price_ntd = $currency . " " . number_format($pro_price_ntd[0]);
+            $s_price_ntd = $currency . " " . formatPrice($pro_price_ntd[0]);
         }
         if(count($pro_price_ntd) > 1)
         {
@@ -2242,7 +2242,7 @@ function GetProductSetContent($id, $db){
             }
             $b = $b + 0;
             $e = $e + 0;
-            $s_price_ntd = $currency . " " . number_format($b) . " ~ " . $currency . " " . number_format($e);
+            $s_price_ntd = $currency . " " . formatPrice($b) . " ~ " . $currency . " " . formatPrice($e);
         }
 
         $s_price_quoted = "";
@@ -2280,7 +2280,7 @@ function GetProductSetContent($id, $db){
             $price = $s_price;
 
         if($s_price_ntd == "")
-            $price_ntd = $currency . " " .  number_format($price_ntd);
+            $price_ntd = $currency . " " .  formatPrice($price_ntd);
         else
             $price_ntd = $s_price_ntd; 
 
@@ -2772,5 +2772,11 @@ function GetReplacementProduct($id, $db){
 
 }
 
-
+function formatPrice($price) {
+    if (floor($price) == $price) {
+        return number_format($price, 0); // No decimal places for whole numbers
+    } else {
+        return number_format($price, 2); // Two decimal places for float values
+    }
+}
 ?>
