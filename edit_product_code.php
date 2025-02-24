@@ -911,6 +911,7 @@ try {
                     <select class="form-control one_half" v-model="currency">
                         <option value="NTD">NTD</option>
                         <option value="USD">USD</option>
+                        <option value="RMB">RMB</option>
                         <option value="PHP">PHP</option>
                     </select>
                 </li>

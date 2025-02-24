@@ -874,7 +874,7 @@ else
                     $price = $s_price;
 
                 if($s_price_ntd == "")
-                    $price_ntd = $currency . " " .  number_format($price_ntd);
+                    $price_ntd = $currency . " " .  formatPrice($price_ntd);
                 else
                     $price_ntd = $s_price_ntd; 
 
@@ -2435,7 +2435,7 @@ function GetProductSetContent($id, $db){
             $price = $s_price;
 
         if($s_price_ntd == "")
-            $price_ntd = $currency . " " .  number_format($price_ntd);
+            $price_ntd = $currency . " " .  formatPrice($price_ntd);
         else
             $price_ntd = $s_price_ntd; 
 
@@ -2925,6 +2925,14 @@ function GetReplacementProduct($id, $db){
 
     return $merged_results;
 
+}
+
+function formatPrice($price) {
+    if (floor($price) == $price) {
+        return number_format($price, 0); // No decimal places for whole numbers
+    } else {
+        return number_format($price, 2); // Two decimal places for float values
+    }
 }
 
 
