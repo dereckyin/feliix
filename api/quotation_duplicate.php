@@ -86,6 +86,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
     $prepare_for_third_line = $merged_results[0]['prepare_for_third_line'];
     $prepare_by_first_line = $merged_results[0]['prepare_by_first_line'];
     $prepare_by_second_line = $merged_results[0]['prepare_by_second_line'];
+    $prepare_by_third_line = $merged_results[0]['prepare_by_third_line'];
     $footer_first_line = $merged_results[0]['footer_first_line'];
     $footer_second_line = $merged_results[0]['footer_second_line'];
     $pageless = $merged_results[0]['pageless'];
@@ -107,6 +108,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
             `prepare_for_third_line` = :prepare_for_third_line,
             `prepare_by_first_line` = :prepare_by_first_line,
             `prepare_by_second_line` = :prepare_by_second_line,
+            `prepare_by_third_line` = :prepare_by_third_line,
             `footer_first_line` = :footer_first_line,
             `footer_second_line` = :footer_second_line,
             `pageless` = :pageless,
@@ -132,6 +134,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
         $stmt->bindParam(':prepare_for_third_line', $prepare_for_third_line);
         $stmt->bindParam(':prepare_by_first_line', $prepare_by_first_line);
         $stmt->bindParam(':prepare_by_second_line', $prepare_by_second_line);
+        $stmt->bindParam(':prepare_by_third_line', $prepare_by_third_line);
         $stmt->bindParam(':footer_first_line', $footer_first_line);
         $stmt->bindParam(':footer_second_line', $footer_second_line);
         $stmt->bindParam(':pageless', $pageless);
@@ -459,6 +462,45 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
                 die();
             }
 
+            
+            // slogan
+            $query = "INSERT INTO quotation_slogan
+                    (
+                        quotation_id,
+                        page,
+                        border,
+                        `create_id`,
+                        created_at
+                    )
+                        select " . $quotation_id . ", page, border, :create_id, now() 
+                    from quotation_slogan where quotation_id = :quotation_id";
+            // prepare the query
+            $stmt = $db->prepare($query);
+
+            // bind the values
+            $stmt->bindParam(':quotation_id', $id);
+            $stmt->bindParam(':create_id', $user_id);
+
+            try {
+                // execute the query, also check if query was successful
+                if ($stmt->execute()) {
+                    $last_id = $db->lastInsertId();
+                } else {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
+
             // payment term
             $query = "INSERT INTO quotation_payment_term
                     (
@@ -562,6 +604,7 @@ function GetQuotation($id, $db) {
                     prepare_for_third_line,
                     prepare_by_first_line,
                     prepare_by_second_line,
+                    prepare_by_third_line,
                     footer_first_line,
                     footer_second_line,
                     (SELECT COUNT(*) FROM quotation_page WHERE quotation_id = quotation.id and quotation_page.status <> -1) page_count,
@@ -590,6 +633,7 @@ function GetQuotation($id, $db) {
         $prepare_for_third_line = $row['prepare_for_third_line'];
         $prepare_by_first_line = $row['prepare_by_first_line'];
         $prepare_by_second_line = $row['prepare_by_second_line'];
+        $prepare_by_third_line = $row['prepare_by_third_line'];
         $footer_first_line = $row['footer_first_line'];
         $footer_second_line = $row['footer_second_line'];
         $page_count = $row['page_count'];
@@ -618,6 +662,7 @@ function GetQuotation($id, $db) {
             "prepare_for_third_line" => $prepare_for_third_line,
             "prepare_by_first_line" => $prepare_by_first_line,
             "prepare_by_second_line" => $prepare_by_second_line,
+            "prepare_by_third_line" => $prepare_by_third_line,
             "footer_first_line" => $footer_first_line,
             "footer_second_line" => $footer_second_line,
             "page_count" => $page_count,

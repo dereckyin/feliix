@@ -72,6 +72,7 @@ switch ($method) {
         $prepare_for_third_line = isset($_POST['prepare_for_third_line']) ? $_POST['prepare_for_third_line'] : '';
         $prepare_by_first_line = isset($_POST['prepare_by_first_line']) ? $_POST['prepare_by_first_line'] : '';
         $prepare_by_second_line = isset($_POST['prepare_by_second_line']) ? $_POST['prepare_by_second_line'] : '';
+        $prepare_by_third_line = isset($_POST['prepare_by_third_line']) ? $_POST['prepare_by_third_line'] : '';
         $footer_first_line = isset($_POST['footer_first_line']) ? $_POST['footer_first_line'] : '';
         $footer_second_line = isset($_POST['footer_second_line']) ? $_POST['footer_second_line'] : '';
 
@@ -105,6 +106,7 @@ switch ($method) {
                         `prepare_for_third_line` = :prepare_for_third_line,
                         `prepare_by_first_line` = :prepare_by_first_line,
                         `prepare_by_second_line` = :prepare_by_second_line,
+                        `prepare_by_third_line` = :prepare_by_third_line,
                         `footer_first_line` = :footer_first_line,
                         `footer_second_line` = :footer_second_line,
                         `pageless` = :pageless,
@@ -126,6 +128,7 @@ switch ($method) {
                     $stmt->bindParam(':prepare_for_third_line', $prepare_for_third_line);
                     $stmt->bindParam(':prepare_by_first_line', $prepare_by_first_line);
                     $stmt->bindParam(':prepare_by_second_line', $prepare_by_second_line);
+                    $stmt->bindParam(':prepare_by_third_line', $prepare_by_third_line);
                     $stmt->bindParam(':footer_first_line', $footer_first_line);
                     $stmt->bindParam(':footer_second_line', $footer_second_line);
                     $stmt->bindParam(':pageless', $pageless);
@@ -169,6 +172,7 @@ switch ($method) {
                         `prepare_for_third_line` = :prepare_for_third_line,
                         `prepare_by_first_line` = :prepare_by_first_line,
                         `prepare_by_second_line` = :prepare_by_second_line,
+                        `prepare_by_third_line` = :prepare_by_third_line,
                         `footer_first_line` = :footer_first_line,
                         `footer_second_line` = :footer_second_line,
                         `pageless` = :pageless,
@@ -190,6 +194,7 @@ switch ($method) {
                 $stmt->bindParam(':prepare_for_third_line', $prepare_for_third_line);
                 $stmt->bindParam(':prepare_by_first_line', $prepare_by_first_line);
                 $stmt->bindParam(':prepare_by_second_line', $prepare_by_second_line);
+                $stmt->bindParam(':prepare_by_third_line', $prepare_by_third_line);
                 $stmt->bindParam(':footer_first_line', $footer_first_line);
                 $stmt->bindParam(':footer_second_line', $footer_second_line);
                 $stmt->bindParam(':pageless', $pageless);

@@ -257,18 +257,20 @@ else
                         $order_info = getOrderInfo($product[$i]['last_order'], $db);
                         $url = "";
 
-                        if($order_info["order_type"] == "taiwan")
-                            $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $product[$i]['last_order'];
-                        
-                        if($order_info["order_type"] == "mockup")
-                            $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $product[$i]['last_order'];
-                        
-                        if($order_info["order_type"] == "sample")
-                            $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $product[$i]['last_order'];
-                        
-                        if($order_info["order_type"] == "stock")
-                            $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $product[$i]['last_order'];
-
+                        if(isset($order_info["order_type"]))
+                        {
+                            if($order_info["order_type"] == "taiwan")
+                                $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $product[$i]['last_order'];
+                            
+                            if($order_info["order_type"] == "mockup")
+                                $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $product[$i]['last_order'];
+                            
+                            if($order_info["order_type"] == "sample")
+                                $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $product[$i]['last_order'];
+                            
+                            if($order_info["order_type"] == "stock")
+                                $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $product[$i]['last_order'];
+                        }
 
                         $params = str_replace("=>", " = ", $product[$i]['1st_variation']);
                         if($product[$i]['2rd_variation'] != "=>")
@@ -372,7 +374,7 @@ else
                 $s_price_ntd = "";
                 if(count($pro_price_ntd) == 1)
                 {
-                    $s_price_ntd = $currency . " " . number_format($pro_price_ntd[0]);
+                    $s_price_ntd = $currency . " " . formatPrice($pro_price_ntd[0]);
                 }
                 if(count($pro_price_ntd) > 1)
                 {
@@ -385,7 +387,7 @@ else
 
                         $e = $pro_price_ntd[$i];
                     }
-                    $s_price_ntd = $currency . " " . number_format($b) . " ~ " . $currency . " " . number_format($e);
+                    $s_price_ntd = $currency . " " . formatPrice($b) . " ~ " . $currency . " " . formatPrice($e);
                 }
 
                 $s_price_quoted = "";
@@ -413,7 +415,7 @@ else
                     $price = $s_price;
 
                 if($s_price_ntd == "")
-                    $price_ntd = $currency . " " .  number_format($price_ntd);
+                    $price_ntd = $currency . " " .  formatPrice($price_ntd);
                 else
                     $price_ntd = $s_price_ntd; 
 
@@ -694,19 +696,20 @@ else
                 {
                     $order_info = getOrderInfo($last_order, $db);
                     $url = "";
-
-                    if($order_info["order_type"] == "taiwan")
-                        $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
-                    
-                    if($order_info["order_type"] == "mockup")
-                        $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
-                    
-                    if($order_info["order_type"] == "sample")
-                        $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
-                    
-                    if($order_info["order_type"] == "stock")
-                        $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
-
+                    if(isset($order_info["order_type"]))
+                    {
+                        if($order_info["order_type"] == "taiwan")
+                            $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
+                        
+                        if($order_info["order_type"] == "mockup")
+                            $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
+                        
+                        if($order_info["order_type"] == "sample")
+                            $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
+                        
+                        if($order_info["order_type"] == "stock")
+                            $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
+                    }
 
                     $is_last_order_main = "Main Product: <br>" . substr($last_order_at, 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $last_order_name . "</a><br>";
                 }
@@ -903,18 +906,20 @@ function GetProduct($id, $db, $currency){
             {
                 $order_info = getOrderInfo($last_order, $db);
                 $last_order_url = "";
-    
-                if($order_info["order_type"] == "taiwan")
-                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
-                
-                if($order_info["order_type"] == "mockup")
-                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
-                
-                if($order_info["order_type"] == "sample")
-                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
-                
-                if($order_info["order_type"] == "stock")
-                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
+                if(isset($order_info["order_type"]))
+                {
+                    if($order_info["order_type"] == "taiwan")
+                        $last_order_url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
+                    
+                    if($order_info["order_type"] == "mockup")
+                        $last_order_url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
+                    
+                    if($order_info["order_type"] == "sample")
+                        $last_order_url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
+                    
+                    if($order_info["order_type"] == "stock")
+                        $last_order_url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
+                }
             }
             else
             {
@@ -1496,18 +1501,20 @@ function GetProductSet($id, $qty, $db){
                         $order_info = getOrderInfo($product[$i]['last_order'], $db);
                         $url = "";
 
-                        if($order_info["order_type"] == "taiwan")
-                            $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $product[$i]['last_order'];
-                        
-                        if($order_info["order_type"] == "mockup")
-                            $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $product[$i]['last_order'];
-                        
-                        if($order_info["order_type"] == "sample")
-                            $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $product[$i]['last_order'];
-                        
-                        if($order_info["order_type"] == "stock")
-                            $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $product[$i]['last_order'];
-
+                        if(isset($order_info["order_type"]))
+                        {
+                            if($order_info["order_type"] == "taiwan")
+                                $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $product[$i]['last_order'];
+                            
+                            if($order_info["order_type"] == "mockup")
+                                $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $product[$i]['last_order'];
+                            
+                            if($order_info["order_type"] == "sample")
+                                $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $product[$i]['last_order'];
+                            
+                            if($order_info["order_type"] == "stock")
+                                $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $product[$i]['last_order'];
+                        }
                         $params = str_replace("=>", " = ", $product[$i]['1st_variation']);
                         if($product[$i]['2rd_variation'] != "=>")
                             $params .= ", " . str_replace("=>", " = ", $product[$i]['2rd_variation']);
@@ -1609,18 +1616,20 @@ function GetProductSet($id, $qty, $db){
                     $order_info = getOrderInfo($last_order, $db);
                     $url = "";
 
-                    if($order_info["order_type"] == "taiwan")
-                        $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
-                    
-                    if($order_info["order_type"] == "mockup")
-                        $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
-                    
-                    if($order_info["order_type"] == "sample")
-                        $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
-                    
-                    if($order_info["order_type"] == "stock")
-                        $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
-
+                    if(isset($order_info["order_type"]))
+                    {
+                        if($order_info["order_type"] == "taiwan")
+                            $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
+                        
+                        if($order_info["order_type"] == "mockup")
+                            $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
+                        
+                        if($order_info["order_type"] == "sample")
+                            $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
+                        
+                        if($order_info["order_type"] == "stock")
+                            $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
+                    }
 
                     $is_last_order_main = "Main Product: <br>" . substr($last_order_at, 0, 10) . " at <a href='" . $url . "' target='_blank'>" .  $last_order_name . "</a><br>";
                 }
@@ -1663,7 +1672,7 @@ function GetProductSet($id, $qty, $db){
                 if(count($pro_price_ntd) == 1)
                 {
                     $pro_price_ntd[0] = $pro_price_ntd[0] + 0;
-                    $s_price_ntd = $currency . " " . number_format($pro_price_ntd[0]);
+                    $s_price_ntd = $currency . " " . formatPrice($pro_price_ntd[0]);
                 }
                 if(count($pro_price_ntd) > 1)
                 {
@@ -1678,7 +1687,7 @@ function GetProductSet($id, $qty, $db){
                     }
                     $b = $b + 0;
                     $e = $e + 0;
-                    $s_price_ntd = $currency . " " . number_format($b) . " ~ " . $currency . " " . number_format($e);
+                    $s_price_ntd = $currency . " " . formatPrice($b) . " ~ " . $currency . " " . formatPrice($e);
                 }
 
                 $s_price_quoted = "";
@@ -1715,7 +1724,7 @@ function GetProductSet($id, $qty, $db){
                     $price = $s_price;
 
                 if($s_price_ntd == "")
-                    $price_ntd = $currency . " " .  number_format($price_ntd);
+                    $price_ntd = $currency . " " .  formatPrice($price_ntd);
                 else
                     $price_ntd = $s_price_ntd; 
 
@@ -2058,5 +2067,13 @@ function getOrderInfo($od_id, $db)
     }
 
     return $merged_results;
+}
+
+function formatPrice($price) {
+    if (floor($price) == $price) {
+        return number_format($price, 0); // No decimal places for whole numbers
+    } else {
+        return number_format($price, 2); // Two decimal places for float values
+    }
 }
 ?>

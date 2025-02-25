@@ -65,6 +65,7 @@ if($jwt){
                     prepare_for_third_line,
                     prepare_by_first_line,
                     prepare_by_second_line,
+                    prepare_by_third_line,
                     footer_first_line,
                     footer_second_line,
                     (SELECT COUNT(*) FROM quotation_page WHERE quotation_id = quotation.id and quotation_page.status <> -1) page_count

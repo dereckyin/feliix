@@ -156,6 +156,20 @@ header( 'location:index' );
 
     <style>
 
+        @font-face {
+            font-family: 'SFPRODISPLAYMEDIUM';
+            src: url('/fonts/SFPRODISPLAYMEDIUM.OTF') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SFPRODISPLAYBOLD';
+            src: url('/fonts/SFPRODISPLAYBOLD.OTF') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body.gray {
             counter-reset: PageNumber;
         }
@@ -633,96 +647,123 @@ header( 'location:index' );
         }
 
         .qn_page .qn_header_space {
-            height: 305px;
+            height: 357.14px;
         }
 
         .qn_page .qn_header {
             width: 100%;
-            height: 275px;
-            background: url('images/Feliix-QuoteBG-03.png');
+            height: 327.14px;
+            background: url('images/Feliix-QuoteBG-04.png');
             background-size: 100% auto;
             position: absolute;
             top: 0;
             left: 0;
+            color: white;
         }
 
         .qn_header .left_block {
-            width: 71%;
+            width: 69.30%;
             float: left;
-            padding-left: 30px;
+            padding-left: 57.14px;
         }
 
-        .qn_header .left_block img.logo {
-            display: block;
-            width: 166px;
-            margin-top: 35px;
-        }
-
-        .qn_header .left_block .qn_title {
-            margin-top: 50px;
-            font-size: 32px;
+         .qn_header .left_block .qn_title {
+            margin-top: 75.78px;
+            font-size: 40px;
             font-weight: 700;
-            line-height: 1.2;
-            height: 76.8px;
+            line-height: 1.1;
+            height: 114.79px;
         }
 
         .qn_header .left_block .qn_title > div {
-            height: 38.4px;
+            height: 57.39px;
         }
 
-        .qn_header .left_block .project_category {
-            margin-top: 15px;
-            font-size: 14px;
+        .qn_header .left_block .qn_by_for {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .qn_header .left_block .qn_by {
+            font-size: 20px;
             font-weight: 700;
+            height: 84.32x;
+            width: 348.69px;
+            float: left;
             line-height: 1.2;
-            height: 33.6px;
+        }
+
+        .qn_header .left_block .qn_by > div {
+            width: 100%;
+            overflow: hidden;
+            height: 21.42px;
+        }
+
+        .qn_header .left_block .qn_for {
+            font-size: 20px;
+            font-weight: 700;
+            height: 84.32px;
+            width: 348.69px;
+            float: right;
+            line-height: 1.2;
+        }
+
+        .qn_header .left_block .qn_for > div {
+            width: 100%;
+            overflow: hidden;
+            height: 21.42px;
         }
 
         .qn_header .right_block {
-            width: 29%;
+            width: 30.70%;
             float: right;
-            padding-right: 3px;
+            padding-right: 57.14px;
+        }
+
+        .qn_header .right_block img.logo {
+            display: block;
+            width: 245.48px;
+            margin-top: 75.78px;
+            height: 53.58px;
+        }
+
+        .qn_header .right_block .project_category {
+            font-size: 30px;
+            font-weight: 500;
+            line-height: 1.8;
+            height: 58.94px;
         }
 
         .qn_header .right_block .qn_number_date {
-            margin-top: 35px;
-            font-size: 14px;
+            margin-top: 24.47px;
+            height: 84.32px;
+            font-size: 20px;
             font-weight: 500;
-            line-height: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
         }
 
-        .qn_header .right_block .qn_number_date .qn_number,
-        .qn_header .right_block .qn_number_date .qn_date,
-        .qn_header .right_block .qn_for div,
-        .qn_header .right_block .qn_by div {
+        .qn_header .right_block .qn_number_date span.qn_number_date_title {
+            display: inline-block;
+            width: 145px;
             font-weight: 700;
         }
 
-        .qn_header .right_block .qn_for {
-            margin-top: 45px;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 1.2;
-            height: 67.2px;
+        .qn_header .right_block .qn_number_date .qn_number,
+        .qn_header .right_block .qn_number_date .qn_date {
+            font-weight: 700;
         }
 
-        .qn_header .right_block .qn_for > div {
-            height: 16.8px;
-            width: 100%;
-            overflow: hidden;
+        .qn_header .font_M {
+            font-family: 'SFPRODISPLAYMEDIUM';
         }
 
-        .qn_header .right_block .qn_by {
-            margin-top: 15px;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 1.2;
-            height: 50.4px;
+        .qn_header .font_B {
+            font-family: 'SFPRODISPLAYBOLD';
         }
 
-        .qn_header .right_block .qn_by > div {
-            height: 16.8px;
-        }
+
 
         .qn_page .qn_body {
             padding: 0 30px;
@@ -984,6 +1025,35 @@ header( 'location:index' );
 
         .tb_total tfoot tr td:nth-last-of-type(1) span.numbers.deleted {
             text-decoration: line-through;
+        }
+
+        .qn_body .area_slogan {
+            width: 100%;
+            border: 2px solid #A0A0A0;
+            padding: 16.61px 45px;
+            position: relative;
+        }
+
+        .qn_body .area_slogan.no_top_border {
+            border-top: none;
+        }
+
+        .area_slogan hr {
+            background: #A42A82;
+            height: 1px;
+        }
+
+        .area_slogan .slogan_text {
+            color: #A42A82;
+            font-weight: 700;
+            font-size: 20px;
+            text-align: center;
+            position: absolute;
+            width: 600px;
+            background: white;
+            top: 18px;
+            left: calc(50% - 300px);
+            font-family: 'SFPRODISPLAYBOLD';
         }
 
         .qn_body .area_subtotal {
@@ -2782,6 +2852,7 @@ header( 'location:index' );
                                 <dd>
                                     <input type="text" placeholder="First Line" v-model="temp_prepare_by_first_line">
                                     <input type="text" placeholder="Second Line" v-model="temp_prepare_by_second_line">
+                                    <input type="text" placeholder="Third Line" v-model="temp_prepare_by_third_line">
                                 </dd>
                                 <div class="btnbox">
                                     <a class="btn small" @click="cancel_header()">Close</a>
@@ -3117,14 +3188,22 @@ header( 'location:index' );
                             </dl>
 
                             <dl>
-                                <dt class="head">Show "*price inclusive of VAT" in the Quotation:</dt>
+                                <dt class="head">Show "*price inclusive of VAT" or "*price exclusive of VAT" or nothing in the Quotation:</dt>
                                 <dd>
+                                    <select v-model="total.show_vat">
+                                        <option value="">Nothing</option>
+                                        <option value="Y">*price inclusive of VAT</option>
+                                        <option value="E">*price exclusive of VAT</option>
+                                    </select>
+
+                                    <!-- 現存的報價單，如果值是 Yes，則會對應成 *price inclusive of VAT；如果值是 No，則會對應成 Nothing
                                     <select v-model="total.show_vat">
                                         <option value="Y">Yes</option>
                                         <option value="">No</option>
                                     </select>
+                                    -->
                                 </dd>
-                            </dl>
+                            </dl>                                                                                                             
 
                             <dl>
                                 <dt class="head">Quotation Valid for:</dt>
@@ -3158,6 +3237,56 @@ header( 'location:index' );
 
                     </div>
                 </div>
+
+
+                <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category != 'Office Systems' ">
+
+                    <?php
+                    if ($test_manager[0]  == "1")
+                    {
+                    ?>
+                    <a id="project_fn2" class="fn2" :ref="'a_fn2'" @click="show_slogan = !show_slogan">Slogan</a>
+                    <?php
+                    } else {
+                    ?>
+                    <a>Total</a>
+                    <?php
+                    }
+                    ?>
+                    <div id="slogan_dialog" class="dialog fn2 show" :ref="'dlg_fn2'" v-show="show_slogan">
+                        <h6>Slogan</h6>
+
+                        <div class="formbox">
+                            <dl style="margin-bottom: 0px; border-bottom: 1px solid black;">
+                                <dt class="head">Choose whether to show the block of slogan in this document:</dt>
+                                <dd>
+                                    <select v-model="slogan.page">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </dd>
+                            </dl>
+
+                            <dl>
+                                <dt class="head">Need the top border for the block of slogan:</dt>
+                                <dd>
+                                    <select v-model="slogan.border">
+                                        <option value="Y">Yes</option>
+                                        <option value="">No</option>
+                                    </select>
+                                </dd>
+                            </dl>
+
+
+                            <div class="btnbox">
+                                <a class="btn small" @click="close_slogan()" v-if="submit == false">Close</a>
+                                <a class="btn small green" @click="save_slogan()">{{ submit == false ? 'Save' : 'Checking and Saving...' }}</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
 
 
                 <div class="popupblock" v-if="(quotation_control && project_category == 'Office Systems') || project_category != 'Office Systems' ">
@@ -3458,38 +3587,44 @@ header( 'location:index' );
 
                         <div class="left_block">
 
-                            <img class="logo" src="images/Feliix-Logo-Black.png">
-
                             <div class="qn_title">
-                                <div class="line1">{{ first_line }}</div>
-                                <div class="line2">{{ second_line }}</div>
+                                <div class="line1 font_B">{{ first_line }}</div>
+                                <div class="line2 font_B" style="margin-top: 3px;">{{ second_line }}</div>
                             </div>
 
-                            <div class="project_category">
-                                <div class="line1">Architectural</div>
-                                <div class="line2">{{ project_category }} Quotation</div>
+
+                            <div class="qn_by_for">
+
+                                <div class="qn_by font_B">
+                                    Prepared by:<br>
+                                    <div class="line1 font_B">{{ prepare_by_first_line }}</div>
+                                    <div class="line2 font_B">{{ prepare_by_second_line }}</div>
+                                    <div class="line3 font_B">{{ prepare_by_third_line }}</div>
+                                </div>
+
+                                <div class="qn_for font_B">
+                                    Prepared for:<br>
+                                    <div class="line1 font_B">{{ prepare_for_first_line }}</div>
+                                    <div class="line2 font_B">{{ prepare_for_second_line }}</div>
+                                    <div class="line3 font_B">{{ prepare_for_third_line }}</div>
+                                </div>
+
                             </div>
 
                         </div>
 
                         <div class="right_block">
 
+                            <img class="logo" src="images/Feliix-Logo-White.png">
+
+                            <div class="project_category font_M">
+                                <!-- 下面的{{}}要顯示的值，如果是 project_category == 'Office Systems'，則{{ }}需要顯示 SystemsFurniture;如果是 project_category == 'Lighting'，則{{ }}需要顯示 Lighting -->
+                                {{ project_category == 'Office Systems' ? 'SystemsFurniture' : project_category }}
+                            </div>
+
                             <div class="qn_number_date">
-                                Quotation No.: <span class="qn_number">{{ quotation_no }}</span><br>
-                                Date: <span class="qn_date">{{ quotation_date }}</span>
-                            </div>
-
-                            <div class="qn_for">
-                                Prepared for:<br>
-                                <div class="line1">{{ prepare_for_first_line }}</div>
-                                <div class="line2">{{ prepare_for_second_line }}</div>
-                                <div class="line3">{{ prepare_for_third_line }}</div>
-                            </div>
-
-                            <div class="qn_by">
-                                <br>
-                                <div class="line1">{{ prepare_by_first_line }}</div>
-                                <div class="line2">{{ prepare_by_second_line }}</div>
+                                <div><span class="qn_number_date_title font_B">Quotation #:</span> <span class="qn_number font_B">{{ quotation_no }}</span></div>
+                                <div><span class="qn_number_date_title font_B">Date:</span> <span class="qn_date font_B">{{ quotation_date }}</span></div>
                             </div>
 
                         </div>
@@ -3733,6 +3868,7 @@ header( 'location:index' );
                                 <tr>
                                     <td>
                                         <span class="total_discount" v-if="tt.show_vat == 'Y'">*price inclusive of VAT</span>
+                                        <span class="total_discount" v-if="tt.show_vat == 'E'">*price exclusive of VAT</span>
                                     </td>
                                     <td>GRAND TOTAL</td>
                                     <td v-if="tt.total != '0.00'">
@@ -3746,6 +3882,16 @@ header( 'location:index' );
                                 </tr>
                                 </tfoot>
                             </table>
+                        </div>
+
+                                                                                       
+
+                        <!-- 如果使用者在表單中選擇不要上框線，則在下面的 div 中需要加入 no_top_border 到 class 裡面 -->
+                        <div :class="[pag.slogan == 'Y' ? 'area_slogan' : 'area_slogan no_top_border']" v-if="pag.slogan == 'Y' || pag.slogan == 'N'">
+
+                            <hr>
+                            <div class="slogan_text">DELIVERING THE RESULTS AT THE CHEAPEST PRICE</div>
+
                         </div>
 
 

@@ -852,6 +852,7 @@ var app = new Vue({
             form_Data.append("prepare_for_third_line", '');
             form_Data.append("prepare_by_first_line", '');
             form_Data.append("prepare_by_second_line", '');
+            form_Data.append("prepare_by_third_line", '');
 
             form_Data.append("footer_first_line", '');
             form_Data.append("footer_second_line", '');

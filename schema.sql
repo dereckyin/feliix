@@ -5660,3 +5660,21 @@ CREATE TABLE IF NOT EXISTS `project_special` (
 -- 2025/01/09 product_category stock
 CREATE INDEX price_record_project_name_is_enabled_idx ON price_record(project_name(512), is_enabled);
 CREATE INDEX project_proof_project_id_status_kind_idx ON project_proof(project_id, `status`, kind);
+
+-- 2025/02/20
+ALTER TABLE quotation
+ADD COLUMN `prepare_by_third_line` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '' AFTER `prepare_by_second_line`;
+
+CREATE TABLE IF NOT EXISTS quotation_slogan
+(
+	`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `quotation_id` bigint(20) unsigned NOT NULL,
+	`page` int(11) DEFAULT 0,
+  `border` varchar(2) DEFAULT '',
+	`status` varchar(2) DEFAULT '',
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

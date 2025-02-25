@@ -37,6 +37,7 @@ var app = new Vue({
 
       prepare_by_first_line : '',
       prepare_by_second_line : '',
+      prepare_by_third_line : '',
 
       // _header
       temp_first_line : '',
@@ -51,6 +52,7 @@ var app = new Vue({
 
       temp_prepare_by_first_line : '',
       temp_prepare_by_second_line : '',
+      temp_prepare_by_third_line : '',
 
       // footer
       footer_first_line : '',
@@ -2666,6 +2668,7 @@ Installation:`;
 
         this.prepare_by_first_line = this.temp_prepare_by_first_line;
         this.prepare_by_second_line = this.temp_prepare_by_second_line;
+        this.prepare_by_third_line = this.temp_prepare_by_third_line;
 
         this.header_save();
         
@@ -2710,6 +2713,7 @@ Installation:`;
 
         this.prepare_by_first_line = '';
         this.prepare_by_second_line = '';
+        this.prepare_by_third_line = '';
 
         // footer
         this.footer_first_line = '';
@@ -2728,6 +2732,7 @@ Installation:`;
 
         this.temp_prepare_by_first_line = '';
         this.temp_prepare_by_second_line = '';
+        this.temp_prepare_by_third_line = '';
 
         // _footer
         this.temp_footer_first_line = '';
@@ -2805,6 +2810,7 @@ Installation:`;
 
               _this.prepare_by_first_line = _this.receive_records[0].prepare_by_first_line;
               _this.prepare_by_second_line = _this.receive_records[0].prepare_by_second_line;
+              _this.prepare_by_third_line = _this.receive_records[0].prepare_by_third_line;
 
               // footer
               _this.footer_first_line = _this.receive_records[0].footer_first_line;
@@ -2856,6 +2862,7 @@ Installation:`;
 
               _this.temp_prepare_by_first_line = _this.receive_records[0].prepare_by_first_line;
               _this.temp_prepare_by_second_line = _this.receive_records[0].prepare_by_second_line;
+              _this.temp_prepare_by_third_line = _this.receive_records[0].prepare_by_third_line;
 
               // footer
               _this.temp_footer_first_line = _this.receive_records[0].footer_first_line;
@@ -3108,6 +3115,7 @@ Installation:`;
         form_Data.append("prepare_for_third_line", this.prepare_for_third_line);
         form_Data.append("prepare_by_first_line", this.prepare_by_first_line);
         form_Data.append("prepare_by_second_line", this.prepare_by_second_line);
+        form_Data.append("prepare_by_third_line", this.prepare_by_third_line);
     
   
         if(this.id == 0) {
@@ -3497,6 +3505,7 @@ Installation:`;
         form_Data.append("prepare_for_third_line", this.prepare_for_third_line);
         form_Data.append("prepare_by_first_line", this.prepare_by_first_line);
         form_Data.append("prepare_by_second_line", this.prepare_by_second_line);
+        form_Data.append("prepare_by_third_line", this.prepare_by_third_line);
 
         form_Data.append("footer_first_line", this.footer_first_line);
         form_Data.append("footer_second_line", this.footer_second_line);

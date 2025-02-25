@@ -22,6 +22,7 @@ var app = new Vue({
       show_total: false,
       show_term: false,
       show_payment_term: false,
+      show_slogan: false,
       show_signature: false,
 
       // header
@@ -37,6 +38,7 @@ var app = new Vue({
 
       prepare_by_first_line : '',
       prepare_by_second_line : '',
+      prepare_by_third_line : '',
 
       // _header
       temp_first_line : '',
@@ -51,6 +53,7 @@ var app = new Vue({
 
       temp_prepare_by_first_line : '',
       temp_prepare_by_second_line : '',
+      temp_prepare_by_third_line : '',
 
       // footer
       footer_first_line : '',
@@ -130,6 +133,13 @@ var app = new Vue({
       {
         page: 0,
         item: [],
+      },
+
+      slogan:
+      {
+        id:0,
+        page: 0,
+        border: '',
       },
 
       payment_term:
@@ -351,6 +361,7 @@ var app = new Vue({
           this.show_total = false;
           this.show_term = false;
           this.show_payment_term = false;
+          this.show_slogan = false;
           this.show_signature = false;
         }
       },
@@ -363,6 +374,7 @@ var app = new Vue({
           this.show_total = false;
           this.show_term = false;
           this.show_payment_term = false;
+          this.show_slogan = false;
           this.show_signature = false;
           this.show_access = false;
         }
@@ -376,6 +388,7 @@ var app = new Vue({
           this.show_total = false;
           this.show_term = false;
           this.show_payment_term = false;
+          this.show_slogan = false;
           this.show_signature = false;
           this.show_access = false;
         }
@@ -389,6 +402,7 @@ var app = new Vue({
           this.show_total = false;
           this.show_term = false;
           this.show_payment_term = false;
+          this.show_slogan = false;
           this.show_signature = false;
           this.show_access = false;
         }
@@ -401,6 +415,7 @@ var app = new Vue({
           this.show_header = false;
           this.show_total = false;
           this.show_term = false;
+          this.show_slogan = false;
           this.show_signature = false;
           this.show_access = false;
         }
@@ -414,6 +429,7 @@ var app = new Vue({
           this.show_header = false;
           this.show_term = false;
           this.show_payment_term = false;
+          this.show_slogan = false;
           this.show_signature = false;
           this.show_access = false;
         }
@@ -427,6 +443,7 @@ var app = new Vue({
           this.show_total = false;
           this.show_header = false;
           this.show_payment_term = false;
+          this.show_slogan = false;
           this.show_signature = false;
           this.show_access = false;
         }
@@ -440,6 +457,7 @@ var app = new Vue({
           this.show_total = false;
           this.show_header = false;
           this.show_term = false;
+          this.show_slogan = false;
           this.show_signature = false;
           this.show_access = false;
         }
@@ -453,9 +471,24 @@ var app = new Vue({
           this.show_total = false;
           this.show_term = false;
           this.show_payment_term = false;
+          this.show_slogan = false;
           this.show_header = false;
           this.show_access = false;
         }
+      },
+
+        show_slogan() {
+          if(this.show_slogan) {
+            this.show_footer = false;
+            this.show_page = false;
+            this.show_subtotal = false;
+            this.show_total = false;
+            this.show_term = false;
+            this.show_payment_term = false;
+            this.show_header = false;
+            this.show_signature = false;
+            this.show_access = false;
+          }
       },
       
       department() {
@@ -1832,6 +1865,59 @@ var app = new Vue({
       
       },
 
+      save_slogan: async function() {
+        if (this.submit == true) return;
+
+        this.submit = true;
+  
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+        let _this = this;
+  
+        form_Data.append("jwt", token);
+ 
+        form_Data.append("quotation_id", this.id);
+        form_Data.append("page", this.slogan.page);
+        form_Data.append("border", this.slogan.border);
+
+        try {
+          let res = await axios({
+            method: 'post',
+            url: 'api/quotation_slogan_insert',
+            data: form_Data,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+
+          if(res.status == 200){
+            // test for status you want, etc
+   
+            _this.submit = false;
+
+            Swal.fire({
+              html: res.data.message,
+              icon: "info",
+              confirmButtonText: "OK",
+            });
+        } 
+          
+        } catch (err) {
+          console.log(err)
+          Swal.fire({
+            text: err,
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+
+            _this.submit = false;
+        }
+
+        await this.reload();
+  
+      
+      },
+
       
       payment_term_save: async function() {
         if (this.submit == true) return;
@@ -1895,6 +1981,10 @@ var app = new Vue({
       close_payment_term() {
         this.show_payment_term = false;
 
+      },
+
+      close_slogan() {
+        this.show_slogan = false;
       },
 
       term_item_del: function(fromIndex) {
@@ -2745,6 +2835,7 @@ Installation:`;
 
         this.prepare_by_first_line = this.temp_prepare_by_first_line;
         this.prepare_by_second_line = this.temp_prepare_by_second_line;
+        this.prepare_by_third_line = this.temp_prepare_by_third_line;
 
         await this.header_save();
         this.show_header = false;
@@ -2791,6 +2882,7 @@ Installation:`;
 
         this.prepare_by_first_line = '';
         this.prepare_by_second_line = '';
+        this.prepare_by_third_line = '';
 
         // footer
         this.footer_first_line = '';
@@ -2809,6 +2901,7 @@ Installation:`;
 
         this.temp_prepare_by_first_line = '';
         this.temp_prepare_by_second_line = '';
+        this.temp_prepare_by_third_line = '';
 
         // _footer
         this.temp_footer_first_line = '';
@@ -2886,6 +2979,7 @@ Installation:`;
 
               _this.prepare_by_first_line = _this.receive_records[0].prepare_by_first_line;
               _this.prepare_by_second_line = _this.receive_records[0].prepare_by_second_line;
+              _this.prepare_by_third_line = _this.receive_records[0].prepare_by_third_line;
 
               // footer
               _this.footer_first_line = _this.receive_records[0].footer_first_line;
@@ -2914,6 +3008,22 @@ Installation:`;
               // term
               _this.term = _this.receive_records[0].term_info;
 
+              // slogan
+              if(_this.receive_records[0].slogan_info != null)
+              {
+                if(_this.receive_records[0].slogan_info.item.length > 0)
+                {
+                  _this.slogan.id = _this.receive_records[0].slogan_info.item[0].id;
+                  _this.slogan.page = _this.receive_records[0].slogan_info.item[0].page;
+                  _this.slogan.border = _this.receive_records[0].slogan_info.item[0].border;
+                }
+                else
+                  _this.slogan = {id:0, page:0, border:''};
+              }
+              else
+                _this.slogan = {id:0, page:0, border:''};
+
+
               // term
               _this.payment_term = _this.receive_records[0].payment_term_info;
 
@@ -2937,6 +3047,7 @@ Installation:`;
 
               _this.temp_prepare_by_first_line = _this.receive_records[0].prepare_by_first_line;
               _this.temp_prepare_by_second_line = _this.receive_records[0].prepare_by_second_line;
+              _this.temp_prepare_by_third_line = _this.receive_records[0].prepare_by_third_line;
 
               // footer
               _this.temp_footer_first_line = _this.receive_records[0].footer_first_line;
@@ -2994,6 +3105,7 @@ Installation:`;
           "page" : order + 1,
           "sig" : sig,
           "term" : [],
+          "slogan" : [],
           "payment_term" : [],
           "total" : [],
           "types" : types,
@@ -3189,6 +3301,7 @@ Installation:`;
         form_Data.append("prepare_for_third_line", this.prepare_for_third_line);
         form_Data.append("prepare_by_first_line", this.prepare_by_first_line);
         form_Data.append("prepare_by_second_line", this.prepare_by_second_line);
+        form_Data.append("prepare_by_third_line", this.prepare_by_third_line);
     
   
         if(this.id == 0) {
@@ -3591,6 +3704,7 @@ Installation:`;
         form_Data.append("prepare_for_third_line", this.prepare_for_third_line);
         form_Data.append("prepare_by_first_line", this.prepare_by_first_line);
         form_Data.append("prepare_by_second_line", this.prepare_by_second_line);
+        form_Data.append("prepare_by_third_line", this.prepare_by_third_line);
 
         form_Data.append("footer_first_line", this.footer_first_line);
         form_Data.append("footer_second_line", this.footer_second_line);
@@ -3716,6 +3830,7 @@ Installation:`;
         this.show_total = false;
         this.show_term = false;
         this.show_payment_term = false;
+        this.show_slogan = false;
         this.show_header = false;
         console.log("close all");
       },

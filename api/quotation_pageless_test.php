@@ -45,6 +45,7 @@ use \Firebase\JWT\JWT;
                     prepare_for_third_line,
                     prepare_by_first_line,
                     prepare_by_second_line,
+                    prepare_by_third_line,
                     footer_first_line,
                     footer_second_line,
                     pixa_s,
@@ -95,6 +96,7 @@ use \Firebase\JWT\JWT;
         $prepare_for_third_line = $row['prepare_for_third_line'];
         $prepare_by_first_line = $row['prepare_by_first_line'];
         $prepare_by_second_line = $row['prepare_by_second_line'];
+        $prepare_by_third_line = $row['prepare_by_third_line'];
         $footer_first_line = $row['footer_first_line'];
         $footer_second_line = $row['footer_second_line'];
 
@@ -111,6 +113,7 @@ use \Firebase\JWT\JWT;
         $block_names = GetBlockNames($row['id'], $db);
         $total_info = GetTotalInfo($row['id'], $db);
         $term_info = GetTermInfo($row['id'], $db);
+        $slogan_info = GetSloganInfo($row['id'], $db);
         $payment_term_info = GetPaymentTermInfo($row['id'], $db);
         $sig_info = GetSigInfo($row['id'], $db);
 
@@ -145,6 +148,7 @@ use \Firebase\JWT\JWT;
             "prepare_for_third_line" => $prepare_for_third_line,
             "prepare_by_first_line" => $prepare_by_first_line,
             "prepare_by_second_line" => $prepare_by_second_line,
+            "prepare_by_third_line" => $prepare_by_third_line,
             "footer_first_line" => $footer_first_line,
             "footer_second_line" => $footer_second_line,
 
@@ -161,6 +165,7 @@ use \Firebase\JWT\JWT;
             "total_info" => $total_info,
             "term_info" => $term_info,
             "payment_term_info" => $payment_term_info,
+            "slogan_info" => $slogan_info,
             "sig_info" => $sig_info,
             "subtotal_info" => $subtotal_info,
          
@@ -516,6 +521,7 @@ function GetPages($qid, $db){
         $type = GetTypes($id, $db);
         $total = GetTotal($qid, $page, $db);
         $term = GetTerm($qid, $page, $db);
+        $slogan = GetSlogan($qid, $page, $db);
         $payment_term = GetPaymentTerm($qid, $page, $db);
         $sig = GetSig($qid, $page, $db);
   
@@ -525,6 +531,7 @@ function GetPages($qid, $db){
             "types" => $type,
             "total" => $total,
             "term" => $term,
+            "slogan" => $slogan,
             "payment_term" => $payment_term,
             "sig" => $sig,
         );
@@ -615,6 +622,38 @@ function GetTerm($qid, $page, $db){
             "brief" => $brief,
             "list" => $list,
           
+        );
+    }
+
+    return $merged_results;
+}
+
+function GetSlogan($qid, $page, $db){
+    $query = "
+        SELECT 
+        `page`,
+        border
+        FROM   quotation_slogan
+        WHERE  quotation_id = " . $qid . "
+ 
+        AND `status` <> -1 
+        ORDER BY id
+    ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $merged_results = [];
+    
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $page = $row['page'];
+        $border = $row['border'];
+
+        $merged_results[] = array(
+            "page" => $page,
+            "border" => $border,
         );
     }
 
@@ -895,6 +934,54 @@ function GetTermInfo($qid, $db)
     return $merged_results;
 }
 
+function GetSloganInfo($qid, $db)
+{
+    $query = "
+        SELECT 
+        id,
+        `page`,
+        border
+        FROM   quotation_slogan
+        WHERE  quotation_id = " . $qid . "
+        AND `status` <> -1 
+        ORDER BY id
+    ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $item = [];
+
+    $merged_results = [];
+    
+    $id = 0;
+    $page = 0;
+    $border = '';
+
+  
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $id = $row['id'];
+        $page = $row['page'];
+        $border = $row['border'];
+       
+        $item[] = array(
+            "id" => $id,
+            "page" => $page,
+            "border" => $border,
+          
+        );
+        
+    }
+
+    $merged_results = array(
+        "page" => $page,
+        "item" => $item,
+    );
+
+    return $merged_results;
+}
+
 
 function GetPaymentTermInfo($qid, $db)
 {
@@ -921,8 +1008,8 @@ function GetPaymentTermInfo($qid, $db)
     
     $id = 0;
     $page = 0;
-    $payment_method = 'Cash; Cheque; Credit Card; Bank Wiring;';
-    $brief = '50% Downpayment & another 50% balance a day before the delivery';
+    $payment_method = 'Cash; Cheque; Credit Card; Bank Wiring; GCash';
+    $brief = '50% Down payment upon order confirmation, 50% Balance upon delivery';
     $list = '[{"id":"0", "bank_name": "BDO", "first_line":"Acct. Name: Feliix Inc. Acct no: 006910116614", "second_line":"Branch: V.A Rufino", "third_line":""}, {"id":"1", "bank_name": "SECURITY BANK", "first_line":"Acct. Name: Feliix Inc. Acct no: 0000018155245", "second_line":"Swift code: SETCPHMM", "third_line":"Address: 512 Edsa near Corner Urbano Plata St., Caloocan City"}]';
 
     $item = json_decode($list, TRUE); 
@@ -1475,18 +1562,20 @@ function GetProductMain($id, $db){
                 $order_info = getOrderInfo($product[$i]['last_order'], $db);
                 $url = "";
 
-                if($order_info["order_type"] == "taiwan")
-                    $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $product[$i]['last_order'];
-                
-                if($order_info["order_type"] == "mockup")
-                    $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $product[$i]['last_order'];
-                
-                if($order_info["order_type"] == "sample")
-                    $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $product[$i]['last_order'];
-                
-                if($order_info["order_type"] == "stock")
-                    $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $product[$i]['last_order'];
-
+                if(isset($order_info["order_type"]))
+                {
+                    if($order_info["order_type"] == "taiwan")
+                        $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $product[$i]['last_order'];
+                    
+                    if($order_info["order_type"] == "mockup")
+                        $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $product[$i]['last_order'];
+                    
+                    if($order_info["order_type"] == "sample")
+                        $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $product[$i]['last_order'];
+                    
+                    if($order_info["order_type"] == "stock")
+                        $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $product[$i]['last_order'];
+                }
 
                 $params = str_replace("=>", " = ", $product[$i]['1st_variation']);
                 if($product[$i]['2rd_variation'] != "=>")
@@ -1508,17 +1597,20 @@ function GetProductMain($id, $db){
             $order_info = getOrderInfo($last_order, $db);
             $url = "";
 
-            if($order_info["order_type"] == "taiwan")
-                $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
-            
-            if($order_info["order_type"] == "mockup")
-                $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
-            
-            if($order_info["order_type"] == "sample")
-                $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
-            
-            if($order_info["order_type"] == "stock")
-                $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
+            if(isset($order_info["order_type"]))
+            {
+                if($order_info["order_type"] == "taiwan")
+                    $url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
+                
+                if($order_info["order_type"] == "mockup")
+                    $url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
+                
+                if($order_info["order_type"] == "sample")
+                    $url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
+                
+                if($order_info["order_type"] == "stock")
+                    $url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
+            }
 
             $last_order_url = $url;
 
@@ -1601,17 +1693,20 @@ function GetProduct($id, $db){
                 $order_info = getOrderInfo($last_order, $db);
                 $last_order_url = "";
     
-                if($order_info["order_type"] == "taiwan")
-                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
-                
-                if($order_info["order_type"] == "mockup")
-                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
-                
-                if($order_info["order_type"] == "sample")
-                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
-                
-                if($order_info["order_type"] == "stock")
-                    $last_order_url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
+                if(isset($order_info["order_type"]))
+                {
+                    if($order_info["order_type"] == "taiwan")
+                        $last_order_url = "https://feliix.myvnc.com/order_taiwan_p4?id=" . $last_order;
+                    
+                    if($order_info["order_type"] == "mockup")
+                        $last_order_url = "https://feliix.myvnc.com/order_taiwan_mockup_p4?id=" . $last_order;
+                    
+                    if($order_info["order_type"] == "sample")
+                        $last_order_url = "https://feliix.myvnc.com/order_taiwan_sample_p4?id=" . $last_order;
+                    
+                    if($order_info["order_type"] == "stock")
+                        $last_order_url = "https://feliix.myvnc.com/order_taiwan_stock_p4?id=" . $last_order;
+                }
             }
             else
             {
