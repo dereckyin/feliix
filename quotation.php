@@ -658,6 +658,7 @@ header( 'location:index' );
             width: 69.30%;
             float: left;
             padding-left: 57.14px;
+            padding-right: 57.14px;
         }
                 
         .qn_header .left_block .qn_title {
@@ -677,7 +678,7 @@ header( 'location:index' );
             width: 100%;
         }
 
-        .qn_header .left_block .qn_by {
+        .qn_header .left_block .qn_for {
             font-size: 20px;
             font-weight: 700;
             height: 84.32x;
@@ -686,13 +687,13 @@ header( 'location:index' );
             line-height: 1.2;
         }
 
-        .qn_header .left_block .qn_by > div {
+        .qn_header .left_block .qn_for > div {
             width: 100%;
             overflow: hidden;
             height: 21.42px;
         }
 
-        .qn_header .left_block .qn_for {
+        .qn_header .left_block .qn_by {
             font-size: 20px;
             font-weight: 700;
             height: 84.32px;
@@ -701,7 +702,7 @@ header( 'location:index' );
             line-height: 1.2;
         }
 
-        .qn_header .left_block .qn_for > div {
+        .qn_header .left_block .qn_by > div {
             width: 100%;
             overflow: hidden;
             height: 21.42px;
@@ -728,7 +729,7 @@ header( 'location:index' );
         }
 
         .qn_header .right_block .qn_number_date {
-            margin-top: 24.47px;
+            margin-top: 10px;
             height: 84.32px;
             font-size: 20px;
             font-weight: 500;
@@ -3539,23 +3540,23 @@ header( 'location:index' );
 
                     <div class="qn_title">
                         <div class="line1 font_B">{{ first_line }}</div>
-                        <div class="line2 font_B" style="margin-top: 3px;">{{ second_line }}</div>
+                        <div class="line2 font_B" style="margin-top: -15px;">{{ second_line }}</div>
                     </div>
 
                     <div class="qn_by_for">
-
-                        <div class="qn_by font_B">
-                            Prepared by:<br>
-                            <div class="line1 font_B">{{ prepare_by_first_line }}</div>
-                            <div class="line2 font_B">{{ prepare_by_second_line }}</div>
-                            <div class="line3 font_B">{{ prepare_by_third_line }}</div>
-                        </div>
 
                         <div class="qn_for font_B">
                             Prepared for:<br>
                             <div class="line1 font_B">{{ prepare_for_first_line }}</div>
                             <div class="line2 font_B">{{ prepare_for_second_line }}</div>
                             <div class="line3 font_B">{{ prepare_for_third_line }}</div>
+                        </div>
+
+                        <div class="qn_by font_B">
+                            Prepared by:<br>
+                            <div class="line1 font_B">{{ prepare_by_first_line }}</div>
+                            <div class="line2 font_B">{{ prepare_by_second_line }}</div>
+                            <div class="line3 font_B">{{ prepare_by_third_line }}</div>
                         </div>
 
                     </div>
