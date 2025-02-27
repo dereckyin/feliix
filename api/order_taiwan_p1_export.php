@@ -676,6 +676,8 @@ if($jwt){
             $sheet->getRowDimension($i)->setRowHeight(109.8);
 
             $short_brand = "";
+            if(strtoupper($brand) == 'AIDIMMING')
+                $short_brand = "AD";
             if(strtoupper($brand) == 'COLORS')
                 $short_brand = "CL";
             if(strtoupper($brand) == 'DANCELIGHT')
@@ -684,6 +686,8 @@ if($jwt){
                 $short_brand = "ET";
             if(strtoupper($brand) == 'EVERLIGHT')
                 $short_brand = "EL";
+            if(strtoupper($brand) == 'EUCHIPS')
+                $short_brand = "EC";
             if(strtoupper($brand) == 'GAMMA')
                 $short_brand = "GM";
             if(strtoupper($brand) == 'GENTECH')
@@ -694,6 +698,8 @@ if($jwt){
                 $short_brand = "HG";
             if(strtoupper($brand) == 'LEDOUX')
                 $short_brand = "LD";
+            if(strtoupper($brand) == 'MODERN')
+                $short_brand = "MD";
             if(strtoupper($brand) == 'ROOSTER')
                 $short_brand = "RT";
             if(strtoupper($brand) == 'SASUGAS')
