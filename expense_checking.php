@@ -457,7 +457,9 @@ function EditListing() {
                                 <select style="width:100%" v-model="record.info_remark">
                                     <option value=""></option>
                                     <option value="Cash">Cash</option>
+                                    <option value="GCash">GCash</option>
                                     <option value="Check">Check</option>
+                                    <option value="DigiBanker">DigiBanker</option>
                                     <option value="Other">Other</option>
                                 </select>
 
