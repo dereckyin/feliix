@@ -36,7 +36,7 @@ $test_manager = "1";
 }
 
 //  ('Kuan', 'Dennis Lin', 'dereck', 'Ariel Lin', 'Kristel Tan');
-if($user_id == 48 || $user_id == 2 || $user_id == 11 || $user_id == 6 ||  $user_id == 1 || $user_id == 3 || $user_id == 89 || $user_id == 129 || $user_id == 137 || $user_id == 138 || $user_id == 148 || $user_id == 191)
+if($user_id == 48 || $user_id == 2 || $user_id == 11 || $user_id == 6 ||  $user_id == 1 || $user_id == 3 || $user_id == 89 || $user_id == 129 || $user_id == 137 || $user_id == 138 || $user_id == 148 || $user_id == 191 || $user_id == 195)
 $test_manager = "1";
 
 $database = new Database();
@@ -3603,7 +3603,7 @@ header( 'location:index' );
                                     <div class="line3 font_B">{{ prepare_for_third_line }}</div>
                                 </div>
 
-                                <div class="qn_by font_B">
+                                <div class="qn_by font_B" v-if="prepare_by_first_line != '' || prepare_by_second_line != '' || prepare_by_third_line != ''">
                                     Prepared by:<br>
                                     <div class="line1 font_B">{{ prepare_by_first_line }}</div>
                                     <div class="line2 font_B">{{ prepare_by_second_line }}</div>
