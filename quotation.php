@@ -3552,7 +3552,7 @@ header( 'location:index' );
                             <div class="line3 font_B">{{ prepare_for_third_line }}</div>
                         </div>
 
-                        <div class="qn_by font_B">
+                        <div class="qn_by font_B" v-if="prepare_by_first_line != '' || prepare_by_second_line != '' || prepare_by_third_line != ''">
                             Prepared by:<br>
                             <div class="line1 font_B">{{ prepare_by_first_line }}</div>
                             <div class="line2 font_B">{{ prepare_by_second_line }}</div>
