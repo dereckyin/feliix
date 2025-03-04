@@ -224,6 +224,10 @@ else
 
                 $product = GetProduct($id, $db, $currency);
 
+                $product_ics = GetAttachment($id, 'product_ics', $db);
+                $product_skp = GetAttachment($id, 'product_skp', $db);
+                $product_manual = GetAttachment($id, 'product_manual', $db);
+
                 $phased_out_cnt = 0;
                 $phased_out_text = [];
 
@@ -801,6 +805,10 @@ else
 
                                     "last_order_url" => "",
                                     "last_have_spec" => true,
+
+                                    "product_ics" => $product_ics,
+                                    "product_skp" => $product_skp,
+                                    "product_manual" => $product_manual,
             );
             }
 
@@ -1471,6 +1479,11 @@ function GetProductSet($id, $qty, $db){
 
 
                 $product = GetProduct($id, $db, $currency);
+
+                $product_ics = GetAttachment($id, 'product_ics', $db);
+                $product_skp = GetAttachment($id, 'product_skp', $db);
+                $product_manual = GetAttachment($id, 'product_manual', $db);
+
                 $phased_out_cnt = 0;
                 $phased_out_text = [];
                 $phased_out_text1 = [];
@@ -2047,6 +2060,9 @@ function GetProductSet($id, $qty, $db){
                                     "last_order_url" => "",
                                     "last_have_spec" => true,
 
+                                   "product_ics" => $product_ics,
+                                    "product_skp" => $product_skp,
+                                    "product_manual" => $product_manual,
             );
             }
 
@@ -2076,4 +2092,23 @@ function formatPrice($price) {
         return number_format($price, 2); // Two decimal places for float values
     }
 }
+
+function GetAttachment($_id, $batch_type, $db)
+{
+    $sql = "select id, 1 is_checked, COALESCE(h.filename, '') filename, COALESCE(h.gcp_name, '') gcp_name
+            from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = '" . $batch_type . "'
+            order by h.created_at ";
+
+    $merged_results = array();
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = $row;
+    }
+
+    return $merged_results;
+}
+
 ?>
