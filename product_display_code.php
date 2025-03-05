@@ -783,21 +783,21 @@
 
                     <!-- 如果當前產品是 Lighting 產品，而且該產品有上傳 IES 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
                     <p class="supporting_attachment" v-if="set.product_ics.length > 0">IES File:
-                        <span v-for="(item, index) in product_ics">
+                        <span v-for="(item, index) in set.product_ics">
                             <a :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
                         </span>
                     </p>
 
                     <!-- 如果當前產品是 Office 產品，而且該產品有上傳 SketchUp 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
-                    <p class="supporting_attachment" v-if="product_skp.length > 0">SketchUp File:
-                        <span v-for="(item, index) in product_skp">
+                    <p class="supporting_attachment" v-if="set.product_skp.length > 0">SketchUp File:
+                        <span v-for="(item, index) in set.product_skp">
                             <a :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
                         </span>
                     </p>
 
                     <!-- 無論當前產品是 Lighting 或 Office 產品，只要該產品有上傳 Supporting Attachment 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
-                    <p class="supporting_attachment" v-if="product_manual.length > 0">Supporting Attachment:
-                        <span v-for="(item, index) in product_manual">
+                    <p class="supporting_attachment" v-if="set.product_manual.length > 0">Supporting Attachment:
+                        <span v-for="(item, index) in set.product_manual">
                             <a :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
                         </span>
                     </p>
