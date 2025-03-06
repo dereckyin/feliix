@@ -1477,6 +1477,35 @@ header( 'location:index' );
             border-radius: 10px;
         }
 
+        #modal_product_catalog tbody td ul.supporting_attachment {
+            margin-top: 2px;
+        }
+
+        #modal_product_catalog tbody td ul.supporting_attachment li:nth-of-type(1) {
+            padding: 1px 0;
+        }
+
+        #modal_product_catalog tbody td ul.supporting_attachment span {
+            background-color: orange;
+            color: #fff;
+            font-size: 14px;
+            display: inline-block;
+            font-weight: 600;
+            border-radius: 5px;
+            margin: 3px 0px;
+            padding: 1px 15px 2px;
+            cursor: pointer;
+            border: none;
+        }
+
+        #modal_product_catalog tbody td ul.supporting_attachment span + span {
+            margin-left: 5px;
+        }
+
+        #modal_product_catalog tbody td ul.supporting_attachment li ~ li {
+            padding-left: 5px;
+        }
+
         #modal_product_catalog tbody td ul.last_order_history button {
             font-size: 14px;
             font-weight: 500;
@@ -2311,6 +2340,12 @@ header( 'location:index' );
 
                                         </ul>
 
+                                        <ul class="supporting_attachment">
+                                <li><span v-if="set.product_ics.length > 0">IES File</span></li>
+                                <li><span v-if="set.product_skp.length > 0">SketchUp File</span></li>
+                                <li><span v-if="set.product_manual.length > 0">Supporting File</span></li>
+                            </ul>
+
                                         <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
                                         <ul class="last_order_history" v-if="set.is_last_order != ''">
                                             <li>
@@ -2443,6 +2478,12 @@ header( 'location:index' );
                                         {{ item.updated_at }}
                                     </li>
                                 </ul>
+
+                                <ul class="supporting_attachment">
+                                <li><span v-if="item.product_ics.length > 0">IES File</span></li>
+                                <li><span v-if="item.product_skp.length > 0">SketchUp File</span></li>
+                                <li><span v-if="item.product_manual.length > 0">Supporting File</span></li>
+                            </ul>
 
                                 <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
                                 <ul class="last_order_history"  v-if="item.is_last_order != ''">

@@ -616,7 +616,7 @@
                         <li><b>Notes</b></li>
                         <li><textarea style="width:100%" v-model="notes"></textarea></li>
 
-                        <li><b>Supporting Attachments (Like Purchasing Receipt)</b></li>
+                        <li><b>Supporting Files (Like Purchasing Receipt)</b></li>
                         <li>
                             <input type="file" ref="file" name="file[]" multiple style="width:100%">
 
@@ -711,7 +711,7 @@
                         <li>{{ notes }}</li>
                     </ul>
                     <ul class="head">
-                        <li>PHASE 1: Checker Creates Item List and Encodes Replenished Qty<br>Supporting Attachments</li>
+                        <li>PHASE 1: Checker Creates Item List and Encodes Replenished Qty<br>Supporting Files</li>
                         <li>
                             <a v-for='(item, index) in record.attachment' :key="index" :href="baseURL + item.gcp_name" target="_blank">{{item.filename}}</a>
                         </li>
@@ -817,7 +817,7 @@
                         <li>{{ notes }}</li>
                     </ul>
                     <ul class="head">
-                        <li>PHASE 1: Checker Creates Item List and Encodes Replenished Qty<br>Supporting Attachments</li>
+                        <li>PHASE 1: Checker Creates Item List and Encodes Replenished Qty<br>Supporting Files</li>
                         <li>
                             <a v-for='(item, index) in record.attachment' :key="index" :href="baseURL + item.gcp_name" target="_blank">{{item.filename}}</a>
                         </li>

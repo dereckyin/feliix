@@ -1070,7 +1070,7 @@ try {
 
             <ul>
                 <li>
-                    Manual / Supporting Attachment
+                    Manual / Supporting File
                 </li>
                 <li class="additional_file">
                     <input class="one_third" type="file" ref="file_manual" name="file_manual[]" multiple @change="check_manual($event)">

@@ -363,6 +363,35 @@ try {
             color: #007bff;
         }
 
+        #tb_product_list tbody td ul.supporting_attachment {
+            margin-top: 2px;
+        }
+
+        #tb_product_list tbody td ul.supporting_attachment li:nth-of-type(1) {
+            padding: 1px 0;
+        }
+
+        #tb_product_list tbody td ul.supporting_attachment span {
+            background-color: orange;
+            color: #fff;
+            font-size: 14px;
+            display: inline-block;
+            font-weight: 600;
+            border-radius: 5px;
+            margin: 3px 0px;
+            padding: 1px 15px 2px;
+            cursor: pointer;
+            border: none;
+        }
+
+        #tb_product_list tbody td ul.supporting_attachment span + span {
+            margin-left: 5px;
+        }
+
+        #tb_product_list tbody td ul.supporting_attachment li ~ li {
+            padding-left: 5px;
+        }
+
         #tb_product_list tbody td ul.last_order_history button {
             font-size: 14px;
             font-weight: 500;
@@ -923,6 +952,17 @@ try {
 
                             </ul>
 
+                            <!-- 如果當前產品是 Lighting 產品，而且該產品有上傳 IES 檔案，則下面的結構中就要把 IES 的 span 建立出來，如果該產品有 上傳 Supporting File 檔案，則下面的結構中就要把 Supporting File 的 span 建立出來
+                                 如果當前產品是 Office 產品，而且該產品有上傳 SketchUp 檔案，則下面的結構中就要把 SketchUp 的 span 建立出來，如果該產品有 上傳 Supporting File 檔案，則下面的結構中就要把 Supporting File 的 span 建立出來 -->
+                            <ul class="supporting_attachment">
+                                <li></li>
+                                <li>
+                                    <span v-if="item.product_ics.length > 0">IES File</span>
+                                    <span v-if="item.product_skp.length > 0">SketchUp File</span>
+                                    <span v-if="item.product_manual.length > 0">Supporting File</span>
+                                </li>
+                            </ul>
+
                             <div class="product_set_desc">
                                 Description:
                                 <div>{{ item.description }}</div>
@@ -1030,6 +1070,17 @@ try {
                                     {{ set.updated_name !== null ? set.updated_at : '' }} {{ set.updated_name !== null ? '(' + set.updated_name + ')' : '' }}
                                 </li>
 
+                            </ul>
+
+                            <!-- 如果當前產品是 Lighting 產品，而且該產品有上傳 IES 檔案，則下面的結構中就要把 IES 的 span 建立出來，如果該產品有 上傳 Supporting File 檔案，則下面的結構中就要把 Supporting File 的 span 建立出來
+                                 如果當前產品是 Office 產品，而且該產品有上傳 SketchUp 檔案，則下面的結構中就要把 SketchUp 的 span 建立出來，如果該產品有 上傳 Supporting File 檔案，則下面的結構中就要把 Supporting File 的 span 建立出來 -->
+                            <ul class="supporting_attachment">
+                                <li></li>
+                                <li>
+                                    <span v-if="set.product_ics.length > 0">IES File</span>
+                                    <span v-if="set.product_skp.length > 0">SketchUp File</span>
+                                    <span v-if="set.product_manual.length > 0">Supporting File</span>
+                                </li>
                             </ul>
 
                             <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
@@ -1174,6 +1225,12 @@ try {
                                     {{ item.updated_name !== null ? item.updated_at : '' }} {{ item.updated_name !== null ? '(' + item.updated_name + ')' : '' }}
                                 </li>
 
+                            </ul>
+
+                            <ul class="supporting_attachment">
+                                <li><span v-if="item.product_ics.length > 0">IES File</span></li>
+                                <li><span v-if="item.product_skp.length > 0">SketchUp File</span></li>
+                                <li><span v-if="item.product_manual.length > 0">Supporting File</span></li>
                             </ul>
 
                             <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->

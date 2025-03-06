@@ -413,6 +413,20 @@
             margin-right: 10px;
         }
 
+        .lower_section .desc_imgbox img:nth-of-type(odd) {
+            margin-right: 10px;
+        }
+
+        .lower_section p.supporting_attachment {
+            font-weight: 500;
+        }
+
+        .lower_section p.supporting_attachment span a.attch {
+            color: var(--fth05);
+            transition: .3s;
+            margin: 0 15px 0 0;
+            font-size: 15px;
+        }
 
         .row.custom {
             margin: 5px 0 0 0;
@@ -761,11 +775,33 @@
                 </div>
 
 
-                <div class="lower_section" v-if="(set.notes != null && set.notes != '') || set.description != ''">
+                <div class="lower_section" v-if="(set.notes != null && set.notes != '') || set.description != '' || set.product_ics.length > 0 || set.product_skp.length > 0 || set.product_manual.length > 0">
                     <h5>Description</h5>
                     <p style="white-space: break-spaces;">{{ set.description }}</p>
 
                     <p v-if="set.notes != null && set.notes != ''">Notes: {{ set.notes }}</p>
+
+                    <!-- 如果當前產品是 Lighting 產品，而且該產品有上傳 IES 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
+                    <p class="supporting_attachment" v-if="set.product_ics.length > 0">IES File:
+                        <span v-for="(item, index) in set.product_ics">
+                            <a :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
+                        </span>
+                    </p>
+
+                    <!-- 如果當前產品是 Office 產品，而且該產品有上傳 SketchUp 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
+                    <p class="supporting_attachment" v-if="set.product_skp.length > 0">SketchUp File:
+                        <span v-for="(item, index) in set.product_skp">
+                            <a :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
+                        </span>
+                    </p>
+
+                    <!-- 無論當前產品是 Lighting 或 Office 產品，只要該產品有上傳 Supporting File 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
+                    <p class="supporting_attachment" v-if="set.product_manual.length > 0">Supporting File:
+                        <span v-for="(item, index) in set.product_manual">
+                            <a :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
+                        </span>
+                    </p>
+
 
                     <!--
                     <div class="desc_imgbox">
@@ -979,11 +1015,32 @@
             </div>
         </div>
 
-        <div class="lower_section" v-if="((notes != null && notes != '') || description != '') && sub_category != '10020000'">
+        <div class="lower_section" v-if="((notes != null && notes != '') || description != '' || product_ics.length > 0 || product_skp.length > 0 || product_manual.length > 0) && sub_category != '10020000'">
             <h5>Description</h5>
             <p style="white-space: break-spaces;">{{ description }}</p>
 
             <p v-if="notes != null && notes != ''">Notes: {{ notes }}</p>
+
+            <!-- 如果當前產品是 Lighting 產品，而且該產品有上傳 IES 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
+            <p class="supporting_attachment" v-if="product_ics.length > 0">IES File:
+                <span v-for="(item, index) in product_ics">
+                    <a :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
+                </span>
+            </p>
+
+            <!-- 如果當前產品是 Office 產品，而且該產品有上傳 SketchUp 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
+            <p class="supporting_attachment" v-if="product_skp.length > 0">SketchUp File:
+                <span v-for="(item, index) in product_skp">
+                    <a :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
+                </span>
+            </p>
+
+            <!-- 無論當前產品是 Lighting 或 Office 產品，只要該產品有上傳 Supporting File 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
+            <p class="supporting_attachment" v-if="product_manual.length > 0">Supporting File:
+                <span v-for="(item, index) in product_manual">
+                    <a :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
+                </span>
+            </p>
 
             <!--
             <div class="desc_imgbox">

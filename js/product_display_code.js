@@ -52,6 +52,11 @@ var app = new Vue({
     price_org: "",
     description: "",
     notes: "",
+
+    product_ics: [],
+    product_skp: [],
+    product_manual: [],
+
     accessory_mode: false,
     variation_mode: false,
 
@@ -574,6 +579,11 @@ var app = new Vue({
             _this.price_org = _this.record[0]['price_org'];
             _this.description = _this.record[0]['description'];
             _this.notes = _this.record[0]['notes'];
+
+            _this.product_ics = _this.record[0]['product_ics'];
+            _this.product_skp = _this.record[0]['product_skp'];
+            _this.product_manual = _this.record[0]['product_manual'];
+
             _this.accessory_mode = _this.record[0]['accessory_mode'];
             _this.variation_mode = _this.record[0]['variation_mode'];
 
