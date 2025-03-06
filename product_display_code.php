@@ -795,8 +795,8 @@
                         </span>
                     </p>
 
-                    <!-- 無論當前產品是 Lighting 或 Office 產品，只要該產品有上傳 Supporting Attachment 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
-                    <p class="supporting_attachment" v-if="set.product_manual.length > 0">Supporting Attachment:
+                    <!-- 無論當前產品是 Lighting 或 Office 產品，只要該產品有上傳 Supporting File 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
+                    <p class="supporting_attachment" v-if="set.product_manual.length > 0">Supporting File:
                         <span v-for="(item, index) in set.product_manual">
                             <a :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
                         </span>
@@ -1035,8 +1035,8 @@
                 </span>
             </p>
 
-            <!-- 無論當前產品是 Lighting 或 Office 產品，只要該產品有上傳 Supporting Attachment 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
-            <p class="supporting_attachment" v-if="product_manual.length > 0">Supporting Attachment:
+            <!-- 無論當前產品是 Lighting 或 Office 產品，只要該產品有上傳 Supporting File 檔案，則下面的 <p> 結構就要建立出來，並一一列出檔案在 <span> -->
+            <p class="supporting_attachment" v-if="product_manual.length > 0">Supporting File:
                 <span v-for="(item, index) in product_manual">
                     <a :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
                 </span>

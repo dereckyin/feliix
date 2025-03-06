@@ -952,14 +952,14 @@ try {
 
                             </ul>
 
-                            <!-- 如果當前產品是 Lighting 產品，而且該產品有上傳 IES 檔案，則下面的結構中就要把 IES 的 span 建立出來，如果該產品有 上傳 Supporting Attachment 檔案，則下面的結構中就要把 Supporting Attachment 的 span 建立出來
-                                 如果當前產品是 Office 產品，而且該產品有上傳 SketchUp 檔案，則下面的結構中就要把 SketchUp 的 span 建立出來，如果該產品有 上傳 Supporting Attachment 檔案，則下面的結構中就要把 Supporting Attachment 的 span 建立出來 -->
+                            <!-- 如果當前產品是 Lighting 產品，而且該產品有上傳 IES 檔案，則下面的結構中就要把 IES 的 span 建立出來，如果該產品有 上傳 Supporting File 檔案，則下面的結構中就要把 Supporting File 的 span 建立出來
+                                 如果當前產品是 Office 產品，而且該產品有上傳 SketchUp 檔案，則下面的結構中就要把 SketchUp 的 span 建立出來，如果該產品有 上傳 Supporting File 檔案，則下面的結構中就要把 Supporting File 的 span 建立出來 -->
                             <ul class="supporting_attachment">
                                 <li></li>
                                 <li>
                                     <span v-if="item.product_ics.length > 0">IES File</span>
                                     <span v-if="item.product_skp.length > 0">SketchUp File</span>
-                                    <span v-if="item.product_manual.length > 0">Supporting Attachment</span>
+                                    <span v-if="item.product_manual.length > 0">Supporting File</span>
                                 </li>
                             </ul>
 
@@ -1072,14 +1072,14 @@ try {
 
                             </ul>
 
-                            <!-- 如果當前產品是 Lighting 產品，而且該產品有上傳 IES 檔案，則下面的結構中就要把 IES 的 span 建立出來，如果該產品有 上傳 Supporting Attachment 檔案，則下面的結構中就要把 Supporting Attachment 的 span 建立出來
-                                 如果當前產品是 Office 產品，而且該產品有上傳 SketchUp 檔案，則下面的結構中就要把 SketchUp 的 span 建立出來，如果該產品有 上傳 Supporting Attachment 檔案，則下面的結構中就要把 Supporting Attachment 的 span 建立出來 -->
+                            <!-- 如果當前產品是 Lighting 產品，而且該產品有上傳 IES 檔案，則下面的結構中就要把 IES 的 span 建立出來，如果該產品有 上傳 Supporting File 檔案，則下面的結構中就要把 Supporting File 的 span 建立出來
+                                 如果當前產品是 Office 產品，而且該產品有上傳 SketchUp 檔案，則下面的結構中就要把 SketchUp 的 span 建立出來，如果該產品有 上傳 Supporting File 檔案，則下面的結構中就要把 Supporting File 的 span 建立出來 -->
                             <ul class="supporting_attachment">
                                 <li></li>
                                 <li>
                                     <span v-if="set.product_ics.length > 0">IES File</span>
                                     <span v-if="set.product_skp.length > 0">SketchUp File</span>
-                                    <span v-if="set.product_manual.length > 0">Supporting Attachment</span>
+                                    <span v-if="set.product_manual.length > 0">Supporting File</span>
                                 </li>
                             </ul>
 
@@ -1230,7 +1230,7 @@ try {
                             <ul class="supporting_attachment">
                                 <li><span v-if="item.product_ics.length > 0">IES File</span></li>
                                 <li><span v-if="item.product_skp.length > 0">SketchUp File</span></li>
-                                <li><span v-if="item.product_manual.length > 0">Supporting Attachment</span></li>
+                                <li><span v-if="item.product_manual.length > 0">Supporting File</span></li>
                             </ul>
 
                             <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->

@@ -3695,7 +3695,7 @@ header( 'location:index' );
                                             <li>
                                                 <span v-if="set.product_ics.length > 0">IES File</span>
                                                 <span v-if="set.product_skp.length > 0">SketchUp File</span>
-                                                <span v-if="set.product_manual.length > 0">Supporting Attachment</span>
+                                                <span v-if="set.product_manual.length > 0">Supporting File</span>
                                             </li>
                                         </ul>
 
@@ -3837,7 +3837,7 @@ header( 'location:index' );
                                 <li>
                                     <span v-if="item.product_ics.length > 0">IES File</span>
                                     <span v-if="item.product_skp.length > 0">SketchUp File</span>
-                                    <span v-if="item.product_manual.length > 0">Supporting Attachment</span>
+                                    <span v-if="item.product_manual.length > 0">Supporting File</span>
                                 </li>
                             </ul>
 
