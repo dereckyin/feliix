@@ -762,7 +762,7 @@ else
                                     "variation1_custom" => $variation1_custom,
                                     "variation2_custom" => $variation2_custom,
                                     "variation3_custom" => $variation3_custom,
-                                    "variation4_text" => $variation4_text,
+                                    "variation4_custom" => $variation4_custom,
                                     "accessory" => $accessory,
                                     "special_information" => $special_information,
                                     "accessory_information" => $accessory_information,
