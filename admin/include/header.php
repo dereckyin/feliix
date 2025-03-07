@@ -142,6 +142,24 @@ try {
             $office_inventory_approver_releaser = true;
         }
 
+        $for_user = false;
+        
+        $query = "SELECT * FROM access_control WHERE for_user LIKE '%" . $username . "%' ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $for_user = true;
+        }
+
+        $for_profile = false;
+
+        $query = "SELECT * FROM access_control WHERE for_profile LIKE '%" . $username . "%' ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $for_profile = true;
+        }
+
         $access3 = false;
         if($user_id == 1 || $user_id == 4 || $user_id == 6 || $user_id == 2 || $user_id == 41 || $user_id == 3 || $user_id == 9 || $user_id == 87 || $user_id == 99 || $user_id == 190 || $user_id == 143 || $user_id == 146 || $user_id == 154)
             $access3 = true;
@@ -504,10 +522,18 @@ try {
                 <a class="uni">Personal<br>Section</a>
                 <a class="list" href="../individual_data_sheet">Employee Data Sheet</a>
             </li>
-
+            <?php 
+            if($for_user == true || $for_profile == true)
+            {
+            ?>
             <li class="cyan01" style="border: 3px solid var(--cyan01);">
-                <a class="uni" href="user">System<br>Section</a>
+                <a class="uni">System<br>Section</a>
+                <?=($for_user == true) ? '<a class="list" href="user">User</a>' : '' ?>
+                <?=($for_profile == true) ? '<a class="list" href="user_profile">User Profile</a>' : '' ?>
             </li>
+            <?php 
+                }
+            ?>
         </ul>
         <?php
             }

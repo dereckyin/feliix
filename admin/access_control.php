@@ -764,6 +764,42 @@
 
                 </div>
 
+                <div class="box-content">
+                    <ul>
+                        <li><b>Access of user</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="for_user" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(38)">Cancel</a>
+                        <a class="btn" @click="save(38)">Save</a>
+                    </div>
+
+                </div>
+
+                <div class="box-content">
+                    <ul>
+                        <li><b>Access of user profile</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="for_profile" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(39)">Cancel</a>
+                        <a class="btn" @click="save(39)">Save</a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

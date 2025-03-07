@@ -30,7 +30,7 @@ use \Firebase\JWT\JWT;
     $limited_access = false;
 
     $access_office_item = true;
-    
+
 
 $pic_url = "man6.jpg";
 
@@ -140,6 +140,24 @@ try {
         $stmt->execute();
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $office_inventory_approver_releaser = true;
+        }
+
+        $for_user = false;
+        
+        $query = "SELECT * FROM access_control WHERE for_user LIKE '%" . $username . "%' ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $for_user = true;
+        }
+
+        $for_profile = false;
+
+        $query = "SELECT * FROM access_control WHERE for_profile LIKE '%" . $username . "%' ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $for_profile = true;
         }
 
         $access3 = false;
@@ -506,10 +524,18 @@ try {
                 <a class="uni">Personal<br>Section</a>
                 <a class="list" href="individual_data_sheet">Employee Data Sheet</a>
             </li>
-
+            <?php 
+            if($for_user == true || $for_profile == true)
+            {
+            ?>
             <li class="cyan01" style="border: 3px solid var(--cyan01);">
-                <a class="uni" href="admin/user">System<br>Section</a>
+                <a class="uni">System<br>Section</a>
+                <?=($for_user == true) ? '<a class="list" href="admin/user">User</a>' : '' ?>
+                <?=($for_profile == true) ? '<a class="list" href="admin/user_profile">User Profile</a>' : '' ?>
             </li>
+            <?php 
+                }
+            ?>
         </ul>
         <?php
             }

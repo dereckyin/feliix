@@ -49,6 +49,8 @@ var app = new Vue({
     cost_furniture: [],
     leadership_assessment: [],
     special_agreement: [],
+    for_user: [],
+    for_profile: [],
   },
 
   created() {
@@ -223,6 +225,14 @@ var app = new Vue({
                 _this.special_agreement = res.data[0]["special_agreement"].split(",").filter(function (el) {
                   return el != "";
                 });
+              if (kind === 38 || kind === undefined)
+                _this.for_user = res.data[0]["for_user"].split(",").filter(function (el) {
+                  return el != "";
+                });
+              if (kind === 39 || kind === undefined)
+                _this.for_profile = res.data[0]["for_profile"].split(",").filter(function (el) {
+                  return el != "";
+                });
 
           },
           (err) => {
@@ -305,6 +315,8 @@ var app = new Vue({
       form_Data.append("cost_furniture", this.cost_furniture);
       form_Data.append("leadership_assessment", this.leadership_assessment);
       form_Data.append("special_agreement", this.special_agreement);
+      form_Data.append("for_user", this.for_user);
+      form_Data.append("for_profile", this.for_profile);
 
       axios({
         method: "post",

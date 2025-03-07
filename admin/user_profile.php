@@ -1,8 +1,9 @@
 <?php
 $jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
 $uid = (isset($_COOKIE['uid']) ?  $_COOKIE['uid'] : null);
-if ( !isset( $jwt ) ) {
-  header( 'location:index' );
+if ($jwt === NULL || $jwt === '') {
+    setcookie("userurl", $_SERVER['REQUEST_URI']);
+    header( 'location:../index' );
 }
 
 include_once '../api/config/core.php';
@@ -10,45 +11,43 @@ include_once '../api/libs/php-jwt-master/src/BeforeValidException.php';
 include_once '../api/libs/php-jwt-master/src/ExpiredException.php';
 include_once '../api/libs/php-jwt-master/src/SignatureInvalidException.php';
 include_once '../api/libs/php-jwt-master/src/JWT.php';
-
+include_once '../api/config/database.php';
 
 use \Firebase\JWT\JWT;
 
-$access6 = false;
-
 try {
-        // decode jwt
-        try {
-            // decode jwt
-            $decoded = JWT::decode($jwt, $key, array('HS256'));
-            $user_id = $decoded->data->id;
-            $username = $decoded->data->username;
+    // decode jwt
+    $decoded = JWT::decode($jwt, $key, array('HS256'));
 
+    $user_id = $decoded->data->id;
+    $username = $decoded->data->username;
 
-            // 可以存取 user_profile 的人員名單如下：
-            if($username == "Dennis Lin" ||  $username == "Kristel Tan" ||  $username == "dereck" || $username == "Kuan" || $username == "Maria Trinidad Parco" || $username == "Gina Donato")
-            {
-                $access6 = true;
-            }
+    $position = $decoded->data->position;
+    $department = $decoded->data->department;
 
-            if($access6 == false)
-                header('location:../default');
+    if($decoded->data->limited_access == true)
+    header( 'location:../index' );
 
-        }
-        catch (Exception $e){
+    $database = new Database();
+    $db = $database->getConnection();
 
-            header('location:../index');
-        }
+    $for_profile = false;
 
-
-        //if(passport_decrypt( base64_decode($uid)) !== $decoded->data->username )
-        //    header( 'location:index.php' );
+    $query = "SELECT * FROM access_control WHERE `for_profile` LIKE '%" . $username . "%' ";
+    $stmt = $db->prepare( $query );
+    $stmt->execute();
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $for_profile = true;
     }
-    // if decode fails, it means jwt is invalid
-    catch (Exception $e){
 
+    if ($for_profile == false)
         header( 'location:../index' );
-    }
+}
+// if decode fails, it means jwt is invalid
+catch (Exception $e) {
+
+    header( 'location:../index' );
+}
 
 ?>
 
