@@ -48,6 +48,11 @@ $cost_lighting = (isset($_POST['cost_lighting']) ?  $_POST['cost_lighting'] : ''
 $cost_furniture = (isset($_POST['cost_furniture']) ?  $_POST['cost_furniture'] : '');
 $leadership_assessment = (isset($_POST['leadership_assessment']) ?  $_POST['leadership_assessment'] : '');
 $special_agreement = (isset($_POST['special_agreement']) ?  $_POST['special_agreement'] : '');
+$for_user = (isset($_POST['for_user']) ?  $_POST['for_user'] : '');
+$for_profile = (isset($_POST['for_profile']) ?  $_POST['for_profile'] : '');
+$product_edit = (isset($_POST['product_edit']) ?  $_POST['product_edit'] : '');
+$product_duplicate = (isset($_POST['product_duplicate']) ?  $_POST['product_duplicate'] : '');
+$product_delete = (isset($_POST['product_delete']) ?  $_POST['product_delete'] : '');
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -73,7 +78,13 @@ if (!isset($jwt)) {
     if ($action == 1) {
         //select all
         try {
-            $query = "SELECT payess1, payess2, payess3, salary payess4, salary_mgt payess5, salary_slip_mgt payess6, payess7, payess8, access1, access2, access3, access4, access5, access6, access7, knowledge, vote1, vote2, schedule_confirm, halfday, tag_management, soa, transmittal, edit_emp, edit_basic, office_items, office_item_approve, office_item_release, limited_access, inventory_checker, inventory_approver, frozen_office, quotation_control, cost_lighting, cost_furniture, leadership_assessment, special_agreement from access_control where id = 1";
+            $query = "SELECT payess1, payess2, payess3, salary payess4, salary_mgt payess5, salary_slip_mgt payess6, 
+                            payess7, payess8, access1, access2, access3, access4, access5, access6, access7, knowledge, 
+                            vote1, vote2, schedule_confirm, halfday, tag_management, soa, transmittal, 
+                            edit_emp, edit_basic, office_items, office_item_approve, office_item_release, limited_access, 
+                            inventory_checker, inventory_approver, frozen_office, quotation_control, cost_lighting, cost_furniture, 
+                            leadership_assessment, special_agreement, for_user, for_profile, product_edit, product_duplicate, product_delete 
+                            from access_control where id = 1";
 
             $stmt = $db->prepare($query);
             $stmt->execute();
@@ -127,7 +138,12 @@ if (!isset($jwt)) {
                             cost_lighting = :cost_lighting,
                             cost_furniture = :cost_furniture,
                             leadership_assessment = :leadership_assessment,
-                            special_agreement = :special_agreement
+                            special_agreement = :special_agreement,
+                            for_user = :for_user,
+                            for_profile = :for_profile,
+                            product_edit = :product_edit,
+                            product_duplicate = :product_duplicate,
+                            product_delete = :product_delete
                         where id = :id";
 
             // prepare the query
@@ -173,6 +189,11 @@ if (!isset($jwt)) {
             $cost_furniture = htmlspecialchars(strip_tags($cost_furniture));
             $leadership_assessment = htmlspecialchars(strip_tags($leadership_assessment));
             $special_agreement = htmlspecialchars(strip_tags($special_agreement));
+            $for_user = htmlspecialchars(strip_tags($for_user));
+            $for_profile = htmlspecialchars(strip_tags($for_profile));
+            $product_edit = htmlspecialchars(strip_tags($product_edit));
+            $product_duplicate = htmlspecialchars(strip_tags($product_duplicate));
+            $product_delete = htmlspecialchars(strip_tags($product_delete));
 
             // bind the values
             $stmt->bindParam(':id', $id);
@@ -213,6 +234,11 @@ if (!isset($jwt)) {
             $stmt->bindParam(':cost_furniture', $cost_furniture);
             $stmt->bindParam(':leadership_assessment', $leadership_assessment);
             $stmt->bindParam(':special_agreement', $special_agreement);
+            $stmt->bindParam(':for_user', $for_user);
+            $stmt->bindParam(':for_profile', $for_profile);
+            $stmt->bindParam(':product_edit', $product_edit);
+            $stmt->bindParam(':product_duplicate', $product_duplicate);
+            $stmt->bindParam(':product_delete', $product_delete);
 
             try {
                 // execute the query, also check if query was successful

@@ -5678,3 +5678,20 @@ CREATE TABLE IF NOT EXISTS quotation_slogan
   `updated_at` timestamp NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--20250306
+ALTER TABLE access_control
+ADD COLUMN `for_user` text COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE access_control
+ADD COLUMN `for_profile` text COLLATE utf8mb4_unicode_ci;
+
+--20250307
+ALTER TABLE access_control
+ADD COLUMN `product_edit` text COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE access_control
+ADD COLUMN `product_duplicate` text COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE access_control
+ADD COLUMN `product_delete` text COLLATE utf8mb4_unicode_ci;

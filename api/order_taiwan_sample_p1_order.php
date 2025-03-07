@@ -191,7 +191,10 @@ function UpdateProduct($od_id, $item, $od_name,  $db)
 
     if($v1 != '' || $v2 != '' || $v3 != '' || $v4 != '')
     {
-        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'samples', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' and 4th_variation like '%" . $v4 . "' ";
+        if($v4 != '')
+            $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'samples', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' and 4th_variation like '%" . $v4 . "' ";
+        else
+            $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'samples', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' ";
         // prepare the query
         $stmt = $db->prepare($query);
 
@@ -250,7 +253,10 @@ function UpdateProduct($od_id, $item, $od_name,  $db)
             }
         }
 
-        $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'samples', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' and 4th_variation like '%" . $v4 . "' ";
+        if($v4 != '')
+            $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'samples', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' and 4th_variation like '%" . $v4 . "' ";
+        else
+            $query = "update product set last_order = :od_id, last_order_name = :od_name, last_order_type = 'samples', last_order_at = now() where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' ";
         // prepare the query
         $stmt = $db->prepare($query);
 

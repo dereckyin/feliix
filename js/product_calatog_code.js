@@ -56,6 +56,10 @@ var app = new Vue({
 
     cost_lighting : false,
     cost_furniture : false,
+
+    product_edit : false,
+    product_delete : false,
+    product_duplicate : false,
   },
 
   created() {
@@ -128,6 +132,8 @@ var app = new Vue({
     this.get_brands();
     this.getTagGroup();
     this.getProductControl();
+
+    this.getAccess();
   },
 
   computed: {
@@ -160,6 +166,40 @@ var app = new Vue({
 
 
   methods: {
+
+    getAccess: function() {
+      var token = localStorage.getItem('token');
+      var form_Data = new FormData();
+      let _this = this;
+
+      form_Data.append('jwt', token);
+
+      axios({
+          method: 'get',
+
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+          url: 'api/product_access_control',
+
+      })
+      .then(function(response) {
+          //handle success
+          _this.product_edit = response.data.product_edit;
+          _this.product_delete = response.data.product_delete;
+          _this.product_duplicate = response.data.product_duplicate;
+        
+
+      })
+      .catch(function(response) {
+          //handle error
+          Swal.fire({
+            text: JSON.stringify(response),
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
+      });
+    },
     
     getProductControl: function() {
       var token = localStorage.getItem('token');
