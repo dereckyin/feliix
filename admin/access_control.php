@@ -800,6 +800,60 @@
 
                 </div>
 
+                <div class="box-content">
+                    <ul>
+                        <li><b>Product Edit</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="product_edit" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(40)">Cancel</a>
+                        <a class="btn" @click="save(40)">Save</a>
+                    </div>
+
+                </div>
+
+                <div class="box-content">
+                    <ul>
+                        <li><b>Product Duplicate</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="product_duplicate" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(41)">Cancel</a>
+                        <a class="btn" @click="save(41)">Save</a>
+                    </div>
+
+                </div>
+
+                <div class="box-content">
+                    <ul>
+                        <li><b>Product Delete</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="product_delete" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(42)">Cancel</a>
+                        <a class="btn" @click="save(42)">Save</a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

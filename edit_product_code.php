@@ -25,6 +25,18 @@ try {
             $database = new Database();
             $db = $database->getConnection();
 
+            $product_edit = false;
+
+            $query = "SELECT * FROM access_control WHERE `product_edit` LIKE '%" . $username . "%' ";
+            $stmt = $db->prepare( $query );
+            $stmt->execute();
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $product_edit = true;
+            }
+
+            if ($product_edit == false)
+                header( 'location:index' );
+
             $tag_group = array();
 
             $query = "SELECT id,

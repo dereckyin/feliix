@@ -980,12 +980,12 @@ try {
 
                         <!-- 如果這個 Product Set 產品有 Product1 和 Product 2，則 rowspan=3；如果這個 Product Set 產品有 Product1 和 Product 2 和 Product 3，則 rowspan=4 -->
                         <td :rowspan="item.product_set_cnt + 1">
-                            <button id="edit01" @click="btnEditClick(item.id)"><i class="fas fa-edit"></i>
+                            <button id="edit01" @click="btnEditClick(item.id)" v-if="product_edit"><i class="fas fa-edit"></i>
                             </button>
 
-                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="name == 'dereck' || name == 'Dennis Lin' || name == 'Ariel Lin' || name == 'Gwendolyn Sarmiento'"><i class="fas fa-copy"></i></button>
+                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="product_duplicate"><i class="fas fa-copy"></i></button>
 
-                            <button @click="btnDelClick(item.id)"><i class="fas fa-times"></i></button>
+                            <button @click="btnDelClick(item.id)" v-if="product_delete"><i class="fas fa-times"></i></button>
 
                         </td>
                     </tr>
@@ -1291,12 +1291,12 @@ try {
                         </td>
 
                         <td>
-                            <button id="edit01" @click="btnEditClick(item.id)" v-if="item.status != -1"><i class="fas fa-edit"></i>
+                            <button id="edit01" @click="btnEditClick(item.id)" v-if="product_edit && item.status != -1"><i class="fas fa-edit"></i>
                             </button>
 
-                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="(name == 'dereck' || name == 'Dennis Lin' || name == 'Ariel Lin' || name == 'Gwendolyn Sarmiento') && item.status != -1"><i class="fas fa-copy"></i></button>
+                            <button id="copy01" @click="btnDuplicateClick(item.id)" v-if="product_duplicate && item.status != -1"><i class="fas fa-copy"></i></button>
 
-                            <button @click="btnDelClick(item.id)" v-if="item.status != -1"><i class="fas fa-times"></i></button>
+                            <button @click="btnDelClick(item.id)" v-if="product_delete && item.status != -1"><i class="fas fa-times"></i></button>
 
                         </td>
                     </tr>

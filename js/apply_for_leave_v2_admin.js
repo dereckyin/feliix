@@ -284,7 +284,8 @@ let _this = this;
           this.apply_end = this.normalize(this.apply_end);
 
 
-          if(this.leave_level == 'B' || this.leave_level == 'C' || this.leave_type == 'H' || this.leave_type == 'U')
+          // if(this.leave_level == 'B' || this.leave_level == 'C' || this.leave_type == 'H' || this.leave_type == 'U')
+          if(this.leave_level == 'B' || this.leave_level == 'C' || this.leave_type == 'H')
           {
             var timeStart = this.apply_start.slice(0, 10);
 
@@ -498,7 +499,8 @@ let _this = this;
     var amEnd = 'P';
 
 
-    if(this.leave_level == 'B' || this.leave_level == 'C' || this.leave_type == 'H' || this.leave_type == 'U')
+    // if(this.leave_level == 'B' || this.leave_level == 'C' || this.leave_type == 'H' || this.leave_type == 'U')
+    if(this.leave_level == 'B' || this.leave_level == 'C' || this.leave_type == 'H')
     {
       var timeStart = this.apply_start.slice(0, 10);
 
@@ -568,7 +570,8 @@ let _this = this;
     var d_manager =  new Date(today.getFullYear(), "11", 0);
     var d_next_year =  new Date(today.getFullYear() + 1, 10, 0);
 
-    if(this.leave_level == 'B' || this.leave_level == 'C' || this.leave_type == 'H' || this.leave_type == 'U')
+    // if(this.leave_level == 'B' || this.leave_level == 'C' || this.leave_type == 'H' || this.leave_type == 'U')
+    if(this.leave_level == 'B' || this.leave_level == 'C' || this.leave_type == 'H')
     {
       if(d1 > d_manager)
       {
