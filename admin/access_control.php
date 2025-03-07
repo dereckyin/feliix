@@ -802,7 +802,7 @@
 
                 <div class="box-content">
                     <ul>
-                        <li><b>Product Edit</b></li>
+                        <li><b>Product Add and Edit</b></li>
                         <br>
                         <li>
                             <div>

@@ -1546,7 +1546,10 @@ function GetProductSet($ps_var, $db)
             }
         }
 
-        $query = "select * from product where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' and 4th_variation like '%" . $v4 . "'";
+        if($v4 != "")
+            $query = "select * from product where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "' and 4th_variation like '%" . $v4 . "'";
+        else
+            $query = "select * from product where product_id = :pid and 1st_variation like '%" . $v1 . "' and 2rd_variation like '%" . $v2 . "' and 3th_variation like '%" . $v3 . "'";
         // prepare the query
         $stmt = $db->prepare($query);
 
