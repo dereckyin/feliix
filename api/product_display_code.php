@@ -91,6 +91,7 @@ else
             $accessory = [];
 
             $related_product = [];
+            $replacement_product = [];
 
             $tags = '';
             $moq = '';
@@ -290,6 +291,7 @@ else
                 //$phased_out_cnt = $phased_out_cnt;
 
                 $related_product = GetRelatedProductCode($id, $db);
+                $replacement_product = GetRelacementProductCode($id, $db);
 
                 $variation1_value = [];
                 $variation2_value = [];
@@ -746,6 +748,7 @@ else
                                     "created_at" => $created_at,
                                     "create_id" => $create_id,
                                     "related_product" => $related_product,
+                                    "replacement_product" => $replacement_product,
                                     "product" => $product,
                                     "variation1_text" => $variation1_text,
                                     "variation2_text" => $variation2_text,
@@ -1363,6 +1366,56 @@ function GetRelatedProductCode($id, $db){
 
 }
 
+function GetRelacementProductCode($id, $db){
+    $sql = "SELECT * FROM product_category where id in (SELECT replacement_id FROM product_replacement WHERE product_id = ". $id . " and STATUS <> -1) and status <> -1";
+
+    $sql = $sql . " ORDER BY code ";
+
+    $merged_results = [];
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $_id = $row['id'];
+        $currency = $row['currency'];
+
+        $product = GetProduct($_id, $db, $currency);
+        $phased_out_cnt = 0;
+        $phased_out_text = [];
+        for($i = 0; $i < count($product); $i++)
+        {
+            if($product[$i]['enabled'] != 1)
+            {
+                $key_value_text = "";
+
+                $phased_out_cnt++;
+                if($product[$i]['v1'] != "")
+                    $key_value_text .= $product[$i]['k1'] . " = " . $product[$i]['v1'] . ", ";
+                if($product[$i]['v2'] != "")
+                    $key_value_text .= $product[$i]['k2'] . " = " . $product[$i]['v2'] . ", ";
+                if($product[$i]['v3'] != "")
+                    $key_value_text .= $product[$i]['k3'] . " = " . $product[$i]['v3'] . ", ";
+                if($product[$i]['v4'] != "")
+                    $key_value_text .= $product[$i]['k4'] . " = " . $product[$i]['v4'] . ", ";
+
+                $key_value_text = substr($key_value_text, 0, -2);
+
+                array_push($phased_out_text, $key_value_text);
+            }
+                
+        }
+
+        $row['phased_out_cnt'] = $phased_out_cnt;
+        $row['phased_out_text'] = $phased_out_text;
+        
+        $merged_results[] = $row;
+    }
+
+    return $merged_results;
+
+}
+
 function GetProductSet($id, $qty, $db){
     $merged_results = array();
 
@@ -1402,6 +1455,7 @@ function GetProductSet($id, $qty, $db){
             $accessory = [];
 
             $related_product = [];
+            $replacement_product = [];
 
             $tags = '';
             $moq = '';
@@ -1542,8 +1596,10 @@ function GetProductSet($id, $qty, $db){
                 //$phased_out_cnt = $phased_out_cnt;
 
                 $related_product = GetRelatedProductCode($id, $db);
+                $replacement_product = GetRelacementProductCode($id, $db);
 
                 $groupedItems[] = array_slice($related_product, 0, 4);
+                $groupedItems_replacement[] = array_slice($replacement_product, 0, 4);
 
 
                 $variation1_value = [];
@@ -1982,7 +2038,9 @@ function GetProductSet($id, $qty, $db){
                                     "created_at" => $created_at,
                                     "create_id" => $create_id,
                                     "related_product" => $related_product,
+                                    "replacement_product" => $replacement_product,
                                     "groupedItems" => $groupedItems,
+                                    "groupedItems_replacement" => $groupedItems_replacement,
                                     "product" => $product,
                                     "variation1_text" => $variation1_text,
                                     "variation2_text" => $variation2_text,

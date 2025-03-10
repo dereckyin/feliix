@@ -212,6 +212,7 @@ var app = new Vue({
         related_product: [],
         specification: [],
         description: "",
+        replacement_product: [],
 
         // vat for each product
         product_vat : '',
@@ -236,6 +237,7 @@ var app = new Vue({
         toggle_type:'A',
 
         groupedItems : [],
+        groupedItems_replacement : [],
 
         //
         fil_project_category:'',
@@ -1404,6 +1406,14 @@ var app = new Vue({
         this.groupedItems  = newArr;
       },
 
+      chunk_replacement: function(arr, size) {
+        var newArr = [];
+        for (var i=0; i<arr.length; i+=size) {
+          newArr.push(arr.slice(i, i+size));
+        }
+        this.groupedItems_replacement  = newArr;
+      },
+
       set_up_variants() {
         for(var i=0; i<this.product.variation1_value.length; i++)
         {
@@ -1447,6 +1457,7 @@ var app = new Vue({
         this.attributes = product.attribute_list;
 
         this.related_product  = product.related_product;
+        this.replacement_product = product.replacement_product;
 
         this.quoted_price = product.quoted_price;
         this.price = product.price;
@@ -1459,6 +1470,7 @@ var app = new Vue({
         this.out_cnt = product.phased_out_cnt;
 
         this.chunk(this.related_product, 4);
+        this.chunk_replacement(this.replacement_product, 4);
 
         this.set_up_variants();
         this.set_up_specification();

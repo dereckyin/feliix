@@ -99,8 +99,13 @@ var app = new Vue({
     variation_product: [],
 
     related_product : [],
+    replacement_product : [],
+    is_replacement_product: [],
+    
+
     nColumns: 4,
     groupedItems: [],
+    groupedItems_replacement: [],
 
     show_accessory: false,
 
@@ -279,6 +284,14 @@ var app = new Vue({
         newArr.push(arr.slice(i, i+size));
       }
       this.groupedItems  = newArr;
+    },
+
+    chunk_replacement: function(arr, size) {
+      var newArr = [];
+      for (var i=0; i<arr.length; i+=size) {
+        newArr.push(arr.slice(i, i+size));
+      }
+      this.groupedItems_replacement  = newArr;
     },
 
     getUserName: function() {
@@ -651,6 +664,9 @@ var app = new Vue({
 
             _this.related_product = _this.record[0]['related_product'];
             _this.chunk(_this.related_product, 4);
+
+            _this.replacement_product = _this.record[0]['replacement_product'];
+            _this.chunk_replacement(_this.replacement_product, 4);
 
             _this.variation1 = _this.record[0]['variation1'];
             _this.variation2 = _this.record[0]['variation2'];

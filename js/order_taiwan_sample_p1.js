@@ -214,6 +214,7 @@ var app = new Vue({
         related_product: [],
         specification: [],
         description: "",
+        replacement_product: [],
 
         // vat for each product
         product_vat : '',
@@ -239,6 +240,7 @@ var app = new Vue({
         toggle: false,
 
         groupedItems : [],
+        groupedItems_replacement : [],
 
         //
         fil_project_category:'',
@@ -400,6 +402,9 @@ var app = new Vue({
         p_related_product : [],
         p_nColumns: 4,
         p_groupedItems: [],
+
+        replacement_product : [],
+    is_replacement_product: [],
 
         p_show_accessory: false,
 
@@ -1708,6 +1713,14 @@ var app = new Vue({
         this.groupedItems  = newArr;
       },
 
+      chunk_replacement: function(arr, size) {
+        var newArr = [];
+        for (var i=0; i<arr.length; i+=size) {
+          newArr.push(arr.slice(i, i+size));
+        }
+        this.groupedItems_replacement  = newArr;
+      },
+
       set_up_variants() {
         for(var i=0; i<this.product.variation1_value.length; i++)
         {
@@ -1773,6 +1786,7 @@ var app = new Vue({
         this.attributes = product.attribute_list;
 
         this.related_product  = product.related_product;
+        this.replacement_product = product.replacement_product;
 
         this.quoted_price = product.quoted_price;
         this.price = product.price;
@@ -1790,6 +1804,7 @@ var app = new Vue({
         this.last_order_url = product.last_order_url;
 
         this.chunk(this.related_product, 4);
+        this.chunk_replacement(this.replacement_product, 4);
 
         this.set_up_variants();
         this.set_up_specification();
@@ -3188,6 +3203,9 @@ var app = new Vue({
 
           _this.p_related_product = _this.p_record[0]['related_product'];
           _this.p_chunk(_this.p_related_product, 4);
+
+          _this.replacement_product = _this.p_record[0]['replacement_product'];
+          _this.chunk_replacement(_this.replacement_product, 4);
 
           _this.p_variation1 = _this.p_record[0]['variation1'];
           _this.p_variation2 = _this.p_record[0]['variation2'];
