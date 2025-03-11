@@ -2951,7 +2951,7 @@ function getOrderInfo($od_id, $db)
 }
 
 function GetReplacementProduct($id, $db){
-    $sql = "SELECT id replacement_id, code, photo1 FROM product_category where id = (SELECT replacement_id FROM product_replacement WHERE product_id = ". $id . " and STATUS <> -1)";
+    $sql = "SELECT id replacement_id, code, photo1 FROM product_category where id in (SELECT replacement_id FROM product_replacement WHERE product_id = ". $id . " and STATUS <> -1)";
 
     $sql = $sql . " ORDER BY code ";
 
