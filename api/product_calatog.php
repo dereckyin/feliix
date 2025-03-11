@@ -1794,7 +1794,7 @@ function IsReplacementProduct($id, $db){
 
     $time_start = microtime(true); 
 
-    $sql = "SELECT * FROM product_replacement WHERE replacement_id = ". $id . " and STATUS <> -1";
+    $sql = "SELECT * FROM product_replacement WHERE product_id = ". $id . " and STATUS <> -1";
 
     $merged_results = array();
 
