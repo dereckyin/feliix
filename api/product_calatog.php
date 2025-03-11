@@ -2951,7 +2951,7 @@ function getOrderInfo($od_id, $db)
 }
 
 function GetReplacementProduct($id, $db){
-    $sql = "SELECT id replacement_id, code, photo1 FROM product_category where id in (SELECT replacement_id FROM product_replacement WHERE product_id = ". $id . " and STATUS <> -1)";
+    $sql = "SELECT id, id replacement_id, code, photo1 FROM product_category where id in (SELECT replacement_id FROM product_replacement WHERE product_id = ". $id . " and STATUS <> -1)";
 
     $sql = $sql . " ORDER BY code ";
 
@@ -2961,7 +2961,8 @@ function GetReplacementProduct($id, $db){
     $stmt->execute();
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $merged_results[] = array(  "replacement_id" => $row['replacement_id'], 
+        $merged_results[] = array(  "id" => $row['id'],
+                                    "replacement_id" => $row['replacement_id'], 
                                     "code" => $row['code'],
                                     "photo1" => $row['photo1'],
                                    

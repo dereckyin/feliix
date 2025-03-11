@@ -466,7 +466,7 @@ try {
         }
 
         #tb_product_list tbody tr.set_format1 > td:nth-of-type(3) {
-            width: 220px!important;
+            width: 150px!important;
         }
 
         #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) {
@@ -730,11 +730,14 @@ try {
                             </ul>
 
                             <ul class="supporting_attachment">
-                                <li><span v-if="item.product_ics.length > 0">IES File</span></li>
-                                <li><span v-if="item.product_skp.length > 0">SketchUp File</span></li>
-                                <li><span v-if="item.product_manual.length > 0">Supporting File</span></li>
-                                <li><span v-if="item.is_replacement_product.length > 0">Replacement Product</span></li>
-                            </ul>
+                                            <li></li>
+                                            <li>
+                                                <span v-if="item.product_ics.length > 0">IES File</span>
+                                                <span v-if="item.product_skp.length > 0">SketchUp File</span>
+                                                <span v-if="item.product_manual.length > 0">Supporting File</span>
+                                                <span v-if="item.is_replacement_product.length > 0">Replacement Product</span>
+                                            </li>
+                                        </ul>
 
                             <div class="product_set_desc">
                                 Description:
@@ -833,11 +836,14 @@ try {
                             </ul>
 
                             <ul class="supporting_attachment">
-                                <li><span v-if="set.product_ics.length > 0">IES File</span></li>
-                                <li><span v-if="set.product_skp.length > 0">SketchUp File</span></li>
-                                <li><span v-if="set.product_manual.length > 0">Supporting File</span></li>
-                                <li><span v-if="set.is_replacement_product.length > 0">Replacement Product</span></li>
-                            </ul>
+                                            <li></li>
+                                            <li>
+                                                <span v-if="set.product_ics.length > 0">IES File</span>
+                                                <span v-if="set.product_skp.length > 0">SketchUp File</span>
+                                                <span v-if="set.product_manual.length > 0">Supporting File</span>
+                                                <span v-if="set.is_replacement_product.length > 0">Replacement Product</span>
+                                            </li>
+                                        </ul>
 
                             <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
                             <ul class="last_order_history" v-if="set.is_last_order != ''">
@@ -971,11 +977,14 @@ try {
                             </ul>
 
                             <ul class="supporting_attachment">
-                                <li><span v-if="item.product_ics.length > 0">IES File</span></li>
-                                <li><span v-if="item.product_skp.length > 0">SketchUp File</span></li>
-                                <li><span v-if="item.product_manual.length > 0">Supporting File</span></li>
-                                <li><span v-if="item.is_replacement_product.length > 0">Replacement Product</span></li>
-                            </ul>
+                                            <li></li>
+                                            <li>
+                                                <span v-if="item.product_ics.length > 0">IES File</span>
+                                                <span v-if="item.product_skp.length > 0">SketchUp File</span>
+                                                <span v-if="item.product_manual.length > 0">Supporting File</span>
+                                                <span v-if="item.is_replacement_product.length > 0">Replacement Product</span>
+                                            </li>
+                                        </ul>
 
                             <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
                             <ul class="last_order_history"  v-if="item.is_last_order != ''">

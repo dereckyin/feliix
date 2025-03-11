@@ -203,16 +203,16 @@ try {
         }
 
         #tb_product_list tbody tr td:nth-of-type(2) {
-            width: 380px;
+            width: 420px;
             padding-right: 20px
         }
 
         #tb_product_list tbody tr td:nth-of-type(3) {
-            width: 430px;
+            width: 460px;
         }
 
         #tb_product_list tbody tr td:nth-of-type(4) {
-            width: 210px;
+            width: 220px;
         }
 
         #tb_product_list tbody tr td:nth-of-type(5) {
@@ -1460,12 +1460,12 @@ try {
         #modal_product_catalog tbody td ul.supporting_attachment span {
             background-color: orange;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             display: inline-block;
             font-weight: 600;
             border-radius: 5px;
             margin: 3px 0px;
-            padding: 1px 15px 2px;
+            padding: 1px 10px 2px;
             cursor: pointer;
             border: none;
         }
@@ -1832,7 +1832,7 @@ try {
 <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_product_catalog">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
         <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 
@@ -1993,11 +1993,14 @@ try {
                                         </ul>
 
                                         <ul class="supporting_attachment">
-                                <li><span v-if="item.product_ics.length > 0">IES File</span></li>
-                                <li><span v-if="item.product_skp.length > 0">SketchUp File</span></li>
-                                <li><span v-if="item.product_manual.length > 0">Supporting File</span></li>
-                                <li><span v-if="item.is_replacement_product.length > 0">Replacement Product</span></li>
-                            </ul>
+                                            <li></li>
+                                            <li>
+                                                <span v-if="item.product_ics.length > 0">IES File</span>
+                                                <span v-if="item.product_skp.length > 0">SketchUp File</span>
+                                                <span v-if="item.product_manual.length > 0">Supporting File</span>
+                                                <span v-if="item.is_replacement_product.length > 0">Replacement Product</span>
+                                            </li>
+                                        </ul>
 
                                         <div class="product_set_desc">
                                 Description:
@@ -2246,11 +2249,14 @@ try {
                                     </ul>
 
                                     <ul class="supporting_attachment">
-                                <li><span v-if="item.product_ics.length > 0">IES File</span></li>
-                                <li><span v-if="item.product_skp.length > 0">SketchUp File</span></li>
-                                <li><span v-if="item.product_manual.length > 0">Supporting File</span></li>
-                                <li><span v-if="item.is_replacement_product.length > 0">Replacement Product</span></li>
-                            </ul>
+                                            <li></li>
+                                            <li>
+                                                <span v-if="item.product_ics.length > 0">IES File</span>
+                                                <span v-if="item.product_skp.length > 0">SketchUp File</span>
+                                                <span v-if="item.product_manual.length > 0">Supporting File</span>
+                                                <span v-if="item.is_replacement_product.length > 0">Replacement Product</span>
+                                            </li>
+                                        </ul>
                                 <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
                                 <ul class="last_order_history"  v-if="item.is_last_order != ''">
                                     <li>
@@ -2434,7 +2440,7 @@ try {
 <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_product_display">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
         <div class="modal-content"
              style="height: calc( 100vh - 3.75rem); overflow-y: auto; border: none; padding-bottom: 20px;">
@@ -3562,7 +3568,7 @@ try {
 <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_quotation_list">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
         <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 

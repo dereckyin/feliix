@@ -466,7 +466,7 @@ try {
         }
 
         #tb_product_list tbody tr.set_format1 > td:nth-of-type(3) {
-            width: 220px!important;
+            width: 150px!important;
         }
 
         #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) {

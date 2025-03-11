@@ -562,11 +562,14 @@
                 </ul>
 
                 <ul class="supporting_attachment">
-                                <li><span v-if="product_ics.length > 0">IES File</span></li>
-                                <li><span v-if="product_skp.length > 0">SketchUp File</span></li>
-                                <li><span v-if="product_manual.length > 0">Supporting File</span></li>
-                                <li><span v-if="is_replacement_product.length > 0">Replacement Product</span></li>
-                            </ul>
+                                            <li></li>
+                                            <li>
+                                                <span v-if="product_ics.length > 0">IES File</span>
+                                                <span v-if="product_skp.length > 0">SketchUp File</span>
+                                                <span v-if="product_manual.length > 0">Supporting File</span>
+                                                <span v-if="is_replacement_product.length > 0">Replacement Product</span>
+                                            </li>
+                                        </ul>
 
                 <!-- 如果這個 Product Set 的 Description 是空值，則整個 <div class="product_set_desc"> 都不用被建立出來 -->
                 <div class="product_set_desc">
