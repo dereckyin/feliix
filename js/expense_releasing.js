@@ -662,10 +662,10 @@ var app = new Vue({
 
     account_privileges: function() {
 
-      if(this.record.info_account === 'Office Petty Cash' && (this.name.trim() === 'Mary Jude Jeng Articulo' || this.name.trim() === 'Dennis Lin' || this.name.trim() === 'Marie Kayla Patricia Dequina'))
+      if(this.record.info_account === 'Office Petty Cash' && (this.name.trim() === 'Mary Jude Jeng Articulo' || this.name.trim() === 'Dennis Lin' || this.name.trim() === 'Marie Kayla Patricia Dequina' || this.name.trim() === "Stephanie De dio"))
         return true;
       
-      if(this.record.info_account === 'Online Transactions' && (this.name.trim() === 'Mary Jude Jeng Articulo' || this.name.trim() === 'Dennis Lin' || this.name.trim() === 'Marie Kayla Patricia Dequina'))
+      if(this.record.info_account === 'Online Transactions' && (this.name.trim() === 'Mary Jude Jeng Articulo' || this.name.trim() === 'Dennis Lin' || this.name.trim() === 'Marie Kayla Patricia Dequina' || this.name.trim() === "Stephanie De dio"))
         return true;
 
       if(this.record.info_account === 'Security Bank' && (this.name.trim() === 'Glendon Wendell Co' || this.name.trim() === 'Dennis Lin'))
