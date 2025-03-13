@@ -2913,9 +2913,33 @@
 
                             </div>
 
-                            <div class="company_signature" v-if="(pag.sig != undefined ? pag.sig.item_company.length : 0) > 0">
+                            <div class="company_signature"
+                                 v-if="(pag.sig != undefined ? pag.sig.item_company.length : 0) > 0 && (pag.sig != undefined ? pag.sig.item_company.length : 0) <= 4">
 
                                 <div class="signature" v-for="(tt, index) in pag.sig.item_company">
+                                    <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
+                                    <div class="name">{{ tt.name }}</div>
+                                    <div class="line1">{{ tt.position }}</div>
+                                    <div class="line2">{{ tt.phone }}</div>
+                                    <div class="line3">{{ tt.email }}</div>
+                                </div>
+                            </div>
+
+                            <div class="company_signature"
+                                 v-if="(sig != undefined ? pag.sig.item_company.length : 0) > 4">
+
+                                <div class="signature" v-for="(tt, index) in sig.item_company" v-if="index < 3">
+                                    <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
+                                    <div class="name">{{ tt.name }}</div>
+                                    <div class="line1">{{ tt.position }}</div>
+                                    <div class="line2">{{ tt.phone }}</div>
+                                    <div class="line3">{{ tt.email }}</div>
+                                </div>
+                            </div>
+                            <div class="company_signature"
+                                 v-if="(sig != undefined ? pag.sig.item_company.length : 0) > 4">
+
+                                <div class="signature" v-for="(tt, index) in sig.item_company" v-if="index >= 3">
                                     <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
                                     <div class="name">{{ tt.name }}</div>
                                     <div class="line1">{{ tt.position }}</div>

@@ -3751,9 +3751,32 @@ header( 'location:index' );
                             </div>
 
                             <div class="company_signature"
-                                 v-if="(sig_disp != undefined ? sig_disp.item_company.length : 0) > 0">
+                                 v-if="(sig_disp != undefined ? sig_disp.item_company.length : 0) > 0 && (sig_disp != undefined ? sig_disp.item_company.length : 0) <= 4">
 
                                 <div class="signature" v-for="(tt, index) in sig_disp.item_company">
+                                    <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
+                                    <div class="name">{{ tt.name }}</div>
+                                    <div class="line1">{{ tt.position }}</div>
+                                    <div class="line2">{{ tt.phone }}</div>
+                                    <div class="line3">{{ tt.email }}</div>
+                                </div>
+                            </div>
+
+                            <div class="company_signature"
+                                 v-if="(sig_disp != undefined ? sig_disp.item_company.length : 0) > 4">
+
+                                <div class="signature" v-for="(tt, index) in sig_disp.item_company" v-if="index < 3">
+                                    <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
+                                    <div class="name">{{ tt.name }}</div>
+                                    <div class="line1">{{ tt.position }}</div>
+                                    <div class="line2">{{ tt.phone }}</div>
+                                    <div class="line3">{{ tt.email }}</div>
+                                </div>
+                            </div>
+                            <div class="company_signature"
+                                 v-if="(sig_disp != undefined ? sig_disp.item_company.length : 0) > 4">
+
+                                <div class="signature" v-for="(tt, index) in sig_disp.item_company" v-if="index >= 3">
                                     <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
                                     <div class="name">{{ tt.name }}</div>
                                     <div class="line1">{{ tt.position }}</div>
