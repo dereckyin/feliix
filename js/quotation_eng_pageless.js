@@ -4011,7 +4011,8 @@ Installation:`;
               _this.pixa = _this.total.pixa;
               _this.show = _this.total.show;
 
-              
+              _this.pag = JSON.parse(JSON.stringify(_this.receive_records[0]));
+              _this.pag.sig = JSON.parse(JSON.stringify(_this.receive_records[0].sig_info));
 
               // get product_vat from total.vat
               _this.total.vat !== undefined ? _this.product_vat = _this.total.vat : _this.product_vat = '';

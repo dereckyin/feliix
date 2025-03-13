@@ -413,6 +413,10 @@ header( 'location:index' );
             width: 220px!important;
         }
 
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(3) {
+            width: 150px!important;
+        }
+
         #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) {
             width: 80px!important;
         }
@@ -458,6 +462,15 @@ header( 'location:index' );
         #tb_product_list tbody tr.set_format2 > td:nth-of-type(4) {
             width: 220px!important;
         }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(5) {
+            width: 150px!important;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(6) {
+            width: 80px!important;
+        }
+
 
         #tb_specification_list {
             width: 100%;
@@ -777,11 +790,12 @@ header( 'location:index' );
         .area_conforme .signature {
             text-align: center;
             padding-top: 20px;
+            width: 280px;
         }
 
         .area_conforme .signature .pic {
             width: 230px;
-            height: 150px;
+            height: 140px;
             padding-bottom: 5px;
             text-align: center;
             vertical-align: bottom;
@@ -3773,8 +3787,7 @@ header( 'location:index' );
                                     <div class="line3">{{ tt.email }}</div>
                                 </div>
                             </div>
-                            <div class="company_signature"
-                                 v-if="(sig_disp != undefined ? sig_disp.item_company.length : 0) > 4">
+                            <div class="company_signature" style="margin-top: -18px;" v-if="(sig_disp != undefined ? sig_disp.item_company.length : 0) > 4">
 
                                 <div class="signature" v-for="(tt, index) in sig_disp.item_company" v-if="index >= 3">
                                     <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
