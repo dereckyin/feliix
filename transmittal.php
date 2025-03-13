@@ -398,6 +398,10 @@ header( 'location:index' );
             width: 220px!important;
         }
 
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(3) {
+            width: 150px!important;
+        }
+
         #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) {
             width: 80px!important;
         }
@@ -442,6 +446,14 @@ header( 'location:index' );
 
         #tb_product_list tbody tr.set_format2 > td:nth-of-type(4) {
             width: 220px!important;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(5) {
+            width: 150px!important;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(6) {
+            width: 80px!important;
         }
 
         #tb_specification_list {
