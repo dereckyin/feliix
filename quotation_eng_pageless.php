@@ -259,16 +259,16 @@ header( 'location:index' );
         }
 
         #tb_product_list tbody tr td:nth-of-type(2) {
-            width: 380px;
+            width: 420px;
             padding-right: 20px
         }
 
         #tb_product_list tbody tr td:nth-of-type(3) {
-            width: 430px;
+            width: 460px;
         }
 
         #tb_product_list tbody tr td:nth-of-type(4) {
-            width: 210px;
+            width: 220px;
         }
 
         #tb_product_list tbody tr td:nth-of-type(5) {
@@ -389,6 +389,10 @@ header( 'location:index' );
             width: 220px!important;
         }
 
+        #tb_product_list tbody tr.set_format1 > td:nth-of-type(3) {
+            width: 150px!important;
+        }
+
         #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) {
             width: 80px!important;
         }
@@ -433,6 +437,14 @@ header( 'location:index' );
 
         #tb_product_list tbody tr.set_format2 > td:nth-of-type(4) {
             width: 220px!important;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(5) {
+            width: 150px!important;
+        }
+
+        #tb_product_list tbody tr.set_format2 > td:nth-of-type(6) {
+            width: 80px!important;
         }
 
         #tb_specification_list {
@@ -711,11 +723,12 @@ header( 'location:index' );
         .area_conforme .signature {
             text-align: center;
             padding-top: 20px;
+            width: 280px;
         }
 
         .area_conforme .signature .pic {
             width: 230px;
-            height: 150px;
+            height: 140px;
             padding-bottom: 5px;
             text-align: center;
             vertical-align: bottom;
@@ -2209,12 +2222,12 @@ header( 'location:index' );
         #modal_product_catalog tbody td ul.supporting_attachment span {
             background-color: orange;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             display: inline-block;
             font-weight: 600;
             border-radius: 5px;
             margin: 3px 0px;
-            padding: 1px 15px 2px;
+            padding: 1px 10px 2px;
             cursor: pointer;
             border: none;
         }
@@ -2238,12 +2251,12 @@ header( 'location:index' );
         #modal_product_catalog tbody td ul.supporting_attachment span {
             background-color: orange;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             display: inline-block;
             font-weight: 600;
             border-radius: 5px;
             margin: 3px 0px;
-            padding: 1px 15px 2px;
+            padding: 1px 10px 2px;
             cursor: pointer;
             border: none;
         }
@@ -3966,15 +3979,15 @@ header( 'location:index' );
                         </div>
 
 
-                        <div class="area_conforme" v-bind:style="{ 'margin-bottom': pixa_s + 'px' }" v-if="show_s == ''">
+                        <div class="area_conforme" v-bind:style="{ 'margin-bottom': pag.pixa_s + 'px' }" v-if="pag.show_s == ''">
                             <div class="conforme"
-                                v-if="(sig != undefined ? sig.item_client.length : 0)  + (sig != undefined ?  sig.item_company.length : 0) > 0">
+                                v-if="(pag.sig != undefined ? pag.sig.item_client.length : 0)  + (pag.sig != undefined ?  pag.sig.item_company.length : 0) > 0">
                                 CONFORME
                             </div>
 
-                            <div class="client_signature" v-if="(sig != undefined ? sig.item_client.length : 0) > 0">
+                            <div class="client_signature" v-if="(pag.sig != undefined ? pag.sig.item_client.length : 0) > 0">
 
-                                <div class="signature" v-for="(tt, index) in sig.item_client">
+                                <div class="signature" v-for="(tt, index) in pag.sig.item_client">
                                     <div class="pic"></div>
                                     <div class="name">{{ tt.name }}</div>
                                     <div class="line1">{{ tt.position }}</div>
@@ -3984,9 +3997,10 @@ header( 'location:index' );
 
                             </div>
 
-                            <div class="company_signature" v-if="(sig != undefined ? sig.item_company.length : 0) > 0">
+                            <div class="company_signature"
+                                 v-if="(pag.sig != undefined ? pag.sig.item_company.length : 0) > 0 && (pag.sig != undefined ? pag.sig.item_company.length : 0) <= 4">
 
-                                <div class="signature" v-for="(tt, index) in sig.item_company">
+                                <div class="signature" v-for="(tt, index) in pag.sig.item_company">
                                     <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
                                     <div class="name">{{ tt.name }}</div>
                                     <div class="line1">{{ tt.position }}</div>
@@ -3994,6 +4008,29 @@ header( 'location:index' );
                                     <div class="line3">{{ tt.email }}</div>
                                 </div>
                             </div>
+
+                            <div class="company_signature"
+                                 v-if="(pag.sig != undefined ? pag.sig.item_company.length : 0) > 4">
+
+                                <div class="signature" v-for="(tt, index) in pag.sig.item_company" v-if="index < 3">
+                                    <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
+                                    <div class="name">{{ tt.name }}</div>
+                                    <div class="line1">{{ tt.position }}</div>
+                                    <div class="line2">{{ tt.phone }}</div>
+                                    <div class="line3">{{ tt.email }}</div>
+                                </div>
+                            </div>
+                            <div class="company_signature" style="margin-top: -18px;" v-if="(pag.sig != undefined ? pag.sig.item_company.length : 0) > 4">
+
+                                <div class="signature" v-for="(tt, index) in pag.sig.item_company" v-if="index >= 3">
+                                    <div class="pic"><img :src="img_url + tt.photo" v-if="tt.photo != ''"></div>
+                                    <div class="name">{{ tt.name }}</div>
+                                    <div class="line1">{{ tt.position }}</div>
+                                    <div class="line2">{{ tt.phone }}</div>
+                                    <div class="line3">{{ tt.email }}</div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
@@ -4185,6 +4222,16 @@ header( 'location:index' );
 
                                         </ul>
 
+                                        <ul class="supporting_attachment">
+                                            <li></li>
+                                            <li>
+                                                <span v-if="item.product_ics.length > 0">IES File</span>
+                                                <span v-if="item.product_skp.length > 0">SketchUp File</span>
+                                                <span v-if="item.product_manual.length > 0">Supporting File</span>
+                                                <span v-if="item.is_replacement_product.length > 0">Replacement Product</span>
+                                            </li>
+                                        </ul>
+
                                         <div class="product_set_desc">
                                 Description:
                                 <div>{{ item.description }}</div>
@@ -4289,10 +4336,14 @@ header( 'location:index' );
                                         </ul>
 
                                         <ul class="supporting_attachment">
-                                <li><span v-if="set.product_ics.length > 0">IES File</span></li>
-                                <li><span v-if="set.product_skp.length > 0">SketchUp File</span></li>
-                                <li><span v-if="set.product_manual.length > 0">Supporting File</span></li>
-                            </ul>
+                                            <li></li>
+                                            <li>
+                                                <span v-if="set.product_ics.length > 0">IES File</span>
+                                                <span v-if="set.product_skp.length > 0">SketchUp File</span>
+                                                <span v-if="set.product_manual.length > 0">Supporting File</span>
+                                                <span v-if="set.is_replacement_product.length > 0">Replacement Product</span>
+                                            </li>
+                                        </ul>
 
                                         <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
                                         <ul class="last_order_history" v-if="set.is_last_order != ''">
@@ -4428,10 +4479,14 @@ header( 'location:index' );
                                     </ul>
 
                                     <ul class="supporting_attachment">
-                                <li><span v-if="item.product_ics.length > 0">IES File</span></li>
-                                <li><span v-if="item.product_skp.length > 0">SketchUp File</span></li>
-                                <li><span v-if="item.product_manual.length > 0">Supporting File</span></li>
-                            </ul>
+                                            <li></li>
+                                            <li>
+                                                <span v-if="item.product_ics.length > 0">IES File</span>
+                                                <span v-if="item.product_skp.length > 0">SketchUp File</span>
+                                                <span v-if="item.product_manual.length > 0">Supporting File</span>
+                                                <span v-if="item.is_replacement_product.length > 0">Replacement Product</span>
+                                            </li>
+                                        </ul>
 
                                 <!-- 針對一個產品 ID， if (它的主產品在 product_category 資料表 last_order 欄位有值 or 它的任何一個子規格在 product 資料表 last_order 欄位有值)，就需要顯示下面的 <ul class="last_order_history"> 結構 -->
                                 <ul class="last_order_history"  v-if="item.is_last_order != ''">
@@ -4618,7 +4673,7 @@ header( 'location:index' );
     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          aria-hidden="true" id="modal_product_display">
 
-        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
             <div class="modal-content"
                  style="height: calc( 100vh - 3.75rem); overflow-y: auto; border: none; padding-bottom: 20px;">
@@ -4878,6 +4933,48 @@ header( 'location:index' );
                                 </a>
                             </div>
                         </div>
+                        <div class="middle_section"
+                            v-if="set.replacement_product !== undefined ? set.replacement_product.length !== 0 : false">
+                            <h5>Replacement Product</h5>
+
+                            <div id="carouselExampleControls_replacement" class="carousel slide">
+
+                                <div class="carousel-inner">
+
+                                    <div v-for='(g, groupIndex) in set.groupedItems_replacement'
+                                        :class="['carousel-item', (groupIndex == 0 ? 'active' : '')]">
+                                        <div class="row custom">
+                                            <div class="col custom" v-for='(item, index) in g'>
+                                                <img :src="img_url + item.photo1" :alt="'No Product Picture'">
+                                                <div>
+                                                    <a @click="getSingleProduct(item.id)">
+                                                        {{ item.code }}
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <!-- 網頁載入時，對於每一個相關產品，會根據「該產品是否停產」以及「有多少子規格停產」，來決定下面三個<span class="phasedout2">結構要顯示哪一個 -->
+                                                    <span class="phasedout2" v-if="item.out == 'Y' && item.phased_out_cnt == 0">Phased Out</span>
+                                                    <span class="phasedout2" v-if="item.phased_out_cnt == 1" @click="PhaseOutAlert(item.phased_out_text)">1 variant is phased out</span>
+                                                    <span class="phasedout2" v-if="item.phased_out_cnt > 1" @click="PhaseOutAlert(item.phased_out_text)">{{ item.phased_out_cnt }} variants are phased out</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls_replacement" role="button"
+                                data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls_replacement" role="button"
+                                data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
                         <div class="lower_section"
                             v-if="(set.notes != null && set.notes != '') || set.description != ''"><h5>
                             Description</h5>
@@ -5116,7 +5213,48 @@ header( 'location:index' );
                                 </a>
                             </div>
                         </div>
+                        <div class="middle_section"
+                            v-if="set.replacement_product !== undefined ? set.replacement_product.length !== 0 : false">
+                            <h5>Replacement Product</h5>
 
+                            <div id="carouselExampleControls_replacement" class="carousel slide">
+
+                                <div class="carousel-inner">
+
+                                    <div v-for='(g, groupIndex) in set.groupedItems_replacement'
+                                        :class="['carousel-item', (groupIndex == 0 ? 'active' : '')]">
+                                        <div class="row custom">
+                                            <div class="col custom" v-for='(item, index) in g'>
+                                                <img :src="img_url + item.photo1" :alt="'No Product Picture'">
+                                                <div>
+                                                    <a @click="getSingleProduct(item.id)">
+                                                        {{ item.code }}
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <!-- 網頁載入時，對於每一個相關產品，會根據「該產品是否停產」以及「有多少子規格停產」，來決定下面三個<span class="phasedout2">結構要顯示哪一個 -->
+                                                    <span class="phasedout2" v-if="item.out == 'Y' && item.phased_out_cnt == 0">Phased Out</span>
+                                                    <span class="phasedout2" v-if="item.phased_out_cnt == 1" @click="PhaseOutAlert(item.phased_out_text)">1 variant is phased out</span>
+                                                    <span class="phasedout2" v-if="item.phased_out_cnt > 1" @click="PhaseOutAlert(item.phased_out_text)">{{ item.phased_out_cnt }} variants are phased out</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls_replacement" role="button"
+                                data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls_replacement" role="button"
+                                data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
 
                         <div class="lower_section"
                             v-if="(set.notes != null && set.notes != '') || set.description != ''">
@@ -5296,6 +5434,48 @@ header( 'location:index' );
                                 </a>
                             </div>
                         </div>
+                        <div class="middle_section"
+                         v-if="product.replacement_product !== undefined ? product.replacement_product.length !== 0 : false">
+                        <h5>Replacement Product</h5>
+
+                        <div id="carouselExampleControls_replacement" class="carousel slide">
+
+                            <div class="carousel-inner">
+
+                                <div v-for='(g, groupIndex) in groupedItems_replacement'
+                                     :class="['carousel-item', (groupIndex == 0 ? 'active' : '')]">
+                                    <div class="row custom">
+                                        <div class="col custom" v-for='(item, index) in g'>
+                                            <img :src="img_url + item.photo1" :alt="'No Product Picture'">
+                                            <div>
+                                                <a @click="getSingleProduct(item.id)">
+                                                    {{ item.code }}
+                                                </a>
+                                            </div>
+					    <div>
+                                                <!-- 網頁載入時，對於每一個相關產品，會根據「該產品是否停產」以及「有多少子規格停產」，來決定下面三個<span class="phasedout2">結構要顯示哪一個 -->
+                                                <span class="phasedout2" v-if="item.out == 'Y' && item.phased_out_cnt == 0">Phased Out</span>
+                                                <span class="phasedout2" v-if="item.phased_out_cnt == 1" @click="PhaseOutAlert(item.phased_out_text)">1 variant is phased out</span>
+                                                <span class="phasedout2" v-if="item.phased_out_cnt > 1" @click="PhaseOutAlert(item.phased_out_text)">{{ item.phased_out_cnt }} variants are phased out</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleControls_replacement" role="button"
+                               data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleControls_replacement" role="button"
+                               data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
                         <div class="lower_section"
                             v-if="(product.notes != null && product.notes != '') || product.description != ''"><h5>
                             Description</h5>
@@ -5532,7 +5712,48 @@ header( 'location:index' );
                                 </a>
                             </div>
                         </div>
+                        <div class="middle_section"
+                         v-if="product.replacement_product !== undefined ? product.replacement_product.length !== 0 : false">
+                        <h5>Replacement Product</h5>
 
+                        <div id="carouselExampleControls_replacement" class="carousel slide">
+
+                            <div class="carousel-inner">
+
+                                <div v-for='(g, groupIndex) in groupedItems_replacement'
+                                     :class="['carousel-item', (groupIndex == 0 ? 'active' : '')]">
+                                    <div class="row custom">
+                                        <div class="col custom" v-for='(item, index) in g'>
+                                            <img :src="img_url + item.photo1" :alt="'No Product Picture'">
+                                            <div>
+                                                <a @click="getSingleProduct(item.id)">
+                                                    {{ item.code }}
+                                                </a>
+                                            </div>
+					    <div>
+                                                <!-- 網頁載入時，對於每一個相關產品，會根據「該產品是否停產」以及「有多少子規格停產」，來決定下面三個<span class="phasedout2">結構要顯示哪一個 -->
+                                                <span class="phasedout2" v-if="item.out == 'Y' && item.phased_out_cnt == 0">Phased Out</span>
+                                                <span class="phasedout2" v-if="item.phased_out_cnt == 1" @click="PhaseOutAlert(item.phased_out_text)">1 variant is phased out</span>
+                                                <span class="phasedout2" v-if="item.phased_out_cnt > 1" @click="PhaseOutAlert(item.phased_out_text)">{{ item.phased_out_cnt }} variants are phased out</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleControls_replacement" role="button"
+                               data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleControls_replacement" role="button"
+                               data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
 
                         <div class="lower_section"
                             v-if="(product.notes != null && product.notes != '') || product.description != ''">
@@ -5566,7 +5787,7 @@ header( 'location:index' );
     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          aria-hidden="true" id="modal_specification_sheet">
 
-        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
             <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 
@@ -5670,7 +5891,7 @@ header( 'location:index' );
     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          aria-hidden="true" id="modal_signature_codebook">
 
-        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
             <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 
@@ -5731,7 +5952,7 @@ header( 'location:index' );
     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_quotation_list">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
         <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 
@@ -5933,7 +6154,7 @@ header( 'location:index' );
     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_electrical_catalog">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
         <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 
@@ -6029,7 +6250,7 @@ header( 'location:index' );
     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_electrical_tool_catalog">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
         <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 

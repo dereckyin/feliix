@@ -89,6 +89,9 @@ var app = new Vue({
     nColumns: 4,
     groupedItems: [],
 
+    replacement_product : [],
+    is_replacement_product: [],
+
     show_accessory: false,
 
     v1:"",

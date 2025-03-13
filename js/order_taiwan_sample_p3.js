@@ -213,6 +213,7 @@ var app = new Vue({
         related_product: [],
         specification: [],
         description: "",
+        replacement_product: [],
 
         // vat for each product
         product_vat : '',
@@ -238,6 +239,7 @@ var app = new Vue({
         toggle: false,
 
         groupedItems : [],
+        groupedItems_replacement : [],
 
         //
         fil_project_category:'',
@@ -405,6 +407,9 @@ var app = new Vue({
         p_related_product : [],
         p_nColumns: 4,
         p_groupedItems: [],
+
+        replacement_product : [],
+    is_replacement_product: [],
 
         p_show_accessory: false,
 
@@ -2167,6 +2172,14 @@ var app = new Vue({
         this.groupedItems  = newArr;
       },
 
+      chunk_replacement: function(arr, size) {
+        var newArr = [];
+        for (var i=0; i<arr.length; i+=size) {
+          newArr.push(arr.slice(i, i+size));
+        }
+        this.groupedItems_replacement  = newArr;
+      },
+
       set_up_variants() {
         for(var i=0; i<this.product.variation1_value.length; i++)
         {
@@ -2235,6 +2248,9 @@ var app = new Vue({
         this.attributes = product.attribute_list;
 
         this.related_product  = product.related_product;
+        this.related_product_cnt = product.related_product.length;
+
+        this.replacement_product = product.replacement_product;
 
         this.quoted_price = product.quoted_price;
         this.price = product.price;
@@ -2252,6 +2268,7 @@ var app = new Vue({
         this.last_order_url = product.last_order_url;
 
         this.chunk(this.related_product, 4);
+        this.chunk_replacement(this.product.replacement_product, 4);
 
         this.set_up_variants();
         this.set_up_specification();
@@ -2314,6 +2331,68 @@ var app = new Vue({
       },
 
 
+      getSingleProduct : function(id) {
+
+
+        let _this = this;
+  
+  
+        const params = {
+          sd: id,
+          c: '',
+          t: '',
+          b: '',
+          of1: '',
+          ofd1: '',
+          of2: '',
+          ofd2: '',
+          page: 1,
+          size: 10,
+        };
+    
+        let token = localStorage.getItem("accessToken");
+    
+        axios
+          .get("api/product_calatog", {
+            params,
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then(function(response) {
+            console.log(response.data);
+            let res = response.data;
+            if(res.length > 0) 
+            {
+              _this.product = response.data[0];
+              _this.url = _this.product.photo1 !== '' ? _this.img_url + _this.product.photo1 : '';
+  
+              _this.special_infomation = _this.product.special_information[0].lv3[0];
+              _this.attributes = _this.product.attribute_list;
+      
+              _this.related_product  = _this.product.related_product;
+              _this.replacement_product = _this.product.replacement_product;
+  
+              _this.quoted_price = _this.product.quoted_price;
+              _this.price = _this.product.price;
+  
+              _this.v1 = "";
+              _this.v2 = "";
+              _this.v3 = "";
+              _this.v4 = "";
+      
+              _this.chunk(_this.related_product, 4);
+              _this.chunk_replacement(_this.replacement_product, 4);
+      
+              _this.set_up_variants();
+              _this.set_up_specification();
+            }
+  
+      
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+  
+      },
       
     filter_apply_new_quo: function() {
       let _this = this;
@@ -3629,6 +3708,9 @@ var app = new Vue({
 
           _this.p_related_product = _this.p_record[0]['related_product'];
           _this.p_chunk(_this.p_related_product, 4);
+
+          _this.replacement_product = _this.p_record[0]['replacement_product'];
+          _this.chunk_replacement(_this.replacement_product, 4);
 
           _this.p_variation1 = _this.p_record[0]['variation1'];
           _this.p_variation2 = _this.p_record[0]['variation2'];

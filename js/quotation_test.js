@@ -219,6 +219,7 @@ var app = new Vue({
         related_product: [],
         specification: [],
         description: "",
+        replacement_product: [],
 
         // vat for each product
         product_vat : '',
@@ -245,6 +246,7 @@ var app = new Vue({
         toggle_type:'',
 
         groupedItems : [],
+        groupedItems_replacement : [],
 
         product_array: [],
         qp:'',
@@ -1215,6 +1217,7 @@ var app = new Vue({
             _this.attributes = _this.product.attribute_list;
     
             _this.related_product  = _this.product.related_product;
+            _this.replacement_product = _this.product.replacement_product;
 
             _this.quoted_price = _this.product.quoted_price;
             _this.price = _this.product.price;
@@ -1225,6 +1228,7 @@ var app = new Vue({
             _this.v4 = "";
     
             _this.chunk(_this.related_product, 4);
+            _this.chunk_replacement(_this.replacement_product, 4);
     
             _this.set_up_variants();
             _this.set_up_specification();
@@ -1285,6 +1289,7 @@ var app = new Vue({
         this.attributes = product.attribute_list;
 
         this.related_product  = product.related_product;
+        this.replacement_product = product.replacement_product;
 
         this.quoted_price = product.quoted_price;
         this.price = product.price;
@@ -1302,6 +1307,7 @@ var app = new Vue({
         this.last_order_url = product.last_order_url;
 
         this.chunk(this.related_product, 4);
+        this.chunk_replacement(this.replacement_product, 4);
 
         this.set_up_variants();
         this.set_up_specification();
@@ -1313,6 +1319,14 @@ var app = new Vue({
           newArr.push(arr.slice(i, i+size));
         }
         this.groupedItems  = newArr;
+      },
+
+      chunk_replacement: function(arr, size) {
+        var newArr = [];
+        for (var i=0; i<arr.length; i+=size) {
+          newArr.push(arr.slice(i, i+size));
+        }
+        this.groupedItems_replacement  = newArr;
       },
 
       set_up_variants() {

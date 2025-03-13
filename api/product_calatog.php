@@ -410,6 +410,8 @@ else
                 if($replacement_cnt > 0)
                     $replacement_product = GetReplacementProduct($id, $db);
 
+                $is_replacement_product = IsReplacementProduct($id, $db);
+
                 $product_set_1 = [];
                 $product_set_2 = [];
                 $product_set_3 = [];
@@ -1329,6 +1331,8 @@ else
                                     "product_ics" => $product_ics,
                                     "product_skp" => $product_skp,
                                     "product_manual" => $product_manual,
+
+                                    "is_replacement_product" => $is_replacement_product,
                 );
             }
 
@@ -1786,6 +1790,30 @@ function GetLevel3($cat_id, $db){
 
 }
 
+function IsReplacementProduct($id, $db){
+
+    $time_start = microtime(true); 
+
+    $sql = "SELECT * FROM product_replacement WHERE product_id = ". $id . " and STATUS <> -1";
+
+    $merged_results = array();
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = $row;
+    }
+
+    $time_end = microtime(true);
+
+    $execution_time = ($time_end - $time_start);
+    // echo '<b>IsReplacementProduct</b> '.$execution_time.'<br/>';
+
+    return $merged_results;
+
+}
+
 function GetRelatedProductCode($id, $db){
 
     $time_start = microtime(true); 
@@ -2164,6 +2192,8 @@ function GetProductSetContent($id, $db){
         $phased_out_cnt = $phased_out_cnt;
 
         $related_product = GetRelatedProductCode($id, $db);
+
+        $is_replacement_product = IsReplacementProduct($id, $db);
 
         $quoted_price = $row['quoted_price'];
         $quoted_price_org = $row['quoted_price'];
@@ -2853,6 +2883,8 @@ function GetProductSetContent($id, $db){
                             "product_skp" => $product_skp,
                             "product_manual" => $product_manual,
 
+                            "is_replacement_product" => $is_replacement_product,
+
         );
     }
 
@@ -2919,7 +2951,7 @@ function getOrderInfo($od_id, $db)
 }
 
 function GetReplacementProduct($id, $db){
-    $sql = "SELECT replacement_id, code FROM product_replacement WHERE product_id = '". $id . "' and STATUS <> -1";
+    $sql = "SELECT id, id replacement_id, code, photo1 FROM product_category where id in (SELECT replacement_id FROM product_replacement WHERE product_id = ". $id . " and STATUS <> -1)";
 
     $sql = $sql . " ORDER BY code ";
 
@@ -2929,8 +2961,10 @@ function GetReplacementProduct($id, $db){
     $stmt->execute();
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $merged_results[] = array(  "replacement_id" => $row['replacement_id'], 
+        $merged_results[] = array(  "id" => $row['id'],
+                                    "replacement_id" => $row['replacement_id'], 
                                     "code" => $row['code'],
+                                    "photo1" => $row['photo1'],
                                    
             );
     }

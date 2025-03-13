@@ -3166,7 +3166,7 @@ header( 'location:index' );
     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          aria-hidden="true" id="modal_product_catalog">
 
-        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
             <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 
@@ -3521,7 +3521,7 @@ header( 'location:index' );
     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          aria-hidden="true" id="modal_product_display">
 
-        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
             <div class="modal-content"
                  style="height: calc( 100vh - 3.75rem); overflow-y: auto; border: none; padding-bottom: 20px;">
@@ -3906,7 +3906,7 @@ header( 'location:index' );
     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          aria-hidden="true" id="modal_specification_sheet">
 
-        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
 
             <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 
