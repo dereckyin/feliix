@@ -472,16 +472,16 @@ Delivery Charges
 
             if($project_category == OFFICE)
             {
-                $title = "Terms and Conditions";
-                $brief = "";
-                $list = "1. Warranty: 5 years upon delivery and lifetime service warranty. This limited warranty does not cover those defects brought about by normal wear and tear. During the Warranty Period, Feliix Inc. will repair or replace products or parts of a product that proves defective because of improper material or workmanship under normal use and maintenance.
-2. Quotation valid for 2 Weeks.
-3. Leadtime:30- 45 Days (Start production upon P.O and down payment)
-4. Above price is subject to change without prior notice due to exchange rate of Dollar to Peso.
-Building freight charges to be charged accordingly to client.
-Any returned deliveries due to unfinished site and/or resulting for items not to be installed, will be billed 30 days after delivery on site and/or acknowledgement of arrival of goods.
-5. Covid related requirements (e.g. Swab Test, etc.) are reimbursable to the client.
-6. Delivery of items is free of charge within Metro Manila only. Out of town delivery shall be billed accordingly.";
+                $title = "Warranty & Lifetime Service";
+                $brief = "Terms and Conditions";
+                $list = "5-year warranty : Locally manufactured products
+3-year warranty : Indent items from Taiwan
+
+*Warranty period commences from the date of completion of Delivery and Installation.
+
+*Does not cover defects arising from normal wear and tear, misuse, or unauthorized modifications. The warranty is void if repairs or alterations are performed by parties other than Feliix Inc.
+
+*Feliix Inc. reserves the right to determine whether a product defect is covered by the warranty.";
 
                 $query = "INSERT INTO quotation_term
                 SET
@@ -522,6 +522,113 @@ Any returned deliveries due to unfinished site and/or resulting for items not to
                     echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
                     die();
                 }
+
+
+                $title = "Delivery & Lead Time";
+                $brief = "Terms and Conditions";
+                $list = "Local Production: 30-45 business days
+Indent Items from Taiwan: 60-90 business days
+
+*Production will start upon receipt of Purchase Order (P.O.), 50% down payment, and approval of finishes or shop drawings (if necessary). Purchase orders requiring approval of shop drawings and finishes should be completed promptly after receiving the P.O. and down payment.
+
+*Failure to provide timely approval may result in a delay of the production schedule.
+
+*Delivery Charges
+Free delivery within Metro Manila.
+Delivery charges apply for areas outside Metro Manila.";
+
+                $query = "INSERT INTO quotation_term
+                SET
+                    `quotation_id` = :quotation_id,
+                    `page` = 0,
+                    `title` = :title,
+                    `brief` = :brief,
+                    `list` = :list,
+                    `status` = 0,
+                    `create_id` = :create_id,
+                    `created_at` = now()";
+
+                // prepare the query
+                $stmt = $db->prepare($query);
+                // bind the values
+                $stmt->bindParam(':quotation_id', $last_id);
+                $stmt->bindParam(':title', $title);
+                $stmt->bindParam(':brief', $brief);
+                $stmt->bindParam(':list', $list);
+
+                $stmt->bindParam(':create_id', $user_id);
+
+
+                try {
+                    // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        $arr = $stmt->errorInfo();
+                        error_log($arr[2]);
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+                        die();
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+
+
+                $title = "Notes";
+                $brief = "";
+                $list = "*Weekends, holidays, and/or natural disasters that may cause operational delays are not accounted for in the set lead time. Additionally, lead time may be extended due to the availability of raw materials and/or site conditions.
+
+*Any changes to the design or specifications after the proposal has been approved may result in a price adjustment and extended lead time, as agreed upon by both parties.
+
+*Building freight charges will be charged accordingly to the client.
+
+*Any item deliveries returned due to an unfinished site, preventing installation, will be invoiced for full payment 30 days after the delivery date/acknowledgement of receipt.";
+
+                $query = "INSERT INTO quotation_term
+                SET
+                    `quotation_id` = :quotation_id,
+                    `page` = 0,
+                    `title` = :title,
+                    `brief` = :brief,
+                    `list` = :list,
+                    `status` = 0,
+                    `create_id` = :create_id,
+                    `created_at` = now()";
+
+                // prepare the query
+                $stmt = $db->prepare($query);
+                // bind the values
+                $stmt->bindParam(':quotation_id', $last_id);
+                $stmt->bindParam(':title', $title);
+                $stmt->bindParam(':brief', $brief);
+                $stmt->bindParam(':list', $list);
+
+                $stmt->bindParam(':create_id', $user_id);
+
+
+                try {
+                    // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        $arr = $stmt->errorInfo();
+                        error_log($arr[2]);
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+                        die();
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+
+
             }
         }
 
