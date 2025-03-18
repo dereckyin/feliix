@@ -162,6 +162,16 @@ var app = new Vue({
                 _this.rate_electrician = _this.temp_rate_electrician;
                 _this.rate_helper = _this.temp_rate_helper;
 
+                if(_this.period > 0 && _this.item_list.length != 0)
+                {
+                    // resize item_list.type.days
+                    for(var i = 0; i < _this.item_list.length; i++) {
+                        for(var j = 0; j < _this.item_list[i].types.length; j++) {
+                            _this.item_list[i].types[j].days = _this.resize_array(_this.item_list[i].types[j].days, _this.period, "");
+                        }
+                    }
+                }
+
                 _this.reload();
 
                 //_this.setup_man_power();
@@ -178,6 +188,11 @@ var app = new Vue({
                 
                 _this.submit = false;
             });
+        },
+
+        resize_array(arr, size, defval) {
+            while (arr.length > size) { arr.pop(); }
+            while (arr.length < size) { arr.push(defval); }
         },
 
         setup_man_power: function() {
