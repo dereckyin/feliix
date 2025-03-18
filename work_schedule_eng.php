@@ -1092,17 +1092,17 @@ header( 'location:index' );
 
 
         <div class="btnbox" style="text-align: left; padding: 20px 0 0;" v-show="show_gantt">
-            <a class="btn" style="color: white;">Reset</a>
-            <a class="btn green" style="color: white;">Save</a>
+            <a class="btn" style="color: white;" @click="reset()">Reset</a>
+            <a class="btn green" style="color: white;" @click="apply()">Save</a>
         </div>
         
 
-        <div class="box_weekly_cost" style="display: none;">
+        <div class="box_weekly_cost" v-show="man_power_weekly.length > 0">
 
-            <table class="tb_weekly_cost">
+            <table class="tb_weekly_cost" v-for="(item, index) in man_power_weekly">
                 <tbody>
                 <tr class="title">
-                    <td colspan="6">Week 1</td>
+                    <td colspan="6">Week {{index + 1}}</td>
                 </tr>
 
                 <tr>
@@ -1116,139 +1116,37 @@ header( 'location:index' );
 
                 <tr>
                     <td>No. of ppl.</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>10</td>
-                    <td>15</td>
-                    <td>15</td>
+                    <td>{{ item.man_power2 }}</td>
+                    <td>{{ item.man_power3 }}</td>
+                    <td>{{ item.man_power4 }}</td>
+                    <td>{{ item.man_power5 }}</td>
+                    <td>{{ item.man_power6 }}</td>
                 </tr>
 
                 <tr>
                     <td>Rate</td>
-                    <td>1400</td>
-                    <td>1200</td>
-                    <td>1000</td>
-                    <td>1400</td>
-                    <td>900</td>
+                    <td>{{ rate_leadman }}</td>
+                    <td>{{ rate_sr_technician }}</td>
+                    <td>{{ rate_technician }}</td>
+                    <td>{{ rate_electrician }}</td>
+                    <td>{{ rate_helper }}</td>
                 </tr>
 
                 <tr>
                     <td>Subtotal</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>10000</td>
-                    <td>21000</td>
-                    <td>13500</td>
+                    <td>{{ item.man_power2 * rate_leadman }}</td>
+                    <td>{{ item.man_power3 * rate_sr_technician }}</td>
+                    <td>{{ item.man_power4 * rate_technician }}</td>
+                    <td>{{ item.man_power5 * rate_electrician }}</td>
+                    <td>{{ item.man_power6 * rate_helper }}</td>
                 </tr>
 
                 <tr>
                     <td>Total per Week</td>
-                    <td colspan="5">44500</td>
+                    <td colspan="5">{{ item.man_power2 * rate_leadman + item.man_power3 * rate_sr_technician + item.man_power4 * rate_technician + item.man_power5 * rate_electrician + item.man_power6 * rate_helper}}</td>
                 </tr>
                 </tbody>
             </table>
-
-
-
-            <table class="tb_weekly_cost">
-                <tbody>
-                <tr class="title">
-                    <td colspan="6">Week 2</td>
-                </tr>
-
-                <tr>
-                    <td></td>
-                    <td>b</td>
-                    <td>c</td>
-                    <td>d</td>
-                    <td>e</td>
-                    <td>f</td>
-                </tr>
-
-                <tr>
-                    <td>No. of ppl.</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>10</td>
-                    <td>15</td>
-                    <td>15</td>
-                </tr>
-
-                <tr>
-                    <td>Rate</td>
-                    <td>1400</td>
-                    <td>1200</td>
-                    <td>1000</td>
-                    <td>1400</td>
-                    <td>900</td>
-                </tr>
-
-                <tr>
-                    <td>Subtotal</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>10000</td>
-                    <td>21000</td>
-                    <td>13500</td>
-                </tr>
-
-                <tr>
-                    <td>Total per Week</td>
-                    <td colspan="5">44500</td>
-                </tr>
-                </tbody>
-            </table>
-
-
-            <table class="tb_weekly_cost">
-                <tbody>
-                <tr class="title">
-                    <td colspan="6">Week 3</td>
-                </tr>
-
-                <tr>
-                    <td></td>
-                    <td>b</td>
-                    <td>c</td>
-                    <td>d</td>
-                    <td>e</td>
-                    <td>f</td>
-                </tr>
-
-                <tr>
-                    <td>No. of ppl.</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>10</td>
-                    <td>15</td>
-                    <td>15</td>
-                </tr>
-
-                <tr>
-                    <td>Rate</td>
-                    <td>1400</td>
-                    <td>1200</td>
-                    <td>1000</td>
-                    <td>1400</td>
-                    <td>900</td>
-                </tr>
-
-                <tr>
-                    <td>Subtotal</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>10000</td>
-                    <td>21000</td>
-                    <td>13500</td>
-                </tr>
-
-                <tr>
-                    <td>Total per Week</td>
-                    <td colspan="5">44500</td>
-                </tr>
-                </tbody>
-            </table>
-
 
             <table class="tb_total_cost">
                 <tbody>
@@ -1263,9 +1161,9 @@ header( 'location:index' );
                 </tr>
 
                 <tr>
-                    <td>133,500</td>
-                    <td>267,000</td>
-                    <td>400,500</td>
+                    <td>{{ Math.floor(sum_man_power_weekly).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                    <td>{{ Math.floor(sum_man_power_weekly * 2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                    <td>{{ Math.floor(sum_man_power_weekly * 3).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
                 </tr>
                 </tbody>
             </table>

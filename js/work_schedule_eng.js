@@ -45,6 +45,9 @@ var app = new Vue({
         man_power6 : [],
 
         man_power_sum: [],
+
+        man_power_weekly: [],
+        sum_man_power_weekly: 0,
         
     },
     
@@ -161,7 +164,7 @@ var app = new Vue({
 
                 _this.reload();
 
-                _this.setup_man_power();
+                //_this.setup_man_power();
 
                 _this.submit = false;
             })
@@ -254,7 +257,34 @@ var app = new Vue({
                     this.temp_item_list = JSON.parse(record[0].items);
                     
                     this.man_power = JSON.parse(record[0].man_power);
+                    this.man_power_weekly = JSON.parse(record[0].man_power_weekly);
+
+                    if(this.man_power["man_power1"] != undefined)
+                        this.man_power1 = JSON.parse(JSON.stringify(this.man_power["man_power1"]));
+                    if(this.man_power["man_power2"] != undefined)
+                        this.man_power2 = JSON.parse(JSON.stringify(this.man_power["man_power2"]));
+                    if(this.man_power["man_power3"] != undefined)
+                        this.man_power3 = JSON.parse(JSON.stringify(this.man_power["man_power3"]));
+                    if(this.man_power["man_power4"] != undefined)
+                        this.man_power4 = JSON.parse(JSON.stringify(this.man_power["man_power4"]));
+                    if(this.man_power["man_power5"] != undefined)
+                        this.man_power5 = JSON.parse(JSON.stringify(this.man_power["man_power5"]));
+                    if(this.man_power["man_power6"] != undefined)
+                        this.man_power6 = JSON.parse(JSON.stringify(this.man_power["man_power6"]));
+                    this.sum_man_power();
                 }
+
+                // sum weekly
+                sum_man_power_weekly = 0;
+                for(var i = 0; i < this.man_power_weekly.length; i++) {
+                    sum_man_power_weekly += this.man_power_weekly[i]['man_power2'] * this.rate_leadman;
+                    sum_man_power_weekly += this.man_power_weekly[i]['man_power3'] * this.rate_sr_technician;
+                    sum_man_power_weekly += this.man_power_weekly[i]['man_power4'] * this.rate_technician;
+                    sum_man_power_weekly += this.man_power_weekly[i]['man_power5'] * this.rate_electrician;
+                    sum_man_power_weekly += this.man_power_weekly[i]['man_power6'] * this.rate_helper;
+                }
+
+                this.sum_man_power_weekly = sum_man_power_weekly;
 
                 if(this.period > 0 && this.man_power.length == 0 && this.item_list.length > 0)
                     this.setup_man_power();
@@ -480,57 +510,77 @@ var app = new Vue({
         
         reset: function() {
             this.submit = false;
-            // header
-            this.first_line = '';
-            this.second_line = '';
-            this.project_category = '';
-            this.quotation_no = '';
-            this.quotation_date = '';
+            // clear every value in man_power
+            this.setup_man_power();
+            // clear every value
+            for(var i = 0; i < this.item_list.length; i++) {
+                for(var j = 0; j < this.item_list[i].types.length; j++) {
+                    for(var k = 0; k < this.item_list[i].types[j].days.length; k++) {
+                        this.item_list[i].types[j].days[k] = "";
+                    }
+                }
+            }
             
-            this.prepare_for_first_line = '';
-            this.prepare_for_second_line ='';
-            this.prepare_for_third_line = '';
+        },
+
+        apply: async function() {
+            if (this.submit == true) return;
             
-            this.prepare_by_first_line = '';
-            this.prepare_by_second_line = '';
-            this.prepare_by_third_line = '';
+            if(this.id == 0)
+                return;
+
+            this.submit = true;
             
-            // footer
-            this.footer_first_line = '';
-            this.footer_second_line = '';
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+            let _this = this;
+
+            // combile man_power
+            obj = {
+                "man_power1" : this.man_power1,
+                "man_power2" : this.man_power2,
+                "man_power3" : this.man_power3,
+                "man_power4" : this.man_power4,
+                "man_power5" : this.man_power5,
+                "man_power6" : this.man_power6,
+            };
             
-            // _header
-            this.temp_first_line = '';
-            this.temp_second_line = '';
-            this.temp_project_category = '';
-            this.temp_quotation_no = '';
-            this.temp_quotation_date = '';
+            form_Data.append("jwt", token);
             
-            this.temp_prepare_for_first_line = '';
-            this.temp_prepare_for_second_line ='';
-            this.temp_prepare_for_third_line = '';
+            form_Data.append("id", this.id);
+            form_Data.append("items", JSON.stringify(this.item_list));
+            form_Data.append("man_power", JSON.stringify(obj));
             
-            this.temp_prepare_by_first_line = '';
-            this.temp_prepare_by_second_line = '';
-            this.temp_prepare_by_third_line = '';
+            axios({
+                method: "post",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+                url: "api/work_schedule_eng_apply",
+                data: form_Data,
+            })
+            .then(function(response) {
+                //handle success
+                Swal.fire({
+                    html: response.data.message,
+                    icon: "info",
+                    confirmButtonText: "OK",
+                });
+            })
+            .catch(function(error) {
+                //handle error
+                Swal.fire({
+                    text: JSON.stringify(error),
+                    icon: "info",
+                    confirmButtonText: "OK",
+                });
+            })
+            .finally(function() {
+                _this.submit = false;
+                _this.reload();
+            });
             
-            // _footer
-            this.temp_footer_first_line = '';
-            this.temp_footer_second_line = '';
-            
-            this.subtotal = 0;
-            this.subtotal_novat_a = 0;
-            this.subtotal_novat_b = 0;
-            
-            // page
-            this.pages = [];
-            this.temp_pages = [];
-            
-            this.can_view = '';
-            this.can_duplicate = '';
-            this.temp_can_view = '';
-            this.temp_can_duplicate = '';
-            
+
         },
         
         get_latest_record: async function() {
@@ -711,9 +761,6 @@ var app = new Vue({
             obj.id = obj_id + 1
             obj.page_id = page.id;
             
-            
-            
-            
             // subtotal
             // var block = this.block_names.find(({ id }) => id === eid);
             var block = this.block_names.filter(element => {
@@ -766,14 +813,14 @@ var app = new Vue({
 
                 if(res.status == 200){
                     _this.submit = false;
-                    await this.reload();
+                    
                     Swal.fire({
                         html: res.data.message,
                         icon: "info",
                         confirmButtonText: "OK",
                     });
 
-                    _this.setup_man_power();
+                    await this.reload();
                 }
             } catch (err) {
                 console.log(err)
@@ -787,65 +834,6 @@ var app = new Vue({
             }
         },
 
-        
-        // page_save_pre: async function() {
-        //     let _this = this;
-        //     let empty = true;
-        //     // check if page is empty
-            
-        //     if (this.submit == true) return;
-        //     this.submit = true;
-            
-            
-        //     await this.get_latest_record();
-            
-            
-        //     this.submit = false;
-            
-        //     // check if this.temp_pages and this.temp_pages_verify identical
-        //     if(JSON.stringify(this.pages ) != JSON.stringify(this.temp_pages_verify))
-        //         {
-        //         Swal.fire({
-        //             text: "This quotation has been modified by other user. Please reload the page and try again.",
-        //             icon: "info",
-        //             confirmButtonText: "OK",
-        //         });
-                
-        //         return;
-        //     }
-            
-        //     for(var i = 0; i < this.temp_pages.length; i++) {
-        //         if(this.temp_pages[i].types.length != 0){
-        //             empty = false;
-        //             break;
-        //         }
-        //     }
-            
-        //     if(this.temp_pages.length != 0)
-        //         empty = false;
-            
-        //     if(empty)
-        //         {
-        //         const alert =  await Swal.fire({
-        //             title: "WARNING",
-        //             text: "If click yes, all the pages and subtotal blocks will be erased.",
-        //             icon: "warning",
-        //             showCancelButton: true,
-        //             confirmButtonColor: "#3085d6",
-        //             cancelButtonColor: "#d33",
-        //             confirmButtonText: "Yes",
-        //         });
-                
-        //         if(alert.value == true)
-        //             await _this.page_save();
-        //     }
-        //     else
-        //     {
-                
-        //         await _this.page_save();
-        //     }
-        // },
-        
         
         reload : async function() {
             this.close_all();

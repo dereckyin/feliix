@@ -5707,6 +5707,7 @@ CREATE TABLE IF NOT EXISTS `work_schedule_eng` (
   `rate_helper` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `items` JSON,
   `man_power` JSON,
+  `man_power_weekly` JSON,
   `status` int(11) DEFAULT 0,
   `create_id` int(11) DEFAULT 0,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,

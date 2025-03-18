@@ -55,6 +55,7 @@ if (!isset($jwt)) {
                     pm.rate_helper, 
                     pm.items,
                     pm.man_power,
+                    pm.man_power_weekly,
                     pm.`status`,
                     c_user.username AS created_by, 
                     u_user.username AS updated_by,
@@ -80,6 +81,7 @@ if (!isset($jwt)) {
         $rate_helper = $row['rate_helper'];
         $items = $row['items'];
         $man_power = $row['man_power'];
+        $man_power_week = $row['man_power_weekly'];
         $status = $row['status'];
 
         $created_by = $row['created_by'];
@@ -92,6 +94,9 @@ if (!isset($jwt)) {
         
         if($man_power == null)
             $man_power = "[]";
+
+        if($man_power_week == null)
+            $man_power_week = "[]";
         
         $merged_results[] = array(
             "id" => $id,
@@ -103,6 +108,7 @@ if (!isset($jwt)) {
             "rate_helper" => $rate_helper,
             "items" => $items,
             "man_power" => $man_power,
+            "man_power_weekly" => $man_power_week,
             "status" => $status,
             "created_by" => $created_by,
             "updated_by" => $updated_by,
