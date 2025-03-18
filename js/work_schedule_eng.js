@@ -162,16 +162,6 @@ var app = new Vue({
                 _this.rate_electrician = _this.temp_rate_electrician;
                 _this.rate_helper = _this.temp_rate_helper;
 
-                if(_this.period > 0 && _this.item_list.length != 0)
-                {
-                    // resize item_list.type.days
-                    for(var i = 0; i < _this.item_list.length; i++) {
-                        for(var j = 0; j < _this.item_list[i].types.length; j++) {
-                            _this.item_list[i].types[j].days = _this.resize_array(_this.item_list[i].types[j].days, _this.period, "");
-                        }
-                    }
-                }
-
                 _this.reload();
 
                 //_this.setup_man_power();
@@ -193,6 +183,30 @@ var app = new Vue({
         resize_array(arr, size, defval) {
             while (arr.length > size) { arr.pop(); }
             while (arr.length < size) { arr.push(defval); }
+        },
+
+        resize_item_list: function() {
+            if(this.period == 0)
+                return;
+            // resize item_list.type.days
+            for(var i = 0; i < this.item_list.length; i++) {
+                for(var j = 0; j < this.item_list[i].types.length; j++) {
+                    this.resize_array(this.item_list[i].types[j].days, this.period, "");
+                }
+            }
+        },
+
+        resize_man_power: function() {
+            if(this.period == 0)
+                return;
+            this.resize_array(this.man_power1, this.period, "");
+            this.resize_array(this.man_power2, this.period, "");
+            this.resize_array(this.man_power3, this.period, "");
+            this.resize_array(this.man_power4, this.period, "");
+            this.resize_array(this.man_power5, this.period, "");
+            this.resize_array(this.man_power6, this.period, "");
+
+            this.resize_array(this.man_power_sum, this.period, "");
         },
 
         setup_man_power: function() {
@@ -286,7 +300,6 @@ var app = new Vue({
                         this.man_power5 = JSON.parse(JSON.stringify(this.man_power["man_power5"]));
                     if(this.man_power["man_power6"] != undefined)
                         this.man_power6 = JSON.parse(JSON.stringify(this.man_power["man_power6"]));
-                    this.sum_man_power();
                 }
 
                 // sum weekly
@@ -303,6 +316,14 @@ var app = new Vue({
 
                 if(this.period > 0 && this.man_power.length == 0 && this.item_list.length > 0)
                     this.setup_man_power();
+
+                if(this.period != this.item_list.length)
+                    this.resize_item_list();
+
+                if(this.period != this.man_power.length)
+                    this.resize_man_power();
+
+                this.sum_man_power();
             }
         },
         
