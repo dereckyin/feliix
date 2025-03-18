@@ -5,7 +5,7 @@ var app = new Vue({
         
         
         id:0,
-        
+        init_id:0,
         
         //img_url: 'https://storage.googleapis.com/feliiximg/',
         
@@ -64,6 +64,7 @@ var app = new Vue({
                     switch (tmp[0]) {
                         case "id":
                         _this.id = tmp[1];
+                        _this.init_id = tmp[1];
                         
                         break;
                         default:
@@ -785,7 +786,7 @@ var app = new Vue({
         
         page_copy: async function(pid,  eid) {
             // page
-            var page = this.temp_pages.find(({ id }) => id === pid);
+            var page = this.temp_item_list.find(({ id }) => id === pid);
             var element = page.types.find(({ id }) => id === eid);
             
             let obj_id = 0;
@@ -795,28 +796,12 @@ var app = new Vue({
             
             var obj = JSON.parse(JSON.stringify(element));
             obj.id = obj_id + 1
-            obj.page_id = page.id;
             
-            // subtotal
-            // var block = this.block_names.find(({ id }) => id === eid);
-            var block = this.block_names.filter(element => {
-                return element.id === eid && element.page_id === pid;
-            });
-            
-            var new_blocks = JSON.parse(JSON.stringify(block[0].blocks));
-            
-            for(var i = 0; i < new_blocks.length; i++) {
-                new_blocks[i].type_id = obj_id + 1;
-            }
-            
-            
-            await this.page_copy_save(this.id, obj_id + 1, new_blocks, obj);
-            
-            await this.reload();
+            page.types.push(obj);
         },
         
         del_block: function(pid, eid) {
-            var page = this.temp_pages.find(({ id }) => id === pid);
+            var page = this.temp_item_list.find(({ id }) => id === pid);
             var index = page.types.findIndex(({ id }) => id === eid);
             if (index > -1) {
                 page.types.splice(index, 1);
@@ -875,8 +860,13 @@ var app = new Vue({
             this.close_all();
             
             this.is_load = false;
-            
-            await this.get_records(this.id);
+
+            if(this.init_id == 0)
+            {
+                window.location.href = "work_schedule_eng?" + "id=" + this.id;
+            }
+            else
+                await this.get_records(this.id);
         },
         
         close_all() {

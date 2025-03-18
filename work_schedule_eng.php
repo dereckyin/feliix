@@ -1011,7 +1011,7 @@ header( 'location:index' );
 
                         <tr class="sub_item_row" v-for="(it, sub_index) in item.types" v-if="item.types.length > 0">
                             <td></td>
-                            <td>{{it.legned}}</td>
+                            <td>{{it.legend}}</td>
                             <td>{{it.name}}</td>
                             <td>{{ it.days.filter(function(it){ return it != ''; }).length}}</td>
                             <td v-for="(day, day_index) in it.days" v-if="it.days.length > 0">
