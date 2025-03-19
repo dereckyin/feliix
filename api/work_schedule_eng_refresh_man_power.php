@@ -194,6 +194,121 @@ else
         }
 
         $man_power_weekly = json_encode($weeks_array);
+
+        if($_id != 0)
+        {
+            $is_existed = false;
+            
+            $query = "SELECT id
+            FROM work_schedule_eng
+            where id = :id";
+            
+            $stmt = $db->prepare( $query );
+            $stmt->bindParam(':id', $_id);
+            
+            // execute the query
+            $stmt->execute();
+            
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $is_existed = true;
+            }
+        }
+        
+        if($_id == 0 || !$is_existed)
+        {
+            
+            $query = "INSERT INTO work_schedule_eng
+            SET
+                `period` = 0,
+                `rate_leadman` = 1400,
+                `rate_sr_technician` = 1200,
+                `rate_technician` = 1000,
+                `rate_electrician` = 1400,
+                `rate_helper` = 900,
+                `items` = :items,
+                `man_power` = :man_power,
+                `man_power_weekly` = :man_power_weekly,
+                `status` = 0,
+                `create_id` = :create_id,
+                `created_at` =  now() ";
+            
+            // prepare the query
+            $stmt = $db->prepare($query);
+            
+            // bind the values
+            $stmt->bindParam(':items', $items);
+            $stmt->bindParam(':man_power', $man_power);
+            $stmt->bindParam(':man_power_weekly', $man_power_weekly);
+            $stmt->bindParam(':create_id', $user_id);
+            
+            $last_id = 0;
+            // execute the query, also check if query was successful
+            try {
+                // execute the query, also check if query was successful
+                if ($stmt->execute()) {
+                    $last_id = $db->lastInsertId();
+                } else {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
+        }
+        else
+        {
+
+            $query = "update work_schedule_eng
+                SET
+                    `items` = :items,
+                    `man_power` = :man_power,
+                    `man_power_weekly` = :man_power_weekly,
+                    `updated_id` = :updated_id,
+                    `updated_at` = now()
+                    where id = :id";
+            
+            // prepare the query
+            $stmt = $db->prepare($query);
+            
+            // bind the values
+            $stmt->bindParam(':items', $items);
+            $stmt->bindParam(':man_power', $man_power);
+            $stmt->bindParam(':man_power_weekly', $man_power_weekly);
+            $stmt->bindParam(':updated_id', $user_id);
+            
+            $stmt->bindParam(':id', $_id);
+            
+            $last_id = $_id;
+            // execute the query, also check if query was successful
+            try {
+                // execute the query, also check if query was successful
+                if (!$stmt->execute()) {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                    die();
+                }
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
+        }
+        
+        
+        $db->commit();
         
         
         http_response_code(200);

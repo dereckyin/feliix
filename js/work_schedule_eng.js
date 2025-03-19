@@ -596,6 +596,13 @@ var app = new Vue({
             var token = localStorage.getItem("token");
             var form_Data = new FormData();
 
+            this.resize_array(this.man_power1, this.temp_period, "");
+            this.resize_array(this.man_power2, this.temp_period, "");
+            this.resize_array(this.man_power3, this.temp_period, "");
+            this.resize_array(this.man_power4, this.temp_period, "");
+            this.resize_array(this.man_power5, this.temp_period, "");
+            this.resize_array(this.man_power6, this.temp_period, "");
+
             // combile man_power
             obj = {
                 "man_power1" : this.man_power1,
@@ -609,7 +616,8 @@ var app = new Vue({
             form_Data.append("jwt", token);
             
             form_Data.append("id", this.id);
-            form_Data.append("items", JSON.stringify(this.temp_item_list));
+            form_Data.append("period", this.period);
+            form_Data.append("items", JSON.stringify(this.item_list));
             form_Data.append("man_power", JSON.stringify(obj));
             
             axios({
@@ -622,20 +630,21 @@ var app = new Vue({
             })
             .then(function(response) {
                 //handle success
-                record = response.data.man_power_weekly;
-                _this.man_power_weekly = JSON.parse(record);
+                console.log(response.data);
+                // record = response.data.man_power_weekly;
+                // _this.man_power_weekly = JSON.parse(record);
 
-                // sum weekly
-                sum_man_power_weekly = 0;
-                for(var i = 0; i < _this.man_power_weekly.length; i++) {
-                    sum_man_power_weekly += _this.man_power_weekly[i]['man_power2'] * _this.rate_leadman;
-                    sum_man_power_weekly += _this.man_power_weekly[i]['man_power3'] * _this.rate_sr_technician;
-                    sum_man_power_weekly += _this.man_power_weekly[i]['man_power4'] * _this.rate_technician;
-                    sum_man_power_weekly += _this.man_power_weekly[i]['man_power5'] * _this.rate_electrician;
-                    sum_man_power_weekly += _this.man_power_weekly[i]['man_power6'] * _this.rate_helper;
-                }
+                // // sum weekly
+                // sum_man_power_weekly = 0;
+                // for(var i = 0; i < _this.man_power_weekly.length; i++) {
+                //     sum_man_power_weekly += _this.man_power_weekly[i]['man_power2'] * _this.rate_leadman;
+                //     sum_man_power_weekly += _this.man_power_weekly[i]['man_power3'] * _this.rate_sr_technician;
+                //     sum_man_power_weekly += _this.man_power_weekly[i]['man_power4'] * _this.rate_technician;
+                //     sum_man_power_weekly += _this.man_power_weekly[i]['man_power5'] * _this.rate_electrician;
+                //     sum_man_power_weekly += _this.man_power_weekly[i]['man_power6'] * _this.rate_helper;
+                // }
 
-                _this.sum_man_power();
+                // _this.sum_man_power();
 
             })
             .catch(function(error) {
@@ -960,9 +969,11 @@ var app = new Vue({
             }
             else
             {
-                await this.get_records(this.id);
                 if(this.man_power_weekly.length > 0)
                     await this.refresh_manpower_weekly();
+
+                await this.get_records(this.id);
+                
             }
         },
         
