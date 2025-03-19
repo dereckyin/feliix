@@ -104,12 +104,24 @@ var app = new Vue({
         show_day_and_rate() {
             if(this.show_day_and_rate) {
                 this.show_item_list = false;
+
+                // restore value
+                this.temp_period = this.period;
+                this.temp_rate_leadman = this.rate_leadman;
+                this.temp_rate_sr_technician = this.rate_sr_technician;
+                this.temp_rate_technician = this.rate_technician;
+                this.temp_rate_electrician = this.rate_electrician;
+                this.temp_rate_helper = this.rate_helper;
+
             }
         },
         
         show_item_list() {
             if(this.show_item_list) {
                 this.show_day_and_rate = false;
+
+                // restore value
+                this.temp_item_list = JSON.parse(JSON.stringify(this.item_list));
             }
         },
         
@@ -287,6 +299,15 @@ var app = new Vue({
                     this.rate_electrician = record[0].rate_electrician;
                     this.rate_helper = record[0].rate_helper;
                     this.item_list = JSON.parse(record[0].items);
+
+                    // add new order id
+                    od_id = 0;
+                    for(var i = 0; i < this.item_list.length; i++) {
+                        for(var j = 0; j < this.item_list[i].types.length; j++) {
+                            od_id++;
+                            this.item_list[i].types[j].id = od_id;
+                        }
+                    }
                     
                     this.temp_period = parseInt(record[0].period, 0);
                     this.temp_rate_leadman = record[0].rate_leadman;
@@ -294,7 +315,7 @@ var app = new Vue({
                     this.temp_rate_technician = record[0].rate_technician;
                     this.temp_rate_electrician = record[0].rate_electrician;
                     this.temp_rate_helper = record[0].rate_helper;
-                    this.temp_item_list = JSON.parse(record[0].items);
+                    this.temp_item_list = JSON.parse(JSON.stringify(this.item_list));
                     
                     this.man_power = JSON.parse(record[0].man_power);
                     this.man_power_weekly = JSON.parse(record[0].man_power_weekly);
@@ -570,6 +591,61 @@ var app = new Vue({
             
         },
 
+        refresh_manpower_weekly: async function () {
+            let _this = this;
+            var token = localStorage.getItem("token");
+            var form_Data = new FormData();
+
+            // combile man_power
+            obj = {
+                "man_power1" : this.man_power1,
+                "man_power2" : this.man_power2,
+                "man_power3" : this.man_power3,
+                "man_power4" : this.man_power4,
+                "man_power5" : this.man_power5,
+                "man_power6" : this.man_power6,
+            };
+            
+            form_Data.append("jwt", token);
+            
+            form_Data.append("id", this.id);
+            form_Data.append("items", JSON.stringify(this.temp_item_list));
+            form_Data.append("man_power", JSON.stringify(obj));
+            
+            axios({
+                method: "post",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+                url: "api/work_schedule_eng_refresh_man_power",
+                data: form_Data,
+            })
+            .then(function(response) {
+                //handle success
+                record = response.data.man_power_weekly;
+                _this.man_power_weekly = JSON.parse(record);
+
+                // sum weekly
+                sum_man_power_weekly = 0;
+                for(var i = 0; i < _this.man_power_weekly.length; i++) {
+                    sum_man_power_weekly += _this.man_power_weekly[i]['man_power2'] * _this.rate_leadman;
+                    sum_man_power_weekly += _this.man_power_weekly[i]['man_power3'] * _this.rate_sr_technician;
+                    sum_man_power_weekly += _this.man_power_weekly[i]['man_power4'] * _this.rate_technician;
+                    sum_man_power_weekly += _this.man_power_weekly[i]['man_power5'] * _this.rate_electrician;
+                    sum_man_power_weekly += _this.man_power_weekly[i]['man_power6'] * _this.rate_helper;
+                }
+
+                _this.sum_man_power();
+
+            })
+            .catch(function(error) {
+                
+            })
+            .finally(function() {
+
+            });
+        },
+
         apply: async function() {
             if (this.submit == true) return;
             
@@ -694,6 +770,13 @@ var app = new Vue({
             var element = this.temp_item_list.find(({ id }) => id === eid);
             
             let obj_id = 0;
+            // get max id in all temp_item_list.types
+            for(var i = 0; i < this.temp_item_list.length; i++) {
+                if(this.temp_item_list[i].types.length != 0)
+                    if(obj_id < Math.max.apply(Math, this.temp_item_list[i].types.map(function(o) { return o.id; })))
+                        obj_id = Math.max.apply(Math, this.temp_item_list[i].types.map(function(o) { return o.id; }));
+            }
+
             
             if(element.types.length != 0)
                 obj_id = Math.max.apply(Math, element.types.map(function(o) { return o.id; }))
@@ -766,7 +849,7 @@ var app = new Vue({
             
             var element = page.types.find(({ id }) => id === eid);
             page.types.splice(fromIndex, 1);
-            this.temp_item_list[toIndex].types.splice(this.temp_item_list[toIndex].types.length - 1, 0, element);
+            this.temp_item_list[toIndex].types.splice(this.temp_item_list[toIndex].types.length , 0, element);
         },
         
         set_down: function(pid, fromIndex, eid) {
@@ -791,7 +874,7 @@ var app = new Vue({
             
             var element = page.types.find(({ id }) => id === eid);
             page.types.splice(fromIndex, 1);
-            this.temp_item_list[toIndex].types.splice(this.temp_item_list[toIndex].types.length - 1, 0, element);
+            this.temp_item_list[toIndex].types.splice(this.temp_item_list[toIndex].types.length , 0, element);
         },
         
         page_copy: async function(pid,  eid) {
@@ -876,7 +959,11 @@ var app = new Vue({
                 window.location.href = "work_schedule_eng?" + "id=" + this.id;
             }
             else
+            {
                 await this.get_records(this.id);
+                if(this.man_power_weekly.length > 0)
+                    await this.refresh_manpower_weekly();
+            }
         },
         
         close_all() {
