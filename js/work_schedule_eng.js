@@ -121,6 +121,16 @@ var app = new Vue({
 
         save_total: function() {
             if (this.submit == true) return;
+
+            if(this.period > 84 || this.period < 1)
+            {
+                Swal.fire({
+                    html: "Period should be between 1 and 84",
+                    icon: "info",
+                    confirmButtonText: "OK",
+                });
+                return;
+            }
             
             this.submit = true;
             
