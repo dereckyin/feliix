@@ -118,8 +118,8 @@ if($fpc != "")
 
 if($kind != "")
 {
-    $query = $query . " and pm.kind = '" . $kind . "' ";
-    $query_cnt = $query_cnt . " and pm.kind = '" . $kind . "' ";
+    $query = $query . " and q.kind = '" . $kind . "' ";
+    $query_cnt = $query_cnt . " and q.kind = '" . $kind . "' ";
 }
 
 
