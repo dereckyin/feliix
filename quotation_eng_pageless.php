@@ -3616,11 +3616,11 @@ header( 'location:index' );
                                     <tbody>
                                     <tr>
                                         <td>x1</td>
-                                        <td>{{ item.week1 }}</td>
+                                        <td>{{ Math.floor(item.week1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
                                         <td>x2</td>
-                                        <td>{{ item.week2 }}</td>
+                                        <td>{{ Math.floor(item.week2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
                                         <td>x3</td>
-                                        <td>{{ item.week3 }}</td>
+                                        <td>{{ Math.floor(item.week3).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
