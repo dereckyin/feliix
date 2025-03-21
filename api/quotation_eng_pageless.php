@@ -251,6 +251,8 @@ if (!isset($jwt)) {
 
         $sig_info = GetSigInfo($row['id'], $db);
 
+        $work_schedule = GetWorkScheduleEng($row['id'], $db);
+
 
         // $subtotal_info = GetSubTotalInfo($row['id'], $db);
         // $subtotal_novat_a = GetSubTotalNoVatA($row['id'], $db);
@@ -304,6 +306,7 @@ if (!isset($jwt)) {
             "term_info" => $term_info,
             "payment_term_info" => $payment_term_info,
             "sig_info" => $sig_info,
+            "work_schedule" => $work_schedule,
        
         );
     }
@@ -351,6 +354,8 @@ if (!isset($jwt)) {
         $installation = GetInstallation(0, $db, $show_i, $pixa_i);
         $installation['installation_total'] = 0;
 
+        $work_schedule = array();
+
         //
         // empty 
         $merged_results[] = array(
@@ -389,6 +394,8 @@ if (!isset($jwt)) {
             "term_info" => $term_info,
             "payment_term_info" => $payment_term_info,
             "sig_info" => $sig_info,
+
+            "work_schedule" => $work_schedule,
        
         );
     }
@@ -1470,4 +1477,57 @@ function GetSameGroupOfItem($ary, $group) {
             $result[] = $item;
     }
     return $result;
+}
+
+function GetWorkScheduleEng($id, $db)
+{
+    $items = array();
+    $man_power = array();
+    $rate_leadman = 0;
+    $rate_sr_technician = 0;
+    $rate_technician = 0;
+    $rate_electrician = 0;
+    $rate_helper = 0;
+
+    $sum_man_power = 0;
+
+    $query = "
+        SELECT id, rate_leadman, rate_sr_technician, rate_technician, rate_electrician, rate_helper,
+        man_power_weekly
+        FROM   work_schedule_eng
+        WHERE  quotation_id = " . $id . "
+        AND `status` <> -1 
+    ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $sum_man_power = 0;
+        if($row['man_power_weekly'] != null)
+            $man_power = json_decode($row['man_power_weekly'], true);
+        else
+            $man_power = array();
+
+        $pid = $row['id'];
+        $rate_leadman = $row['rate_leadman'];
+        $rate_sr_technician = $row['rate_sr_technician'];
+        $rate_technician = $row['rate_technician'];
+        $rate_electrician = $row['rate_electrician'];
+        $rate_helper = $row['rate_helper'];
+
+        foreach($man_power as $item)
+        {
+            $sum_man_power += $item['man_power1'] * $rate_leadman;
+            $sum_man_power += $item['man_power2'] * $rate_sr_technician;
+            $sum_man_power += $item['man_power3'] * $rate_technician;
+            $sum_man_power += $item['man_power4'] * $rate_electrician;
+            $sum_man_power += $item['man_power5'] * $rate_helper;
+        }
+
+        $items[] = array("id" => $pid, "week1" => $sum_man_power, "week2" => $sum_man_power * 2, "week3" => $sum_man_power * 3);
+    }
+
+    return $items;
 }
