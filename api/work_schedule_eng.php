@@ -91,6 +91,16 @@ if (!isset($jwt)) {
 
         if($period == "")
             $period = 0;
+        if($rate_leadman == "")
+            $rate_leadman = 1400;
+        if($rate_sr_technician == "")
+            $rate_sr_technician = 1200;
+        if($rate_technician == "")
+            $rate_technician = 1000;
+        if($rate_electrician == "")
+            $rate_electrician = 1400;
+        if($rate_helper == "")
+            $rate_helper = 900;
 
         if($items == null)
             $items = "[]";
