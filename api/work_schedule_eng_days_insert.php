@@ -11,12 +11,12 @@ $jwt = (isset($_POST['jwt']) ?  $_POST['jwt'] : null);
 
 $_id = isset($_POST['id']) ? $_POST['id'] : 0;
 
-$period = isset($_POST['period']) ? $_POST['period'] : '';
-$rate_leadman = isset($_POST['rate_leadman']) ? $_POST['rate_leadman'] : '';
-$rate_sr_technician = isset($_POST['rate_sr_technician']) ? $_POST['rate_sr_technician'] : '';
-$rate_technician = isset($_POST['rate_technician']) ? $_POST['rate_technician'] : '';
-$rate_electrician = isset($_POST['rate_electrician']) ? $_POST['rate_electrician'] : '';
-$rate_helper = isset($_POST['rate_helper']) ? $_POST['rate_helper'] : '';
+$period = isset($_POST['period']) ? $_POST['period'] : '0';
+$rate_leadman = isset($_POST['rate_leadman']) ? $_POST['rate_leadman'] : '1400';
+$rate_sr_technician = isset($_POST['rate_sr_technician']) ? $_POST['rate_sr_technician'] : '1200';
+$rate_technician = isset($_POST['rate_technician']) ? $_POST['rate_technician'] : '1000';
+$rate_electrician = isset($_POST['rate_electrician']) ? $_POST['rate_electrician'] : '1400';
+$rate_helper = isset($_POST['rate_helper']) ? $_POST['rate_helper'] : '900';
 
 $quotaion_id = isset($_POST['quotation_id']) ? $_POST['quotation_id'] : 0;
 
