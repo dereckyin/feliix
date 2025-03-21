@@ -18,6 +18,8 @@ $rate_technician = isset($_POST['rate_technician']) ? $_POST['rate_technician'] 
 $rate_electrician = isset($_POST['rate_electrician']) ? $_POST['rate_electrician'] : '';
 $rate_helper = isset($_POST['rate_helper']) ? $_POST['rate_helper'] : '';
 
+$quotaion_id = isset($_POST['quotation_id']) ? $_POST['quotation_id'] : 0;
+
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
 include_once 'libs/php-jwt-master/src/ExpiredException.php';
@@ -85,7 +87,7 @@ else
                 `rate_technician` = :rate_technician,
                 `rate_electrician` = :rate_electrician,
                 `rate_helper` = :rate_helper,
-            
+                `quotation_id` = :quotation_id,
                 `status` = 0,
                 `create_id` = :create_id,
                 `created_at` =  now() ";
@@ -100,7 +102,7 @@ else
             $stmt->bindParam(':rate_technician', $rate_technician);
             $stmt->bindParam(':rate_electrician', $rate_electrician);
             $stmt->bindParam(':rate_helper', $rate_helper);
-            
+            $stmt->bindParam(':quotation_id', $quotaion_id);
             $stmt->bindParam(':create_id', $user_id);
             
             $last_id = 0;

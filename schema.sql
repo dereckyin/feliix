@@ -5715,3 +5715,10 @@ CREATE TABLE IF NOT EXISTS `work_schedule_eng` (
   `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20250320
+ALTER TABLE work_schedule_eng
+ADD COLUMN `title` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '' AFTER `id`;
+
+ALTER TABLE work_schedule_eng
+ADD COLUMN `quotation_id` bigint(20) DEFAULT 0 AFTER `id`;
