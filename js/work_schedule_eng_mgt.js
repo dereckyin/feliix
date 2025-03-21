@@ -476,6 +476,17 @@ var app = new Vue({
             //var project_id = item['project_id'];
             var project_id = this.quotation_id;
 
+            if (project_id == 0 || project_id == '') {
+                Swal.fire({
+                    text: "Please Input Related Engineering Quotation's ID!",
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                })
+                
+                //$(window).scrollTop(0);
+                return;
+            }
+
             res = await this.CheckQuotationEng(project_id);
             if(res.length == 0) {
                 Swal.fire({
