@@ -1519,11 +1519,11 @@ function GetWorkScheduleEng($id, $db)
 
         foreach($man_power as $item)
         {
-            $sum_man_power += $item['man_power1'] * $rate_leadman;
-            $sum_man_power += $item['man_power2'] * $rate_sr_technician;
-            $sum_man_power += $item['man_power3'] * $rate_technician;
-            $sum_man_power += $item['man_power4'] * $rate_electrician;
-            $sum_man_power += $item['man_power5'] * $rate_helper;
+            $sum_man_power += $item['man_power2'] * $rate_leadman;
+            $sum_man_power += $item['man_power3'] * $rate_sr_technician;
+            $sum_man_power += $item['man_power4'] * $rate_technician;
+            $sum_man_power += $item['man_power5'] * $rate_electrician;
+            $sum_man_power += $item['man_power6'] * $rate_helper;
         }
 
         $items[] = array("id" => $pid, "week1" => $sum_man_power, "week2" => $sum_man_power * 2, "week3" => $sum_man_power * 3);
