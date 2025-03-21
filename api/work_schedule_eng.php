@@ -89,6 +89,9 @@ if (!isset($jwt)) {
         $created_at = $row['created_at'];
         $updated_at = $row['updated_at'];
 
+        if($period == "")
+            $period = 0;
+
         if($items == null)
             $items = "[]";
         
