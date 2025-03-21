@@ -93,7 +93,7 @@ $query = "SELECT pm.id,
                 LEFT JOIN quotation_eng q on pm.quotation_id = q.id
                 LEFT JOIN user c_user ON pm.create_id = c_user.id 
                 LEFT JOIN user u_user ON pm.updated_id = u_user.id 
-                left join project_main p on q.project_id = p.id
+                left join project_main p on q.project_id = p.id and q.kind = ''
                 where pm.status <> -1 ";
 
 $query_cnt = "SELECT count(*) cnt 
