@@ -1496,7 +1496,7 @@ function GetWorkScheduleEng($id, $db)
         man_power_weekly
         FROM   work_schedule_eng
         WHERE  quotation_id = " . $id . "
-        AND `status` <> -1 
+        AND `status` <> -1 order by created_at
     ";
 
     // prepare the query
