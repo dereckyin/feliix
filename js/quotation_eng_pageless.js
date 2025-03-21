@@ -2573,6 +2573,9 @@ var app = new Vue({
         .catch(function(response) {
             //handle error
             console.log(response)
+        })
+        .finally(() => {
+          _this.submit = false;
         });
       },
 
