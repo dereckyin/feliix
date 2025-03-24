@@ -269,6 +269,16 @@ var app = new Vue({
 
         
         print_me(){
+            if(this.show_gantt == false)
+            {
+                Swal.fire({
+                    html: "Please set up the period and item list first.",
+                    icon: "info",
+                    confirmButtonText: "OK",
+                });
+                return;
+            }
+            
             var cls = '#tb_timeline';
 
             html2canvas(document.querySelector(cls), { proxy: "html2canvasproxy", useCORS: false, logging: true, allowTaint: true}).then(canvas => {
