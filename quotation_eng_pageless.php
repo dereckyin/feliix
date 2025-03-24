@@ -1726,6 +1726,63 @@ header( 'location:index' );
             right: -50px;
         }
 
+         #work_schedule_dialog h6 a.add_work_schedule {
+            background-image: url(images/ui/file-plus.svg);
+            width: 30px;
+            height: 30px;
+            float: right;
+            text-decoration: none;
+            border-bottom: none;
+            zoom: 0.9;
+            margin-right: 0;
+        }
+
+        .work_schedule_box {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .work_schedule_box  .work_schedule_entity {
+            padding: 7px 7px 7px 10px;
+        }
+
+        .work_schedule_entity a.work_schedule_link {
+            color: var(--fth05);
+            transition: .3s;
+            margin: 0 15px 0 0;
+            font-size: 13px;
+            border-bottom: none!important;
+        }
+
+        .work_schedule_entity a.work_schedule_link:before {
+            content: "•";
+            color: black;
+            margin-right: 5px;
+            font-size: 13px;
+        }
+
+        .work_schedule_entity table {
+            width: 100%;
+        }
+
+        .work_schedule_entity thead tr th {
+            font-size: 13px;
+            text-align: center;
+            border: 1px solid black;
+        }
+
+        .work_schedule_entity tbody tr td {
+            font-size: 13px;
+            text-align: center;
+            border: 1px solid black;
+        }
+
+        .work_schedule_entity tbody tr td:nth-of-type(1),
+        .work_schedule_entity tbody tr td:nth-of-type(3),
+        .work_schedule_entity tbody tr td:nth-of-type(5) {
+            width: 40px;
+        }
+
         .functionbar{
             position: fixed;
             z-index: 998;
@@ -3521,6 +3578,66 @@ header( 'location:index' );
 
                     </div>
                 </div>
+
+
+                <div class="popupblock">
+
+                    <?php
+                    if ($test_manager[0]  == "1")
+                    {
+                    ?>
+                    <a id="project_fn2" class="fn2" :ref="'a_fn2'"
+                       @click="show_work_schedule = !show_work_schedule">Work Schedule</a>
+                    <?php
+                    } else {
+                    ?>
+                    <a>Work Schedule</a>
+                    <?php
+                    }
+                    ?>
+                    <div id="work_schedule_dialog" class="dialog fn2 show reverse" :ref="'dlg_fn2'" v-show="show_work_schedule" style="right: 95px;">
+                        <h6>Work Schedule
+                            <a class="add_work_schedule" @click="add_work_schedule()"></a>
+                        </h6>
+
+                        <div class="work_schedule_box">
+
+                            <div class="work_schedule_entity" v-for="(item, index) in temp_work_schedule">
+
+                                <a class="work_schedule_link" :href="'work_schedule_eng?id='+item.id ">Work Schedule #{{ item.id }}</a>
+
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th colspan="6">Total Man Power Fee</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr>
+                                        <td>x1</td>
+                                        <td>{{ Math.floor(item.week1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                                        <td>x2</td>
+                                        <td>{{ Math.floor(item.week2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                                        <td>x3</td>
+                                        <td>{{ Math.floor(item.week3).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="formbox">
+                            <div class="btnbox">
+                                <a class="btn small" @click="close_work_schedule()" v-if="submit == false">Close</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
 
             </div>
         </div>

@@ -24,6 +24,8 @@ var app = new Vue({
       show_payment_term: false,
       show_signature: false,
 
+      show_work_schedule: false,
+
       // header
       first_line : '',
       second_line : '',
@@ -74,6 +76,8 @@ var app = new Vue({
 
         installation: [],
         temp_installation: [],
+
+        temp_work_schedule: [],
       
 
       // block_names
@@ -494,6 +498,7 @@ var app = new Vue({
             this.show_term = false;
             this.show_payment_term = false;
             this.show_signature = false;
+            this.show_work_schedule = false;
         }
       },
 
@@ -509,6 +514,7 @@ var app = new Vue({
             this.show_term = false;
             this.show_payment_term = false;
             this.show_signature = false;
+            this.show_work_schedule = false;
         }
       },
 
@@ -524,6 +530,7 @@ var app = new Vue({
             this.show_term = false;
             this.show_payment_term = false;
             this.show_signature = false;
+            this.show_work_schedule = false;
         }
       },
 
@@ -539,6 +546,7 @@ var app = new Vue({
             this.show_term = false;
             this.show_payment_term = false;
             this.show_signature = false;
+            this.show_work_schedule = false;
         }
       },
 
@@ -554,6 +562,7 @@ var app = new Vue({
             this.show_term = false;
             this.show_payment_term = false;
             this.show_signature = false;
+            this.show_work_schedule = false;
         }
       },
 
@@ -569,6 +578,7 @@ var app = new Vue({
             this.show_term = false;
             this.show_payment_term = false;
             this.show_signature = false;
+            this.show_work_schedule = false;
         }
       },
 
@@ -584,39 +594,10 @@ var app = new Vue({
             this.show_term = false;
             this.show_payment_term = false;
             this.show_signature = false;
+            this.show_work_schedule = false;
         }
       },
 
-
-      show_consumables() {
-        if(this.show_consumables) {
-            this.show_header = false;
-            this.show_footer = false;
-            this.show_requirements = false;
-            this.show_detail_requirements = false;
-            this.show_installation = false;
-            this.show_detail_consumables = false;
-            this.show_total = false;
-            this.show_term = false;
-            this.show_payment_term = false;
-            this.show_signature = false;
-        }
-      },
-
-      show_detail_consumables() {
-        if(this.show_detail_consumables) {
-            this.show_header = false;
-            this.show_footer = false;
-            this.show_requirements = false;
-            this.show_detail_requirements = false;
-            this.show_installation = false;
-            this.show_consumables = false;
-            this.show_total = false;
-            this.show_term = false;
-            this.show_payment_term = false;
-            this.show_signature = false;
-        }
-      },
 
       show_total() {
         if(this.show_total) {
@@ -630,6 +611,7 @@ var app = new Vue({
             this.show_term = false;
             this.show_payment_term = false;
             this.show_signature = false;
+            this.show_work_schedule = false;
         }
       },
 
@@ -645,6 +627,7 @@ var app = new Vue({
             this.show_total = false;
             this.show_payment_term = false;
             this.show_signature = false;
+            this.show_work_schedule = false;
         }
       },
 
@@ -660,6 +643,7 @@ var app = new Vue({
             this.show_total = false;
             this.show_term = false;
             this.show_signature = false;
+            this.show_work_schedule = false;
         }
       },
 
@@ -675,8 +659,24 @@ var app = new Vue({
             this.show_total = false;
             this.show_term = false;
             this.show_payment_term = false;
-        }
-      },
+            this.show_work_schedule = false;
+        }},
+
+        show_work_schedule() {
+          if(this.show_work_schedule) {
+              this.show_header = false;
+              this.show_footer = false;
+              this.show_requirements = false;
+              this.show_detail_requirements = false;
+              this.show_installation = false;
+              this.show_consumables = false;
+              this.show_detail_consumables = false;
+              this.show_total = false;
+              this.show_term = false;
+              this.show_payment_term = false;
+              this.show_signature = false;
+          }
+        },
       
       department() {
         this.title = this.shallowCopy(
@@ -2545,9 +2545,47 @@ var app = new Vue({
       
       },
 
+      async add_work_schedule() {
+        let _this = this;
+
+        _this.submit = true;
+        var form_Data = new FormData();
+        
+        var token = localStorage.getItem("token");
+        
+        form_Data.append("jwt", token);
+        form_Data.append('quotation_id', _this.id);
+        
+        axios({
+            method: 'post',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`
+            },
+            url: 'api/work_schedule_eng_days_insert',
+            data: form_Data
+        })
+        .then(function(response) {
+            //handle success
+            //this.$forceUpdate();
+            _this.getRecord();
+        })
+        .catch(function(response) {
+            //handle error
+            console.log(response)
+        })
+        .finally(() => {
+          _this.submit = false;
+        });
+      },
+
       close_term() {
         this.show_term = false;
 
+      },
+
+      close_work_schedule() {
+        this.show_work_schedule = false;
       },
 
       close_payment_term() {
@@ -3975,6 +4013,8 @@ Installation:`;
               // footer
               _this.footer_first_line = _this.receive_records[0].footer_first_line;
               _this.footer_second_line = _this.receive_records[0].footer_second_line;
+
+              _this.temp_work_schedule = _this.receive_records[0].work_schedule;
 
               
               _this.pixa_s = _this.receive_records[0].pixa_s;

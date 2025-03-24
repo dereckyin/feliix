@@ -5695,3 +5695,30 @@ ADD COLUMN `product_duplicate` text COLLATE utf8mb4_unicode_ci;
 
 ALTER TABLE access_control
 ADD COLUMN `product_delete` text COLLATE utf8mb4_unicode_ci;
+
+-- 20250314
+CREATE TABLE IF NOT EXISTS `work_schedule_eng` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `period` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `rate_leadman` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `rate_sr_technician` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `rate_technician` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `rate_electrician` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `rate_helper` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `items` JSON,
+  `man_power` JSON,
+  `man_power_weekly` JSON,
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20250320
+ALTER TABLE work_schedule_eng
+ADD COLUMN `title` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '' AFTER `id`;
+
+ALTER TABLE work_schedule_eng
+ADD COLUMN `quotation_id` bigint(20) DEFAULT 0 AFTER `id`;
