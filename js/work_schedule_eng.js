@@ -266,7 +266,35 @@ var app = new Vue({
 
             this.$forceUpdate();
         },
+
         
+        print_me(){
+            var cls = '#tb_timeline';
+
+            html2canvas(document.querySelector(cls), { proxy: "html2canvasproxy", useCORS: false, logging: true, allowTaint: true}).then(canvas => {
+
+                var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+                    var a = document.createElement('a');
+                     a.href = image;
+                     a.download = 'gantt_' + this.id + '.png';
+                     a.click();
+
+                // return Canvas2Image.saveAsPNG(canvas);
+            });
+
+            // var cls = '#tb_timeline';
+
+            // html2canvas(document.querySelector(cls), {
+            //     onrendered: function(canvas) {
+            //         var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+            //         var a = document.createElement('a');
+            //          a.href = image;
+            //          a.download = 'somefilename.png';
+            //          a.click();
+            //     }
+            // });
+        },
+
         get_records: async function(id) {
             let _this = this;
             let record = {};

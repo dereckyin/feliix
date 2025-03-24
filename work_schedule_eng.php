@@ -336,13 +336,6 @@ header( 'location:index' );
             display: none;
         }
 
-
-
-
-
-
-
-
         .pagebox {
             border: 1px solid black;
             margin-bottom: 20px;
@@ -493,12 +486,6 @@ header( 'location:index' );
             max-height: 400px;
             overflow-y: auto;
         }
-
-
-
-
-
-        
 
         .functionbar{
             position: fixed;
@@ -748,12 +735,6 @@ header( 'location:index' );
         }
 
 
-        
-
-
-
-
-
 
         @media screen and (max-width: 1050px) {
 
@@ -778,24 +759,24 @@ header( 'location:index' );
             }
 
             .mainContent {
-                padding: 0 !important;
+                padding: 5px 0 0 15px !important;
                 background-color: #FFF !important;
             }
 
-            .qn_page {
-                zoom: 82%;
-                margin: 1px 0px 0px 7px;
-                page-break-after: always;
-                overflow-y: hidden;
+            div.box_timeline_manpower {
             }
 
             .noPrint {
                 display: none;
             }
+
+            #tb_timeline tbody tr.sub_item_row td select {
+                background-image: none;
+            }
         }
 
         @page {
-            size: A4 portrait;
+            size: A4 landscape;
             margin: 0;
         }
 
@@ -824,7 +805,7 @@ header( 'location:index' );
             <div class="block">
                 <!-- print -->
                 <div class="popupblock">
-                    <a id="" class="print" title="Export Whole Quotation into PDF" @click="print_page()"></a>
+                    <a id="" class="print" title="Export Work Schedule into Picture" @click="print_me()"></a>
                 </div>
 
             </div>
@@ -1091,7 +1072,7 @@ header( 'location:index' );
 
 
 
-        <div class="btnbox" style="text-align: left; padding: 20px 0 0;" v-show="show_gantt">
+        <div class="btnbox noPrint" style="text-align: left; padding: 20px 0 0;" v-show="show_gantt">
             <a class="btn" style="color: white;" @click="reset()">Reset</a>
             <a class="btn green" style="color: white;" @click="apply()">Save</a>
         </div>
@@ -1286,6 +1267,7 @@ header( 'location:index' );
 <script defer src="js/axios.min.js"></script>
 <script defer src="js/npm/sweetalert2@9.js"></script>
 <script defer src="js/work_schedule_eng.js"></script>
+<script src="js/canvas2image/canvas2image.js"></script>
 <script defer src="js/html2canvas/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
