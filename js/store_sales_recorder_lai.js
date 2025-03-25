@@ -613,7 +613,7 @@ var app = new Vue({
       let _this = this;
       _this.myVar = setTimeout(function() {
         _this.reset();
-        _this.getRecords();
+        //_this.getRecords();
       }, 1000);
     },
 
