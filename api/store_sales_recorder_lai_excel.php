@@ -8,6 +8,7 @@ if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
     $fileTmpPath = $_FILES['file']['tmp_name'];
 
     try {
+        // Load Excel
         $spreadsheet = IOFactory::load($fileTmpPath);
         $headers = ['QTY', 'Unit Code', 'Description', 'Unit Price', 'Total'];
         $allData = [];
@@ -16,7 +17,7 @@ if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
             $worksheet = $spreadsheet->getSheet($sheetIndex);
             $startProcessing = false;
             $headerIndex = [];
-            $currentProduct = null;
+            $currentProduct = "";
             $currentDescription = [];
             $lastUnitPrice = 0;
             $lastQty = 0;
@@ -48,31 +49,30 @@ if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
                     $unitPrice = $rowData[$headerIndex['Unit Price']] ?? "";
                     $total = $rowData[$headerIndex['Total']] ?? "";
 
-                    if (!is_numeric($qty) && !empty($qty)) {
+                    if (!is_numeric($unitPrice) || empty($unitPrice)) {
+                        $unitPrice = 0;
+                    }
+
+                    if (empty($qty) && !empty($unitCode)) {
+                        $currentProduct .= " " . $unitCode;
                         continue;
                     }
 
-                    $unitPrice = is_numeric($unitPrice) ? $unitPrice : 0;
-
-                    if (!empty($total)) {
-                        if ($currentProduct) {
+                    if (is_numeric($qty) && !empty($qty)) {
+                        if (!empty($currentProduct) || !empty($currentDescription)) {
                             $allData[] = [
                                 'QTY' => $lastQty,
-                                'UnitCode' => $currentProduct,
+                                'UnitCode' => trim($currentProduct),
                                 'Description' => implode("\n", $currentDescription),
                                 'Price' => $lastUnitPrice,
                                 'Total' => $total
                             ];
                         }
 
-                        // Set new product data
-                        $currentProduct = $unitCode;
-                        $currentDescription = [$description];
+                        $currentProduct = !empty($unitCode) ? trim($unitCode) : ' ';
+                        $currentDescription = !empty($description) ? [$description] : [];
                         $lastUnitPrice = $unitPrice;
-
-                        if (is_numeric($qty) && $qty !== "") {
-                            $lastQty = (int)$qty;
-                        }
+                        $lastQty = (int)$qty;
                     } else {
                         if (!empty($description)) {
                             $currentDescription[] = $description;
@@ -81,10 +81,10 @@ if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
                 }
             }
 
-            if ($currentProduct) {
+            if (!empty($currentProduct) || !empty($currentDescription)) {
                 $allData[] = [
                     'QTY' => $lastQty,
-                    'UnitCode' => $currentProduct,
+                    'UnitCode' => trim($currentProduct),
                     'Description' => implode("\n", $currentDescription),
                     'Price' => $lastUnitPrice,
                     'Total' => $total
