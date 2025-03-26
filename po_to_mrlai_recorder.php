@@ -268,6 +268,16 @@ header( 'location:index' );
             outline: none !important;
         }
 
+        #app .mask {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            top: 0;
+            z-index: 1;
+            display: none;
+        }
+
     </style>
 
     <script src="js/jquery-3.4.1.min.js"></script>
@@ -283,7 +293,7 @@ header( 'location:index' );
 
 
 <div id="app">
-
+    <div class="mask"></div>
     <div class="header">
         <div style="display: flex; align-items: center;">
             <a href="default" style="margin-left: 42px; transform: scaleX(1.4); text-decoration: none;">
@@ -372,7 +382,7 @@ header( 'location:index' );
                                 <table>
                                     <tr>
                                         <td>
-                                            <input type="text" class="form-control" v-model="product_name"  maxlength="512">
+                                            <textarea class="form-control" style="resize: none;" v-model="product_name"></textarea>
                                         </td>
 
                                         <td>
@@ -400,7 +410,7 @@ header( 'location:index' );
                                     </tr>
 
                                     <tr v-for="(item, index) in payments">
-                                        <td style="text-align: left;">{{item.product_name}}</td>
+                                        <td style="text-align: left; white-space: pre-line;">{{item.product_name}}</td>
                                         <td>{{item.qty}}</td>
                                         <td>{{item.price}}</td>
                                         <td>
@@ -513,6 +523,13 @@ header( 'location:index' );
                                     aria-expanded="true" aria-controls="collapseOne" v-on:click="reset()">Cancel
                             </button>
 
+                            <input type="file" id="excelFile" accept=".xls,.xlsx" style="display:none;"
+                                   v-on:change="uploadExcel">
+
+                            <button class="btn btn-primary" style="width:10vw; font-weight:700; margin-left:2vw;"
+                                    onclick="document.getElementById('excelFile').click()">Upload PO
+                            </button>
+
                             <button class="btn btn-primary" style="width:10vw; font-weight:700; margin-left:2vw;"
                                     data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
                                     aria-expanded="true" aria-controls="collapseOne" v-on:click="apply()">Save
@@ -614,7 +631,7 @@ header( 'location:index' );
 
                         <td style="text-align: left;" v-if="j == 0" :rowspan="row.payment.length">{{ row.client }}</td>
 
-                        <td style="text-align: left;">{{ item.product_name }}</td>
+                        <td style="text-align: left; white-space: pre-line;">{{ item.product_name }}</td>
 
                         <td>{{ item.qty == "" ? "" : Number(item.qty).toLocaleString() }}</td>
 
@@ -698,6 +715,29 @@ header( 'location:index' );
         $("#todays-date").attr("value", today);
         $("#todays_date").attr("value", today);
     });
+
+    function uploadFile() {
+        let fileInput = document.getElementById("excelFile");
+        let file = fileInput.files[0];
+
+        if (!file) {
+            alert("請選擇 Excel 檔案");
+            return;
+        }
+
+        let formData = new FormData();
+        formData.append("file", file);
+
+        fetch("upload.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("output").textContent = JSON.stringify(data, null, 4);
+        })
+        .catch(error => console.error("Error:", error));
+    }
 
 </script>
 
