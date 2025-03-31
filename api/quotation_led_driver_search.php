@@ -66,22 +66,22 @@ else
 
         if($range != '' && $tag != '')
         {
-            $query = "SELECT id, code FROM product_category where id in (" . $range_sql . " and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = '" . $tag . "' and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER')))";
+            $query = "SELECT id, code FROM product_category where id in (" . $range_sql . " and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = '" . $tag . "' and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER'))) and status <> -1 and out <> 'Y' ";
         }
 
         if($range != '' && $tag == '')
         {
-            $query = "SELECT id, code FROM product_category where id in (" . $range_sql . " and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER'))";
+            $query = "SELECT id, code FROM product_category where id in (" . $range_sql . " and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER')) and status <> -1 and out <> 'Y' ";
         }
 
         if($range == '' && $tag != '')
         {
-            $query = "SELECT id, code FROM product_category where id in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = '" . $tag . "' and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER'))";
+            $query = "SELECT id, code FROM product_category where id in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = '" . $tag . "' and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER')) and status <> -1 and out <> 'Y' ";
         }
 
         if($range == '' && $tag == '')
         {
-            $query = "SELECT id, code FROM product_category where id in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER')";
+            $query = "SELECT id, code FROM product_category where id in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER') and status <> -1 and out <> 'Y' ";
         }
 
         $stmt = $db->prepare( $query );
