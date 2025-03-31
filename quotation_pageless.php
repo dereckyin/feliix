@@ -6103,8 +6103,8 @@ header( 'location:index' );
                 <div class="modal-body">
 
                     <div class="modal_function" style="width: 100%; display: flex; align-items: center;">
-                        <a class="btn small green" @click="prod_export()">Add Item</a>
-                    </div>               
+                        <a class="btn small green" @click="add_led()">Add Item</a>
+                    </div>
 
                     <div>
                         <table id="tb_driver_computation" class="table table-sm table-bordered">
@@ -6126,91 +6126,48 @@ header( 'location:index' );
 
                             <tbody>
 
-                            <tr>
-                                <td><input type="text"></td>
-                                <td><textarea rows="2"></textarea></td>
-                                <td><input type="number"></td>
-                                <td><input type="number"></td>
-                                <td><input type="number"></td>
-                                <td>auto calculate</td>
-                                <td>auto calculate</td>
-                                <td>auto calculate</td>
+                            <tr v-for="(item, index) in led_array">
+                                <td><input type="text" v-model="item.no"></td>
+                                <td><textarea rows="2" v-model="item.area"></textarea></td>
+                                <td><input type="number" v-model="item.qty"></td>
+                                <td><input type="number" v-model="item.watt"></td>
+                                <td><input type="number" v-model="item.length"></td>
+                                <td>{{ Number((parseFloat(item.qty) || 0) * (parseFloat(item.watt) || 0) * (parseFloat(item.length) || 0)).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                                <td>{{ Number((parseFloat(item.qty) || 0) * (parseFloat(item.watt) || 0) * (parseFloat(item.length) || 0) * .2).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                                <td>{{ Number((parseFloat(item.qty) || 0) * (parseFloat(item.watt) || 0) * (parseFloat(item.length) || 0) * 1.2).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
                                 <td>
-                                    <select>
-                                        <option>NON-DIMMABLE</option>
-                                        <option>TRIAC</option>
-                                        <option>0/1-10V</option>
-                                        <option>DALI</option>
+                                    <select v-model="item.tag" @change="led_driver_search(item)">
+                                        <option value="NON-DIMMABLE">NON-DIMMABLE</option>
+                                        <option value="TRIAC">TRIAC</option>
+                                        <option value="0/1-10V">0/1-10V</option>
+                                        <option value="DALI">DALI</option>
                                     </select>
 
-                                    <select>
-                                        <option>WATTAGE RANGE</option>
-                                        <option>1W~100W</option>
-                                        <option>101W ~ 200W</option>
-                                        <option>201W ~ 300W</option>
-                                        <option>301W ~ 400W</option>
-                                        <option>401W ~ 500W</option>
-                                        <option>501W above</option>
+                                    <select v-model="item.range" @change="led_driver_search(item)">
+                                        <option value="">WATTAGE RANGE</option>
+                                        <option value="100W">1W~100W</option>
+                                        <option value="200W">101W ~ 200W</option>
+                                        <option value="300W">201W ~ 300W</option>
+                                        <option value="400W">301W ~ 400W</option>
+                                        <option value="500W">401W ~ 500W</option>
+                                        <option value="above">501W above</option>
                                     </select>
 
-                                    <select>
-                                        <option>FELIIX YD LPV-100</option>
-                                        <option>FELIIX YD LRS-50</option>
+                                    <select v-model="item.field">
+                                        <option :value="product.id" v-for="product in item.products">{{ product.code }}</option>
                                     </select>
-                                    
+
                                 </td>
-                                <td><input type="number"></td>
+                                <td><input type="number" v-model="item.driver"></td>
                                 <td>
-                                    <i class="fas fa-arrow-alt-circle-up" @click="term_item_up(index, item.id)"></i>
+                                    <i class="fas fa-arrow-alt-circle-up" @click="led_item_up(index, item.id)"></i>
                                     <i class="fas fa-arrow-alt-circle-down"
-                                      @click="term_item_down(index, item.id)"></i>
-                                    <i class="fas fa-trash-alt" @click="term_item_del(index)"></i>
+                                      @click="led_item_down(index, item.id)"></i>
+                                    <i class="fas fa-trash-alt" @click="led_item_del(index)"></i>
                                 </td>
 
                             </tr>
 
-                            <tr>
-                                <td><input type="text"></td>
-                                <td><textarea rows="2"></textarea></td>
-                                <td><input type="number"></td>
-                                <td><input type="number"></td>
-                                <td><input type="number"></td>
-                                <td>auto calculate</td>
-                                <td>auto calculate</td>
-                                <td>auto calculate</td>
-                                <td>
-                                    <select>
-                                        <option>NON-DIMMABLE</option>
-                                        <option>TRIAC</option>
-                                        <option>0/1-10V</option>
-                                        <option>DALI</option>
-                                    </select>
-
-                                    <select>
-                                        <option>WATTAGE RANGE</option>
-                                        <option>1W~100W</option>
-                                        <option>101W ~ 200W</option>
-                                        <option>201W ~ 300W</option>
-                                        <option>301W ~ 400W</option>
-                                        <option>401W ~ 500W</option>
-                                        <option>501W above</option>
-                                    </select>
-
-                                    <select>
-                                        <option>FELIIX YD LPV-100</option>
-                                        <option>FELIIX YD LRS-50</option>
-                                    </select>
-
-                                </td>
-                                <td><input type="number"></td>
-                                <td>
-                                    <i class="fas fa-arrow-alt-circle-up" @click="term_item_up(index, item.id)"></i>
-                                    <i class="fas fa-arrow-alt-circle-down"
-                                      @click="term_item_down(index, item.id)"></i>
-                                    <i class="fas fa-trash-alt" @click="term_item_del(index)"></i>
-                                </td>
-
-                            </tr>
 
                             </tbody>
                         </table>
@@ -6222,9 +6179,9 @@ header( 'location:index' );
 
                 <div class="modal-footer">
                     <div class="btnbox">
-                        <a class="btn">Close</a>
-                        <a class="btn green">Save</a>
-                        <a class="btn gray">Export</a>
+                        <a class="btn" @click="close_led_driver()">Close</a>
+                        <a class="btn green" @click="save_led_driver()">Save</a>
+                        <a class="btn gray" @click="export_led_driver()">Export</a>
                     </div>
                 </div>
 

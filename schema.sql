@@ -5732,3 +5732,13 @@ CREATE TABLE IF NOT EXISTS `product_category_tags_index` (
   `value` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `quotation_led_driver` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `quotation_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `led_driver` JSON,
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
