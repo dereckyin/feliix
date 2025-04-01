@@ -6128,7 +6128,7 @@ header( 'location:index' );
 
                             <tr v-for="(item, index) in led_array">
                                 <td><input type="text" v-model="item.no"></td>
-                                <td><textarea rows="2" v-model="item.area"></textarea></td>
+                                <td><textarea rows="3" v-model="item.area"></textarea></td>
                                 <td><input type="number" v-model="item.qty"></td>
                                 <td><input type="number" v-model="item.watt"></td>
                                 <td><input type="number" v-model="item.length"></td>

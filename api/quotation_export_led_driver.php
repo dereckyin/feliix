@@ -90,7 +90,7 @@ if($jwt){
                     'bold' => true
                 ),
                 'alignment' => array(
-                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
                     'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
                 )
             );
@@ -108,7 +108,13 @@ if($jwt){
                     'startColor' => array(
                         'rgb' => 'ffff00'
                     )
-                )
+                ),
+                'borders' => array(
+                    'allBorders' => array(
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        'color' => array('rgb' => '000000'),
+                    ),
+                ),
             );
 
 
@@ -131,6 +137,10 @@ if($jwt){
 
             $sheet->setCellValue('A'. $i, "PROJECT NAME: " . $project_name);
             $sheet->getStyle('A'. $i. ':' . 'A' . $i)->applyFromArray($title_style);
+
+            // merge cells
+            $sheet->mergeCells('A'. $i. ':' . 'I' . $i);
+            
             $i = $i + 1;
 
             $sheet->setCellValue('A'. $i, "ITEM NO.");
