@@ -313,6 +313,8 @@ var app = new Vue({
         is_pdf : false,
         cost_lighting : false,
         cost_furniture : false,
+
+        project_name : '',
     },
   
     async created()  {
@@ -3421,7 +3423,8 @@ Installation:`;
 
               _this.temp_can_view = _this.receive_records[0].can_view;
               _this.temp_can_duplicate = _this.receive_records[0].can_duplicate;
-              
+
+              _this.project_name = _this.receive_records[0].project_name;
             }
           })
           .catch(function(error) {
