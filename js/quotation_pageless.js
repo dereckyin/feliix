@@ -1412,10 +1412,7 @@ var app = new Vue({
         .then(function(response) {
           console.log(response.data);
           let res = response.data;
-          if(res.data.length > 0) 
-          {
             item.products = res.data;
-          }
         })
         .catch(function(error) {
           console.log(error);

@@ -157,11 +157,13 @@ if($jwt){
             foreach($led_array as $data)
             {
                 $product_code = '';
+                $wattage = '';
                 foreach($data['products'] as $product)
                 {
                     if($product['id'] == $data['field'])
                     {
                         $product_code = $product['code'];
+                        $wattage = $product['wattage'];
                         break;
                     }
                 }
@@ -173,7 +175,7 @@ if($jwt){
                 $sheet->setCellValue('E'. $i, " " . number_format($data['length'], 2, '.', ','));
                 $sheet->setCellValue('F'. $i, " " . number_format($data['qty'] * $data['watt'] * $data['length'], 2, '.', ','));
                 $sheet->setCellValue('G'. $i, " " . number_format($data['qty'] * $data['watt'] * $data['length'] * 1.2, 2, '.', ','));
-                $sheet->setCellValue('H'. $i, $data['tag'] . "\n" . $data["range"] . ' - ' . $product_code);
+                $sheet->setCellValue('H'. $i, $data['tag'] . "\n" . $wattage != "" ? $wattage . ' - ' . $product_code : $product_code);
                 $sheet->getStyle('H'. $i)->getAlignment()->setWrapText(true);
                 $sheet->setCellValue('I'. $i, $data['driver']);
                 
@@ -200,16 +202,18 @@ if($jwt){
             foreach($led_array as $data)
             {
                 $product_code = '';
+                $wattage = '';
                 foreach($data['products'] as $product)
                 {
                     if($product['id'] == $data['field'])
                     {
                         $product_code = $product['code'];
+                        $wattage = $product['wattage'];
                         break;
                     }
                 }
 
-                $sheet->setCellValue('G'. $i, $data["range"]);
+                $sheet->setCellValue('G'. $i, $wattage);
                 $sheet->setCellValue('H'. $i, $product_code);
                 $sheet->setCellValue('I'. $i, $data['driver']);
                 

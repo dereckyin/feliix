@@ -52,36 +52,36 @@ else
         $range_pid = [];
         $range_sql = "";
         if($range == '100W')
-            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `value` >= '1W' and `value` <= '100W'";
+            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `watt` >= 1 and `watt` <= 100";
         if($range == '200W')
-            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `value` >= '101W' and `value` <= '200W'";
+            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `watt` >= 101 and `watt` <= 200";
         if($range == '300W')
-            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `value` >= '201W' and `value` <= '300W'";
+            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `watt` >= 201 and `watt` <= 300";
         if($range == '400W')
-            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `value` >= '301W' and `value` <= '400W'";
+            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `watt` >= 301 and `watt` <= 400";
         if($range == '500W')
-            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `value` >= '401W' and `value` <= '500W'";
+            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `watt` >= 401 and `watt` <= 500";
         if($range == 'above')
-            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `value` >= '501W'";
+            $range_sql = "SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'Wattage' and `watt` >= 501";
 
         if($range != '' && $tag != '')
         {
-            $query = "SELECT id, code FROM product_category where id in (" . $range_sql . " and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = '" . $tag . "' and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER'))) and status <> -1 and out <> 'Y' ";
+            $query = "SELECT id, code, attributes FROM product_category where id in (" . $range_sql . " and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = '" . $tag . "' and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER'))) and status <> -1 and `out` <> 'Y' ";
         }
 
         if($range != '' && $tag == '')
         {
-            $query = "SELECT id, code FROM product_category where id in (" . $range_sql . " and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER')) and status <> -1 and out <> 'Y' ";
+            $query = "SELECT id, code, attributes FROM product_category where id in (" . $range_sql . " and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER')) and status <> -1 and `out` <> 'Y' ";
         }
 
         if($range == '' && $tag != '')
         {
-            $query = "SELECT id, code FROM product_category where id in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = '" . $tag . "' and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER')) and status <> -1 and out <> 'Y' ";
+            $query = "SELECT id, code, attributes FROM product_category where id in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = '" . $tag . "' and pid in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER')) and status <> -1 and `out` <> 'Y' ";
         }
 
         if($range == '' && $tag == '')
         {
-            $query = "SELECT id, code FROM product_category where id in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER') and status <> -1 and out <> 'Y' ";
+            $query = "SELECT id, code, attributes FROM product_category where id in (SELECT distinct pid FROM product_category_tags_index WHERE `key` = 'LED DRIVER') and status <> -1 and `out` <> 'Y' ";
         }
 
         $stmt = $db->prepare( $query );
@@ -90,10 +90,20 @@ else
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             extract($row);
+            $wattage = "";
+            $attributes = json_decode($attributes, true);
+            foreach ($attributes as $att) {
+                $key = $att['category'];
+                $value = $att['value'];
+                if($key == "Wattage") {
+                    $wattage = $value;
+                }
+            }
 
             $data[] = array(
                 'id' => $id,
                 'code' => $code,
+                'wattage' => $wattage,
             );
         }
         

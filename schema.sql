@@ -5728,8 +5728,9 @@ CREATE TABLE IF NOT EXISTS `product_category_tags_index` (
   `id` bigint(20)  NOT NULL AUTO_INCREMENT,
   `pid` bigint(20)  DEFAULT 0 NOT NULL,
   `type` bigint(20)  DEFAULT 0 NOT NULL,
-  `key` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `value` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `key` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `value` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `watt` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 

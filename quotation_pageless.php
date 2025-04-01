@@ -6154,7 +6154,7 @@ header( 'location:index' );
                                     </select>
 
                                     <select v-model="item.field">
-                                        <option :value="product.id" v-for="product in item.products">{{ product.code }}</option>
+                                        <option :value="product.id" v-for="product in item.products">{{ product.wattage != '' ? product.wattage + ' - ' + product.code : product.code }}</option>
                                     </select>
 
                                 </td>

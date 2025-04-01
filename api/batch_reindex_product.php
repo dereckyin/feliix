@@ -10,6 +10,10 @@ include_once 'config/database.php';
 $database = new Database();
 $db = $database->getConnection();
 
+$sql = "truncate table product_category_tags_index";
+$stmt = $db->prepare( $sql );
+$stmt->execute();
+
 $sql = "SELECT id, tags, attributes, variation_mode FROM product_category where `status` <> -1";
 
 $stmt = $db->prepare( $sql );
@@ -37,12 +41,21 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     foreach ($attributes as $att) {
         $key = $att['category'];
         $value = $att['value'];
+        $watt = 0;
         if($value != "") {
-            $sql = "insert into product_category_tags_index (pid, `type`, `key`, `value`) values (:product_category_id, 1, :key, :value)";
+            if($key == 'Wattage')
+            {
+                if (preg_match_all('/\b(\d+(\.\d+)?)\s*W?\b/i', $value, $matches)) {
+                    $watt = max($matches[1]); // 取最大數值，確保獲取主要的功率數值
+                }
+            }
+
+            $sql = "insert into product_category_tags_index (pid, `type`, `key`, `value`, `watt`) values (:product_category_id, 1, :key, :value, :watt)";
             $stmt2 = $db->prepare( $sql );
             $stmt2->bindParam(':product_category_id', $id);
             $stmt2->bindParam(':key', $key);
             $stmt2->bindParam(':value', $value);
+            $stmt2->bindParam(':watt', $watt);
             $stmt2->execute();
 
             if($stmt2->errorInfo()[0] != "00000") {
