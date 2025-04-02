@@ -75,7 +75,15 @@ if (!isset($jwt)) {
                     show_p,
                     1 page_count,
                     can_view,
-                    can_duplicate
+                    can_duplicate,
+                    kind,
+                    COALESCE((SELECT project_name FROM project_main WHERE id = project_id and kind = ''), '') AS project_name,
+                    COALESCE((SELECT title FROM project_other_task_a WHERE id = project_id and kind = 'a'), '') AS project_name_a,
+                    COALESCE((SELECT title FROM project_other_task_d WHERE id = project_id and kind = 'd'), '') AS project_name_d,
+                    COALESCE((SELECT title FROM project_other_task_l WHERE id = project_id and kind = 'l'), '') AS project_name_l,
+                    COALESCE((SELECT title FROM project_other_task_o WHERE id = project_id and kind = 'o'), '') AS project_name_o,
+                    COALESCE((SELECT title FROM project_other_task_sl WHERE id = project_id and kind = 'sl'), '') AS project_name_sl,
+                    COALESCE((SELECT title FROM project_other_task_sv WHERE id = project_id and kind = 'sv'), '') AS project_name_sv
                     FROM quotation
                     WHERE status <> -1 and id=$id";
 
@@ -152,8 +160,32 @@ if (!isset($jwt)) {
         // print
         $product_array = GetProductItems($pages, $row['id'], $db);
 
+        $led_driver = GetLedDriver($row['id'], $db);
+
         $can_view = $row['can_view'];
         $can_duplicate = $row['can_duplicate'];
+
+        $kind = $row['kind'];
+        $project_name = $row['project_name'];
+        $project_name_a = $row['project_name_a'];
+        $project_name_d = $row['project_name_d'];
+        $project_name_l = $row['project_name_l'];
+        $project_name_o = $row['project_name_o'];
+        $project_name_sl = $row['project_name_sl'];
+        $project_name_sv = $row['project_name_sv'];
+
+        if($kind == 'a')
+            $project_name = $project_name_a;
+        if($kind == 'd')
+            $project_name = $project_name_d;
+        if($kind == 'l')
+            $project_name = $project_name_l;
+        if($kind == 'o')
+            $project_name = $project_name_o;
+        if($kind == 'sl')
+            $project_name = $project_name_sl;
+        if($kind == 'sv')
+            $project_name = $project_name_sv;
 
         $merged_results[] = array(
             "id" => $id,
@@ -195,8 +227,10 @@ if (!isset($jwt)) {
 
             "can_view" => $can_view,
             "can_duplicate" => $can_duplicate,
+            "led_driver" => $led_driver,
             
             "product_array" => $product_array,
+            "project_name" => $project_name,
         );
     }
 
@@ -903,6 +937,34 @@ function GetSig($qid, $page, $db)
     );
 
     return $merged_results;
+}
+
+
+function GetLedDriver($qid, $db){
+    $query = "
+        SELECT 
+        `led_driver`
+        FROM   quotation_led_driver
+        WHERE  quotation_id = " . $qid . "
+        AND `status` <> -1 ";
+
+    // prepare the query
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $merged_results = [];
+    
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $led_driver = $row['led_driver'];   
+
+        $merged_results[] = array(
+            "led_driver" => $led_driver,
+        );
+    }
+
+    return $merged_results;
+
 }
 
 function GetTermInfo($qid, $db)

@@ -2121,6 +2121,7 @@ header( 'location:index' );
         .list_function.main a.export_excel,
         .list_function.main a.approvalform,
         .list_function.main a.export_soa,
+        .list_function.main a.driver_computation,
         .list_function.main a.cost_analysis {
             width: 30px;
             height: 30px;
@@ -2192,6 +2193,19 @@ header( 'location:index' );
             left: 4px;
         }
 
+        .list_function.main a.driver_computation::after {
+            content: " ";
+            background: url(images/ui/btn_driver_computation.svg);
+            background-size: 22px 22px;
+            background-repeat: no-repeat;
+            zoom: 1.3;
+            width: 45px;
+            height: 45px;
+            position: absolute;
+            top: 0.5px;
+            left: 0;
+        }
+
         .list_function.main a.cost_analysis::after {
             content: " ";
             background: url(images/ui/btn_calculator.svg);
@@ -2209,6 +2223,7 @@ header( 'location:index' );
         .list_function.main a.export_excel:hover,
         .list_function.main a.approvalform:hover,
         .list_function.main a.export_soa:hover,
+        .list_function.main a.driver_computation:hover,
         .list_function.main a.cost_analysis:hover {
             background-color: #707071;
         }
@@ -2704,6 +2719,96 @@ header( 'location:index' );
             display: none;
         }
 
+        #modal_driver_computation .modal_function > a.btn {
+            margin-left: 0;
+        }
+
+        #modal_driver_computation .modal-footer {
+            padding: 0;
+        }
+
+        #modal_driver_computation .modal-footer a.btn {
+            color: white;
+            width: 110px;
+            margin-left: 12px;
+            margin-right: 12px;
+        }
+
+        #modal_driver_computation .modal-footer a.btn.gray {
+            background-color: gray;
+        }
+
+
+        #tb_driver_computation {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        #tb_driver_computation tr th {
+            background-color: #E0E0E0;
+            border: 1px solid #C9C9C9;
+        }
+
+        #tb_driver_computation tr th, #tb_driver_computation tr td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 10px;
+        }
+
+        #tb_driver_computation tbody tr:nth-of-type(even) {
+            background-color: #F6F6F6;
+        }
+
+        #tb_driver_computation tr td input {
+            border: 2px solid #ccc;
+            text-align: center;
+        }
+
+        #tb_driver_computation tr td textarea {
+            border: 2px solid #ccc;
+            resize: none;
+        }
+
+        #tb_driver_computation tr td select {
+            border: 2px solid #ccc;
+            width: 200px;
+        }
+
+        #tb_driver_computation tr td select ~ select {
+            margin-top: 5px;
+        }
+
+        #tb_driver_computation tr td:nth-of-type(1) input[type="text"] {
+            width: 80px;
+        }
+
+        #tb_driver_computation tr td:nth-of-type(3) input[type="number"] {
+            width: 90px;
+        }
+
+        #tb_driver_computation tr td:nth-of-type(4) input[type="number"] {
+            width: 90px;
+        }
+
+        #tb_driver_computation tr td:nth-of-type(5) input[type="number"] {
+            width: 100px;
+        }
+
+        #tb_driver_computation tr td:nth-of-type(6),
+        #tb_driver_computation tr td:nth-of-type(7),
+        #tb_driver_computation tr td:nth-of-type(8) {
+            width: 120px;
+        }
+
+        #tb_driver_computation tr td:nth-of-type(10) input[type="number"] {
+            width: 90px;
+        }
+
+        #tb_driver_computation tr td:nth-of-type(11) {
+            width: 100px;
+            font-size: 20px;
+        }
+
         @media screen and (max-width: 1050px) {
 
             #export_pdf {
@@ -2798,6 +2903,10 @@ header( 'location:index' );
 
                 <div class="popupblock">
                     <a id="" class="export_soa" title="Generate Corresponding Statement of Account" @click="soa_post()"></a>
+                </div>
+
+                <div class="popupblock">
+                    <a id="" class="driver_computation" title="LED Driver Computation" @click="driver_compute()"></a>
                 </div>
 
                 <!-- 只有當使用者是 Dennis Lin 或 Ariel Lin 或 testmanager 時，下方這個 <div> 才會被建立出來，不要使用 display: none; 的方式 -->
@@ -5967,6 +6076,116 @@ header( 'location:index' );
 
             </div>
 
+
+        </div>
+
+    </div>
+
+
+    <!-- Modal for LED Driver Computation -->
+    <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         aria-hidden="true" id="modal_driver_computation">
+
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1500px;">
+
+            <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
+
+                <div class="modal-header">
+
+                    <h4 class="modal-title" id="myLargeModalLabel">LED Driver Computation</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="modal_function" style="width: 100%; display: flex; align-items: center;">
+                        <a class="btn small green" @click="add_led()">Add Item</a>
+                    </div>
+
+                    <div>
+                        <table id="tb_driver_computation" class="table table-sm table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ITEM NO.</th>
+                                <th>LOCATION (AREA)</th>
+                                <th>QUANTITY</th>
+                                <th>LED STRIP (WATTAGE)</th>
+                                <th>TOTAL (LENGTH IN METERS)</th>
+                                <th>TOTAL (WATTAGE)</th>
+                                <th>DRIVER LOSSES (20%)</th>
+                                <th>TOTAL LED DRIVER WATTAGE</th>
+                                <th>LED DRIVER WATTAGE AVAILABLE</th>
+                                <th>LED DRIVER QTY</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr v-for="(item, index) in led_array">
+                                <td><input type="text" v-model="item.no"></td>
+                                <td><textarea rows="3" v-model="item.area"></textarea></td>
+                                <td><input type="number" v-model="item.qty"></td>
+                                <td><input type="number" v-model="item.watt"></td>
+                                <td><input type="number" v-model="item.length"></td>
+                                <td>{{ Number((parseFloat(item.qty) || 0) * (parseFloat(item.watt) || 0) * (parseFloat(item.length) || 0)).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                                <td>{{ Number((parseFloat(item.qty) || 0) * (parseFloat(item.watt) || 0) * (parseFloat(item.length) || 0) * .2).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                                <td>{{ Number((parseFloat(item.qty) || 0) * (parseFloat(item.watt) || 0) * (parseFloat(item.length) || 0) * 1.2).toFixed(2).toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</td>
+                                <td>
+                                    <select v-model="item.tag" @change="led_driver_search(item)">
+                                        <option value="NON-DIMMABLE">NON-DIMMABLE</option>
+                                        <option value="TRIAC">TRIAC</option>
+                                        <option value="0/1-10V">0/1-10V</option>
+                                        <option value="DALI">DALI</option>
+                                    </select>
+
+                                    <select v-model="item.range" @change="led_driver_search(item)">
+                                        <option value="">WATTAGE RANGE</option>
+                                        <option value="100W">1W~100W</option>
+                                        <option value="200W">101W ~ 200W</option>
+                                        <option value="300W">201W ~ 300W</option>
+                                        <option value="400W">301W ~ 400W</option>
+                                        <option value="500W">401W ~ 500W</option>
+                                        <option value="above">501W above</option>
+                                    </select>
+
+                                    <select v-model="item.field">
+                                        <option :value="product.id" v-for="product in item.products">{{ product.wattage != '' ? product.wattage + ' - ' + product.code : product.code }}</option>
+                                    </select>
+
+                                </td>
+                                <td><input type="number" v-model="item.driver"></td>
+                                <td>
+                                    <i class="fas fa-arrow-alt-circle-up" @click="led_item_up(index, item.id)"></i>
+                                    <i class="fas fa-arrow-alt-circle-down"
+                                      @click="led_item_down(index, item.id)"></i>
+                                    <i class="fas fa-trash-alt" @click="led_item_del(index)"></i>
+                                </td>
+
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <div class="btnbox">
+                        <a class="btn" @click="close_led_driver()">Close</a>
+                        <a class="btn green" @click="save_led_driver()">Save</a>
+                        <a class="btn gray" @click="export_led_driver()">Export</a>
+                    </div>
+                </div>
+
+            </div>
 
         </div>
 

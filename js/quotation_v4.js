@@ -258,6 +258,8 @@ var app = new Vue({
         groupedItems_replacement : [],
 
         product_array: [],
+        led_array: [],
+
         qp:'',
         srp:'',
 
@@ -296,6 +298,8 @@ var app = new Vue({
         is_pdf : false,
         cost_lighting : false,
         cost_furniture : false,
+
+        project_name : '',
     },
   
     async created()  {
@@ -717,6 +721,12 @@ var app = new Vue({
         specification_sheet() {
             $('#modal_specification_sheet').modal('toggle');
         },
+
+        driver_compute() {
+            $('#modal_driver_computation').modal('toggle');
+        },
+
+        
 
       add_with_image(all) {
 
@@ -1239,6 +1249,61 @@ var app = new Vue({
         $('#modal_product_display').modal('toggle');
     },
 
+      close_led_driver: function() {
+        $('#modal_driver_computation').modal('toggle');
+    },
+
+    async save_led_driver() {
+      if (this.submit == true) return;
+
+        this.submit = true;
+  
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+        let _this = this;
+  
+        form_Data.append("jwt", token);
+ 
+        form_Data.append("quotation_id", this.id);
+        form_Data.append("led_driver", JSON.stringify(this.led_array));
+     
+        try {
+          let res = await axios({
+            method: 'post',
+            url: 'api/quotation_led_driver_insert',
+            data: form_Data,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+
+          if(res.status == 200){
+            // test for status you want, etc
+   
+            _this.submit = false;
+
+            Swal.fire({
+              html: res.data.message,
+              icon: "info",
+              confirmButtonText: "OK",
+            });
+        } 
+          
+        } catch (err) {
+          console.log(err)
+          Swal.fire({
+            text: err,
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+
+            _this.submit = false;
+        }
+
+        await this.reload();
+  
+      
+      },
 
     
     get_records: async function(id) {
@@ -2050,6 +2115,36 @@ var app = new Vue({
         this.term.item.splice(toIndex, 0, element);
       },
 
+      led_item_up: function(fromIndex, eid) {
+        var toIndex = fromIndex - 1;
+  
+        if (toIndex < 0) 
+          return;
+
+        var element = this.led_array.find(({ id }) => id === eid);
+        this.led_array.splice(fromIndex, 1);
+        this.led_array.splice(toIndex, 0, element);
+      },
+
+      led_item_down: function(fromIndex, eid) {
+        var toIndex = fromIndex + 1;
+
+        if (toIndex > this.led_array.length - 1) 
+          return;
+  
+        var element = this.led_array.find(({ id }) => id === eid);
+        this.led_array.splice(fromIndex, 1);
+        this.led_array.splice(toIndex, 0, element);
+      },
+
+      led_item_del: function(fromIndex) {
+
+        var index = fromIndex;
+        if (index > -1) {
+          this.led_array.splice(index, 1);
+        }
+      },
+
       payment_term_item_up: function(fromIndex, eid) {
         var toIndex = fromIndex - 1;
   
@@ -2077,7 +2172,56 @@ var app = new Vue({
         this.term.item.push(obj);
       },
 
+      led_driver_search(item) {
+    
+        const params = {
+          tag: item.tag,
+          range: item.range,
+        };
+
+        let token = localStorage.getItem("accessToken");
+        axios
+          .get("api/quotation_led_driver_search", {
+            params,
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then(function(response) {
+            console.log(response.data);
+            let res = response.data;
+              item.products = res.data;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
       
+      add_led() {
+        let order = 0;
+        
+        if(this.led_array.length != 0)
+          order = Math.max.apply(Math, this.led_array.map(function(o) { return o.id; }))
+          
+        obj = {
+          "id" : order + 1,
+          "no" : '',
+          "area" : '',
+          "qty" : '',
+          "watt" : '',
+          "length" : '',
+          "tag" : '',
+          "range" : '',
+          "field" : '',
+          "driver" : '',
+          "products": [],
+
+          "total_watt" : '',
+          "driver_loss" : '',
+          "total_driver_watt" : '',
+        }, 
+  
+        this.led_array.push(obj);
+      },
+
       add_payment_term_item() {
         let order = 0;
         
@@ -3069,9 +3213,14 @@ Installation:`;
 
               // product array
               _this.product_array = _this.receive_records[0].product_array;
+
+              if(_this.receive_records[0].led_driver.length > 0)
+                _this.led_array = JSON.parse(_this.receive_records[0].led_driver[0]["led_driver"]);
               
               _this.temp_can_view = _this.receive_records[0].can_view;
               _this.temp_can_duplicate = _this.receive_records[0].can_duplicate;
+
+              _this.project_name = _this.receive_records[0].project_name;
             }
           })
           .catch(function(error) {
@@ -4225,6 +4374,38 @@ Installation:`;
                   link.href = url;
                  
                     link.setAttribute('download', 'Quotation Export_' + _this.quotation_no + '.xlsx');
+                 
+                  document.body.appendChild(link);
+                  link.click();
+  
+            })
+            .catch(function(response) {
+                //handle error
+                console.log(response)
+            });
+      },
+
+      export_led_driver() {
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+        let _this = this;
+        form_Data.append("jwt", token);
+        form_Data.append("id", this.id);
+        form_Data.append("led_driver", JSON.stringify(this.led_array));
+        form_Data.append("project_name", this.project_name);
+  
+        axios({
+          method: "post",
+          url: "api/quotation_export_led_driver",
+          data: form_Data,
+          responseType: "blob",
+        })
+            .then(function(response) {
+                  const url = window.URL.createObjectURL(new Blob([response.data]));
+                  const link = document.createElement('a');
+                  link.href = url;
+                 
+                    link.setAttribute('download', 'Driver Computation_' + _this.project_name + '.xlsx');
                  
                   document.body.appendChild(link);
                   link.click();

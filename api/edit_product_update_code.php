@@ -1317,6 +1317,8 @@ else
 
         update_product_category_price_date($product_id, $db);
         update_product_category_phased_out_cnt($product_id, $db);
+
+        update_product_category_tags_index($product_id, $db);
         
         http_response_code(200);
         echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa") ));
@@ -2489,4 +2491,62 @@ function check_code_exist_in_product($pid) {
     
 
     return false;
+}
+
+function update_product_category_tags_index($id, $db) {
+    // clear all data
+    $query = "DELETE FROM product_category_tags_index WHERE pid = :id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+
+    $sql = "SELECT id, tags, attributes, variation_mode FROM product_category where `status` <> -1";
+
+    $stmt = $db->prepare( $sql );
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $id = $row['id'];
+        $tags = explode(',', $row['tags']);
+        $attributes = json_decode($row['attributes'], true);
+
+        $sql = "insert into product_category_tags_index (pid, `type`, `key`, `value`) values (:product_category_id, 0, :tag, '')";
+        $stmt2 = $db->prepare( $sql );
+
+        foreach ($tags as $tag) {
+            $stmt2->bindParam(':product_category_id', $id);
+            $stmt2->bindParam(':tag', $tag);
+            $stmt2->execute();
+
+            if($stmt2->errorInfo()[0] != "00000") {
+                echo $stmt2->errorInfo()[2];
+            }
+        }
+
+        foreach ($attributes as $att) {
+            $key = $att['category'];
+            $value = $att['value'];
+            $watt = 0;
+            if($value != "") {
+                if($key == 'Wattage')
+                {
+                    if (preg_match_all('/\b(\d+(\.\d+)?)\s*W?\b/i', $value, $matches)) {
+                        $watt = max($matches[1]); // 取最大數值，確保獲取主要的功率數值
+                    }
+                }
+
+                $sql = "insert into product_category_tags_index (pid, `type`, `key`, `value`, `watt`) values (:product_category_id, 1, :key, :value, :watt)";
+                $stmt2 = $db->prepare( $sql );
+                $stmt2->bindParam(':product_category_id', $id);
+                $stmt2->bindParam(':key', $key);
+                $stmt2->bindParam(':value', $value);
+                $stmt2->bindParam(':watt', $watt);
+                $stmt2->execute();
+
+                if($stmt2->errorInfo()[0] != "00000") {
+                    echo $stmt2->errorInfo()[2];
+                }
+            }
+        }
+    }
 }

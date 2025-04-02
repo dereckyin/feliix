@@ -84,6 +84,8 @@ else
    if($user_id != 1 && $user_id != 2)
         EmailNotify($id, $db);
 
+    update_product_category_tags_index($id, $db);
+
     http_response_code(200);
     echo json_encode(array("message" => "Deleted at " . date("Y-m-d") . " " . date("h:i:sa")));
 
@@ -624,5 +626,12 @@ function GetAccessoryInfomationDetail($cat_id, $product_id, $db){
 
 }
 
+function update_product_category_tags_index($id, $db) {
+    // clear all data
+    $query = "DELETE FROM product_category_tags_index WHERE pid = :id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+}
 
 ?>

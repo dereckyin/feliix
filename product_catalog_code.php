@@ -619,6 +619,76 @@ try {
             border: 1px solid #ced4da;
         }
 
+        @media screen and (max-width: 640px) {
+            .mainContent > div.block:nth-of-type(1) > .list_function  {
+                padding-top: 110px;
+            }
+
+            #tb_product_list tbody tr td:nth-of-type(1) {
+                min-width: 50px;
+            }
+
+            #tb_product_list tbody tr td:nth-of-type(2) {
+                min-width: 130px;
+            }
+
+            #tb_product_list tbody tr td:nth-of-type(3) {
+                min-width: 380px;
+            }
+
+            #tb_product_list tbody tr td:nth-of-type(4) {
+                min-width: 430px;
+            }
+
+            #tb_product_list tbody tr td:nth-of-type(5) {
+                min-width: 210px;
+            }
+
+            #tb_product_list tbody tr td:nth-of-type(6) {
+                min-width: 150px;
+            }
+
+            #tb_product_list tbody tr td:nth-of-type(7) {
+                min-width: 100px;
+            }
+
+            #tb_product_list tbody tr.set_format1 > td:nth-of-type(1) {
+                min-width: 50px;
+            }
+
+            #tb_product_list tbody tr.set_format1 > td:nth-of-type(2) {
+                min-width: 940px;
+            }
+
+            #tb_product_list tbody tr.set_format1 > td:nth-of-type(3) {
+                min-width: 150px;
+            }
+
+            #tb_product_list tbody tr.set_format1 > td:nth-of-type(4) {
+                min-width: 150px;
+            }
+
+            #tb_product_list tbody tr.set_format1 > td:nth-of-type(5) {
+                min-width: 100px;
+            }
+
+            #tb_product_list tbody tr.set_format2 > td:nth-of-type(1) {
+                min-width: 130px;
+            }
+
+            #tb_product_list tbody tr.set_format2 > td:nth-of-type(2) {
+                min-width: 380px;
+            }
+
+            #tb_product_list tbody tr.set_format2 > td:nth-of-type(3) {
+                min-width: 430px;
+            }
+
+            #tb_product_list tbody tr.set_format2 > td:nth-of-type(4) {
+                min-width: 220px;
+            }
+        }
+
 
     </style>
 
@@ -854,7 +924,7 @@ try {
         </div>
 
 
-        <div>
+        <div style="overflow-x: auto;">
             <table id="tb_product_list" class="table  table-sm table-bordered" >
 
                 <thead>
