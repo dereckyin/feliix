@@ -531,6 +531,10 @@ header( 'location:index' );
         }
 
         .block.B .tb_order thead tr th:nth-of-type(11), .block.B .tb_order tbody tr td:nth-of-type(12) {
+            min-width: 280px;
+        }
+
+        .block.B .tb_order thead tr th:nth-of-type(12), .block.B .tb_order tbody tr td:nth-of-type(13) {
             min-width: 450px;
         }
 
