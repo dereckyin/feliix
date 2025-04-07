@@ -293,6 +293,7 @@ try {
                                     <option>Mock-up</option>
                                     <option>Others</option>
                                     <option>Outsource</option>
+                                    <option>Payroll/Salary</option>
                                     <option>Petty cash</option>
                                     <option>Products</option>
                                     <option>Site Visit</option>
@@ -523,6 +524,7 @@ try {
             <option>Mock-up</option>
             <option>Others</option>
             <option>Outsource</option>
+            <option>Payroll/Salary</option>
             <option>Petty cash</option>
             <option>Products</option>
             <option>Site Visit</option>
@@ -1143,6 +1145,7 @@ try {
                                     <option>Mock-up</option>
                                     <option>Others</option>
                                     <option>Outsource</option>
+                                    <option>Payroll/Salary</option>
                                     <option>Petty cash</option>
                                     <option>Products</option>
                                     <option>Site Visit</option>
@@ -1326,6 +1329,7 @@ try {
                                     <option>Mock-up</option>
                                     <option>Others</option>
                                     <option>Outsource</option>
+                                    <option>Payroll/Salary</option>
                                     <option>Petty cash</option>
                                     <option>Products</option>
                                     <option>Site Visit</option>
@@ -1509,6 +1513,7 @@ try {
                                     <option>Mock-up</option>
                                     <option>Others</option>
                                     <option>Outsource</option>
+                                    <option>Payroll/Salary</option>
                                     <option>Petty cash</option>
                                     <option>Products</option>
                                     <option>Site Visit</option>
@@ -1692,6 +1697,7 @@ try {
                                     <option>Mock-up</option>
                                     <option>Others</option>
                                     <option>Outsource</option>
+                                    <option>Payroll/Salary</option>
                                     <option>Petty cash</option>
                                     <option>Products</option>
                                     <option>Site Visit</option>
@@ -1875,6 +1881,7 @@ try {
                                     <option>Mock-up</option>
                                     <option>Others</option>
                                     <option>Outsource</option>
+                                    <option>Payroll/Salary</option>
                                     <option>Petty cash</option>
                                     <option>Products</option>
                                     <option>Site Visit</option>

@@ -311,6 +311,7 @@ $(function(){
                                     <option value="Mock-up">Mock-up</option>
                                     <option value="Others">Others</option>
                                     <option value="Outsource">Outsource</option>
+                                    <option value="Payroll/Salary">Payroll/Salary</option>
                                     <option value="Petty cash">Petty cash</option>
                                     <option value="Products">Products</option>
                                     <option value="Site Visit">Site Visit</option>

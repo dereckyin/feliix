@@ -204,26 +204,30 @@ if($jwt){
 
 
             $i = $i + 3;
-            $sheet->setCellValue('G'. $i, "WATTAGE");
+            $sheet->setCellValue('F'. $i, "WATTAGE");
+            $sheet->setCellValue('G'. $i, "ID");
             $sheet->setCellValue('H'. $i, "CODE");
             $sheet->setCellValue('I'. $i, "QTY");
-            $sheet->getStyle('G'. $i. ':' . 'I' . $i)->applyFromArray($title_gray_background);
+            $sheet->getStyle('F'. $i. ':' . 'I' . $i)->applyFromArray($title_gray_background);
             $i = $i + 1;
             foreach($led_array as $data)
             {
                 $product_code = '';
                 $wattage = '';
+                $id = '';
                 foreach($data['products'] as $product)
                 {
                     if($product['id'] == $data['field'])
                     {
                         $product_code = $product['code'];
                         $wattage = $product['wattage'];
+                        $id = $product['id'];
                         break;
                     }
                 }
 
-                $sheet->setCellValue('G'. $i, $wattage);
+                $sheet->setCellValue('F'. $i, $wattage);
+                $sheet->setCellValue('G'. $i, $id);
                 $sheet->setCellValue('H'. $i, $product_code);
                 $sheet->setCellValue('I'. $i, $data['driver']);
                 
