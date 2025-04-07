@@ -1427,8 +1427,8 @@ var app = new Vue({
               v3:this.v3,
               v4:this.v4,
               btn2:"1",
-              which_pool:"",
-              as_sample:"",
+              which_pool:"Project Pool",
+            as_sample:"No",
             };
 
             items.push(item);
@@ -1600,8 +1600,8 @@ var app = new Vue({
               shipping_number:"",
             status:"",
             btn2:"1",
-            which_pool:"",
-            as_sample:"",
+            which_pool:"Project Pool",
+            as_sample:"No",
             notes:[]
           };
 
@@ -2489,8 +2489,8 @@ var app = new Vue({
               shipping_number:"",
                 status:"",
                 notes:[],
-                which_pool:"",
-                as_sample:"",
+                which_pool:"Project Pool",
+            as_sample:"No",
               };
 
               items.push(item);
@@ -3651,8 +3651,8 @@ add_with_image_set_select(all) {
       v3: "",
       v4: "",
       btn2:"1",
-      which_pool:"",
-      as_sample:"",
+      which_pool:"Project Pool",
+            as_sample:"No",
       ps_var : sets,
     };
 
@@ -3817,8 +3817,8 @@ add_without_image_set_select(all) {
       status:"",
       notes:[],
       btn2:"1",
-      which_pool:"",
-      as_sample:"",
+      which_pool:"Project Pool",
+            as_sample:"No",
       ps_var : sets,
     };
 
@@ -4115,8 +4115,8 @@ item = {
     v3: all == 'all' ? '' : set.v3,
     v4: all == 'all' ? '' : set.v4,
   btn2:"1",
-  which_pool:"",
-            as_sample:"",
+  which_pool:"Project Pool",
+            as_sample:"No",
 };
 
 items.push(item);
@@ -4316,8 +4316,8 @@ item = {
     status:"",
     notes:[],
     btn2:"1",
-    which_pool:"",
-            as_sample:"",
+    which_pool:"Project Pool",
+            as_sample:"No",
   };
 
   items.push(item);

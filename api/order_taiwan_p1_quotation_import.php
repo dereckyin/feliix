@@ -92,8 +92,8 @@ switch ($method) {
             die();
         }
 
-        $which_pool = "";
-        $as_sample = "";
+        $which_pool = "Project Pool";
+        $as_sample = "No";
 
         if($order_type == "mockup")
         {
