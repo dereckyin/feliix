@@ -646,6 +646,10 @@ try {
         }
 
         .block.A .tb_order thead tr th:nth-of-type(11), .block.A .tb_order tbody tr td:nth-of-type(12) {
+            min-width: 280px;
+        }
+
+        .block.A .tb_order thead tr th:nth-of-type(12), .block.A .tb_order tbody tr td:nth-of-type(13) {
             min-width: 450px;
         }
 
@@ -1690,6 +1694,7 @@ try {
                         <th>Unit</th>
                         <th style="display: none;">Amount</th>
                         <th>Date Needed by Client</th>
+                        <th>Inventory Remarks</th>
                         <th>Notes</th>
                         <th>Shipping Way</th>
                         <th>Action</th>
@@ -1818,6 +1823,30 @@ try {
                 </div>
                 <div class="write_block" v-if="item.is_edit">
                     <input type="text" v-model="item.date_needed">
+                </div>
+            </td>
+
+            <td>
+                <div class="read_block" v-if="!item.is_edit">
+                    <!-- 收到的這個品項屬於哪種類型的庫存數量 -->
+                    Which Inventory Pool to Go?<br>
+                    {{ item.which_pool }}<br>
+                    <!-- 收到的這個品項是否當成樣品 -->
+                    Used as Sample?<br>
+                    {{ item.as_sample }}
+                </div>
+                <div class="write_block" v-if="item.is_edit">
+                    Which Inventory Pool to Go?<br>
+                    <select v-model="item.which_pool">
+                        <option value="Project Pool">Project Pool</option>
+                        <option value="Stock Pool">Stock Pool</option>
+                    </select>
+                    <br><br>
+                    Used as Sample?<br>
+                    <select v-model="item.as_sample">
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
                 </div>
             </td>
 

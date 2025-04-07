@@ -107,6 +107,8 @@ switch ($method) {
                     `v4` = :v4,
                     `ps_var` = :ps_var,
                     `btn2` = :btn2,
+                    `which_pool` = :which_pool,
+                    `as_sample` = :as_sample,
                     `status` = :status,
                     `status_at` = now(),
                     `create_id` = :create_id,
@@ -145,6 +147,8 @@ switch ($method) {
                 $json_ps_var = json_encode($ps_var);
 
                 $btn2 = isset($block_array[$i]['btn2']) ? $block_array[$i]['btn2'] : '';
+                $which_pool = isset($block_array[$i]['which_pool']) ? $block_array[$i]['which_pool'] : '';
+                $as_sample = isset($block_array[$i]['as_sample']) ? $block_array[$i]['as_sample'] : '';
 
                 $status = isset($block_array[$i]['status']) ? $block_array[$i]['status'] : 0;
                 $status = $status == '' ? 0 : $status;
@@ -177,6 +181,8 @@ switch ($method) {
                 $stmt->bindParam(':ps_var', $json_ps_var);
 
                 $stmt->bindParam(':btn2', $btn2);
+                $stmt->bindParam(':which_pool', $which_pool);
+                $stmt->bindParam(':as_sample', $as_sample);
 
                 $stmt->bindParam(':status', $status);
               

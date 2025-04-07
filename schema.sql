@@ -5743,3 +5743,22 @@ CREATE TABLE IF NOT EXISTS `quotation_led_driver` (
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20250401
+ALTER TABLE od_item
+ADD COLUMN `which_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE od_item
+ADD COLUMN `as_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE product_category
+ADD COLUMN `project_qty` int(11) DEFAULT 0;
+
+ALTER TABLE product_category
+ADD COLUMN `project_s_qty` int(11) DEFAULT 0;
+
+ALTER TABLE product_category
+ADD COLUMN `stock_qty` int(11) DEFAULT 0;
+
+ALTER TABLE product_category
+ADD COLUMN `stock_s_qty` int(11) DEFAULT 0;

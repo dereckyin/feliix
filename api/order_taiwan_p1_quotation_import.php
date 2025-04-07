@@ -74,6 +74,44 @@ switch ($method) {
 
         $block_array = GetQuotationItems($qid, $db);
 
+        // get order type
+        $order_type = "";
+        $query = "SELECT order_type FROM `od_main` WHERE id = :od_id";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':od_id', $od_id);
+        try {
+            if ($stmt->execute()) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $order_type = $row['order_type'];
+            } 
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $db->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
+        }
+
+        $which_pool = "";
+        $as_sample = "";
+
+        if($order_type == "mockup")
+        {
+            $which_pool = "Project Pool";
+            $as_sample = "Yes";
+        }
+        
+        if($order_type == "stock")
+        {
+            $which_pool = "Stock Pool";
+            $as_sample = "No";
+        }
+        
+        if($order_type == "sample")
+        {
+            $which_pool = "Stock Pool";
+            $as_sample = "Yes";
+        }
         
         try {
 
@@ -107,6 +145,8 @@ switch ($method) {
                     `v3` = :v3,
                     `v4` = :v4,
                     `ps_var` = :ps_var,
+                    `which_pool` = :which_pool,
+                    `as_sample` = :as_sample,
                     `status` = 0,
                     `status_at` = now(),
                     `normal` = :normal,
@@ -173,6 +213,8 @@ switch ($method) {
                 $stmt->bindParam(':v4', $v4);
 
                 $stmt->bindParam(':ps_var', $json_ps_var);
+                $stmt->bindParam(':which_pool', $which_pool);
+                $stmt->bindParam(':as_sample', $as_sample);
 
                 $stmt->bindParam(':normal', $is_normal);
               

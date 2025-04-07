@@ -160,6 +160,8 @@ if($block_array[$i]['photo3'] == '')
                     `v3` = :v3,
                     `v4` = :v4,
                     `ps_var` = :ps_var,
+                    `which_pool` = :which_pool,
+                    `as_sample` = :as_sample,
                     updated_id = :updated_id,
                     updated_at = now()
                     where id = :id
@@ -198,6 +200,8 @@ if($block_array[$i]['photo3'] == '')
 
                 $ps_var = isset($block_array[$i]['ps_var']) ? $block_array[$i]['ps_var'] : "[]";
                 $json_ps_var = json_encode($ps_var);
+                $which_pool = isset($block_array[$i]['which_pool']) ? $block_array[$i]['which_pool'] : '';
+                $as_sample = isset($block_array[$i]['as_sample']) ? $block_array[$i]['as_sample'] : '';
 
                 // bind the values
                 $stmt->bindParam(':id', $id);
@@ -229,6 +233,8 @@ if($block_array[$i]['photo3'] == '')
                 $stmt->bindParam(':v4', $v4);
 
                 $stmt->bindParam(':ps_var', $json_ps_var);
+                $stmt->bindParam(':which_pool', $which_pool);
+                $stmt->bindParam(':as_sample', $as_sample);
               
                 $stmt->bindParam(':updated_id', $user_id);
                

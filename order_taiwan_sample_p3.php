@@ -1739,6 +1739,7 @@ header( 'location:index' );
                         <th>Unit</th>
                         <th style="display: none;">Amount</th>
                         <th>Date Needed</th>
+                        <th>Inventory Remarks</th>
                         <th>Notes</th>
                         <th>Notes (Only for Approved Stage)</th>
                         <th>Shipping Way</th>
@@ -1875,6 +1876,17 @@ header( 'location:index' );
                 </div>
                 <div class="write_block" v-if="is_edit_dn">
                     <input type="text" v-model="item.date_needed">
+                </div>
+            </td>
+
+            <td>
+                <div class="read_block">
+                    <!-- 收到的這個品項屬於哪種類型的庫存數量 -->
+                    Which Inventory Pool to Go?<br>
+                    {{ item.which_pool }}<br>
+                    <!-- 收到的這個品項是否當成樣品 -->
+                    Used as Sample?<br>
+                    {{ item.as_sample }}
                 </div>
             </td>
 

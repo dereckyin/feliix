@@ -89,6 +89,8 @@ if (!isset($jwt)) {
                     delivery,
                     final,
                     btn2,
+                    `which_pool`,
+                    `as_sample`,
                     `status`,
                     test_updated_name,
                     test_updated_at,
@@ -186,6 +188,8 @@ if (!isset($jwt)) {
         $delivery_updated_at = $row['delivery_updated_at'];
 
         $btn2 = $row['btn2'];
+        $which_pool = $row['which_pool'];
+        $as_sample = $row['as_sample'];
 
         $status = $row['status'];
 
@@ -248,6 +252,8 @@ if (!isset($jwt)) {
             "final" => $final,
             "status" => $status,
             "btn2" => $btn2,
+            "which_pool" => $which_pool,
+            "as_sample" => $as_sample,
             "test_updated_name" => $test_updated_name,
             "test_updated_at" => $test_updated_at,
             "delivery_updated_name" => $delivery_updated_name,
