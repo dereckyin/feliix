@@ -651,6 +651,10 @@ header( 'location:index' );
         }
 
         .block.C .tb_order thead tr th:nth-of-type(11), .block.C .tb_order tbody tr td:nth-of-type(12) {
+            min-width: 280px;
+        }
+
+        .block.C .tb_order thead tr th:nth-of-type(12), .block.C .tb_order tbody tr td:nth-of-type(13) {
             min-width: 450px;
         }
 
@@ -658,24 +662,24 @@ header( 'location:index' );
             min-width: 120px;
         }
 
-        .block.C .tb_order tbody tr td:nth-of-type(13) {
+        .block.C .tb_order tbody tr td:nth-of-type(14) {
             min-width: 450px;
         }
 
-        .block.C .tb_order tbody tr td:nth-of-type(14) {
+        .block.C .tb_order tbody tr td:nth-of-type(15) {
             min-width: 220px;
         }
 
-        .block.C .tb_order tbody tr td:nth-of-type(15),
         .block.C .tb_order tbody tr td:nth-of-type(16),
-        .block.C .tb_order tbody tr td:nth-of-type(17) {
+        .block.C .tb_order tbody tr td:nth-of-type(17),
+        .block.C .tb_order tbody tr td:nth-of-type(18) {
             min-width: 180px;
         }
 
-        .block.C .tb_order tbody tr td:nth-of-type(18),
         .block.C .tb_order tbody tr td:nth-of-type(19),
         .block.C .tb_order tbody tr td:nth-of-type(20),
-        .block.C .tb_order tbody tr td:nth-of-type(21) {
+        .block.C .tb_order tbody tr td:nth-of-type(21),
+        .block.C .tb_order tbody tr td:nth-of-type(22) {
             min-width: 400px;
         }
 

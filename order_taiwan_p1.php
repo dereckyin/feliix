@@ -643,14 +643,18 @@ header( 'location:index' );
         }
 
         .block.A .tb_order thead tr th:nth-of-type(10), .block.A .tb_order tbody tr td:nth-of-type(11) {
-            min-width: 200px;
+            min-width: 180px;
         }
 
         .block.A .tb_order thead tr th:nth-of-type(11), .block.A .tb_order tbody tr td:nth-of-type(12) {
-            min-width: 280px;
+            min-width: 200px;
         }
 
         .block.A .tb_order thead tr th:nth-of-type(12), .block.A .tb_order tbody tr td:nth-of-type(13) {
+            min-width: 280px;
+        }
+
+        .block.A .tb_order thead tr th:nth-of-type(13), .block.A .tb_order tbody tr td:nth-of-type(14) {
             min-width: 450px;
         }
 
