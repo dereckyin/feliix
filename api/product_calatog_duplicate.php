@@ -167,7 +167,7 @@ function update_product_category_tags_index($id, $db) {
             if($value != "") {
                 if($key == 'Wattage')
                 {
-                    if (preg_match_all('/\b(\d+(\.\d+)?)\b/i',, $value, $matches)) {
+                    if (preg_match_all('/\b(\d+(\.\d+)?)\b/i', $value, $matches)) {
                         $watt = max($matches[1]); // 取最大數值，確保獲取主要的功率數值
                     }
                 }
