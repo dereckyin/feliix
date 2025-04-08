@@ -249,7 +249,7 @@ if($jwt){
             // $sheet->setCellValue('R1', 'Warehouse In Charge');
             // $sheet->setCellValue('S1', 'Testing');
             // $sheet->setCellValue('T1', 'Delivery');
-            $sheet->setCellValue('M1', 'Date Needed by Client');
+            $sheet->setCellValue('M1', 'Date Needed');
             $sheet->setCellValue('N1', 'Inventory Remarks');
             $sheet->setCellValue('O1', 'Shipping Way');
             $sheet->setCellValue('P1', 'Date Send');

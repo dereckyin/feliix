@@ -558,11 +558,11 @@ header( 'location:index' );
             min-width: 200px;
         }
 
-        .block.D .tb_order thead tr th:nth-of-type(13), .block.D .tb_order tbody tr td:nth-of-type(15) {
+        .block.D .tb_order thead tr th:nth-of-type(14), .block.D .tb_order tbody tr td:nth-of-type(15) {
             min-width: 280px;
         }
 
-        .block.D .tb_order thead tr th:nth-of-type(14), .block.D .tb_order tbody tr td:nth-of-type(16) {
+        .block.D .tb_order thead tr th:nth-of-type(15), .block.D .tb_order tbody tr td:nth-of-type(16) {
             min-width: 450px;
         }
 
@@ -1514,7 +1514,7 @@ header( 'location:index' );
                         <th>Backup Qty</th>
                         <th>Unit</th>
                         <th style="display: none;">Amount</th>
-                        <th>Date Needed by Client</th>
+                        <th>Date Needed</th>
                         <th>Inventory Remarks</th>
                         <th>Notes</th>
                         <th>Notes (Only for Approved Stage)</th>
@@ -1847,7 +1847,7 @@ header( 'location:index' );
                     <th colspan="2">Description</th>
                     <th>Qty Needed</th>
                     <th style="display: none;">Amount</th>
-                    <th>Date Needed by Client</th>
+                    <th>Date Needed</th>
                     <th>Notes</th>
                     <th>Action</th>
                 </tr>

@@ -1512,7 +1512,7 @@ header( 'location:index' );
                         <th>Backup Qty</th>
                         <th>Unit</th>
                         <th style="display: none;">Amount</th>
-                        <th>Date Needed by Client</th>
+                        <th>Date Needed</th>
                         <th>Inventory Remarks</th>
                         <th>Notes</th>
                         <th>Notes (Only for Approved Stage)</th>
@@ -1845,7 +1845,7 @@ header( 'location:index' );
                     <th colspan="2">Description</th>
                     <th>Qty Needed</th>
                     <th style="display: none;">Amount</th>
-                    <th>Date Needed by Client</th>
+                    <th>Date Needed</th>
                     <th>Notes</th>
                     <th>Action</th>
                 </tr>

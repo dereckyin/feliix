@@ -558,6 +558,10 @@ header( 'location:index' );
         }
 
         .block.D .tb_order thead tr th:nth-of-type(13), .block.D .tb_order tbody tr td:nth-of-type(14) {
+            min-width: 280px;
+        }
+
+        .block.D .tb_order thead tr th:nth-of-type(14), .block.D .tb_order tbody tr td:nth-of-type(15) {
             min-width: 450px;
         }
 
@@ -565,24 +569,24 @@ header( 'location:index' );
             min-width: 120px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(15) {
+        .block.D .tb_order tbody tr td:nth-of-type(16) {
             min-width: 450px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(16) {
+        .block.D .tb_order tbody tr td:nth-of-type(17) {
             min-width: 220px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(17),
         .block.D .tb_order tbody tr td:nth-of-type(18),
-        .block.D .tb_order tbody tr td:nth-of-type(19) {
+        .block.D .tb_order tbody tr td:nth-of-type(19),
+        .block.D .tb_order tbody tr td:nth-of-type(20) {
             min-width: 180px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(20),
         .block.D .tb_order tbody tr td:nth-of-type(21),
         .block.D .tb_order tbody tr td:nth-of-type(22),
-        .block.D .tb_order tbody tr td:nth-of-type(23) {
+        .block.D .tb_order tbody tr td:nth-of-type(23),
+        .block.D .tb_order tbody tr td:nth-of-type(24) {
             min-width: 400px;
         }
 
@@ -1861,7 +1865,7 @@ header( 'location:index' );
                     <th colspan="2">Description</th>
                     <th>Qty Needed</th>
                     <th style="display: none;">Amount</th>
-                    <th>Date Needed by Client</th>
+                    <th>Date Needed</th>
                     <th>Notes</th>
                     <th>Action</th>
                 </tr>

@@ -643,18 +643,14 @@ header( 'location:index' );
         }
 
         .block.A .tb_order thead tr th:nth-of-type(10), .block.A .tb_order tbody tr td:nth-of-type(11) {
-            min-width: 180px;
-        }
-
-        .block.A .tb_order thead tr th:nth-of-type(11), .block.A .tb_order tbody tr td:nth-of-type(12) {
             min-width: 200px;
         }
 
-        .block.A .tb_order thead tr th:nth-of-type(12), .block.A .tb_order tbody tr td:nth-of-type(13) {
+        .block.A .tb_order thead tr th:nth-of-type(11), .block.A .tb_order tbody tr td:nth-of-type(12) {
             min-width: 280px;
         }
 
-        .block.A .tb_order thead tr th:nth-of-type(13), .block.A .tb_order tbody tr td:nth-of-type(14) {
+        .block.A .tb_order thead tr th:nth-of-type(12), .block.A .tb_order tbody tr td:nth-of-type(13) {
             min-width: 450px;
         }
 
@@ -1698,7 +1694,7 @@ header( 'location:index' );
                         <th>Backup Qty</th>
                         <th>Unit</th>
                         <th style="display: none;">Amount</th>
-                        <th>Date Needed by Client</th>
+                        <th>Date Needed</th>
                         <th>Inventory Remarks</th>
                         <th>Notes</th>
                         <th>Shipping Way</th>
@@ -1972,7 +1968,7 @@ header( 'location:index' );
                     <th colspan="2">Description</th>
                     <th>Qty Needed</th>
                     <th style="display: none;">Amount</th>
-                    <th>Date Needed by Client</th>
+                    <th>Date Needed</th>
                     <th>Notes</th>
                     <th>Action</th>
                 </tr>
