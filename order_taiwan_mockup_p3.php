@@ -206,16 +206,16 @@ header( 'location:index' );
         }
 
         #tb_product_list tbody tr td:nth-of-type(2) {
-            width: 420px;
+            width: 380px;
             padding-right: 20px
         }
 
         #tb_product_list tbody tr td:nth-of-type(3) {
-            width: 460px;
+            width: 430px;
         }
 
         #tb_product_list tbody tr td:nth-of-type(4) {
-            width: 220px;
+            width: 210px;
         }
 
         #tb_product_list tbody tr td:nth-of-type(5) {
@@ -1603,6 +1603,336 @@ header( 'location:index' );
             cursor: pointer;	
         }
 
+        #modal_registry_received_items table.registry_info {
+            width: 100%;
+        }
+
+        table.registry_info td {
+            padding: 0 15px;
+            width: 50%;
+        }
+
+        table.registry_info select {
+            width: calc( 100% - 230px);
+            margin-left: 5px;
+        }
+
+        table.registry_info .photobox {
+            height: 210px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        table.registry_info .photobox .itembox {
+            display: inline-block;
+            margin: 5px 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        table.registry_info .photobox .itembox .photo {
+            border: 1px dashed #707070;
+            width: 150px;
+            height: 150px;
+            padding: 3px;
+            position: relative;
+        }
+
+        table.registry_info .photobox .itembox .photo::before {
+            content: "+";
+            display: block;
+            width: 36px;
+            height: 36px;
+            border: 1px dashed #3FA4F4;
+            border-radius: 18px;
+            line-height: 24px;
+            text-align: center;
+            color: #3FA4F4;
+            font-size: 36px;
+            font-weight: 300;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            padding: 2px 0 0;
+        }
+
+        table.registry_info .photobox .itembox .photo > input[type='file'] {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+
+        table.registry_info .photobox .itembox .photo > img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        table.registry_info .photobox .itembox.chosen .photo::before {
+            content: none;
+        }
+
+        table.registry_info .photobox .itembox .photo > div {
+            display: none;
+        }
+
+        table.registry_info .photobox .itembox.chosen .photo > div {
+            display: inline-block;
+            margin: 8px auto 5px;
+            width: 36px;
+            height: 36px;
+            border: 1px dashed #EA0029;
+            border-radius: 18px;
+            line-height: 28px;
+            text-align: center;
+            color: #EA0029;
+            font-size: 24px;
+            font-weight: 400;
+            cursor: pointer;
+            position: absolute;
+            bottom: -50px;
+            left: 57px;
+        }
+                
+        table.registry_info textarea {
+            border: 1px solid #707070;
+            font-size: 16px;
+            resize: none;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        #modal_registry_received_items .popupblock {
+            margin: -5px 0 5px;
+        }
+
+        #modal_registry_received_items .popupblock a {
+            background-color: #707070;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+        }
+
+        #modal_registry_received_items .popupblock a i {
+            font-size: 20px;
+            color: white;
+            line-height: 1.45;
+        }
+
+        #modal_registry_received_items table.registry_list {
+            width: 100%;
+        }
+
+        table.registry_list thead th, table.registry_list tbody td {
+            text-align: center;
+            padding: 10px;
+            vertical-align: middle;
+        }
+
+        table.registry_list thead th {
+            background-color: #E0E0E0;
+            border: 1px solid #C9C9C9;
+        }
+
+        table.registry_list tbody td {
+            border: 1px solid #dee2e6;
+        }
+
+        table.registry_list tbody tr:nth-of-type(even) {
+            background-color: #F6F6F6;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(1) {
+            width: 180px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(2) {
+            width: 400px;
+            padding-right: 20px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(2) .id,
+        table.registry_list tbody tr td:nth-of-type(2) .brand,
+        table.registry_list tbody tr td:nth-of-type(2) .code {
+            font-size: 16px;
+            font-weight: 800;
+            text-align: left;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(2) .brief {
+            font-size: 16px;
+            font-weight: 400;
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(2) .read_block .listing {
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 3px;
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(3) {
+            width: 140px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(4) {
+            width: 245px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(5) {
+            width: 130px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(6) {
+            width: 80px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(7) {
+            width: 110px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(7) a.btn {
+            display: block;
+            margin: 10px 0;
+            color: white;
+            width: 80px;
+        }
+
+        #modal_registry_received_items .btnbox {
+            text-align: right;
+            padding: 0;
+            margin-top: -10px;
+        }
+
+        #modal_registry_received_items .btnbox a.btn {
+            margin: 10px 0;
+            color: white;
+            width: 80px;
+        }
+
+         #modal_registry_received_items .btnbox a.btn:nth-of-type(1) {
+            margin-right: 20px;
+        }
+
+        #modal_barcode_printing table.barcode_list {
+            width: 100%;
+        }
+
+        #modal_barcode_printing .modal-body {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        #modal_barcode_printing .list_function {
+            margin: 8px 0;
+        }
+
+        table.barcode_list thead th, table.barcode_list tbody td {
+            text-align: center;
+            padding: 10px;
+            vertical-align: middle;
+        }
+
+        table.barcode_list thead th {
+            background-color: #E0E0E0;
+            border: 1px solid #C9C9C9;
+        }
+
+        table.barcode_list tbody td {
+            border: 1px solid #dee2e6;
+        }
+
+        table.barcode_list tbody tr:nth-of-type(even) {
+            background-color: #F6F6F6;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(1) {
+            width: 60px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(2) {
+            width: 140px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(3) {
+            width: 180px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(4) {
+            width: 400px;
+            padding-right: 20px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(4) .id,
+        table.barcode_list tbody tr td:nth-of-type(4) .brand,
+        table.barcode_list tbody tr td:nth-of-type(4) .code {
+            font-size: 16px;
+            font-weight: 800;
+            text-align: left;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(4) .brief {
+            font-size: 16px;
+            font-weight: 400;
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(4) .read_block .listing {
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 3px;
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(5) {
+            width: 245px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(6) {
+            width: 130px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(7) {
+            width: 80px;
+        }
+
+        table.registry_list a.hyperlink,
+        table.barcode_list a.hyperlink {
+            color: #0056b3;
+        }
+
+        table.registry_list a.hyperlink.block,
+        table.barcode_list a.hyperlink.block {
+            display: block;
+        }
+
+        #modal_barcode_printing .modal-footer .btnbox {
+            padding: 0;
+        }
+
+        #modal_barcode_printing .modal-footer .btnbox a.btn {
+            margin: 5px 15px;
+            color: white;
+            width: 130px;
+        }
+
+        button.btn-secondary {
+            margin: 10px 0 5px;
+        }
+
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
@@ -1710,7 +2040,8 @@ header( 'location:index' );
                             <a class="btn small green" @click="cancel()" v-if="MarkasCanceled() && is_edit_dn != true">Mark as Canceled</a>
 
                             <a class="btn small green" @click="edit_shipping_info('ship_info')" v-if="EditShippingInfo() && no_privlege() != true && is_edit_dn != true">Edit Shipping Info</a>
-                            <a class="btn small green" @click="edit_shipping_info_dn('date_needed')" v-if="EditDateNeeded()  && no_privlege() != true && is_edit_dn != true">Edit Date Needed</a>
+                            <a class="btn small green" @click="edit_shipping_info_dn('date_needed')" v-if="EditDateNeeded()  && no_privlege() != true && is_edit_dn != true && is_edit_remark != true">Edit Date Needed</a>
+                            <a class="btn small green" style="width: 190px;" @click="edit_inventory_remark('inventory_remark')" v-if="EditInventoryRemark()  && no_privlege() != true && is_edit_remark != true && is_edit_dn != true">Edit Inventory Remarks</a>
                             <a class="btn small green" @click="edit_shipping_info('ware_info')" v-if="EditWarehouseInfo() && no_privlege() != true && is_edit_dn != true">Edit Warehouse Info</a>
                             <a class="btn small green" @click="edit_shipping_info('assing_test')" v-if="AssignTesting() && no_privlege() != true && 1==0">Assign Testing</a>
                             <a class="btn small green" @click="edit_shipping_info('edit_test')" v-if="EditTestingInfo() && no_privlege() != true && is_edit_dn != true">Edit Testing Info</a>
@@ -1721,6 +2052,8 @@ header( 'location:index' );
                             <a class="btn small green" @click="save_shipping_info()" v-if="Save()">Save</a>
                             <a class="btn small" @click="cancel_date_needed()" v-if="is_edit_dn">Cancel</a>
                             <a class="btn small green" @click="save_date_needed()" v-if="is_edit_dn">Save</a>
+                            <a class="btn small" @click="cancel_inventory_remark()" v-if="is_edit_remark">Cancel</a>
+                            <a class="btn small green" @click="save_inventory_remark()" v-if="is_edit_remark">Save</a>
 
                             <input type="text" placeholder="Comment" v-model="comment" v-if="(access2 == true || access4 == true || access5 == true || access6 == true) && no_privlege() != true || is_edit_dn">
                         </div>
@@ -1885,13 +2218,26 @@ header( 'location:index' );
             </td>
 
             <td>
-                <div class="read_block">
+                <div class="read_block" v-if="!is_edit_remark">
                     <!-- 收到的這個品項屬於哪種類型的庫存數量 -->
                     Which Inventory Pool to Go?<br>
                     {{ item.which_pool }}<br>
                     <!-- 收到的這個品項是否當成樣品 -->
                     Used as Sample?<br>
                     {{ item.as_sample }}
+                </div>
+                <div class="write_block" v-if="is_edit_remark">
+                    Which Inventory Pool to Go?<br>
+                    <select v-model="item.which_pool">
+                        <option>Project Pool</option>
+                        <option>Stock Pool</option>
+                    </select>
+                    <br><br>
+                    Used as Sample?<br>
+                    <select v-model="item.as_sample">
+                        <option>No</option>
+                        <option>Yes</option>
+                    </select>
                 </div>
             </td>
 
@@ -2338,7 +2684,7 @@ header( 'location:index' );
 <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_product_catalog">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
 
         <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 
@@ -2840,7 +3186,7 @@ header( 'location:index' );
 <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_product_display">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
 
         <div class="modal-content"
              style="height: calc( 100vh - 3.75rem); overflow-y: auto; border: none; padding-bottom: 20px;">
@@ -4216,7 +4562,7 @@ header( 'location:index' );
 <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_quotation_list">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
 
         <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 

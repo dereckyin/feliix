@@ -466,6 +466,7 @@ var app = new Vue({
         last_have_spec : true,
 
         is_edit_dn : false,
+        is_edit_remark : false,
 
         cost_lighting : false,
         cost_furniture : false,
@@ -802,6 +803,14 @@ var app = new Vue({
         else
           return false;
       },
+      
+      EditInventoryRemark()
+      {
+        if((this.access1 == true || this.access3 || this.access5 || this.access6 || this.access7) && this.is_info == false)
+          return true;
+        else
+          return false;
+      },
 
       EditWarehouseInfo()
       {
@@ -1044,6 +1053,16 @@ var app = new Vue({
 
       },
 
+      edit_inventory_remark(item) {
+        this.is_edit_remark = true;
+      },
+
+      cancel_inventory_remark() {
+        this.getRecord();
+        this.is_edit_remark = false;
+      },
+
+
       export_excel() {
         // if selected, check if they with same brand
         let brands = [];
@@ -1207,6 +1226,40 @@ var app = new Vue({
         this.comment = '';
 
         this.is_edit_dn = false;
+        this.info_type = '';
+  
+        Swal.fire({
+          //text: "Records Edited" + res.data,
+          text: "Action completed successfully",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+      },
+
+      save_inventory_remark: async function() {
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+
+        form_Data.append("jwt", token);
+        form_Data.append("od_id", this.id);
+        form_Data.append("items", JSON.stringify(this.items));
+        form_Data.append("comment", this.comment);
+        form_Data.append("type", 'inventory_remark');
+
+        
+        let res = await axios({
+          method: 'post',
+          url: 'api/order_taiwan_p1_inventory_remark',
+          data: form_Data,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        this.getRecord();
+        this.comment = '';
+
+        this.is_edit_remark = false;
         this.info_type = '';
   
         Swal.fire({
