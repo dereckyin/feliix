@@ -98,7 +98,7 @@ if (!isset($jwt)) {
                     delivery_updated_at,
                     normal,
                     status_at,
-                    date_send
+                    received_list
                     FROM od_item, 
                     (SELECT @a:=@a+1 serial_number, id FROM od_item, (SELECT @a:= 0) AS a WHERE status <> -1 and od_id=$id order by ABS(sn)) b
                     WHERE status <> -1 and od_id=$id and od_item.id = b.id
@@ -179,6 +179,8 @@ if (!isset($jwt)) {
         $v4 = $row['v4'];
 
         $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
+
+        $received_list = json_decode($row['received_list'] == null ? "[]" : $row['received_list'], true);
 
         $serial_number = $row['serial_number'];
 
@@ -265,6 +267,7 @@ if (!isset($jwt)) {
             "normal" => $normal,
             "status_at" => $status_at,
             "date_send" => $date_send,
+            "received_list" => $received_list,
         );
     }
 

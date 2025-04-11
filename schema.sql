@@ -5762,3 +5762,7 @@ ADD COLUMN `stock_qty` int(11) DEFAULT 0;
 
 ALTER TABLE product_category
 ADD COLUMN `stock_s_qty` int(11) DEFAULT 0;
+
+-- 20250401
+ALTER TABLE od_item
+ADD COLUMN `received_list` JSON;
