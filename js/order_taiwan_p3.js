@@ -296,6 +296,7 @@ var app = new Vue({
 
         od_name : '',
         stage_id : 0,
+
         project_name : '',
         serial_name : '',
 
@@ -475,6 +476,8 @@ var app = new Vue({
 
         received_items: {},
         projects: [],
+        is_encode_warehouse: false,
+        project_id : 0,
     },
   
     created() {
@@ -717,6 +720,7 @@ var app = new Vue({
                   _this.od_name = res.data[0].od_name;
                   _this.stage_id = res.data[0].stage_id;
                   _this.project_name = res.data[0].project_name;
+                  _this.project_id = res.data[0].project_id;
                   _this.serial_name = res.data[0].serial_name;
                   _this.pic1 = res.data[0].pic1;
                   _this.pic2 = res.data[0].pic2;
@@ -856,7 +860,7 @@ var app = new Vue({
 
       encode_warehouse(items)
       {
-        if(items.received_list != []){        
+        if(items.received_list.length != 0){        
           this.received_items = JSON.parse(JSON.stringify(items.received_list));
           this.received_items.id = items.id;
         }
@@ -2340,12 +2344,12 @@ var app = new Vue({
               photo4: "",
               photo5: "",
 
-              receive_date: "",
-              which_pool: "",
-              as_sample: "",
-              location: "",
+              receive_date: new Date().toISOString().slice(0, 10),
+              which_pool: "Project Pool",
+              as_sample: "No",
+              location: "Caloocan",
               project_list: [],
-              project_id: 0,
+              project_id: this.project_id,
               desc:"",
             };
 
@@ -2491,12 +2495,12 @@ var app = new Vue({
             photo4: "",
             photo5: "",
 
-            receive_date: "",
-            which_pool: "",
-            as_sample: "",
-            location: "",
+            receive_date: new Date().toISOString().slice(0, 10),
+            which_pool: "Project Pool",
+            as_sample: "No",
+      location: "Caloocan",
             project_list: [],
-            project_id: 0,
+            project_id: this.project_id,
             desc:"",
           };
 
@@ -2602,7 +2606,10 @@ var app = new Vue({
         {
           $('#variation3_value').tagsinput('add', this.product.variation3_value[i]);
         }
-  
+        for(var i=0; i<this.product.variation4_value.length; i++)
+        {
+          $('#variation4_value').tagsinput('add', this.product.variation4_value[i]);
+        }
         
       },
 
@@ -2829,13 +2836,14 @@ var app = new Vue({
   },
 
   product_catalog() {
-
+    this.is_encode_warehouse = false;
     $('#modal_product_catalog').modal('toggle');
     $("#tag01").selectpicker("refresh");
   },
 
 
       product_catalog_warehouse() {
+        this.is_encode_warehouse = true;
         $('#modal_registry_received_items').modal('toggle');
         $('#modal_product_catalog').modal('toggle');
         $("#tag01").selectpicker("refresh");
@@ -4165,10 +4173,12 @@ var app = new Vue({
           _this.p_variation1_text = _this.p_record[0]['variation1_text'];
           _this.p_variation2_text = _this.p_record[0]['variation2_text'];
           _this.p_variation3_text = _this.p_record[0]['variation3_text'];
+          _this.p_variation4_text = _this.p_record[0]['variation4_text'];
 
           _this.p_variation1_value = _this.p_record[0]['variation1_value'];
           _this.p_variation2_value = _this.p_record[0]['variation2_value'];
           _this.p_variation3_value = _this.p_record[0]['variation3_value'];
+          _this.p_variation4_value = _this.p_record[0]['variation4_value'];
 
           _this.p_related_product = _this.p_record[0]['related_product'];
           _this.p_chunk(_this.p_related_product, 4);
@@ -4179,10 +4189,12 @@ var app = new Vue({
           _this.p_variation1 = _this.p_record[0]['variation1'];
           _this.p_variation2 = _this.p_record[0]['variation2'];
           _this.p_variation3 = _this.p_record[0]['variation3'];
+          _this.p_variation4 = _this.p_record[0]['variation4'];
 
           _this.p_variation1_custom = _this.p_record[0]['variation1_custom'];
           _this.p_variation2_custom = _this.p_record[0]['variation2_custom'];
           _this.p_variation3_custom = _this.p_record[0]['variation3_custom'];
+          _this.p_variation4_custom = _this.p_record[0]['variation4_custom'];
           
           _this.p_set_up_variants();
           _this.p_set_up_specification();
@@ -4286,7 +4298,10 @@ var app = new Vue({
       {
         $('#variation3_value').tagsinput('add', this.p_variation3_value[i]);
       }
-
+      for(var i=0; i<this.p_variation4_value.length; i++)
+      {
+        $('#variation4_value').tagsinput('add', this.p_variation4_value[i]);
+      }
       
     },
 
@@ -4926,12 +4941,12 @@ add_with_image_set_select_warehouse(all) {
       photo4: "",
       photo5: "",
 
-      receive_date: "",
-      which_pool: "",
-      as_sample: "",
-      location: "",
+      receive_date: new Date().toISOString().slice(0, 10),
+      which_pool: "Project Pool",
+      as_sample: "No",
+      location: "Caloocan",
       project_list: [],
-      project_id: 0,
+      project_id: this.project_id,
       desc:"",
     };
 
@@ -5075,12 +5090,12 @@ add_without_image_set_select_warehouse(all) {
       photo4: "",
       photo5: "",
 
-      receive_date: "",
-      which_pool: "",
-      as_sample: "",
-      location: "",
+      receive_date: new Date().toISOString().slice(0, 10),
+      which_pool: "Project Pool",
+      as_sample: "No",
+      location: "Caloocan",
       project_list: [],
-      project_id: 0,
+      project_id: this.project_id,
       desc:"",
     };
 
@@ -5763,12 +5778,12 @@ item = {
   photo4: "",
       photo5: "",
 
-      receive_date: "",
-      which_pool: "",
-      as_sample: "",
-      location: "",
+      receive_date: new Date().toISOString().slice(0, 10),
+      which_pool: "Project Pool",
+      as_sample: "No",
+      location: "Caloocan",
       project_list: [],
-      project_id: 0,
+      project_id: this.project_id,
       desc:"",
 };
 
@@ -5943,12 +5958,12 @@ item = {
     photo4: "",
       photo5: "",
 
-      receive_date: "",
-      which_pool: "",
-      as_sample: "",
-      location: "",
+      receive_date: new Date().toISOString().slice(0, 10),
+      which_pool: "Project Pool",
+      as_sample: "No",
+      location: "Caloocan",
       project_list: [],
-      project_id: 0,
+      project_id: this.project_id,
       desc:"",
       pid:0,
   };

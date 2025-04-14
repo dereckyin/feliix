@@ -200,6 +200,7 @@ var app = new Vue({
         variation1_value:[],
         variation2_value: [],
         variation3_value: [],
+        variation4_value: [],
     
         variation_product: [],
 
@@ -468,6 +469,13 @@ var app = new Vue({
 
         cost_lighting : false,
         cost_furniture : false,
+
+        page: 0,
+        pages_10:0,
+
+        received_items: {},
+        projects: [],
+        is_encode_warehouse: false,
     },
   
     created() {
@@ -529,7 +537,7 @@ var app = new Vue({
       this.getOdMain();
       this.getTagGroup();
       this.getProductControl();
-
+      this.getProjects();
     },
   
     computed: {
@@ -575,6 +583,27 @@ var app = new Vue({
     },
   
     methods: {
+      getProjects () {
+
+        let _this = this;
+  
+        let token = localStorage.getItem('accessToken');
+  
+        axios
+            .get('api/project02_get_project_name_by_keyword', { headers: {"Authorization" : `Bearer ${token}`} })
+            .then(
+            (res) => {
+                _this.projects = res.data;
+            },
+            (err) => {
+                alert(err.response);
+            },
+            )
+            .finally(() => {
+                
+            });
+    },
+
       getProductControl: function() {
         var token = localStorage.getItem('token');
         var form_Data = new FormData();
@@ -824,6 +853,27 @@ var app = new Vue({
           return true;
         else
           return false;
+      },
+
+      encode_warehouse(items)
+      {
+        if(items.received_list.length != 0){        
+          this.received_items = JSON.parse(JSON.stringify(items.received_list));
+          this.received_items.id = items.id;
+        }
+        else
+          this.received_items = JSON.parse(JSON.stringify(items));
+
+        if(this.received_items.items == undefined)
+          this.received_items.items = [];
+
+        $('#modal_registry_received_items').modal('toggle');
+      },
+
+      close_warehouse()
+      {
+        $('#modal_registry_received_items').modal('toggle');
+        this.received_items = {};
       },
 
       EditTestingInfo()
@@ -2540,11 +2590,25 @@ var app = new Vue({
       });
   },
 
-      product_catalog() {
+  product_catalog() {
+    this.is_encode_warehouse = false;
+    $('#modal_product_catalog').modal('toggle');
+    $("#tag01").selectpicker("refresh");
+  },
 
+
+      product_catalog_warehouse() {
+        this.is_encode_warehouse = true;
+        $('#modal_registry_received_items').modal('toggle');
         $('#modal_product_catalog').modal('toggle');
         $("#tag01").selectpicker("refresh");
       },
+
+      close_product() {
+        $('#modal_registry_received_items').modal('toggle');
+        $('#modal_product_catalog').modal('toggle');
+      },
+
 
       get_brands: function() {
         let _this = this;
@@ -3151,6 +3215,102 @@ var app = new Vue({
         window.print();
       },
 
+      
+      clear_main_photo(item, num) {
+
+        if (num === 4) {
+          item.photo4 = "";
+          item.photo4_name = "";
+          document.getElementById('photo_4').value = "";
+        }
+        if (num === 5) {
+          item.photo5 = "";
+          item.photo5_name = "";
+          document.getElementById('photo_5').value = "";
+        }
+  
+        app.$forceUpdate();
+      },
+
+      register(item) {
+        item.status = 1;
+        app.$forceUpdate();
+      },
+
+      remove_item(id) {
+        this.received_items.items = this.received_items.items.filter(item => item.id !== id);
+        app.$forceUpdate();
+      },
+
+      save_encode() {
+
+          let _this = this;
+
+          var token = localStorage.getItem("token");
+          var form_Data = new FormData();
+
+          form_Data.append("jwt", token);
+          form_Data.append("received_items", JSON.stringify(this.received_items));
+
+          var file = document.getElementById('photo_4');
+          if(file) {
+            let f = file.files[0];
+            if(typeof f !== 'undefined') 
+              form_Data.append('photo_4', f);
+          }
+
+          var file = document.getElementById('photo_5');
+          if(file) {
+            let f = file.files[0];
+            if(typeof f !== 'undefined') 
+              form_Data.append('photo_5', f);
+          }
+
+          for(var i=0; i<this.received_items.items.length; i++)
+          {
+            var file = document.getElementById('photo_' + this.received_items.items[i].id + '_1');
+            if(file) {
+              let f = file.files[0];
+              if(typeof f !== 'undefined')
+                form_Data.append('photo_1_' + this.received_items.items[i].id, f);
+            }
+
+            var file = document.getElementById('photo_' + this.received_items.items[i].id + '_2');
+            if(file) {
+              let f = file.files[0];
+              if(typeof f !== 'undefined') 
+                form_Data.append('photo_2_' + this.received_items.items[i].id, f);
+            }
+          }
+
+          axios({
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            url: "api/order_taiwan_p3_encode",
+            data: form_Data,
+          })
+            .then(function(response) {
+              //handle success
+              // close modal
+              _this.close_warehouse();
+              _this.getRecord();
+
+            })
+            .catch(function(error) {
+          
+
+            })
+            .finally(function() {
+              _this.submit = false;
+              _this.received_items = {
+                items: [],
+              };
+
+          });
+      },
+
 
       clear_photo(item, num) {
 
@@ -3177,7 +3337,7 @@ var app = new Vue({
           document.getElementById('photo_' + item.id + '_5').value = "";
         }
   
-        
+        app.$forceUpdate();
       },
       
       onFileChangeImage(e, item, num) {
@@ -3202,6 +3362,22 @@ var app = new Vue({
           item.photo5_name = file.name;
         }
           
+        app.$forceUpdate();
+      },
+
+      onMainFileChangeImage(e, item, num) {
+        const file = e.target.files[0];
+  
+        if (num === 4) {
+          item.photo4 = URL.createObjectURL(file);
+          item.photo4_name = file.name;
+        }
+        if (num === 5) {
+          item.photo5 = URL.createObjectURL(file);
+          item.photo5_name = file.name;
+        }
+          
+        app.$forceUpdate();
       },
 
       getRecord: function() {
@@ -4842,6 +5018,983 @@ item = {
         });
 
 },
+
+
+add_with_image_warehouse(all) {
+
+  var photo = "";
+  var price = "";
+  var list = "";
+
+  let _this = this;
+
+  let item_product = this.shallowCopy(
+    this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3 && element.v4 == this.v4)
+  )
+
+  if(this.product.product.length > 0 && item_product.id == undefined && all != 'all') {
+    alert('Please choose an option for each attribute');
+    return;
+  }
+
+  if(item_product.id != undefined)
+  {
+    if(item_product.photo != "")
+      photo = item_product.photo;
+      // price = Number(item_product.price) != 0 ? Number(item_product.price) : Number(item_product.quoted_price);
+      price = Number(item_product.quoted_price) != 0 ? Number(item_product.quoted_price) : Number(item_product.price);
+      if(this.v1 != "")
+        list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+      if(this.v2 != "")
+        list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+      if(this.v3 != "")
+        list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+      if(this.v4 != "")
+        list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+  }
+  else
+  {
+    photo = this.product.photo1;
+    // price = this.product.price_org !== null ? this.product.price_org : this.product.quoted_price_org;
+    price = this.product.quoted_price_org !== null ? this.product.quoted_price_org : this.product.price_org;
+    list = "";
+  }
+
+  if(all == 'all')
+  {
+    list = "";
+    var k1, k2, k3, k4;
+    k1 = this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1;
+    k2 = this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2;
+    k3 = this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3;
+    k4 = this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4;
+
+    if(k1 !== '')
+      list += (this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1) + ': ' + this.product.variation1_value.join(', ') + "\n";
+    if(k2 !== '')
+      list += (this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2) + ': ' + this.product.variation2_value.join(', ') + "\n";
+    if(k3 !== '')
+      list += (this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3) + ': ' + this.product.variation3_value.join(', ') + "\n";
+    if(k4 !== '')
+      list += (this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4) + ': ' + this.product.variation4_value.join(', ') + "\n";
+
+    photo = this.product.photo1;
+    if(this.product.srp !== null || this.product.srp_quoted !== null)
+      price = this.product.srp_quoted !== null ? this.product.srp_quoted : this.product.srp;
+      //price = this.product.srp !== null ? this.product.srp : this.product.srp_quoted;
+
+    if(price == null)
+      //price = this.product.price_org !== null ? this.product.price_org : this.product.quoted_price_org;
+      price = this.product.quoted_price_org !== null ? this.product.quoted_price_org : this.product.price_org;
+  }
+
+  for(var i=0; i<this.specification.length; i++)
+  {
+      if(this.specification[i].k1 !== '')
+        list += this.specification[i].k1 + ': ' + this.specification[i].v1 + "\n";
+      if(this.specification[i].k2 !== '')
+        list += this.specification[i].k2 + ': ' + this.specification[i].v2 + "\n";
+  }
+
+  // add phased out information
+  if((this.product.phased_out_cnt > 0 && this.phased == 1) || (this.product.phased_out_cnt > 0 && all == 'all'))
+  {
+    list += "\n";
+    list += "Phased-out Variants:\n";
+    list += this.product.phased_out_text.split("<br/>").join("\n");
+  }
+
+  list.replace(/\n+$/, "");
+
+  if(price == null)
+    price = this.product.srp_quoted !== 0 ?  this.product.srp_quoted : this.product.srp;
+    // price = this.product.srp !== 0 ?  this.product.srp : this.product.srp_quoted;
+
+
+    // 20221004 price only srp
+    price = this.product.srp !== 0 ?  this.product.srp : 0;
+
+    var sn = 0;
+
+    for (let i = 0; i < this.received_items.items.length; i++) {
+        if (this.received_items.items[i].id * 1> sn) {
+          sn = this.received_items.items[i].id * 1;
+        }
+    }
+    sn = sn * 1 + 1;
+
+    item = {
+        is_checked:false,
+        is_edit: false,
+        id: sn,
+        sn: sn,
+        confirm: "A",
+        confirm_text: "Approved",
+        brand:this.product.brand,
+        brand_other:"",
+        photo1:photo != '' ? this.img_url + photo : '',
+        photo2:this.product.photo2 != '' ? this.img_url + this.product.photo2 : '',
+        photo3:this.product.photo3 != '' ? this.img_url + this.product.photo3 : '',
+        code:this.product.code,
+        brief:list,
+      listing:"",
+        qty:"",
+        backup_qty:"",
+        unit:"",
+        srp:price,
+        date_needed:"",
+        pid:this.product.id,
+        v1:this.v1,
+        v2:this.v2,
+        v3:this.v3,
+        v4:this.v4,
+        status:0,
+        btn2:"1",
+        notes:[],
+
+        photo4: "",
+        photo5: "",
+
+        receive_date: new Date().toISOString().slice(0, 10),
+        which_pool: "Stock Pool",
+        as_sample: "Yes",
+        location: "Caloocan",
+        project_list: [],
+        project_id: 0,
+        desc:"",
+      };
+
+      this.received_items.items.push(item);
+      alert('Add Successfully');
+app.$forceUpdate();
+
+},
+
+add_without_image_warehouse(all) {
+
+  var photo = "";
+  var price = "";
+  var list = "";
+
+  let _this = this;
+
+  let item_product = this.shallowCopy(
+    this.product.product.find((element) => element.v1 == this.v1 && element.v2 == this.v2 && element.v3 == this.v3 && element.v4 == this.v4)
+  )
+
+  if(this.product.product.length > 0 && item_product.id == undefined && all != 'all') {
+    alert('Please choose an option for each attribute');
+    return;
+  }
+
+  if(item_product.id != undefined)
+  {
+    if(item_product.photo != "")
+      photo = item_product.photo;
+      //price = Number(item_product.price) != 0 ? Number(item_product.price) : Number(item_product.quoted_price);
+      price = Number(item_product.quoted_price) != 0 ? Number(item_product.quoted_price) : Number(item_product.price);
+      if(this.v1 != "")
+        list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+      if(this.v2 != "")
+        list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+      if(this.v3 != "")
+        list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+      if(this.v4 != "")
+        list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+  }
+  else
+  {
+    photo = this.product.photo1;
+    //price = this.product.price_org !== null ? this.product.price_org : this.product.quoted_price_org;
+    price = this.product.quoted_price_org !== null ? this.product.quoted_price_org : this.product.price_org;
+    list = "";
+  }
+
+  if(all == 'all')
+  {
+    list = "";
+    var k1, k2, k3, k4;
+    k1 = this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1;
+    k2 = this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2;
+    k3 = this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3;
+    k4 = this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4;
+
+    if(k1 !== '')
+      list += (this.product.variation1 === "custom" ? this.product.variation1_custom : this.product.variation1) + ': ' + this.product.variation1_value.join(', ') + "\n";
+    if(k2 !== '')
+      list += (this.product.variation2 === "custom" ? this.product.variation2_custom : this.product.variation2) + ': ' + this.product.variation2_value.join(', ') + "\n";
+    if(k3 !== '')
+      list += (this.product.variation3 === "custom" ? this.product.variation3_custom : this.product.variation3) + ': ' + this.product.variation3_value.join(', ') + "\n";
+    if(k4 !== '')
+      list += (this.product.variation4 === "custom" ? this.product.variation4_custom : this.product.variation4) + ': ' + this.product.variation4_value.join(', ') + "\n";
+
+    photo = this.product.photo1;
+
+    if(this.product.srp !== null || this.product.srp_quoted !== null)
+      price = this.product.srp_quoted !== null ? this.product.srp_quoted : this.product.srp;
+      //price = this.product.srp !== null ? this.product.srp : this.product.srp_quoted;
+
+    if(price == null)
+      //price = this.product.price_org !== null ? this.product.price_org : this.product.quoted_price_org;
+      price = this.product.quoted_price_org !== null ? this.product.quoted_price_org : this.product.price_org;
+  }
+
+  if(price == null)
+    price = this.product.srp_quoted !== 0 ?  this.product.srp_quoted : this.product.srp;
+    //price = this.product.srp !== 0 ?  this.product.srp : this.product.srp_quoted;
+
+    // 20221004 price only srp
+    price = this.product.srp !== 0 ?  this.product.srp : 0;
+
+  for(var i=0; i<this.specification.length; i++)
+  {
+      if(this.specification[i].k1 !== '')
+        list += this.specification[i].k1 + ': ' + this.specification[i].v1 + "\n";
+      if(this.specification[i].k2 !== '')
+        list += this.specification[i].k2 + ': ' + this.specification[i].v2 + "\n";
+  }
+
+  // add phased out information
+  if((this.product.phased_out_cnt > 0 && this.phased == 1) || (this.product.phased_out_cnt > 0 && all == 'all'))
+  {
+    list += "\n";
+    list += "Phased-out Variants:\n";
+    list += this.product.phased_out_text.split("<br/>").join("\n");
+  }
+
+  list.replace(/\n+$/, "");
+
+  var sn = 0;
+  
+  for (let i = 0; i < this.received_items.items.length; i++) {
+    if (this.received_items.items[i].id * 1 > sn) {
+      sn = this.received_items.items[i].id * 1;
+    }
+}
+
+  sn = sn * 1 + 1;
+
+  item = {
+      is_checked:false,
+      is_edit: false,
+      id: sn,
+      sn: sn,
+      confirm: "A",
+      confirm_text: "Approved",
+      brand:this.product.brand,
+      brand_other:"",
+      photo1:'',
+      photo2:'',
+      photo3:'',
+      code:this.product.code,
+      brief:list,
+      listing:"",
+      qty:"",
+      backup_qty:"",
+      unit:"",
+      srp:price,
+      date_needed:"",
+      pid:this.product.id,
+      v1:this.v1,
+      v2:this.v2,
+      v3:this.v3,
+      v4:this.v4,
+      status:0,
+      btn2:"1",
+      notes:[],
+
+      photo4: "",
+      photo5: "",
+
+      receive_date: new Date().toISOString().slice(0, 10),
+      which_pool: "Stock Pool",
+      as_sample: "Yes",
+location: "Caloocan",
+      project_list: [],
+      project_id: 0,
+      desc:"",
+    };
+
+    this.received_items.items.push(item);
+    alert('Add Successfully');
+app.$forceUpdate();
+
+},
+
+add_with_image_set_select_warehouse(all) {
+let change = true;
+let price_ntd = 0;
+let price = 0;
+let quoted_price = 0;
+let qty = 0;
+let srp = 0;
+
+let list = "";
+let ps_var = "";
+let _this = this;
+
+let sets = [];
+
+for(var i=0; i < this.product_set.length; i++){
+let item_product = this.shallowCopy(
+this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
+)
+
+var list_g = "";
+
+for(var j=0; j<this.product_set[i].specification.length; j++)
+{
+  if(this.product_set[i].specification[j].k1 !== '')
+    list_g += this.product_set[i].specification[j].k1 + ': ' + this.product_set[i].specification[j].v1 + "\n";
+  if(this.product_set[i].specification[j].k2 !== '')
+    list_g += this.product_set[i].specification[j].k2 + ': ' + this.product_set[i].specification[j].v2 + "\n";
+}
+
+// add phased out information
+if((this.product_set[i].phased_out_cnt > 0 && this.phased == 1) || (this.product_set[i].phased_out_cnt > 0 && all == 'all'))
+{
+list_g += "\n";
+list_g += "Phased-out Variants:\n";
+list_g += this.product_set[i].phased_out_text.split("<br/>").join("\n");
+}
+
+
+if(item_product.id != undefined)
+{
+if(item_product.photo != "")
+  this.product_set[i].photo = item_product.photo;
+
+price_ntd += item_product.price_ntd * 1;
+price += item_product.price * 1;
+quoted_price += item_product.quoted_price * 1;
+qty += this.product_set[i].qty * 1;
+
+srp = quoted_price != 0 ? quoted_price : price;
+
+ps_var = ('id: ' + this.product_set[i].id) + "\n";
+
+if(item_product.v1 != ""){
+  list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+  ps_var += (item_product.k1 + ': ' + item_product.v1) + "\n";
+}
+if(item_product.v2 != ""){
+  list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+  ps_var += (item_product.k2 + ': ' + item_product.v2) + "\n";
+}
+if(item_product.v3 != ""){
+  list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+  ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+}
+if(item_product.v4 != ""){
+  list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+  ps_var += (item_product.k4 + ': ' + item_product.v4) + "\n";
+}
+
+sets.push(ps_var);
+
+list += list_g;
+
+list += "\n";
+
+}
+else
+change = false;
+}
+
+if(change)
+{
+list.replace(/\n+$/, "");
+
+var sn = 0;
+
+for (let i = 0; i < this.received_items.items.length; i++) {
+if (this.received_items.items[i].id * 1 > sn) {
+  sn = this.received_items.items[i].id * 1;
+}
+}
+
+sn = sn * 1 + 1;
+
+item = {
+is_checked:false,
+is_edit: false,
+id: sn,
+sn: sn,
+confirm: "A",
+confirm_text: "Approved",
+brand:"",
+brand_other:"",
+photo1: this.product_set[0] != undefined ? this.img_url + this.product_set[0].photo : "",
+photo2: this.product_set[1] != undefined ? this.img_url + this.product_set[1].photo : "",
+photo3: this.product_set[2] != undefined ? this.img_url + this.product_set[2].photo : "",
+code: this.product.code,
+brief:list,
+listing:"",
+qty:"",
+backup_qty:"",
+unit:"",
+srp:srp,
+date_needed:"",
+pid: this.product.id,
+status:0,
+shipping_way:"",
+shipping_number:"",
+notes:[],
+v1: "",
+v2: "",
+v3: "",
+v4: "",
+btn2:"1",
+
+ps_var : sets,
+
+photo4: "",
+photo5: "",
+
+receive_date: new Date().toISOString().slice(0, 10),
+which_pool: "Stock Pool",
+as_sample: "Yes",
+location: "Caloocan",
+project_list: [],
+project_id: 0,
+desc:"",
+};
+
+}
+else{
+alert('Please choose option for each attribute of every sub-product');
+return;
+}
+
+this.received_items.items.push(item);
+alert('Add Successfully');
+app.$forceUpdate();
+
+},
+
+
+add_without_image_set_select_warehouse(all) {
+let change = true;
+let price_ntd = 0;
+let price = 0;
+let quoted_price = 0;
+let qty = 0;
+let srp = 0;
+
+let list = "";
+let ps_var = "";
+
+let sets = [];
+let _this = this;
+
+for(var i=0; i < this.product_set.length; i++){
+let item_product = this.shallowCopy(
+this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
+)
+
+var list_g = "";
+
+for(var j=0; j<this.product_set[i].specification.length; j++)
+{
+  if(this.product_set[i].specification[j].k1 !== '')
+    list_g += this.product_set[i].specification[j].k1 + ': ' + this.product_set[i].specification[j].v1 + "\n";
+  if(this.product_set[i].specification[j].k2 !== '')
+    list_g += this.product_set[i].specification[j].k2 + ': ' + this.product_set[i].specification[j].v2 + "\n";
+}
+
+// add phased out information
+if((this.product_set[i].phased_out_cnt > 0 && this.phased == 1) || (this.product_set[i].phased_out_cnt > 0 && all == 'all'))
+{
+list_g += "\n";
+list_g += "Phased-out Variants:\n";
+list_g += this.product_set[i].phased_out_text.split("<br/>").join("\n");
+}
+
+if(item_product.id != undefined)
+{
+price_ntd += item_product.price_ntd * 1;
+price += item_product.price * 1;
+quoted_price += item_product.quoted_price * 1;
+qty += this.product_set[i].qty * 1;
+
+srp = quoted_price != 0 ? quoted_price : price;
+
+ps_var = ('id: ' + this.product_set[i].id) + "\n";
+
+if(item_product.v1 != ""){
+  list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+  ps_var += (item_product.k1 + ': ' + item_product.v1) + "\n";
+}
+if(item_product.v2 != ""){
+  list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+  ps_var += (item_product.k2 + ': ' + item_product.v2) + "\n";
+}
+if(item_product.v3 != ""){
+  list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+  ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+}
+if(item_product.v4 != ""){
+  list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+  ps_var += (item_product.k4 + ': ' + item_product.v4) + "\n";
+}
+
+sets.push(ps_var);
+
+list += list_g;
+
+list += "\n";
+
+}
+else
+change = false;
+}
+
+if(change)
+{
+
+list.replace(/\n+$/, "");
+
+var sn = 0;
+
+for (let i = 0; i < this.received_items.items.length; i++) {
+if (this.received_items.items[i].id * 1 > sn) {
+  sn = this.received_items.items[i].id * 1;
+}
+}
+
+sn = sn * 1 + 1;
+
+item = {
+is_checked:false,
+is_edit: false,
+id: sn,
+sn: sn,
+confirm: "A",
+confirm_text: "Approved",
+brand:"",
+brand_other:"",
+photo1:'',
+photo2:'',
+photo3:'',
+code:this.product.code,
+brief:list,
+listing:"",
+qty:"",
+backup_qty:"",
+unit:"",
+srp:srp,
+date_needed:"",
+pid: this.product.id,
+v1: "",
+v2: "",
+v3: "",
+v4: "",
+shipping_way:"",
+shipping_number:"",
+status:0,
+notes:[],
+btn2:"1",
+
+ps_var : sets,
+
+photo4: "",
+photo5: "",
+
+receive_date: new Date().toISOString().slice(0, 10),
+which_pool: "Stock Pool",
+as_sample: "Yes",
+location: "Caloocan",
+project_list: [],
+project_id: 0,
+desc:"",
+};
+
+}
+else{
+alert('Please choose option for each attribute of every sub-product');
+return;
+}
+
+this.received_items.items.push(item);
+alert('Add Successfully');
+app.$forceUpdate();
+
+},
+
+add_with_image_set_warehouse(set, all) {
+
+var photo = "";
+var photo2 = "";
+var photo3 = "";
+
+var price = "";
+var list = "";
+
+var srp = 0;
+
+let _this = this;
+
+let item_product = this.shallowCopy(
+set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
+)
+
+if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
+alert('Please choose an option for each attribute');
+return;
+}
+
+if(item_product.id != undefined)
+{
+if(item_product.photo != "")
+photo = item_product.photo;
+
+photo2 = set.photo2;
+photo3 = set.photo3;
+
+// price = Number(item_product.price) != 0 ? Number(item_product.price) : Number(item_product.quoted_price);
+price = Number(item_product.quoted_price) != 0 ? Number(item_product.quoted_price) : Number(item_product.price);
+srp =  Number(item_product.price);
+if(set.v1 != "")
+list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+if(set.v2 != "")
+list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+if(set.v3 != "")
+list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+if(set.v4 != "")
+list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+}
+else
+{
+photo = set.photo1;
+photo2 = set.photo2;
+photo3 = set.photo3;
+// price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+srp = Number(set.price_org);
+list = "";
+}
+
+if(all == 'all')
+{
+list = "";
+var k1, k2, k3;
+k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
+k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
+k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
+k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
+
+if(k1 !== '')
+list += set.variation1 === "custom" ? set.variation1_custom + ': ' + set.variation1_value.join(', ') + "\n" : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+if(k2 !== '')
+list += set.variation2 === "custom" ? set.variation2_custom + ': ' + set.variation2_value.join(', ') + "\n" : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+if(k3 !== '')
+list += set.variation3 === "custom" ? set.variation3_custom + ': ' + set.variation3_value.join(', ') + "\n" : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+if(k4 !== '')
+list += set.variation4 === "custom" ? set.variation4_custom + ': ' + set.variation4_value.join(', ') + "\n" : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
+
+photo = set.photo1;
+photo2 = set.photo2;
+photo3 = set.photo3;
+
+if(set.srp !== null || set.srp_quoted !== null)
+price = set.srp_quoted !== null ? set.srp_quoted : set.srp;
+
+srp = set.srp;
+//price = set.srp !== null ? set.srp : set.srp_quoted;
+
+if(price == null)
+//price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+
+}
+
+for(var i=0; i<set.specification.length; i++)
+{
+if(set.specification[i].k1 !== '')
+list += set.specification[i].k1 + ': ' + set.specification[i].v1 + "\n";
+if(set.specification[i].k2 !== '')
+list += set.specification[i].k2 + ': ' + set.specification[i].v2 + "\n";
+}
+
+// add phased out information
+if((set.phased_out_cnt > 0 && set.phased == 1) || (set.phased_out_cnt > 0 && all == 'all'))
+{
+// if string or is string array
+if(typeof set.phased_out_text === 'string' || set.phased_out_text instanceof String)
+{
+list += "\n";
+list += "Phased-out Variants:\n";
+list += set.phased_out_text.split("<br/>").join("\n");
+}
+else if(Array.isArray(set.phased_out_text))
+{
+for(var i=0; i<set.phased_out_text.length; i++)
+{
+list += "\n";
+list += "Phased-out Variants:\n";
+list += set.phased_out_text[i].split("<br/>").join("\n");
+}
+}
+else
+{
+list += "\n";
+list += "Phased-out Variants:\n";
+list += set.phased_out_text.split("<br/>").join("\n");
+}
+
+}
+
+if(price == null)
+price = set.srp_quoted !== 0 ?  set.srp_quoted : set.srp;
+// price = set.srp !== 0 ?  set.srp : set.srp_quoted;
+
+if(srp == null)
+srp = 0;
+
+
+var sn = 0;
+
+for (let i = 0; i < this.received_items.items.length; i++) {
+if (this.received_items.items[i].id * 1> sn) {
+  sn = this.received_items.items[i].id * 1;
+}
+}
+sn = sn * 1 + 1;
+
+list.replace(/\n+$/, "");
+sn = sn + 1;
+
+item = {
+is_checked:false,
+is_edit: false,
+id: sn,
+sn: sn,
+confirm: "A",
+        confirm_text: "Approved",
+brand:set.brand,
+brand_other:"",
+photo1:photo != '' ? this.img_url + photo : '',
+photo2:set.photo2 != '' ? this.img_url + set.photo2 : '',
+photo3:set.photo3 != '' ? this.img_url + set.photo3 : '',
+code:set.code,
+brief:list,
+listing:"",
+qty:set.qty,
+backup_qty:"",
+unit:"",
+srp:price,
+date_needed:"",
+pid: set.id,
+status:0,
+shipping_way:"",
+shipping_number:"",
+notes:[],
+v1: all == 'all' ? '' : set.v1,
+v2: all == 'all' ? '' : set.v2,
+v3: all == 'all' ? '' : set.v3,
+v4: all == 'all' ? '' : set.v4,
+btn2:"1",
+
+photo4: "",
+photo5: "",
+
+receive_date: new Date().toISOString().slice(0, 10),
+which_pool: "Stock Pool",
+as_sample: "Yes",
+location: "Caloocan",
+project_list: [],
+project_id: 0,
+desc:"",
+};
+
+this.received_items.items.push(item);
+alert('Add Successfully');
+app.$forceUpdate();
+
+},
+
+add_without_image_set_warehouse(set, all) {
+
+var photo = "";
+var price = "";
+var list = "";
+
+var srp = 0;
+
+let _this = this;
+
+let item_product = this.shallowCopy(
+set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
+)
+
+if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
+alert('Please choose an option for each attribute');
+return;
+}
+
+if(item_product.id != undefined)
+{
+if(item_product.photo != "")
+photo = item_product.photo;
+//price = Number(item_product.price) != 0 ? Number(item_product.price) : Number(item_product.quoted_price);
+price = Number(item_product.quoted_price) != 0 ? Number(item_product.quoted_price) : Number(item_product.price);
+srp =  Number(item_product.price);
+if(set.v1 != "")
+list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+if(set.v2 != "")
+list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+if(set.v3 != "")
+list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+if(set.v4 != "")
+list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+}
+else
+{
+photo = set.photo1;
+//price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+srp = Number(set.price_org);
+list = "";
+}
+
+if(all == 'all')
+{
+list = "";
+var k1, k2, k3;
+k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
+k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
+k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
+k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
+
+if(k1 !== '')
+list += set.variation1 === "custom" ? set.variation1_custom + ': ' + set.variation1_value.join(', ') + "\n" : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+if(k2 !== '')
+list += set.variation2 === "custom" ? set.variation2_custom + ': ' + set.variation2_value.join(', ') + "\n" : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+if(k3 !== '')
+list += set.variation3 === "custom" ? set.variation3_custom + ': ' + set.variation3_value.join(', ') + "\n" : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+if(k4 !== '')
+list += set.variation4 === "custom" ? set.variation4_custom + ': ' + set.variation4_value.join(', ') + "\n" : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
+
+photo = set.photo1;
+
+if(set.srp !== null || set.srp_quoted !== null)
+price = set.srp_quoted !== null ? set.srp_quoted : set.srp;
+
+//price = set.srp !== null ? set.srp : set.srp_quoted;
+
+if(price == null)
+//price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+
+
+srp = set.srp;
+}
+
+if(price == null)
+price = set.srp_quoted !== 0 ?  set.srp_quoted : set.srp;
+//price = set.srp !== 0 ?  set.srp : set.srp_quoted;
+
+if(srp == null)
+srp = 0;
+
+for(var i=0; i<set.specification.length; i++)
+{
+if(set.specification[i].k1 !== '')
+list += set.specification[i].k1 + ': ' + set.specification[i].v1 + "\n";
+if(set.specification[i].k2 !== '')
+list += set.specification[i].k2 + ': ' + set.specification[i].v2 + "\n";
+}
+
+// add phased out information
+if((set.phased_out_cnt > 0 && set.phased == 1) || (set.phased_out_cnt > 0 && all == 'all'))
+{
+// if string or is string array
+if(typeof set.phased_out_text === 'string' || set.phased_out_text instanceof String)
+{
+list += "\n";
+list += "Phased-out Variants:\n";
+list += set.phased_out_text.split("<br/>").join("\n");
+}
+else if(Array.isArray(set.phased_out_text))
+{
+for(var i=0; i<set.phased_out_text.length; i++)
+{
+list += "\n";
+list += "Phased-out Variants:\n";
+list += set.phased_out_text[i].split("<br/>").join("\n");
+}
+}
+else
+{
+list += "\n";
+list += "Phased-out Variants:\n";
+list += set.phased_out_text.split("<br/>").join("\n");
+}
+}
+
+list.replace(/\n+$/, "");
+
+var sn = 0;
+
+for (let i = 0; i < this.received_items.items.length; i++) {
+if (this.received_items.items[i].id * 1 > sn) {
+sn = this.received_items.items[i].id * 1;
+}
+}
+
+sn = sn * 1 + 1;
+
+item = {
+is_checked:false,
+is_edit: false,
+id: sn,
+sn: sn,
+confirm: "A",
+      confirm_text: "Approved",
+brand:set.brand,
+brand_other:"",
+photo1:'',
+photo2:'',
+photo3:'',
+code:set.code,
+brief:list,
+listing:"",
+qty:set.qty,
+backup_qty:"",
+unit:"",
+srp:price,
+date_needed:"",
+pid: set.id,
+v1: all == 'all' ? '' : set.v1,
+v2: all == 'all' ? '' : set.v2,
+v3: all == 'all' ? '' : set.v3,
+v4: all == 'all' ? '' : set.v4,
+shipping_way:"",
+shipping_number:"",
+status:0,
+notes:[],
+btn2:"1",
+
+photo4: "",
+photo5: "",
+
+receive_date: new Date().toISOString().slice(0, 10),
+which_pool: "Stock Pool",
+as_sample: "Yes",
+location: "Caloocan",
+project_list: [],
+project_id: 0,
+desc:"",
+pid:0,
+};
+
+this.received_items.items.push(item);
+alert('Add Successfully');
+app.$forceUpdate();
+
+},
+
+
     }
   
   });

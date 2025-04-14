@@ -834,8 +834,18 @@ header( 'location:index' );
             content: none;
         }
 
-        .write_block .itembox .photo > div {
-            display: none;
+        .read_block .photo > div {
+            /* display: none; */
+            width: 36px;
+            height: 36px;
+            border: 1px dashed #3FA4F4;
+            border-radius: 18px;
+            line-height: 24px;
+            text-align: center;
+            color: #3FA4F4;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
         }
 
         .write_block .itembox.chosen .photo > div {
@@ -2374,6 +2384,21 @@ header( 'location:index' );
             </td>
 
             <td>
+                <div class="read_block">
+                    <label>Arrival Status: </label> {{ item.charge == "" ? 'Not Yet Arrive' : (item.charge == "2" ? 'Partially Arrived' : (item.charge == "1" ? 'Completely Arrived' : '')) }}<br>
+                    <br>
+
+                    <div class="photobox">
+	                    <img v-if="item.photo4" :src="item.photo4">
+	                    <img v-if="item.photo5" :src="item.photo5">
+                    </div>
+
+                    <label>Remark:</label><br>
+                    <textarea rows="3" readonly v-model="item.remark"></textarea>
+                    <button type="button" class="btn btn-secondary" v-if="EditWarehouseInfo() && no_privlege() != true && is_edit_dn != true && is_edit_remark != true" @click="encode_warehouse(item)">Encode</button>
+                </div>
+
+            <!--
                 <div class="read_block" v-if="ArriveRemarkRead(item)">
                     Confirm Arrival:  <input type="checkbox" :value="item.charge" :true-value="1" v-model:checked="item.charge" class="alone" disabled>
 
@@ -2415,6 +2440,7 @@ header( 'location:index' );
 
                     <textarea rows="3" placeholder="Remarks" v-model="item.remark"></textarea>
             </td>
+            -->
 
             <td>
                 <div class="read_block" v-if="TestRead(item)">
@@ -2686,7 +2712,7 @@ header( 'location:index' );
 <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_product_catalog">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
 
         <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 
@@ -2694,7 +2720,11 @@ header( 'location:index' );
 
                 <h4 class="modal-title" id="myLargeModalLabel">Product Catalog</h4>
 
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close_product()" v-if="is_encode_warehouse">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-if="!is_encode_warehouse">
                     <span aria-hidden="true">&times;</span>
                 </button>
 
@@ -3230,10 +3260,12 @@ header( 'location:index' );
                         <div class="btnbox">
                             <ul>
                                 <li v-if="toggle_type == 'A'">
-                                    <button class="btn btn-info" @click="add_with_image_set_select()" v-if="out==''">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_set_select_warehouse()" v-if="out=='' && is_encode_warehouse">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_set_select()" v-if="out=='' && !is_encode_warehouse">Add with Image</button>
                                 </li>
                                 <li>
-                                    <button class="btn btn-info" @click="add_without_image_set_select()" v-if="out==''">Add without Image</button>
+                                    <button class="btn btn-info" @click="add_without_image_set_select_warehouse()" v-if="out=='' && is_encode_warehouse">Add without Image</button>
+                                    <button class="btn btn-info" @click="add_without_image_set_select()" v-if="out=='' && !is_encode_warehouse">Add without Image</button>
                                 </li>
                             </ul>
 
@@ -3359,10 +3391,13 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out==''">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add with Image</button>
                                         </li>
                                         <li>
-                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out==''">Add without Image
+                                            <button class="btn btn-info" @click="add_without_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add without Image
+                                            </button>
+                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add without Image
                                             </button>
                                         </li>
                                     </ul>
@@ -3635,10 +3670,13 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out==''">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add with Image</button>
                                         </li>
                                         <li>
-                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out==''">Add without Image
+                                            <button class="btn btn-info" @click="add_without_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add without Image
+                                            </button>
+                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add without Image
                                             </button>
                                         </li>
                                     </ul>
@@ -3873,10 +3911,13 @@ header( 'location:index' );
                         <div class="btnbox">
                             <ul>
                                 <li v-if="toggle_type == 'A'">
-                                    <button class="btn btn-info" @click="add_with_image()" v-if="out==''">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image()" v-if="out=='' && !is_encode_warehouse">Add with Image</button>
                                 </li>
                                 <li>
-                                    <button class="btn btn-info" @click="add_without_image()" v-if="out==''">Add without Image
+                                    <button class="btn btn-info" @click="add_without_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add without Image
+                                    </button>
+                                    <button class="btn btn-info" @click="add_without_image()" v-if="out=='' && !is_encode_warehouse">Add without Image
                                     </button>
                                 </li>
                             </ul>
@@ -4148,10 +4189,13 @@ header( 'location:index' );
                         <div class="btnbox">
                             <ul>
                                 <li v-if="toggle_type == 'A'">
-                                    <button class="btn btn-info" @click="add_with_image()" v-if="out==''">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image()" v-if="out=='' && !is_encode_warehouse">Add with Image</button>
                                 </li>
                                 <li>
-                                    <button class="btn btn-info" @click="add_without_image()" v-if="out==''">Add without Image
+                                    <button class="btn btn-info" @click="add_without_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add without Image
+                                    </button>
+                                    <button class="btn btn-info" @click="add_without_image()" v-if="out=='' && !is_encode_warehouse">Add without Image
                                     </button>
                                 </li>
                             </ul>
@@ -4758,6 +4802,439 @@ header( 'location:index' );
     </div>
 
 </div>
+
+
+<!-- Warehouse in Charge 人員用來登錄 收貨物品登記簿 的彈出視窗 -->
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true" id="modal_registry_received_items">
+
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+
+        <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="myLargeModalLabel">Registry of Received Items</h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close_warehouse()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <table class="registry_info">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <label>Arrival Status of Ordered Items: </label>
+
+                            <select v-model="received_items.charge">
+                                <option value="">Not Yet Arrive</option>
+                                <option value="2">Partially Arrived</option>
+                                <option value="1">Completely Arrived</option>
+                            </select>
+                        </td>
+
+                        <td rowspan="2">
+
+                            <div class="photobox">
+
+                                <div :class="['itembox', (received_items.photo4 !== null ? 'chosen' : '')]">
+                                    <div class="photo">
+                                        <input type="file" :id="'photo_4'"  @change="onMainFileChangeImage($event, received_items, 4)">
+                                        <img v-if="received_items.photo4" :src="received_items.photo4"/>
+                                        <div @click="clear_main_photo(received_items, 4)">x</div>
+                                    </div>
+                                </div>
+
+                                <div :class="['itembox', (received_items.photo5 !== null ? 'chosen' : '')]">
+                                    <div class="photo">
+                                        <input type="file" :id="'photo_5'"  @change="onMainFileChangeImage($event, received_items, 5)">
+                                        <img v-if="received_items.photo5" :src="received_items.photo5"/>
+                                        <div @click="clear_main_photo(received_items, 5)">x</div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <textarea rows="4" placeholder="Remarks" v-model="received_items.remark"></textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <div class="popupblock">
+                    <a title="Add Item from Product Database"><i class="fas fa-list-alt" @click="product_catalog_warehouse()"></i></a>
+                </div>
+
+                <table class="registry_list">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Description</th>
+                        <th>Received Date<br>Qty</th>
+                        <th>Inventory Pool</th>
+                        <th>Location</th>
+                        <th>Sample</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr v-for="(item, index) in received_items.items" :key="index">
+                        <td class="pic">
+                            <!--
+                            <div class="read_block" v-if="!item.is_edit">
+                                <img v-if="item.photo1" :src="item.photo1">
+                            </div>
+
+                            <div class="write_block" v-if="item.is_edit">
+                                <div :class="['itembox', (item.photo1 !== null ? 'chosen' : '')]">
+                                    <div class="photo">
+                                        <input type="file" :id="'photo_' + item.id + '_1'"  @change="onFileChangeImage($event, item, 1)">
+                                        <img v-if="item.photo1" :src="item.photo1"/>
+                                        <div @click="clear_photo(item, 1)">x</div>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                            <div class="read_block" v-if="item.photo1 != '' && item.status == 1">
+                                <img :src="item.photo1">
+                            </div>
+
+                            <div class="read_block" v-if="item.photo1 != '' && item.status == 0">
+                                <img :src="item.photo1">
+                                <div class="photo">
+                                    <div @click="clear_photo(item, 1)">x</div>
+                                </div>
+                            </div>
+
+                            <div class="write_block" v-show="item.photo1 == '' && item.status == 0">
+                                <div class="itembox">
+                                    <div class="photo">
+                                        <input type="file" @change="onFileChangeImage($event, item, 1)" :id="'photo_' + item.id + '_1'">
+                                        <img v-if="item.photo1 != ''" :src="item.photo1"/>
+                                        <div @click="clear_photo(item, 1)" v-if="item.photo1 != ''">x</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="read_block" v-if="item.photo2 != '' && item.status == 1">
+                                <img :src="item.photo2">
+                            </div>
+
+                            <div class="read_block" v-if="item.photo2 != '' && item.status == 0">
+                                <img :src="item.photo2">
+                                <div class="photo">
+                                    <div @click="clear_photo(item, 2)">x</div>
+                                </div>
+                            </div>
+
+                            <div class="write_block" v-show="item.photo2 == '' && item.status == 0">
+                                <div class="itembox">
+                                    <div class="photo">
+                                        <input type="file" @change="onFileChangeImage($event, item, 2)" :id="'photo_' + item.id + '_2'">
+                                        <img v-if="item.photo2 != ''" :src="item.photo2"/>
+                                        <div @click="clear_photo(item, 2)" v-if="item.photo2 != ''">x</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </td>
+
+                        <td>
+                            <!--
+                            <div class="read_block" v-if="!item.is_edit">
+                                <div class="id">ID: {{ item.pid != 0 ? item.pid : ''}}</div>
+                                <div class="code">{{ item.code }} <i class="fas fa-edit" v-if="item.normal == 1" style="cursor: pointer;" @click="toggle_normal(item.pid, item.id)"></i></div>
+                                <div class="brief">{{ item.brief }}</div>
+                                <div class="listing">{{ item.listing }}</div>
+                            </div>
+                            <div class="write_block" v-if="item.is_edit">
+                                <input type="text" placeholder="Code" v-model="item.code" :readonly="item.btn2 == '1'"><br>
+                                <textarea rows="2" placeholder="Brief" v-model="item.brief" :readonly="item.btn2 == '1'"></textarea><br>
+                                <textarea rows="4" placeholder="Listing" v-model="item.listing"></textarea>
+                            </div>
+                            -->
+
+                            <div class="id">ID: <a class="hyperlink" :href="'product_display_code?id=' + item.pid + '&v1=' + item.v1 + '&v2=' + item.v2 + '&v3=' + item.v3 + '&v4=' + item.v4">{{ item.pid }}</a></div>
+                            <div class="brand">{{ item.brand }}</div>
+                            <div class="code">{{ item.code }}</div>
+                            <div class="brief">{{ item.brief }}</div>
+                            <div class="read_block">
+                                <div class="listing">{{ item.listing }}</div>
+                            </div>
+                            <div class="write_block">
+                                <textarea rows="4" placeholder="Describe item's details if needed" v-model="item.desc" :readonly="item.status == 1" ></textarea>
+                            </div>
+                        </td>
+
+                        <td>
+                            <!--
+                            <div class="read_block" v-if="!item.is_edit">
+                                {{ item.qty }}
+                            </div>
+                            <div class="write_block" v-if="item.is_edit">
+                                <input type="text" v-model="item.qty">
+                            </div>
+                            -->
+
+                            <div class="read_block" v-if="item.status == 1">
+                                {{ item.receive_date }}
+                                <br>
+                                {{ item.qty }}
+                            </div>
+                            <div class="write_block" v-if="item.status == 0">
+                                <input type="date" v-model="item.receive_date">
+                                <input type="number" min="0" v-model="item.qty" placeholder="Qty">
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="read_block" v-if="item.status == 1">
+                                {{ item.which_pool }}
+                            </div>
+                            <div class="write_block" v-if="item.status == 0">
+                                <select v-model="item.which_pool">
+                                    <option value="Project Pool">Project Pool</option>
+                                    <option value="Stock Pool">Stock Pool</option>
+                                </select>
+
+                                <select v-model="item.project_id" v-show="item.which_pool == 'Project Pool'">
+                                    <option v-for="(prj, idx) in projects" :value="prj.id">{{ prj.project_name }}</option>
+                                </select>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="read_block" v-if="item.status == 1">
+                                {{ item.location }}
+                            </div>
+                            <div class="write_block" v-if="item.status == 0">
+                                <select v-model="item.location">
+                                    <option value="Caloocan">Caloocan</option>
+                                    <option value="Makati">Makati</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="read_block" v-if="item.status == 1">
+                                {{ item.as_sample }}
+                            </div>
+                            <div class="write_block" v-if="item.status == 0">
+                                <select v-model="item.as_sample">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <a class="btn small" @click="remove_item(item.id)" v-if="item.status == 0">Delete</a>
+                            <a class="btn small green" @click="register(item)" v-if="item.status == 0">Register</a>
+                            <a class="btn small green" v-if="item.status == 1">Barcode</a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+                <hr>
+
+                <div class="btnbox">
+                    <a class="btn small" @click="close_warehouse()">Cancel</a>
+                    <a class="btn small green" @click="save_encode()">Save</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<!-- Warehouse in Charge 人員用來 列印或註銷 Barcode 的彈出視窗 -->
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true" id="modal_barcode_printing">
+
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+
+        <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="myLargeModalLabel">Label Printing</h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="block">
+                    <div class="list_function">
+                    <!-- 分頁功能 -->
+                    <!-- 分頁 -->
+                        <div class="pagenation">
+                            <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+
+                            <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
+
+                            <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="barcode_list">
+                    <thead>
+                    <tr>
+                        <th><i class="micons">view_list</i></th>
+                        <th>Barcode</th>
+                        <th>Image</th>
+                        <th>Description</th>
+                        <th>Inventory Pool</th>
+                        <th>Location</th>
+                        <th>Sample</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td><input type="checkbox" class="alone"></td>
+                        <td>
+                            {{ }}//該品項的16碼的 Barcode (採用 Code 128 標準)
+                        </td>
+                        <td class="pic">
+                            <div class="read_block">
+                                <img src="item.photo1">
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="id">ID: <a class="hyperlink" href="product_display_code?id=&v1&v2&v3&v4">{{ }}</a></div>//該品項的id數字部分為一個超連結，點開後會連結到 product display 頁面，並載入這個品項所選擇的 v1,v2,v3,v4
+                            <div class="brand">{{ }}</div>
+                            <div class="code">{{ }}</div>
+                            <div class="brief">{{ }}</div>
+                            <div class="read_block">
+                                <div class="listing">{{ }}</div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="read_block">
+                                {{ }}//收到的這個品項屬於哪種類型的庫存數量
+                                <a class="hyperlink block">Bistro hard rock</a>//如果這個品項屬於 Project Pool 種類，這邊則會放那個相關專案的 project02 頁面
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="read_block">
+                                {{ }}//收到的這個品項，要入庫到哪裡的倉儲
+                            </div>
+                        </td>
+                        <td>
+                            <div class="read_block">
+                                {{ }}//收到的這個品項，是否當作是樣品或正常品
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- 一個範例 -->
+                    <tr>
+                        <td><input type="checkbox" class="alone"></td>
+                        <td>2502250222300001
+                        <td class="pic">
+                            <div class="read_block">
+                                <img src="https://storage.googleapis.com/feliiximg/1715090782_DSA2006-C.jpg">
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="id">ID: <a class="hyperlink" href="product_display_code?id=&v1&v2&v3&v4">2223</a></div>//該品項的id數字部分為一個超連結，點開後會連結到 product display 頁面，並載入這個品項所選擇的 v1,v2,v3,v4
+                            <div class="brand">LEDOUX</div>
+                            <div class="code">FELIIX LD DSA2006-C-W</div>
+                            <div class="brief">Beam Angle: 60°
+CCT: 3000K
+Reflector Color: CHROME
+Lumens: 414
+CRI / RA: >95
+Wattage: 6W
+IP Rating: IP20
+Color Finish: WHITE
+Installation: RECESSED      </div>
+                            <div class="read_block">
+                                <div class="listing">30 meter wire
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="read_block">
+                                Project Pool<br>
+                                <a class="hyperlink block">Bistro hard rock</a>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="read_block">
+                                Caloocan
+                            </div>
+                        </td>
+                        <td>
+                            <div class="read_block">
+                                No
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+                <div class="block">
+                    <div class="list_function">
+                    <!-- 分頁功能 -->
+                    <!-- 分頁 -->
+                        <div class="pagenation">
+                            <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+
+                            <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
+
+                            <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <div class="btnbox">
+                    <a class="btn small">Cancel</a>
+                    <a class="btn small">Void Barcode</a>
+                    <a class="btn small green">Print Label</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 
 
 </div>

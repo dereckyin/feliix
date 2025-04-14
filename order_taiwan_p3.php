@@ -2720,7 +2720,11 @@ header( 'location:index' );
 
                 <h4 class="modal-title" id="myLargeModalLabel">Product Catalog</h4>
 
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close_product()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close_product()" v-if="is_encode_warehouse">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-if="!is_encode_warehouse">
                     <span aria-hidden="true">&times;</span>
                 </button>
 
@@ -3254,10 +3258,12 @@ header( 'location:index' );
                         <div class="btnbox">
                             <ul>
                                 <li v-if="toggle_type == 'A'">
-                                    <button class="btn btn-info" @click="add_with_image_set_select()" v-if="out==''">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_set_select_warehouse()" v-if="out=='' && is_encode_warehouse">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_set_select()" v-if="out=='' && !is_encode_warehouse">Add with Image</button>
                                 </li>
                                 <li>
-                                    <button class="btn btn-info" @click="add_without_image_set_select()" v-if="out==''">Add without Image</button>
+                                    <button class="btn btn-info" @click="add_without_image_set_select_warehouse()" v-if="out=='' && is_encode_warehouse">Add without Image</button>
+                                    <button class="btn btn-info" @click="add_without_image_set_select()" v-if="out=='' && !is_encode_warehouse">Add without Image</button>
                                 </li>
                             </ul>
 
@@ -3383,10 +3389,13 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out==''">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add with Image</button>
                                         </li>
                                         <li>
-                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out==''">Add without Image
+                                            <button class="btn btn-info" @click="add_without_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add without Image
+                                            </button>
+                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add without Image
                                             </button>
                                         </li>
                                     </ul>
@@ -3659,10 +3668,13 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out==''">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add with Image</button>
                                         </li>
                                         <li>
-                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out==''">Add without Image
+                                            <button class="btn btn-info" @click="add_without_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add without Image
+                                            </button>
+                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add without Image
                                             </button>
                                         </li>
                                     </ul>
@@ -3897,10 +3909,13 @@ header( 'location:index' );
                         <div class="btnbox">
                             <ul>
                                 <li v-if="toggle_type == 'A'">
-                                    <button class="btn btn-info" @click="add_with_image()" v-if="out==''">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image()" v-if="out=='' && !is_encode_warehouse">Add with Image</button>
                                 </li>
                                 <li>
-                                    <button class="btn btn-info" @click="add_without_image()" v-if="out==''">Add without Image
+                                    <button class="btn btn-info" @click="add_without_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add without Image
+                                    </button>
+                                    <button class="btn btn-info" @click="add_without_image()" v-if="out=='' && !is_encode_warehouse">Add without Image
                                     </button>
                                 </li>
                             </ul>
@@ -4172,10 +4187,13 @@ header( 'location:index' );
                         <div class="btnbox">
                             <ul>
                                 <li v-if="toggle_type == 'A'">
-                                    <button class="btn btn-info" @click="add_with_image()" v-if="out==''">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image()" v-if="out=='' && !is_encode_warehouse">Add with Image</button>
                                 </li>
                                 <li>
-                                    <button class="btn btn-info" @click="add_without_image()" v-if="out==''">Add without Image
+                                    <button class="btn btn-info" @click="add_without_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add without Image
+                                    </button>
+                                    <button class="btn btn-info" @click="add_without_image()" v-if="out=='' && !is_encode_warehouse">Add without Image
                                     </button>
                                 </li>
                             </ul>
@@ -4947,7 +4965,7 @@ header( 'location:index' );
                             </div>
                             -->
 
-                            <div class="id">ID: <a class="hyperlink" :href="'project_display_code?id=' + item.pid + '&v1=' + item.v1 + '&v2=' + item.v2 + '&v3=' + item.v3 + '&v4=' + item.v4">{{ item.pid }}</a></div>
+                            <div class="id">ID: <a class="hyperlink" :href="'product_display_code?id=' + item.pid + '&v1=' + item.v1 + '&v2=' + item.v2 + '&v3=' + item.v3 + '&v4=' + item.v4">{{ item.pid }}</a></div>
                             <div class="brand">{{ item.brand }}</div>
                             <div class="code">{{ item.code }}</div>
                             <div class="brief">{{ item.brief }}</div>
@@ -4990,7 +5008,7 @@ header( 'location:index' );
                                     <option value="Stock Pool">Stock Pool</option>
                                 </select>
 
-                                <select v-model="item.project_id">
+                                <select v-model="item.project_id" v-show="item.which_pool == 'Project Pool'">
                                     <option v-for="(prj, idx) in projects" :value="prj.id">{{ prj.project_name }}</option>
                                 </select>
                             </div>
@@ -5107,7 +5125,7 @@ header( 'location:index' );
                         </td>
 
                         <td>
-                            <div class="id">ID: <a class="hyperlink" href="project_display_code?id=&v1&v2&v3&v4">{{ }}</a></div>//該品項的id數字部分為一個超連結，點開後會連結到 product display 頁面，並載入這個品項所選擇的 v1,v2,v3,v4
+                            <div class="id">ID: <a class="hyperlink" href="product_display_code?id=&v1&v2&v3&v4">{{ }}</a></div>//該品項的id數字部分為一個超連結，點開後會連結到 product display 頁面，並載入這個品項所選擇的 v1,v2,v3,v4
                             <div class="brand">{{ }}</div>
                             <div class="code">{{ }}</div>
                             <div class="brief">{{ }}</div>
@@ -5146,7 +5164,7 @@ header( 'location:index' );
                         </td>
 
                         <td>
-                            <div class="id">ID: <a class="hyperlink" href="project_display_code?id=&v1&v2&v3&v4">2223</a></div>//該品項的id數字部分為一個超連結，點開後會連結到 product display 頁面，並載入這個品項所選擇的 v1,v2,v3,v4
+                            <div class="id">ID: <a class="hyperlink" href="product_display_code?id=&v1&v2&v3&v4">2223</a></div>//該品項的id數字部分為一個超連結，點開後會連結到 product display 頁面，並載入這個品項所選擇的 v1,v2,v3,v4
                             <div class="brand">LEDOUX</div>
                             <div class="code">FELIIX LD DSA2006-C-W</div>
                             <div class="brief">Beam Angle: 60°
