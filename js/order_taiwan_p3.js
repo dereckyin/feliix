@@ -3541,7 +3541,11 @@ var app = new Vue({
               // close modal
               _this.close_warehouse();
               _this.getRecord();
-
+              Swal.fire({
+                text: response.data.message,
+                icon: "success",
+                confirmButtonText: "OK",
+              });
             })
             .catch(function(error) {
           
