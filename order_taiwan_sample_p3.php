@@ -4964,7 +4964,7 @@ header( 'location:index' );
                             </div>
                             -->
 
-                            <div class="id">ID: <a class="hyperlink" :href="'product_display_code?id=' + item.pid + '&v1=' + item.v1 + '&v2=' + item.v2 + '&v3=' + item.v3 + '&v4=' + item.v4">{{ item.pid }}</a></div>
+                            <div class="id">ID: <a class="hyperlink" :href="'product_display_code?id=' + item.pid + '&v1=' + item.v1 + '&v2=' + item.v2 + '&v3=' + item.v3 + '&v4=' + item.v4" target="_blank">{{ item.pid }}</a></div>
                             <div class="brand">{{ item.brand }}</div>
                             <div class="code">{{ item.code }}</div>
                             <div class="brief">{{ item.brief }}</div>
