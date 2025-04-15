@@ -858,10 +858,31 @@ var app = new Vue({
           return false;
       },
 
-      encode_warehouse(items)
+      async refresh_warehouse(item_id)
       {
-        if(items.received_list.length != 0){        
-          this.received_items = JSON.parse(JSON.stringify(items.received_list));
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+        let _this = this;
+        form_Data.append("jwt", token);
+        form_Data.append("item_id", item_id);
+
+        let res = await axios({
+          method: 'post',
+          url: 'api/order_taiwan_p1_warehouse_refresh',
+          data: form_Data,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        return JSON.parse(res.data);
+      },
+
+      async encode_warehouse(items)
+      {
+        it = await this.refresh_warehouse(items.id);
+        if(it.id != undefined){        
+          this.received_items = JSON.parse(JSON.stringify(it));
           this.received_items.id = items.id;
         }
         else
@@ -2005,7 +2026,9 @@ var app = new Vue({
               v4:this.v4,
               status:"3",
               btn2:"1",
-              notes:[]
+              notes:[],
+              which_pool:"Project Pool",
+            as_sample:"No",
             };
 
             items.push(item);
@@ -2173,7 +2196,9 @@ var app = new Vue({
             v4:this.v4,
             status:"3",
             btn2:"1",
-            notes:[]
+            notes:[],
+            which_pool:"Project Pool",
+            as_sample:"No",
           };
 
           items.push(item);
@@ -3387,7 +3412,9 @@ var app = new Vue({
                 v3:"",
                 v4:"",
                 status:"3",
-                notes:[]
+                notes:[],
+                which_pool:"Project Pool",
+            as_sample:"No",
               };
 
               items.push(item);
@@ -3477,8 +3504,10 @@ var app = new Vue({
         app.$forceUpdate();
       },
 
-      register(item) {
+      async register(item) {
         item.status = 1;
+        await this.save_encode_list(item.id);
+
         app.$forceUpdate();
       },
 
@@ -3556,6 +3585,65 @@ var app = new Vue({
               _this.received_items = {
                 items: [],
               };
+
+          });
+      },
+
+      
+      save_encode_list(index) {
+
+        let _this = this;
+
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+
+        form_Data.append("jwt", token);
+        form_Data.append("received_items", JSON.stringify(this.received_items));
+
+        for(var i=0; i<this.received_items.items.length; i++)
+        {
+          if(this.received_items.items[i].id != index)
+            continue;
+
+          var file = document.getElementById('photo_' + this.received_items.items[i].id + '_1');
+          if(file) {
+            let f = file.files[0];
+            if(typeof f !== 'undefined')
+              form_Data.append('photo_1_' + this.received_items.items[i].id, f);
+          }
+
+          var file = document.getElementById('photo_' + this.received_items.items[i].id + '_2');
+          if(file) {
+            let f = file.files[0];
+            if(typeof f !== 'undefined') 
+              form_Data.append('photo_2_' + this.received_items.items[i].id, f);
+          }
+        }
+
+        axios({
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          url: "api/order_taiwan_p3_encode_list",
+          data: form_Data,
+        })
+          .then(function(response) {
+            //handle success
+            // close modal
+
+            // Swal.fire({
+            //   text: response.data.message,
+            //   icon: "success",
+            //   confirmButtonText: "OK",
+            // });
+          })
+          .catch(function(error) {
+        
+
+            })
+            .finally(function() {
+              _this.submit = false;
 
           });
       },
@@ -4637,7 +4725,8 @@ add_with_image_set_select(all) {
       v3: "",
       v4: "",
       btn2:"1",
-
+      which_pool:"Project Pool",
+      as_sample:"No",
       ps_var : sets,
     };
 
@@ -4802,7 +4891,8 @@ add_without_image_set_select(all) {
       status:"3",
       notes:[],
       btn2:"1",
-
+      which_pool:"Project Pool",
+      as_sample:"No",
       ps_var : sets,
     };
 
@@ -5373,6 +5463,8 @@ add_with_image_set(set, all) {
       v3: all == 'all' ? '' : set.v3,
       v4: all == 'all' ? '' : set.v4,
     btn2:"1",
+    which_pool:"Project Pool",
+            as_sample:"No",
   };
   
   items.push(item);
@@ -5571,7 +5663,9 @@ add_with_image_set(set, all) {
         shipping_number:"",
         status:"3",
       notes:[],
-      btn2:"1"
+      btn2:"1",
+      which_pool:"Project Pool",
+            as_sample:"No",
     };
   
     items.push(item);

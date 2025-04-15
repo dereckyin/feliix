@@ -65,73 +65,41 @@ switch ($method) {
         $received_items = (isset($_POST['received_items']) ?  $_POST['received_items'] : []);
 
         $block_array = json_decode($received_items,true);
+        $new_items = [];
 
         try {
             $_id = $block_array['id'];
 
-            $key = "photo_4";
-            if (array_key_exists($key, $_FILES))
+            for($i = 0; $i < count($block_array['items']); $i++)
             {
-                $update_name = SaveImage($key, $batch_id, $batch_type, $user_id, $db, $conf);
-                if($update_name != "")
-                {
-                    $block_array['photo4'] = $img_url . $update_name;
-
-                    $sql = "update od_item set photo4 = :photo4 where id = :id";
-                    $stmt = $db->prepare($sql);
-                    $stmt->bindParam(':id', $_id);
-                    $stmt->bindParam(':photo4', $update_name);
-                    $stmt->execute();
-                }
-            }
-
-            $key = "photo_5";
-            if (array_key_exists($key, $_FILES))
-            {
-                $update_name = SaveImage($key, $batch_id, $batch_type, $user_id, $db, $conf);
-                if($update_name != "")
-                {
-                    $block_array['photo5'] = $img_url . $update_name;
-
-                    $sql = "update od_item set photo5 = :photo5 where id = :id";
-                    $stmt = $db->prepare($sql);
-                    $stmt->bindParam(':id', $_id);
-                    $stmt->bindParam(':photo5', $update_name);
-                    $stmt->execute();
-                }
-            }
-
-            // update remark, charge
-            $remark = $block_array['remark'];
-            $charge = $block_array['charge'];
-            $sql = "update od_item set remark = :remark, charge = :charge where id = :id";
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(':id', $_id);
-            $stmt->bindParam(':remark', $remark);
-            $stmt->bindParam(':charge', $charge);
-            $stmt->execute();
-
-            // for($i = 0; $i < count($block_array['items']); $i++)
-            // {
-            //     $item = $block_array['items'][$i];
                 
-            //     $key = "photo_1_" . $item['id'];
-            //     if (array_key_exists($key, $_FILES))
-            //     {
-            //         $update_name = SaveImage($key, $batch_id, $batch_type, $user_id, $db, $conf);
-            //         if($update_name != "")
-            //             $block_array['items'][$i]['photo1'] = $img_url . $update_name;
-            //     }
+                $item = $block_array['items'][$i];
 
-            //     $key = "photo_2_" . $item['id'];
-            //     if (array_key_exists($key, $_FILES))
-            //     {
-            //         $update_name = SaveImage($key, $batch_id, $batch_type, $user_id, $db, $conf);
-            //         if($update_name != "")
-            //             $block_array['items'][$i]['photo2'] = $img_url . $update_name;
-            //     }
+                if($item['status'] != 1)
+                    continue;
+                
+                
+                $key = "photo_1_" . $item['id'];
+                if (array_key_exists($key, $_FILES))
+                {
+                    $update_name = SaveImage($key, $batch_id, $batch_type, $user_id, $db, $conf);
+                    if($update_name != "")
+                        $block_array['items'][$i]['photo1'] = $img_url . $update_name;
+                }
 
-            // }
+                $key = "photo_2_" . $item['id'];
+                if (array_key_exists($key, $_FILES))
+                {
+                    $update_name = SaveImage($key, $batch_id, $batch_type, $user_id, $db, $conf);
+                    if($update_name != "")
+                        $block_array['items'][$i]['photo2'] = $img_url . $update_name;
+                }
+
+                $new_items[] = $item;
+
+            }
+
+            $block_array['items'] = $new_items;
 
             $query = "update od_item set received_list = :received_list, updated_id = :updated_id, updated_at = now() where id = :id";
 

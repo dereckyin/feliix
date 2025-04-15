@@ -859,10 +859,31 @@ var app = new Vue({
           return false;
       },
 
-      encode_warehouse(items)
+      async refresh_warehouse(item_id)
       {
-        if(items.received_list.length != 0){        
-          this.received_items = JSON.parse(JSON.stringify(items.received_list));
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+        let _this = this;
+        form_Data.append("jwt", token);
+        form_Data.append("item_id", item_id);
+
+        let res = await axios({
+          method: 'post',
+          url: 'api/order_taiwan_p1_warehouse_refresh',
+          data: form_Data,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        return JSON.parse(res.data);
+      },
+
+      async encode_warehouse(items)
+      {
+        it = await this.refresh_warehouse(items.id);
+        if(it.id != undefined){        
+          this.received_items = JSON.parse(JSON.stringify(it));
           this.received_items.id = items.id;
         }
         else
@@ -2004,6 +2025,8 @@ var app = new Vue({
               v4:this.v4,
               status:"3",
               btn2:"1",
+              which_pool:"Project Pool",
+              as_sample:"Yes",
               notes:[]
             };
 
@@ -2172,6 +2195,8 @@ var app = new Vue({
             v4:this.v4,
             status:"3",
             btn2:"1",
+            which_pool:"Project Pool",
+              as_sample:"Yes",
             notes:[]
           };
 
@@ -3383,7 +3408,9 @@ var app = new Vue({
                 v3:"",
                 v4:"",
                 status:"3",
-                notes:[]
+                notes:[],
+                which_pool:"Project Pool",
+                as_sample:"Yes",
               };
 
               items.push(item);
@@ -3473,8 +3500,10 @@ var app = new Vue({
         app.$forceUpdate();
       },
 
-      register(item) {
+      async register(item) {
         item.status = 1;
+        await this.save_encode_list(item.id);
+
         app.$forceUpdate();
       },
 
@@ -3555,6 +3584,65 @@ var app = new Vue({
 
           });
       },
+
+      
+      save_encode_list(index) {
+
+        let _this = this;
+
+        var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+
+        form_Data.append("jwt", token);
+        form_Data.append("received_items", JSON.stringify(this.received_items));
+
+        for(var i=0; i<this.received_items.items.length; i++)
+        {
+          if(this.received_items.items[i].id != index)
+            continue;
+
+          var file = document.getElementById('photo_' + this.received_items.items[i].id + '_1');
+          if(file) {
+            let f = file.files[0];
+            if(typeof f !== 'undefined')
+              form_Data.append('photo_1_' + this.received_items.items[i].id, f);
+          }
+
+          var file = document.getElementById('photo_' + this.received_items.items[i].id + '_2');
+          if(file) {
+            let f = file.files[0];
+            if(typeof f !== 'undefined') 
+              form_Data.append('photo_2_' + this.received_items.items[i].id, f);
+          }
+        }
+
+        axios({
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          url: "api/order_taiwan_p3_encode_list",
+          data: form_Data,
+        })
+          .then(function(response) {
+            //handle success
+            // close modal
+
+            // Swal.fire({
+            //   text: response.data.message,
+            //   icon: "success",
+            //   confirmButtonText: "OK",
+            // });
+          })
+          .catch(function(error) {
+        
+
+          })
+          .finally(function() {
+            _this.submit = false;
+
+        });
+    },
 
       changePool() {
         app.$forceUpdate();
@@ -4177,10 +4265,12 @@ var app = new Vue({
           _this.p_variation1_text = _this.p_record[0]['variation1_text'];
           _this.p_variation2_text = _this.p_record[0]['variation2_text'];
           _this.p_variation3_text = _this.p_record[0]['variation3_text'];
+          _this.p_variation4_text = _this.p_record[0]['variation4_text'];
 
           _this.p_variation1_value = _this.p_record[0]['variation1_value'];
           _this.p_variation2_value = _this.p_record[0]['variation2_value'];
           _this.p_variation3_value = _this.p_record[0]['variation3_value'];
+          _this.p_variation4_value = _this.p_record[0]['variation4_value'];
 
           _this.p_related_product = _this.p_record[0]['related_product'];
           _this.p_chunk(_this.p_related_product, 4);
@@ -4191,10 +4281,12 @@ var app = new Vue({
           _this.p_variation1 = _this.p_record[0]['variation1'];
           _this.p_variation2 = _this.p_record[0]['variation2'];
           _this.p_variation3 = _this.p_record[0]['variation3'];
+          _this.p_variation4 = _this.p_record[0]['variation4'];
 
           _this.p_variation1_custom = _this.p_record[0]['variation1_custom'];
           _this.p_variation2_custom = _this.p_record[0]['variation2_custom'];
           _this.p_variation3_custom = _this.p_record[0]['variation3_custom'];
+          _this.p_variation4_custom = _this.p_record[0]['variation4_custom'];
           
           _this.p_set_up_variants();
           _this.p_set_up_specification();
@@ -4627,7 +4719,8 @@ add_with_image_set_select(all) {
       v2: "",
       v3: "",
       v4: "",
-
+      which_pool:"Project Pool",
+      as_sample:"Yes",
       ps_var : sets,
     };
 
@@ -4794,7 +4887,8 @@ add_without_image_set_select(all) {
       status:"3",
       notes:[],
       btn2:"1",
-
+      which_pool:"Project Pool",
+      as_sample:"Yes",
       ps_var : sets,
     };
 
@@ -5089,6 +5183,8 @@ item = {
     v2: all == 'all' ? '' : set.v2,
     v3: all == 'all' ? '' : set.v3,
     v4: all == 'all' ? '' : set.v4,
+    which_pool:"Project Pool",
+              as_sample:"Yes",
 };
 
 items.push(item);
@@ -5287,7 +5383,9 @@ item = {
       shipping_number:"",
       status:"3",
     notes:[],
-    btn2:"1"
+    btn2:"1",
+    which_pool:"Project Pool",
+              as_sample:"Yes",
   };
 
   items.push(item);
