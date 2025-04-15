@@ -4841,7 +4841,7 @@ header( 'location:index' );
 
                             <div class="photobox">
 
-                                <div :class="['itembox', (received_items.photo4 !== null ? 'chosen' : '')]">
+                                <div :class="['itembox', (received_items.photo4 !== '' ? 'chosen' : '')]">
                                     <div class="photo">
                                         <input type="file" :id="'photo_4'"  @change="onMainFileChangeImage($event, received_items, 4)">
                                         <img v-if="received_items.photo4" :src="received_items.photo4"/>
@@ -4849,7 +4849,7 @@ header( 'location:index' );
                                     </div>
                                 </div>
 
-                                <div :class="['itembox', (received_items.photo5 !== null ? 'chosen' : '')]">
+                                <div :class="['itembox', (received_items.photo5 !== '' ? 'chosen' : '')]">
                                     <div class="photo">
                                         <input type="file" :id="'photo_5'"  @change="onMainFileChangeImage($event, received_items, 5)">
                                         <img v-if="received_items.photo5" :src="received_items.photo5"/>
@@ -4928,18 +4928,18 @@ header( 'location:index' );
                                 </div>
                             </div>
 
-                            <div class="read_block" v-if="item.photo2 != '' && item.status == 1">
+                            <div class="read_block" v-if="item.photo2 != '' && item.status == 1 && 1==0">
                                 <img :src="item.photo2">
                             </div>
 
-                            <div class="read_block" v-if="item.photo2 != '' && item.status == 0">
+                            <div class="read_block" v-if="item.photo2 != '' && item.status == 0 && 1==0">
                                 <img :src="item.photo2">
                                 <div class="photo">
                                     <div @click="clear_photo(item, 2)">x</div>
                                 </div>
                             </div>
 
-                            <div class="write_block" v-show="item.photo2 == '' && item.status == 0">
+                            <div class="write_block" v-show="item.photo2 == '' && item.status == 0 && 1==0">
                                 <div class="itembox">
                                     <div class="photo">
                                         <input type="file" @change="onFileChangeImage($event, item, 2)" :id="'photo_' + item.id + '_2'">

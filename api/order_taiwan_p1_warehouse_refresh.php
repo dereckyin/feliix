@@ -82,6 +82,9 @@ function GetShipping($id, $db){
         $received_list = $row['received_list'];
     }
 
+    if($received_list == ""){
+        return "[]";
+    }
     $obj = json_decode($received_list, true);
 
     $items = array();
