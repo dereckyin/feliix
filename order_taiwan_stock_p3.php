@@ -5004,7 +5004,7 @@ header( 'location:index' );
                             <div class="read_block" v-if="item.status == 1">
                                 {{ item.which_pool }}
                             </div>
-                            <div class="write_block" v-if="item.status == 0">
+                            <div class="write_block" v-if="item.status == 0" @change="changePool()">
                                 <select v-model="item.which_pool">
                                     <option value="Project Pool">Project Pool</option>
                                     <option value="Stock Pool">Stock Pool</option>

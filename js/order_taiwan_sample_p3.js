@@ -3315,6 +3315,9 @@ var app = new Vue({
           });
       },
 
+      changePool() {
+        app.$forceUpdate();
+        },
 
       clear_photo(item, num) {
 
