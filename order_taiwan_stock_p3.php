@@ -2054,7 +2054,7 @@ header( 'location:index' );
                             <a class="btn small green" @click="edit_shipping_info('ship_info')" v-if="EditShippingInfo() && no_privlege() != true && is_edit_dn != true && is_edit_remark != true">Edit Shipping Info</a>
                             <a class="btn small green" @click="edit_shipping_info_dn('date_needed')" v-if="EditDateNeeded()  && no_privlege() != true && is_edit_dn != true && is_edit_remark != true">Edit Date Needed</a>
                             <a class="btn small green" style="width: 190px;" @click="edit_inventory_remark('inventory_remark')" v-if="EditInventoryRemark()  && no_privlege() != true && is_edit_remark != true && is_edit_dn != true">Edit Inventory Remarks</a>
-                            <a class="btn small green" @click="edit_shipping_info('ware_info')" v-if="EditWarehouseInfo() && no_privlege() != true && is_edit_dn != true && is_edit_remark != true">Edit Warehouse Info</a>
+                            <a class="btn small green" @click="edit_shipping_info('ware_info')" v-if="EditWarehouseInfo() && no_privlege() != true && is_edit_dn != true && is_edit_remark != true && 1==0">Edit Warehouse Info</a>
                             <a class="btn small green" @click="edit_shipping_info('assing_test')" v-if="AssignTesting() && no_privlege() != true && 1==0">Assign Testing</a>
                             <a class="btn small green" @click="edit_shipping_info('edit_test')" v-if="EditTestingInfo() && no_privlege() != true && is_edit_dn != true && is_edit_remark != true">Edit Testing Info</a>
                             <a class="btn small green" @click="edit_shipping_info('assign_delivery')" v-if="AssignDelivery() && no_privlege() != true && 1==0">Assign Delivery</a>
