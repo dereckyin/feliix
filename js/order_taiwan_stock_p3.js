@@ -3345,9 +3345,12 @@ var app = new Vue({
         },
 
         changeProjectName(item, event) {
-          item.project_name = event.target.text;
-
+          if(event.target[event.target.value].text != undefined)
+            item.project_name = event.target[event.target.value].text
+          if(event.target.text != undefined)
+            item.project_name = event.target.text
         },
+
 
 
       clear_photo(item, num) {
