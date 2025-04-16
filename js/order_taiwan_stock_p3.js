@@ -3344,6 +3344,12 @@ var app = new Vue({
         app.$forceUpdate();
         },
 
+        changeProjectName(item, event) {
+          item.project_name = event.target.text;
+
+        },
+
+
       clear_photo(item, num) {
 
         if (num === 1) {

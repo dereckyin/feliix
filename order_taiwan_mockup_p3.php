@@ -4971,8 +4971,11 @@ header( 'location:index' );
                             <div class="read_block">
                                 <div class="listing">{{ item.listing }}</div>
                             </div>
+                            <div class="read_block" v-if="item.status == 1">
+                                <div class="listing">{{ item.desc }}</div>
+                            </div>
                             <div class="write_block">
-                                <textarea rows="4" placeholder="Describe item's details if needed" v-model="item.desc" :readonly="item.status == 1" ></textarea>
+                                <textarea rows="4" placeholder="Describe item's details if needed" v-model="item.desc" v-if="item.status == 0" ></textarea>
                             </div>
                         </td>
 
@@ -5000,6 +5003,7 @@ header( 'location:index' );
                         <td>
                             <div class="read_block" v-if="item.status == 1">
                                 {{ item.which_pool }}
+                                <a :href="'project02?p=' + item.id"><div v-if="item.which_pool == 'Project Pool'">{{ item.project_name }}</div></a>
                             </div>
                             <div class="write_block" v-if="item.status == 0" @change="changePool()">
                                 <select v-model="item.which_pool">
@@ -5007,7 +5011,7 @@ header( 'location:index' );
                                     <option value="Stock Pool">Stock Pool</option>
                                 </select>
 
-                                <select v-model="item.project_id" v-show="item.which_pool == 'Project Pool'">
+                                <select v-model="item.project_id" v-show="item.which_pool == 'Project Pool'" @change="changeProjectName(item, $event)" >
                                     <option v-for="(prj, idx) in projects" :value="prj.id">{{ prj.project_name }}</option>
                                 </select>
                             </div>
@@ -5038,7 +5042,7 @@ header( 'location:index' );
                         <td>
                             <a class="btn small" @click="remove_item(item.id)" v-if="item.status == 0">Delete</a>
                             <a class="btn small green" @click="register(item)" v-if="item.status == 0">Register</a>
-                            <a class="btn small green" v-if="item.status == 1">Barcode</a>
+                            <a class="btn small green" v-if="item.status == 1">Label</a>
                         </td>
                     </tr>
 

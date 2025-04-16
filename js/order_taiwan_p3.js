@@ -2375,6 +2375,7 @@ var app = new Vue({
               location: "Caloocan",
               project_list: [],
               project_id: this.project_id,
+              project_name: this.project_name,
               desc:"",
             };
 
@@ -2526,6 +2527,7 @@ var app = new Vue({
       location: "Caloocan",
             project_list: [],
             project_id: this.project_id,
+            project_name: this.project_name,
             desc:"",
           };
 
@@ -3651,6 +3653,12 @@ var app = new Vue({
       changePool() {
         app.$forceUpdate();
         },
+
+        changeProjectName(item, event) {
+          item.project_name = event.target.text;
+
+        },
+
 
       clear_photo(item, num) {
 
@@ -5044,6 +5052,7 @@ add_with_image_set_select_warehouse(all) {
       location: "Caloocan",
       project_list: [],
       project_id: this.project_id,
+      project_name: this.project_name,
       desc:"",
     };
 
@@ -5193,6 +5202,7 @@ add_without_image_set_select_warehouse(all) {
       location: "Caloocan",
       project_list: [],
       project_id: this.project_id,
+      project_name: this.project_name,
       desc:"",
     };
 
@@ -5885,6 +5895,7 @@ item = {
       location: "Caloocan",
       project_list: [],
       project_id: this.project_id,
+      project_name: this.project_name,
       desc:"",
 };
 
@@ -6065,6 +6076,7 @@ item = {
       location: "Caloocan",
       project_list: [],
       project_id: this.project_id,
+      project_name: this.project_name,
       desc:"",
       pid:0,
   };
