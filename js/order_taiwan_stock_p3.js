@@ -3344,13 +3344,15 @@ var app = new Vue({
         app.$forceUpdate();
         },
 
-        changeProjectName(item, event) {
-          if(event.target[event.target.value].text != undefined)
-            item.project_name = event.target[event.target.value].text
-          if(event.target.text != undefined)
-            item.project_name = event.target.text
-        },
+        changeProjectName(item) {
+          id = item.project_id;
 
+          this.projects.forEach((element) => {
+            if (element.id == id) {
+              item.project_name = element.project_name;
+            }
+          })
+        },
 
 
       clear_photo(item, num) {

@@ -5003,7 +5003,7 @@ header( 'location:index' );
                         <td>
                             <div class="read_block" v-if="item.status == 1">
                                 {{ item.which_pool }}
-                                <a :href="'project02?p=' + item.id"><div v-if="item.which_pool == 'Project Pool'">{{ item.project_name }}</div></a>
+                                <a :href="'project02?p=' + item.project_id" target="_blank" v-if="item.which_pool == 'Project Pool'"><div>{{ item.project_name }}</div></a>
                             </div>
                             <div class="write_block" v-if="item.status == 0" @change="changePool()">
                                 <select v-model="item.which_pool">
