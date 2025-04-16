@@ -85,6 +85,15 @@ switch ($method) {
                 }
             }
 
+            if($block_array['photo4'] == "")
+            {
+                $sql = "update od_item set photo4 = :photo4 where id = :id";
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam(':id', $_id);
+                $stmt->bindParam(':photo4', $block_array['photo4']);
+                $stmt->execute();
+            }
+
             $key = "photo_5";
             if (array_key_exists($key, $_FILES))
             {
@@ -99,6 +108,15 @@ switch ($method) {
                     $stmt->bindParam(':photo5', $update_name);
                     $stmt->execute();
                 }
+            }
+
+            if($block_array['photo5'] == "")
+            {
+                $sql = "update od_item set photo5 = :photo5 where id = :id";
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam(':id', $_id);
+                $stmt->bindParam(':photo5', $block_array['photo5']);
+                $stmt->execute();
             }
 
             // update remark, charge
