@@ -63,13 +63,15 @@ switch ($method) {
 
         $jwt = (isset($_POST['jwt']) ?  $_POST['jwt'] : null);
         $received_items = (isset($_POST['received_items']) ?  $_POST['received_items'] : []);
+        $od_id = (isset($_POST['od_id']) ?  $_POST['od_id'] : 0);
+        $index = (isset($_POST['index']) ?  $_POST['index'] : 0);
 
         $block_array = json_decode($received_items,true);
         $new_items = [];
 
         try {
             $_id = $block_array['id'];
-
+            
             for($i = 0; $i < count($block_array['items']); $i++)
             {
                 
@@ -97,6 +99,14 @@ switch ($method) {
 
                 $new_items[] = $item;
 
+                if($item['status'] == 1 && $item['id'] == $index)
+                {
+                    // update product qty
+                    UpdateProductQty($od_id, $item, $db);
+                    $last_id = insertOrderReceiveItem($db, $od_id, $_id, $item, $user_id);
+                    $barcode_list = insertOrderTrackingItem($db, $item, $last_id, $user_id);
+                    insertInventoryChangeHistory($db, $last_id, $barcode_list, $item, $user_id);
+                }
             }
 
             $block_array['items'] = $new_items;
@@ -129,6 +139,7 @@ switch ($method) {
                 die();
             }
 
+
             $db->commit();
 
             
@@ -144,66 +155,6 @@ switch ($method) {
         }
         break;
 }
-
-
-
-function AddAcces7($od_id, $username, $db)
-{
-    $access7 = "";
-    $query = "SELECT access7 FROM `od_main` WHERE id = :od_id";
-
-    // prepare the query
-    $stmt = $db->prepare($query);
-
-    // bind the values
-    $stmt->bindParam(':od_id', $od_id);
-
-    try {
-        // execute the query, also check if query was successful
-        if ($stmt->execute()) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $access7 = $row['access7'];
-        } else {
-            $arr = $stmt->errorInfo();
-            error_log($arr[2]);
-        }
-    } catch (Exception $e) {
-        error_log($e->getMessage());
-    }
-
-    // seperate by comma and check if username is already in the list
-    $access7_array = explode(",", $access7);
-    if (!in_array($username, $access7_array)) {
-        array_push($access7_array, $username);
-    }
-
-    // implode by comma and update to access7
-    $access7 = implode(",", $access7_array);
-
-    $query = "UPDATE `od_main` SET access7 = :access7 WHERE id = :od_id";
-
-    // prepare the query
-    $stmt = $db->prepare($query);
-
-    // bind the values
-    $stmt->bindParam(':access7', $access7);
-    $stmt->bindParam(':od_id', $od_id);
-
-    try {
-        // execute the query, also check if query was successful
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            $arr = $stmt->errorInfo();
-            error_log($arr[2]);
-            return false;
-        }
-    } catch (Exception $e) {
-        error_log($e->getMessage());
-        return false;
-    }
-}
-
 
 function SaveImage($type, $batch_id, $batch_type, $user_id, $db, $conf)
 {
@@ -315,75 +266,130 @@ function SaveImage($type, $batch_id, $batch_type, $user_id, $db, $conf)
 }
 
 
-function UpdateImageNameVariation($sn, $upload_name, $batch_id, $db){
+function UpdateProductQty($od_id, $item, $db)
+{
+    $pid = $item['pid'];
+    $qty = 0;
+    $qty_str = $item['qty'];
+
     
-    $query = "update od_item
-    SET photo" . $sn . " = :gcp_name where id=:id";
-
-    // prepare the query
-    $stmt = $db->prepare($query);
-
-    // bind the values
-    $stmt->bindParam(':id', $batch_id);
-
-    $stmt->bindParam(':gcp_name', $upload_name);
 
 
-    try {
-        // execute the query, also check if query was successful
-        if ($stmt->execute()) {
-            $last_id = $db->lastInsertId();
-        }
-        else
-        {
-            $arr = $stmt->errorInfo();
-            error_log($arr[2]);
-        }
-    }
-    catch (Exception $e)
+    // check the original qty
+    $sql = "select incoming_qty, project_qty, project_s_qty, stock_qty, stock_s_qty from product_category where id = :pid ";
+
+    $incoming_qty = 0;
+    $project_qty = 0;
+    $project_s_qty = 0;
+    $stock_qty = 0;
+    $stock_s_qty = 0;
+
+    if($qty_str != '') $qty = preg_replace('/[^0-9]/', '', $qty_str);
+    
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':pid', $pid);
+    $stmt->execute();
+    $num = $stmt->rowCount();
+    if($num > 0)
     {
-        error_log($e->getMessage());
-        $db->rollback();
-        http_response_code(501);
-        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-        die();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $incoming_qty = $row['incoming_qty'];
+        $project_qty = $row['project_qty'];
+        $project_s_qty = $row['project_s_qty'];
+        $stock_qty = $row['stock_qty'];
+        $stock_s_qty = $row['stock_s_qty'];
     }
+
+    $pool = $item['which_pool'];
+    $sample = $item['as_sample'];
+
+    $stock_sql = "";
+    $stock = 0;
+    if($pool == 'Project Pool')
+    {
+        if($sample == 'Yes')
+        {
+            $stock_sql = ", project_s_qty = :stock";
+            $stock = $project_s_qty + $qty;
+        }
+        
+        if($sample == 'No')
+        {
+            $stock_sql = ", project_qty = :stock";
+            $stock = $project_qty + $qty;
+        }
+    }
+
+    else if($pool == 'Stock Pool')
+    {
+        if($sample == 'Yes')
+        {
+            $stock_sql = ", stock_s_qty = :stock";
+            $stock = $stock_s_qty + $qty;
+        }
+        
+        if($sample == 'No')
+        {
+            $stock_sql = ", stock_qty = :stock";
+            $stock = $stock_qty + $qty;
+        }
+    }
+
+    $sql = "update product_category set incoming_qty = :new_qty " . $stock_sql . " where id = :pid and incoming_qty = :incoming_qty";   // incoming_qty equality is for atomic update
+    $stmt = $db->prepare($sql);
+    $new_qty = $incoming_qty - $qty;
+    $stmt->bindParam(':new_qty', $new_qty);
+    if($stock_sql != "")
+    {
+        $stmt->bindParam(':stock', $stock);
+    }
+    $stmt->bindParam(':incoming_qty', $incoming_qty);
+    $stmt->bindParam(':pid', $pid);
+    $stmt->execute();
 }
 
+function insertOrderReceiveItem($db, $od_id, $item_id, $item, $user_id) {
+    $query = "INSERT INTO order_receive_item
+            SET
+                od_id = :od_id,
+                item_id = :item_id,
+                receive_id = :receive_id,
+                product_id = :product_id,
+                pic = :pic,
+                v1 = :v1,
+                v2 = :v2,
+                v3 = :v3,
+                v4 = :v4,
+                received_date = now(),
+                qty = :qty,
+                which_pool = :which_pool,
+                as_sample = :as_sample,
+                location = :location,
+                project_id = :project_id,
+                status = 0,
+                create_id = :create_id,
+                created_at = now();";
 
-function PreserveConfirm($od_id, $pre_confirm, $user_id, $db){
-    
-    $comment = $pre_confirm;
-    $action = "change_confirm";
-    $items = '["' . $pre_confirm . '"]';
-
-    $query = "INSERT INTO od_process
-    SET
-        `od_id` = :od_id,
-        `comment` = :comment,
-        `action` = :action,
-        `items` = :items,
-        `status` = 0,
-        `create_id` = :create_id,
-        `created_at` =  now() ";
-
-    // prepare the query
     $stmt = $db->prepare($query);
-
-    // bind the values
     $stmt->bindParam(':od_id', $od_id);
-    $stmt->bindParam(':comment', $comment);
-    $stmt->bindParam(':action', $action);
-    $stmt->bindParam(':items', $items);
+    $stmt->bindParam(':item_id', $item_id);
+    $stmt->bindParam(':receive_id', $item['id']);
+    $stmt->bindParam(':product_id', $item['pid']);
+    $stmt->bindParam(':pic', $item['photo1']);
+    $stmt->bindParam(':v1', $item['v1']);
+    $stmt->bindParam(':v2', $item['v2']);
+    $stmt->bindParam(':v3', $item['v3']);
+    $stmt->bindParam(':v4', $item['v4']);
+    $stmt->bindParam(':qty', $item['qty']);
+    $stmt->bindParam(':which_pool', $item['which_pool']);
+    $stmt->bindParam(':as_sample', $item['as_sample']);
+    $stmt->bindParam(':location', $item['location']);
+    $stmt->bindParam(':project_id', $item['project_id']);
     $stmt->bindParam(':create_id', $user_id);
 
-
-    $last_id = 0;
-    // execute the query, also check if query was successful
     try {
-        // execute the query, also check if query was successful
         if ($stmt->execute()) {
-            $last_id = $db->lastInsertId();
+            return $db->lastInsertId();
         } else {
             $arr = $stmt->errorInfo();
             error_log($arr[2]);
@@ -401,123 +407,111 @@ function PreserveConfirm($od_id, $pre_confirm, $user_id, $db){
     }
 }
 
-function UpdateProductQty($od_id, $item, $db)
-{
-    $pid = $item['pid'];
-    $qty = 0;
-    $qty_str = $item['qty'];
-    $backup_qty = 0;
-    $backup_qty_str = $item['backup_qty'];
-    $org_incoming_element = [];
-
-    $new_incoming_qty = 0;
-    $new_incoming_element = [];
-
-    $v1 = $item['v1'];
-    $v2 = $item['v2'];
-    $v3 = $item['v3'];
-    $v4 = $item['v4'];
-    $ps_var = $item['ps_var'];
-
-    // check the original qty
-    $sql = "select incoming_qty, incoming_element from product_category where id = :pid ";
+function insertOrderTrackingItem($db, $item, $item_id, $user_id) {
     
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':pid', $pid);
+    $query = "select barcode from order_tracking_item where barcode like :barcode order by barcode desc limit 1";
+    $stmt = $db->prepare($query);
+    $barcode = date("ymd") . str_pad($item['pid'], 6, '0', STR_PAD_LEFT);
+    $barcode = $barcode . '%';
+    $stmt->bindParam(':barcode', $barcode);
     $stmt->execute();
     $num = $stmt->rowCount();
+
+    $qty_base = 0;
+
+    $barcode_list = array();
+
     if($num > 0)
     {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($row['incoming_element'] != '')
-            $org_incoming_element = json_decode($row['incoming_element'], true);
-        else
-            $org_incoming_element = [];
+        $barcode = $row['barcode'];
+        $qty_base = substr($barcode, -5);
+        $qty_base = intval($qty_base);
     }
 
-    if($qty_str != '') $qty = preg_replace('/[^0-9]/', '', $qty_str);
+    $inc = intval($item['qty']);
 
-    if($backup_qty_str != '') $backup_qty = preg_replace('/[^0-9]/', '', $backup_qty_str);
-
-    // update new incoming element, if existed, update the qty else add new element
-    $found = false;
-    foreach($org_incoming_element as $element)
+    for($i = 0; $i < $inc; $i++)
     {
-        if($element['od_id'] == $od_id && $element['v1'] == $v1 && $element['v2'] == $v2 && $element['v3'] == $v3 && $element['v4'] == $v4 && $element['ps_var'] == $ps_var)
-        {
-            $element['qty'] = $qty;
-            $element['backup_qty'] = $backup_qty;
-            $new_incoming_qty += $qty + $backup_qty;
-            $found = true;
+        $barcode = date("ymd") . str_pad($item['pid'], 6, '0', STR_PAD_LEFT) . str_pad($qty_base + $i + 1, 5, '0', STR_PAD_LEFT);
+        $query = "INSERT INTO order_tracking_item
+        SET
+            item_id = :item_id,
+            barcode = :barcode,
+            status = 0,
+            create_id = :create_id,
+            created_at = now()";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':item_id', $item_id);
+        $stmt->bindParam(':barcode', $barcode);
+        $stmt->bindParam(':create_id', $user_id);
+
+        try {
+            // execute the query, also check if query was successful
+            if ($stmt->execute()) {
+                $last_id = $db->lastInsertId();
+
+                $barcode_list[] = $barcode;
+
+            } else {
+                $arr = $stmt->errorInfo();
+                error_log($arr[2]);
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+                die();
+            }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $db->rollback();
+            http_response_code(501);
+            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+            die();
         }
-        else
-        {
-            $new_incoming_qty += $element['qty'] + $element['backup_qty'];
-        }
-        $new_incoming_element[] = $element;
     }
 
-    if($found == false)
-    {
-        $new_incoming_qty += $qty + $backup_qty;
-        $new_incoming_element[] = array('od_id' => $od_id, 'qty' => $qty, 'backup_qty' => $backup_qty, 'v1' => $v1, 'v2' => $v2, 'v3' => $v3, 'v4' => $v4, 'ps_var' => $ps_var, 'order_date' => date("Y-m-d H:i:s"), 'order_type' => 'taiwan');
-    }
-
-    $sql = "update product_category set incoming_qty = :incoming_qty, incoming_element = :incoming_element where id = :pid ";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':incoming_qty', $new_incoming_qty);
-    $stmt->bindParam(':incoming_element', json_encode($new_incoming_element));
-    $stmt->bindParam(':pid', $pid);
-    $stmt->execute();
+    return $barcode_list;
+    
 }
 
-function RemoveProductQty($od_id, $item, $db)
-{
-    $pid = $item['pid'];
-    $org_incoming_element = [];
 
-    $new_incoming_qty = 0;
-    $new_incoming_element = [];
+function insertInventoryChangeHistory($db, $last_id, $barcode_list, $item, $user_id) {
+    $query = "INSERT INTO inventory_change_history
+            SET
+                item_id = :item_id,
+                reason = :reason,
+                affected_qty = :affected_qty,
+                affected_sign = 'Add',
+                affected_tracking = :affected_tracking,
+                status = 0,
+                create_id = :create_id,
+                created_at = now();";
 
-    $v1 = $item['v1'];
-    $v2 = $item['v2'];
-    $v3 = $item['v3'];
-    $v4 = $item['v4'];
-    $ps_var = $item['ps_var'];
+    $barcode_json = json_encode($barcode_list);
 
-    // check the original qty
-    $sql = "select incoming_qty, incoming_element from product_category where id = :pid ";
-    
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':pid', $pid);
-    $stmt->execute();
-    $num = $stmt->rowCount();
-    if($num > 0)
-    {
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($row['incoming_element'] != '')
-            $org_incoming_element = json_decode($row['incoming_element'], true);
-        else
-            $org_incoming_element = [];
-    }
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':item_id', $last_id);
+    $stmt->bindParam(':reason', $item['remark']);
+    $stmt->bindParam(':affected_qty', $item['qty']);
+    $stmt->bindParam(':affected_tracking', $barcode_json);
+    $stmt->bindParam(':create_id', $user_id);
 
-    foreach($org_incoming_element as $element)
-    {
-        if($element['od_id'] == $od_id && $element['v1'] == $v1 && $element['v2'] == $v2 && $element['v3'] == $v3 && $element['v4'] == $v4 && $element['ps_var'] == $ps_var)
-        {
-            $found = true;
+    try {
+        if ($stmt->execute()) {
+            return $db->lastInsertId();
+        } else {
+            $arr = $stmt->errorInfo();
+            error_log($arr[2]);
+            $db->rollback();
+            http_response_code(501);
+            echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+            die();
         }
-        else
-        {
-            $new_incoming_qty += $element['qty'] + $element['backup_qty'];
-            $new_incoming_element[] = $element;
-        }
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        $db->rollback();
+        http_response_code(501);
+        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+        die();
     }
-
-    $sql = "update product_category set incoming_qty = :incoming_qty, incoming_element = :incoming_element where id = :pid ";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':incoming_qty', $new_incoming_qty);
-    $stmt->bindParam(':incoming_element', json_encode($new_incoming_element));
-    $stmt->bindParam(':pid', $pid);
-    $stmt->execute();
 }

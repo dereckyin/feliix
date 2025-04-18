@@ -478,6 +478,14 @@ var app = new Vue({
         projects: [],
         is_encode_warehouse: false,
         project_id : 0,
+
+        // barcode information
+        barcode_list : [],
+        barcode_total : 0,
+        barcode_pages : [],
+
+        barcode_page: 0,
+        barcode_pages_10:0,
     },
   
     created() {
@@ -585,6 +593,105 @@ var app = new Vue({
     },
   
     methods: {
+      
+      get_barcode_records: function(item_id, receive_id) {
+        let _this = this;
+        const params = {
+          item_id : item_id,
+          receive_id : receive_id,
+          page: 1,
+          size: 10,
+        };
+    
+        let token = localStorage.getItem("accessToken");
+    
+        this.barcode_total = 0;
+    
+        axios
+          .get("api/order_receive_tracking_item", {
+            params,
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then(function(response) {
+            console.log(response.data);
+            let res = response.data;
+            if(res.length > 0) 
+            {
+              _this.barcode_list = response.data;
+              _this.barcode_total = response.data.length;
+
+              _this.barcode_page = 1;
+              _this.setPagesBarcode();
+              _this.paginateBarcode(_this.barcode_list);
+            }
+      
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+
+      setPagesBarcode() {
+        console.log("setPagesBarcode");
+        this.barcode_pages = [];
+        let numberOfPages = Math.ceil(this.barcode_total / this.perPage);
+  
+        if (numberOfPages == 1) this.barcode_page = 1;
+        if (this.barcode_page < 1) this.barcode_page = 1;
+        for (let index = 1; index <= numberOfPages; index++) {
+          this.barcode_pages.push(index);
+        }
+      },
+  
+      paginateBarcode: function(posts) {
+        console.log("paginateBarcode");
+        if (this.barcode_page < 1) this.barcode_page = 1;
+        if (this.barcode_page > this.barcode_pages.length) this.barcode_page = this.barcode_pages.length;
+  
+        let tenPages = Math.floor((this.barcode_page - 1) / 10);
+        if(tenPages < 0)
+          tenPages = 0;
+        this.barcode_pages_10 = [];
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+        
+        this.barcode_pages_10 = this.barcode_pages.slice(from, to);
+  
+        return this.barcode_records;
+      },
+
+      pre_page_barcode: function(){
+        let tenPages = Math.floor((this.barcode_page - 1) / 10) + 1;
+  
+          this.barcode_page = parseInt(this.barcode_page) - 10;
+          if(this.barcode_page < 1)
+            this.barcode_page = 1;
+   
+          this.barcode_pages_10 = [];
+  
+          let from = tenPages * 10;
+          let to = (tenPages + 1) * 10;
+  
+          this.barcode_pages_10 = this.barcode_pages.slice(from, to);
+        
+      },
+  
+      nex_page_barcode: function(){
+        let tenPages = Math.floor((this.barcode_page - 1) / 10) + 1;
+  
+        this.barcode_page = parseInt(this.barcode_page) + 10;
+        if(this.barcode_page > this.barcode_pages.length)
+          this.barcode_page = this.barcode_pages.length;
+  
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+        let pages_10 = this.barcode_pages.slice(from, to);
+  
+        if(pages_10.length > 0)
+          this.barcode_pages_10 = pages_10;
+  
+      },
+
       getProjects () {
 
         let _this = this;
@@ -2881,6 +2988,16 @@ var app = new Vue({
         $('#modal_product_catalog').modal('toggle');
       },
 
+      barcode_printing(od_id, id) {
+        this.get_barcode_records(od_id, id);
+        $('#modal_registry_received_items').modal('toggle');
+        $('#modal_barcode_printing').modal('toggle');
+      },
+
+      close_barcode_printing() {
+        $('#modal_registry_received_items').modal('toggle');
+        $('#modal_barcode_printing').modal('toggle');
+      },
 
       get_brands: function() {
         let _this = this;
@@ -3601,6 +3718,8 @@ var app = new Vue({
 
         form_Data.append("jwt", token);
         form_Data.append("received_items", JSON.stringify(this.received_items));
+        form_Data.append("od_id", this.id);
+        form_Data.append("index", index);
 
         for(var i=0; i<this.received_items.items.length; i++)
         {

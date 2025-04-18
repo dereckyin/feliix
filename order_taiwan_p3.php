@@ -5043,7 +5043,7 @@ header( 'location:index' );
                         <td>
                             <a class="btn small" @click="remove_item(item.id)" v-if="item.status == 0">Delete</a>
                             <a class="btn small green" @click="register(item)" v-if="item.status == 0">Register</a>
-                            <a class="btn small green" v-if="item.status == 1">Label</a>
+                            <a class="btn small green" @click="barcode_printing(received_items.id, item.id)" v-if="item.status == 1">Label</a>
                         </td>
                     </tr>
 
@@ -5081,7 +5081,7 @@ header( 'location:index' );
 
                 <h4 class="modal-title" id="myLargeModalLabel">Label Printing</h4>
 
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close" @click="close_barcode_printing()">
                     <span aria-hidden="true">&times;</span>
                 </button>
 
@@ -5094,11 +5094,11 @@ header( 'location:index' );
                     <!-- 分頁功能 -->
                     <!-- 分頁 -->
                         <div class="pagenation">
-                            <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+                            <a class="prev" :disabled="barcode_page == 1" @click="pre_page_barcode(); filter_apply_barcode();">Prev 10</a>
 
-                            <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
+                            <a class="page" v-for="pg in barcode_pages_10" @click="barcode_page=pg; filter_apply_barcode();" v-bind:style="[pg == barcode_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                            <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                            <a class="next" :disabled="barcode_page == barcode_pages.length" @click="nex_page_barcode(); filter_apply_barcode();">Next 10</a>
                         </div>
                     </div>
                 </div>
@@ -5212,11 +5212,11 @@ Installation: RECESSED      </div>
                     <!-- 分頁功能 -->
                     <!-- 分頁 -->
                         <div class="pagenation">
-                            <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+                            <a class="prev" :disabled="barcode_page == 1" @click="pre_page_barcode(); filter_apply_barcode();">Prev 10</a>
 
-                            <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
+                            <a class="page" v-for="pg in barcode_pages_10" @click="barcode_page=pg; filter_applybarcode_();" v-bind:style="[pg == barcode_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                            <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                            <a class="next" :disabled="barcode_page == barcode_pages.length" @click="nex_page_barcode(); filter_apply_barcode();">Next 10</a>
                         </div>
                     </div>
                 </div>
@@ -5225,7 +5225,7 @@ Installation: RECESSED      </div>
 
             <div class="modal-footer">
                 <div class="btnbox">
-                    <a class="btn small">Cancel</a>
+                    <a class="btn small" @click="close_barcode_printing()">Cancel</a>
                     <a class="btn small">Void Barcode</a>
                     <a class="btn small green">Print Label</a>
                 </div>

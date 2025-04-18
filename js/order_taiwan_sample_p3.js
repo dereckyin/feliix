@@ -3354,6 +3354,8 @@ var app = new Vue({
 
         form_Data.append("jwt", token);
         form_Data.append("received_items", JSON.stringify(this.received_items));
+        form_Data.append("od_id", this.id);
+        form_Data.append("index", index);
 
         for(var i=0; i<this.received_items.items.length; i++)
         {

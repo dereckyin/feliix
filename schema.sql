@@ -5766,3 +5766,57 @@ ADD COLUMN `stock_s_qty` int(11) DEFAULT 0;
 -- 20250401
 ALTER TABLE od_item
 ADD COLUMN `received_list` JSON;
+
+-- 20250417
+CREATE TABLE IF NOT EXISTS `order_receive_item` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `od_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `item_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `receive_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `product_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `pic` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `v1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `v2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `v3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `v4` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `received_date` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `qty` int(11) DEFAULT 0,
+  `which_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `as_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `project_id` bigint(20) DEFAULT 0,
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `order_tracking_item` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `item_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `barcode` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `inventory_change_history` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `item_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `reason` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `affected_qty` int(11) DEFAULT 0,
+  `affected_sign` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `affected_tracking` JSON,
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
