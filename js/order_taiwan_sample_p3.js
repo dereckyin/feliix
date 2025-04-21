@@ -476,6 +476,17 @@ var app = new Vue({
         received_items: {},
         projects: [],
         is_encode_warehouse: false,
+        project_id : 0,
+
+        // barcode information
+        barcode_list : [],
+        barcode_total : 0,
+        barcode_pages : [],
+
+        barcode_page: 0,
+        barcode_pages_10:0,
+
+        item_id: 0,
     },
   
     created() {
@@ -550,6 +561,11 @@ var app = new Vue({
 
       },
 
+      displayBarcodeItems() {
+ 
+        return this.paginateBarcode(this.barcode_list);
+      },
+
         displayedPosts() {
             //if(this.pg == 0)
             //  this.filter_apply_new();
@@ -583,6 +599,128 @@ var app = new Vue({
     },
   
     methods: {
+      void_barcode_selected: async function() {
+
+        var list = this.barcode_list.filter((item) => item.is_checked == 1);
+        
+        if(list.length > 0) {
+          res = await axios({
+            method: 'post',
+            url: 'api/order_taiwan_p1_void_barcode',
+            data: {"items": list},
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          Swal.fire({
+            text: "Action completed successfully",
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+
+          this.get_barcode_records(this.received_items.id, this.item_id);
+        }
+
+      },
+      
+      get_barcode_records: function(item_id, receive_id) {
+        let _this = this;
+        const params = {
+          item_id : item_id,
+          receive_id : receive_id,
+          pg: this.barcode_page,
+          size: 10,
+        };
+    
+        let token = localStorage.getItem("accessToken");
+    
+        this.barcode_total = 0;
+    
+        axios
+          .get("api/order_receive_tracking_item", {
+            params,
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then(function(response) {
+            console.log(response.data);
+            let res = response.data;
+            if(res.length > 0) 
+            {
+              _this.barcode_list = response.data;
+              _this.barcode_total = response.data[0].cnt;
+
+              _this.setPagesBarcode();
+              _this.paginateBarcode(_this.barcode_list);
+            }
+      
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+
+      setPagesBarcode() {
+        console.log("setPagesBarcode");
+        this.barcode_pages = [];
+        let numberOfPages = Math.ceil(this.barcode_total / this.perPage);
+  
+        if (numberOfPages == 1) this.barcode_page = 1;
+        if (this.barcode_page < 1) this.barcode_page = 1;
+        for (let index = 1; index <= numberOfPages; index++) {
+          this.barcode_pages.push(index);
+        }
+      },
+  
+      paginateBarcode: function(posts) {
+        console.log("paginateBarcode");
+        if (this.barcode_page < 1) this.barcode_page = 1;
+        if (this.barcode_page > this.barcode_pages.length) this.barcode_page = this.barcode_pages.length;
+  
+        let tenPages = Math.floor((this.barcode_page - 1) / 10);
+        if(tenPages < 0)
+          tenPages = 0;
+        this.barcode_pages_10 = [];
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+        
+        this.barcode_pages_10 = this.barcode_pages.slice(from, to);
+  
+        return this.barcode_list;
+      },
+
+      pre_page_barcode: function(){
+        let tenPages = Math.floor((this.barcode_page - 1) / 10) + 1;
+  
+          this.barcode_page = parseInt(this.barcode_page) - 10;
+          if(this.barcode_page < 1)
+            this.barcode_page = 1;
+   
+          this.barcode_pages_10 = [];
+  
+          let from = tenPages * 10;
+          let to = (tenPages + 1) * 10;
+  
+          this.barcode_pages_10 = this.barcode_pages.slice(from, to);
+        
+      },
+  
+      nex_page_barcode: function(){
+        let tenPages = Math.floor((this.barcode_page - 1) / 10) + 1;
+  
+        this.barcode_page = parseInt(this.barcode_page) + 10;
+        if(this.barcode_page > this.barcode_pages.length)
+          this.barcode_page = this.barcode_pages.length;
+  
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+        let pages_10 = this.barcode_pages.slice(from, to);
+  
+        if(pages_10.length > 0)
+          this.barcode_pages_10 = pages_10;
+  
+      },
+
       getProjects () {
 
         let _this = this;

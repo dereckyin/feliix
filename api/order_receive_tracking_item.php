@@ -45,13 +45,74 @@ if (!isset($jwt)) {
     $GLOBALS["user_id"] = $decoded->data->id;
 
     $merged_results = array();
-    
 
-    $query = "SELECT rec.id,
+    // get receive_list json from od_item
+    $query = "SELECT received_list
+                    FROM od_item 
+                    WHERE id = :item_id";
+
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':item_id', $item_id);
+    $stmt->execute();
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $received_list = $row['received_list'];
+
+    if ($received_list == "") {
+        $received_list = "{}";
+        $received_list['items'] = array();
+    }
+    if ($received_list == null) {
+        $received_list = "{}";
+        $received_list['items'] = array();
+    }
+
+    $received_list = json_decode($received_list, true);
+    
+    $item = array();
+    foreach ($received_list['items'] as $it) {
+        if ($it['id'] == $receive_id) {
+            $item = $it;
+            break;
+        }
+    }
+
+    $code = "";
+    $brief = "";
+    $listing = "";
+    $project_name = "";
+    $desc = "";
+    
+    if($item['id'] == $receive_id) {
+        $code = $item['code'];
+        $brief = $item['brief'];
+        $listing = $item['listing'];
+        $project_name = $item['project_name'];
+        $desc = $item['desc'];
+    } 
+
+    $cnt = 0;
+    $query_cnt = "SELECT COUNT(*) as cnt
+                    FROM order_receive_item rec left join order_tracking_item tra on rec.id = tra.item_id
+                    WHERE rec.item_id = :item_id and rec.receive_id = :receive_id and tra.status <> -1  order by tra.barcode ";
+    $stmt_cnt = $db->prepare($query_cnt);
+    $stmt_cnt->bindParam(':item_id', $item_id);
+    $stmt_cnt->bindParam(':receive_id', $receive_id);
+    $stmt_cnt->execute();
+
+    $row_cnt = $stmt_cnt->fetch(PDO::FETCH_ASSOC);
+    $cnt = $row_cnt['cnt'];
+    
+    $query = "SELECT tra.id,
+                    rec.id as rec_id,
                     rec.od_id,
                     rec.item_id,
                     rec.receive_id,
                     rec.product_id,
+                    rec.v1,
+                    rec.v2,
+                    rec.v3,
+                    rec.v4,
                     rec.pic,
                     rec.qty,
                     rec.which_pool,
@@ -61,23 +122,41 @@ if (!isset($jwt)) {
                     tra.barcode,
                     tra.status
                     FROM order_receive_item rec left join order_tracking_item tra on rec.id = tra.item_id
-                    WHERE rec.item_id = :item_id and rec.receive_id = :receive_id ";
+                    WHERE rec.item_id = :item_id and rec.receive_id = :receive_id  and tra.status <> -1 ";
 
-                
+    $query .= "  order by tra.barcode ";
 
-    $query = $query . " order by tra.barcode ";
-
+    $query .= " LIMIT :pg, :size ";
     $stmt = $db->prepare($query);
+
+    if($pg == 0) {
+        $pg = 0;
+    } else {
+        $pg = ($pg - 1) * $size;
+    }
+    if($size == 0) {
+        $size = 10;
+    } else {
+        $size = $size;
+    }
+
     $stmt->bindParam(':item_id', $item_id);
     $stmt->bindParam(':receive_id', $receive_id);
+    $stmt->bindParam(':pg', $pg, PDO::PARAM_INT);
+    $stmt->bindParam(':size', $size, PDO::PARAM_INT);
     $stmt->execute();
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id = $row['id'];
         $od_id = $row['od_id'];
+        $rec_id = $row['rec_id'];
         $item_id = $row['item_id'];
         $receive_id = $row['receive_id'];
         $product_id = $row['product_id'];
+        $v1 = $row['v1'];
+        $v2 = $row['v2'];
+        $v3 = $row['v3'];
+        $v4 = $row['v4'];
         $pic = $row['pic'];
         $qty = $row['qty'];
         $which_pool = $row['which_pool'];
@@ -88,11 +167,18 @@ if (!isset($jwt)) {
         $status = $row['status'];
         
         $merged_results[] = array(
+            "is_checked" => "",
             "id" => $id,
             "od_id" => $od_id,
+            "rec_id" => $rec_id,
             "item_id" => $item_id,
             "receive_id" => $receive_id,
             "product_id" => $product_id,
+            "code" => $code,
+            "v1" => $v1,
+            "v2" => $v2,
+            "v3" => $v3,
+            "v4" => $v4,
             "pic" => $pic,
             "qty" => $qty,
             "which_pool" => $which_pool,
@@ -100,7 +186,12 @@ if (!isset($jwt)) {
             "location" => $location,
             "project_id" => $project_id,
             "barcode" => $barcode,
-            "status" => $status
+            "status" => $status,
+            "brief" => $brief,
+            "listing" => $listing,
+            "project_name" => $project_name,
+            "desc" => $desc,
+            "cnt" => $cnt,
         );
     }
 

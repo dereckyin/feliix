@@ -486,6 +486,8 @@ var app = new Vue({
 
         barcode_page: 0,
         barcode_pages_10:0,
+
+        item_id: 0,
     },
   
     created() {
@@ -560,6 +562,11 @@ var app = new Vue({
 
       },
 
+      displayBarcodeItems() {
+ 
+        return this.paginateBarcode(this.barcode_list);
+      },
+
         displayedPosts() {
             //if(this.pg == 0)
             //  this.filter_apply_new();
@@ -593,13 +600,37 @@ var app = new Vue({
     },
   
     methods: {
+      void_barcode_selected: async function() {
+
+        var list = this.barcode_list.filter((item) => item.is_checked == 1);
+        
+        if(list.length > 0) {
+          res = await axios({
+            method: 'post',
+            url: 'api/order_taiwan_p1_void_barcode',
+            data: {"items": list},
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          Swal.fire({
+            text: "Action completed successfully",
+            icon: "info",
+            confirmButtonText: "OK",
+          });
+
+          this.get_barcode_records(this.received_items.id, this.item_id);
+        }
+
+      },
       
       get_barcode_records: function(item_id, receive_id) {
         let _this = this;
         const params = {
           item_id : item_id,
           receive_id : receive_id,
-          page: 1,
+          pg: this.barcode_page,
           size: 10,
         };
     
@@ -618,9 +649,8 @@ var app = new Vue({
             if(res.length > 0) 
             {
               _this.barcode_list = response.data;
-              _this.barcode_total = response.data.length;
+              _this.barcode_total = response.data[0].cnt;
 
-              _this.barcode_page = 1;
               _this.setPagesBarcode();
               _this.paginateBarcode(_this.barcode_list);
             }
@@ -657,7 +687,7 @@ var app = new Vue({
         
         this.barcode_pages_10 = this.barcode_pages.slice(from, to);
   
-        return this.barcode_records;
+        return this.barcode_list;
       },
 
       pre_page_barcode: function(){
@@ -2990,6 +3020,7 @@ var app = new Vue({
 
       barcode_printing(od_id, id) {
         this.get_barcode_records(od_id, id);
+        this.item_id = id;
         $('#modal_registry_received_items').modal('toggle');
         $('#modal_barcode_printing').modal('toggle');
       },

@@ -5042,7 +5042,7 @@ header( 'location:index' );
                         <td>
                             <a class="btn small" @click="remove_item(item.id)" v-if="item.status == 0">Delete</a>
                             <a class="btn small green" @click="register(item)" v-if="item.status == 0">Register</a>
-                            <a class="btn small green" v-if="item.status == 1">Label</a>
+                            <a class="btn small green" @click="barcode_printing(received_items.id, item.id)" v-if="item.status == 1">Label</a>
                         </td>
                     </tr>
 
@@ -5080,7 +5080,7 @@ header( 'location:index' );
 
                 <h4 class="modal-title" id="myLargeModalLabel">Label Printing</h4>
 
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close" @click="close_barcode_printing()">
                     <span aria-hidden="true">&times;</span>
                 </button>
 
@@ -5093,11 +5093,11 @@ header( 'location:index' );
                     <!-- 分頁功能 -->
                     <!-- 分頁 -->
                         <div class="pagenation">
-                            <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+                            <a class="prev" :disabled="barcode_page == 1" @click="pre_page_barcode(); get_barcode_records(received_items.id, item_id);">Prev 10</a>
 
-                            <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
+                            <a class="page" v-for="pg in barcode_pages_10" @click="barcode_page=pg; get_barcode_records(received_items.id, item_id);" v-bind:style="[pg == barcode_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                            <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                            <a class="next" :disabled="barcode_page == barcode_pages.length" @click="nex_page_barcode(); get_barcode_records(received_items.id, item_id);">Next 10</a>
                         </div>
                     </div>
                 </div>
@@ -5116,92 +5116,46 @@ header( 'location:index' );
                     </thead>
 
                     <tbody>
-                    <tr>
-                        <td><input type="checkbox" class="alone"></td>
+                    <tr v-for="(item, index) in displayBarcodeItems">
+                        <td><input type="checkbox" class="alone" :value="item.id" :true-value="1" v-model:checked="item.is_checked"></td>
                         <td>
-                            {{ }}//該品項的16碼的 Barcode (採用 Code 128 標準)
+                            {{ item.barcode }}
                         </td>
                         <td class="pic">
                             <div class="read_block">
-                                <img src="item.photo1">
+                                <img :src="item.pic" v-if="item.pic != ''">
                             </div>
                         </td>
 
                         <td>
-                            <div class="id">ID: <a class="hyperlink" href="product_display_code?id=&v1&v2&v3&v4">{{ }}</a></div>//該品項的id數字部分為一個超連結，點開後會連結到 product display 頁面，並載入這個品項所選擇的 v1,v2,v3,v4
-                            <div class="brand">{{ }}</div>
-                            <div class="code">{{ }}</div>
-                            <div class="brief">{{ }}</div>
+                        <div class="id">ID: <a class="hyperlink" :href="'product_display_code?id=' + item.pid + '&v1=' + item.v1 + '&v2=' + item.v2 + '&v3=' + item.v3 + '&v4=' + item.v4" target="_blank">{{ item.pid }}</a></div>
+                            <div class="brand">{{ item.brand }}</div>
+                            <div class="code">{{ item.code }}</div>
+                            <div class="brief">{{ item.brief }}</div>
                             <div class="read_block">
-                                <div class="listing">{{ }}</div>
-                            </div>
-                        </td>
-
-                        <td>
-                            <div class="read_block">
-                                {{ }}//收到的這個品項屬於哪種類型的庫存數量
-                                <a class="hyperlink block">Bistro hard rock</a>//如果這個品項屬於 Project Pool 種類，這邊則會放那個相關專案的 project02 頁面
+                                <div class="listing">{{ item.listing }}</div>
                             </div>
                         </td>
 
                         <td>
                             <div class="read_block">
-                                {{ }}//收到的這個品項，要入庫到哪裡的倉儲
+                                {{ item.which_pool }}
+                                <a class="hyperlink block" :href="'project02?p=' + item.project_id" target="_blank" v-if="item.which_pool == 'Project Pool'">{{ item.project_name }}</a>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="read_block">
+                                {{ item.location }}
                             </div>
                         </td>
                         <td>
                             <div class="read_block">
-                                {{ }}//收到的這個品項，是否當作是樣品或正常品
+                                {{ item.as_sample }}
                             </div>
                         </td>
                     </tr>
 
-                    <!-- 一個範例 -->
-                    <tr>
-                        <td><input type="checkbox" class="alone"></td>
-                        <td>2502250222300001
-                        <td class="pic">
-                            <div class="read_block">
-                                <img src="https://storage.googleapis.com/feliiximg/1715090782_DSA2006-C.jpg">
-                            </div>
-                        </td>
-
-                        <td>
-                            <div class="id">ID: <a class="hyperlink" href="product_display_code?id=&v1&v2&v3&v4">2223</a></div>//該品項的id數字部分為一個超連結，點開後會連結到 product display 頁面，並載入這個品項所選擇的 v1,v2,v3,v4
-                            <div class="brand">LEDOUX</div>
-                            <div class="code">FELIIX LD DSA2006-C-W</div>
-                            <div class="brief">Beam Angle: 60°
-CCT: 3000K
-Reflector Color: CHROME
-Lumens: 414
-CRI / RA: >95
-Wattage: 6W
-IP Rating: IP20
-Color Finish: WHITE
-Installation: RECESSED      </div>
-                            <div class="read_block">
-                                <div class="listing">30 meter wire
-                            </div>
-                        </td>
-
-                        <td>
-                            <div class="read_block">
-                                Project Pool<br>
-                                <a class="hyperlink block">Bistro hard rock</a>
-                            </div>
-                        </td>
-
-                        <td>
-                            <div class="read_block">
-                                Caloocan
-                            </div>
-                        </td>
-                        <td>
-                            <div class="read_block">
-                                No
-                            </div>
-                        </td>
-                    </tr>
                     </tbody>
 
                 </table>
@@ -5211,11 +5165,11 @@ Installation: RECESSED      </div>
                     <!-- 分頁功能 -->
                     <!-- 分頁 -->
                         <div class="pagenation">
-                            <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+                            <a class="prev" :disabled="barcode_page == 1" @click="pre_page_barcode(); get_barcode_records(received_items.id, item_id);">Prev 10</a>
 
-                            <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
+                            <a class="page" v-for="pg in barcode_pages_10" @click="barcode_page=pg; get_barcode_records(received_items.id, item_id);" v-bind:style="[pg == barcode_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                            <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                            <a class="next" :disabled="barcode_page == barcode_pages.length" @click="nex_page_barcode(); get_barcode_records(received_items.id, item_id);">Next 10</a>
                         </div>
                     </div>
                 </div>
@@ -5224,8 +5178,8 @@ Installation: RECESSED      </div>
 
             <div class="modal-footer">
                 <div class="btnbox">
-                    <a class="btn small">Cancel</a>
-                    <a class="btn small">Void Barcode</a>
+                    <a class="btn small" @click="close_barcode_printing()">Cancel</a>
+                    <a class="btn small" @click="void_barcode_selected()">Void Barcode</a>
                     <a class="btn small green">Print Label</a>
                 </div>
             </div>
