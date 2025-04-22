@@ -87,7 +87,11 @@ if (!isset($jwt)) {
         $code = $item['code'];
         $brief = $item['brief'];
         $listing = $item['listing'];
-        $project_name = $item['project_name'];
+        if(isset($item['project_name'])) {
+            $project_name = $item['project_name'];
+        } else {
+            $project_name = "";
+        }
         $desc = $item['desc'];
     } 
 
