@@ -3019,6 +3019,7 @@ var app = new Vue({
       },
 
       barcode_printing(od_id, id) {
+        this.barcode_page = 0;
         this.get_barcode_records(od_id, id);
         this.item_id = id;
         $('#modal_registry_received_items').modal('toggle');

@@ -2706,6 +2706,20 @@ var app = new Vue({
         $('#modal_product_catalog').modal('toggle');
       },
 
+      
+      barcode_printing(od_id, id) {
+        this.barcode_page = 0;
+        this.get_barcode_records(od_id, id);
+        this.item_id = id;
+        $('#modal_registry_received_items').modal('toggle');
+        $('#modal_barcode_printing').modal('toggle');
+      },
+
+      close_barcode_printing() {
+        $('#modal_registry_received_items').modal('toggle');
+        $('#modal_barcode_printing').modal('toggle');
+      },
+
 
       get_brands: function() {
         let _this = this;
