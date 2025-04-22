@@ -600,6 +600,27 @@ var app = new Vue({
     },
   
     methods: {
+
+      print_barcode: function() {
+
+        var list = this.barcode_list.filter((item) => item.is_checked == 1);
+        // list only contains product_id and barcode
+        list = list.map((item) => {
+          return {
+            p: item.product_id,
+            c: item.code,
+            b: item.barcode,
+          }
+        });
+        
+        // open label_printing.php and send list to it
+        if(list.length > 0) {
+          var url = 'label_printing?items=' + JSON.stringify(list);
+          window.open(url, '_blank');
+        }
+
+      },
+
       void_barcode_selected: async function() {
 
         var list = this.barcode_list.filter((item) => item.is_checked == 1);
