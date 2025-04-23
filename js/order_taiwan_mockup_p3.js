@@ -641,7 +641,14 @@ var app = new Vue({
             confirmButtonText: "OK",
           });
 
-          this.get_barcode_records(this.received_items.id, this.item_id);
+          await this.get_barcode_records(this.received_items.id, this.item_id);
+          // refresh warehouse info
+          var it = await this.refresh_warehouse(this.received_items.id);
+          if(it.id != undefined){        
+            this.received_items = JSON.parse(JSON.stringify(it));
+            app.$forceUpdate();
+          }
+
         }
 
       },
@@ -1039,7 +1046,7 @@ var app = new Vue({
 
       async encode_warehouse(items)
       {
-        it = await this.refresh_warehouse(items.id);
+        var it = await this.refresh_warehouse(items.id);
         if(it.id != undefined){        
           this.received_items = JSON.parse(JSON.stringify(it));
           this.received_items.id = items.id;
@@ -3025,6 +3032,7 @@ var app = new Vue({
 
       product_catalog_warehouse() {
         this.is_encode_warehouse = true;
+        this.sort_me(0);
         $('#modal_registry_received_items').modal('toggle');
         $('#modal_product_catalog').modal('toggle');
         $("#tag01").selectpicker("refresh");
