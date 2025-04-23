@@ -411,7 +411,7 @@ function insertOrderTrackingItem($db, $item, $item_id, $user_id) {
     
     $query = "select barcode from order_tracking_item where barcode like :barcode order by barcode desc limit 1";
     $stmt = $db->prepare($query);
-    $barcode = date("ymd") . str_pad($item['pid'], 6, '0', STR_PAD_LEFT);
+    $barcode = date("ymd") . str_pad($item['pid'], 5, '0', STR_PAD_LEFT);
     $barcode = $barcode . '%';
     $stmt->bindParam(':barcode', $barcode);
     $stmt->execute();
@@ -433,7 +433,7 @@ function insertOrderTrackingItem($db, $item, $item_id, $user_id) {
 
     for($i = 0; $i < $inc; $i++)
     {
-        $barcode = date("ymd") . str_pad($item['pid'], 6, '0', STR_PAD_LEFT) . str_pad($qty_base + $i + 1, 5, '0', STR_PAD_LEFT);
+        $barcode = date("ymd") . str_pad($item['pid'], 5, '0', STR_PAD_LEFT) . str_pad($qty_base + $i + 1, 5, '0', STR_PAD_LEFT);
         $query = "INSERT INTO order_tracking_item
         SET
             item_id = :item_id,
