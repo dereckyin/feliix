@@ -1962,7 +1962,7 @@ out : "",
   },
 
       product_catalog() {
-
+        this.sort_me(0);
         $('#modal_product_catalog').modal('toggle');
         $("#tag01").selectpicker("refresh");
       },

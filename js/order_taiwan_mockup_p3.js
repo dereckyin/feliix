@@ -3024,6 +3024,7 @@ var app = new Vue({
   },
 
   product_catalog() {
+    this.sort_me(0);
     this.is_encode_warehouse = false;
     $('#modal_product_catalog').modal('toggle');
     $("#tag01").selectpicker("refresh");
