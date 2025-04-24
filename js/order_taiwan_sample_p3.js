@@ -673,14 +673,17 @@ var app = new Vue({
           .then(function(response) {
             console.log(response.data);
             let res = response.data;
+            // if(res.length > 0) 
+            // {
+            _this.barcode_list = response.data;
             if(res.length > 0) 
-            {
-              _this.barcode_list = response.data;
               _this.barcode_total = response.data[0].cnt;
+            else
+              _this.barcode_total = 0;
 
-              _this.setPagesBarcode();
-              _this.paginateBarcode(_this.barcode_list);
-            }
+            _this.setPagesBarcode();
+            _this.paginateBarcode(_this.barcode_list);
+          // }
       
           })
           .catch(function(error) {

@@ -59,12 +59,10 @@ if (!isset($jwt)) {
     $received_list = $row['received_list'];
 
     if ($received_list == "") {
-        $received_list = "{}";
-        $received_list['items'] = array();
+        $received_list = "{items:[]}";
     }
     if ($received_list == null) {
-        $received_list = "{}";
-        $received_list['items'] = array();
+        $received_list = "{items:[]}";
     }
 
     $received_list = json_decode($received_list, true);
