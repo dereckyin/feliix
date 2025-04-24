@@ -31,8 +31,8 @@ $items = json_decode($items, true);
             border: 1px solid black;
             display: inline-block;
             margin-top: 0.5mm;
-            margin-left: 1.5mm;
-            }
+            margin-left: 1.7mm;
+        }
 
         div.label_block.right {
             margin-left: 2mm;
@@ -74,10 +74,15 @@ $items = json_decode($items, true);
         }
 
         div.label_block table tr:nth-of-type(2) td:nth-of-type(1) img {
-            width: 30mm;
-            margin_top: -1px;
+            width: 37mm;
         }
 
+        @media print {
+            div.label_block {
+                border: none;
+            }
+        }
+        
         @page {
             size: 92mm 25mm;
             size: landscape;
@@ -88,7 +93,9 @@ $items = json_decode($items, true);
 <body>
 
 <?php
+    $even = 0;
     foreach ($items as $item) {
+        $even++;
         $pid = $item['p'];
         $code = $item['c'];
         $bar = $item['b'];
@@ -107,9 +114,10 @@ $items = json_decode($items, true);
         $writer = new PngWriter();
         $result = $writer->write($qrCode);
         $qrCodeImage = $result->getDataUri(); // Get the data URI for the QR code image
+        $format_bar = substr($bar, 0, 6) . ' ' . substr($bar, 6, 5) . ' ' . substr($bar, 11);
 
 ?>
-    <div class="label_block">
+    <div class="label_block<?php echo ($even % 2 == 0) ? ' right' : ''; ?>">
         <table>
             <tbody>
             <tr>
@@ -127,7 +135,7 @@ $items = json_decode($items, true);
             <tr>
                 <td colspan="2">
                     <img src="data:image/png;base64,<?= base64_encode($barcode) ?>" alt="Barcode">
-                    <br><strong><?php echo $bar; ?></strong>
+                    <br><strong><?php echo $format_bar; ?></strong>
                 </td>
             </tr>
             </tbody>

@@ -848,6 +848,12 @@ header( 'location:index' );
             text-align: center;
         }
 
+        .registry_list .read_block .photo > div {
+            border: 1px dashed red;
+            color: red;
+            margin-left: calc( 50% - 18px );
+        }
+
         .write_block .itembox.chosen .photo > div {
             display: inline-block;
             margin: 8px auto 5px;
