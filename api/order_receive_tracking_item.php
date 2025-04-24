@@ -82,8 +82,14 @@ if (!isset($jwt)) {
     $listing = "";
     $project_name = "";
     $desc = "";
-    
-    if($item['id'] == $receive_id) {
+
+    if (count($item) == 0) {
+        $code = "";
+        $brief = "";
+        $listing = "";
+        $project_name = "";
+        $desc = "";
+    } else {
         $code = $item['code'];
         $brief = $item['brief'];
         $listing = $item['listing'];
@@ -93,7 +99,7 @@ if (!isset($jwt)) {
             $project_name = "";
         }
         $desc = $item['desc'];
-    } 
+    }
 
     $cnt = 0;
     $query_cnt = "SELECT COUNT(*) as cnt
