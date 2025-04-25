@@ -166,6 +166,16 @@ if($jwt){
         
             $pid = $row['pid'];
 
+            if($row['photo1'] == "" && $row['pid'] != "0")
+            {
+                $query = "SELECT photo1 FROM product_category WHERE id = $row[pid]";
+                $stmt2 = $db->prepare($query);
+                $stmt2->execute();
+                while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                    $photo1 = $row2['photo1'];
+                }
+            }
+
             $merged_results[] = array(
             "is_checked" => "",
             "is_edit" => false,
