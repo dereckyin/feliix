@@ -294,12 +294,17 @@ header( 'location:index' );
                                 <dt>Tracking Code (Use Semicolon to Separate Multiple Tracking Codes)</dt>
                                 <dd>
                                     <input type="text" v-model="fil_tracking" style="width: 88%;">
-                                    <a class="btn small green" style="margin-left: 2% !important;">Scan</a>
+                                    <a class="btn small green" style="margin-left: 2% !important;" id="startButton">Scan</a>
                                 </dd>
+
+                                <div id="video_area" style="display: none;">
+                                    <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+                                    <a class="btn small orange" id="resetButton">Stop</a>
+                                </div>
 
                                 <dt>Product ID</dt>
                                 <dd>
-                                    <input type="text" v-model="fil_prod_id">
+                                    <input type="text" v-model="fil_prod_id" id="prod_id">
                                 </dd>
 
                                 <dt>Product Code</dt>
@@ -580,9 +585,53 @@ header( 'location:index' );
 <script defer src="js/axios.min.js"></script>
 <script defer src="js/npm/sweetalert2@9.js"></script>
 <script defer src="js/tracking_item_query.js"></script>
-
+<script type="text/javascript" src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
 </html>
 
-<script>
+<script type="text/javascript">
+    window.addEventListener('load', function () {
+      let selectedDeviceId;
 
-</script>
+      const hints = new Map();
+      const formats = [ZXing.BarcodeFormat.CODE_128];
+      const CHARSET = 'utf-8';
+      hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, formats);
+      hints.set(ZXing.DecodeHintType.CHARACTER_SET, CHARSET);
+      hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
+      hints.set(ZXing.DecodeHintType.PURE_BARCODE, false);
+
+      const codeReader = new ZXing.BrowserMultiFormatReader();
+      console.log('ZXing code reader initialized');
+
+      codeReader.listVideoInputDevices()
+        .then((videoInputDevices) => {
+          selectedDeviceId = videoInputDevices[0].deviceId;
+          
+          document.getElementById('startButton').addEventListener('click', () => {
+            document.getElementById('video_area').style.display = 'block';
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+              if (result) {
+                //console.log(result);
+                alert(result.text);
+                document.getElementById('prod_id').textContent += ":" + result.text;
+              }
+              if (err && !(err instanceof ZXing.NotFoundException)) {
+                console.error(err);
+                document.getElementById('result').textContent = err;
+              }
+            });
+            console.log(`Started continuous decode from camera with id ${selectedDeviceId}`);
+          });
+
+          document.getElementById('resetButton').addEventListener('click', () => {
+            codeReader.reset();
+            document.getElementById('video_area').style.display = 'none';
+
+            console.log('Reset.');
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+  </script>
