@@ -315,25 +315,13 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $remark = "";
     if($receive_json != null)
     {
-        foreach ($receive_json as $key => $value) {
-            if($value['id'] == $item_id)
-            {
-                $remark = $value['remark'];
-                break;
-            }
-        }
+        $listing = $receive_json['remark'];
     }
 
     $listing = "";
     if($receive_json != null)
     {
-        foreach ($receive_json as $key => $value) {
-            if($value['id'] == $item_id)
-            {
-                $listing = $value['listing'];
-                break;
-            }
-        }
+        $listing = $receive_json['listing'];
     }
 
     $order_url = "";
