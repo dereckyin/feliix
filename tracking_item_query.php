@@ -324,8 +324,7 @@ header( 'location:index' );
                                 <dt>Related Project</dt>
                                 <dd>
                                     <select v-model="fil_project_related">
-                                        <option v-for="(item, index) in projects" :value="item.id">{{ item.project_name
-                                            }}
+                                        <option v-for="(item, index) in projects" :value="item.id">{{ item.project_name}}
                                         </option>
                                     </select>
                                 </dd>

@@ -315,13 +315,13 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $remark = "";
     if($receive_json != null)
     {
-        $listing = $receive_json['remark'];
+        $remark = $receive_json['listing'];
     }
 
     $listing = "";
     if($receive_json != null)
     {
-        $listing = $receive_json['listing'];
+        $listing = $receive_json['brief'];
     }
 
     $order_url = "";
@@ -356,7 +356,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "receive_id" => $receive_id,
         "product_id" => $product_id,
         "project_id" => $project_id,
-        "product_name" => $project_name,
+        "project_name" => $project_name,
         "code" => $code,
         "brand" => $brand,
         "v1" => $v1,
@@ -368,7 +368,6 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "which_pool" => $which_pool,
         "as_sample" => $as_sample,
         "location" => $location,
-        "project_id" => $project_id,
         "barcode" => $barcode,
         "format_bar" => $format_bar,
         "created_by" => $created_by,
