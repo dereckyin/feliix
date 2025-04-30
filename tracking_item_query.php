@@ -614,9 +614,13 @@ header( 'location:index' );
               if (result) {
                 //console.log(result);
                 //alert(result.text);
-                codeReader.reset();
-                document.getElementById('video_area').style.display = 'none';
-                app.fil_tracking += ":" + result.text;
+
+                if(result.text.length == 16){
+                    codeReader.reset();
+                    document.getElementById('video_area').style.display = 'none';
+                    app.fil_tracking += ":" + result.text;
+                }
+                
               }
               if (err && !(err instanceof ZXing.NotFoundException)) {
                 console.error(err);
