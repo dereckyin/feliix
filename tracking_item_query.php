@@ -614,6 +614,8 @@ header( 'location:index' );
               if (result) {
                 //console.log(result);
                 //alert(result.text);
+                codeReader.reset();
+                document.getElementById('video_area').style.display = 'none';
                 document.getElementById('prod_id').textContent += ":" + result.text;
               }
               if (err && !(err instanceof ZXing.NotFoundException)) {
