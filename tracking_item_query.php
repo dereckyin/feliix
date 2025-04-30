@@ -294,14 +294,15 @@ header( 'location:index' );
                                 <dt>Tracking Code (Use Semicolon to Separate Multiple Tracking Codes)</dt>
                                 <dd>
                                     <input type="text" v-model="fil_tracking" style="width: 88%;">
-                                    
+                             
                                 </dd>
 
                                 <div id="video_area" style="display: none;">
                                     <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
                                     <a class="btn small orange" id="resetButton">Stop</a>
-                                    <a class="btn small green" style="margin-left: 2% !important;" id="startButton">Scan</a>
                                 </div>
+
+                                <a class="btn small green" style="margin-left: 2% !important;" id="startButton">Scan</a>
 
                                 <dt>Product ID</dt>
                                 <dd>
