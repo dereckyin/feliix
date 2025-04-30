@@ -613,7 +613,7 @@ header( 'location:index' );
             codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
               if (result) {
                 //console.log(result);
-                alert(result.text);
+                //alert(result.text);
                 document.getElementById('prod_id').textContent += ":" + result.text;
               }
               if (err && !(err instanceof ZXing.NotFoundException)) {
