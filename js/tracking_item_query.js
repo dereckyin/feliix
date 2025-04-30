@@ -20,6 +20,8 @@ var app = new Vue({
     task_id : 0,
     projects : [],
 
+    orders: [],
+
     kind: '',
     generate: '',
     task_a : [],
@@ -120,7 +122,7 @@ var app = new Vue({
         tmp = v.split("=");
         if (tmp.length == 2) {
           switch (tmp[0]) {
-            case "ft":
+            case "tid":
               _this.fil_tracking = decodeURI(tmp[1]);
               break;
             case "fpi":
@@ -186,6 +188,7 @@ var app = new Vue({
 
     this.getRecords();
     this.getProjects();
+    this.getOrders();
     this.getCreators();
     this.getUsers();
 
@@ -693,8 +696,7 @@ var app = new Vue({
       let _this = this;
 
       const params = {
-
-                ft : _this.fil_tracking,
+                tid : _this.fil_tracking,
                 fpi: _this.fil_prod_id,
                 fpc: _this.fil_prod_code,
        
@@ -756,6 +758,27 @@ var app = new Vue({
               .then(
               (res) => {
                   _this.projects = res.data;
+              },
+              (err) => {
+                  alert(err.response);
+              },
+              )
+              .finally(() => {
+                  
+              });
+      },
+
+      getOrders () {
+
+          let _this = this;
+    
+          let token = localStorage.getItem('accessToken');
+    
+          axios
+              .get('api/tracking_item_get_order_by_keyword', { headers: {"Authorization" : `Bearer ${token}`} })
+              .then(
+              (res) => {
+                  _this.orders = res.data;
               },
               (err) => {
                   alert(err.response);
@@ -1093,8 +1116,7 @@ var app = new Vue({
 
         window.location.href =
           "tracking_item_query?" +
-    
-          "ft=" +
+          "tid=" +
           _this.fil_tracking +
           "&fpi=" +
           _this.fil_prod_id +
@@ -1151,8 +1173,7 @@ var app = new Vue({
 
         window.location.href =
           "tracking_item_query?" +
- 
-          "ft=" +
+          "tid=" +
           _this.fil_tracking +
           "&fpi=" +
           _this.fil_prod_id +
@@ -1197,8 +1218,7 @@ var app = new Vue({
 
         window.location.href =
           "tracking_item_query?" +
- 
-          "ft=" +
+          "tid=" +
           _this.fil_tracking +
           "&fpi=" +
           _this.fil_prod_id +
@@ -1241,8 +1261,7 @@ var app = new Vue({
 
         window.location.href =
           "tracking_item_query?" +
- 
-          "ft=" +
+          "tid=" +
           _this.fil_tracking +
           "&fpi=" +
           _this.fil_prod_id +

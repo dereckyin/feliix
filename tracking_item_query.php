@@ -362,7 +362,7 @@ header( 'location:index' );
                                 <dt>Which Order?</dt>
                                 <dd>
                                     <select v-model="fil_order">
-                                        <option value=""></option>
+                                        <option v-for="(item, index) in orders" :value="item.id">{{ item.od_name}}</option>
                                     </select>
                                 </dd>
 

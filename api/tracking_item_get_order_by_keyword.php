@@ -59,7 +59,11 @@ else
             //         LEFT JOIN order_receive_item rec ON oti.item_id = rec.id 
             //         left join project_main pm on rec.project_id = pm.id
             //         AND oti.status <> -1 and pm.project_name like '%" . $pid . "%' and pm.status <> -1 order by project_name ";
-            $sql = "SELECT id, project_name FROM project_main pm where pm.project_name like '%" . $pid . "%' and pm.status <> -1 order by project_name ";
+            $sql = "SELECT distinct
+                    rec.od_id id,
+                    od.od_name
+                    FROM order_receive_item rec 
+                    LEFT JOIN od_main od ON rec.od_id = od.id order by od_name ";
 
             $merged_results = [];
 

@@ -43,7 +43,7 @@ include_once 'config/database.php';
 $database = new Database();
 $db = $database->getConnection();
 
-$fil_tracking = (isset($_GET['ft']) ?  $_GET['ft'] : '');
+$fil_tracking = (isset($_GET['tid']) ?  $_GET['tid'] : '');
 $fil_prod_id = (isset($_GET['fpi']) ?  $_GET['fpi'] : '');
 $fil_prod_code = (isset($_GET['fpc']) ?  $_GET['fpc'] : '');
 $fil_prod_code = urldecode($fil_prod_code);
@@ -107,7 +107,7 @@ $query = "SELECT tra.id,
                     Left JOIN project_main pm ON rec.project_id = pm.id
                     LEFT JOIN user c_user ON rec.create_id = c_user.id 
                     LEFT JOIN user u_user ON rec.updated_id = u_user.id 
-                    WHERE tra.status <> -1 ";
+                    WHERE 1=1 ";
 
 // if($all != "all")
 // {
@@ -121,13 +121,14 @@ $query_cnt = "SELECT COUNT(*) as cnt
                     Left JOIN od_item oi ON rec.item_id = oi.id
                     LEFT JOIN user c_user ON rec.create_id = c_user.id 
                     LEFT JOIN user u_user ON rec.updated_id = u_user.id 
-                    WHERE tra.status <> -1 ";
+                    WHERE 1=1 ";
 
 if($fil_tracking != "")
 {
-    $tracking_ids = explode(';', $fil_tracking);
+    $tracking_ids = explode(':', $fil_tracking);
 
     $tracking_sql = implode("','", $tracking_ids);
+    $tracking_sql = str_replace(" ", "", $tracking_sql);
     $query = $query . " and tra.barcode in ('" . $tracking_sql . "') ";
     $query_cnt = $query_cnt . " and tra.barcode in ('" . $tracking_sql . "') ";
 }
@@ -140,8 +141,8 @@ if($fil_prod_id != "")
 
 if($fil_prod_code != "")
 {
-    $query = $query . " and pc.`code` = '" . $fil_prod_code . "' ";
-    $query_cnt = $query_cnt . " and pc.`code` = '" . $fil_prod_code . "' ";
+    $query = $query . " and pc.`code` like '%" . $fil_prod_code . "%' ";
+    $query_cnt = $query_cnt . " and pc.`code` like '%" . $fil_prod_code . "%' ";
 }
 
 if($fil_pool != "")
@@ -166,6 +167,18 @@ if($fil_sample != "")
 {
     $query = $query . " and rec.as_sample = '" . $fil_sample . "' ";
     $query_cnt = $query_cnt . " and rec.as_sample = '" . $fil_sample . "' ";
+}
+
+if($fil_status != "")
+{
+    $query = $query . " and tra.status = '" . $fil_status . "' ";
+    $query_cnt = $query_cnt . " and tra.status = '" . $fil_status . "' ";
+}
+
+if($fil_order != "")
+{
+    $query = $query . " and rec.od_id = '" . $fil_order . "' ";
+    $query_cnt = $query_cnt . " and rec.od_id = '" . $fil_order . "' ";
 }
 
 if($fil_date_from != "")
