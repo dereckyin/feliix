@@ -627,7 +627,7 @@ header( 'location:index' );
           selectedDeviceId = videoInputDevices[0].deviceId;
           
           document.getElementById('startButton').addEventListener('click', () => {
-            document.getElementById('video_area').style.display = 'block';
+            document.getElementById('video_area').style.display = 'flex';
             codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
               if (result) {
                 //console.log(result);
