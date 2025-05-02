@@ -260,6 +260,16 @@ header( 'location:index' );
             color: #007bff;
         }
 
+        #video_area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #video_area > a.btn {
+            margin-top: 10px !important;
+        }
+
         @media screen and (max-width: 640px) {
             #filter_dialog {
                 width: 620px;
@@ -294,7 +304,7 @@ header( 'location:index' );
                                 <dt>Tracking Code (Use Semicolon to Separate Multiple Tracking Codes)</dt>
                                 <dd>
                                     <input type="text" v-model="fil_tracking" style="width: 88%;">
-                             
+                                    <a class="btn small green" style="margin-left: 2% !important;" id="startButton">Scan</a>
                                 </dd>
 
                                 <div id="video_area" style="display: none;">
@@ -302,7 +312,7 @@ header( 'location:index' );
                                     <a class="btn small orange" id="resetButton">Stop</a>
                                 </div>
 
-                                <a class="btn small green" style="margin-left: 2% !important;" id="startButton">Scan</a>
+
 
                                 <dt>Product ID</dt>
                                 <dd>
@@ -502,7 +512,7 @@ header( 'location:index' );
                             </ul>
 
                             <ul>
-                                <li>Purchased thru Which Order:</li>
+                                <li style="width: 135px;">Purchased thru Which Order:</li>
                                 <li><a :href="item.order_url" target="_blank">{{item.order_name}}</a></li>
                             </ul>
 
@@ -524,7 +534,7 @@ header( 'location:index' );
                             </ul>
 
                             <ul>
-                                <li>Related Project:</li>
+                                <li style="width: 140px;">Related Project:</li>
                                 <li><a :href="'project02?p=' + item.project_id" target="_blank">{{ item.project_name }}</a></li>
                             </ul>
 
@@ -557,10 +567,18 @@ header( 'location:index' );
                                 <li>{{ item.brand }}</li>
                             </ul>
 
+                            <!-- 列出 brief -->
                             <ul>
-                                <li>Specification:</li>
-                                <li>{{ item.listing }} {{ item.remark }}</li>
+                                <li style="padding: 1px 3px;"></li>
+                                <li style="white-space: break-spaces; font-weight: 300;">{{ item.listing }}</li>
                             </ul>
+
+                            <!-- 列出 listing -->
+                            <ul>
+                                <li style="padding: 1px 3px;"></li>
+                                <li style="white-space: break-spaces; font-weight: 500;">{{ item.remark }}</li>
+                            </ul>
+         
                         </td>
                     </tr>
 
