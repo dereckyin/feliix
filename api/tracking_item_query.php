@@ -107,7 +107,7 @@ $query = "SELECT tra.id,
                     Left JOIN project_main pm ON rec.project_id = pm.id
                     LEFT JOIN user c_user ON rec.create_id = c_user.id 
                     LEFT JOIN user u_user ON rec.updated_id = u_user.id 
-                    WHERE 1=1 ";
+                    WHERE 1=0 ";
 
 // if($all != "all")
 // {
@@ -121,74 +121,121 @@ $query_cnt = "SELECT COUNT(*) as cnt
                     Left JOIN od_item oi ON rec.item_id = oi.id
                     LEFT JOIN user c_user ON rec.create_id = c_user.id 
                     LEFT JOIN user u_user ON rec.updated_id = u_user.id 
-                    WHERE 1=1 ";
+                    WHERE 1=0 ";
+
+
 
 if($fil_tracking != "")
 {
-    $tracking_ids = explode(':', $fil_tracking);
+    $tracking_ids = explode(';', $fil_tracking);
 
     $tracking_sql = implode("','", $tracking_ids);
     $tracking_sql = str_replace(" ", "", $tracking_sql);
+
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+
     $query = $query . " and tra.barcode in ('" . $tracking_sql . "') ";
     $query_cnt = $query_cnt . " and tra.barcode in ('" . $tracking_sql . "') ";
 }
 
 if($fil_prod_id != "")
 {
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+
     $query = $query . " and rec.product_id = '" . $fil_prod_id . "' ";
     $query_cnt = $query_cnt . " and rec.product_id = '" . $fil_prod_id . "' ";
 }
 
 if($fil_prod_code != "")
 {
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+
     $query = $query . " and pc.`code` like '%" . $fil_prod_code . "%' ";
     $query_cnt = $query_cnt . " and pc.`code` like '%" . $fil_prod_code . "%' ";
 }
 
 if($fil_pool != "")
 {
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+
     $query = $query . " and rec.which_pool = '" . $fil_pool . "' ";
     $query_cnt = $query_cnt . " and rec.which_pool = '" . $fil_pool . "' ";
 }
 
 if($fil_location != "")
 {
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+
     $query = $query . " and rec.location = '" . $fil_location . "' ";
     $query_cnt = $query_cnt . " and rec.location = '" . $fil_location . "' ";
 }
 
 if($fil_project_related != "")
 {
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+
     $query = $query . " and rec.project_id = '" . $fil_project_related . "' ";
     $query_cnt = $query_cnt . " and rec.project_id = '" . $fil_project_related . "' ";
 }
 
 if($fil_sample != "")
 {
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+
     $query = $query . " and rec.as_sample = '" . $fil_sample . "' ";
     $query_cnt = $query_cnt . " and rec.as_sample = '" . $fil_sample . "' ";
 }
 
 if($fil_status != "")
 {
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+
     $query = $query . " and tra.status = '" . $fil_status . "' ";
     $query_cnt = $query_cnt . " and tra.status = '" . $fil_status . "' ";
 }
 
 if($fil_order != "")
 {
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+
     $query = $query . " and rec.od_id = '" . $fil_order . "' ";
     $query_cnt = $query_cnt . " and rec.od_id = '" . $fil_order . "' ";
 }
 
 if($fil_date_from != "")
 {
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+
     $query = $query . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') >= '" . $fil_date_from . "' ";
     $query_cnt = $query_cnt . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') >= '" . $fil_date_from . "' ";
 }
 
 if($fil_date_to != "")
 {
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+    
     $query = $query . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') <= '" . $fil_date_to . "' ";
     $query_cnt = $query_cnt . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') <= '" . $fil_date_to . "' ";
 }
@@ -323,18 +370,37 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $status_text = getStatus($status);
 
     $receive_list = $row['received_list'];
-    $receive_json = json_decode($receive_list, true);
 
-    $remark = "";
-    if($receive_json != null)
-    {
-        $remark = $receive_json['listing'];
+    if ($receive_list == "") {
+        $receive_list = "{items:[]}";
+    }
+    if ($receive_list == null) {
+        $receive_list = "{items:[]}";
     }
 
+    $receive_json = json_decode($receive_list, true);
+
+    
+
+
+    $item_1 = array();
+    foreach ($receive_json['items'] as $it) {
+        if ($it['id'] == $receive_id) {
+            $item_1 = $it;
+            break;
+        }
+    }
+
+    $remark = "";
     $listing = "";
+
     if($receive_json != null)
     {
         $listing = $receive_json['brief'];
+    }
+
+    if (count($item_1) > 0) {
+        $remark = $item_1['desc'];
     }
 
     $order_url = "";
@@ -404,11 +470,11 @@ function getStatus($status)
 {
     switch ($status) {
         case 0:
-            return "Delivered to Client";
+            return "On Hand";
         case 1:
             return "Lost";
         case 2:
-            return "On Hand";
+            return "Delivered to Client";
         case 3:
             return "Scrapped";
         case -1:

@@ -353,9 +353,9 @@ header( 'location:index' );
                                 <dd>
                                     <select v-model="fil_status">
                                         <option value=""></option>
-                                        <option value="0">Delivered to Client</option>
+                                        <option value="0">On Hand</option>
                                         <option value="1">Lost</option>
-                                        <option value="2">On Hand</option>
+                                        <option value="2">Delivered to Client</option>
                                         <option value="3">Scrapped</option>
                                         <option value="-1">Voided</option>
                                     </select>
@@ -618,7 +618,7 @@ header( 'location:index' );
                 if(result.text.length == 16){
                     codeReader.reset();
                     document.getElementById('video_area').style.display = 'none';
-                    app.fil_tracking += ":" + result.text;
+                    app.fil_tracking += ";" + result.text;
                 }
                 
               }
