@@ -48,7 +48,6 @@ $merged_results = [];
 
 $id = (isset($_POST['id']) ?  $_POST['id'] : 0);
 
-
 $query = "
     update apply_for_leave a LEFT JOIN user u ON a.uid = u.id 
     set approval_id = " . $user_id . ", approval_at = NOW()
@@ -133,7 +132,7 @@ while($row1 = $stmt1->fetch(PDO::FETCH_ASSOC)) {
     $row_id = $row1['uid'];
 }
 
-if($row_id != "")
+if($row_id != "" )
 {
     $query = "
         update apply_for_leave a LEFT JOIN user u ON a.uid = u.id 
@@ -142,6 +141,37 @@ if($row_id != "")
         WHERE a.STATUS <> -1 AND approval_id = 0 AND reject_id = 0 AND re_approval_id = 0 AND re_reject_id = 0 
         and uid IN 
         (" . $row_id . ")
+        AND a.id in(" . $id . ")
+    ";
+
+    $stmt = $db->prepare( $query );
+
+    if (!$stmt->execute())
+    {
+        $arr = $stmt->errorInfo();
+        error_log($arr[2]);
+    }
+}
+
+// 20250506 bose approval (auto approved)
+$query = "SELECT uid FROM leave_flow WHERE apartment_id IN (SELECT apartment_id from user WHERE id = (SELECT uid FROM apply_for_leave WHERE id = " . $id . ")) AND flow = 2 ";
+$stmt = $db->prepare( $query );
+$stmt->execute();
+
+$is_boss_flow_2 = 0;
+while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    if($row['uid'] == 3)
+    {
+        $is_boss_flow_2 = 1;
+    }
+}
+if($is_boss_flow_2 == 1 )
+{
+    $query = "
+        update apply_for_leave a LEFT JOIN user u ON a.uid = u.id 
+        set
+        re_approval_id = 3, re_approval_at = NOW()
+        WHERE a.STATUS <> -1 AND re_approval_id = 0 AND re_reject_id = 0 
         AND a.id in(" . $id . ")
     ";
 

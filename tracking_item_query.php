@@ -628,7 +628,8 @@ header( 'location:index' );
           
           document.getElementById('startButton').addEventListener('click', () => {
             document.getElementById('video_area').style.display = 'flex';
-            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+            // codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+            codeReader.decodeFromVideoDevice(undefined, 'video', (result, err) => {
               if (result) {
                 //console.log(result);
                 //alert(result.text);

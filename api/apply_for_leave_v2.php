@@ -443,11 +443,38 @@ else
                 $first_approver = 1;
             }
 
-            // 20250109 halfday planning only bose approval
+            // // 20250109 halfday planning only bose approval
+            // if($leave_type == 'H')
+            // {
+            //     $first_approver = 0;
+            // }
+            // 20250506 halfday planning only bose approval (auto approved)
             if($leave_type == 'H')
             {
-                $first_approver = 0;
+                $first_approver = 3;
+                $ret = false;
+                $ret = $afl->approval($id, $first_approver);
+                if(!$ret)
+                {
+                    http_response_code(401);
+                    echo json_encode(array("message" => "Apply Fail at" . date("Y-m-d") . " " . date("h:i:sa")));
+                }
+
+                $ret = $afl->re_approval($id, $first_approver);
+                if(!$ret)
+                {
+                    http_response_code(401);
+                    echo json_encode(array("message" => "Apply Fail at" . date("Y-m-d") . " " . date("h:i:sa")));
+                }
+
+                http_response_code(200);
+                echo json_encode(array("message" => "Apply Success at " . date("Y-m-d") . " " . date("h:i:sa")));
+                die();
             }
+
+
+
+
 
             if($first_approver == 1)
             {
@@ -461,6 +488,68 @@ else
 
                 $who_get_mail = 2;
             }
+
+
+
+
+
+            // 20250506 bose approval (auto approved)
+            $query = "select * from leave_flow where apartment_id = " . $apartment_id . " and uid = 3 order by flow";
+            $stmt = $db->prepare( $query );
+            $stmt->execute();
+
+            $is_boss_flow_1 = 0;
+            $is_boss_flow_2 = 0;
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if($row['flow'] == 1)
+                {
+                    $is_boss_flow_1 = 1;
+                }
+                if($row['flow'] == 2)
+                {
+                    $is_boss_flow_2 = 1;
+                }
+            }
+
+            if($is_boss_flow_1 == 1)
+            {
+                $ret = false;
+                $ret = $afl->approval($id, 3);
+                if(!$ret)
+                {
+                    http_response_code(401);
+                    echo json_encode(array("message" => "Apply Fail at" . date("Y-m-d") . " " . date("h:i:sa")));
+                }
+
+                $ret = $afl->re_approval($id, 3);
+                if(!$ret)
+                {
+                    http_response_code(401);
+                    echo json_encode(array("message" => "Apply Fail at" . date("Y-m-d") . " " . date("h:i:sa")));
+                }
+
+                http_response_code(200);
+                echo json_encode(array("message" => "Apply Success at " . date("Y-m-d") . " " . date("h:i:sa")));
+                die();
+            }
+
+            if($first_approver == 1 && $is_boss_flow_2 == 1)
+            {
+                $ret = false;
+                $ret = $afl->re_approval($id, $user_id);
+                if(!$ret)
+                {
+                    http_response_code(401);
+                    echo json_encode(array("message" => "Apply Fail at" . date("Y-m-d") . " " . date("h:i:sa")));
+                }
+
+                http_response_code(200);
+                echo json_encode(array("message" => "Apply Success at " . date("Y-m-d") . " " . date("h:i:sa")));
+                die();
+            }
+
+
+
 
             // send mail to approver
             $mail_name = '';
