@@ -310,6 +310,7 @@ header( 'location:index' );
                                 <div id="video_area" style="display: none;">
                                     <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
                                     <a class="btn small orange" id="resetButton">Stop</a>
+                                    <a class="btn small blue" id="switchCameraButton">Switch Camera</a>
                                 </div>
 
 
@@ -610,6 +611,8 @@ header( 'location:index' );
 <script type="text/javascript">
     window.addEventListener('load', function () {
       let selectedDeviceId;
+      let videoInputDevices = [];
+      let currentDeviceIndex = 0;
 
       const hints = new Map();
       const formats = [ZXing.BarcodeFormat.CODE_128];
@@ -623,23 +626,19 @@ header( 'location:index' );
       console.log('ZXing code reader initialized');
 
       codeReader.listVideoInputDevices()
-        .then((videoInputDevices) => {
+        .then((devices) => {
+          videoInputDevices = devices;
           selectedDeviceId = videoInputDevices[0].deviceId;
           
           document.getElementById('startButton').addEventListener('click', () => {
             document.getElementById('video_area').style.display = 'flex';
-            // codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
-            codeReader.decodeFromVideoDevice(undefined, 'video', (result, err) => {
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
               if (result) {
-                //console.log(result);
-                //alert(result.text);
-
                 if(result.text.length == 16){
                     codeReader.reset();
                     document.getElementById('video_area').style.display = 'none';
                     app.fil_tracking += ";" + result.text;
                 }
-                
               }
               if (err && !(err instanceof ZXing.NotFoundException)) {
                 console.error(err);
@@ -652,8 +651,27 @@ header( 'location:index' );
           document.getElementById('resetButton').addEventListener('click', () => {
             codeReader.reset();
             document.getElementById('video_area').style.display = 'none';
-
             console.log('Reset.');
+          });
+
+          document.getElementById('switchCameraButton').addEventListener('click', () => {
+            codeReader.reset();
+            currentDeviceIndex = (currentDeviceIndex + 1) % videoInputDevices.length;
+            selectedDeviceId = videoInputDevices[currentDeviceIndex].deviceId;
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+              if (result) {
+                if(result.text.length == 16){
+                    codeReader.reset();
+                    document.getElementById('video_area').style.display = 'none';
+                    app.fil_tracking += ";" + result.text;
+                }
+              }
+              if (err && !(err instanceof ZXing.NotFoundException)) {
+                console.error(err);
+                document.getElementById('result').textContent = err;
+              }
+            });
+            console.log(`Switched to camera with id ${selectedDeviceId}`);
           });
         })
         .catch((err) => {
