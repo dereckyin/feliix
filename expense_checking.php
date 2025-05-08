@@ -470,7 +470,7 @@ function EditListing() {
 
                         <div class="btnbox">
                             <a class="btn" @click="approve_op_only">Send to OP</a>
-                            <a class="btn" @click="approve_md">Send to MD</a>
+                            <a class="btn" @click="approve_md" style="display: none">Send to MD</a>
                             <a class="btn" @click="approve_op" style="display: none">Send to OP & MD</a>
                         </div>
 
