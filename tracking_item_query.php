@@ -643,6 +643,8 @@ header( 'location:index' );
 <script type="text/javascript">
     window.addEventListener('load', function () {
       let selectedDeviceId;
+      let videoInputDevices = [];
+      let currentDeviceIndex = 0;
 
       const hints = new Map();
       const formats = [ZXing.BarcodeFormat.CODE_128];
@@ -656,7 +658,8 @@ header( 'location:index' );
       console.log('ZXing code reader initialized');
 
       codeReader.listVideoInputDevices()
-        .then((videoInputDevices) => {
+        .then((devices) => {
+          videoInputDevices = devices;
           selectedDeviceId = videoInputDevices[0].deviceId;
           
           document.getElementById('startButton').addEventListener('click', () => {
@@ -686,6 +689,26 @@ header( 'location:index' );
             document.getElementById('video_area').style.display = 'none';
 
             console.log('Reset.');
+          });
+
+          document.getElementById('switchCameraButton').addEventListener('click', () => {
+            codeReader.reset();
+            currentDeviceIndex = (currentDeviceIndex + 1) % videoInputDevices.length;
+            selectedDeviceId = videoInputDevices[currentDeviceIndex].deviceId;
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+              if (result) {
+                if(result.text.length == 16){
+                    codeReader.reset();
+                    document.getElementById('video_area').style.display = 'none';
+                    app.fil_tracking += ";" + result.text;
+                }
+              }
+              if (err && !(err instanceof ZXing.NotFoundException)) {
+                console.error(err);
+                document.getElementById('result').textContent = err;
+              }
+            });
+            console.log(`Switched to camera with id ${selectedDeviceId}`);
           });
         })
         .catch((err) => {
