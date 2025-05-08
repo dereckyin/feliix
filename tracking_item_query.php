@@ -266,18 +266,47 @@ header( 'location:index' );
             align-items: center;
         }
 
-        #video_area > a.btn {
-            margin-top: 10px !important;
+        #video_area #video {
+            border: 1px solid gray;
+            width: 60%;
+            height: 60%;
+        }
+
+        #video_area > div {
+            margin-top: 12px;
+        }
+
+        #video_area > div > a.btn {
+            width: 130px!important;
+            margin: 0 20px 0 20px!important;
+        }
+
+        #filter_dialog {
+            width: 1000px;
+        }
+
+        #codebox {
+            width: 88%;
         }
 
         @media screen and (max-width: 640px) {
             #filter_dialog {
-                width: 620px;
+                width: calc(100vw - 24px);
             }
+
+            #codebox {
+                width: 82%;
+            }
+
+            .dialog .formbox .half:nth-of-type(odd)
+                margin-Specificity: (0,4,0)
+            {
 
             body.gray .mainContent {
                 padding-top: 475px;
             }
+
+
         }
 
         
@@ -298,19 +327,22 @@ header( 'location:index' );
                 <!-- 篩選 -->
                 <div class="new_project">
                     <a class="filter"></a>
-                    <div id="filter_dialog" class="dialog d-filter" style="width: 1000px;"><h6>Query Condition:</h6>
+                    <div id="filter_dialog" class="dialog d-filter"><h6>Query Condition:</h6>
                         <div class="formbox">
                             <dl>
                                 <dt>Tracking Code (Use Semicolon to Separate Multiple Tracking Codes)</dt>
                                 <dd>
-                                    <input type="text" v-model="fil_tracking" style="width: 88%;">
+                                    <input id="codebox" type="text" v-model="fil_tracking">
                                     <a class="btn small green" style="margin-left: 2% !important;" id="startButton">Scan</a>
                                 </dd>
 
                                 <div id="video_area" style="display: none;">
-                                    <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
-                                    <a class="btn small orange" id="resetButton">Stop</a>
-                                    <a class="btn small blue" id="switchCameraButton">Switch Camera</a>
+                                    <video id="video"></video>
+
+                                    <div>
+                                        <a class="btn small orange" id="resetButton">Stop</a>
+                                        <a id="switchCameraButton" class="btn small blue">Switch Camera</a>
+                                    </div>
                                 </div>
 
 
@@ -385,7 +417,7 @@ header( 'location:index' );
                                     <dd><input type="date" v-model="fil_date_from"></dd>
                                 </div>
 
-                                <div class="half">
+                                <div class="half" style="margin-left: 1%;">
                                     <dt>to</dt>
                                     <dd><input type="date" v-model="fil_date_to"></dd>
                                 </div>
@@ -611,8 +643,6 @@ header( 'location:index' );
 <script type="text/javascript">
     window.addEventListener('load', function () {
       let selectedDeviceId;
-      let videoInputDevices = [];
-      let currentDeviceIndex = 0;
 
       const hints = new Map();
       const formats = [ZXing.BarcodeFormat.CODE_128];
@@ -626,19 +656,22 @@ header( 'location:index' );
       console.log('ZXing code reader initialized');
 
       codeReader.listVideoInputDevices()
-        .then((devices) => {
-          videoInputDevices = devices;
+        .then((videoInputDevices) => {
           selectedDeviceId = videoInputDevices[0].deviceId;
           
           document.getElementById('startButton').addEventListener('click', () => {
             document.getElementById('video_area').style.display = 'flex';
             codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
               if (result) {
+                //console.log(result);
+                //alert(result.text);
+
                 if(result.text.length == 16){
                     codeReader.reset();
                     document.getElementById('video_area').style.display = 'none';
                     app.fil_tracking += ";" + result.text;
                 }
+                
               }
               if (err && !(err instanceof ZXing.NotFoundException)) {
                 console.error(err);
@@ -651,27 +684,8 @@ header( 'location:index' );
           document.getElementById('resetButton').addEventListener('click', () => {
             codeReader.reset();
             document.getElementById('video_area').style.display = 'none';
-            console.log('Reset.');
-          });
 
-          document.getElementById('switchCameraButton').addEventListener('click', () => {
-            codeReader.reset();
-            currentDeviceIndex = (currentDeviceIndex + 1) % videoInputDevices.length;
-            selectedDeviceId = videoInputDevices[currentDeviceIndex].deviceId;
-            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
-              if (result) {
-                if(result.text.length == 16){
-                    codeReader.reset();
-                    document.getElementById('video_area').style.display = 'none';
-                    app.fil_tracking += ";" + result.text;
-                }
-              }
-              if (err && !(err instanceof ZXing.NotFoundException)) {
-                console.error(err);
-                document.getElementById('result').textContent = err;
-              }
-            });
-            console.log(`Switched to camera with id ${selectedDeviceId}`);
+            console.log('Reset.');
           });
         })
         .catch((err) => {
