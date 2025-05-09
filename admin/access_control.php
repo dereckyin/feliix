@@ -854,6 +854,24 @@
 
                 </div>
 
+                <div class="box-content">
+                    <ul>
+                        <li><b>Admin of Inventory Modification</b></li>
+                        <br>
+                        <li>
+                            <div>
+                                <v-select v-model="inventory_modify" :options="payees" attach chips label="Name" multiple></v-select>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn" @click="cancel(43)">Cancel</a>
+                        <a class="btn" @click="save(43)">Save</a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

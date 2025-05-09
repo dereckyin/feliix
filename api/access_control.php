@@ -53,6 +53,7 @@ $for_profile = (isset($_POST['for_profile']) ?  $_POST['for_profile'] : '');
 $product_edit = (isset($_POST['product_edit']) ?  $_POST['product_edit'] : '');
 $product_duplicate = (isset($_POST['product_duplicate']) ?  $_POST['product_duplicate'] : '');
 $product_delete = (isset($_POST['product_delete']) ?  $_POST['product_delete'] : '');
+$inventory_modify = (isset($_POST['inventory_modify']) ?  $_POST['inventory_modify'] : '');
 
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -83,7 +84,8 @@ if (!isset($jwt)) {
                             vote1, vote2, schedule_confirm, halfday, tag_management, soa, transmittal, 
                             edit_emp, edit_basic, office_items, office_item_approve, office_item_release, limited_access, 
                             inventory_checker, inventory_approver, frozen_office, quotation_control, cost_lighting, cost_furniture, 
-                            leadership_assessment, special_agreement, for_user, for_profile, product_edit, product_duplicate, product_delete 
+                            leadership_assessment, special_agreement, for_user, for_profile, product_edit, product_duplicate, product_delete,
+                            inventory_modify
                             from access_control where id = 1";
 
             $stmt = $db->prepare($query);
@@ -143,7 +145,8 @@ if (!isset($jwt)) {
                             for_profile = :for_profile,
                             product_edit = :product_edit,
                             product_duplicate = :product_duplicate,
-                            product_delete = :product_delete
+                            product_delete = :product_delete,
+                            inventory_modify = :inventory_modify
                         where id = :id";
 
             // prepare the query
@@ -194,6 +197,7 @@ if (!isset($jwt)) {
             $product_edit = htmlspecialchars(strip_tags($product_edit));
             $product_duplicate = htmlspecialchars(strip_tags($product_duplicate));
             $product_delete = htmlspecialchars(strip_tags($product_delete));
+            $inventory_modify = htmlspecialchars(strip_tags($inventory_modify));
 
             // bind the values
             $stmt->bindParam(':id', $id);
@@ -239,6 +243,7 @@ if (!isset($jwt)) {
             $stmt->bindParam(':product_edit', $product_edit);
             $stmt->bindParam(':product_duplicate', $product_duplicate);
             $stmt->bindParam(':product_delete', $product_delete);
+            $stmt->bindParam(':inventory_modify', $inventory_modify);
 
             try {
                 // execute the query, also check if query was successful

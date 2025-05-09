@@ -1,0 +1,1261 @@
+<?php include 'check.php'; ?>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 共用資料 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, min-width=640, user-scalable=0, viewport-fit=cover"/>
+
+    <!-- favicon.ico iOS icon 152x152px -->
+    <link rel="shortcut icon" href="images/favicon.ico"/>
+    <link rel="Bookmark" href="images/favicon.ico"/>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
+    <link rel="apple-touch-icon" href="images/iosicon.png"/>
+
+    <!-- SEO -->
+    <title>Inventory Modification</title>
+    <meta name="keywords" content="FELIIX">
+    <meta name="Description" content="FELIIX">
+    <meta name="robots" content="all"/>
+    <meta name="author" content="FELIIX"/>
+
+    <!-- Open Graph protocol -->
+    <meta property="og:site_name" content="FELIIX"/>
+    <!--<meta property="og:url" content="分享網址" />-->
+    <meta property="og:type" content="website"/>
+    <meta property="og:description" content="FELIIX"/>
+    <!--<meta property="og:image" content="分享圖片(1200×628)" />-->
+    <!-- Google Analytics -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="css/default.css"/>
+    <link rel="stylesheet" type="text/css" href="css/ui.css"/>
+    <link rel="stylesheet" type="text/css" href="css/case.css"/>
+    <link rel="stylesheet" type="text/css" href="css/mediaqueries.css"/>
+
+    <!-- jQuery和js載入 -->
+    <script type="text/javascript" src="js/rm/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="js/rm/realmediaScript.js"></script>
+    <script type="text/javascript" src="js/main.js" defer></script>
+
+    <!-- import CSS -->
+    <link rel="stylesheet" href="css/element-ui/theme-chalk/index.css">
+
+
+    <!-- 這個script之後寫成aspx時，改用include方式載入header.htm，然後這個就可以刪掉了 -->
+    <script>
+    $(function() {
+        $('header').load('include/header.php');
+    })
+
+    </script>
+
+
+    <!-- JS for current webpage -->
+    <script>
+    function EditListing() {
+        $(".mask").toggle();
+        $("#modal_EditListing").toggle();
+    }
+
+    </script>
+
+    <!-- CSS for current webpage -->
+    <style type="text/css">
+    .box-content table {
+        border-top: 2px solid var(--pri01a);
+        border-left: 2px solid var(--pri01a);
+        width: 100%;
+    }
+
+    .box-content table tr th {
+        background-color: var(--pri01c);
+        font-weight: 800;
+        border-bottom: 2px solid var(--pri01a);
+        border-right: 2px solid var(--pri01a);
+        text-align: center;
+        padding: 10px;
+    }
+
+    .box-content table tr td {
+        font-weight: 800;
+        border-bottom: 2px solid var(--pri01a);
+        border-right: 2px solid var(--pri01a);
+        text-align: center;
+        padding: 10px;
+    }
+
+    .block.A .box-content ul:first-of-type li:nth-of-type(even) {
+        padding-bottom: 10px;
+    }
+
+    body.green select {
+        background-image: url(./images/ui/icon_form_select_arrow_green.svg);
+    }
+
+    .style_Remarks {
+        max-width: 300px !important;
+        text-align: left !important;
+    }
+
+    .style_Icons {
+        font-size: 25px !important;
+    }
+
+    </style>
+
+    <style type="text/css">
+    /* -------------------------- */
+    /* body.green Style (Yellow) */
+    /* -------------------------- */
+    body.fourth .mainContent>.block {
+        border: 2px solid var(--fth01);
+    }
+
+    body.fourth .mainContent>.block h6 {
+        color: var(--fth01);
+        border-bottom: 2px solid var(--fth01);
+    }
+
+    .block.A .box-content ul:first-of-type li:nth-of-type(even) {
+        padding-bottom: 10px;
+    }
+
+    .bodybox .mask {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.5);
+        width: 100%;
+        height: 100%;
+        top: 0;
+        z-index: 1;
+        display: none;
+    }
+
+    .headings {
+        margin-bottom: 15px;
+    }
+
+    .headings .tag {
+        font-size: 24px;
+        font-weight: 700;
+        color: black;
+        border-radius: 50px;
+        padding: 3px 20px 3px 10px;
+        margin-right: 0;
+        pointer-events: none;
+        vertical-align: middle;
+    }
+
+    .headings .tag.focus {
+        color: var(--fth01);
+        background-color: var(--fth02);
+        padding-left: 20px;
+        margin-left: -10px;
+    }
+
+    form ul li b {
+        display: block;
+        font-size: 20px;
+        font-weight: 500;
+        width: 100px;
+    }
+
+    form ul li select {
+        border-color: var(--fth01)!important;
+        background-image: url(../images/ui/icon_form_select_arrow_blue.svg);
+    }
+
+    form ul li textarea {
+        border-color: var(--fth01)!important;
+    }
+
+    li.further_input div.deliver_client,
+    li.further_input div.change_pool_project,
+    li.further_input div.change_location,
+    li.further_input div.change_sample {
+        margin-top: 15px;
+    }
+
+    li.further_input b {
+        width: 150px;
+    }
+
+    li.further_input select {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    li.further_input div.compoundbox {
+        display: flex;
+        align-items: center;
+    }
+
+    li.further_input div.compoundbox span {
+        display: block;
+        width: 430px;
+        font-size: 18px;
+        color: var(--fth01);
+        font-weight: 500;
+        margin-left: 10px;
+    }
+
+    li.further_input div.compoundbox input[type="file"] {
+        width: 100%;
+        border: 2px solid var(--fth01);
+    }
+
+    li.further_input div.compoundbox .list_attch {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    li.further_input div.compoundbox .list_attch a.attch {
+        color: #25a2b8;
+        transition: .3s;
+        margin: 0 0 0 5px;
+        font-weight: 500;
+        font-size: 15px;
+    }
+
+    li.further_input div.compoundbox .list_attch a.attch::before {
+        content: '';
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        margin-right: 5px;
+        background-color: var(--fth05);
+        border-radius: 50px;
+        vertical-align: text-bottom;
+        transition: .3s;
+    }
+
+    li.row_list {
+        display: flex;
+        margin: 50px 0 7px;
+    }
+
+    li.row_list div.label_btn {
+        display: flex;
+        align-items: center;
+    }
+
+    li.row_list div.label_btn a.btn_quickquery {
+        background-color: var(--fth01);
+        width: 30px;
+        height: 30px;
+        text-align: center;
+    }
+
+    li.row_list div.label_btn a.btn_quickquery i {
+        font-size: 20px;
+        color: white;
+        line-height: 1.45;
+    }
+
+    li.row_list div.label_btn input[type="text"] {
+        font-size: 16px;
+        font-weight: 500;
+        padding: 3px 25px 3px 10px;
+        border-radius: 3px;
+        width: 500px;
+        height: 29px;
+        border: 1px solid #999;
+        margin: 0 5px 0 15px;
+    }
+
+    li.row_list div.label_btn a.btn.small {
+        background-color: var(--fth01);
+    }
+
+    li.row_list div.label_btn a.btn_export {
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        margin-left: 10px;
+        color: #2F9A57;
+        padding-bottom: 25px;
+    }
+
+    li.row_list div.label_btn div.list_function {
+        margin-top: 5px;
+    }
+
+    div.block > h6 > span {
+        color: var(--fth01);
+        background-color: var(--fth02);
+        font-size: 28px;
+        font-weight: 700;
+        border-radius: 50px;
+        padding: 3px 20px 5px;
+        margin-left: 100px;
+        display: inline-block;
+        vertical-align: text-bottom;
+    }
+
+    #modal_EditListing {
+        display: none;
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        z-index: 2;
+    }
+
+    #modal_EditListing > .modal-content {
+        width: 90%;
+        margin: auto;
+        border: 2px solid var(--fth01);
+        padding: 20px 25px;
+        background-color: white;
+        max-height: 850px;
+        overflow-y: auto;
+    }
+
+    #modal_EditListing .modal-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    #modal_EditListing .modal-heading h6 {
+        color: var(--fth01);
+        border-bottom: none;
+        font-size: 36px;
+        font-weight: 700;
+        padding: 10px 20px;
+    }
+
+    #modal_EditListing .modal-heading a {
+        color: var(--fth01);
+        font-size: 20px;
+    }
+
+    #modal_EditListing .filter_function {
+        margin: 3px 20px 0 0;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    #modal_EditListing .filter_function > input[type="text"] {
+        font-size: 14px;
+        font-weight: 500;
+        padding: 3px 25px 3px 10px;
+        border-radius: 3px;
+        width: 250px;
+        height: 29px;
+        border: 1px solid #999;
+    }
+
+    #modal_EditListing .filter_function > select {
+        font-size: 14px;
+        font-weight: 500;
+        padding: 3px 25px 3px 10px;
+        border-radius: 3px;
+        width: 250px;
+        height: 29px;
+        border: 1px solid #999;
+        background-image: url(../images/ui/icon_form_select_arrow_gray.svg);
+        margin-left: 20px;
+    }
+
+    #modal_EditListing .filter_function > select:nth-of-type(2),
+    #modal_EditListing .filter_function > select:nth-of-type(3) {
+        width: 400px;
+    }
+
+    #modal_EditListing .filter_function > button {
+        height: 29px;
+        width: 29px;
+        padding: 2px;
+        margin: 0 7px;
+        cursor: pointer;
+        vertical-align: middle;
+        border: 1px solid #999;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    #modal_EditListing .list_function {
+        width: 100%;
+        padding: 20px 10px 2px;
+    }
+
+    .list_function .pagenation a {
+        border-color: var(--fth01);
+        color: var(--fth01);
+    }
+
+    .list_function .pagenation a:hover {
+        border-color: var(--fth01);
+        color: #FFF;
+    }
+
+    #modal_EditListing .tablebox {
+        width: 100%;
+        padding: 0 10px 10px;
+        border: none;
+    }
+
+    #tb_tracking_codes1, #tb_tracking_codes2, #tb_tracking_codes3 {
+        width: 100%;
+        margin: 5px 0 10px 0;
+        border-top: none;
+        border-left: none;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+    #tb_tracking_codes1 thead th,
+    #tb_tracking_codes2 thead th,
+    #tb_tracking_codes3 thead th {
+        background-color: var(--fth01);
+        border: 1px solid var(--fth03);
+        font-size: 14px;
+        color: #FFF;
+        text-align: center;
+        vertical-align: middle;
+        padding: 10px;
+    }
+
+    #tb_tracking_codes1 tbody td,
+    #tb_tracking_codes2 tbody td,
+    #tb_tracking_codes3 tbody td {
+        border: 1px solid var(--fth03);
+        vertical-align: top;
+        padding: 10px;
+        font-weight: 300;
+    }
+
+    #tb_tracking_codes1 tbody tr:nth-of-type(even),
+    #tb_tracking_codes2 tbody tr:nth-of-type(even),
+    #tb_tracking_codes3 tbody tr:nth-of-type(even) {
+        background-color: #F6F6F6;
+    }
+
+    #tb_tracking_codes1 tbody tr td:nth-of-type(1),
+    #tb_tracking_codes2 tbody tr td:nth-of-type(1),
+    #tb_tracking_codes3 tbody tr td:nth-of-type(1) {
+        width: 30%;
+    }
+
+    #tb_tracking_codes1 tbody tr td:nth-of-type(2),
+    #tb_tracking_codes2 tbody tr td:nth-of-type(2),
+    #tb_tracking_codes3 tbody tr td:nth-of-type(2) {
+        width: 30%;
+    }
+
+    #tb_tracking_codes1 tbody tr td:nth-of-type(3),
+    #tb_tracking_codes2 tbody tr td:nth-of-type(3),
+    #tb_tracking_codes3 tbody tr td:nth-of-type(3) {
+        width: 30%;
+    }
+
+    #tb_tracking_codes1 tbody tr td:nth-of-type(4),
+    #tb_tracking_codes2 tbody tr td:nth-of-type(4),
+    #tb_tracking_codes3 tbody tr td:nth-of-type(4) {
+        width: 10%;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 25px;
+    }
+
+    #tb_tracking_codes1 tbody tr td ul,
+    #tb_tracking_codes2 tbody tr td ul,
+    #tb_tracking_codes3 tbody tr td ul {
+        margin-bottom: 5px;
+    }
+
+    #tb_tracking_codes1 ul li,
+    #tb_tracking_codes2 ul li,
+    #tb_tracking_codes3 ul li {
+        display: table-cell;
+        text-decoration: none;
+        text-align: left;
+        font-size: 16px;
+    }
+
+    #tb_tracking_codes1 ul li:first-of-type,
+    #tb_tracking_codes2 ul li:first-of-type,
+    #tb_tracking_codes3 ul li:first-of-type {
+        font-weight: 600;
+        padding: 1px 7px 1px 5px;
+        max-width: 230px;
+        vertical-align: top;
+    }
+
+    #tb_tracking_codes1 ul li:nth-of-type(2) span.after_change,
+    #tb_tracking_codes2 ul li:nth-of-type(2) span.after_change,
+    #tb_tracking_codes3 ul li:nth-of-type(2) span.after_change {
+        color: red;
+        font-size: 16px;
+        font-weight: 500;
+        margin-left: 5px;
+    }
+
+    #tb_tracking_codes1 tbody td ul li:nth-of-type(2) a,
+    #tb_tracking_codes2 tbody td ul li:nth-of-type(2) a,
+    #tb_tracking_codes3 tbody td ul li:nth-of-type(2) a {
+        color: #007bff;
+    }
+
+    #tb_tracking_codes1 ul li:nth-of-type(2) span.after_change a,
+    #tb_tracking_codes2 ul li:nth-of-type(2) span.after_change a,
+    #tb_tracking_codes3 ul li:nth-of-type(2) span.after_change a {
+        color: red;
+    }
+
+    #tb_tracking_codes1 tbody tr td:nth-of-type(3) img,
+    #tb_tracking_codes2 tbody tr td:nth-of-type(3) img,
+    #tb_tracking_codes3 tbody tr td:nth-of-type(3) img {
+        max-width: 100px;
+        max-height: 100px;
+    }
+
+    #tb_tracking_codes1 tbody tr td:nth-of-type(4) button,
+    #tb_tracking_codes2 tbody tr td:nth-of-type(4) button,
+    #tb_tracking_codes3 tbody tr td:nth-of-type(4) button {
+        border: 2px solid black;
+        width: 34px;
+        height: 34px;
+        box-sizing: border-box;
+        padding: 6px;
+        line-height: 1.0;
+    }
+
+    .shake {
+        animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        transform: translate3d(0, 0, 0);
+    }
+
+    @keyframes shake {
+        10%,
+        90% {
+            transform: translate3d(-1px, 0, 0);
+        }
+
+        20%,
+        80% {
+            transform: translate3d(2px, 0, 0);
+        }
+
+        30%,
+        50%,
+        70% {
+            transform: translate3d(-4px, 0, 0);
+        }
+
+        40%,
+        60% {
+            transform: translate3d(4px, 0, 0);
+        }
+    }
+
+
+    </style>
+
+
+</head>
+
+<body class="fourth">
+
+<div class="bodybox">
+    <div class="mask" :ref="'mask'" style="display:none"></div>
+    <!-- header -->
+    <header>header</header>
+    <!-- header end -->
+    <div id="app" class="mainContent">
+
+        <!-- Blocks -->
+        <div class="block A focus" style="position: relative;">
+            <h6>Inventory Modification<span>{{ record.request_no }}</span></h6>
+
+            <div class="box-content" id="phase1" v-if="record.status == 1">
+
+                <div class="headings">
+                    <b class="tag focus">PHASE 1</b>
+                    <b class="tag">User Chooses Reason and Creates List of Affected Item(s)</b>
+                </div>
+
+                <form>
+                    <ul>
+                        <li><b>Reason</b></li>
+                        <li>
+                            <select style="width: 100%; margin-bottom: 8px;" v-model="notes">
+                                <option value=""></option>
+                                <option value="">Deliver Item(s) to Client</option>
+                                <option value="">Return Item(s) from Client to Inventory System</option>
+                                <option value="">Void Tracking Code of Item(s)</option>
+                                <option value="">Item(s) Lost</option>
+                                <option value="">Item(s) Scrapped</option>
+                                <option value="">Change Inventory Pool or Related Project of Item(s)</option>
+                                <option value="">Change Location of Item(s)</option>
+                                <option value="">Change Sample Status of Item(s)</option>
+                            </select>
+
+                            <textarea style="width:100%" placeholder="Notes" v-model="notes4"></textarea>
+                        </li>
+
+
+                        <li class="further_input">
+                            <div class="deliver_client" style="display: none;">
+                                <b>Further Input</b>
+
+                                <div class="compoundbox">
+                                    <span>Which Intermal Member Receives?</span>
+                                    <select>
+                                        <option value="">Which internal member receives the item(s)?</option>
+                                        <option value="">放入系統上所有已經註冊 且 不是被刪除 且 不是被 disabled 的使用者</option>
+                                    </select>
+                                </div>
+
+                                <div class="compoundbox">
+                                    <span>Transmittal File</span>
+                                    <input type="file" multiple>
+                                </div>
+                            </div>
+
+
+                            <div class="change_pool_project" style="display: none;">
+                                <b>Further Input</b>
+
+                                <div class="compoundbox">
+                                    <span>New Inventory Pool of Item(s)</span>
+                                    <select>
+                                        <option value="Project Pool">Project Pool</option>
+                                        <option value="Stock Pool">Stock Pool</option>
+                                    </select>
+                                </div>
+
+                                <div class="compoundbox">
+                                    <span>Related Project?</span>
+                                    <select>
+                                        <option value="">載入系統上所有的專案</option>
+                                    </select>
+                                </div>                                                                                                
+                            </div>
+
+
+                            <div class="change_location" style="display: none;">
+                                <b>Further Input</b>
+
+                                <div class="compoundbox">
+                                    <span>New Location of Item(s)</span>
+                                    <select>
+                                        <option value="Caloocan">Caloocan</option>
+                                        <option value="Makati">Makati</option>
+                                    </select>
+                                </div>
+
+                                <div class="compoundbox">
+                                    <span>Which Intermal Member Receives?</span>
+                                    <select>
+                                        <option value="">Which internal member receives the item(s)?</option>
+                                        <option value="">放入系統上所有已經註冊 且 不是被刪除 且 不是被 disabled 的使用者</option>
+                                    </select>
+                                </div>
+
+                                <div class="compoundbox">
+                                    <span>Transmittal File</span>
+                                    <input type="file" multiple>
+                                </div>
+
+                            </div>
+
+                            <div class="change_sample" style="display: none;">
+                                <b>Further Input</b>
+
+                                <div class="compoundbox">
+                                    <span>New Sample Status of Item(s)</span>
+
+                                    <select>
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="row_list">
+                            <div class="label_btn">
+                                <b>Item List</b>
+                                <a class="btn_quickquery" title="Add Item from Quick Query" href="javascript: void(0)" onclick="EditListing()"><i class="fas fa-list-alt"></i></a>
+                                <input type="text" placeholder="Input Tracking Code(s) Here and Separate by Semicolon.">
+                                <a class="btn small">Scan</a>
+                            </div>
+
+                            <!-- 分頁功能，下方的 tablebox 的內容要做分頁，每一頁 10 筆資料  -->
+                            <div class="list_function">
+                                <div class="pagenation">
+                                    <a class="prev" :disabled="it_page == 1" @click="it_pre_page();">Prev 10</a>
+
+                                    <a class="page" v-for="pg in it_pages_10" @click="it_page=pg;" v-bind:style="[pg == it_page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
+
+                                    <a class="next" :disabled="it_page == it_pages.length" @click="it_nex_page();">Next 10</a>
+                                </div>
+                            </div>
+                        </li>
+
+
+                        <li>
+                            <table id="tb_tracking_codes1" class="table  table-sm table-bordered" >
+
+                                <thead>
+                                <tr>
+                                    <th>Tracking Code Info</th>
+                                    <th>Inventory Info</th>
+                                    <th>Product Info</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <ul>
+                                            <li>Tracking Code:</li>
+                                            <li>250220 02949 00001</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Status:</li>
+                                            <li>On Hand</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li style="max-width: 135px;">Purchased thru Which Order:</li>
+                                            <li><a href="order_taiwan_p4?id=xxxx">LPO-TW-0270 Arthaland Century Pacific Tower</a></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Created:</li>
+                                            <li>2025-03-26 17:11:20 (Gwendolyn Sarmiento)</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Updated:</li>
+                                            <li>2025-04-05 10:11:20 (Dennis Lin)</li>
+                                        </ul>
+                                    </td>
+
+                                    <td>
+                                        <ul>
+                                            <li>Inventory Pool:</li>
+                                            <li>Project Pool</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li style="min-width: 130px;">Related Project:</li>
+                                            <li><a href="project02?p=2239">Arthaland Century Pacific Tower - 7th Floor (Additional) No.1</a></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Location:</li>
+                                            <li>Caloocan</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Sample:</li>
+                                            <li>No</li>
+                                        </ul>
+                                    </td>
+
+                                    <td>
+                                        <img>
+
+                                        <ul>
+                                            <li>Product ID:</li>
+                                            <li>2423</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Product Code:</li>
+                                            <li><a>FELIIX SB NS0612</a></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Brand:</li>
+                                            <li>SHAN BEN</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Specification:</li>
+                                            <li>received item 的 brief 和 listing</li>
+                                        </ul>
+                                    </td>
+
+                                    <td>
+                                        <i aria-hidden="true" class="fas fa-arrow-alt-circle-up"
+                                           @click="_set_up((it_page - 1 ) * it_perPage + index, item.id)"></i>
+                                        <i aria-hidden="true" class="fas fa-arrow-alt-circle-down"
+                                           @click="_set_down((it_page - 1 ) * it_perPage + index, item.id)"></i>
+                                        <i aria-hidden="true" class="fas fa-trash-alt" @click="_del(item.id)"></i>
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+
+                        </li>
+
+                    </ul>
+
+                    <div class="btnbox">
+                        <a class="btn red" @click="reset1" title="Clear All Encoded Content">Reset</a>
+                        <a class="btn green" @click="save(1, notes)" title="Temporarily Save Encoded Content">Save</a>
+                        <a class="btn green" @click="goto_phase2">Execute</a>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+
+            <div class="box-content" id="phase2" v-if="record.status == 2">
+
+                <div class="headings">
+                    <b class="tag focus">PHASE 2</b>
+                    <b class="tag">Inventory Modification Completed</b>
+                </div>
+
+                <form>
+                    <ul>
+                        <li><b>Reason</b></li>
+                        <li>
+                            <select style="width: 100%; margin-bottom: 8px;" v-model="notes" disabled>
+                                <option value=""></option>
+                                <option value="">Deliver Item(s) to Client</option>
+                                <option value="">Return Item(s) from Client to Inventory System</option>
+                                <option value="">Void Tracking Code of Item(s)</option>
+                                <option value="">Item(s) Lost</option>
+                                <option value="">Item(s) Scrapped</option>
+                                <option value="">Change Inventory Pool or Related Project of Item(s)</option>
+                                <option value="">Change Location of Item(s)</option>
+                                <option value="">Change Sample Status of Item(s)</option>
+                            </select>
+
+                            <textarea style="width:100%" placeholder="Notes" v-model="notes4" disabled></textarea>
+                        </li>
+
+
+                        <li class="further_input">
+                            <div class="deliver_client" style="display: none;">
+                                <b>Further Input</b>
+
+                                <div class="compoundbox">
+                                    <span>Which Intermal Member Receives?</span>
+                                    <select disabled>
+                                        <option value="">Which internal member receives the item(s)?</option>
+                                        <option value="">放入系統上所有已經註冊 且 不是被刪除 且 不是被 disabled 的使用者</option>
+                                    </select>
+                                </div>
+
+                                <div class="compoundbox">
+                                    <span>Transmittal File</span>
+                                    <div class="list_attch">
+                                        <a href="https://storage.googleapis.com/feliiximg/1743132750_OQ-3796_250328_ROCKWELL NEPO PAMPANGA OFFICE - OFFICE FURNITURE (ADDITIONAL) OPTION 1 R2 (1).pdf" target="_blank" class="attch">OQ-3796_250328_ROCKWELL NEPO PAMPANGA OFFICE - OFFICE FURNITURE (ADDITIONAL) OPTION 1 R2 (1).pdf</a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="change_pool_project" style="display: none;">
+                                <b>Further Input</b>
+
+                                <div class="compoundbox">
+                                    <span>New Inventory Pool of Item(s)</span>
+                                    <select disabled>
+                                        <option value="Project Pool">Project Pool</option>
+                                        <option value="Stock Pool">Stock Pool</option>
+                                    </select>
+                                </div>
+
+                                <div class="compoundbox">
+                                    <span>Related Project?</span>
+                                    <select disabled>
+                                        <option value="">載入系統上所有的專案</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="change_location" style="display: none;">
+                                <b>Further Input</b>
+
+                                <div class="compoundbox">
+                                    <span>New Location of Item(s)</span>
+                                    <select disabled>
+                                        <option value="Caloocan">Caloocan</option>
+                                        <option value="Makati">Makati</option>
+                                    </select>
+                                </div>
+
+                                <div class="compoundbox">
+                                    <span>Which Intermal Member Receives?</span>
+                                    <select disabled>
+                                        <option value="">Which internal member receives the item(s)?</option>
+                                        <option value="">放入系統上所有已經註冊 且 不是被刪除 且 不是被 disabled 的使用者</option>
+                                    </select>
+                                </div>
+
+                                <div class="compoundbox">
+                                    <span>Transmittal File</span>
+                                    <div class="list_attch">
+                                        <a href="https://storage.googleapis.com/feliiximg/1743132750_OQ-3796_250328_ROCKWELL NEPO PAMPANGA OFFICE - OFFICE FURNITURE (ADDITIONAL) OPTION 1 R2 (1).pdf" target="_blank" class="attch">OQ-3796_250328_ROCKWELL NEPO PAMPANGA OFFICE - OFFICE FURNITURE (ADDITIONAL) OPTION 1 R2 (1).pdf</a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="change_sample" style="display: none;">
+                                <b>Further Input</b>
+
+                                <div class="compoundbox">
+                                    <span>New Sample Status of Item(s)</span>
+
+                                    <select disabled>
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="row_list">
+                            <div class="label_btn">
+                                <b>Item List</b>
+                            </div>
+
+                            <!-- 分頁功能，下方的 tablebox 的內容要做分頁，每一頁 10 筆資料  -->
+                            <div class="list_function">
+                                <div class="pagenation">
+                                    <a class="prev" :disabled="it_page == 1" @click="it_pre_page();">Prev 10</a>
+
+                                    <a class="page" v-for="pg in it_pages_10" @click="it_page=pg;" v-bind:style="[pg == it_page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
+
+                                    <a class="next" :disabled="it_page == it_pages.length" @click="it_nex_page();">Next 10</a>
+                                </div>
+                            </div>
+                        </li>
+
+
+                        <li>
+                            <table id="tb_tracking_codes2" class="table  table-sm table-bordered" >
+
+                                <thead>
+                                <tr>
+                                    <th>Tracking Code Info</th>
+                                    <th>Inventory Info</th>
+                                    <th>Product Info</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <ul>
+                                            <li>Tracking Code:</li>
+                                            <li>250220 02949 00001</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Status:</li>
+                                            <li>On Hand <span class="after_change"> => Delivered to Client</span></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li style="max-width: 135px;">Purchased thru Which Order:</li>
+                                            <li><a href="order_taiwan_p4?id=xxxx">LPO-TW-0270 Arthaland Century Pacific Tower</a></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Created:</li>
+                                            <li>2025-03-26 17:11:20 (Gwendolyn Sarmiento)</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Updated:</li>
+                                            <li>2025-04-05 10:11:20 (Dennis Lin)</li>
+                                        </ul>
+                                    </td>
+
+                                    <td>
+                                        <ul>
+                                            <li>Inventory Pool:</li>
+                                            <li>Project Pool <span class="after_change"> => Stock Pool</span></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li style="min-width: 130px;">Related Project:</li>
+                                            <li><a href="project02?p=2239">Arthaland Century Pacific Tower - 7th Floor (Additional) No.1</a> <span class="after_change"> => <a href="project02?p=2239">New Project</a><span></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Location:</li>
+                                            <li>Caloocan <span class="after_change"> => Makati</span></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Sample:</li>
+                                            <li>No <span class="after_change"> => Yes</span></li>
+                                        </ul>
+                                    </td>
+
+                                    <td>
+                                        <img>
+
+                                        <ul>
+                                            <li>Product ID:</li>
+                                            <li>2423</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Product Code:</li>
+                                            <li><a>FELIIX SB NS0612</a></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Brand:</li>
+                                            <li>SHAN BEN</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li>Specification:</li>
+                                            <li>received item 的 brief 和 listing</li>
+                                        </ul>
+                                    </td>
+
+                                </tr>
+                                </tbody>
+
+                            </table>
+
+                        </li>
+
+                    </ul>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="modal_EditListing" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+
+                <div class="modal-heading">
+                    <h6>Quick Query for Tracking Code</h6>
+                    <a href="javascript: void(0)" onclick="EditListing()"><i class="fa fa-times fa-lg"
+                                                                             aria-hidden="true"></i></a>
+                </div>
+
+
+                <div class="filter_function">
+                    <input type="text" placeholder="Input Product ID or Code">
+
+                    <select>
+                        <option value="">----- Status of Tracking Code -----</option>
+                        <option>Deliver to Client</option>
+                        <option>Lost</option>
+                        <option>On Hand</option>
+                        <option>Scrapped</option>
+                        <option>Voided</option>
+                    </select>
+
+                    <select>
+                        <option value="">----- Related Project -----</option>
+                        <!-- 載入系統上所有的 Project 名字 -->
+                        <option>{{  }}</option>
+                    </select>
+
+                    <select>
+                        <option value="">----- Which Order -----</option>
+                        <!-- 載入系統上所有的 Order 編號和名字，例如： LPO-TW-0284 Laureen Uy-Cruz House - General Lights -->
+                        <option>{{ 訂單編號 }} {{ 訂單名稱 }}</option>
+                    </select>
+
+
+                    <button style="margin-left: 20px;" @click="filter_apply_new()">
+                        <i aria-hidden="true" class="fas fa-filter"></i>
+                    </button>
+
+                    <button @click="add_filtered()" style="width: 160px; font-size: 14px;">Add All Filtered</button>
+                    <button @click="clear()" style="width: 60px; font-size: 14px;">Clear</button>
+
+                </div>
+
+
+                <div class="list_function">
+                    <!-- 分頁功能 -->
+                    <!-- 這個頁面需要做分頁，每一頁 10 筆資料  -->
+                    <div class="pagenation">
+                        <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+
+                        <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'var(--fth01)', 'color': 'white'} : { }]">{{ pg }}</a>
+
+                        <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                    </div>
+
+                </div>
+
+
+                <div class="tablebox">
+
+                    <table id="tb_tracking_codes3" class="table  table-sm table-bordered" >
+
+                        <thead>
+                        <tr>
+                            <th>Tracking Code Info</th>
+                            <th>Inventory Info</th>
+                            <th>Product Info</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li>Tracking Code:</li>
+                                    <li>250220 02949 00001</li>
+                                </ul>
+
+                                <ul>
+                                    <li>Status:</li>
+                                    <li>On Hand</li>
+                                </ul>
+
+                                <ul>
+                                    <li style="max-width: 125px;">Purchased thru Which Order:</li>
+                                    <li><a href="order_taiwan_p4?id=xxxx">LPO-TW-0270 Arthaland Century Pacific Tower</a></li>
+                                </ul>
+
+                                <ul>
+                                    <li>Created:</li>
+                                    <li>2025-03-26 17:11:20 (Gwendolyn Sarmiento)</li>
+                                </ul>
+
+                                <ul>
+                                    <li>Updated:</li>
+                                    <li>2025-04-05 10:11:20 (Dennis Lin)</li>
+                                </ul>
+                            </td>
+
+                            <td>
+                                 <ul>
+                                    <li>Inventory Pool:</li>
+                                    <li>Project Pool</li>
+                                 </ul>
+
+                                 <ul>
+                                    <li style="min-width: 130px;">Related Project:</li>
+                                    <li><a href="project02?p=2239">Arthaland Century Pacific Tower - 7th Floor (Additional) No.1</a></li>
+                                 </ul>
+
+                                 <ul>
+                                    <li>Location:</li>
+                                    <li>Caloocan</li>
+                                 </ul>
+
+                                 <ul>
+                                    <li>Sample:</li>
+                                    <li>No</li>
+                                 </ul>
+                             </td>
+
+                             <td>
+                                <img>
+
+                                <ul>
+                                    <li>Product ID:</li>
+                                    <li>2423</li>
+                                </ul>
+
+                                <ul>
+                                    <li>Product Code:</li>
+                                    <li><a>FELIIX SB NS0612</a></li>
+                                </ul>
+
+                                <ul>
+                                    <li>Brand:</li>
+                                    <li>SHAN BEN</li>
+                                </ul>
+
+                                <ul>
+                                    <li>Specification:</li>
+                                    <li>received item 的 brief 和 listing</li>
+                                </ul>
+                            </td>
+
+                            <td>
+                                <button id="edit01"><i aria-hidden="true" class="fas fa-caret-right"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+</div>
+
+
+</body>
+
+<script>
+function action_forOther(selector) {
+
+    if (selector.value == 1) {
+        document.getElementById("specific_payableto").style.display = "none";
+    } else {
+        document.getElementById("specific_payableto").value = "";
+        document.getElementById("specific_payableto").style.display = "";
+    }
+}
+
+</script>
+
+
+<script src="js/npm/vue/dist/vue.js"></script>
+<script src="js/axios.min.js"></script>
+<script src="js/npm/sweetalert2@9.js"></script>
+
+<script src="js/vue-i18n/vue-i18n.global.min.js"></script>
+<script src="js/element-ui@2.15.14/index.js"></script>
+<script src="js/element-ui@2.15.14/en.js"></script>
+
+<script>
+ELEMENT.locale(ELEMENT.lang.en)
+
+</script>
+
+<!-- import JavaScript -->
+<script src="js/element-ui@2.15.14/lib/index.js"></script>
+<script src="js/office_item_inventory_modify.js"></script>
+
+<!-- Awesome Font for current webpage -->
+<script src="js/a076d05399.js"></script>
+
+</html>

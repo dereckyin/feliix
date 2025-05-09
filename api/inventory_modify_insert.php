@@ -41,7 +41,7 @@ else
         $merged_results = array();
 
         /* fetch data */
-        $query = "SELECT id from office_item_inventory_modify order by id desc limit 1";
+        $query = "SELECT id from inventory_modify order by id desc limit 1";
 
         $stmt = $db->prepare( $query );
         $stmt->execute();
@@ -52,9 +52,9 @@ else
 
         $row_id += 1;
 
-        $request_no = "OIM-" . str_pad($row_id, 5, '0', STR_PAD_LEFT);
+        $request_no = "IM-" . str_pad($row_id, 5, '0', STR_PAD_LEFT);
 
-        $query = "INSERT INTO office_item_inventory_modify SET 
+        $query = "INSERT INTO inventory_modify SET 
                     request_no = :request_no, 
                     check_name = :check_name, 
                     create_id = :create_id, 
