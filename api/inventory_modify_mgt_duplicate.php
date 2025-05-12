@@ -86,7 +86,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
 
     $row_id += 1;
 
-    $request_no = "IM-" . str_pad($row_id, 5, '0', STR_PAD_LEFT);
+    $request_no = "OIM-" . str_pad($row_id, 5, '0', STR_PAD_LEFT);
 
     $note_1 = "";
     $note_2 = "";

@@ -120,7 +120,7 @@ switch ($method) {
                 LEFT JOIN user p ON p.id = pm.create_id 
                 LEFT JOIN user c ON c.id = pm.checker
                 LEFT JOIN user a ON a.id = pm.approver
-                where pm.`status` <> -1  ";
+                where 1=1  ";
 
         $sql = "SELECT  pm.id,
                         request_no, 
@@ -135,15 +135,18 @@ switch ($method) {
                         DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at,
                         DATE_FORMAT(pm.updated_at, '%Y/%m/%d %T') updated_at,
                         c.username checker,
-                        DATE_FORMAT(pm.check_at, '%Y/%m/%d %T') check_at,
                         a.username approver,
-                        DATE_FORMAT(pm.approval_at, '%Y/%m/%d %T') approval_at
+                        note_1,
+                        phase_1,
+                        note_2,
+                        note_3,
+                        note_4
                 from inventory_modify pm 
                 LEFT JOIN user p ON p.id = pm.create_id 
                 LEFT JOIN user u ON u.id = pm.updated_id
-                LEFT JOIN user c ON c.id = pm.check_id
-                LEFT JOIN user a ON a.id = pm.approval_id
-                where pm.`status` <> -1 ";
+                LEFT JOIN user c ON c.id = pm.checker
+                LEFT JOIN user a ON a.id = pm.approver
+                where 1=1 ";
 
 if($id != "" && $id != "0")
 {
@@ -159,14 +162,14 @@ if($ft != "" && $ft != "0")
 
 if($frl != "")
 {
-    $sql = $sql . " and pm.request_no >= 'IM-" . sprintf('%05d', $frl) . "' ";
-    $query_cnt = $query_cnt . " and pm.request_no >= 'IM-" . sprintf('%05d', $frl) . "' ";
+    $sql = $sql . " and pm.request_no >= 'IC-" . sprintf('%05d', $frl) . "' ";
+    $query_cnt = $query_cnt . " and pm.request_no >= 'IC-" . sprintf('%05d', $frl) . "' ";
 }
 
 if($fru != "")
 {
-    $sql = $sql . " and pm.request_no <= 'IM-" . sprintf('%05d', $fru) . "' ";
-    $query_cnt = $query_cnt . " and pm.request_no <= 'IM-" . sprintf('%05d', $fru) . "' ";
+    $sql = $sql . " and pm.request_no <= 'IC-" . sprintf('%05d', $fru) . "' ";
+    $query_cnt = $query_cnt . " and pm.request_no <= 'IC-" . sprintf('%05d', $fru) . "' ";
 }
 
 if($fc != "")
@@ -428,15 +431,15 @@ if($of1 != "" && $of1 != "0")
             break;
         case 7:
             if($ofd1 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
         case 9:
             if($ofd1 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
         default:
     }
@@ -472,15 +475,15 @@ if($of2 != "" && $of2 != "0" && $sOrder != "")
             break;
         case 7:
             if($ofd2 == 2)
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
         case 9:
             if($ofd2 == 2)
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder .= ", Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
         default:
     }
@@ -516,15 +519,15 @@ if($of2 != "" && $of2 != "0" && $sOrder == "")
             break;
         case 7:
             if($ofd2 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Approver Approved' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
         case 9:
             if($ofd2 == 2)
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '0000-00-00') desc";
             else
-                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from office_item_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
+                $sOrder = "Coalesce((select DATE_FORMAT(ph.created_at, '%Y/%m/%d')  from inventory_modify_apply_history ph where ph.`status` <> -1 and ph.request_id = pm.id and ph.`action` = 'Releaser released' order by ph.created_at desc LIMIT 1), '9999-99-99') ";
             break;
         default:
     }
@@ -544,8 +547,6 @@ if (!empty($_GET['page'])) {
     }
 }
 
-if($page == 0)
-    $page = 1;
 
 if (!empty($_GET['size'])) {
     $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
@@ -586,11 +587,13 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
         $checker = "";
         $approver = "";
 
+        $note_1 = "";
+        $phase_1 = "[]";
         
         $list = [];
         $attachment = [];
         $release_items = [];
-    
+        $attachment = [];
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $id = $row['id'];
@@ -610,12 +613,24 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
             $checker = $row['checker'];
             $approver = $row['approver'];
-
-            $check_at = $row['check_at'];
-            $approval_at = $row['approval_at'];
             
             $desc = GetStatus($row['status']);
-        
+            $attachment = GetAttachment($id, $db);
+
+            $phase_1 = $row['phase_1'];
+            if($phase_1 == null) 
+                $phase_1 = "[]";
+            $phase1 = json_decode($phase_1, true);
+            if($phase1 == null)
+                $phase1 = [];
+
+            if($status != 3)
+                $phase1 = UpdateQty($phase1, $db);
+
+            $note_1 = $row['note_1'];
+            $note_2 = $row['note_2'];
+            $note_3 = $row['note_3'];
+            $note_4 = $row['note_4'];
 
             $merged_results[] = array(
                 "is_edited" => 1,
@@ -627,6 +642,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 "checker_id" => $checker_id,
                 "approver_id" => $approver_id,
                 "date_requested" => $date_requested,
+                "attachment" => $attachment,
                 "status" => $status,
                 "requestor" => $requestor,
                 "created_at" => $created_at,
@@ -636,9 +652,11 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 "checker" => $checker,
                 "approver" => $approver,
                 "desc" => $desc,
-
-                "check_at" => $check_at,
-                "approval_at" => $approval_at,
+                "note_1" => $note_1,
+                "note_2" => $note_2,
+                "note_3" => $note_3,
+                "note_4" => $note_4,
+                "phase1" => $phase1,
             
                 "cnt" => $cnt,
             );
@@ -653,8 +671,8 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
 function GetAttachment($_id, $db)
 {
-    $sql = "select COALESCE(h.filename, '') filename, COALESCE(h.gcp_name, '') gcp_name
-            from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = 'apply_office_item'
+    $sql = "select id, 1 is_checked, COALESCE(h.filename, '') filename, COALESCE(h.gcp_name, '') gcp_name
+            from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = 'inventory_modify'
             order by h.created_at ";
 
     $merged_results = array();
@@ -694,7 +712,7 @@ function UpdateQty($list, $db)
 function GetReleaseAttachment($_id, $db)
 {
     $sql = "select COALESCE(h.filename, '') filename, COALESCE(h.gcp_name, '') gcp_name
-            from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = 'office_item_release'
+            from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = 'inventory_modify_release'
             order by h.created_at ";
 
     $merged_results = array();
@@ -726,7 +744,7 @@ function GetStatus($loc)
 
 function GetHistory($_id, $db)
 {
-    $sql = "select pm.id, `actor`, `action`, reason, `status`, DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at from office_item_apply_history pm 
+    $sql = "select pm.id, `actor`, `action`, reason, `status`, DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at from inventory_modify_apply_history pm 
             where `status` <> -1 and request_id = " . $_id . " order by created_at ";
 
     $merged_results = array();
@@ -743,7 +761,7 @@ function GetHistory($_id, $db)
 
 function GetHistoryDesc($_id, $db)
 {
-    $sql = "select pm.id, `actor`, `action`, reason, `status`, DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at from office_item_apply_history pm 
+    $sql = "select pm.id, `actor`, `action`, reason, `status`, DATE_FORMAT(pm.created_at, '%Y/%m/%d %T') created_at from inventory_modify_apply_history pm 
             where `status` <> -1 and request_id = " . $_id . " order by created_at desc ";
 
     $merged_results = array();

@@ -588,14 +588,14 @@
                         <li>
                             <select style="width: 100%; margin-bottom: 8px;" v-model="notes">
                                 <option value=""></option>
-                                <option value="">Deliver Item(s) to Client</option>
-                                <option value="">Return Item(s) from Client to Inventory System</option>
-                                <option value="">Void Tracking Code of Item(s)</option>
-                                <option value="">Item(s) Lost</option>
-                                <option value="">Item(s) Scrapped</option>
-                                <option value="">Change Inventory Pool or Related Project of Item(s)</option>
-                                <option value="">Change Location of Item(s)</option>
-                                <option value="">Change Sample Status of Item(s)</option>
+                                <option value="Deliver Item(s) to Client">Deliver Item(s) to Client</option>
+                                <option value="Return Item(s) from Client to Inventory System">Return Item(s) from Client to Inventory System</option>
+                                <option value="Void Tracking Code of Item(s)">Void Tracking Code of Item(s)</option>
+                                <option value="Item(s) Lost">Item(s) Lost</option>
+                                <option value="Item(s) Scrapped">Item(s) Scrapped</option>
+                                <option value="Change Inventory Pool or Related Project of Item(s)">Change Inventory Pool or Related Project of Item(s)</option>
+                                <option value="Change Location of Item(s)">Change Location of Item(s)</option>
+                                <option value="Change Sample Status of Item(s)">Change Sample Status of Item(s)</option>
                             </select>
 
                             <textarea style="width:100%" placeholder="Notes" v-model="notes4"></textarea>
@@ -1078,16 +1078,16 @@
                         <option>Voided</option>
                     </select>
 
-                    <select>
+                    <select v-model="fil_project_related">
                         <option value="">----- Related Project -----</option>
                         <!-- 載入系統上所有的 Project 名字 -->
-                        <option>{{  }}</option>
+                        <option v-for="(item, index) in projects" :value="item.id">{{ item.project_name}}</option>
                     </select>
 
-                    <select>
+                    <select v-model="fil_which_order">
                         <option value="">----- Which Order -----</option>
                         <!-- 載入系統上所有的 Order 編號和名字，例如： LPO-TW-0284 Laureen Uy-Cruz House - General Lights -->
-                        <option>{{ 訂單編號 }} {{ 訂單名稱 }}</option>
+                        <option v-for="(item, index) in orders" :value="item.id">{{ item.serial_name}} {{ item.order_name }}</option>
                     </select>
 
 
@@ -1253,7 +1253,7 @@ ELEMENT.locale(ELEMENT.lang.en)
 
 <!-- import JavaScript -->
 <script src="js/element-ui@2.15.14/lib/index.js"></script>
-<script src="js/office_item_inventory_modify.js"></script>
+<script src="js/inventory_modify.js"></script>
 
 <!-- Awesome Font for current webpage -->
 <script src="js/a076d05399.js"></script>
