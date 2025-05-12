@@ -384,12 +384,16 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
 
     $item_1 = array();
-    foreach ($receive_json['items'] as $it) {
+    if($receive_json != null && isset($receive_json['items']))
+    {
+        foreach ($receive_json['items'] as $it) {
         if ($it['id'] == $receive_id) {
             $item_1 = $it;
             break;
         }
     }
+    }
+    
 
     $remark = "";
     $listing = "";

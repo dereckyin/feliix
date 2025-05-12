@@ -56,6 +56,7 @@
     <!-- JS for current webpage -->
     <script>
     function EditListing() {
+        app.clearListing();
         $(".mask").toggle();
         $("#modal_EditListing").toggle();
     }
@@ -695,11 +696,11 @@
                             <!-- 分頁功能，下方的 tablebox 的內容要做分頁，每一頁 10 筆資料  -->
                             <div class="list_function">
                                 <div class="pagenation">
-                                    <a class="prev" :disabled="it_page == 1" @click="it_pre_page();">Prev 10</a>
+                                    <a class="prev" :disabled="page == 1" @click="pre_page();">Prev 10</a>
 
-                                    <a class="page" v-for="pg in it_pages_10" @click="it_page=pg;" v-bind:style="[pg == it_page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
+                                    <a class="page" v-for="pg in pages_10" @click="page=pg;" v-bind:style="[pg == page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                                    <a class="next" :disabled="it_page == it_pages.length" @click="it_nex_page();">Next 10</a>
+                                    <a class="next" :disabled="page == pages.length" @click="nex_page();">Next 10</a>
                                 </div>
                             </div>
                         </li>
@@ -718,53 +719,53 @@
                                 </thead>
 
                                 <tbody>
-                                <tr>
+                                <tr v-for="(item, index) in phase" :key="index" :class="[is_toIndex === (page - 1 ) * perPage + index ? 'shake' : '' ]" :data-attr="index">
                                     <td>
                                         <ul>
                                             <li>Tracking Code:</li>
-                                            <li>250220 02949 00001</li>
+                                            <li>{{ item.format_bar }}</li>
                                         </ul>
 
                                         <ul>
                                             <li>Status:</li>
-                                            <li>On Hand</li>
+                                            <li>{{ item.status_text }}</li>
                                         </ul>
 
                                         <ul>
                                             <li style="max-width: 135px;">Purchased thru Which Order:</li>
-                                            <li><a href="order_taiwan_p4?id=xxxx">LPO-TW-0270 Arthaland Century Pacific Tower</a></li>
+                                            <li><a :href="item.order_url" target="_blank">{{item.order_name}} {{item.order_name}}</a></li>
                                         </ul>
 
                                         <ul>
                                             <li>Created:</li>
-                                            <li>2025-03-26 17:11:20 (Gwendolyn Sarmiento)</li>
+                                            <li>{{ item.created_at }} ({{ item.created_by }})</li>
                                         </ul>
 
                                         <ul>
                                             <li>Updated:</li>
-                                            <li>2025-04-05 10:11:20 (Dennis Lin)</li>
+                                            <li v-show="item.updated_by != null">{{ item.updated_at }} ({{ item.updated_by }})</li>
                                         </ul>
                                     </td>
 
                                     <td>
                                         <ul>
                                             <li>Inventory Pool:</li>
-                                            <li>Project Pool</li>
+                                            <li>{{ item.which_pool }}</li>
                                         </ul>
 
                                         <ul>
                                             <li style="min-width: 130px;">Related Project:</li>
-                                            <li><a href="project02?p=2239">Arthaland Century Pacific Tower - 7th Floor (Additional) No.1</a></li>
+                                            <li><a :href="'project02?p=' + item.project_id" target="_blank">{{ item.project_name }}</a></li>
                                         </ul>
 
                                         <ul>
                                             <li>Location:</li>
-                                            <li>Caloocan</li>
+                                            <li>{{ item.location }}</li>
                                         </ul>
 
                                         <ul>
                                             <li>Sample:</li>
-                                            <li>No</li>
+                                            <li>{{ item.as_sample }}</li>
                                         </ul>
                                     </td>
 
@@ -773,31 +774,31 @@
 
                                         <ul>
                                             <li>Product ID:</li>
-                                            <li>2423</li>
+                                            <li>{{ item.product_id }}</li>
                                         </ul>
 
                                         <ul>
                                             <li>Product Code:</li>
-                                            <li><a>FELIIX SB NS0612</a></li>
+                                            <li><a :href="'product_display?id=' + item.product_id" target="_blank">{{ item.code }}</a></li>
                                         </ul>
 
                                         <ul>
                                             <li>Brand:</li>
-                                            <li>SHAN BEN</li>
+                                            <li>{{ item.brand }}</li>
                                         </ul>
 
                                         <ul>
                                             <li>Specification:</li>
-                                            <li>received item 的 brief 和 listing</li>
+                                            <li style="white-space: break-spaces; font-weight: 300;">{{ item.listing }} {{ item.remark }}</li>
                                         </ul>
                                     </td>
 
                                     <td>
                                         <i aria-hidden="true" class="fas fa-arrow-alt-circle-up"
-                                           @click="_set_up((it_page - 1 ) * it_perPage + index, item.id)"></i>
+                                           @click="set_up((page - 1 ) * perPage + index, item.id)"></i>
                                         <i aria-hidden="true" class="fas fa-arrow-alt-circle-down"
-                                           @click="_set_down((it_page - 1 ) * it_perPage + index, item.id)"></i>
-                                        <i aria-hidden="true" class="fas fa-trash-alt" @click="_del(item.id)"></i>
+                                           @click="set_down((page - 1 ) * perPage + index, item.id)"></i>
+                                        <i aria-hidden="true" class="fas fa-trash-alt" @click="del(item.id)"></i>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -941,11 +942,11 @@
                             <!-- 分頁功能，下方的 tablebox 的內容要做分頁，每一頁 10 筆資料  -->
                             <div class="list_function">
                                 <div class="pagenation">
-                                    <a class="prev" :disabled="it_page == 1" @click="it_pre_page();">Prev 10</a>
+                                    <a class="prev" :disabled="page == 1" @click="pre_page();">Prev 10</a>
 
-                                    <a class="page" v-for="pg in it_pages_10" @click="it_page=pg;" v-bind:style="[pg == it_page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
+                                    <a class="page" v-for="pg in pages_10" @click="page=pg;" v-bind:style="[pg == page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                                    <a class="next" :disabled="it_page == it_pages.length" @click="it_nex_page();">Next 10</a>
+                                    <a class="next" :disabled="page == pages.length" @click="nex_page();">Next 10</a>
                                 </div>
                             </div>
                         </li>
@@ -963,11 +964,11 @@
                                 </thead>
 
                                 <tbody>
-                                <tr>
+                                <tr v-for="(item, index) in items" :key="index">
                                     <td>
                                         <ul>
                                             <li>Tracking Code:</li>
-                                            <li>250220 02949 00001</li>
+                                            <li>{{ item.format_bar }}</li>
                                         </ul>
 
                                         <ul>
@@ -1067,15 +1068,15 @@
 
 
                 <div class="filter_function">
-                    <input type="text" placeholder="Input Product ID or Code">
+                    <input type="text" v-model="fil_tracking" placeholder="Input Product ID or Code">
 
-                    <select>
+                    <select v-model="fil_status">
                         <option value="">----- Status of Tracking Code -----</option>
-                        <option>Deliver to Client</option>
-                        <option>Lost</option>
-                        <option>On Hand</option>
-                        <option>Scrapped</option>
-                        <option>Voided</option>
+                        <option value="2">Deliver to Client</option>
+                        <option value="1">Lost</option>
+                        <option value="0">On Hand</option>
+                        <option value="3">Scrapped</option>
+                        <option value="-1">Voided</option>
                     </select>
 
                     <select v-model="fil_project_related">
@@ -1084,10 +1085,10 @@
                         <option v-for="(item, index) in projects" :value="item.id">{{ item.project_name}}</option>
                     </select>
 
-                    <select v-model="fil_which_order">
+                    <select v-model="fil_order">
                         <option value="">----- Which Order -----</option>
                         <!-- 載入系統上所有的 Order 編號和名字，例如： LPO-TW-0284 Laureen Uy-Cruz House - General Lights -->
-                        <option v-for="(item, index) in orders" :value="item.id">{{ item.serial_name}} {{ item.order_name }}</option>
+                        <option v-for="(item, index) in orders" :value="item.id">{{ item.od_name}}</option>
                     </select>
 
 
@@ -1096,7 +1097,7 @@
                     </button>
 
                     <button @click="add_filtered()" style="width: 160px; font-size: 14px;">Add All Filtered</button>
-                    <button @click="clear()" style="width: 60px; font-size: 14px;">Clear</button>
+                    <button @click="clearListing()" style="width: 60px; font-size: 14px;">Clear</button>
 
                 </div>
 
@@ -1105,11 +1106,11 @@
                     <!-- 分頁功能 -->
                     <!-- 這個頁面需要做分頁，每一頁 10 筆資料  -->
                     <div class="pagenation">
-                        <a class="prev" :disabled="page == 1" @click="pre_page(); filter_apply_new();">Prev 10</a>
+                        <a class="prev" :disabled="it_page == 1" @click="it_pre_page(); filter_apply_new();">Prev 10</a>
 
-                        <a class="page" v-for="pg in pages_10" @click="page=pg; filter_apply_new();" v-bind:style="[pg == page ? { 'background':'var(--fth01)', 'color': 'white'} : { }]">{{ pg }}</a>
+                        <a class="page" v-for="pg in it_pages_10" @click="it_page=pg; filter_apply_new();" v-bind:style="[pg == it_page ? { 'background':'var(--fth01)', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                        <a class="next" :disabled="page == pages.length" @click="nex_page(); filter_apply_new();">Next 10</a>
+                        <a class="next" :disabled="it_page == it_pages.length" @click="it_nex_page(); filter_apply_new();">Next 10</a>
                     </div>
 
                 </div>
@@ -1129,53 +1130,53 @@
                         </thead>
 
                         <tbody>
-                        <tr>
+                        <tr v-for="(item, index) in it_records" :key="index">
                             <td>
                                 <ul>
                                     <li>Tracking Code:</li>
-                                    <li>250220 02949 00001</li>
+                                    <li>{{ item.format_bar }}</li>
                                 </ul>
 
                                 <ul>
                                     <li>Status:</li>
-                                    <li>On Hand</li>
+                                    <li>{{ item.status_text }}</li>
                                 </ul>
 
                                 <ul>
                                     <li style="max-width: 125px;">Purchased thru Which Order:</li>
-                                    <li><a href="order_taiwan_p4?id=xxxx">LPO-TW-0270 Arthaland Century Pacific Tower</a></li>
+                                    <li><a :href="item.order_url" target="_blank">{{item.order_name}} {{item.order_name}}</a></li>
                                 </ul>
 
                                 <ul>
                                     <li>Created:</li>
-                                    <li>2025-03-26 17:11:20 (Gwendolyn Sarmiento)</li>
+                                    <li>{{ item.created_at }} ({{ item.created_by }})</li>
                                 </ul>
 
                                 <ul>
                                     <li>Updated:</li>
-                                    <li>2025-04-05 10:11:20 (Dennis Lin)</li>
+                                    <li v-show="item.updated_by != null">{{ item.updated_at }} ({{ item.updated_by }})</li>
                                 </ul>
                             </td>
 
                             <td>
                                  <ul>
                                     <li>Inventory Pool:</li>
-                                    <li>Project Pool</li>
+                                    <li>{{ item.which_pool }}</li>
                                  </ul>
 
                                  <ul>
                                     <li style="min-width: 130px;">Related Project:</li>
-                                    <li><a href="project02?p=2239">Arthaland Century Pacific Tower - 7th Floor (Additional) No.1</a></li>
+                                    <li><a :href="'project02?p=' + item.project_id" target="_blank">{{ item.project_name }}</a></li>
                                  </ul>
 
                                  <ul>
                                     <li>Location:</li>
-                                    <li>Caloocan</li>
+                                    <li>{{ item.location }}</li>
                                  </ul>
 
                                  <ul>
                                     <li>Sample:</li>
-                                    <li>No</li>
+                                    <li>{{ item.as_sample }}</li>
                                  </ul>
                              </td>
 
@@ -1184,27 +1185,27 @@
 
                                 <ul>
                                     <li>Product ID:</li>
-                                    <li>2423</li>
+                                    <li>{{ item.product_id }}</li>
                                 </ul>
 
                                 <ul>
                                     <li>Product Code:</li>
-                                    <li><a>FELIIX SB NS0612</a></li>
+                                    <li><a :href="'product_display?id=' + item.product_id" target="_blank">{{ item.code }}</a></li>
                                 </ul>
 
                                 <ul>
                                     <li>Brand:</li>
-                                    <li>SHAN BEN</li>
+                                    <li>{{ item.brand }}</li>
                                 </ul>
 
                                 <ul>
                                     <li>Specification:</li>
-                                    <li>received item 的 brief 和 listing</li>
+                                    <li style="white-space: break-spaces; font-weight: 300;">{{ item.listing }} {{ item.remark }}</li>
                                 </ul>
                             </td>
 
                             <td>
-                                <button id="edit01"><i aria-hidden="true" class="fas fa-caret-right"></i></button>
+                                <button id="edit01" @click="addItem(item)"><i aria-hidden="true" class="fas fa-caret-right"></i></button>
                             </td>
                         </tr>
                         </tbody>

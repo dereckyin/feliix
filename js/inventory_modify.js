@@ -116,7 +116,9 @@ var app = new Vue({
     is_toIndex: "",
 
     fil_project_related: "",
-    fil_which_order : "",
+    fil_order : "",
+    fil_status : "",
+    fil_tracking : "",
 
     it_records: [],
     it_page: 1,
@@ -125,6 +127,7 @@ var app = new Vue({
     it_pages: [],
     it_pages_10: [],
     it_total: 0,
+
   },
 
   created() {
@@ -160,10 +163,8 @@ var app = new Vue({
 
     // this.getProjectNames();
     this.getLevel1();
-    this.getItems();
     this.getProjects();
     this.getOrders();
-    this.getTrackingItem();
 
   },
 
@@ -189,9 +190,9 @@ var app = new Vue({
     // },
 
     phase() {
-      this.it_total = this.phase1.length;
-      this.it_setPages();
-      return this.it_paginate(this.phase1);
+      this.total = this.items.length;
+      this.setPages();
+      return this.paginate(this.items);
     },
 
 
@@ -207,11 +208,52 @@ var app = new Vue({
     //   } 
     // },
 
-    
+    // items() {
+    //   this.total = this.items.length;
+    //   this.setPages();
+    //   return this.paginate(this.items);
+    // },
 
   },
 
   methods: {
+
+    clearListing() {
+      this.it_records = [];
+      this.it_page = 1;
+      this.it_pg = 0;
+      this.it_pages = [];
+      this.it_pages_10 = [];
+      this.it_total = 0;
+
+      this.fil_project_related = "";
+      this.fil_order = "";
+      this.fil_status = "";
+      this.fil_tracking = "";
+    },
+
+    addItem(item) {
+      let found = false;
+      for (i = 0; i < this.items.length; i++) {
+        if (this.items[i].id == item.id) {
+          found = true;
+          break;
+        }
+      }
+
+      if (found) {
+        Swal.fire({
+          text: "Item already exists in the list.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
+      this.items.push(item);
+
+      
+    },
 
     setTrackingPages () {
       console.log('setPages');
@@ -250,31 +292,18 @@ var app = new Vue({
         },
 
     
-    getTrackingItem: function(keyword) {
+    filter_apply_new: function(keyword) {
       let _this = this;
 
       const params = {
                 tid : _this.fil_tracking,
-                fpi: _this.fil_prod_id,
-                fpc: _this.fil_prod_code,
-       
-                fp: _this.fil_pool,
-                fpr: _this.fil_project_related,
-                loc: _this.fil_location,
-                sap: _this.fil_sample,
 
+                fpr: _this.fil_project_related,
                 fs: _this.fil_status,
                 fo: _this.fil_order,
-                fdf: _this.fil_date_from,
-                fdt: _this.fil_date_to,
-
-                op1: _this.od_opt1,
-                od1: _this.od_ord1,
-                op2: _this.od_opt2,
-                od2: _this.od_ord2,
-
-                page: _this.tracking_page,
-                size: _this.tracking_perPage,
+               
+                page: _this.it_page,
+                size: _this.it_perPage,
             };
 
             this.total = 0;
@@ -285,16 +314,13 @@ var app = new Vue({
               .get('api/tracking_item_query', { params, headers: {"Authorization" : `Bearer ${token}`} })
               .then(
               (res) => {
-                  _this.tracking_records = res.data;
+                  _this.it_records = res.data;
 
-                  if(_this.tracking_records.length > 0)
-                   _this.total = _this.tracking_records[0].cnt;
+                  if(_this.it_records.length > 0)
+                   _this.it_total = _this.it_records[0].cnt;
 
-                  if(_this.tracking_pg !== 0)
-                  { 
-                    _this.tracking_page = _this.tracking_pg;
                     _this.setTrackingPages();
-                  }
+                  
               },
               (err) => {
                   alert(err.response);
@@ -1026,7 +1052,7 @@ var app = new Vue({
         this.pages.push(index);
       }
 
-      this.paginate(this.receive_records);
+      this.paginate(this.items);
     },
 
     paginate: function (posts) {
@@ -1045,10 +1071,8 @@ var app = new Vue({
 
         this.pages_10 = this.pages.slice(from, to);
 
-      // if(this.fil_keyword != '')
-      //   return this.receive_records.slice(from, to);
-      // else
-        return  this.receive_records;
+      return this.items.slice(from, to);
+
     },
 
     pre_page: function(){
@@ -1080,6 +1104,38 @@ var app = new Vue({
 
       if(pages_10.length > 0)
         this.pages_10 = pages_10;
+
+    },
+
+    it_pre_page: function(){
+      let tenPages = Math.floor((this.it_page - 1) / 10) + 1;
+
+        this.it_page = parseInt(this.it_page) - 10;
+        if(this.it_page < 1)
+          this.it_page = 1;
+ 
+        this.it_pages_10 = [];
+
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+
+        this.it_pages_10 = this.it_pages.slice(from, to);
+      
+    },
+
+    it_nex_page: function(){
+      let tenPages = Math.floor((this.it_page - 1) / 10) + 1;
+
+      this.it_page = parseInt(this.it_page) + 10;
+      if(this.it_page > this.it_pages.length)
+        this.it_page = this.it_pages.length;
+
+      let from = tenPages * 10;
+      let to = (tenPages + 1) * 10;
+      let pages_10 = this.it_pages.slice(from, to);
+
+      if(pages_10.length > 0)
+        this.it_pages_10 = pages_10;
 
     },
 
@@ -1163,44 +1219,6 @@ var app = new Vue({
     },
 
     
-    getItems: function() {
-      let _this = this;
-
-      let token = localStorage.getItem("accessToken");
-
-    const params = {
-      level: 1,
-      parent: '',
-      
-      page: _this.page,
-      size: _this.perPage,
-    };
-
-    axios
-      .get("api/office_items_catalog", {
-        params,
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(
-        (res) => {
-          _this.items = res.data;
-
-          if(_this.items.length > 0)
-          {
-            _this.total = _this.items[0].cnt;
-            _this.setPages();
-          }
-          else
-            _this.total = 0;
-
-        },
-        (err) => {
-          alert(err.response);
-        }
-      )
-      .finally(() => { console.log('getItems') });
-  },
-
 
     getLevel1: function() {
         let _this = this;
@@ -1364,57 +1382,23 @@ var app = new Vue({
     },
 
 
-    filter_apply_new: function() {
-      let _this = this;
-
-      let token = localStorage.getItem("accessToken");
-
-    const params = {
-      level: 1,
-      parent: this.lv1 + this.lv2 + this.lv3 + this.lv4,
-      
-      page: _this.page,
-      size: _this.perPage,
-    };
-
-    axios
-      .get("api/office_items_catalog", {
-        params,
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(
-        (res) => {
-          _this.items = res.data;
-
-          if(_this.items.length > 0)
-          {
-            _this.total = _this.items[0].cnt;
-            _this.setPages();
-          }
-          else
-            _this.total = 0;
-
-        },
-        (err) => {
-          alert(err.response);
-        }
-      )
-      .finally(() => {});
-  },
-
     filter_apply_async: async function() {
       let data = [];
       let token = localStorage.getItem("accessToken");
 
       const params = {
-        level: 1,
-        parent: this.lv1 + this.lv2 + this.lv3 + this.lv4,
-        page: 1,
-        size: 100000,
+          tid : this.fil_tracking,
+
+          fpr: this.fil_project_related,
+          fs: this.fil_status,
+          fo: this.fil_order,
+          
+          page: 1,
+          size: 100000,
       };
 
       try {
-        let res = await axios.get("api/office_items_catalog", {
+        let res = await axios.get("api/tracking_item_query", {
           params,
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -1957,17 +1941,17 @@ var app = new Vue({
     },
 
 
-    _set_up: function(fromIndex, eid) {
+    set_up: function(fromIndex, eid) {
       var toIndex = fromIndex - 1;
 
       if (toIndex < 0) toIndex = 0;
 
-      var element = this.phase1.find(({ id }) => id === eid);
-      this.phase1.splice(fromIndex, 1);
-      this.phase1.splice(toIndex, 0, element);
+      var element = this.items.find(({ id }) => id === eid);
+      this.items.splice(fromIndex, 1);
+      this.items.splice(toIndex, 0, element);
 
-      let page = toIndex / this.it_perPage;
-      this.it_page = parseInt(page) + 1;
+      let page = toIndex / this.perPage;
+      this.page = parseInt(page) + 1;
 
       this.is_toIndex = toIndex;
 
@@ -1976,18 +1960,18 @@ var app = new Vue({
       }, 500)
     },
 
-    _set_down: function(fromIndex, eid) {
+    set_down: function(fromIndex, eid) {
       var toIndex = fromIndex + 1;
 
-      if (toIndex > this.phase1.length - 1)
-        toIndex = this.phase1.length - 1;
+      if (toIndex > this.items.length - 1)
+        toIndex = this.items.length - 1;
 
-      var element = this.phase1.find(({ id }) => id === eid);
-      this.phase1.splice(fromIndex, 1);
-      this.phase1.splice(toIndex, 0, element);
+      var element = this.items.find(({ id }) => id === eid);
+      this.items.splice(fromIndex, 1);
+      this.items.splice(toIndex, 0, element);
 
-      let page = toIndex / this.it_perPage;
-      this.it_page = parseInt(page) + 1;
+      let page = toIndex / this.perPage;
+      this.page = parseInt(page) + 1;
 
       this.is_toIndex = toIndex;
 
@@ -2020,10 +2004,10 @@ var app = new Vue({
       this.e_editing = true;
     },
 
-    _del: function(eid) {
-      var index = this.phase1.findIndex(({ id }) => id === eid);
+    del: function(eid) {
+      var index = this.items.findIndex(({ id }) => id === eid);
       if (index > -1) {
-        this.phase1.splice(index, 1);
+        this.items.splice(index, 1);
       }
     },
 
@@ -2153,62 +2137,20 @@ var app = new Vue({
 
     
     add_filtered: async function() {
+      var it_records = await this.filter_apply_async();
 
-      var id = 0;
-      var duplicate = false;
-
-      var items = await this.filter_apply_async();
-
-      for(j=0; j < items.length; j++)
-      {
-        duplicate = false;
-        
-        for (i = 0; i < this.phase1.length; i++) {
-          if (this.phase1[i].id > id) id = this.phase1[i].id;
-  
-          if(this.phase1[i].code1 == items[j].code1 && this.phase1[i].code2 == items[j].code2 && this.phase1[i].code3 == items[j].code3 && this.phase1[i].code4 == items[j].code4)
-          {
-            // Swal.fire({
-            //   text: "Same-code items[j] cannot be added into Listing twice.",
-            //   icon: "warning",
-            //   confirmButtonText: "OK",
-            // });
-  
-            duplicate = true;
+      for (var i = 0; i < it_records.length; i++) {
+        let found = false;
+        for (j = 0; j < this.items.length; j++) {
+          if (this.items[j].id == it_records[i].id) {
+            found = true;
             break;
           }
-
         }
-
-        if(duplicate == true)
-          continue;
-
-        var ad = {
-          id: ++id,
-          code1: items[j].code1,
-          code2: items[j].code2,
-          code3: items[j].code3,
-          code4: items[j].code4,
-          cat1: items[j].cat1,
-          cat2: items[j].cat2,
-          cat3: items[j].cat3,
-          cat4: items[j].cat4,
-          url: items[j].url,
-          amount : items[j].amount,
-          qty: items[j].qty,
-          sign: "",
-          qty1: "",
-          note: "",
-          qty2: "",
-          sign2: "",
-          comment: "",
-          reserve_qty : items[j].reserve_qty,
-          item_id: items[j].id,
-        };
-        this.phase1.push(ad);
-
+        if (found == false) {
+          this.items.push(it_records[i]);
+        }
       }
-        this.e_clear_edit();
     },
 
     _cancel_criterion: function() {
