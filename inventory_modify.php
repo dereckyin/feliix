@@ -587,7 +587,7 @@
                     <ul>
                         <li><b>Reason</b></li>
                         <li>
-                            <select style="width: 100%; margin-bottom: 8px;" v-model="reason">
+                            <select style="width: 100%; margin-bottom: 8px;" v-model="reason" @change="reset_codition()">
                                 <option value=""></option>
                                 <option value="Deliver Item(s) to Client">Deliver Item(s) to Client</option>
                                 <option value="Return Item(s) from Client to Inventory System">Return Item(s) from Client to Inventory System</option>
@@ -617,7 +617,7 @@
 
                                 <div class="compoundbox">
                                     <span>Transmittal File</span>
-                                    <input type="file" multiple id="transmittal_file" name="transmittal_file" >
+                                    <input type="file" multiple id="transmittal_file" name="transmittal_file" :ref="'transmittal_file'">
                                 </div>
                             </div>
 
@@ -636,7 +636,7 @@
                                 <div class="compoundbox">
                                     <span>Related Project?</span>
                                     <select v-model="project_id">
-                                        <option value="" >載入系統上所有的專案</option>
+                                         <option v-for="(item, index) in projects" :value="item.id">{{ item.project_name}}</option>
                                     </select>
                                 </div>                                                                                                
                             </div>
@@ -647,7 +647,7 @@
 
                                 <div class="compoundbox">
                                     <span>New Location of Item(s)</span>
-                                    <select>
+                                    <select v-model="location">
                                         <option value="Caloocan">Caloocan</option>
                                         <option value="Makati">Makati</option>
                                     </select>
@@ -655,15 +655,15 @@
 
                                 <div class="compoundbox">
                                     <span>Which Intermal Member Receives?</span>
-                                    <select>
+                                    <select v-model="receiver">
                                         <option value="">Which internal member receives the item(s)?</option>
-                                        <option value="">放入系統上所有已經註冊 且 不是被刪除 且 不是被 disabled 的使用者</option>
+                                        <option v-for="(item, index) in users" value="item.id">{{ item.username }}</option>
                                     </select>
                                 </div>
 
                                 <div class="compoundbox">
                                     <span>Transmittal File</span>
-                                    <input type="file" multiple>
+                                    <input type="file" multiple id="transmittal_file_1" name="transmittal_file_1" :ref="'transmittal_file_1'">
                                 </div>
 
                             </div>
@@ -674,7 +674,7 @@
                                 <div class="compoundbox">
                                     <span>New Sample Status of Item(s)</span>
 
-                                    <select>
+                                    <select v-model="as_sample">
                                         <option value="No">No</option>
                                         <option value="Yes">Yes</option>
                                     </select>
@@ -811,7 +811,7 @@
 
                     <div class="btnbox">
                         <a class="btn red" @click="reset1" title="Clear All Encoded Content">Reset</a>
-                        <a class="btn green" @click="save(1, notes)" title="Temporarily Save Encoded Content">Save</a>
+                        <a class="btn green" @click="save()" title="Temporarily Save Encoded Content">Save</a>
                         <a class="btn green" @click="goto_phase2">Execute</a>
                     </div>
 

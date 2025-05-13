@@ -130,6 +130,10 @@ var app = new Vue({
     users: [],
 
     receiver : "",
+    which_pool : "",
+    project_id : "",
+    as_sample : "",
+    location : "",
   },
 
   created() {
@@ -219,6 +223,15 @@ var app = new Vue({
   },
 
   methods: {
+    reset_codition() {
+      this.receiver = "";
+      $("#transmittal_file").val("");
+      $("#transmittal_file_1").val("");
+      this.which_pool = "";
+      this.project_id = "";
+      this.as_sample = "";
+      this.location = "";
+    },
 
     getUsers () {
 
@@ -494,31 +507,34 @@ var app = new Vue({
   
       },
 
-      save: function(stage, note) {
+      save: function() {
         let _this = this;
 
         var form_Data = new FormData();
         var token = localStorage.getItem("token");
         form_Data.append("jwt", token);
         form_Data.append("id", _this.id);
-        form_Data.append("stage", stage);
-        form_Data.append("notes", note);
-        form_Data.append("notes4", this.notes4)
-        form_Data.append("phase", JSON.stringify(_this.phase1));
+        form_Data.append("reason", this.reason);
+        form_Data.append("which_pool", this.which_pool);
+        form_Data.append("related_project", this.project_id)
+        form_Data.append("as_sample", this.as_sample);
+        form_Data.append("location", this.location);
+        form_Data.append("items", JSON.stringify(_this.items));
 
-        var favorite = [];
-        for(var i = 0; i < this.item_list.length; i++)
+
+        if(this.$refs.transmittal_file != undefined)
         {
-            if(this.item_list[i].is_checked === false)
-            favorite.push(this.item_list[i].id);
+          for (var i = 0; i < this.$refs.transmittal_file.files.length; i++) {
+            let file = this.$refs.transmittal_file.files[i];
+            form_Data.append("transmittal_file[" + i + "]", file);
+          }
         }
-        form_Data.append("items_to_delete", JSON.stringify(favorite));
 
-        if(this.$refs.file != undefined)
+        if(this.$refs.transmittal_file_1 != undefined)
         {
-          for (var i = 0; i < this.$refs.file.files.length; i++) {
-            let file = this.$refs.file.files[i];
-            form_Data.append("files[" + i + "]", file);
+          for (var i = 0; i < this.$refs.transmittal_file_1.files.length; i++) {
+            let file = this.$refs.transmittal_file_1.files[i];
+            form_Data.append("transmittal_file[" + i + "]", file);
           }
         }
 
@@ -528,7 +544,7 @@ var app = new Vue({
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
-          url: "api/office_item_inventory_modify_save",
+          url: "api/inventory_modify_save",
           data: form_Data,
         })
           .then(function(response) {
@@ -1848,14 +1864,11 @@ var app = new Vue({
     },
 
     reset1: function() {
-        this.phase1 = [];
+        this.items = [];
         //this.$refs.file.value = "";
-        this.notes = "";
-        this.notes4 = "";
-
-        // each item_list should be unchecked
-        for(var i = 0; i < this.item_list.length; i++)
-          this.item_list[i].is_checked = false;
+        this.reason = "";
+      
+        this.reset_codition(); 
     
     },
 
