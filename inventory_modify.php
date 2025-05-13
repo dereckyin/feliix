@@ -576,7 +576,7 @@
         <div class="block A focus" style="position: relative;">
             <h6>Inventory Modification<span>{{ record.request_no }}</span></h6>
 
-            <div class="box-content" id="phase1" v-if="record.status == 1">
+            <div class="box-content" id="phase1" v-show="record.status == 1">
 
                 <div class="headings">
                     <b class="tag focus">PHASE 1</b>
@@ -690,7 +690,18 @@
                                 <b>Item List</b>
                                 <a class="btn_quickquery" title="Add Item from Quick Query" href="javascript: void(0)" onclick="EditListing()"><i class="fas fa-list-alt"></i></a>
                                 <input type="text" placeholder="Input Tracking Code(s) Here and Separate by Semicolon.">
-                                <a class="btn small">Scan</a>
+                                <a class="btn small" id="startButton">Scan</a>
+
+                                
+                            </div>
+
+                            <div id="video_area" style="display: none;">
+                                <video id="video"></video>
+
+                                <div>
+                                    <a class="btn small orange" id="resetButton">Stop</a>
+                                    <a id="switchCameraButton" class="btn small blue">Switch Camera</a>
+                                </div>
                             </div>
 
                             <!-- 分頁功能，下方的 tablebox 的內容要做分頁，每一頁 10 筆資料  -->
@@ -821,7 +832,7 @@
 
 
 
-            <div class="box-content" id="phase2" v-if="record.status == 2">
+            <div class="box-content" id="phase2" v-show="record.status == 2">
 
                 <div class="headings">
                     <b class="tag focus">PHASE 2</b>
@@ -1258,5 +1269,83 @@ ELEMENT.locale(ELEMENT.lang.en)
 
 <!-- Awesome Font for current webpage -->
 <script src="js/a076d05399.js"></script>
-
+<script type="text/javascript" src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
 </html>
+
+
+<script type="text/javascript">
+    window.addEventListener('load', function () {
+      let selectedDeviceId;
+      let videoInputDevices = [];
+      let currentDeviceIndex = 0;
+
+      const hints = new Map();
+      const formats = [ZXing.BarcodeFormat.CODE_128];
+      const CHARSET = 'utf-8';
+      hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, formats);
+      hints.set(ZXing.DecodeHintType.CHARACTER_SET, CHARSET);
+      hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
+      hints.set(ZXing.DecodeHintType.PURE_BARCODE, false);
+
+      const codeReader = new ZXing.BrowserMultiFormatReader();
+      console.log('ZXing code reader initialized');
+
+      codeReader.listVideoInputDevices()
+        .then((devices) => {
+          videoInputDevices = devices;
+          selectedDeviceId = videoInputDevices[0].deviceId;
+          
+          document.getElementById('startButton').addEventListener('click', () => {
+            document.getElementById('video_area').style.display = 'flex';
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+              if (result) {
+                //console.log(result);
+                //alert(result.text);
+
+                if(result.text.length == 16){
+                    codeReader.reset();
+                    document.getElementById('video_area').style.display = 'none';
+                    app.fil_tracking += ";" + result.text;
+                }
+                
+              }
+              if (err && !(err instanceof ZXing.NotFoundException)) {
+                console.error(err);
+                document.getElementById('result').textContent = err;
+              }
+            });
+            console.log(`Started continuous decode from camera with id ${selectedDeviceId}`);
+          });
+
+          document.getElementById('resetButton').addEventListener('click', () => {
+            codeReader.reset();
+            document.getElementById('video_area').style.display = 'none';
+
+            console.log('Reset.');
+          });
+
+          document.getElementById('switchCameraButton').addEventListener('click', () => {
+            codeReader.reset();
+            currentDeviceIndex = (currentDeviceIndex + 1) % videoInputDevices.length;
+            selectedDeviceId = videoInputDevices[currentDeviceIndex].deviceId;
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+              if (result) {
+                if(result.text.length == 16){
+                    codeReader.reset();
+                    document.getElementById('video_area').style.display = 'none';
+                    app.fil_tracking += ";" + result.text;
+                }
+              }
+              if (err && !(err instanceof ZXing.NotFoundException)) {
+                console.error(err);
+                document.getElementById('result').textContent = err;
+              }
+            });
+            console.log(`Switched to camera with id ${selectedDeviceId}`);
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+  </script>

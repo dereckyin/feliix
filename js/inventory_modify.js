@@ -489,16 +489,17 @@ var app = new Vue({
             if (response.data.length > 0) {
             
               _this.record = response.data[0];
-              _this.phase1 = JSON.parse(JSON.stringify(_this.record.phase1));
-              _this.it_total = _this.phase1.length;
-              _this.notes = _this.record.note_1;
-              _this.notes2 = _this.record.note_2;
-              _this.notes3 = _this.record.note_3;
-              _this.notes4 = _this.record.note_4;
+              _this.items = JSON.parse(JSON.stringify(_this.record.listing));
+              _this.reason = _this.record.reason;
+              _this.which_pool = _this.record.which_pool;
+              _this.as_sample = _this.record.as_sample;
+              _this.location = _this.record.location;
+              _this.project_id = _this.record.project_id;
 
               _this.item_list = _this.record.attachment;
 
-              //_this.it_setPages();
+              _this.setPages();
+              _this.paginate(_this.items);
             }
           })
           .catch(function(error) {
@@ -519,6 +520,7 @@ var app = new Vue({
         form_Data.append("related_project", this.project_id)
         form_Data.append("as_sample", this.as_sample);
         form_Data.append("location", this.location);
+        form_Data.append("stage", 1);
         form_Data.append("items", JSON.stringify(_this.items));
 
 

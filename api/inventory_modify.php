@@ -125,6 +125,7 @@ switch ($method) {
         $sql = "SELECT  pm.id,
                         request_no, 
                         check_name,
+                        date_requested,
                         pm.`status`,
                         create_id,
                         checker checker_id,
@@ -136,11 +137,12 @@ switch ($method) {
                         DATE_FORMAT(pm.updated_at, '%Y/%m/%d %T') updated_at,
                         c.username checker,
                         a.username approver,
-                        note_1,
-                        phase_1,
-                        note_2,
-                        note_3,
-                        note_4
+                        reason,
+                        listing,
+                        which_pool,
+                        as_sample,
+                        location,
+                        project_id
                 from inventory_modify pm 
                 LEFT JOIN user p ON p.id = pm.create_id 
                 LEFT JOIN user u ON u.id = pm.updated_id
@@ -587,12 +589,13 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
         $checker = "";
         $approver = "";
 
-        $note_1 = "";
-        $phase_1 = "[]";
+        $reason = "";
+        $listing = "[]";
         
-        $list = [];
-        $attachment = [];
-        $release_items = [];
+        $which_pool = "";
+        $as_sample = "";
+        $location = "";
+        $project_id = "";
         $attachment = [];
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -600,6 +603,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $request_no = $row['request_no'];
             $check_name = $row['check_name'];
             $status = $row['status'];
+            $date_requested = $row['date_requested'];
             $requestor = $row['username'];
             $created_at = $row['created_at'];
             $updated_at = $row['updated_at'];
@@ -614,23 +618,19 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $checker = $row['checker'];
             $approver = $row['approver'];
             
-            $desc = GetStatus($row['status']);
+            $reason = $row['reason'];
+            $listing = $row['listing'];
+            $which_pool = $row['which_pool'];
+            $as_sample = $row['as_sample'];
+            $location = $row['location'];
+            $project_id = $row['project_id'];
+
+            if($listing == null || $listing == "")
+            {
+                $listing = "[]";
+            }
+
             $attachment = GetAttachment($id, $db);
-
-            $phase_1 = $row['phase_1'];
-            if($phase_1 == null) 
-                $phase_1 = "[]";
-            $phase1 = json_decode($phase_1, true);
-            if($phase1 == null)
-                $phase1 = [];
-
-            if($status != 3)
-                $phase1 = UpdateQty($phase1, $db);
-
-            $note_1 = $row['note_1'];
-            $note_2 = $row['note_2'];
-            $note_3 = $row['note_3'];
-            $note_4 = $row['note_4'];
 
             $merged_results[] = array(
                 "is_edited" => 1,
@@ -651,12 +651,12 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 "updated_by" => $updated_by,
                 "checker" => $checker,
                 "approver" => $approver,
-                "desc" => $desc,
-                "note_1" => $note_1,
-                "note_2" => $note_2,
-                "note_3" => $note_3,
-                "note_4" => $note_4,
-                "phase1" => $phase1,
+                "reason" => $reason,
+                "listing" => json_decode($listing),
+                "which_pool" => $which_pool,
+                "as_sample" => $as_sample,
+                "location" => $location,
+                "project_id" => $project_id,
             
                 "cnt" => $cnt,
             );

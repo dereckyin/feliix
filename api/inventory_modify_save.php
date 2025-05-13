@@ -77,19 +77,15 @@ if (!isset($jwt)) {
                 set ";
 if($stage == 1)
 {
-                $query .= " note_1 = :note_1, ";
-                $query .= " note_4 = '" . $notes4 . "', ";
-}
-if($stage == 2)
-{
-                $query .= " note_2 = :note_1, ";
-}
-if($stage == 3)
-{
-                $query .= " note_3 = :note_1, ";
+                $query .= " reason = :reason, ";
 }
 
-                $query .= " phase_1 = :phase_1,
+                $query .= " 
+                which_pool = :which_pool,
+                as_sample = :as_sample,
+                location = :location,
+                project_id = :related_project,
+                listing = :items,
                 updated_id = :updated_id,
                 updated_at = now()
                 where id = :id";
@@ -97,8 +93,13 @@ if($stage == 3)
                 // prepare the query
                 $stmt = $db->prepare($query);
 
-                $stmt->bindParam(':note_1', $notes);
-                $stmt->bindParam(':phase_1', $phase);
+                // bind the values
+                $stmt->bindParam(':reason', $reason);
+                $stmt->bindParam(':which_pool', $which_pool);
+                $stmt->bindParam(':as_sample', $as_sample);
+                $stmt->bindParam(':location', $location);
+                $stmt->bindParam(':related_project', $related_project);
+                $stmt->bindParam(':items', $items);
                 $stmt->bindParam(':updated_id', $user_id);
                 $stmt->bindParam(':id', $id);
                 
@@ -125,9 +126,9 @@ if($stage == 3)
 
                 try {
                     // count if there is any file
-                    if(isset($_FILES['files']['name']))
+                    if(isset($_FILES['transmittal_file']['name']))
                     {
-                        $total = count($_FILES['files']['name']);
+                        $total = count($_FILES['transmittal_file']['name']);
                     }
                     else
                     {
@@ -136,9 +137,9 @@ if($stage == 3)
                     // Loop through each file
                     for( $i=0 ; $i < $total ; $i++ ) {
 
-                        if(isset($_FILES['files']['name'][$i]))
+                        if(isset($_FILES['transmittal_file']['name'][$i]))
                         {
-                            $image_name = $_FILES['files']['name'][$i];
+                            $image_name = $_FILES['transmittal_file']['name'][$i];
                             $valid_extensions = array("jpg","jpeg","png","gif","pdf","docx","doc","xls","xlsx","ppt","pptx","zip","rar","7z","txt","dwg","skp","psd","evo","dwf","bmp");
                             $extension = pathinfo($image_name, PATHINFO_EXTENSION);
                             if (in_array(strtolower($extension), $valid_extensions)) 
@@ -154,11 +155,11 @@ if($stage == 3)
 
                                 $upload_name = time() . '_' . pathinfo($image_name, PATHINFO_FILENAME) . '.' . $extension;
 
-                                $file_size = filesize($_FILES['files']['tmp_name'][$i]);
+                                $file_size = filesize($_FILES['transmittal_file']['tmp_name'][$i]);
                                 $size = 0;
 
                                 $obj = $bucket->upload(
-                                    fopen($_FILES['files']['tmp_name'][$i], 'r'),
+                                    fopen($_FILES['transmittal_file']['tmp_name'][$i], 'r'),
                                     ['name' => $upload_name]);
 
                                 $info = $obj->info();
@@ -241,36 +242,36 @@ if($stage == 3)
                     die();
                 }
 
-                // items to delete
-                for ($i = 0; $i < count($items_array); $i++) {
-                    $query = "DELETE FROM gcp_storage_file
-                        WHERE
-                            `id` = :_id";
+                // // items to delete
+                // for ($i = 0; $i < count($items_array); $i++) {
+                //     $query = "DELETE FROM gcp_storage_file
+                //         WHERE
+                //             `id` = :_id";
 
-                    // prepare the query
-                    $stmt = $db->prepare($query);
+                //     // prepare the query
+                //     $stmt = $db->prepare($query);
 
-                    // bind the values
-                    $stmt->bindParam(':_id', $items_array[$i]);
+                //     // bind the values
+                //     $stmt->bindParam(':_id', $items_array[$i]);
 
-                    try {
-                        // execute the query, also check if query was successful
-                        if (!$stmt->execute()) {
-                            $arr = $stmt->errorInfo();
-                            error_log($arr[2]);
-                            $db->rollback();
-                            http_response_code(501);
-                            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
-                            die();
-                        }
-                    } catch (Exception $e) {
-                        error_log($e->getMessage());
-                        $db->rollback();
-                        http_response_code(501);
-                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-                        die();
-                    }
-                }
+                //     try {
+                //         // execute the query, also check if query was successful
+                //         if (!$stmt->execute()) {
+                //             $arr = $stmt->errorInfo();
+                //             error_log($arr[2]);
+                //             $db->rollback();
+                //             http_response_code(501);
+                //             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                //             die();
+                //         }
+                //     } catch (Exception $e) {
+                //         error_log($e->getMessage());
+                //         $db->rollback();
+                //         http_response_code(501);
+                //         echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                //         die();
+                //     }
+                // }
             
                 
                 $db->commit();
