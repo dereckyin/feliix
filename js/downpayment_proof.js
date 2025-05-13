@@ -454,7 +454,7 @@ var app = new Vue({
       if(this.record.special == '' && this.name == 'Glendon Wendell Co')
         this.who_detail = 'g';
 
-      if(this.record.special == 'sn' && this.name == 'Kristel Tan' && this.record.kind == '0' && this.record.final_amount <= 100000)
+      if(this.record.special == 'sn' && this.name == 'Manilynne Nicol' && this.record.kind == '0' && this.record.final_amount <= 100000)
         this.who_detail = 't';
 
       if(this.record.special == 'sn' && this.name == 'Kuan' && this.record.kind == '0' && this.record.final_amount > 100000)

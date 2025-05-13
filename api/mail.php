@@ -844,7 +844,7 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
     if($special == "sn" && $kind == 0 && $final_amount <= 100000)
-        $content = $content . "Kristel has checked " . $payment . " proof, Please check details below:";
+        $content = $content . "Manilynne has checked " . $payment . " proof, Please check details below:";
 
     // Project Type = No DP and Kind = 0 and Amount > 10萬
     if($special == "sn" && $kind == 0 && $final_amount > 100000)
@@ -1265,9 +1265,10 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
     if($special == "sn" && $kind == 0 && $final_amount <= 100000){
-        $mail->AddAddress('kristel@feliix.com', 'Kristel Tan');
-	$mail->AddCC('kuan@feliix.com', 'Kuan');
-	$mail->AddCC('glen@feliix.com', 'Glendon Wendell Co');
+        $mail->AddAddress('manilynne@feliix.com', 'Manilynne Nicol');
+        $mail->AddCC('kuan@feliix.com', 'Kuan');
+        $mail->AddCC('glen@feliix.com', 'Glendon Wendell Co');
+        $mail->AddCC('kristel@feliix.com', 'Kristel Tan');
     }
 
     // Project Type = No DP and Kind = 0 and Amount > 10萬
@@ -1349,7 +1350,7 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
     if($special == "sn" && $kind == 0 && $final_amount <= 100000)
-        $content = $content . ' Dear Kristel, ';
+        $content = $content . ' Dear Manilynne, ';
 
     // Project Type = No DP and Kind = 0 and Amount > 10萬
     if($special == "sn" && $kind == 0 && $final_amount > 100000)
@@ -7719,7 +7720,7 @@ function send_pay_reminder_mail_new($name, $email1,  $leaver, $projectname, $rem
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
     if($special == "sn" && $kind == 0 && $final_amount <= 100000)
-        $content = $content . ' Dear Kristel, ';
+        $content = $content . ' Dear Manilynne, ';
 
     // Project Type = No DP and Kind = 0 and Amount > 10萬
     if($special == "sn" && $kind == 0 && $final_amount > 100000)
@@ -12673,6 +12674,11 @@ function order_notification03($name, $access,  $access_cc, $project_name, $seria
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p1?id=" . $od_id;
@@ -12711,6 +12717,11 @@ function order_notification03($name, $access,  $access_cc, $project_name, $seria
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p2?id=" . $od_id;
@@ -12748,6 +12759,11 @@ function order_notification03($name, $access,  $access_cc, $project_name, $seria
         }
 
         $receiver = "All";
+
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
 
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -12957,6 +12973,11 @@ function mockup_notification03($name, $access,  $access_cc, $project_name, $seri
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p1?id=" . $od_id;
@@ -12995,6 +13016,11 @@ function mockup_notification03($name, $access,  $access_cc, $project_name, $seri
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p2?id=" . $od_id;
@@ -13032,6 +13058,11 @@ function mockup_notification03($name, $access,  $access_cc, $project_name, $seri
         }
 
         $receiver = "All";
+
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
 
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -13241,6 +13272,11 @@ function order_type_notification03($name, $access,  $access_cc, $project_name, $
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_" . $type . "_p1?id=" . $od_id;
@@ -13279,6 +13315,11 @@ function order_type_notification03($name, $access,  $access_cc, $project_name, $
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_" . $type . "_p2?id=" . $od_id;
@@ -13316,6 +13357,11 @@ function order_type_notification03($name, $access,  $access_cc, $project_name, $
         }
 
         $receiver = "All";
+
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
 
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -13578,6 +13624,11 @@ function order_notification03Access7($name, $access,  $access_cc, $project_name,
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p1?id=" . $od_id;
@@ -13616,6 +13667,11 @@ function order_notification03Access7($name, $access,  $access_cc, $project_name,
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_p2?id=" . $od_id;
@@ -13653,6 +13709,11 @@ function order_notification03Access7($name, $access,  $access_cc, $project_name,
         }
 
         $receiver = "All";
+
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
 
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -13873,6 +13934,11 @@ function mockup_notification03Access7($name, $access,  $access_cc, $project_name
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_mockup_p1?id=" . $od_id;
@@ -13911,6 +13977,11 @@ function mockup_notification03Access7($name, $access,  $access_cc, $project_name
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_mockup_p2?id=" . $od_id;
@@ -13948,6 +14019,11 @@ function mockup_notification03Access7($name, $access,  $access_cc, $project_name
         }
 
         $receiver = "All";
+
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
 
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
@@ -14169,6 +14245,11 @@ function order_type_notification03Access7($name, $access,  $access_cc, $project_
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_" . $type . "_p1?id=" . $od_id;
@@ -14207,6 +14288,11 @@ function order_type_notification03Access7($name, $access,  $access_cc, $project_
 
         $receiver = "All";
 
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
+
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
         $url = "https://feliix.myvnc.com/order_taiwan_" . $type . "_p2?id=" . $od_id;
@@ -14244,6 +14330,11 @@ function order_type_notification03Access7($name, $access,  $access_cc, $project_
         }
 
         $receiver = "All";
+
+        //<! Ariel is to request someone who should always reply her question in the order interface -->
+        $mail->AddAddress("jack@feliix.com", "Jack Beringuela");
+        $mail->AddAddress("beaclaudine.feliix@gmail.com", "Bea Claudine M. Zara");
+        $mail->AddAddress("aurielyn.feliix@gmail.com", "Aurielyn P. Paralejas");
 
         $mail->Subject = 'New message was created for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '" ';
         $header = $name . ' created a new message for item #' . $item_sn . ' in "' . $order_type . ': ' . $serial_name . '". Please check details below:';
