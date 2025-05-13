@@ -844,7 +844,7 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
     if($special == "sn" && $kind == 0 && $final_amount <= 100000)
-        $content = $content . "Kristel has checked " . $payment . " proof, Please check details below:";
+        $content = $content . "Manilynne has checked " . $payment . " proof, Please check details below:";
 
     // Project Type = No DP and Kind = 0 and Amount > 10萬
     if($special == "sn" && $kind == 0 && $final_amount > 100000)
@@ -1265,9 +1265,10 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
     if($special == "sn" && $kind == 0 && $final_amount <= 100000){
-        $mail->AddAddress('kristel@feliix.com', 'Kristel Tan');
-	$mail->AddCC('kuan@feliix.com', 'Kuan');
-	$mail->AddCC('glen@feliix.com', 'Glendon Wendell Co');
+        $mail->AddAddress('manilynne@feliix.com', 'Manilynne Nicol');
+        $mail->AddCC('kuan@feliix.com', 'Kuan');
+        $mail->AddCC('glen@feliix.com', 'Glendon Wendell Co');
+        $mail->AddCC('kristel@feliix.com', 'Kristel Tan');
     }
 
     // Project Type = No DP and Kind = 0 and Amount > 10萬
@@ -1349,7 +1350,7 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
     if($special == "sn" && $kind == 0 && $final_amount <= 100000)
-        $content = $content . ' Dear Kristel, ';
+        $content = $content . ' Dear Manilynne, ';
 
     // Project Type = No DP and Kind = 0 and Amount > 10萬
     if($special == "sn" && $kind == 0 && $final_amount > 100000)
@@ -7719,7 +7720,7 @@ function send_pay_reminder_mail_new($name, $email1,  $leaver, $projectname, $rem
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
     if($special == "sn" && $kind == 0 && $final_amount <= 100000)
-        $content = $content . ' Dear Kristel, ';
+        $content = $content . ' Dear Manilynne, ';
 
     // Project Type = No DP and Kind = 0 and Amount > 10萬
     if($special == "sn" && $kind == 0 && $final_amount > 100000)

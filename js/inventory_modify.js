@@ -127,7 +127,9 @@ var app = new Vue({
     it_pages: [],
     it_pages_10: [],
     it_total: 0,
+    users: [],
 
+    receiver : "",
   },
 
   created() {
@@ -165,7 +167,7 @@ var app = new Vue({
     this.getLevel1();
     this.getProjects();
     this.getOrders();
-
+    this.getUsers();
   },
 
   computed: {
@@ -217,6 +219,28 @@ var app = new Vue({
   },
 
   methods: {
+
+    getUsers () {
+
+        let _this = this;
+  
+        let token = localStorage.getItem('accessToken');
+  
+        axios
+            .get('api/admin/get_all_users', { headers: {"Authorization" : `Bearer ${token}`} })
+            .then(
+            (res) => {
+                _this.users = res.data;
+            },
+            (err) => {
+                alert(err.response);
+            },
+            )
+            .finally(() => {
+                
+            });
+    },
+
 
     clearListing() {
       this.it_records = [];
@@ -1052,7 +1076,7 @@ var app = new Vue({
         this.pages.push(index);
       }
 
-      this.paginate(this.items);
+      //this.paginate(this.items);
     },
 
     paginate: function (posts) {
@@ -1071,7 +1095,11 @@ var app = new Vue({
 
         this.pages_10 = this.pages.slice(from, to);
 
-      return this.items.slice(from, to);
+      let page = this.page;
+      let perPage = this.perPage;
+      let it_from = (page * perPage) - perPage;
+      let it_to = (page * perPage);
+      return  this.items.slice(it_from, it_to);
 
     },
 

@@ -587,7 +587,7 @@
                     <ul>
                         <li><b>Reason</b></li>
                         <li>
-                            <select style="width: 100%; margin-bottom: 8px;" v-model="notes">
+                            <select style="width: 100%; margin-bottom: 8px;" v-model="reason">
                                 <option value=""></option>
                                 <option value="Deliver Item(s) to Client">Deliver Item(s) to Client</option>
                                 <option value="Return Item(s) from Client to Inventory System">Return Item(s) from Client to Inventory System</option>
@@ -599,35 +599,35 @@
                                 <option value="Change Sample Status of Item(s)">Change Sample Status of Item(s)</option>
                             </select>
 
-                            <textarea style="width:100%" placeholder="Notes" v-model="notes4"></textarea>
+                            <textarea style="width:100%" placeholder="Notes" v-model="notes"></textarea>
                         </li>
 
 
                         <li class="further_input">
-                            <div class="deliver_client" style="display: none;">
+                            <div class="deliver_client" v-show="reason == 'Deliver Item(s) to Client'">
                                 <b>Further Input</b>
 
                                 <div class="compoundbox">
                                     <span>Which Intermal Member Receives?</span>
-                                    <select>
+                                    <select v-model="receiver">
                                         <option value="">Which internal member receives the item(s)?</option>
-                                        <option value="">放入系統上所有已經註冊 且 不是被刪除 且 不是被 disabled 的使用者</option>
+                                        <option v-for="(item, index) in users" value="item.id">{{ item.username }}</option>
                                     </select>
                                 </div>
 
                                 <div class="compoundbox">
                                     <span>Transmittal File</span>
-                                    <input type="file" multiple>
+                                    <input type="file" multiple id="transmittal_file" name="transmittal_file" >
                                 </div>
                             </div>
 
 
-                            <div class="change_pool_project" style="display: none;">
+                            <div class="change_pool_project" v-show="reason == 'Change Inventory Pool or Related Project of Item(s)'">
                                 <b>Further Input</b>
 
                                 <div class="compoundbox">
                                     <span>New Inventory Pool of Item(s)</span>
-                                    <select>
+                                    <select v-model="which_pool">
                                         <option value="Project Pool">Project Pool</option>
                                         <option value="Stock Pool">Stock Pool</option>
                                     </select>
@@ -635,14 +635,14 @@
 
                                 <div class="compoundbox">
                                     <span>Related Project?</span>
-                                    <select>
-                                        <option value="">載入系統上所有的專案</option>
+                                    <select v-model="project_id">
+                                        <option value="" >載入系統上所有的專案</option>
                                     </select>
                                 </div>                                                                                                
                             </div>
 
 
-                            <div class="change_location" style="display: none;">
+                            <div class="change_location" v-show="reason == 'Change Location of Item(s)'">
                                 <b>Further Input</b>
 
                                 <div class="compoundbox">
@@ -668,7 +668,7 @@
 
                             </div>
 
-                            <div class="change_sample" style="display: none;">
+                            <div class="change_sample" v-show="reason == 'Change Sample Status of Item(s)'">
                                 <b>Further Input</b>
 
                                 <div class="compoundbox">
