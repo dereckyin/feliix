@@ -86,41 +86,41 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
 
     $row_id += 1;
 
-    $request_no = "OIM-" . str_pad($row_id, 5, '0', STR_PAD_LEFT);
+    $request_no = "IM-" . str_pad($row_id, 5, '0', STR_PAD_LEFT);
 
-    $note_1 = "";
-    $note_2 = "";
-    $note_3 = "";
-    $note_4 = "";
+    $reason = "";
+    $listing = "";
+    $which_pool = "";
+    $as_sample = "";
+    $location = "";
+    $project_id = "";
 
-    $phase_1 = $merged_results[0]['phase_1'];
-    $phase_2 = $merged_results[0]['phase_2'];
-    $phase_3 = $merged_results[0]['phase_3'];
-    $phase_4 = $merged_results[0]['phase_4'];
+    $reason = $merged_results[0]['reason'];
+    $listing = $merged_results[0]['listing'];
+    $which_pool = $merged_results[0]['which_pool'];
+    $location = $merged_results[0]['location'];
+    $project_id = $merged_results[0]['project_id'];
 
     $checker = 0;
     $approver = 0;
 
-    if($phase_1 == "")
+    if($listing == "")
     {
-        $phase_1 = "[]";
+        $listing = "[]";
     }
 
-    $phase_1 = UpdateQty($phase_1, $db);
     
     $query = "INSERT INTO inventory_modify
         SET
             `request_no` = :request_no,
             `check_name` = :check_name,
-            `note_1` = :note_1,
-            `note_2` = :note_2,
-            `note_3` = :note_3,
-            `note_4` = :note_4,
+            `reason` = :reason,
+            `project_id` = :project_id,
+            `as_sample` = :as_sample,
 
-            `phase_1` = :phase_1,
-            `phase_2` = :phase_2,
-            `phase_3` = :phase_3,
-            `phase_4` = :phase_4,
+            `listing` = :listing,
+            `which_pool` = :which_pool,
+            `location` = :location,
 
             `checker` = :checker,
             `approver` = :approver,
@@ -135,15 +135,13 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
     // bind the values
     $stmt->bindParam(':request_no', $request_no);
     $stmt->bindParam(':check_name', $check_name);
-    $stmt->bindParam(':note_1', $note_1);
-    $stmt->bindParam(':note_2', $note_2);
-    $stmt->bindParam(':note_3', $note_3);
-    $stmt->bindParam(':note_4', $note_4);
+    $stmt->bindParam(':reason', $reason);
+    $stmt->bindParam(':project_id', $project_id);
+    $stmt->bindParam(':as_sample', $as_sample);
 
-    $stmt->bindParam(':phase_1', $phase_1);
-    $stmt->bindParam(':phase_2', $phase_2);
-    $stmt->bindParam(':phase_3', $phase_3);
-    $stmt->bindParam(':phase_4', $phase_4);
+    $stmt->bindParam(':listing', $listing);
+    $stmt->bindParam(':which_pool', $which_pool);
+    $stmt->bindParam(':location', $location);
 
     $stmt->bindParam(':checker', $checker);
     $stmt->bindParam(':approver', $approver);
