@@ -1272,7 +1272,7 @@ ELEMENT.locale(ELEMENT.lang.en)
 <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
 </html>
 
-
+<!-- 
 <script type="text/javascript">
     window.addEventListener('load', function () {
       let selectedDeviceId;
@@ -1348,4 +1348,4 @@ ELEMENT.locale(ELEMENT.lang.en)
           console.error(err);
         });
     });
-  </script>
+  </script> -->
