@@ -93,7 +93,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
     $which_pool = "";
     $as_sample = "";
     $location = "";
-    $project_id = "";
+    $project_id = 0;
     $note_1 = "";
 
     $listing = $merged_results[0]['listing'];
