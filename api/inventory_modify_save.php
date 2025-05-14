@@ -73,6 +73,11 @@ if (!isset($jwt)) {
             $id = (isset($_POST['id']) ?  $_POST['id'] : '0');
             $notes = (isset($_POST['notes']) ?  $_POST['notes'] : '');
 
+            if($related_project == "")
+            {
+                $related_project = 0;
+            }
+
             try {
                 $query = "update inventory_modify
                 set    
