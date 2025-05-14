@@ -66,7 +66,7 @@ if (!isset($jwt)) {
             $items = (isset($_POST['items']) ?  $_POST['items'] : '[]');
             $reason = (isset($_POST['reason']) ?  $_POST['reason'] : '');
             $which_pool = (isset($_POST['which_pool']) ?  $_POST['which_pool'] : '');
-            $related_project = (isset($_POST['related_project']) ?  $_POST['related_project'] : '');
+            $related_project = (isset($_POST['related_project']) ?  $_POST['related_project'] : 0);
             $as_sample = (isset($_POST['as_sample']) ?  $_POST['as_sample'] : '');
             $location = (isset($_POST['location']) ?  $_POST['location'] : 1);
             $stage = (isset($_POST['stage']) ?  $_POST['stage'] : 1);
