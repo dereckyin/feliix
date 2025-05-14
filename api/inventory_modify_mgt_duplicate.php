@@ -96,13 +96,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
     $project_id = "";
     $note_1 = "";
 
-    $reason = $merged_results[0]['reason'];
     $listing = $merged_results[0]['listing'];
-    $which_pool = $merged_results[0]['which_pool'];
-    $location = $merged_results[0]['location'];
-    $project_id = $merged_results[0]['project_id'];
-    $as_sample = $merged_results[0]['as_sample'];
-    $note_1 = $merged_results[0]['note_1'];
 
     $checker = 0;
     $approver = 0;
