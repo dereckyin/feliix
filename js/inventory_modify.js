@@ -496,6 +496,7 @@ var app = new Vue({
               _this.as_sample = _this.record.as_sample;
               _this.location = _this.record.location;
               _this.project_id = _this.record.project_id;
+              _this.receiver = _this.record.receive_id;
 
               _this.item_list = _this.record.attachment;
 
@@ -518,6 +519,7 @@ var app = new Vue({
         form_Data.append("id", _this.id);
         form_Data.append("reason", this.reason);
         form_Data.append("notes", this.notes);
+        form_Data.append("receiver", this.receiver);
         form_Data.append("which_pool", this.which_pool);
         form_Data.append("related_project", this.project_id)
         form_Data.append("as_sample", this.as_sample);

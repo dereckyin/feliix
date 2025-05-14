@@ -5851,3 +5851,6 @@ ADD COLUMN `inventory_modify` text COLLATE utf8mb4_unicode_ci;
 
 ALTER TABLE inventory_modify
 ADD COLUMN `note_1` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '' AFTER `request_no`;
+
+ALTER TABLE inventory_modify
+ADD COLUMN `receive_id` bigint(20)  DEFAULT 0 NOT NULL AFTER `listing`;

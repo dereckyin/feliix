@@ -139,6 +139,7 @@ switch ($method) {
                         a.username approver,
                         reason,
                         note_1,
+                        receive_id,
                         listing,
                         which_pool,
                         as_sample,
@@ -600,6 +601,8 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
         $project_id = "";
         $attachment = [];
 
+        $receive_id = 0;
+
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $id = $row['id'];
             $request_no = $row['request_no'];
@@ -627,6 +630,8 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $as_sample = $row['as_sample'];
             $location = $row['location'];
             $project_id = $row['project_id'];
+
+            $receive_id = $row['receive_id'];
 
             if($listing == null || $listing == "")
             {
@@ -661,6 +666,8 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 "as_sample" => $as_sample,
                 "location" => $location,
                 "project_id" => $project_id,
+
+                "receive_id" => $receive_id,
             
                 "cnt" => $cnt,
             );

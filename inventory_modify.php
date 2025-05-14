@@ -610,8 +610,8 @@
                                 <div class="compoundbox">
                                     <span>Which Intermal Member Receives?</span>
                                     <select v-model="receiver">
-                                        <option value="">Which internal member receives the item(s)?</option>
-                                        <option v-for="(item, index) in users" value="item.id">{{ item.username }}</option>
+                                        <option value="0">Which internal member receives the item(s)?</option>
+                                        <option v-for="(item, index) in users" :value="item.id">{{ item.username }}</option>
                                     </select>
                                 </div>
 
@@ -656,8 +656,8 @@
                                 <div class="compoundbox">
                                     <span>Which Intermal Member Receives?</span>
                                     <select v-model="receiver">
-                                        <option value="">Which internal member receives the item(s)?</option>
-                                        <option v-for="(item, index) in users" value="item.id">{{ item.username }}</option>
+                                        <option value="0">Which internal member receives the item(s)?</option>
+                                        <option v-for="(item, index) in users" :value="item.id">{{ item.username }}</option>
                                     </select>
                                 </div>
 

@@ -72,10 +72,16 @@ if (!isset($jwt)) {
             $stage = (isset($_POST['stage']) ?  $_POST['stage'] : 1);
             $id = (isset($_POST['id']) ?  $_POST['id'] : '0');
             $notes = (isset($_POST['notes']) ?  $_POST['notes'] : '');
+            $receiver = (isset($_POST['receiver']) ?  $_POST['receiver'] : 0);
 
             if($related_project == "")
             {
                 $related_project = 0;
+            }
+
+            if($receiver == "")
+            {
+                $receiver = 0;
             }
 
             try {
@@ -84,7 +90,7 @@ if (!isset($jwt)) {
 
                 reason = :reason,
                 note_1 = :notes,
-  
+                receive_id = :receiver,
                 which_pool = :which_pool,
                 as_sample = :as_sample,
                 location = :location,
@@ -100,6 +106,7 @@ if (!isset($jwt)) {
                 // bind the values
                 $stmt->bindParam(':reason', $reason);
                 $stmt->bindParam(':notes', $notes);
+                $stmt->bindParam(':receiver', $receiver);
                 $stmt->bindParam(':which_pool', $which_pool);
                 $stmt->bindParam(':as_sample', $as_sample);
                 $stmt->bindParam(':location', $location);
