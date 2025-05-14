@@ -338,7 +338,7 @@ var app = new Vue({
     if(status == 1)
     {
       if(!checker)
-        ret_msg = "For inventory modification record with PHASE 1: User Chooses Reason and Creates List of Affected Item(s), only checker is allowed to delete it.";
+        ret_msg = "For inventory modification record with PHASE 1: User Chooses Reason and Creates List of Affected Item(s), only creator and person with access are allowed to delete it.";
     }
     else if(status == 2)
     {
