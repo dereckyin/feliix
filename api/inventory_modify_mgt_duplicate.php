@@ -125,7 +125,9 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
 
             `status` = 1,
             `create_id` = :create_id,
-            `created_at` =  now()";
+            `created_at` =  now(),
+            updated_id = :updated_id,
+            updated_at = now()";
 
     // prepare the query
     $stmt = $db->prepare($query);
@@ -146,6 +148,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
     $stmt->bindParam(':approver', $approver);
 
     $stmt->bindParam(':create_id', $user_id);
+    $stmt->bindParam(':updated_id', $user_id);
 
     $last_id = 0;
     // execute the query, also check if query was successful
