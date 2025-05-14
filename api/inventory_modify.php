@@ -138,6 +138,7 @@ switch ($method) {
                         c.username checker,
                         a.username approver,
                         reason,
+                        note_1,
                         listing,
                         which_pool,
                         as_sample,
@@ -590,6 +591,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
         $approver = "";
 
         $reason = "";
+        $note_1 = "";
         $listing = "[]";
         
         $which_pool = "";
@@ -619,6 +621,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $approver = $row['approver'];
             
             $reason = $row['reason'];
+            $note_1 = $row['note_1'];
             $listing = $row['listing'];
             $which_pool = $row['which_pool'];
             $as_sample = $row['as_sample'];
@@ -652,6 +655,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                 "checker" => $checker,
                 "approver" => $approver,
                 "reason" => $reason,
+                "note_1" => $note_1,
                 "listing" => json_decode($listing),
                 "which_pool" => $which_pool,
                 "as_sample" => $as_sample,

@@ -491,6 +491,7 @@ var app = new Vue({
               _this.record = response.data[0];
               _this.items = JSON.parse(JSON.stringify(_this.record.listing));
               _this.reason = _this.record.reason;
+              _this.notes = _this.record.note_1;
               _this.which_pool = _this.record.which_pool;
               _this.as_sample = _this.record.as_sample;
               _this.location = _this.record.location;
@@ -516,6 +517,7 @@ var app = new Vue({
         form_Data.append("jwt", token);
         form_Data.append("id", _this.id);
         form_Data.append("reason", this.reason);
+        form_Data.append("notes", this.notes);
         form_Data.append("which_pool", this.which_pool);
         form_Data.append("related_project", this.project_id)
         form_Data.append("as_sample", this.as_sample);
@@ -1869,6 +1871,7 @@ var app = new Vue({
         this.items = [];
         //this.$refs.file.value = "";
         this.reason = "";
+        this.notes = "";
       
         this.reset_codition(); 
     

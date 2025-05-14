@@ -71,16 +71,15 @@ if (!isset($jwt)) {
             $location = (isset($_POST['location']) ?  $_POST['location'] : 1);
             $stage = (isset($_POST['stage']) ?  $_POST['stage'] : 1);
             $id = (isset($_POST['id']) ?  $_POST['id'] : '0');
+            $notes = (isset($_POST['notes']) ?  $_POST['notes'] : '');
 
             try {
                 $query = "update inventory_modify
-                set ";
-if($stage == 1)
-{
-                $query .= " reason = :reason, ";
-}
+                set    
 
-                $query .= " 
+                reason = :reason,
+                note_1 = :notes,
+  
                 which_pool = :which_pool,
                 as_sample = :as_sample,
                 location = :location,
@@ -95,6 +94,7 @@ if($stage == 1)
 
                 // bind the values
                 $stmt->bindParam(':reason', $reason);
+                $stmt->bindParam(':notes', $notes);
                 $stmt->bindParam(':which_pool', $which_pool);
                 $stmt->bindParam(':as_sample', $as_sample);
                 $stmt->bindParam(':location', $location);
