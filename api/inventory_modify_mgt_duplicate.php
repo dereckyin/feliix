@@ -94,12 +94,15 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
     $as_sample = "";
     $location = "";
     $project_id = "";
+    $note_1 = "";
 
     $reason = $merged_results[0]['reason'];
     $listing = $merged_results[0]['listing'];
     $which_pool = $merged_results[0]['which_pool'];
     $location = $merged_results[0]['location'];
     $project_id = $merged_results[0]['project_id'];
+    $as_sample = $merged_results[0]['as_sample'];
+    $note_1 = $merged_results[0]['note_1'];
 
     $checker = 0;
     $approver = 0;
@@ -117,6 +120,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
             `reason` = :reason,
             `project_id` = :project_id,
             `as_sample` = :as_sample,
+            note_1 = :note_1,
 
             `listing` = :listing,
             `which_pool` = :which_pool,
@@ -138,6 +142,7 @@ function InsertQuotation($id, $user_id, $merged_results, $db)
     $stmt->bindParam(':reason', $reason);
     $stmt->bindParam(':project_id', $project_id);
     $stmt->bindParam(':as_sample', $as_sample);
+    $stmt->bindParam(':note_1', $note_1);
 
     $stmt->bindParam(':listing', $listing);
     $stmt->bindParam(':which_pool', $which_pool);

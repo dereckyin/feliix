@@ -427,11 +427,12 @@
 
                        
                         <ul v-for='(record, index) in displayedRecord' :key="index">
-                            <li>{{ record.request_no  }}</li>
                             <li>
-                                <a v-show="record.is_edited == 1" :class="record.followup == 'Y' ? 'red' : ''" v-bind:href="'inventory_modify?id=' + record.id" target="_blank">{{record.check_name }}</a>
+                                <a v-show="record.is_edited == 1" :class="record.followup == 'Y' ? 'red' : ''" v-bind:href="'inventory_modify?id=' + record.id" target="_blank">{{record.request_no }}</a>
                                 <input name="check_name" type="text" v-show="record.is_edited == 0" v-model="check_name" maxlength="1024">
                             </li>
+                            <li>{{ record.reason + (record.note_1 == '' ? '' : ' : ') + record.note_1  }}</li>
+                            
                             <li>{{ record.desc }}</li>
                             <li>{{ record.created_at }}<br>{{record.create_by}}</li>
                             <li>{{ record.updated_at }}<br>{{record.updated_by}}</li>

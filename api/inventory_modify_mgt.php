@@ -129,6 +129,8 @@ switch ($method) {
                         create_id,
                         checker checker_id,
                         approver approver_id,
+                        reason,
+                        note_1,
                         p.username,
                         p.username created_by,
                         u.username updated_by,
@@ -583,6 +585,9 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
         $created_at = "";
         $updated_at = "";
 
+        $reason = "";
+        $note_1 = "";
+
         $checker = "";
         $approver = "";
 
@@ -615,7 +620,9 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
             $approval_at = $row['approval_at'];
             
             $desc = GetStatus($row['status']);
-        
+
+            $reason = $row['reason'];
+            $note_1 = $row['note_1'];        
 
             $merged_results[] = array(
                 "is_edited" => 1,
@@ -639,6 +646,9 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
                 "check_at" => $check_at,
                 "approval_at" => $approval_at,
+
+                "reason" => $reason,
+                "note_1" => $note_1,
             
                 "cnt" => $cnt,
             );
@@ -654,7 +664,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 function GetAttachment($_id, $db)
 {
     $sql = "select COALESCE(h.filename, '') filename, COALESCE(h.gcp_name, '') gcp_name
-            from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = 'apply_office_item'
+            from gcp_storage_file h where h.batch_id = " . $_id . " AND h.batch_type = 'inventory_modify
             order by h.created_at ";
 
     $merged_results = array();
