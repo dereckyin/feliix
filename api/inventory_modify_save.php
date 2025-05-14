@@ -73,7 +73,7 @@ if (!isset($jwt)) {
             $id = (isset($_POST['id']) ?  $_POST['id'] : '0');
             $notes = (isset($_POST['notes']) ?  $_POST['notes'] : '');
             $receiver = (isset($_POST['receiver']) ?  $_POST['receiver'] : 0);
-
+  
             if($related_project == "")
             {
                 $related_project = 0;
@@ -97,6 +97,7 @@ if (!isset($jwt)) {
                 project_id = :related_project,
                 listing = :items,
                 updated_id = :updated_id,
+                status = :stage,
                 updated_at = now()
                 where id = :id";
             
@@ -113,6 +114,7 @@ if (!isset($jwt)) {
                 $stmt->bindParam(':related_project', $related_project);
                 $stmt->bindParam(':items', $items);
                 $stmt->bindParam(':updated_id', $user_id);
+                $stmt->bindParam(':stage', $stage);
                 $stmt->bindParam(':id', $id);
                 
                 try {

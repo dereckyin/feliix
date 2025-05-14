@@ -562,8 +562,10 @@ var app = new Vue({
               confirmButtonText: "OK",
             });
 
-            if(_this.$refs.file != undefined)
-              _this.$refs.file.value = "";
+            if(_this.$refs.transmittal_file_1 != undefined)
+              _this.$refs.transmittal_file_1.value = "";
+            if(_this.$refs.transmittal_file != undefined)
+              _this.$refs.transmittal_file.value = "";
             _this.getRecord(_this.id);
 
           })
@@ -675,92 +677,140 @@ var app = new Vue({
     },
 
     goto_phase2: function() {
-      if (this.phase1.length == 0) {
+      if (this.reason == "") {
         Swal.fire({
-          text: "Item list needs to contain at least one item before going to the next phase!",
+          text: "Please select the reason of inventory modification.",
           icon: "warning",
           confirmButtonText: "OK",
         });
         return false;
       }
 
-        for (i = 0; i < this.phase1.length; i++) {
-            if ((parseInt(this.phase1[i].qty1) || 0) < 1) {
-                Swal.fire({
-                    text: "Every item in Item list needs to have at least one qty before going to the next phase!",
-                    icon: "warning",
-                    confirmButtonText: "OK",
-                });
-                return false;
-            }
-
-            if(this.phase1[i].sign == "")
-            {
-                Swal.fire({
-                    text: 'Every item in Item list needs to indicate “+” or “-” before going to the next phase!',
-                    icon: "warning",
-                    confirmButtonText: "OK",
-                });
-                return false;
-            }
-
-            // if(this.phase1[i].sign == "-" && (parseInt(this.phase1[i].qty1) || 0) > (parseInt(this.phase1[i].qty) || 0))
-            // {
-            //     Swal.fire({
-            //         text: 'The current stock qty of “' + this.phase1[i].code1 + this.phase1[i].code2 + this.phase1[i].code3 + this.phase1[i].code4 + '” is ' + this.phase1[i].qty + '. The requesting operation “-' + this.phase1[i].qty1 + '” will lead to negative value in stock qty, which is not allowed.',
-            //         icon: "warning",
-            //         confirmButtonText: "OK",
-            //     });
-            //     return false;
-            // }
-        }
-
-        if(this.notes == "")
+      if(this.reason == "Deliver Item(s) to Client")
+      {
+        if(this.receiver == "0" || this.$refs.transmittal_file.files.length == 0)
         {
-            Swal.fire({
-                text: 'Please select the reason of inventory modification.',
-                icon: "warning",
-                confirmButtonText: "OK",
-            });
-            return false;
+          Swal.fire({
+            text: 'Please encode all the further inputs.',
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return false;
         }
+      }
 
-        if(this.notes == "Other" && this.notes4 == "")
-            {
+      if(this.reason == "Change Inventory Pool or Related Project of Item(s)")
+      {
+        if(this.which_pool == "" || this.project_id == "0")
+        {
+          Swal.fire({
+            text: 'Please encode all the further inputs.',
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return false;
+        }
+      }
+
+      if(this.reason == "Change Location of Item(s)")
+      {
+        if(this.location == "" || this.receiver == "0" || this.$refs.transmittal_file_1.files.length == 0)
+        {
+          Swal.fire({
+            text: 'Please encode all the further inputs.',
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return false;
+        }
+      }
+
+      if(this.reason == "Change Sample Status of Item(s)" && this.as_sample == "")
+      {
+        Swal.fire({
+          text: 'Please encode all the further inputs.',
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return false;
+      }
+
+      if(this.notes == "")
+      {
+        Swal.fire({
+          text: 'Please encode all the further inputs.',
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return false;
+      }
+
+      if (this.items.length == 0) {
+        Swal.fire({
+          text: "Item list needs to contain at least one tracking code before going to execute the inventory modification! ",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return false;
+      }
+
+        for (i = 0; i < this.items.length; i++) {
+
+            if (this.reason == "Return Item(s) from Client to Inventory System" && this.items[i].status_text != "Delivered to Client") {
                 Swal.fire({
-                    text: 'Please state the details of reason if selecting “Other” option.',
+                    text: "Only Item(s) with Status=”Delivered to Client” can execute the inventory modification with the reason=”Return Item(s) from Client to Inventory System”!",
                     icon: "warning",
                     confirmButtonText: "OK",
                 });
                 return false;
             }
-        
-     
+
+            if (( this.reason == "Deliver Item(s) to Client" ||
+                  this.reason == "Void Tracking Code of Item(s)" || 
+                  this.reason == "Item(s) Lost" ||
+                  this.reason == "Item(s) Scrapped" ||
+                  this.reason == "Change Inventory Pool or Related Project of Item(s)" ||
+                  this.reason == "Change Location of Item(s)" ||
+                  this.reason == "Change Sample Status of Item(s)")
+                  && this.items[i].status_text != "On Hand") {
+                Swal.fire({
+                    text: "Only Item(s) with Status=”On Hand” can execute the inventory modification with the reason=”" + this.reason + "”! ",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+                return false;
+            }
+        }
+
       let _this = this;
 
       var form_Data = new FormData();
       var token = localStorage.getItem("token");
       form_Data.append("jwt", token);
       form_Data.append("id", _this.id);
-      form_Data.append("notes", _this.notes);
-      form_Data.append("notes4", _this.notes4)
-      form_Data.append("phase", JSON.stringify(_this.phase1));
-      form_Data.append("status", 2);
+      form_Data.append("reason", this.reason);
+      form_Data.append("notes", this.notes);
+      form_Data.append("receiver", this.receiver);
+      form_Data.append("which_pool", this.which_pool);
+      form_Data.append("related_project", this.project_id)
+      form_Data.append("as_sample", this.as_sample);
+      form_Data.append("location", this.location);
+      form_Data.append("stage", 2);
+      form_Data.append("items", JSON.stringify(_this.items));
 
-      
-      var favorite = [];
-      for(var i = 0; i < this.item_list.length; i++)
+      if(this.$refs.transmittal_file != undefined)
       {
-          if(this.item_list[i].is_checked === false)
-          favorite.push(this.item_list[i].id);
+        for (var i = 0; i < this.$refs.transmittal_file.files.length; i++) {
+          let file = this.$refs.transmittal_file.files[i];
+          form_Data.append("transmittal_file[" + i + "]", file);
+        }
       }
-      form_Data.append("items_to_delete", JSON.stringify(favorite));
 
-      if(this.$refs.file != undefined)
+      if(this.$refs.transmittal_file_1 != undefined)
       {
-        for (var i = 0; i < this.$refs.file.files.length; i++) {
-          let file = this.$refs.file.files[i];
-          form_Data.append("files[" + i + "]", file);
+        for (var i = 0; i < this.$refs.transmittal_file_1.files.length; i++) {
+          let file = this.$refs.transmittal_file_1.files[i];
+          form_Data.append("transmittal_file[" + i + "]", file);
         }
       }
 
@@ -770,21 +820,21 @@ var app = new Vue({
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
-        url: "api/office_item_inventory_modify_action",
+        url: "api/inventory_modify_save",
         data: form_Data,
       })
         .then(function(response) {
-          //handle success
-          //this.$forceUpdate();
-          // yes then go to next phase
           Swal.fire({
-            text: response.data.message,
-            icon: "info",
-            confirmButtonText: "OK",
-          }).then(function() {
+              text: response.data.message,
+              icon: "info",
+              confirmButtonText: "OK",
+            });
+
+            if(_this.$refs.transmittal_file_1 != undefined)
+              _this.$refs.transmittal_file_1.value = "";
+            if(_this.$refs.transmittal_file != undefined)
+              _this.$refs.transmittal_file.value = "";
             _this.getRecord(_this.id);
-            _this.it_page = 1;
-          });
 
         })
         .catch(function(response) {
