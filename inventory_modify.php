@@ -690,7 +690,7 @@
                                 <b>Item List</b>
                                 <a class="btn_quickquery" title="Add Item from Quick Query" href="javascript: void(0)" onclick="EditListing()"><i class="fas fa-list-alt"></i></a>
                                 <input type="text" placeholder="Input Tracking Code(s) Here and Separate by Semicolon." id="tracking_code">
-                                <a class="btn small" id="startButton">Scan</a>
+                                <a class="btn small" id="startButton">Scan</a><a class="btn small" style="margin-left: 5px;" @click="add_scan_tracking_code()">Add</a>
 
                                 
                             </div>

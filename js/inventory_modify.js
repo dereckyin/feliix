@@ -254,6 +254,11 @@ var app = new Vue({
             });
     },
 
+    add_scan_tracking_code() {
+      $(".mask").toggle();
+      $("#modal_EditListing").toggle();
+      this.filter_apply_new();
+    },
 
     clearListing() {
       this.it_records = [];
@@ -267,6 +272,8 @@ var app = new Vue({
       this.fil_order = "";
       this.fil_status = "";
       this.fil_tracking = "";
+
+      //$("#tracking_code").val("");
     },
 
     addItem(item) {

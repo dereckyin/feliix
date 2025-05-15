@@ -153,8 +153,8 @@ if($fil_code != "")
     $query = str_replace("1=0", "1=1", $query);
     $query_cnt = str_replace("1=0", "1=1", $query_cnt);
 
-    $query = $query . " and (tra.barcode in ('" . $tracking_sql . "') ";
-    $query_cnt = $query_cnt . " and (tra.barcode in ('" . $tracking_sql . "') ";
+    $query = $query . " and tra.barcode in ('" . $tracking_sql . "') ";
+    $query_cnt = $query_cnt . " and tra.barcode in ('" . $tracking_sql . "') ";
 
 }
 
