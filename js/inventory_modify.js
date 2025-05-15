@@ -348,7 +348,7 @@ var app = new Vue({
           let token = localStorage.getItem('accessToken');
     
           axios
-              .get('api/tracking_item_query', { params, headers: {"Authorization" : `Bearer ${token}`} })
+              .get('api/tracking_item_query_for_inventory_modify', { params, headers: {"Authorization" : `Bearer ${token}`} })
               .then(
               (res) => {
                   _this.it_records = res.data;
@@ -1498,7 +1498,7 @@ var app = new Vue({
       };
 
       try {
-        let res = await axios.get("api/tracking_item_query", {
+        let res = await axios.get("api/tracking_item_query_for_inventory_modify", {
           params,
           headers: { Authorization: `Bearer ${token}` },
         });
