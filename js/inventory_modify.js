@@ -735,15 +735,15 @@ var app = new Vue({
         return false;
       }
 
-      if(this.notes == "")
-      {
-        Swal.fire({
-          text: 'Please encode all the further inputs.',
-          icon: "warning",
-          confirmButtonText: "OK",
-        });
-        return false;
-      }
+      // if(this.notes == "")
+      // {
+      //   Swal.fire({
+      //     text: 'Please encode all the further inputs.',
+      //     icon: "warning",
+      //     confirmButtonText: "OK",
+      //   });
+      //   return false;
+      // }
 
       if (this.items.length == 0) {
         Swal.fire({
