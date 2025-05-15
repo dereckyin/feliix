@@ -44,6 +44,7 @@ $database = new Database();
 $db = $database->getConnection();
 
 $fil_tracking = (isset($_GET['tid']) ?  $_GET['tid'] : '');
+$fil_code = (isset($_GET['code']) ?  $_GET['code'] : '');
 $fil_prod_id = (isset($_GET['fpi']) ?  $_GET['fpi'] : '');
 $fil_prod_code = (isset($_GET['fpc']) ?  $_GET['fpc'] : '');
 $fil_prod_code = urldecode($fil_prod_code);
@@ -138,6 +139,22 @@ if($fil_tracking != "")
 
     $query = $query . " and (tra.barcode in ('" . $tracking_sql . "') or pc.id in ('" . $tracking_sql . "') or pc.code like'%" . $tracking_sql . "%') ";
     $query_cnt = $query_cnt . " and (tra.barcode in ('" . $tracking_sql . "') or pc.id in ('" . $tracking_sql . "') or pc.code like'%" . $tracking_sql . "%')  ";
+
+}
+
+if($fil_code != "")
+{
+    $tracking_ids = explode(';', $fil_code);
+
+    $tracking_sql = implode("','", $tracking_ids);
+    $tracking_sql = str_replace(" ", "", $tracking_sql);
+
+    // remove 1=0 from query and query_cnt
+    $query = str_replace("1=0", "1=1", $query);
+    $query_cnt = str_replace("1=0", "1=1", $query_cnt);
+
+    $query = $query . " and (tra.barcode in ('" . $tracking_sql . "') ";
+    $query_cnt = $query_cnt . " and (tra.barcode in ('" . $tracking_sql . "') ";
 
 }
 

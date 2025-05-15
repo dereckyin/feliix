@@ -332,8 +332,11 @@ var app = new Vue({
     filter_apply_new: function(keyword) {
       let _this = this;
 
+      var code = $("#tracking_code").val();
+
       const params = {
                 tid : _this.fil_tracking,
+                code: code,
 
                 fpr: _this.fil_project_related,
                 fs: _this.fil_status,
@@ -1486,8 +1489,11 @@ var app = new Vue({
       let data = [];
       let token = localStorage.getItem("accessToken");
 
+      var code = $("#tracking_code").val();
+
       const params = {
           tid : this.fil_tracking,
+          code: code,
 
           fpr: this.fil_project_related,
           fs: this.fil_status,
