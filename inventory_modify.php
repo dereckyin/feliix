@@ -689,7 +689,7 @@
                             <div class="label_btn">
                                 <b>Item List</b>
                                 <a class="btn_quickquery" title="Add Item from Quick Query" href="javascript: void(0)" onclick="EditListing()"><i class="fas fa-list-alt"></i></a>
-                                <input type="text" placeholder="Input Tracking Code(s) Here and Separate by Semicolon." v-model="fil_tracking">
+                                <input type="text" placeholder="Input Tracking Code(s) Here and Separate by Semicolon." id="tracking_code">
                                 <a class="btn small" id="startButton">Scan</a>
 
                                 
@@ -1332,7 +1332,8 @@ ELEMENT.locale(ELEMENT.lang.en)
                 if(result.text.length == 16){
                     codeReader.reset();
                     document.getElementById('video_area').style.display = 'none';
-                    app.fil_tracking += ";" + result.text;
+                    document.getElementById('tracking_code').value += ";" + result.text;
+                    //app.fil_tracking += ";" + result.text;
                 }
               }
               if (err && !(err instanceof ZXing.NotFoundException)) {
