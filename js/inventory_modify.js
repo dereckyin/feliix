@@ -254,10 +254,12 @@ var app = new Vue({
             });
     },
 
-    add_scan_tracking_code() {
-      $(".mask").toggle();
-      $("#modal_EditListing").toggle();
-      this.filter_apply_new();
+    async add_scan_tracking_code() {
+
+      await this.add_filtered();
+
+       $("#tracking_code").val("");
+       //this.items = [];
     },
 
     clearListing() {
@@ -287,7 +289,7 @@ var app = new Vue({
 
       if (found) {
         Swal.fire({
-          text: "Item already exists in the list.",
+          text: "The selected item already exists in the list.",
           icon: "warning",
           confirmButtonText: "OK",
         });
