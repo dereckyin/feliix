@@ -809,10 +809,10 @@ var app = new Vue({
 
     clear() {
 
-      this.check_name = "";
+      // this.check_name = "";
 
-      document.getElementById("btn_insert").classList.remove("focus");
-      document.getElementById("insert_dialog").classList.remove("show");
+      // document.getElementById("btn_insert").classList.remove("focus");
+      // document.getElementById("insert_dialog").classList.remove("show");
     },
 
     filter_clear() {
@@ -969,16 +969,16 @@ var app = new Vue({
         return;
 
 
-      if (this.check_name.trim() == "") {
-        Swal.fire({
-          text: "Name of Inventory Modification is required!",
-          icon: "warning",
-          confirmButtonText: "OK",
-        });
+      // if (this.check_name.trim() == "") {
+      //   Swal.fire({
+      //     text: "Name of Inventory Modification is required!",
+      //     icon: "warning",
+      //     confirmButtonText: "OK",
+      //   });
 
-        //$(window).scrollTop(0);
-        return;
-      }
+      //   //$(window).scrollTop(0);
+      //   return;
+      // }
       
       this.submit = true;
 

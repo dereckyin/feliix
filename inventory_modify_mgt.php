@@ -232,8 +232,8 @@
 
                     <!-- 建立新的庫存異動單 -->
                     <div class="popupblock">
-                        <a class="inserting" id="btn_insert"></a>
-                        <div id="insert_dialog" class="dialog d-add"><h6>Create New Inventory Modification:</h6>
+                        <a class="inserting" id="btn_insert" @click="approve()"></a>
+                        <!-- <div id="insert_dialog" class="dialog d-add" ><h6>Create New Inventory Modification:</h6>
                             <div class="formbox">
                                 <dl>
                                     <dt>Name of Inventory Modification</dt>
@@ -244,7 +244,7 @@
                                     <a class="btn small green" @click="approve()">Create</a>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- 篩選 -->
