@@ -289,7 +289,7 @@ var app = new Vue({
 
       if (found) {
         Swal.fire({
-          text: "The selected item already exists in the list.",
+          text: "The selected item already existed in the list.",
           icon: "warning",
           confirmButtonText: "OK",
         });
