@@ -5854,3 +5854,6 @@ ADD COLUMN `note_1` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '' AFTER `re
 
 ALTER TABLE inventory_modify
 ADD COLUMN `receive_id` bigint(20)  DEFAULT 0 NOT NULL AFTER `listing`;
+
+-- 20251516
+alter table quotation_page_type_block change `num` `num` VARCHAR(50) DEFAULT '';

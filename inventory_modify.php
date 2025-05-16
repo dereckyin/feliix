@@ -285,6 +285,30 @@
         margin-top: 5px;
     }
 
+    #video_area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    #video_area #video {
+        border: 1px solid gray;
+        width: 600px;
+    }
+
+    #video_area > div {
+        margin-top: 12px;
+    }
+
+    #video_area > div > a.btn {
+        width: 130px!important;
+        margin: 0 20px 0 20px!important;
+        text-align: center;
+    }
+
+
+
     div.block > h6 > span {
         color: var(--fth01);
         background-color: var(--fth02);
@@ -402,6 +426,7 @@
         width: 100%;
         padding: 0 10px 10px;
         border: none;
+        overflow-x: auto;
     }
 
     #tb_tracking_codes1, #tb_tracking_codes2, #tb_tracking_codes3 {
@@ -529,6 +554,14 @@
         line-height: 1.0;
     }
 
+    #tb_tracking_codes1 {
+        min-width: 1750px;
+    }
+
+    #tb_tracking_codes3 {
+        min-width: 1600px;
+    }
+
     .shake {
         animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
         transform: translate3d(0, 0, 0);
@@ -555,6 +588,31 @@
         60% {
             transform: translate3d(4px, 0, 0);
         }
+    }
+
+    @media screen and (max-width: 640px) {
+
+        div.block > h6 > span {
+            margin-left: 10px;
+        }
+
+        li.row_list div.label_btn input[type="text"] {
+            width: 260px;
+        }
+
+        #modal_EditListing .modal-heading h6 {
+            font-size: 28px;
+        }
+
+        #modal_EditListing .filter_function {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        #modal_EditListing .filter_function > * {
+            margin: 5px 0 5px 0!important;
+        }
+
     }
 
 
@@ -684,17 +742,17 @@
 
                         </li>
 
-
                         <li class="row_list">
                             <div class="label_btn">
                                 <b>Item List</b>
                                 <a class="btn_quickquery" title="Add Item from Quick Query" href="javascript: void(0)" onclick="EditListing()"><i class="fas fa-list-alt"></i></a>
                                 <input type="text" placeholder="Input Tracking Code(s) Here and Separate by Semicolon." id="tracking_code">
-                                <a class="btn small" id="startButton">Scan</a><a class="btn small" style="margin-left: 5px;" @click="add_scan_tracking_code()">Add</a>
-
-                                
+                                <a class="btn small" id="startButton">Scan</a>
+                                <a class="btn small" style="margin-left: 10px;" @click="add_scan_tracking_code()">Add</a>
                             </div>
+                        </li>
 
+                        <li>
                             <div id="video_area" style="display: none;">
                                 <video id="video"></video>
 
@@ -703,21 +761,23 @@
                                     <a id="switchCameraButton" class="btn small blue">Switch Camera</a>
                                 </div>
                             </div>
+                        </li>
 
+                        <li style="padding-bottom: 0;">
                             <!-- 分頁功能，下方的 tablebox 的內容要做分頁，每一頁 10 筆資料  -->
                             <div class="list_function">
                                 <div class="pagenation">
                                     <a class="prev" :disabled="page == 1" @click="pre_page();">Prev 10</a>
 
-                                    <a class="page" v-for="pg in pages_10" @click="page=pg;" v-bind:style="[pg == page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
+                                    <a class="page" v-for="pg in pages_10" @click="page=pg;" v-bind:style="[pg == page ? { 'background':'#1E6BA8', 'color': 'white'} : { }]">{{ pg }}</a>
 
                                     <a class="next" :disabled="page == pages.length" @click="nex_page();">Next 10</a>
                                 </div>
                             </div>
+
                         </li>
 
-
-                        <li>
+                        <li style="overflow-x: auto;">
                             <table id="tb_tracking_codes1" class="table  table-sm table-bordered" >
 
                                 <thead>
@@ -744,7 +804,7 @@
 
                                         <ul>
                                             <li style="max-width: 135px;">Purchased thru Which Order:</li>
-                                            <li><a :href="item.order_url" target="_blank">{{item.order_name}} {{item.order_name}}</a></li>
+                                            <li><a :href="item.order_url" target="_blank">{{item.order_name}}</a></li>
                                         </ul>
 
                                         <ul>
@@ -798,10 +858,18 @@
                                             <li>{{ item.brand }}</li>
                                         </ul>
 
+                                        <!-- 列出 brief -->
                                         <ul>
-                                            <li>Specification:</li>
-                                            <li style="white-space: break-spaces; font-weight: 300;">{{ item.listing }} {{ item.remark }}</li>
+                                            <li style="padding: 1px 3px;"></li>
+                                            <li style="white-space: break-spaces; font-weight: 300;">{{ item.listing }}</li>
                                         </ul>
+
+                                        <!-- 列出 listing -->
+                                        <ul>
+                                            <li style="padding: 1px 3px;"></li>
+                                            <li style="white-space: break-spaces; font-weight: 500;">{{ item.remark }}</li>
+                                        </ul>
+                                     
                                     </td>
 
                                     <td>
@@ -1083,7 +1151,7 @@
 
                     <select v-model="fil_status">
                         <option value="">----- Status of Tracking Code -----</option>
-                        <option value="2">Deliver to Client</option>
+                        <option value="2">Delivered to Client</option>
                         <option value="1">Lost</option>
                         <option value="0">On Hand</option>
                         <option value="3">Scrapped</option>
@@ -1155,7 +1223,7 @@
 
                                 <ul>
                                     <li style="max-width: 125px;">Purchased thru Which Order:</li>
-                                    <li><a :href="item.order_url" target="_blank">{{item.order_name}} {{item.order_name}}</a></li>
+                                    <li><a :href="item.order_url" target="_blank">{{item.order_name}}</a></li>
                                 </ul>
 
                                 <ul>
@@ -1209,9 +1277,16 @@
                                     <li>{{ item.brand }}</li>
                                 </ul>
 
+                                <!-- 列出 brief -->
                                 <ul>
-                                    <li>Specification:</li>
-                                    <li style="white-space: break-spaces; font-weight: 300;">{{ item.listing }} {{ item.remark }}</li>
+                                    <li style="padding: 1px 3px;"></li>
+                                    <li style="white-space: break-spaces; font-weight: 300;">{{ item.listing }}</li>
+                                </ul>
+
+                                <!-- 列出 listing -->
+                                <ul>
+                                    <li style="padding: 1px 3px;"></li>
+                                    <li style="white-space: break-spaces; font-weight: 500;">{{ item.remark }}</li>
                                 </ul>
                             </td>
 
