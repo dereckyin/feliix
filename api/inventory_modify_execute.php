@@ -1,0 +1,621 @@
+<?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+$jwt = (isset($_COOKIE['jwt']) ?  $_COOKIE['jwt'] : null);
+include_once 'config/core.php';
+include_once 'libs/php-jwt-master/src/BeforeValidException.php';
+include_once 'libs/php-jwt-master/src/ExpiredException.php';
+include_once 'libs/php-jwt-master/src/SignatureInvalidException.php';
+include_once 'libs/php-jwt-master/src/JWT.php';
+require_once '../vendor/autoload.php';
+
+// include_once 'mail.php';
+
+use \Firebase\JWT\JWT;
+use Google\Cloud\Storage\StorageClient;
+
+$method = $_SERVER['REQUEST_METHOD'];
+
+
+if (!isset($jwt)) {
+    http_response_code(401);
+    
+    echo json_encode(array("message" => "Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . "Access denied."));
+    die();
+} else {
+    try {
+        // decode jwt
+        $decoded = JWT::decode($jwt, $key, array('HS256'));
+        $user_id = $decoded->data->id;
+        $user_name = $decoded->data->username;
+        //if(!$decoded->data->is_admin)
+        //{
+            //  http_response_code(401);
+            
+            //  echo json_encode(array("message" => "Access denied."));
+            //  die();
+            //}
+        }
+        // if decode fails, it means jwt is invalid
+        catch (Exception $e) {
+            
+            http_response_code(401);
+            
+            echo json_encode(array("message" => "Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . "Access denied."));
+            die();
+        }
+    }
+    
+    header('Access-Control-Allow-Origin: *');
+    
+    include_once 'config/database.php';
+    
+    
+    switch ($method) {
+        
+        case 'POST':
+            
+            $database = new Database();
+            $db = $database->getConnection();
+            $db->beginTransaction();
+            $conf = new Conf();
+            
+            $jwt = (isset($_POST['jwt']) ?  $_POST['jwt'] : null);
+            
+            $items = (isset($_POST['items']) ?  $_POST['items'] : '[]');
+            $reason = (isset($_POST['reason']) ?  $_POST['reason'] : '');
+            $which_pool = (isset($_POST['which_pool']) ?  $_POST['which_pool'] : '');
+            $related_project = (isset($_POST['related_project']) ?  $_POST['related_project'] : 0);
+            $as_sample = (isset($_POST['as_sample']) ?  $_POST['as_sample'] : '');
+            $location = (isset($_POST['location']) ?  $_POST['location'] : 1);
+            $stage = (isset($_POST['stage']) ?  $_POST['stage'] : 1);
+            $id = (isset($_POST['id']) ?  $_POST['id'] : '0');
+            $notes = (isset($_POST['notes']) ?  $_POST['notes'] : '');
+            $receiver = (isset($_POST['receiver']) ?  $_POST['receiver'] : 0);
+  
+            if($related_project == "")
+            {
+                $related_project = 0;
+            }
+
+            if($receiver == "")
+            {
+                $receiver = 0;
+            }
+
+            try {
+                $query = "update inventory_modify
+                set    
+
+                reason = :reason,
+                note_1 = :notes,
+                receive_id = :receiver,
+                which_pool = :which_pool,
+                as_sample = :as_sample,
+                location = :location,
+                project_id = :related_project,
+                listing = :items,
+                updated_id = :updated_id,
+                status = :stage,
+                updated_at = now()
+                where id = :id";
+            
+                // prepare the query
+                $stmt = $db->prepare($query);
+
+                // bind the values
+                $stmt->bindParam(':reason', $reason);
+                $stmt->bindParam(':notes', $notes);
+                $stmt->bindParam(':receiver', $receiver);
+                $stmt->bindParam(':which_pool', $which_pool);
+                $stmt->bindParam(':as_sample', $as_sample);
+                $stmt->bindParam(':location', $location);
+                $stmt->bindParam(':related_project', $related_project);
+                $stmt->bindParam(':items', $items);
+                $stmt->bindParam(':updated_id', $user_id);
+                $stmt->bindParam(':stage', $stage);
+                $stmt->bindParam(':id', $id);
+                
+                try {
+                    // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        $arr = $stmt->errorInfo();
+                        error_log($arr[2]);
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                        die();
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+
+                $batch_id = $id;
+                $batch_type = "inventory_modify";
+
+                try {
+                    // count if there is any file
+                    if(isset($_FILES['transmittal_file']['name']))
+                    {
+                        $total = count($_FILES['transmittal_file']['name']);
+                    }
+                    else
+                    {
+                        $total = 0;
+                    }
+                    // Loop through each file
+                    for( $i=0 ; $i < $total ; $i++ ) {
+
+                        if(isset($_FILES['transmittal_file']['name'][$i]))
+                        {
+                            $image_name = $_FILES['transmittal_file']['name'][$i];
+                            $valid_extensions = array("jpg","jpeg","png","gif","pdf","docx","doc","xls","xlsx","ppt","pptx","zip","rar","7z","txt","dwg","skp","psd","evo","dwf","bmp");
+                            $extension = pathinfo($image_name, PATHINFO_EXTENSION);
+                            if (in_array(strtolower($extension), $valid_extensions)) 
+                            {
+                                //$upload_path = 'img/' . time() . '.' . $extension;
+
+                                $storage = new StorageClient([
+                                    'projectId' => 'predictive-fx-284008',
+                                    'keyFilePath' => $conf::$gcp_key
+                                ]);
+
+                                $bucket = $storage->bucket('feliiximg');
+
+                                $upload_name = time() . '_' . pathinfo($image_name, PATHINFO_FILENAME) . '.' . $extension;
+
+                                $file_size = filesize($_FILES['transmittal_file']['tmp_name'][$i]);
+                                $size = 0;
+
+                                $obj = $bucket->upload(
+                                    fopen($_FILES['transmittal_file']['tmp_name'][$i], 'r'),
+                                    ['name' => $upload_name]);
+
+                                $info = $obj->info();
+                                $size = $info['size'];
+
+                                if($size == $file_size && $file_size != 0 && $size != 0)
+                                {
+                                    $query = "INSERT INTO gcp_storage_file
+                                    SET
+                                        batch_id = :batch_id,
+                                        batch_type = :batch_type,
+                                        filename = :filename,
+                                        gcp_name = :gcp_name,
+
+                                        create_id = :create_id,
+                                        created_at = now()";
+
+                                    // prepare the query
+                                    $stmt = $db->prepare($query);
+                                
+                                    // bind the values
+                                    $stmt->bindParam(':batch_id', $batch_id);
+                                    $stmt->bindParam(':batch_type', $batch_type);
+                                    $stmt->bindParam(':filename', $image_name);
+                                    $stmt->bindParam(':gcp_name', $upload_name);
+                        
+                                    $stmt->bindParam(':create_id', $user_id);
+
+                                    try {
+                                        // execute the query, also check if query was successful
+                                        if ($stmt->execute()) {
+                                            $last_id = $db->lastInsertId();
+                                        }
+                                        else
+                                        {
+                                            $arr = $stmt->errorInfo();
+                                            error_log($arr[2]);
+                                        }
+                                    }
+                                    catch (Exception $e)
+                                    {
+                                        error_log($e->getMessage());
+                                        $db->rollback();
+                                        http_response_code(501);
+                                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                                        die();
+                                    }
+
+
+                                    $message = 'Uploaded';
+                                    $code = 0;
+                                    $upload_id = $last_id;
+                                    $image = $image_name;
+                                }
+                                else
+                                {
+                                    $message = 'There is an error while uploading file';
+                                    $db->rollback();
+                                    http_response_code(501);
+                                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                                    die();
+                                    
+                                }
+                            }
+                            else
+                            {
+                                $message = 'Only Images or Office files allowed to upload';
+                                $db->rollback();
+                                http_response_code(501);
+                                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $message));
+                                die();
+                            }
+                        }
+
+                    }
+                } catch (Exception $e) {
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " Error uploading, Please use laptop to upload again."));
+                    die();
+                }
+
+                // // items to delete
+                // for ($i = 0; $i < count($items_array); $i++) {
+                //     $query = "DELETE FROM gcp_storage_file
+                //         WHERE
+                //             `id` = :_id";
+
+                //     // prepare the query
+                //     $stmt = $db->prepare($query);
+
+                //     // bind the values
+                //     $stmt->bindParam(':_id', $items_array[$i]);
+
+                //     try {
+                //         // execute the query, also check if query was successful
+                //         if (!$stmt->execute()) {
+                //             $arr = $stmt->errorInfo();
+                //             error_log($arr[2]);
+                //             $db->rollback();
+                //             http_response_code(501);
+                //             echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                //             die();
+                //         }
+                //     } catch (Exception $e) {
+                //         error_log($e->getMessage());
+                //         $db->rollback();
+                //         http_response_code(501);
+                //         echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                //         die();
+                //     }
+                // }
+
+                // insert into inventory_modify_history
+                $version = 0;
+                $rec = getHistoryRecord($db, $id);
+
+                if($rec)
+                {
+                    $version = $rec['version'] + 1;
+                }
+                else
+                {
+                    $version = 1;
+                }
+
+                $query = "INSERT INTO inventory_modify_history
+                SET
+                    request_id = :request_id,
+                    reason = :reason,
+                    listing = :items,
+                    receive_id = :receiver,
+                    which_pool = :which_pool,
+                    as_sample = :as_sample,
+                    `location` = :location,
+                    project_id = :related_project,
+                    `version` = :version,
+                    create_id = :create_id,
+                    created_at = now()";
+
+                // prepare the query
+                $stmt = $db->prepare($query);
+                // bind the values
+                $stmt->bindParam(':request_id', $id);
+                $stmt->bindParam(':reason', $reason);
+                $stmt->bindParam(':items', $items);
+                $stmt->bindParam(':receiver', $receiver);
+                $stmt->bindParam(':which_pool', $which_pool);
+                $stmt->bindParam(':as_sample', $as_sample);
+                $stmt->bindParam(':location', $location);
+                $stmt->bindParam(':related_project', $related_project);
+                $stmt->bindParam(':version', $version);
+                $stmt->bindParam(':create_id', $user_id);
+
+                $db->commit();
+
+                // update products qty
+                $items_array = json_decode($items, true);
+                $product_items_array = array();
+
+                $v1 = "";
+                $v2 = "";
+                $v3 = "";
+                $v4 = "";
+
+                // split items_array with product id
+                for($i = 0; $i < count($items_array); $i++)
+                {
+                    $array_to_insert = $items_array[$i];
+
+                    $v1 = $items_array[$i]['v1'];
+                    $v2 = $items_array[$i]['v2'];
+                    $v3 = $items_array[$i]['v3'];
+                    $v4 = $items_array[$i]['v4'];
+
+                    $product_id = $items_array[$i]['product_id'];
+
+                    $pkey = $product_id . "_" . $v1 . "_" . $v2 . "_" . $v3 . "_" . $v4;
+                    
+                    if(!array_key_exists($pkey, $product_items_array))
+                    {
+                        $product_items_array[$pkey] = array();
+                    }
+
+                    array_push($product_items_array[$pkey], $array_to_insert);
+                }
+
+                $product_id = 0;
+
+                $project_qty = 0;
+                $project_s_qty = 0;
+                $stock_qty = 0;
+                $stock_s_qty = 0;
+
+                $which_pool = 0;
+                $as_sample = 0;
+
+                $v1 = "";
+                $v2 = "";
+                $v3 = "";
+                $v4 = "";
+
+                $product_qty_stats = array($project_qty, $project_s_qty, $stock_qty, $stock_s_qty);
+
+                for($j = 0; $j < count($product_items_array); $j++)
+                {
+                    $product_key = array_keys($product_items_array)[$j];
+
+                    $product_id = explode("_", $product_key)[0];
+                    $v1 = explode("_", $product_key)[1];
+                    $v2 = explode("_", $product_key)[2];
+                    $v3 = explode("_", $product_key)[3];
+                    $v4 = explode("_", $product_key)[4];
+
+                    $stock_sql = "";
+                    $stock = 0;
+
+                    $items_array = $product_items_array[$product_key];
+
+                    $tracking_code = array();
+
+                    for($i = 0; $i < count($items_array); $i++)
+                    {
+                        $v1 = $items_array[$i]['v1'];
+                        $v2 = $items_array[$i]['v2'];
+                        $v3 = $items_array[$i]['v3'];
+                        $v4 = $items_array[$i]['v4'];
+
+                        $tracking_code[] = $items_array[$i]['tracking_code'];
+
+                        if($which_pool == 'Porject_Pool')
+                        {
+                            if($as_sample == "Yes")
+                            {
+                                if($reason == "Delivered to Client")
+                                {
+                                    $stock_sql = "project_s_qty = project_s_qty - 1";
+                                    $project_s_qty--;
+                                }
+                                
+                                if($reason == "Return Item(s) from Client to Inventory System")
+                                {
+                                    $stock_sql = "project_s_qty = project_s_qty + 1";
+                                    $project_s_qty++;
+                                }
+
+                                if($reason == "Void Tracking Code of Item(s)")
+                                {
+                                    $stock_sql = "project_s_qty = project_s_qty - 1";
+                                    $project_s_qty--;
+                                }
+
+                                if($reason == "Item(s) Lost")
+                                {
+                                    $stock_sql = "project_s_qty = project_s_qty - 1";
+                                    $project_s_qty--;
+                                }
+
+                                if($reason == "Item(s) Scrapped")
+                                {
+                                    $stock_sql = "project_s_qty = project_s_qty - 1";
+                                    $project_s_qty--;
+                                }
+                            }
+                            
+                            if($as_sample == "No")
+                            {
+                                if($reason == "Delivered to Client")
+                                {
+                                    $stock_sql = "project_qty = project_qty - 1";
+                                    $project_qty--;
+                                }
+                                
+                                if($reason == "Return Item(s) from Client to Inventory System")
+                                {
+                                    $stock_sql = "project_qty = project_qty + 1";
+                                    $project_qty++;
+                                }
+
+                                if($reason == "Void Tracking Code of Item(s)")
+                                {
+                                    $stock_sql = "project_qty = project_qty - 1";
+                                    $project_qty--;
+                                }
+
+                                if($reason == "Item(s) Lost")
+                                {
+                                    $stock_sql = "project_qty = project_qty - 1";
+                                    $project_qty--;
+                                }
+
+                                if($reason == "Item(s) Scrapped")
+                                {
+                                    $stock_sql = "project_qty = project_qty - 1";
+                                    $project_qty--;
+                                }
+                            }
+                        }
+                        
+                        if($which_pool == 'Stock_Pool')
+                        {
+                            if($as_sample == "Yes")
+                            {
+                                if($reason == "Delivered to Client")
+                                {
+                                    $stock_sql = "stock_s_qty = stock_s_qty - 1";
+                                    $stock_s_qty--;
+                                }
+                                
+                                if($reason == "Return Item(s) from Client to Inventory System")
+                                {
+                                    $stock_sql = "stock_s_qty = stock_s_qty + 1";
+                                    $stock_s_qty++;
+                                }
+
+                                if($reason == "Void Tracking Code of Item(s)")
+                                {
+                                    $stock_sql = "stock_s_qty = stock_s_qty - 1";
+                                    $stock_s_qty--;
+                                }
+
+                                if($reason == "Item(s) Lost")
+                                {
+                                    $stock_sql = "stock_s_qty = stock_s_qty - 1";
+                                    $stock_s_qty--;
+                                }
+
+                                if($reason == "Item(s) Scrapped")
+                                {
+                                    $stock_sql = "stock_s_qty = stock_s_qty - 1";
+                                    $stock_s_qty--;
+                                }
+                            }
+                            
+                            if($as_sample == "No")
+                            {
+                                if($reason == "Delivered to Client")
+                                {
+                                    $stock_sql = "stock_qty = stock_qty - 1";
+                                    $stock_qty--;
+                                }
+                                
+                                if($reason == "Return Item(s) from Client to Inventory System")
+                                {
+                                    $stock_sql = "stock_qty = stock_qty + 1";
+                                    $stock_qty++;
+                                }
+
+                                if($reason == "Void Tracking Code of Item(s)")
+                                {
+                                    $stock_sql = "stock_qty = stock_qty - 1";
+                                    $stock_qty--;
+                                }
+
+                                if($reason == "Item(s) Lost")
+                                {
+                                    $stock_sql = "stock_qty = stock_qty - 1";
+                                    $stock_qty--;
+                                }
+
+                                if($reason == "Item(s) Scrapped")
+                                {
+                                    $stock_sql = "stock_qty = stock_qty - 1";
+                                    $stock_qty--;
+                                }
+                            }
+                        }
+
+                        $sql = "update product_category set " . $stock_sql . " where id = :pid "; 
+                        $stmt = $db->prepare($sql);
+                        $stmt->bindParam(':pid', $pid);
+                        $stmt->execute();
+                    }
+
+                    // insert into inventory_modify_history
+                    if($reason == "Delivered to Client")
+                    {
+                        $afftected_sign = "Deduct";
+                    }
+                    
+                    if($reason == "Return Item(s) from Client to Inventory System")
+                    {
+                        $afftected_sign = "Add";
+                    }
+
+                    if($reason == "Void Tracking Code of Item(s)")
+                    {
+                        $afftected_sign = "Deduct";
+                    }
+
+                    if($reason == "Item(s) Lost")
+                    {
+                        $afftected_sign = "Deduct";
+                    }
+
+                    if($reason == "Item(s) Scrapped")
+                    {
+                        $afftected_sign = "Deduct";
+                    }
+
+                    $afftected_qty = abs($stock_qty) + abs($stock_s_qty) + abs($project_qty) + abs($project_s_qty);
+                    $afftected_tracking_code = implode(",", $tracking_code);
+                    
+                    $query = "INSERT INTO inventory_modify_history
+                    SET
+                        request_id = :request_id,
+                        reason = :reason,
+                        listing = :items,
+                        receive_id = :receiver,
+                        which_pool = :which_pool,
+                        as_sample = :as_sample,
+                        `location` = :location,
+                        project_id = :related_project,
+                        `version` = :version,
+                        create_id = :create_id,
+                        created_at = now()";
+                }
+                
+
+                http_response_code(200);
+                echo json_encode(array("message" => "Success at " . date("Y-m-d") . " " . date("h:i:sa")));
+            } catch (Exception $e) {
+                
+                error_log($e->getMessage());
+                $db->rollback();
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                die();
+            }
+            break;
+        }
+        
+
+// get the previous recode
+function getHistoryRecord($db, $id)
+{
+    $query = "SELECT * FROM inventory_modify_history WHERE request_id = :id order by version desc limit 1";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row;
+}
+
+        ?>

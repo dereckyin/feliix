@@ -5857,3 +5857,49 @@ ADD COLUMN `receive_id` bigint(20)  DEFAULT 0 NOT NULL AFTER `listing`;
 
 -- 20251516
 alter table quotation_page_type_block change `num` `num` VARCHAR(50) DEFAULT '';
+
+-- 20250516
+CREATE TABLE IF NOT EXISTS `inventory_modify_history` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `request_id` bigint(20) unsigned NOT NULL,
+  `reason` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `listing` JSON,
+  receive_id bigint(20)  DEFAULT 0 NOT NULL,
+  `which_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `as_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `project_id` bigint(20) DEFAULT 0,
+  `version` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+
+ALTER TABLE inventory_change_history
+ADD COLUMN `modify_history_id` bigint(20)  DEFAULT 0 NOT NULL;
+
+ALTER TABLE inventory_change_history
+ADD COLUMN `pid` bigint(20)  DEFAULT 0 NOT NULL;
+
+ALTER TABLE inventory_change_history ADD COLUMN v1 VARCHAR(255) DEFAULT '';
+ALTER TABLE inventory_change_history ADD COLUMN v2 VARCHAR(255) DEFAULT '';
+ALTER TABLE inventory_change_history ADD COLUMN v3 VARCHAR(255) DEFAULT '';
+ALTER TABLE inventory_change_history ADD COLUMN v4 VARCHAR(255) DEFAULT '';
+
+ALTER TABLE inventory_change_history
+ADD COLUMN `request_no` varchar(10) COLLATE utf8mb4_unicode_ci default '';
+ALTER TABLE inventory_change_history
+ADD COLUMN `releated_item` JSON;
+ALTER TABLE inventory_change_history
+ADD COLUMN `influence_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE inventory_change_history
+ADD COLUMN `new_related_project` bigint(20) DEFAULT 0;
+ALTER TABLE inventory_change_history
+ADD COLUMN `influence_location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE inventory_change_history
+ADD COLUMN `influence_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+

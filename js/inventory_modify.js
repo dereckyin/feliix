@@ -832,7 +832,7 @@ var app = new Vue({
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
-        url: "api/inventory_modify_save",
+        url: "api/inventory_modify_execute",
         data: form_Data,
       })
         .then(function(response) {
