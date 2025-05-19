@@ -800,6 +800,7 @@ var app = new Vue({
       var token = localStorage.getItem("token");
       form_Data.append("jwt", token);
       form_Data.append("id", _this.id);
+      form_Data.append("request_no", this.record.request_no);
       form_Data.append("reason", this.reason);
       form_Data.append("notes", this.notes);
       form_Data.append("receiver", this.receiver);
