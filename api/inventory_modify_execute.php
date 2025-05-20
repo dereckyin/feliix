@@ -292,64 +292,60 @@ if (!isset($jwt)) {
 
                 // insert into inventory_modify_history
                 $version = 0;
-                $rec = getHistoryRecord($db, $id);
+                $rec = getHistoryRecord($db, $id, $items);
 
                 if($rec)
                 {
                     $version = $rec['version'] + 1;
-                }
-                else
-                {
-                    $version = 1;
-                }
 
-                $query = "INSERT INTO inventory_modify_history
-                SET
-                    request_id = :request_id,
-                    reason = :reason,
-                    listing = :items,
-                    receive_id = :receiver,
-                    which_pool = :which_pool,
-                    as_sample = :as_sample,
-                    `location` = :location,
-                    project_id = :related_project,
-                    `version` = :version,
-                    create_id = :create_id,
-                    created_at = now()";
+                    $query = "INSERT INTO inventory_modify_history
+                        SET
+                            request_id = :request_id,
+                            reason = :reason,
+                            listing = :items,
+                            receive_id = :receiver,
+                            which_pool = :which_pool,
+                            as_sample = :as_sample,
+                            `location` = :location,
+                            project_id = :related_project,
+                            `version` = :version,
+                            create_id = :create_id,
+                            created_at = now()";
 
-                // prepare the query
-                $stmt = $db->prepare($query);
-                // bind the values
-                $stmt->bindParam(':request_id', $id);
-                $stmt->bindParam(':reason', $reason);
-                $stmt->bindParam(':items', $items);
-                $stmt->bindParam(':receiver', $receiver);
-                $stmt->bindParam(':which_pool', $which_pool);
-                $stmt->bindParam(':as_sample', $as_sample);
-                $stmt->bindParam(':location', $location);
-                $stmt->bindParam(':related_project', $related_project);
-                $stmt->bindParam(':version', $version);
-                $stmt->bindParam(':create_id', $user_id);
+                        // prepare the query
+                        $stmt = $db->prepare($query);
+                        // bind the values
+                        $stmt->bindParam(':request_id', $id);
+                        $stmt->bindParam(':reason', $reason);
+                        $stmt->bindParam(':items', $items);
+                        $stmt->bindParam(':receiver', $receiver);
+                        $stmt->bindParam(':which_pool', $which_pool);
+                        $stmt->bindParam(':as_sample', $as_sample);
+                        $stmt->bindParam(':location', $location);
+                        $stmt->bindParam(':related_project', $related_project);
+                        $stmt->bindParam(':version', $version);
+                        $stmt->bindParam(':create_id', $user_id);
 
-                try {
-                // execute the query, also check if query was successful
-                if ($stmt->execute()) {
-                    $last_id = $db->lastInsertId();
+                        try {
+                        // execute the query, also check if query was successful
+                        if ($stmt->execute()) {
+                            $last_id = $db->lastInsertId();
+                        }
+                        else
+                        {
+                            $arr = $stmt->errorInfo();
+                            error_log($arr[2]);
+                        }
+                    }
+                    catch (Exception $e)
+                    {
+                        error_log($e->getMessage());
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                        die();
+                    }
                 }
-                else
-                {
-                    $arr = $stmt->errorInfo();
-                    error_log($arr[2]);
-                }
-            }
-            catch (Exception $e)
-            {
-                error_log($e->getMessage());
-                $db->rollback();
-                http_response_code(501);
-                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-                die();
-            }
 
                 // update products qty
                 $items_array = json_decode($items, true);
@@ -389,8 +385,8 @@ if (!isset($jwt)) {
                 $stock_qty = 0;
                 $stock_s_qty = 0;
 
-                $which_pool = 0;
-                $as_sample = 0;
+                $as_sample = "";
+                $which_pool = "";
 
                 $v1 = "";
                 $v2 = "";
@@ -421,9 +417,12 @@ if (!isset($jwt)) {
                         $v3 = $items_array[$i]['v3'];
                         $v4 = $items_array[$i]['v4'];
 
+                        $which_pool = $items_array[$i]['which_pool'];
+                        $as_sample = $items_array[$i]['as_sample'];
+
                         $tracking_code[] = $items_array[$i]['barcode'];
 
-                        if($which_pool == 'Porject_Pool')
+                        if($which_pool == 'Project Pool')
                         {
                             if($as_sample == "Yes")
                             {
@@ -492,7 +491,7 @@ if (!isset($jwt)) {
                             }
                         }
                         
-                        if($which_pool == 'Stock_Pool')
+                        if($which_pool == 'Stock Pool')
                         {
                             if($as_sample == "Yes")
                             {
@@ -563,63 +562,65 @@ if (!isset($jwt)) {
 
                         $sql = "update product_category set " . $stock_sql . " where id = :pid "; 
                         $stmt = $db->prepare($sql);
-                        $stmt->bindParam(':pid', $pid);
+                        $stmt->bindParam(':pid', $product_id);
                         $stmt->execute();
                     }
 
                     // insert into inventory_modify_history
                     if($reason == "Deliver Item(s) to Client")
                     {
-                        $afftected_sign = "Deduct";
+                        $affected_sign = "Deduct";
                         $reason_str = 'Deliver Item(s) to Client. Status changed to "Deliver Item(s) to Client".';
                     }
                     
                     if($reason == "Return Item(s) from Client to Inventory System")
                     {
-                        $afftected_sign = "Add";
+                        $affected_sign = "Add";
                         $reason_str = 'Return Item(s) from Client to Inventory System. Status changed to "On Hand".';
                     }
 
                     if($reason == "Void Tracking Code of Item(s)")
                     {
-                        $afftected_sign = "Deduct";
+                        $affected_sign = "Deduct";
                         $reason_str = 'Void Tracking Code of Item(s). Status changed to "Voided".';
                     }
 
                     if($reason == "Item(s) Lost")
                     {
-                        $afftected_sign = "Deduct";
+                        $affected_sign = "Deduct";
                         $reason_str = 'Item(s) Lost. Status changed to "Lost".';
                     }
 
                     if($reason == "Item(s) Scrapped")
                     {
-                        $afftected_sign = "Deduct";
+                        $affected_sign = "Deduct";
                         $reason_str = 'Item(s) Scrapped. Status changed to "Scrapped".';
                     }
 
                     if($reason == "Change Inventory Pool or Related Project of Item(s)")
                     {
-                        $afftected_sign = "";
+                        $affected_sign = "";
                         $reason_str = 'Change Inventory Pool or Related Project of Item(s)';
                     }
 
                     if($reason == "Change Location of Item(s)")
                     {
-                        $afftected_sign = "";
+                        $affected_sign = "";
                         $reason_str = 'Change Location of Item(s)';
                     }
 
                     if($reason == "Change Sample Status of Item(s)")
                     {
-                        $afftected_sign = "";
+                        $affected_sign = "";
                         $reason_str = 'Change Sample Status of Item(s)';
                     }
 
-                    $afftected_qty = abs($stock_qty) + abs($stock_s_qty) + abs($project_qty) + abs($project_s_qty);
-                    $afftected_tracking_code = implode(",", $tracking_code);
+                    $affected_qty = abs($stock_qty) + abs($stock_s_qty) + abs($project_qty) + abs($project_s_qty);
+                    $affected_tracking_code = implode('","', $tracking_code);
+
+                    $affected_tracking_code = '["' . $affected_tracking_code . '"]';
                     
-                    $query = "INSERT INTO inventory_modify_history
+                    $query = "INSERT INTO inventory_change_history
                     SET
                         modify_history_id = :modify_history_id,
                         pid = :pid,
@@ -627,13 +628,13 @@ if (!isset($jwt)) {
                         v2 = :v2,
                         v3 = :v3,
                         v4 = :v4,
-                        request_id = :request_id,
+                    
                         reason = :reason,
-                        listing = :items,
-                        related_record = :related_record,
-                        afftected_qty = :afftected_qty,
-                        afftected_sign = :afftected_sign,
-                        afftected_tracking = :afftected_tracking,
+
+                        releated_item = :releated_item,
+                        affected_qty = :affected_qty,
+                        affected_sign = :affected_sign,
+                        affected_tracking = :affected_tracking,
                         create_id = :create_id,
                         created_at = now()";
 
@@ -646,14 +647,14 @@ if (!isset($jwt)) {
                     $stmt->bindParam(':v2', $v2);
                     $stmt->bindParam(':v3', $v3);
                     $stmt->bindParam(':v4', $v4);
-                    $stmt->bindParam(':request_id', $id);
+                
                     $stmt->bindParam(':reason', $reason);
-                    $stmt->bindParam(':items', $items);
-                    $stmt->bindParam(':related_record', $id);
-                    $stmt->bindParam(':afftected_qty', $afftected_qty);
-                    $stmt->bindParam(':afftected_sign', $afftected_sign);
 
-                    $stmt->bindParam(':afftected_tracking', $afftected_tracking_code);
+                    $stmt->bindParam(':releated_item', $id);
+                    $stmt->bindParam(':affected_qty', $affected_qty);
+                    $stmt->bindParam(':affected_sign', $affected_sign);
+
+                    $stmt->bindParam(':affected_tracking', $affected_tracking_code);
                     $stmt->bindParam(':create_id', $user_id);
 
                     try {
@@ -696,7 +697,7 @@ if (!isset($jwt)) {
         
 
 // get the previous recode
-function getHistoryRecord($db, $id)
+function getHistoryRecord($db, $id, $items)
 {
     $query = "SELECT * FROM inventory_modify_history WHERE request_id = :id order by version desc limit 1";
     $stmt = $db->prepare($query);
@@ -713,23 +714,23 @@ function getHistoryRecord($db, $id)
         SET
             request_id = :id,
             reason = '',
-            listing = '',
+            listing = :items,
             receive_id = 0,
             which_pool = '',
             as_sample = '',
             `location` = 0,
             project_id = 0,
-            `version` = 1,
+            `version` = 0,
             create_id = 0,
             created_at = now()";
         // prepare the query
         $stmt = $db->prepare($query);
         // bind the values
         $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':items', $items);
         $stmt->execute();
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row;
+        return false;
     }
 }
 
