@@ -268,7 +268,7 @@ $(function(){
                             <li>
                                 <select style="width:100%" v-model="new_info_account">
                                     <option value="Office Petty Cash">Office Petty Cash</option>
-                                    <option value="Online Transactions">Online Transactions</option>
+                                    <option value="Online Transactions" disabled>Online Transactions</option>
                                     <option value="Security Bank">Security Bank</option>
                                 </select>
                             </li>

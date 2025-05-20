@@ -394,7 +394,7 @@ function EditListing() {
                                 <select style="width:100%" v-model="record.info_account" v-if="record.request_type !== 'Petty Cash Replenishment'">
                                     <option value=""></option>
                                     <option value="Office Petty Cash">Office Petty Cash</option>
-                                    <option value="Online Transactions">Online Transactions</option>
+                                    <option value="Online Transactions" disabled>Online Transactions</option>
                                     <option value="Security Bank">Security Bank</option>
                                 </select>
 
