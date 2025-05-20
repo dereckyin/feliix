@@ -5891,7 +5891,7 @@ ALTER TABLE inventory_change_history ADD COLUMN v3 VARCHAR(255) DEFAULT '';
 ALTER TABLE inventory_change_history ADD COLUMN v4 VARCHAR(255) DEFAULT '';
 
 ALTER TABLE inventory_change_history
-ADD COLUMN `request_no` varchar(10) COLLATE utf8mb4_unicode_ci default '';
+ADD COLUMN `related_record` varchar(10) COLLATE utf8mb4_unicode_ci default '';
 ALTER TABLE inventory_change_history
 ADD COLUMN `releated_item` JSON;
 ALTER TABLE inventory_change_history

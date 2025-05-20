@@ -223,7 +223,7 @@ try {
                                 <select class="form-control" style="width:15vw;" v-model="account">
                                     
                                     <option value="1">Office Petty Cash</option>
-                                    <option value="3">Online Transactions</option>
+                                    <option value="3" disabled>Online Transactions</option>
                                     <option value="2">Security Bank</option>
                                 </select>
                             </td>
@@ -325,7 +325,7 @@ try {
                                 <select class="form-control" style="width:15vw;" v-model="related_account">
                                     <option value="None">None</option>
                                     <option>Office Petty Cash</option>
-                                    <option>Online Transactions</option>
+                                    <option disabled>Online Transactions</option>
                                     <option>Security Bank</option>
                                 </select>
                             </td>

@@ -622,6 +622,7 @@ if (!isset($jwt)) {
                     
                     $query = "INSERT INTO inventory_change_history
                     SET
+                        item_id = :item_id,
                         modify_history_id = :modify_history_id,
                         pid = :pid,
                         v1 = :v1,
@@ -630,8 +631,7 @@ if (!isset($jwt)) {
                         v4 = :v4,
                     
                         reason = :reason,
-
-                        releated_item = :releated_item,
+                        related_record = :related_record,
                         affected_qty = :affected_qty,
                         affected_sign = :affected_sign,
                         affected_tracking = :affected_tracking,
@@ -641,6 +641,7 @@ if (!isset($jwt)) {
                     // prepare the query
                     $stmt = $db->prepare($query);
                     // bind the values
+                    $stmt->bindParam(':item_id', $id);
                     $stmt->bindParam(':modify_history_id', $last_id);
                     $stmt->bindParam(':pid', $product_id);
                     $stmt->bindParam(':v1', $v1);
@@ -650,7 +651,7 @@ if (!isset($jwt)) {
                 
                     $stmt->bindParam(':reason', $reason);
 
-                    $stmt->bindParam(':releated_item', $id);
+                    $stmt->bindParam(':related_record', $request_no);
                     $stmt->bindParam(':affected_qty', $affected_qty);
                     $stmt->bindParam(':affected_sign', $affected_sign);
 
