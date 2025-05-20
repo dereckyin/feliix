@@ -17,6 +17,12 @@ use Google\Cloud\Storage\StorageClient;
 
 $method = $_SERVER['REQUEST_METHOD'];
 
+define("ON_HAND", 0);
+define('LOST', 1);
+define("DELIVERED_TO_CLIENT", 2);
+define("SCRAPPED", 3);
+define("VOIDED", -1);
+
 
 if (!isset($jwt)) {
     http_response_code(401);
@@ -74,16 +80,16 @@ if (!isset($jwt)) {
             $id = (isset($_POST['id']) ?  $_POST['id'] : '0');
             $notes = (isset($_POST['notes']) ?  $_POST['notes'] : '');
             $receiver = (isset($_POST['receiver']) ?  $_POST['receiver'] : 0);
-  
-            if($related_project == "")
-            {
-                $related_project = 0;
-            }
 
-            if($receiver == "")
-            {
-                $receiver = 0;
-            }
+            // if($related_project == "")
+            // {
+            //     $related_project = 0;
+            // }
+
+            // if($receiver == "")
+            // {
+            //     $receiver = 0;
+            // }
 
             $last_id = $id;
 
@@ -92,17 +98,97 @@ if (!isset($jwt)) {
                 set    
 
                 reason = :reason,
-                note_1 = :notes,
-                receive_id = :receiver,
+                note_1 = :notes, ";
+
+                if($receiver != "")
+                {
+                    $query .= " receiver_id = :receiver, ";
+                }
+
+                $query .= "
                 which_pool = :which_pool,
                 as_sample = :as_sample,
-                location = :location,
-                project_id = :related_project,
+                location = :location, ";
+                
+                if($related_project != "")
+                    $query .= " project_id = :related_project, ";
+
+                $query .= "
                 listing = :items,
                 updated_id = :updated_id,
                 status = :stage,
                 updated_at = now()
                 where id = :id";
+
+
+                $items_array = json_decode($items, true);
+
+
+                if($reason == "Deliver Item(s) to Client")
+                {
+                    for($i = 0; $i < count($items_array); $i++)
+                    {
+                        $items_array[$i]['status'] = DELIVERED_TO_CLIENT;
+                    }
+                }
+                
+                if($reason == "Return Item(s) from Client to Inventory System")
+                {
+                    for($i = 0; $i < count($items_array); $i++)
+                    {
+                        $items_array[$i]['status'] = ON_HAND;
+                    }
+                }
+
+                if($reason == "Void Tracking Code of Item(s)")
+                {
+                    for($i = 0; $i < count($items_array); $i++)
+                    {
+                        $items_array[$i]['status'] = VOIDED;
+                    }
+                }
+
+                if($reason == "Item(s) Lost")
+                {
+                    for($i = 0; $i < count($items_array); $i++)
+                    {
+                        $items_array[$i]['status'] = LOST;
+                    }
+                }
+
+                if($reason == "Item(s) Scrapped")
+                {
+                    for($i = 0; $i < count($items_array); $i++)
+                    {
+                        $items_array[$i]['status'] = SCRAPPED;
+                    }
+                }
+
+                if($reason == "Change Inventory Pool or Related Project of Item(s)")
+                {
+                    for($i = 0; $i < count($items_array); $i++)
+                    {
+                        $items_array[$i]['project_id'] = $related_project;
+                        $items_array[$i]['which_pool'] = $which_pool;
+                    }
+                }
+
+                if($reason == "Change Location of Item(s)")
+                {
+                    for($i = 0; $i < count($items_array); $i++)
+                    {
+                        $items_array[$i]['location'] = $location;
+                        $items_array[$i]['receive_id'] = $receiver;
+                    }
+                }
+
+                if($reason == "Change Sample Status of Item(s)")
+                {
+                    for($i = 0; $i < count($items_array); $i++)
+                    {
+                        $items_array[$i]['as_sample'] = $as_sample;
+                    }
+                }
             
                 // prepare the query
                 $stmt = $db->prepare($query);
@@ -110,12 +196,20 @@ if (!isset($jwt)) {
                 // bind the values
                 $stmt->bindParam(':reason', $reason);
                 $stmt->bindParam(':notes', $notes);
-                $stmt->bindParam(':receiver', $receiver);
+
+                if($receiver != "")
+                    $stmt->bindParam(':receiver', $receiver);
+
                 $stmt->bindParam(':which_pool', $which_pool);
                 $stmt->bindParam(':as_sample', $as_sample);
                 $stmt->bindParam(':location', $location);
-                $stmt->bindParam(':related_project', $related_project);
-                $stmt->bindParam(':items', $items);
+
+                if($related_project != "")
+                    $stmt->bindParam(':related_project', $related_project);
+             
+                $items_changed = json_encode($items_array);
+
+                $stmt->bindParam(':items', $items_changed);
                 $stmt->bindParam(':updated_id', $user_id);
                 $stmt->bindParam(':stage', $stage);
                 $stmt->bindParam(':id', $id);
@@ -312,6 +406,16 @@ if (!isset($jwt)) {
                             create_id = :create_id,
                             created_at = now()";
 
+                        if($related_project == "")
+                        {
+                            $related_project = 0;
+                        }
+
+                        if($receiver == "")
+                        {
+                            $receiver = 0;
+                        }
+                            
                         // prepare the query
                         $stmt = $db->prepare($query);
                         // bind the values
@@ -406,6 +510,10 @@ if (!isset($jwt)) {
                     $stock_sql = "";
                     $stock = 0;
 
+                    $org_which_pool = "";
+                    $org_as_sample = "";
+                    $org_product_id = 0;
+
                     $items_array = $product_items_array[$product_key];
 
                     $tracking_code = array();
@@ -417,10 +525,42 @@ if (!isset($jwt)) {
                         $v3 = $items_array[$i]['v3'];
                         $v4 = $items_array[$i]['v4'];
 
-                        $which_pool = $items_array[$i]['which_pool'];
-                        $as_sample = $items_array[$i]['as_sample'];
+                        $org_which_pool = $items_array[$i]['which_pool'];
+                        $org_as_sample = $items_array[$i]['as_sample'];
+                        $org_product_id = $items_array[$i]['product_id'];
 
                         $tracking_code[] = $items_array[$i]['barcode'];
+
+                        if($reason == "Deliver Item(s) to Client")
+                        {
+                            $which_pool = $items_array[$i]['which_pool'];
+                            $as_sample = $items_array[$i]['as_sample'];
+                        }
+                        
+                        if($reason == "Return Item(s) from Client to Inventory System")
+                        {
+                            $which_pool = $items_array[$i]['which_pool'];
+                            $as_sample = $items_array[$i]['as_sample'];
+                        }
+
+                        if($reason == "Void Tracking Code of Item(s)")
+                        {
+                            $which_pool = $items_array[$i]['which_pool'];
+                            $as_sample = $items_array[$i]['as_sample'];
+                        }
+
+                        if($reason == "Item(s) Lost")
+                        {
+                            $which_pool = $items_array[$i]['which_pool'];
+                            $as_sample = $items_array[$i]['as_sample'];
+                        }
+
+                        if($reason == "Item(s) Scrapped")
+                        {
+                            $which_pool = $items_array[$i]['which_pool'];
+                            $as_sample = $items_array[$i]['as_sample'];
+                        }
+
 
                         if($which_pool == 'Project Pool')
                         {
@@ -564,6 +704,73 @@ if (!isset($jwt)) {
                         $stmt = $db->prepare($sql);
                         $stmt->bindParam(':pid', $product_id);
                         $stmt->execute();
+
+                        if($reason == "Change Inventory Pool or Related Project of Item(s)")
+                        {
+                            if($org_which_pool == "Project Pool" && $which_pool == "Stock Pool")
+                            {
+                                if($org_as_sample == "Yes")
+                                {
+                                    $stock_sql = "project_s_qty = project_s_qty - 1, stock_s_qty = stock_s_qty + 1";
+                                }
+                                
+                                if($org_as_sample == "No")
+                                {
+                                    $stock_sql = "project_qty = project_qty - 1, stock_qty = stock_qty + 1";
+                                }
+                            }
+
+                            if($org_which_pool == "Stock Pool" && $which_pool == "Project Pool")
+                            {
+                                if($org_as_sample == "Yes")
+                                {
+                                    $stock_sql = "stock_s_qty = stock_s_qty - 1, project_s_qty = project_s_qty + 1";
+                                }
+                                
+                                if($org_as_sample == "No")
+                                {
+                                    $stock_sql = "stock_qty = stock_qty - 1, project_qty = project_qty + 1";
+                                }
+                            }
+
+                            $sql = "update product_category set " . $stock_sql . " where id = :pid ";
+                            $stmt = $db->prepare($sql);
+                            $stmt->bindParam(':pid', $product_id);
+                            $stmt->execute();
+                        }
+
+                        if($reason == "Change Sample Status of Item(s)")
+                        {
+                            if($org_which_pool == "Project Pool")
+                            {
+                                if($org_as_sample == "Yes" && $as_sample == "No")
+                                {
+                                    $stock_sql = "project_s_qty = project_s_qty - 1, project_qty = project_qty + 1";
+                                }
+                                if($org_as_sample == "No" && $as_sample == "Yes")
+                                {
+                                    $stock_sql = "project_qty = project_qty - 1, project_s_qty = project_s_qty + 1";
+                                }
+                            }
+
+                            if($org_which_pool == "Stock Pool")
+                            {
+                                if($org_as_sample == "Yes" && $as_sample == "No")
+                                {
+                                    $stock_sql = "stock_s_qty = stock_s_qty - 1, stock_qty = stock_qty + 1";
+                                }
+                                if($org_as_sample == "No" && $as_sample == "Yes")
+                                {
+                                    $stock_sql = "stock_qty = stock_qty - 1, stock_s_qty = stock_s_qty + 1";
+                                }
+                            }
+
+                            $sql = "update product_category set " . $stock_sql . " where id = :pid ";
+                            $stmt = $db->prepare($sql);
+                            $stmt->bindParam(':pid', $product_id);
+                            $stmt->execute();
+                        }
+                        
                     }
 
                     // insert into inventory_modify_history
