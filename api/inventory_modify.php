@@ -640,6 +640,47 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
             $attachment = GetAttachment($id, $db);
 
+            if($status > 1)
+            {
+                $history_item = getHistoryRecord($id, $db);
+
+                if($history_item != null)
+                {
+                    $obj1 = json_decode($history_item["listing"]);
+                    $obj2 = json_decode($listing);
+
+                    for($i = 0; $i < count($obj1); $i++)
+                    {
+                        $diff_items = [];
+                        $diff_items = show_diff($obj1[$i], $obj2[$i]);
+
+                        if($diff_items != null)
+                        {
+                            // add new value to the object
+                            for($j = 0; $j < count($diff_items); $j++)
+                            {
+                                $key = $diff_items[$j]['key'];
+                                $value = $diff_items[$j]['value'];
+
+                                foreach($obj2[$i] as $key2 => $value2)
+                                {
+                                    if($key == $key2)
+                                    {
+                                        $key3 = $key2 . "_new";
+                                        $obj2[$i]->$key3 = " => " . $obj2[$i]->$key2;
+                                        $obj2[$i]->$key2 = $value;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    
+                    $listing = json_encode($obj2);
+                }
+            }
+            
+
             $merged_results[] = array(
                 "is_edited" => 1,
                 "followup" => "",
@@ -934,4 +975,54 @@ function GetDepartment($dept_name)
         $department = 'Sales Department';
 
     return $department;
+}
+
+// get the previous recode
+function getHistoryRecord($id, $db)
+{
+    $query = "SELECT * FROM inventory_modify_history WHERE request_id = :id order by version desc limit 1";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    // if no record found, insert one and return it
+
+    if ($row) {
+        return $row;
+    } 
+    else
+        return null;
+}
+
+function show_diff($pre_item, $item)
+{
+    $diff = [];
+
+    $pre_item = json_decode(json_encode($pre_item));
+
+    foreach($item as $key => $value)
+    {
+        if($key == "id" || $key == "created_at" || $key == "updated_at" || $key == "request_id")
+            continue;
+
+        foreach($pre_item as $key2 => $value2)
+        {
+            if($key == $key2)
+            {
+                if($value == $value2)
+                    continue;
+                else
+                    $diff[] = [
+                        'key' => $key,
+                        'value' => $value2
+                    ];
+            }
+
+        }
+
+
+    }
+
+    return $diff;
 }

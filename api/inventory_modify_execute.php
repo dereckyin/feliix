@@ -129,6 +129,7 @@ if (!isset($jwt)) {
                     for($i = 0; $i < count($items_array); $i++)
                     {
                         $items_array[$i]['status'] = DELIVERED_TO_CLIENT;
+                        $items_array[$i]['status_text'] = "Deliver to Client";
                     }
                 }
                 
@@ -137,6 +138,7 @@ if (!isset($jwt)) {
                     for($i = 0; $i < count($items_array); $i++)
                     {
                         $items_array[$i]['status'] = ON_HAND;
+                        $items_array[$i]['status_text'] = "On Hand";
                     }
                 }
 
@@ -145,6 +147,7 @@ if (!isset($jwt)) {
                     for($i = 0; $i < count($items_array); $i++)
                     {
                         $items_array[$i]['status'] = VOIDED;
+                        $items_array[$i]['status_text'] = "Voided";
                     }
                 }
 
@@ -153,6 +156,7 @@ if (!isset($jwt)) {
                     for($i = 0; $i < count($items_array); $i++)
                     {
                         $items_array[$i]['status'] = LOST;
+                        $items_array[$i]['status_text'] = "Lost";
                     }
                 }
 
@@ -161,6 +165,7 @@ if (!isset($jwt)) {
                     for($i = 0; $i < count($items_array); $i++)
                     {
                         $items_array[$i]['status'] = SCRAPPED;
+                        $items_array[$i]['status_text'] = "Scrapped";
                     }
                 }
 
@@ -190,6 +195,12 @@ if (!isset($jwt)) {
                     {
                         $items_array[$i]['as_sample'] = $as_sample;
                     }
+                }
+
+                for($i = 0; $i < count($items_array); $i++)
+                {
+                    $items_array[$i]['updated_at'] = date("Y-m-d H:i:s");
+                    $items_array[$i]['updated_by'] = $user_id;
                 }
             
                 // prepare the query

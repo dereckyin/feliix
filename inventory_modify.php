@@ -911,49 +911,49 @@
                     <ul>
                         <li><b>Reason</b></li>
                         <li>
-                            <select style="width: 100%; margin-bottom: 8px;" v-model="notes" disabled>
+                            <select style="width: 100%; margin-bottom: 8px;" v-model="reason" disabled>
                                 <option value=""></option>
-                                <option value="">Deliver Item(s) to Client</option>
-                                <option value="">Return Item(s) from Client to Inventory System</option>
-                                <option value="">Void Tracking Code of Item(s)</option>
-                                <option value="">Item(s) Lost</option>
-                                <option value="">Item(s) Scrapped</option>
-                                <option value="">Change Inventory Pool or Related Project of Item(s)</option>
-                                <option value="">Change Location of Item(s)</option>
-                                <option value="">Change Sample Status of Item(s)</option>
+                                <option value="Deliver Item(s) to Client">Deliver Item(s) to Client</option>
+                                <option value="Return Item(s) from Client to Inventory System">Return Item(s) from Client to Inventory System</option>
+                                <option value="Void Tracking Code of Item(s)">Void Tracking Code of Item(s)</option>
+                                <option value="Item(s) Lost">Item(s) Lost</option>
+                                <option value="Item(s) Scrapped">Item(s) Scrapped</option>
+                                <option value="Change Inventory Pool or Related Project of Item(s)">Change Inventory Pool or Related Project of Item(s)</option>
+                                <option value="Change Location of Item(s)">Change Location of Item(s)</option>
+                                <option value="Change Sample Status of Item(s)">Change Sample Status of Item(s)</option>
                             </select>
 
-                            <textarea style="width:100%" placeholder="Notes" v-model="notes4" disabled></textarea>
+                            <textarea style="width:100%" placeholder="Notes" v-model="notes" disabled></textarea>
                         </li>
 
 
                         <li class="further_input">
-                            <div class="deliver_client" style="display: none;">
+                            <div class="deliver_client" v-show="reason == 'Deliver Item(s) to Client'">
                                 <b>Further Input</b>
 
                                 <div class="compoundbox">
                                     <span>Which Intermal Member Receives?</span>
-                                    <select disabled>
-                                        <option value="">Which internal member receives the item(s)?</option>
-                                        <option value="">放入系統上所有已經註冊 且 不是被刪除 且 不是被 disabled 的使用者</option>
+                                    <select v-model="receiver" disabled>
+                                        <option value="0">Which internal member receives the item(s)?</option>
+                                        <option v-for="(item, index) in users" :value="item.id">{{ item.username }}</option>
                                     </select>
                                 </div>
 
                                 <div class="compoundbox">
                                     <span>Transmittal File</span>
                                     <div class="list_attch">
-                                        <a href="https://storage.googleapis.com/feliiximg/1743132750_OQ-3796_250328_ROCKWELL NEPO PAMPANGA OFFICE - OFFICE FURNITURE (ADDITIONAL) OPTION 1 R2 (1).pdf" target="_blank" class="attch">OQ-3796_250328_ROCKWELL NEPO PAMPANGA OFFICE - OFFICE FURNITURE (ADDITIONAL) OPTION 1 R2 (1).pdf</a>
+                                        <a v-for='(item, index) in item_list' :key="index" :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
                                     </div>
                                 </div>
                             </div>
 
 
-                            <div class="change_pool_project" style="display: none;">
+                            <div class="change_pool_project" v-show="reason == 'Change Inventory Pool or Related Project of Item(s)'">
                                 <b>Further Input</b>
 
                                 <div class="compoundbox">
                                     <span>New Inventory Pool of Item(s)</span>
-                                    <select disabled>
+                                    <select v-model="which_pool" disabled>
                                         <option value="Project Pool">Project Pool</option>
                                         <option value="Stock Pool">Stock Pool</option>
                                     </select>
@@ -961,19 +961,19 @@
 
                                 <div class="compoundbox">
                                     <span>Related Project?</span>
-                                    <select disabled>
-                                        <option value="">載入系統上所有的專案</option>
+                                    <select v-model="project_id" disabled>
+                                        <option v-for="(item, index) in projects" :value="item.id">{{ item.project_name}}</option>
                                     </select>
                                 </div>
                             </div>
 
 
-                            <div class="change_location" style="display: none;">
+                            <div class="change_location" v-show="reason == 'Change Location of Item(s)'">
                                 <b>Further Input</b>
 
                                 <div class="compoundbox">
                                     <span>New Location of Item(s)</span>
-                                    <select disabled>
+                                    <select v-model="location" disabled>
                                         <option value="Caloocan">Caloocan</option>
                                         <option value="Makati">Makati</option>
                                     </select>
@@ -981,28 +981,28 @@
 
                                 <div class="compoundbox">
                                     <span>Which Intermal Member Receives?</span>
-                                    <select disabled>
-                                        <option value="">Which internal member receives the item(s)?</option>
-                                        <option value="">放入系統上所有已經註冊 且 不是被刪除 且 不是被 disabled 的使用者</option>
+                                    <select v-model="receiver" disabled>
+                                        <option value="0">Which internal member receives the item(s)?</option>
+                                        <option v-for="(item, index) in users" :value="item.id">{{ item.username }}</option>
                                     </select>
                                 </div>
 
                                 <div class="compoundbox">
                                     <span>Transmittal File</span>
                                     <div class="list_attch">
-                                        <a href="https://storage.googleapis.com/feliiximg/1743132750_OQ-3796_250328_ROCKWELL NEPO PAMPANGA OFFICE - OFFICE FURNITURE (ADDITIONAL) OPTION 1 R2 (1).pdf" target="_blank" class="attch">OQ-3796_250328_ROCKWELL NEPO PAMPANGA OFFICE - OFFICE FURNITURE (ADDITIONAL) OPTION 1 R2 (1).pdf</a>
+                                        <a v-for='(item, index) in item_list' :key="index" :href="baseURL + item.gcp_name" target="_blank" class="attch">{{item.filename}}</a>
                                     </div>
                                 </div>
 
                             </div>
 
-                            <div class="change_sample" style="display: none;">
+                            <div class="change_sample" v-show="reason == 'Change Sample Status of Item(s)'">
                                 <b>Further Input</b>
 
                                 <div class="compoundbox">
                                     <span>New Sample Status of Item(s)</span>
 
-                                    <select disabled>
+                                    <select v-model="as_sample" disabled>
                                         <option value="No">No</option>
                                         <option value="Yes">Yes</option>
                                     </select>
@@ -1043,7 +1043,7 @@
                                 </thead>
 
                                 <tbody>
-                                <tr v-for="(item, index) in items" :key="index">
+                                <tr v-for="(item, index) in phase" :key="index">
                                     <td>
                                         <ul>
                                             <li>Tracking Code:</li>
@@ -1052,44 +1052,44 @@
 
                                         <ul>
                                             <li>Status:</li>
-                                            <li>On Hand <span class="after_change"> => Delivered to Client</span></li>
+                                            <li>{{ item.status_text }}<span class="after_change" v-if="item.status_text_new">{{ item.status_text_new }}</span></li>
                                         </ul>
 
                                         <ul>
                                             <li style="max-width: 135px;">Purchased thru Which Order:</li>
-                                            <li><a href="order_taiwan_p4?id=xxxx">LPO-TW-0270 Arthaland Century Pacific Tower</a></li>
+                                            <li><a :href="item.order_url" target="_blank">{{item.order_name}}</a></li>
                                         </ul>
 
                                         <ul>
                                             <li>Created:</li>
-                                            <li>2025-03-26 17:11:20 (Gwendolyn Sarmiento)</li>
+                                            <li>{{ item.created_at }} ({{ item.created_by }})</li>
                                         </ul>
 
                                         <ul>
                                             <li>Updated:</li>
-                                            <li>2025-04-05 10:11:20 (Dennis Lin)</li>
+                                            <li v-show="item.updated_by != null">{{ item.updated_at }} ({{ item.updated_by }})</li>
                                         </ul>
                                     </td>
 
                                     <td>
                                         <ul>
                                             <li>Inventory Pool:</li>
-                                            <li>Project Pool <span class="after_change"> => Stock Pool</span></li>
+                                            <li>{{ item.which_pool }}<span class="after_change" v-if="item.which_pool_new">{{ item.which_pool_new }}</span></li>
                                         </ul>
 
                                         <ul>
                                             <li style="min-width: 130px;">Related Project:</li>
-                                            <li><a href="project02?p=2239">Arthaland Century Pacific Tower - 7th Floor (Additional) No.1</a> <span class="after_change"> => <a href="project02?p=2239">New Project</a><span></li>
+                                            <li><a :href="'project02?p=' + item.project_id" target="_blank">{{ item.project_name }}</a> <span class="after_change" v-if="item.project_name_new"> => <a :href="'project02?p=' + item.project_id_new">{{ item.project_name_new }}</a><span></li>
                                         </ul>
 
                                         <ul>
                                             <li>Location:</li>
-                                            <li>Caloocan <span class="after_change"> => Makati</span></li>
+                                            <li>{{ item.location }} <span class="after_change" v-if="item.location_new">{{ item.location_new }}</span></li>
                                         </ul>
 
                                         <ul>
                                             <li>Sample:</li>
-                                            <li>No <span class="after_change"> => Yes</span></li>
+                                            <li>{{ item.as_sample }}<span class="after_change" v-if="item.as_sample_new">{{ item.as_sample_new }}</span></li>
                                         </ul>
                                     </td>
 
@@ -1098,22 +1098,22 @@
 
                                         <ul>
                                             <li>Product ID:</li>
-                                            <li>2423</li>
+                                            <li>{{ item.product_id }}</li>
                                         </ul>
 
                                         <ul>
                                             <li>Product Code:</li>
-                                            <li><a>FELIIX SB NS0612</a></li>
+                                            <li><a :href="'product_display?id=' + item.product_id" target="_blank">{{ item.code }}</a></li>
                                         </ul>
 
                                         <ul>
                                             <li>Brand:</li>
-                                            <li>SHAN BEN</li>
+                                            <li>{{ item.brand }}</li>
                                         </ul>
 
                                         <ul>
                                             <li>Specification:</li>
-                                            <li>received item 的 brief 和 listing</li>
+                                            <li>{{ item.listing }}{{ item.remark }}</li>
                                         </ul>
                                     </td>
 
