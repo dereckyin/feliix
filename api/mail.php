@@ -768,38 +768,32 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
     if($kind == 2)
         $payment = "2307";
 
+    //Sales Manager 和 所有的 Admin Team 成員
+    $mail->AddAddress('manilynne@feliix.com', 'Manilynne Nicol');
+    $mail->AddAddress('gina@feliix.com', 'Gina Donato');
+    $mail->AddAddress('kayla@feliix.com', 'Marie Kayla Patricia Dequina');
+    $mail->AddAddress('stephanie@feliix.com', 'Stephanie De dios');
+
     if($category == '1')
         $mail->AddAddress('johmar@feliix.com', 'Johmar Maximo');
 
-    //if($category == '2')
-        //$mail->AddAddress('nestor@feliix.com', 'Nestor Rosales');
+    if($category == '2')
+        $mail->AddAddress('jack@feliix.com', 'Jack Beringuela');
 
+    //需要 cc 的名單
     $mail->AddCC('kuan@feliix.com', 'Kuan');
-    $mail->AddCC('kristel@feliix.com', 'Kristel Tan');
-    $mail->AddCC('glen@feliix.com', 'Glendon Wendell Co');
     $mail->AddCC('ariel@feliix.com', 'Ariel Lin');
-    //$mail->AddCC('wren@feliix.com', 'Thalassa Wren Benzon');
-    //if($kind == 0)
-    //    $mail->AddCC('argel.feliix@gmail.com', 'Argel Argana');
+    $mail->AddCC('glen@feliix.com', 'Glendon Wendell Co');
+    $mail->AddCC('kenilynsy@gmail.com', 'Kenilyn Sy');
 
-    //if($kind == 1 && $send_mail == 'true')
-
-    //if($kind == 0 || $kind == 1)
-        //$mail->AddCC('edneil@feliix.com', 'Edneil Fernandez');
-
-    $mail->AddCC('dennis@feliix.com', 'Dennis Lin');
 
     $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
     $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
-    // $mail->AddCC("tryhelpbuy@gmail.com", "tryhelpbuy");
+
 
     if($status == 'True'){
         $mail->Subject = "[PAYMENT CONFIRMED] Checked: " . $status . " for " . $payment . " Proof submitted by " . $name . "(" . $projectname . ")";
 
-        if($category == '2' && ($kind == 0 || $kind == 1)){
-            $mail->AddAddress('aiza@feliix.com', 'Aiza Eisma');
-            $mail->AddCC('alleah.feliix@gmail.com', 'Alleah Belmonte');
-        }
     }
     if($status == 'False')
         $mail->Subject = "Checked: " . $status . " for " . $payment . " Proof submitted by " . $name . "(" . $projectname . ")";
@@ -829,37 +823,36 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
     // Project Type = Normal
     if($special == ""){
 	    $content = $content . "Glen has checked " . $payment . " proof, Please check details below:";
-	    $mail->AddCC('kenilynsy@gmail.com', 'Kenilyn Sy');
 	}
 
     // Project Type = X-Deal and Kind = 0 or 1
-    if($special == "s" && ($kind == 0 || $kind == 1))
+    if($special == "s" && ($kind == 0 || $kind == 1)){
         $content = $content . "Boss has checked " . $payment . " proof, Please check details below:";
+    }
 
     // Project Type = X-Deal and Kind = 2
     if($special == "s" && $kind == 2){
         $content = $content . "Glen has checked " . $payment . " proof, Please check details below:";
-        $mail->AddCC('kenilynsy@gmail.com', 'Kenilyn Sy');
     }
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
-    if($special == "sn" && $kind == 0 && $final_amount <= 100000)
+    if($special == "sn" && $kind == 0 && $final_amount <= 100000){
         $content = $content . "Manilynne has checked " . $payment . " proof, Please check details below:";
+    }
 
     // Project Type = No DP and Kind = 0 and Amount > 10萬
-    if($special == "sn" && $kind == 0 && $final_amount > 100000)
+    if($special == "sn" && $kind == 0 && $final_amount > 100000){
         $content = $content . "Boss has checked " . $payment . " proof, Please check details below:";
+    }
 
     // Project Type = No DP and Kind = 1 or 2 and Amount <= 10萬
     if($special == "sn" && ($kind == 1 || $kind == 2) && $final_amount <= 100000){
         $content = $content . "Glen has checked " . $payment . " proof, Please check details below:";
-        $mail->AddCC('kenilynsy@gmail.com', 'Kenilyn Sy');
     }
 
     // Project Type = No DP and Kind = 1 or 2 and Amount > 10萬
     if($special == "sn" && ($kind == 1 || $kind == 2) && $final_amount > 100000){
         $content = $content . "Glen has checked " . $payment . " proof, Please check details below:";
-        $mail->AddCC('kenilynsy@gmail.com', 'Kenilyn Sy');
     }
 
 
@@ -1085,31 +1078,7 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
                     </div>
                     </body>
                     </html>';
-/*
-    $content = $content . "<p>Remark: " . $remark . "</p>";
 
-
-    $content = $content . "<p>Status: Checked: " . $status . "</p>";
-
-    $content = $content . "<p>Date of Receiving Payment: " . $receive_date . "</p>";
-
-    $content = $content . "<p>Amount of Receiving Payment: " . number_format($amount) . "</p>";
-
-    $content = $content . "<p>Project Name: " . $projectname . "</p>";
-    $content = $content . "<p>Submission Time: " . $subtime . "</p>";
-    $content = $content . "<p>Submitter: " . $leaver . "</p>";
-    $content = $content . "<p>Checked: " . $status . "</p>";
-    $content = $content . "<p>Remark: " . $remark . "</p>";
-
-
-    if($reason != "")
-        $content = $content . "<p>Additional Remark: " . $reason . "</p>";
-
-    $content = $content . "<p> </p>";
-
-    $content = $content . "<p>Please log on to Feliix >> Admin Section >> Verify and Review to view the downpayment proof.</p>";
-    $content = $content . "<p>URL: " . $conf::$mail_ip . "</p>";
-*/
 
     $mail->MsgHTML($content);
     if($mail->Send()) {
@@ -1125,105 +1094,7 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
 
 }
 
-// 2023/07/10 因為目前無任何地方會呼叫此函數，因此將其註解起來
-// function send_check_notify_mail($name, $email1, $projectname, $remark, $subtime, $reason, $status, $category)
-// {
-//     $conf = new Conf();
 
-//     $mail = new PHPMailer();
-//     $mail->IsSMTP();
-//     $mail->Mailer = "smtp";
-//     $mail->CharSet = 'UTF-8';
-//     $mail->Encoding = 'base64';
-
-//     // $mail->SMTPDebug  = 0;
-//     // $mail->SMTPAuth   = true;
-//     // $mail->SMTPSecure = "ssl";
-//     // $mail->Port       = 465;
-//     // $mail->SMTPKeepAlive = true;
-//     // $mail->Host       = $conf::$mail_host;
-//     // $mail->Username   = $conf::$mail_username;
-//     // $mail->Password   = $conf::$mail_password;
-
-//     $mail = SetupMail($mail, $conf);
-
-//     $mail->IsHTML(true);
-//     $mail->AddAddress($email1, $name);
-
-
-//     if($category == '1')
-//         $mail->AddAddress('johmar@feliix.com', 'Johmar Maximo');
-
-//     if($category == '2')
-//         $mail->AddAddress('nestor@feliix.com', 'Nestor Rosales');
-
-//     $mail->AddCC('kuan@feliix.com', 'Kuan');
-//     $mail->AddCC('kristel@feliix.com', 'Kristel Tan');
-//     $mail->AddCC('glen@feliix.com', 'Glendon Wendell Co');
-//     $mail->AddCC('ariel@feliix.com', 'Ariel Lin');
-//     //$mail->AddCC('wren@feliix.com', 'Thalassa Wren Benzon');
-//     //$mail->AddCC('edneil@feliix.com', 'Edneil Fernandez');
-
-//     $mail->AddCC('dennis@feliix.com', 'Dennis Lin');
-
-//     $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
-//     $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
-//     // $mail->AddCC("tryhelpbuy@gmail.com", "tryhelpbuy");
-
-
-//     if($status == 'True'){
-//         $mail->Subject = "[PAYMENT CONFIRMED] Checked: " . $status . " for Downpayment Proof submitted by " . $name . "(" . $projectname . ")";
-
-//         if($category == '2'){
-//             $mail->AddAddress('aiza@feliix.com', 'Aiza Eisma');
-//             $mail->AddCC('cristina@feliix.com', 'Cristina Matining');
-//             $mail->AddCC('alleah.feliix@gmail.com', 'Alleah Belmonte');
-//         }
-
-//     }
-//     if($status == 'False')
-//         $mail->Subject = "Checked: " . $status . " for Downpayment Proof submitted by " . $name . "(" . $projectname . ")";
-
-//     $content =  "<p>Dear " . $name . ",</p>";
-//     $content = $content . "<p>Glen has checked downpayment proof, Following are the details:</p>";
-
-//     $content = $content . "<p>Project Name: " . $projectname . "</p>";
-//     $content = $content . "<p>Submission Time: " . $subtime . "</p>";
-//     $content = $content . "<p>Submitter: " . $name . "</p>";
-//     $content = $content . "<p>Remark: " . $remark . "</p>";
-
-
-//     $content = $content . "<p>Status: Checked: " . $status . "</p>";
-//     /*
-//     $content = $content . "<p>Project Name: " . $projectname . "</p>";
-//     $content = $content . "<p>Submission Time: " . $subtime . "</p>";
-//     $content = $content . "<p>Submitter: " . $leaver . "</p>";
-//     $content = $content . "<p>Checked: " . $status . "</p>";
-//     $content = $content . "<p>Remark: " . $remark . "</p>";
-//     */
-
-//     if($reason != "")
-//         $content = $content . "<p>Additional Remark: " . $reason . "</p>";
-
-//     $content = $content . "<p> </p>";
-
-//     $content = $content . "<p>Please log on to Feliix >> Admin Section >> Verify and Review to view the downpayment proof.</p>";
-//     $content = $content . "<p>URL: " . $conf::$mail_ip . "</p>";
-
-
-//     $mail->MsgHTML($content);
-//     if($mail->Send()) {
-//         logMail($email1, $content);
-//         return true;
-// //        echo "Error while sending Email.";
-// //        var_dump($mail);
-//     } else {
-//         logMail($email1, $mail->ErrorInfo . $content);
-//         return false;
-// //        echo "Email sent successfully";
-//     }
-
-// }
 
 function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remark, $subtime, $category, $kind, $special, $final_amount, $bid)
 {

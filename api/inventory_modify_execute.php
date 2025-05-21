@@ -100,9 +100,9 @@ if (!isset($jwt)) {
                 reason = :reason,
                 note_1 = :notes, ";
 
-                if($receiver != "")
+                if($receiver != "" && $receiver != 0)
                 {
-                    $query .= " receiver_id = :receiver, ";
+                    $query .= " receive_id = :receiver, ";
                 }
 
                 $query .= "
@@ -110,7 +110,7 @@ if (!isset($jwt)) {
                 as_sample = :as_sample,
                 location = :location, ";
                 
-                if($related_project != "")
+                if($related_project != "" && $related_project != 0)
                     $query .= " project_id = :related_project, ";
 
                 $query .= "
@@ -166,10 +166,12 @@ if (!isset($jwt)) {
 
                 if($reason == "Change Inventory Pool or Related Project of Item(s)")
                 {
+                    $project_name = getProjectName($db, $related_project);
                     for($i = 0; $i < count($items_array); $i++)
                     {
                         $items_array[$i]['project_id'] = $related_project;
                         $items_array[$i]['which_pool'] = $which_pool;
+                        $items_array[$i]['project_name'] = $project_name;
                     }
                 }
 
@@ -197,14 +199,14 @@ if (!isset($jwt)) {
                 $stmt->bindParam(':reason', $reason);
                 $stmt->bindParam(':notes', $notes);
 
-                if($receiver != "")
+                if($receiver != "" && $receiver != 0)
                     $stmt->bindParam(':receiver', $receiver);
 
                 $stmt->bindParam(':which_pool', $which_pool);
                 $stmt->bindParam(':as_sample', $as_sample);
                 $stmt->bindParam(':location', $location);
 
-                if($related_project != "")
+                if($related_project != "" && $related_project != 0)
                     $stmt->bindParam(':related_project', $related_project);
              
                 $items_changed = json_encode($items_array);
@@ -489,9 +491,6 @@ if (!isset($jwt)) {
                 $stock_qty = 0;
                 $stock_s_qty = 0;
 
-                $as_sample = "";
-                $which_pool = "";
-
                 $v1 = "";
                 $v2 = "";
                 $v3 = "";
@@ -508,7 +507,6 @@ if (!isset($jwt)) {
                     $v4 = explode("_", $product_key)[4];
 
                     $stock_sql = "";
-                    $stock = 0;
 
                     $org_which_pool = "";
                     $org_as_sample = "";
@@ -520,6 +518,8 @@ if (!isset($jwt)) {
 
                     for($i = 0; $i < count($items_array); $i++)
                     {
+                        $stock_sql = "";
+
                         $v1 = $items_array[$i]['v1'];
                         $v2 = $items_array[$i]['v2'];
                         $v3 = $items_array[$i]['v3'];
@@ -700,10 +700,14 @@ if (!isset($jwt)) {
                             }
                         }
 
-                        $sql = "update product_category set " . $stock_sql . " where id = :pid "; 
-                        $stmt = $db->prepare($sql);
-                        $stmt->bindParam(':pid', $product_id);
-                        $stmt->execute();
+                        if($stock_sql != "")
+                        {
+                            $sql = "update product_category set " . $stock_sql . " where id = :pid "; 
+                            $stmt = $db->prepare($sql);
+                            $stmt->bindParam(':pid', $product_id);
+                            $stmt->execute();
+                        }
+                        
 
                         if($reason == "Change Inventory Pool or Related Project of Item(s)")
                         {
@@ -838,7 +842,7 @@ if (!isset($jwt)) {
                         v4 = :v4,
                     
                         reason = :reason,
-                        related_record = :related_record,
+                        new_related_project = :related_record,
                         affected_qty = :affected_qty,
                         affected_sign = :affected_sign,
                         affected_tracking = :affected_tracking,
@@ -940,6 +944,20 @@ function getHistoryRecord($db, $id, $items)
 
         return false;
     }
+}
+
+function getProjectName($db, $id)
+{
+    $project_name = "";
+    $query = "SELECT project_name FROM project_main WHERE id = :id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($row) {
+        $project_name = $row['project_name'];
+    }
+    return $project_name;
 }
 
         ?>
