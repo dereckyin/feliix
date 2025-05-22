@@ -1027,15 +1027,16 @@ function getHistoryRecord($listing, $db)
 
     if ($row) {
         // get each item id with largest version
-        foreach ($items as $item) {
-            $item_id = $item['id'];
+        while ($row) {
+            $item_id = $row['item_id'];
             if (!isset($items_with_largest_version[$item_id]) || $row['version'] > $items_with_largest_version[$item_id]['version']) {
                 $items_with_largest_version[$item_id] = array(
                     'id' => $item_id,
                     'version' => $row['version'],
-                    'listing' => $row['listing'],
+                    'listing' => json_encode($row['listing'], true),
                 );
             }
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
     }
@@ -1047,7 +1048,7 @@ function show_diff($pre_item, $item)
 {
     $diff = [];
 
-    $pre_item = json_decode(json_encode($pre_item));
+    $pre_item = json_decode($pre_item);
 
     foreach($item as $key => $value)
     {

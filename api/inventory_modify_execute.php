@@ -1051,14 +1051,15 @@ function getHistoryRecord($db, $items)
 
     if ($row) {
         // get each item id with largest version
-        foreach ($items as $item) {
-            $item_id = $item['id'];
+        while ($row) {
+            $item_id = $row['item_id'];
             if (!isset($items_with_largest_version[$item_id]) || $row['version'] > $items_with_largest_version[$item_id]['version']) {
                 $items_with_largest_version[$item_id] = array(
                     'id' => $item_id,
                     'version' => $row['version']
                 );
             }
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
         return $items_with_largest_version;
