@@ -91,6 +91,8 @@ if (!isset($jwt)) {
             //     $receiver = 0;
             // }
 
+            $tracking_status = 0;
+
             $last_id = $id;
 
             try {
@@ -123,7 +125,6 @@ if (!isset($jwt)) {
 
                 $items_array = json_decode($items, true);
 
-
                 if($reason == "Deliver Item(s) to Client")
                 {
                     for($i = 0; $i < count($items_array); $i++)
@@ -131,6 +132,8 @@ if (!isset($jwt)) {
                         $items_array[$i]['status'] = DELIVERED_TO_CLIENT;
                         $items_array[$i]['status_text'] = "Deliver to Client";
                     }
+
+                    $tracking_status = DELIVERED_TO_CLIENT;
                 }
                 
                 if($reason == "Return Item(s) from Client to Inventory System")
@@ -140,6 +143,8 @@ if (!isset($jwt)) {
                         $items_array[$i]['status'] = ON_HAND;
                         $items_array[$i]['status_text'] = "On Hand";
                     }
+
+                    $tracking_status = ON_HAND;
                 }
 
                 if($reason == "Void Tracking Code of Item(s)")
@@ -149,6 +154,8 @@ if (!isset($jwt)) {
                         $items_array[$i]['status'] = VOIDED;
                         $items_array[$i]['status_text'] = "Voided";
                     }
+
+                    $tracking_status = VOIDED;
                 }
 
                 if($reason == "Item(s) Lost")
@@ -158,6 +165,8 @@ if (!isset($jwt)) {
                         $items_array[$i]['status'] = LOST;
                         $items_array[$i]['status_text'] = "Lost";
                     }
+
+                    $tracking_status = LOST;
                 }
 
                 if($reason == "Item(s) Scrapped")
@@ -167,6 +176,8 @@ if (!isset($jwt)) {
                         $items_array[$i]['status'] = SCRAPPED;
                         $items_array[$i]['status_text'] = "Scrapped";
                     }
+
+                    $tracking_status = SCRAPPED;
                 }
 
                 if($reason == "Change Inventory Pool or Related Project of Item(s)")
@@ -178,6 +189,7 @@ if (!isset($jwt)) {
                         $items_array[$i]['which_pool'] = $which_pool;
                         $items_array[$i]['project_name'] = $project_name;
                     }
+
                 }
 
                 if($reason == "Change Location of Item(s)")
@@ -229,6 +241,38 @@ if (!isset($jwt)) {
                 
                 try {
                     // execute the query, also check if query was successful
+                    if (!$stmt->execute()) {
+                        $arr = $stmt->errorInfo();
+                        error_log($arr[2]);
+                        $db->rollback();
+                        http_response_code(501);
+                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]));
+                        die();
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                    die();
+                }
+
+                // order_tracking_item
+                $tracking_code = array();
+                for($i = 0; $i < count($items_array); $i++)
+                {
+                    $tracking_code[] = $items_array[$i]['id'];
+                }
+
+                
+                $tracking_code_str = implode(",", $tracking_code);
+                $tracking_sql = "update order_tracking_item set `status` = :status, updated_at = now(), updated_id = :updated_id where id in (" . $tracking_code_str . ")";
+
+                try {
+                    $stmt = $db->prepare($tracking_sql);
+                    $stmt->bindParam(':status', $tracking_status);
+                    $stmt->bindParam(':updated_id', $user_id);
+
                     if (!$stmt->execute()) {
                         $arr = $stmt->errorInfo();
                         error_log($arr[2]);
@@ -399,7 +443,7 @@ if (!isset($jwt)) {
 
                 // insert into inventory_modify_history
                 $version = 0;
-                $rec = getHistoryRecord($db, $id, $items);
+                $rec = getHistoryRecord($db, $id, $items, $reason);
 
                 if($rec)
                 {
@@ -526,6 +570,11 @@ if (!isset($jwt)) {
                     $items_array = $product_items_array[$product_key];
 
                     $tracking_code = array();
+
+                    $stock_qty = 0;
+                    $stock_s_qty = 0;
+                    $project_qty = 0;
+                    $project_s_qty = 0;
 
                     for($i = 0; $i < count($items_array); $i++)
                     {
@@ -920,7 +969,7 @@ if (!isset($jwt)) {
         
 
 // get the previous recode
-function getHistoryRecord($db, $id, $items)
+function getHistoryRecord($db, $id, $items, $reason)
 {
     $query = "SELECT * FROM inventory_modify_history WHERE request_id = :id order by version desc limit 1";
     $stmt = $db->prepare($query);
