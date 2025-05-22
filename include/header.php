@@ -259,7 +259,7 @@ try {
             $dashboard = true;
         }
 
-        if($user_id == 1 || $user_id == 99 || $user_id == 41 || $user_id == 9 || $user_id == 190 || $user_id == 198)
+        if($user_id == 1 || $user_id == 99 || $user_id == 41 || $user_id == 9 || $user_id == 190 || $user_id == 198 || $user_id = 153)
             $access6 = true;
 
         $pic_url = $decoded->data->pic_url;
