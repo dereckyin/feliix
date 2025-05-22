@@ -455,11 +455,15 @@ if (!isset($jwt)) {
 
                     // if exists in $rec
                     $vs = null;
-                    $s_item_id = $rec[$item_id];
-                    if($s_item_id != null)
+                    foreach($rec as $r)
                     {
-                        $vs = $s_item_id['version'];
+                        if($r['id'] == $item_id)
+                        {
+                            $vs = $r['version'];
+                            break;
+                        }
                     }
+
                     if($vs != null)
                     {
                         $version = $vs;
@@ -943,6 +947,11 @@ if (!isset($jwt)) {
                     $affected_tracking_code = implode('","', $tracking_code);
 
                     $affected_tracking_code = '["' . $affected_tracking_code . '"]';
+
+                    if($related_project == "")
+                    {
+                        $related_project = 0;
+                    }
                     
                     $query = "INSERT INTO inventory_change_history
                     SET
