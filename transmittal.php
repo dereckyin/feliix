@@ -2396,7 +2396,7 @@ header( 'location:index' );
                                 <td>{{ item.qty}}</td>
                                 <td>{{ item.unit}}</td>
                                 <td>
-                                    <span>{{ item.code  }}</span>
+                                    <span v-if="item.pid > 0">{{ item.pid  }}-{{ item.code  }}</span>
                                     <span>{{ item.list }}</span>
                                 </td>
                             </tr>
