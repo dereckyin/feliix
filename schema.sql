@@ -5863,6 +5863,8 @@ CREATE TABLE IF NOT EXISTS `inventory_modify_history` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `request_id` bigint(20) unsigned NOT NULL,
   `reason` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `item_id` bigint(20) DEFAULT 0 NOT NULL,
+  `barcode` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `listing` JSON,
   receive_id bigint(20)  DEFAULT 0 NOT NULL,
   `which_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
@@ -5902,4 +5904,3 @@ ALTER TABLE inventory_change_history
 ADD COLUMN `influence_location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
 ALTER TABLE inventory_change_history
 ADD COLUMN `influence_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
-

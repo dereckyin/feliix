@@ -442,71 +442,119 @@ if (!isset($jwt)) {
                 // }
 
                 // insert into inventory_modify_history
-                $version = 0;
-                $rec = getHistoryRecord($db, $id, $items, $reason);
+                $rec = getHistoryRecord($db, $items);
 
-                if($rec)
+                $items_a = json_decode($items, true);
+
+                for($i = 0; $i < count($items_a); $i++)
                 {
-                    $version = $rec['version'] + 1;
+                    $item_id = $items_a[$i]['id'];
+                    $version = 0;
+                    $barcode = $items_a[$i]['barcode'];
+                    $item_str = json_encode($items_a[$i]);
 
-                    $query = "INSERT INTO inventory_modify_history
-                        SET
-                            request_id = :request_id,
-                            reason = :reason,
-                            listing = :items,
-                            receive_id = :receiver,
-                            which_pool = :which_pool,
-                            as_sample = :as_sample,
-                            `location` = :location,
-                            project_id = :related_project,
-                            `version` = :version,
-                            create_id = :create_id,
-                            created_at = now()";
-
-                        if($related_project == "")
-                        {
-                            $related_project = 0;
-                        }
-
-                        if($receiver == "")
-                        {
-                            $receiver = 0;
-                        }
-                            
-                        // prepare the query
-                        $stmt = $db->prepare($query);
-                        // bind the values
-                        $stmt->bindParam(':request_id', $id);
-                        $stmt->bindParam(':reason', $reason);
-                        $stmt->bindParam(':items', $items);
-                        $stmt->bindParam(':receiver', $receiver);
-                        $stmt->bindParam(':which_pool', $which_pool);
-                        $stmt->bindParam(':as_sample', $as_sample);
-                        $stmt->bindParam(':location', $location);
-                        $stmt->bindParam(':related_project', $related_project);
-                        $stmt->bindParam(':version', $version);
-                        $stmt->bindParam(':create_id', $user_id);
-
-                        try {
-                        // execute the query, also check if query was successful
-                        if ($stmt->execute()) {
-                            $last_id = $db->lastInsertId();
-                        }
-                        else
-                        {
-                            $arr = $stmt->errorInfo();
-                            error_log($arr[2]);
-                        }
-                    }
-                    catch (Exception $e)
+                    // if exists in $rec
+                    $vs = $rec[$item_id]['version'];
+                    if($vs != null)
                     {
-                        error_log($e->getMessage());
-                        $db->rollback();
-                        http_response_code(501);
-                        echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
-                        die();
+                        $version = $vs;
+                    }
+
+                    if($vs == null)
+                    {
+                            $query = "INSERT INTO inventory_modify_history
+                            SET
+                                request_id = :id,
+                                reason = '',
+                                item_id = :item_id,
+                                barcode = :barcode,
+                                listing = :listing,
+                                receive_id = 0,
+                                which_pool = '',
+                                as_sample = '',
+                                `location` = 0,
+                                project_id = 0,
+                                `version` = 0,
+                                create_id = 0,
+                                created_at = now()";
+                            // prepare the query
+                            $stmt = $db->prepare($query);
+                            // bind the values
+                            $stmt->bindParam(':id', $id);
+                            $stmt->bindParam(':item_id', $item_id);
+                            $stmt->bindParam(':listing', $item_str);
+                            $stmt->bindParam(':barcode', $barcode);
+                            $stmt->execute();
+                    }
+                    else
+                    {
+                            
+                        $version += 1;
+
+                        $query = "INSERT INTO inventory_modify_history
+                            SET
+                                request_id = :request_id,
+                                reason = :reason,
+                                item_id = :item_id,
+                                barcode = :barcode,
+                                listing = :listing,
+                                receive_id = :receiver,
+                                which_pool = :which_pool,
+                                as_sample = :as_sample,
+                                `location` = :location,
+                                project_id = :related_project,
+                                `version` = :version,
+                                create_id = :create_id,
+                                created_at = now()";
+
+                            if($related_project == "")
+                            {
+                                $related_project = 0;
+                            }
+
+                            if($receiver == "")
+                            {
+                                $receiver = 0;
+                            }
+                                
+                            // prepare the query
+                            $stmt = $db->prepare($query);
+                            // bind the values
+                            $stmt->bindParam(':request_id', $id);
+                            $stmt->bindParam(':reason', $reason);
+                            $stmt->bindParam(':item_id', $item_id);
+                            $stmt->bindParam(':barcode', $barcode);
+                            $stmt->bindParam(':listing', $item_str);
+                            $stmt->bindParam(':receiver', $receiver);
+                            $stmt->bindParam(':which_pool', $which_pool);
+                            $stmt->bindParam(':as_sample', $as_sample);
+                            $stmt->bindParam(':location', $location);
+                            $stmt->bindParam(':related_project', $related_project);
+                            $stmt->bindParam(':version', $version);
+                            $stmt->bindParam(':create_id', $user_id);
+
+                            try {
+                            // execute the query, also check if query was successful
+                            if ($stmt->execute()) {
+                                $last_id = $db->lastInsertId();
+                            }
+                            else
+                            {
+                                $arr = $stmt->errorInfo();
+                                error_log($arr[2]);
+                            }
+                        }
+                        catch (Exception $e)
+                        {
+                            error_log($e->getMessage());
+                            $db->rollback();
+                            http_response_code(501);
+                            echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $e->getMessage()));
+                            die();
+                        }
                     }
                 }
+                
 
                 // update products qty
                 $items_array = json_decode($items, true);
@@ -969,40 +1017,65 @@ if (!isset($jwt)) {
         
 
 // get the previous recode
-function getHistoryRecord($db, $id, $items, $reason)
+function getHistoryRecord($db, $items)
 {
-    $query = "SELECT * FROM inventory_modify_history WHERE request_id = :id order by version desc limit 1";
+    $item_ids = array();
+    $items = json_decode($items, true);
+    foreach ($items as $item) {
+        $item_ids[] = $item['id'];
+    }
+    $item_id_str = implode(',', $item_ids);
+    $query = "SELECT * FROM inventory_modify_history WHERE item_id in (" . $item_id_str . ") order by item_id, version desc";
     $stmt = $db->prepare($query);
-    $stmt->bindParam(':id', $id);
+
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    // if no record found, insert one and return it
+    // if no record found, insert one and return false
+    $items_with_largest_version = array();
 
     if ($row) {
-        return $row;
-    } else {
-        $query = "INSERT INTO inventory_modify_history
-        SET
-            request_id = :id,
-            reason = '',
-            listing = :items,
-            receive_id = 0,
-            which_pool = '',
-            as_sample = '',
-            `location` = 0,
-            project_id = 0,
-            `version` = 0,
-            create_id = 0,
-            created_at = now()";
-        // prepare the query
-        $stmt = $db->prepare($query);
-        // bind the values
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':items', $items);
-        $stmt->execute();
+        // get each item id with largest version
+        foreach ($items as $item) {
+            $item_id = $item['id'];
+            if (!isset($items_with_largest_version[$item_id]) || $row['version'] > $items_with_largest_version[$item_id]['version']) {
+                $items_with_largest_version[$item_id] = array(
+                    'id' => $item_id,
+                    'version' => $row['version']
+                );
+            }
+        }
 
-        return false;
+        return $items_with_largest_version;
+    } else {
+
+        // for($i = 0; $i < count($items); $i++)
+        // {
+        //     $item_id = $items[$i]['id'];
+
+        //     $query = "INSERT INTO inventory_modify_history
+        //     SET
+        //         request_id = :id,
+        //         reason = '',
+        //         item_id = :item_id,
+        //         receive_id = 0,
+        //         which_pool = '',
+        //         as_sample = '',
+        //         `location` = 0,
+        //         project_id = 0,
+        //         `version` = 0,
+        //         create_id = 0,
+        //         created_at = now()";
+        //     // prepare the query
+        //     $stmt = $db->prepare($query);
+        //     // bind the values
+        //     $stmt->bindParam(':id', $id);
+        //     $stmt->bindParam(':item_id', $item_id);
+        //     $stmt->execute();
+        // }
+        
+
+        return $items_with_largest_version;
     }
 }
 

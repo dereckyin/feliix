@@ -642,37 +642,48 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
             if($status > 1)
             {
-                $history_item = getHistoryRecord($id, $db);
+                $history_item = getHistoryRecord($listing, $db);
 
                 if($history_item != null)
                 {
-                    $obj1 = json_decode($history_item["listing"]);
+                    //$obj1 = json_decode($history_item["listing"]);
                     $obj2 = json_decode($listing);
 
-                    for($i = 0; $i < count($obj1); $i++)
+                    foreach($history_item as $key => $item)
                     {
+                        $obj1 = json_decode($history_item[$key]["listing"]);
                         $diff_items = [];
-                        $diff_items = show_diff($obj1[$i], $obj2[$i]);
 
-                        if($diff_items != null)
+                        // find in obj2 where id = $key
+                        $obj_now = null;
+                        for($i = 0; $i < count($obj2); $i++)
                         {
-                            // add new value to the object
-                            for($j = 0; $j < count($diff_items); $j++)
+                            if($obj2[$i]->id == $key)
                             {
-                                $key = $diff_items[$j]['key'];
-                                $value = $diff_items[$j]['value'];
+                                $diff_items = show_diff($obj1, $obj2[$i]);
 
-                                foreach($obj2[$i] as $key2 => $value2)
+                                if($diff_items != null)
                                 {
-                                    if($key == $key2)
+                                    // add new value to the object
+                                    for($j = 0; $j < count($diff_items); $j++)
                                     {
-                                        $key3 = $key2 . "_new";
-                                        $obj2[$i]->$key3 = " => " . $obj2[$i]->$key2;
-                                        $obj2[$i]->$key2 = $value;
-                                    }
-                                }
-                            }
+                                        $key = $diff_items[$j]['key'];
+                                        $value = $diff_items[$j]['value'];
 
+                                        foreach($obj2[$i] as $key2 => $value2)
+                                        {
+                                            if($key == $key2)
+                                            {
+                                                $key3 = $key2 . "_new";
+                                                $obj2[$i]->$key3 = " => " . $obj2[$i]->$key2;
+                                                $obj2[$i]->$key2 = $value;
+                                            }
+                                        }
+                                    }
+
+                                }
+                                break;
+                            }
                         }
                     }
                     
@@ -978,21 +989,53 @@ function GetDepartment($dept_name)
 }
 
 // get the previous recode
-function getHistoryRecord($id, $db)
+function getHistoryRecord($listing, $db)
 {
-    $query = "SELECT * FROM inventory_modify_history WHERE request_id = :id order by version desc limit 1";
+    $items = json_decode($listing, true);
+    $item_str = "";
+
+    $items_with_largest_version = array();
+
+    foreach ($items as $item) {
+        $item_id = $item['id'];
+        if ($item_str == "") {
+            $item_str = $item_id;
+        } else {
+            $item_str .= "," . $item_id;
+        }
+    }
+
+    if ($item_str == "") {
+        return $items_with_largest_version;
+    }
+
+    $query = "SELECT * FROM inventory_modify_history WHERE item_id in (" . $item_str . ") order by item_id, version desc";
     $stmt = $db->prepare($query);
-    $stmt->bindParam(':id', $id);
+
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
     // if no record found, insert one and return it
 
+    // if no record found, insert one and return false
+    
+
     if ($row) {
-        return $row;
-    } 
-    else
-        return null;
+        // get each item id with largest version
+        foreach ($items as $item) {
+            $item_id = $item['id'];
+            if (!isset($items_with_largest_version[$item_id]) || $row['version'] > $items_with_largest_version[$item_id]['version']) {
+                $items_with_largest_version[$item_id] = array(
+                    'id' => $item_id,
+                    'version' => $row['version'],
+                    'listing' => $row['listing'],
+                );
+            }
+        }
+
+    }
+
+    return $items_with_largest_version;
 }
 
 function show_diff($pre_item, $item)
