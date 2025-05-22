@@ -948,9 +948,9 @@ if (!isset($jwt)) {
                         v2 = :v2,
                         v3 = :v3,
                         v4 = :v4,
-                    
+                        related_record = :related_record,
                         reason = :reason,
-                        new_related_project = :related_record,
+                        new_related_project = :new_related_project,
                         affected_qty = :affected_qty,
                         affected_sign = :affected_sign,
                         affected_tracking = :affected_tracking,
@@ -971,6 +971,7 @@ if (!isset($jwt)) {
                     $stmt->bindParam(':reason', $reason);
 
                     $stmt->bindParam(':related_record', $request_no);
+                    $stmt->bindParam(':new_related_project', $related_project);
                     $stmt->bindParam(':affected_qty', $affected_qty);
                     $stmt->bindParam(':affected_sign', $affected_sign);
 
