@@ -454,7 +454,12 @@ if (!isset($jwt)) {
                     $item_str = json_encode($items_a[$i]);
 
                     // if exists in $rec
-                    $vs = $rec[$item_id]['version'];
+                    $vs = null;
+                    $s_item_id = $rec[$item_id];
+                    if($s_item_id != null)
+                    {
+                        $vs = $s_item_id['version'];
+                    }
                     if($vs != null)
                     {
                         $version = $vs;
