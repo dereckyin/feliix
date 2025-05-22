@@ -675,7 +675,12 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                                             if($key == $key2)
                                             {
                                                 $key3 = $key2 . "_new";
-                                                $obj2[$i]->$key3 = " => " . $obj2[$i]->$key2;
+                                                if($key2 == "project_id" || $key2 == "project_name")
+                                                {
+                                                    $obj2[$i]->$key3 = $obj2[$i]->$key2;
+                                                }
+                                                else
+                                                    $obj2[$i]->$key3 = " => " . $obj2[$i]->$key2;
                                                 $obj2[$i]->$key2 = $value;
                                             }
                                         }
