@@ -212,7 +212,7 @@ if (!isset($jwt)) {
                 for($i = 0; $i < count($items_array); $i++)
                 {
                     $items_array[$i]['updated_at'] = date("Y-m-d H:i:s");
-                    $items_array[$i]['updated_by'] = $user_id;
+                    $items_array[$i]['updated_by'] = $user_name;
                 }
             
                 // prepare the query
