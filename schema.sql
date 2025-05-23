@@ -5916,3 +5916,6 @@ ADD COLUMN `location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
 
 ALTER TABLE order_tracking_item
 ADD COLUMN `project_id` bigint(20) DEFAULT 0;
+
+ALTER TABLE order_tracking_item
+ADD COLUMN receive_id bigint(20)  DEFAULT 0;
