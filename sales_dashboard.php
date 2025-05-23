@@ -45,7 +45,7 @@ header( 'location:index' );
         $access6 = true;
     }
 
-    if($username == "Marie Kayla Patricia Dequina" || $username == "Gina Donato" || $username == "Aiza Eisma" || $username == "Johmar Maximo" || $username == "Stephanie De dios")
+    if($username == "Marie Kayla Patricia Dequina" || $username == "Gina Donato" || $username == "Jack Beringuela" || $username == "Johmar Maximo" || $username == "Stephanie De dios")
     {
         $access7 = true;
     }
