@@ -99,7 +99,13 @@ $query = "SELECT tra.id,
                     c_user.username AS created_by, 
                     u_user.username AS updated_by,
                     DATE_FORMAT(rec.created_at, '%Y-%m-%d %H:%i:%s') created_at, 
-                    DATE_FORMAT(rec.updated_at, '%Y-%m-%d %H:%i:%s') updated_at
+                    DATE_FORMAT(rec.updated_at, '%Y-%m-%d %H:%i:%s') updated_at,
+                    tra.which_pool as tra_which_pool,
+                    tra.location as tra_location,
+                    tra.project_id as tra_project_id,
+                    tra.as_sample as tra_as_sample,
+                    DATE_FORMAT(tra.updated_at, '%Y-%m-%d %H:%i:%s') as tra_updated_at,
+                    t_user.username AS tra_updated_by
                     FROM order_receive_item rec left join order_tracking_item tra on rec.id = tra.item_id
                     LEFT JOIN product_category pc ON rec.product_id = pc.id
                     LEFT JOIN od_main od ON rec.od_id = od.id
@@ -107,6 +113,7 @@ $query = "SELECT tra.id,
                     Left JOIN project_main pm ON rec.project_id = pm.id
                     LEFT JOIN user c_user ON rec.create_id = c_user.id 
                     LEFT JOIN user u_user ON rec.updated_id = u_user.id 
+                    LEFT JOIN user t_user ON tra.updated_id = t_user.id 
                     WHERE 1=0 ";
 
 // if($all != "all")
@@ -366,6 +373,37 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $created_at = $row['created_at'];
     $updated_at = $row['updated_at'];
 
+    $tra_which_pool = $row['tra_which_pool'];
+    $tra_location = $row['tra_location'];
+    $tra_project_id = $row['tra_project_id'];
+    $tra_as_sample = $row['tra_as_sample'];
+
+    $tra_updated_at = $row['tra_updated_at'];
+    $tra_updated_by = $row['tra_updated_by'];
+
+    if($tra_which_pool != "")
+    {
+        $which_pool = $tra_which_pool;
+    }
+    if($tra_location != "")
+    {
+        $location = $tra_location;
+    }
+    
+    if($tra_as_sample != "")
+    {
+        $as_sample = $tra_as_sample;
+    }
+
+    if($tra_updated_at != "")
+    {
+        $updated_at = $tra_updated_at;
+    }
+    if($tra_updated_by != "")
+    {
+        $updated_by = $tra_updated_by;
+    }
+
     $status = $row['status'];
     $status_text = getStatus($status);
 
@@ -429,6 +467,12 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
     $project_id = $row['project_id'];
     $project_name = $row['project_name'];
+
+    if($tra_project_id != 0)
+    {
+        $project_id = $tra_project_id;
+        $project_name = getProjectName($db, $tra_project_id);
+    }
 
     $merged_results[] = array(
         "is_edited" => 1,
