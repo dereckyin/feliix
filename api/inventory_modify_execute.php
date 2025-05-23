@@ -266,12 +266,46 @@ if (!isset($jwt)) {
 
                 
                 $tracking_code_str = implode(",", $tracking_code);
-                $tracking_sql = "update order_tracking_item set `status` = :status, updated_at = now(), updated_id = :updated_id where id in (" . $tracking_code_str . ")";
+                $tracking_sql = "update order_tracking_item set `status` = :status, updated_at = now(), updated_id = :updated_id ";
+
+                if($reason == "Change Inventory Pool or Related Project of Item(s)")
+                {
+                    $tracking_sql .= ", project_id = :project_id, which_pool = :which_pool ";
+                }
+
+                if($reason == "Change Location of Item(s)")
+                {
+                    $tracking_sql .= ", `location` = :location, receive_id = :receive_id ";
+                }
+
+                if($reason == "Change Sample Status of Item(s)")
+                {
+                    $tracking_sql .= ", as_sample = :as_sample ";
+                }
+
+                $tracking_sql .= "  where id in (" . $tracking_code_str . ")";
 
                 try {
                     $stmt = $db->prepare($tracking_sql);
                     $stmt->bindParam(':status', $tracking_status);
                     $stmt->bindParam(':updated_id', $user_id);
+
+                    if($reason == "Change Inventory Pool or Related Project of Item(s)")
+                    {
+                        $stmt->bindParam(':project_id', $related_project);
+                        $stmt->bindParam(':which_pool', $which_pool);
+                    }
+
+                    if($reason == "Change Location of Item(s)")
+                    {
+                        $stmt->bindParam(':location', $location);
+                        $stmt->bindParam(':receive_id', $receiver);
+                    }
+
+                    if($reason == "Change Sample Status of Item(s)")
+                    {
+                        $stmt->bindParam(':as_sample', $as_sample);
+                    }
 
                     if (!$stmt->execute()) {
                         $arr = $stmt->errorInfo();

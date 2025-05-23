@@ -5904,3 +5904,15 @@ ALTER TABLE inventory_change_history
 ADD COLUMN `influence_location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
 ALTER TABLE inventory_change_history
 ADD COLUMN `influence_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE order_tracking_item
+ADD COLUMN `which_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE order_tracking_item
+ADD COLUMN `as_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE order_tracking_item
+ADD COLUMN `location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE order_tracking_item
+ADD COLUMN `project_id` bigint(20) DEFAULT 0;
