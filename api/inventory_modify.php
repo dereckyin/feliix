@@ -675,7 +675,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
                                             if($key == $key2)
                                             {
                                                 $key3 = $key2 . "_new";
-                                                if($key2 == "project_id" || $key2 == "project_name")
+                                                if($key2 == "project_id" || $key2 == "project_name" || $key2 == "updated_at" || $key2 == "updated_by")
                                                 {
                                                     $obj2[$i]->$key3 = $obj2[$i]->$key2;
                                                 }
@@ -1052,7 +1052,7 @@ function show_diff($pre_item, $item)
 
     foreach($item as $key => $value)
     {
-        if($key == "id" || $key == "created_at" || $key == "updated_at" || $key == "request_id")
+        if($key == "id" || $key == "created_at" || $key == "request_id")
             continue;
 
         foreach($pre_item as $key2 => $value2)

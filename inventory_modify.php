@@ -1067,7 +1067,7 @@
 
                                         <ul>
                                             <li>Updated:</li>
-                                            <li v-show="item.updated_by != null">{{ item.updated_at }} ({{ item.updated_by }})</li>
+                                            <li v-show="item.updated_by_new != null">{{ item.updated_at_new }} ({{ item.updated_by_new }})</li>
                                         </ul>
                                     </td>
 
