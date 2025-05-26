@@ -211,6 +211,8 @@ if (!isset($jwt)) {
 
                 for($i = 0; $i < count($items_array); $i++)
                 {
+                    $ver = getHistoryRecordByBarcode($db, $items_array[$i]['barcode']);
+                    $items_array[$i]['version'] = $ver;
                     $items_array[$i]['updated_at'] = date("Y-m-d H:i:s");
                     $items_array[$i]['updated_by'] = $user_name;
                 }
@@ -596,6 +598,8 @@ if (!isset($jwt)) {
                             die();
                         }
                     }
+
+                    //$items_a[$i]['version'] = $version;
                 }
                 
 
@@ -1064,6 +1068,22 @@ if (!isset($jwt)) {
             break;
         }
         
+
+function getHistoryRecordByBarcode($db, $barcode)
+{
+    $query = "SELECT * FROM inventory_modify_history WHERE barcode = :barcode ORDER BY version DESC LIMIT 1";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':barcode', $barcode);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        return $row['version'];
+    } else {
+        return 0;
+    }
+}
+
 
 // get the previous recode
 function getHistoryRecord($db, $items)

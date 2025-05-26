@@ -642,7 +642,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
             if($status > 1)
             {
-                $history_item = getHistoryRecord($listing, $db);
+                $history_item = getHistoryRecord($listing, $db, $id);
 
                 if($history_item != null)
                 {
@@ -994,7 +994,7 @@ function GetDepartment($dept_name)
 }
 
 // get the previous recode
-function getHistoryRecord($listing, $db)
+function getHistoryRecord($listing, $db, $request_id)
 {
     $items = json_decode($listing, true);
     $item_str = "";
@@ -1014,7 +1014,7 @@ function getHistoryRecord($listing, $db)
         return $items_with_largest_version;
     }
 
-    $query = "SELECT * FROM inventory_modify_history WHERE item_id in (" . $item_str . ") order by item_id, version desc";
+    $query = "SELECT * FROM inventory_modify_history WHERE item_id in (" . $item_str . ") and request_id = " . $request_id . " order by item_id, version desc";
     $stmt = $db->prepare($query);
 
     $stmt->execute();
