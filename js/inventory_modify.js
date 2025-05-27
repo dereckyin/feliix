@@ -796,6 +796,9 @@ var app = new Vue({
 
       let _this = this;
 
+      if(this.which_pool == "Stock Pool" && this.project_id != "0")
+        this.project_id = "0";
+
       var form_Data = new FormData();
       var token = localStorage.getItem("token");
       form_Data.append("jwt", token);

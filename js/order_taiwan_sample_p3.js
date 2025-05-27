@@ -3446,6 +3446,15 @@ var app = new Vue({
 
       async register(item) {
         item.status = 1;
+        if(item.qty > item.incoming_qty)
+        {
+          Swal.fire({
+            text: "According to the qty that you want to register, the incoming qty is not enough to deduct, please check the qty to register again.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
         await this.save_encode_list(item.id);
 
         app.$forceUpdate();
@@ -5422,6 +5431,8 @@ add_with_image_warehouse(all) {
     }
     sn = sn * 1 + 1;
 
+    incoming_qty = this.product.incoming_qty != undefined ? this.product.incoming_qty : 0;
+
     item = {
         is_checked:false,
         is_edit: false,
@@ -5461,7 +5472,7 @@ add_with_image_warehouse(all) {
         project_list: [],
         project_id: 0,
         desc:"",
-        
+        incoming_qty: incoming_qty,
       };
 
       this.received_items.items.push(item);
@@ -5613,6 +5624,7 @@ location: "Caloocan",
       project_list: [],
       project_id: 0,
       desc:"",
+      incoming_qty: this.product.incoming_qty != undefined ? this.product.incoming_qty : 0,
     };
 
     this.received_items.items.push(item);
@@ -5758,6 +5770,7 @@ location: "Caloocan",
 project_list: [],
 project_id: 0,
 desc:"",
+incoming_qty: item_product.incoming_qty != undefined ? item_product.incoming_qty : 0,
 };
 
 }
@@ -5907,6 +5920,7 @@ location: "Caloocan",
 project_list: [],
 project_id: 0,
 desc:"",
+incoming_qty: this.product.incoming_qty != undefined ? this.product.incoming_qty : 0,
 };
 
 }
@@ -6105,6 +6119,7 @@ location: "Caloocan",
 project_list: [],
 project_id: 0,
 desc:"",
+incoming_qty: set.incoming_qty != undefined ? set.incoming_qty : 0,
 };
 
 this.received_items.items.push(item);
@@ -6286,6 +6301,7 @@ project_list: [],
 project_id: 0,
 desc:"",
 pid:0,
+incoming_qty: set.incoming_qty != undefined ? set.incoming_qty : 0,
 };
 
 this.received_items.items.push(item);

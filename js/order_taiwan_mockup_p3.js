@@ -2504,6 +2504,8 @@ var app = new Vue({
           }
           sn = sn * 1 + 1;
 
+          incoming_qty = this.product.incoming_qty !== null ? this.product.incoming_qty : 0;
+
           item = {
               is_checked:false,
               is_edit: false,
@@ -2544,6 +2546,7 @@ var app = new Vue({
               project_list: [],
               project_id: this.project_id,
               desc:"",
+              incoming_qty: incoming_qty,
             };
 
             this.received_items.items.push(item);
@@ -2656,6 +2659,8 @@ var app = new Vue({
 
         sn = sn * 1 + 1;
 
+        incoming_qty = this.product.incoming_qty !== null ? this.product.incoming_qty : 0;
+
         item = {
             is_checked:false,
             is_edit: false,
@@ -2696,6 +2701,7 @@ var app = new Vue({
             project_id: this.project_id,
             project_name: this.project_name,
             desc:"",
+            incoming_qty: incoming_qty,
           };
 
           this.received_items.items.push(item);
@@ -2800,7 +2806,10 @@ var app = new Vue({
         {
           $('#variation3_value').tagsinput('add', this.product.variation3_value[i]);
         }
-  
+        for(var i=0; i<this.product.variation4_value.length; i++)
+        {
+          $('#variation4_value').tagsinput('add', this.product.variation4_value[i]);
+        }
         
       },
 
@@ -3689,6 +3698,15 @@ var app = new Vue({
 
       async register(item) {
         item.status = 1;
+        if(item.qty > item.incoming_qty)
+        {
+          Swal.fire({
+            text: "According to the qty that you want to register, the incoming qty is not enough to deduct, please check the qty to register again.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
         await this.save_encode_list(item.id);
 
         app.$forceUpdate();
@@ -5764,6 +5782,7 @@ add_with_image_set_select_warehouse(all) {
   project_id: this.project_id,
   project_name: this.project_name,
   desc:"",
+  incoming_qty: this.product.incoming_qty !== null ? this.product.incoming_qty : 0,
   };
   
   }
@@ -5914,6 +5933,7 @@ add_with_image_set_select_warehouse(all) {
   project_id: this.project_id,
   project_name: this.project_name,
   desc:"",
+  incoming_qty: this.product.incoming_qty !== null ? this.product.incoming_qty : 0,
   };
   
   }
@@ -6113,6 +6133,7 @@ add_with_image_set_select_warehouse(all) {
   project_id: this.project_id,
   project_name: this.project_name,
   desc:"",
+  incoming_qty: set.incoming_qty !== null ? set.incoming_qty : 0,
   };
   
   this.received_items.items.push(item);
@@ -6295,6 +6316,7 @@ add_with_image_set_select_warehouse(all) {
   project_name: this.project_name,
   desc:"",
   pid:0,
+  incoming_qty: set.incoming_qty !== null ? set.incoming_qty : 0,
   };
   
   this.received_items.items.push(item);

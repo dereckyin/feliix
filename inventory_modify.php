@@ -691,12 +691,19 @@
                                     </select>
                                 </div>
 
-                                <div class="compoundbox">
+                                <div class="compoundbox" v-show="which_pool == 'Project Pool'">
                                     <span>Related Project?</span>
                                     <select v-model="project_id">
                                          <option v-for="(item, index) in projects" :value="item.id">{{ item.project_name}}</option>
                                     </select>
-                                </div>                                                                                                
+                                </div>
+                                
+                                <div class="compoundbox" v-show="which_pool == 'Stock Pool'" disabled>
+                                    <span>Related Project?</span>
+                                    <select disabled>
+                                         <option value=""></option>
+                                    </select>
+                                </div>
                             </div>
 
 

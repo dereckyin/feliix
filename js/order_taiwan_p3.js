@@ -2504,6 +2504,8 @@ var app = new Vue({
           }
           sn = sn * 1 + 1;
 
+          incoming_qty = this.product.incoming_qty !== null ? this.product.incoming_qty : 0;
+
           item = {
               is_checked:false,
               is_edit: false,
@@ -2544,6 +2546,7 @@ var app = new Vue({
               project_id: this.project_id,
               project_name: this.project_name,
               desc:"",
+              incoming_qty: incoming_qty,
             };
 
             this.received_items.items.push(item);
@@ -2656,6 +2659,8 @@ var app = new Vue({
 
         sn = sn * 1 + 1;
 
+        incoming_qty = this.product.incoming_qty !== null ? this.product.incoming_qty : 0;
+
         item = {
             is_checked:false,
             is_edit: false,
@@ -2696,6 +2701,7 @@ var app = new Vue({
             project_id: this.project_id,
             project_name: this.project_name,
             desc:"",
+            incoming_qty: incoming_qty,
           };
 
           this.received_items.items.push(item);
@@ -3689,6 +3695,15 @@ var app = new Vue({
 
       async register(item) {
         item.status = 1;
+        if(item.qty > item.incoming_qty)
+        {
+          Swal.fire({
+            text: "According to the qty that you want to register, the incoming qty is not enough to deduct, please check the qty to register again.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
         await this.save_encode_list(item.id);
 
         app.$forceUpdate();
@@ -5197,6 +5212,8 @@ add_with_image_set_select_warehouse(all) {
 
     sn = sn * 1 + 1;
 
+    incoming_qty = item_product.incoming_qty != undefined ? item_product.incoming_qty : 0;
+
     item = {
       is_checked:false,
       is_edit: false,
@@ -5241,6 +5258,7 @@ add_with_image_set_select_warehouse(all) {
       project_id: this.project_id,
       project_name: this.project_name,
       desc:"",
+      incoming_qty: incoming_qty,
     };
 
   }
@@ -5347,6 +5365,8 @@ add_without_image_set_select_warehouse(all) {
 
     sn = sn * 1 + 1;
 
+    incoming_qty = item_product.incoming_qty != undefined ? item_product.incoming_qty : 0;
+
     item = {
       is_checked:false,
       is_edit: false,
@@ -5391,6 +5411,7 @@ add_without_image_set_select_warehouse(all) {
       project_id: this.project_id,
       project_name: this.project_name,
       desc:"",
+      incoming_qty: incoming_qty,
     };
 
   }
@@ -6042,6 +6063,8 @@ if(srp == null)
 list.replace(/\n+$/, "");
 sn = sn + 1;
 
+incoming_qty = set.incoming_qty != undefined ? set.incoming_qty : 0;
+
 item = {
   is_checked:false,
   is_edit: false,
@@ -6084,6 +6107,7 @@ item = {
       project_id: this.project_id,
       project_name: this.project_name,
       desc:"",
+      incoming_qty: incoming_qty,
 };
 
 this.received_items.items.push(item);
@@ -6223,6 +6247,8 @@ for (let i = 0; i < this.received_items.items.length; i++) {
 
 sn = sn * 1 + 1;
 
+incoming_qty = set.incoming_qty != undefined ? set.incoming_qty : 0;
+
 item = {
     is_checked:false,
     is_edit: false,
@@ -6266,6 +6292,7 @@ item = {
       project_name: this.project_name,
       desc:"",
       pid:0,
+      incoming_qty: incoming_qty,
   };
 
   this.received_items.items.push(item);

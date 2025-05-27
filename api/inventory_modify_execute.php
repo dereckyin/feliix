@@ -111,9 +111,14 @@ if (!isset($jwt)) {
                 which_pool = :which_pool,
                 as_sample = :as_sample,
                 location = :location, ";
+
+                if($related_project == "")
+                {
+                    $related_project = 0;
+                }
                 
-                if($related_project != "" && $related_project != 0)
-                    $query .= " project_id = :related_project, ";
+                // if($related_project != "" && $related_project != 0)
+                $query .= " project_id = :related_project, ";
 
                 $query .= "
                 listing = :items,
@@ -231,7 +236,7 @@ if (!isset($jwt)) {
                 $stmt->bindParam(':as_sample', $as_sample);
                 $stmt->bindParam(':location', $location);
 
-                if($related_project != "" && $related_project != 0)
+                //if($related_project != "" && $related_project != 0)
                     $stmt->bindParam(':related_project', $related_project);
              
                 $items_changed = json_encode($items_array);
@@ -294,7 +299,16 @@ if (!isset($jwt)) {
 
                     if($reason == "Change Inventory Pool or Related Project of Item(s)")
                     {
-                        $stmt->bindParam(':project_id', $related_project);
+                        if($related_project == 0)
+                        {
+                            $related_projec_minus = -1;
+                            $stmt->bindParam(':project_id', $related_projec_minus);
+                        }
+                        else
+                        {
+                            $stmt->bindParam(':project_id', $related_project);
+                        }
+                        
                         $stmt->bindParam(':which_pool', $which_pool);
                     }
 
