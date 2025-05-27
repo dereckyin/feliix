@@ -418,9 +418,6 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
     $receive_json = json_decode($receive_list, true);
 
-    
-
-
     $item_1 = array();
     if($receive_json != null && isset($receive_json['items']))
     {
@@ -436,9 +433,16 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $remark = "";
     $listing = "";
 
-    if($receive_json != null)
+    if($item_1 != null)
     {
-        $listing = $receive_json['brief'];
+        if($item_1['brief'] != "")
+        {
+            $listing = $item_1['brief'];
+        }
+        if($item_1['listing'] != "")
+        {
+            $listing = $item_1['listing'];
+        }
     }
 
     if (count($item_1) > 0) {
