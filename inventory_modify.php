@@ -217,7 +217,7 @@
     li.further_input div.compoundbox .list_attch a.attch {
         color: #25a2b8;
         transition: .3s;
-        margin: 0 0 0 5px;
+        margin: 3px 0 3px 5px;
         font-weight: 500;
         font-size: 15px;
     }
@@ -390,10 +390,7 @@
         margin-left: 20px;
     }
 
-    #modal_EditListing .filter_function > select:nth-of-type(2),
-    #modal_EditListing .filter_function > select:nth-of-type(3) {
-        width: 400px;
-    }
+
 
     #modal_EditListing .filter_function > button {
         height: 29px;
@@ -464,28 +461,33 @@
         background-color: #F6F6F6;
     }
 
-    #tb_tracking_codes1 tbody tr td:nth-of-type(1),
-    #tb_tracking_codes2 tbody tr td:nth-of-type(1),
-    #tb_tracking_codes3 tbody tr td:nth-of-type(1) {
+    #tb_tracking_codes1 thead tr th:nth-of-type(1),
+    #tb_tracking_codes2 thead tr th:nth-of-type(1),
+    #tb_tracking_codes3 thead tr th:nth-of-type(1) {
         width: 30%;
     }
 
-    #tb_tracking_codes1 tbody tr td:nth-of-type(2),
-    #tb_tracking_codes2 tbody tr td:nth-of-type(2),
-    #tb_tracking_codes3 tbody tr td:nth-of-type(2) {
+    #tb_tracking_codes1 thead tr th:nth-of-type(2),
+    #tb_tracking_codes2 thead tr th:nth-of-type(2),
+    #tb_tracking_codes3 thead tr th:nth-of-type(2) {
         width: 30%;
     }
 
-    #tb_tracking_codes1 tbody tr td:nth-of-type(3),
-    #tb_tracking_codes2 tbody tr td:nth-of-type(3),
-    #tb_tracking_codes3 tbody tr td:nth-of-type(3) {
+    #tb_tracking_codes1 thead tr th:nth-of-type(3),
+    #tb_tracking_codes2 thead tr th:nth-of-type(3),
+    #tb_tracking_codes3 thead tr th:nth-of-type(3) {
         width: 30%;
+    }
+
+    #tb_tracking_codes1 thead tr th:nth-of-type(4),
+    #tb_tracking_codes2 thead tr th:nth-of-type(4),
+    #tb_tracking_codes3 thead tr th:nth-of-type(4) {
+        width: 10%;
     }
 
     #tb_tracking_codes1 tbody tr td:nth-of-type(4),
     #tb_tracking_codes2 tbody tr td:nth-of-type(4),
     #tb_tracking_codes3 tbody tr td:nth-of-type(4) {
-        width: 10%;
         vertical-align: middle;
         text-align: center;
         font-size: 25px;
@@ -554,13 +556,7 @@
         line-height: 1.0;
     }
 
-    #tb_tracking_codes1 {
-        min-width: 1750px;
-    }
 
-    #tb_tracking_codes3 {
-        min-width: 1600px;
-    }
 
     .shake {
         animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
@@ -590,6 +586,28 @@
         }
     }
 
+    @media screen and (max-width: 1024px) {
+
+        #modal_EditListing .filter_function > select:nth-of-type(2),
+        #modal_EditListing .filter_function > select:nth-of-type(3) {
+            width: 400px;
+        }
+
+        #modal_EditListing .modal-heading h6 {
+            font-size: 28px;
+        }
+
+        #modal_EditListing .filter_function {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        #modal_EditListing .filter_function > * {
+            margin: 5px 0 5px 0!important;
+        }
+
+    }
+
     @media screen and (max-width: 640px) {
 
         div.block > h6 > span {
@@ -598,6 +616,19 @@
 
         li.row_list div.label_btn input[type="text"] {
             width: 260px;
+        }
+
+        #tb_tracking_codes1, #tb_tracking_codes2 {
+            min-width: 1750px;
+        }
+
+        #tb_tracking_codes3 {
+            min-width: 1600px;
+        }
+
+        #modal_EditListing .filter_function > select:nth-of-type(2),
+        #modal_EditListing .filter_function > select:nth-of-type(3) {
+            width: 400px;
         }
 
         #modal_EditListing .modal-heading h6 {
@@ -856,7 +887,7 @@
                                         </ul>
 
                                         <ul>
-                                            <li>Product Code:</li>
+                                            <li style="min-width: 120px;">Product Code:</li>
                                             <li><a :href="'product_display?id=' + item.product_id" target="_blank">{{ item.code }}</a></li>
                                         </ul>
 
@@ -1030,7 +1061,7 @@
                                 <div class="pagenation">
                                     <a class="prev" :disabled="page == 1" @click="pre_page();">Prev 10</a>
 
-                                    <a class="page" v-for="pg in pages_10" @click="page=pg;" v-bind:style="[pg == page ? { 'background':'#2F9A57', 'color': 'white'} : { }]">{{ pg }}</a>
+                                    <a class="page" v-for="pg in pages_10" @click="page=pg;" v-bind:style="[pg == page ? { 'background':'#1E6BA8', 'color': 'white'} : { }]">{{ pg }}</a>
 
                                     <a class="next" :disabled="page == pages.length" @click="nex_page();">Next 10</a>
                                 </div>
@@ -1038,7 +1069,7 @@
                         </li>
 
 
-                        <li>
+                        <li style="overflow-x: auto;">
                             <table id="tb_tracking_codes2" class="table  table-sm table-bordered" >
 
                                 <thead>
@@ -1118,9 +1149,16 @@
                                             <li>{{ item.brand }}</li>
                                         </ul>
 
+                                        <!-- 列出 brief -->
                                         <ul>
-                                            <li>Specification:</li>
-                                            <li>{{ item.listing }}{{ item.remark }}</li>
+                                            <li style="padding: 1px 3px;"></li>
+                                            <li style="white-space: break-spaces; font-weight: 300;">{{ item.listing }}</li>
+                                        </ul>
+
+                                        <!-- 列出 listing -->
+                                        <ul>
+                                            <li style="padding: 1px 3px;"></li>
+                                            <li style="white-space: break-spaces; font-weight: 500;">{{ item.remark }}</li>
                                         </ul>
                                     </td>
 
