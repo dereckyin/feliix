@@ -62,6 +62,7 @@ $sql = "SELECT  pm.id,
         info_remark_other,
         pm.total_amount_liquidate,
                         pm.amount_of_return,
+                        pm.method_of_return,
         pm.rtype,
         pm.dept_name
 from apply_for_petty pm 
@@ -99,6 +100,7 @@ $info_remark_other = "";
 
 $total_amount_liquidate = "";
         $amount_of_return = "";
+        $method_of_return = "";
         $apply_for_petty_liquidate = [];
 
 $total = 0;
@@ -142,6 +144,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
             $total_amount_liquidate = $row['total_amount_liquidate'];
             $amount_of_return = $row['amount_of_return'];
+            $method_of_return = $row['method_of_return'];
 
             $combine_liquidate = [];
             if($amount_liquidated == null)

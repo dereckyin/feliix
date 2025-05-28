@@ -5919,3 +5919,7 @@ ADD COLUMN `project_id` bigint(20) DEFAULT 0;
 
 ALTER TABLE order_tracking_item
 ADD COLUMN receive_id bigint(20)  DEFAULT 0;
+
+-- 20250526 method to return
+ALTER TABLE apply_for_petty
+ADD COLUMN  `method_of_return` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';

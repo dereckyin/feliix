@@ -3379,7 +3379,7 @@ var app = new Vue({
       },
 
       async register(item) {
-        item.status = 1;
+        
         if(item.qty > item.incoming_qty)
         {
           Swal.fire({
@@ -3389,9 +3389,12 @@ var app = new Vue({
           });
           return;
         }
-        await this.save_encode_list(item.id);
-
-        app.$forceUpdate();
+        else
+        {
+          item.status = 1;
+          await this.save_encode_list(item.id);
+          app.$forceUpdate();
+        }
       },
 
       remove_item(id) {

@@ -107,6 +107,7 @@ switch ($method) {
                         remark_liquidated,
                         total_amount_liquidate,
                         amount_of_return,
+                        method_of_return,
                         pm.rtype,
                         pm.dept_name
                 from apply_for_petty pm 
@@ -172,6 +173,7 @@ switch ($method) {
 
         $total_amount_liquidate = "";
         $amount_of_return = "";
+        $method_of_return = "";
         $apply_for_petty_liquidate = [];
 
         $amount_liquidated = 0;
@@ -208,6 +210,7 @@ switch ($method) {
 
             $total_amount_liquidate = $row['total_amount_liquidate'];
             $amount_of_return = $row['amount_of_return'];
+            $method_of_return = $row['method_of_return'];
 
             $history = GetHistory($row['id'], $db);
             $list = GetList($row['id'], $db);
@@ -278,6 +281,7 @@ switch ($method) {
 
                 "total_amount_liquidate" => $total_amount_liquidate,
                 "amount_of_return" => $amount_of_return,
+                "method_of_return" => $method_of_return,
                 "apply_for_petty_liquidate" => $combine_liquidate,
 
                 "release_date" => $release_date,

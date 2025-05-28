@@ -437,6 +437,10 @@ function EditListing() {
                             <li>{{ (!record.amount_of_return) ? "" : Number(record.amount_of_return).toLocaleString() }}</li>
                         </ul>
                         <ul>
+                            <li class="head">Method to Return Money</li>
+                            <li>{{record.method_of_return}}</li>
+                        </ul>
+                        <ul>
                             <li class="head">Liquidation Files</li>
                             <li><a v-for='(item, index) in record.liquidate_items' :key="index" :href="baseURL + item.gcp_name" target="_blank">{{item.filename}}</a></li>
                             
@@ -489,6 +493,15 @@ function EditListing() {
                             <li style="margin-top: 15px;"><b>Amount of Return Money</b></li>
                             <li><input type="text" style="width:100%" readonly
                                     v-model="Number(parsenumber(amount_of_return)).toLocaleString()" placeholder="Auto Calculation"></li>
+
+                            <li style="margin-top: 15px;"><b>Method to Return Money</b></li>
+                            <li>
+                                <select style="width:100%" v-model="method_of_return">
+                                    <option value="Cash">Cash</option>
+                                    <option value="DigiBanker">DigiBanker</option>
+                                    <option value="GCash">GCash</option>
+                                </select>
+                            </li>
 
                             <li style="margin-top: 15px;"><b>Upload Liquidation Files</b></li>
                             <li>

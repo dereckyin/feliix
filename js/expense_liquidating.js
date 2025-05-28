@@ -49,6 +49,7 @@ var app = new Vue({
     list_sn: 0,
 
     amount_of_return:"",
+    method_of_return:"",
     total_amount_liquidate:"",
   },
 
@@ -218,6 +219,7 @@ var app = new Vue({
       form_Data.append("amount", this.parsenumber(this.amount_liquidated));
 
       form_Data.append("amount_of_return", this.amount_of_return);
+      form_Data.append("method_of_return", this.method_of_return);
       form_Data.append("total_amount_liquidate", this.total_amount_liquidate);
       form_Data.append("items", JSON.stringify(this.petty_list));
 
@@ -433,6 +435,8 @@ var app = new Vue({
         this.amount_of_return = this.record.amount_of_return;
       else
         this.amount_of_return = Number(this.record.amount_of_return).toLocaleString();
+
+        this.method_of_return = this.record.method_of_return;
 
       this.petty_list = JSON.parse(JSON.stringify(this.record.apply_for_petty_liquidate));
 

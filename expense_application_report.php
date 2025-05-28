@@ -795,6 +795,10 @@
                                     <li>{{ (record.request_type == "New") ?  (!record.amount_of_return ? "" : Number(record.amount_of_return).toLocaleString()) : "---" }}</li>
                                 </ul>
                                 <ul>
+                                    <li class="head">Method to Return Money</li>
+                                    <li>{{ record.method_of_return }}</li>
+                                </ul>
+                                <ul>
                                     <li class="head">Liquidation Files</li>
                                     <li><a v-if="record.request_type == 'New'" v-for='(item, index) in record.liquidate_items' :key="index" :href="baseURL + item.gcp_name" target="_blank">{{item.filename}}</a>
                                         <div v-if="record.request_type == 'Reimbursement' || record.request_type == 'Petty Cash Replenishment'">---</div>
