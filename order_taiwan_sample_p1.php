@@ -647,6 +647,10 @@ header( 'location:index' );
         }
 
         .block.A .tb_order thead tr th:nth-of-type(11), .block.A .tb_order tbody tr td:nth-of-type(12) {
+            min-width: 280px;
+        }
+
+        .block.A .tb_order thead tr th:nth-of-type(12), .block.A .tb_order tbody tr td:nth-of-type(13) {
             min-width: 450px;
         }
 
@@ -1690,6 +1694,7 @@ header( 'location:index' );
                         <th>Unit</th>
                         <th style="display: none;">Amount</th>
                         <th>Date Needed</th>
+                        <th>Inventory Remarks</th>
                         <th>Notes</th>
                         <th>Shipping Way</th>
                         <th>Action</th>
@@ -1818,6 +1823,30 @@ header( 'location:index' );
                 </div>
                 <div class="write_block" v-if="item.is_edit">
                     <input type="text" v-model="item.date_needed">
+                </div>
+            </td>
+
+            <td>
+                <div class="read_block" v-if="!item.is_edit">
+                    <!-- 收到的這個品項屬於哪種類型的庫存數量 -->
+                    Which Inventory Pool to Go?<br>
+                    {{ item.which_pool }}<br>
+                    <!-- 收到的這個品項是否當成樣品 -->
+                    Used as Sample?<br>
+                    {{ item.as_sample }}
+                </div>
+                <div class="write_block" v-if="item.is_edit">
+                    Which Inventory Pool to Go?<br>
+                    <select v-model="item.which_pool">
+                        <option value="Project Pool">Project Pool</option>
+                        <option value="Stock Pool">Stock Pool</option>
+                    </select>
+                    <br><br>
+                    Used as Sample?<br>
+                    <select v-model="item.as_sample">
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
                 </div>
             </td>
 
@@ -2418,6 +2447,15 @@ header( 'location:index' );
                                     <td>
                                         Incoming<br>
                                         <span class="stock_qty" @click="incoming_qty_info(set.incoming_html)">{{ set.incoming_qty }}</span><br>
+                                        Project Pool<br>
+                                        <span class="stock_qty_ware">{{ set.project_qty }}</span>
+                                        <span class="stock_qty_ware">{{ set.project_s_qty }}</span>
+                                        <br>
+
+                                        Stock Pool<br>
+                                        <span class="stock_qty_ware">{{ set.stock_qty }}</span>
+                                        <span class="stock_qty_ware">{{ set.stock_s_qty }}</span>
+                                        <br>
                                         <!--
                                         Project-Locked<br>
                                         <span class="stock_qty_ware">10</span><br>
@@ -2556,6 +2594,15 @@ header( 'location:index' );
                                 <td>
                                     Incoming<br>
                                     <span class="stock_qty" @click="incoming_qty_info(item.incoming_html)">{{ item.incoming_qty }}</span><br>
+                                    Project Pool<br>
+                                        <span class="stock_qty_ware">{{ item.project_qty }}</span>
+                                        <span class="stock_qty_ware">{{ item.project_s_qty }}</span>
+                                        <br>
+
+                                        Stock Pool<br>
+                                        <span class="stock_qty_ware">{{ item.stock_qty }}</span>
+                                        <span class="stock_qty_ware">{{ item.stock_s_qty }}</span>
+                                        <br>
                                     <!--
                                     Project-Locked<br>
                                     <span class="stock_qty_ware">10</span><br>

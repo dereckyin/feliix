@@ -54,6 +54,7 @@ var app = new Vue({
     product_edit: [],
     product_duplicate: [],
     product_delete: [],
+    inventory_modify: [],
   },
 
   created() {
@@ -248,6 +249,10 @@ var app = new Vue({
                 _this.product_delete = res.data[0]["product_delete"].split(",").filter(function (el) {
                   return el != "";
                 });
+              if (kind === 43 || kind === undefined)
+                _this.inventory_modify = res.data[0]["inventory_modify"].split(",").filter(function (el) {
+                  return el != "";
+                });
 
           },
           (err) => {
@@ -335,6 +340,7 @@ var app = new Vue({
       form_Data.append("product_edit", this.product_edit);
       form_Data.append("product_duplicate", this.product_duplicate);
       form_Data.append("product_delete", this.product_delete);
+      form_Data.append("inventory_modify", this.inventory_modify);
 
       axios({
         method: "post",

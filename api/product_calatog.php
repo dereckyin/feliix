@@ -1111,6 +1111,13 @@ else
                 // 20241218 for incoming qty
                 $incoming_qty = $row['incoming_qty'];
                 $incoming_element = $row['incoming_element'];
+
+                // 20250526 for project_qty, project_s_qty, stock_qty, stock_s_qty
+                $project_qty = $row['project_qty'];
+                $project_s_qty = $row['project_s_qty'];
+                $stock_qty = $row['stock_qty'];
+                $stock_s_qty = $row['stock_s_qty'];
+
                 $incoming_html = "";
                 $order_sn = 1;
 
@@ -1327,6 +1334,11 @@ else
                                     "incoming_qty" => $incoming_qty,
                                     "incoming_element" => $incoming_element,
                                     "incoming_html" => $incoming_html,
+
+                                    "project_qty" => $project_qty,
+                                    "project_s_qty" => $project_s_qty,
+                                    "stock_qty" => $stock_qty,
+                                    "stock_s_qty" => $stock_s_qty,
 
                                     "product_ics" => $product_ics,
                                     "product_skp" => $product_skp,
@@ -2672,6 +2684,12 @@ function GetProductSetContent($id, $db){
         $incoming_html = "";
         $order_sn = 1;
 
+        // 20250526 for project_qty, project_s_qty, stock_qty, stock_s_qty
+        $project_qty = $row['project_qty'];
+        $project_s_qty = $row['project_s_qty'];
+        $stock_qty = $row['stock_qty'];
+        $stock_s_qty = $row['stock_s_qty'];
+
         if($incoming_element != "")
         {
             $incoming_element_json = json_decode($incoming_element, true);
@@ -2878,6 +2896,11 @@ function GetProductSetContent($id, $db){
                             "incoming_qty" => $incoming_qty,
                             "incoming_element" => $incoming_element,
                             "incoming_html" => $incoming_html,
+
+                            "project_qty" => $project_qty,
+                            "project_s_qty" => $project_s_qty,
+                            "stock_qty" => $stock_qty,
+                            "stock_s_qty" => $stock_s_qty,
 
                             "product_ics" => $product_ics,
                             "product_skp" => $product_skp,

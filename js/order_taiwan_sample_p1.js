@@ -1430,6 +1430,8 @@ var app = new Vue({
               v3:this.v3,
               v4:this.v4,
               btn2:"1",
+              which_pool:"Stock Pool",
+            as_sample:"Yes",
             };
 
             items.push(item);
@@ -1601,7 +1603,9 @@ var app = new Vue({
               shipping_number:"",
             status:"",
             btn2:"1",
-            notes:[]
+            notes:[],
+            which_pool:"Stock Pool",
+            as_sample:"Yes",
           };
 
           items.push(item);
@@ -1971,7 +1975,7 @@ var app = new Vue({
   },
 
       product_catalog() {
-
+        this.sort_me(0);
         $('#modal_product_catalog').modal('toggle');
         $("#tag01").selectpicker("refresh");
       },
@@ -2389,6 +2393,8 @@ var app = new Vue({
                 notes:[],
                 shipping_way:item.shipping_way,
                 shipping_number:item.shipping_number,
+                which_pool:item.which_pool,
+                as_sample:item.as_sample,
               };
 
               items.push(item);
@@ -2484,7 +2490,9 @@ var app = new Vue({
                 shipping_way:"",
               shipping_number:"",
                 status:"",
-                notes:[]
+                notes:[],
+                which_pool:"Stock Pool",
+                as_sample:"Yes",
               };
 
               items.push(item);
@@ -3646,7 +3654,8 @@ add_with_image_set_select(all) {
       v3: "",
       v4: "",
       btn2:"1",
-
+      which_pool:"Stock Pool",
+      as_sample:"Yes",
       ps_var : sets,
     };
 
@@ -3811,7 +3820,8 @@ add_without_image_set_select(all) {
       status:"",
       notes:[],
       btn2:"1",
-
+      which_pool:"Stock Pool",
+      as_sample:"Yes",
       ps_var : sets,
     };
 
@@ -4108,6 +4118,8 @@ item = {
     v3: all == 'all' ? '' : set.v3,
     v4: all == 'all' ? '' : set.v4,
   btn2:"1",
+  which_pool:"Stock Pool",
+            as_sample:"Yes",
 };
 
 items.push(item);
@@ -4306,7 +4318,9 @@ item = {
       shipping_number:"",
     status:"",
     notes:[],
-    btn2:"1"
+    btn2:"1",
+    which_pool:"Stock Pool",
+            as_sample:"Yes",
   };
 
   items.push(item);

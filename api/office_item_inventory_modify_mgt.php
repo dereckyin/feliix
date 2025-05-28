@@ -159,14 +159,14 @@ if($ft != "" && $ft != "0")
 
 if($frl != "")
 {
-    $sql = $sql . " and pm.request_no >= 'IM-" . sprintf('%05d', $frl) . "' ";
-    $query_cnt = $query_cnt . " and pm.request_no >= 'IM-" . sprintf('%05d', $frl) . "' ";
+    $sql = $sql . " and pm.request_no >= 'OIM-" . sprintf('%05d', $frl) . "' ";
+    $query_cnt = $query_cnt . " and pm.request_no >= 'OIM-" . sprintf('%05d', $frl) . "' ";
 }
 
 if($fru != "")
 {
-    $sql = $sql . " and pm.request_no <= 'IM-" . sprintf('%05d', $fru) . "' ";
-    $query_cnt = $query_cnt . " and pm.request_no <= 'IM-" . sprintf('%05d', $fru) . "' ";
+    $sql = $sql . " and pm.request_no <= 'OIM-" . sprintf('%05d', $fru) . "' ";
+    $query_cnt = $query_cnt . " and pm.request_no <= 'OIM-" . sprintf('%05d', $fru) . "' ";
 }
 
 if($fc != "")

@@ -558,6 +558,10 @@ header( 'location:index' );
         }
 
         .block.D .tb_order thead tr th:nth-of-type(13), .block.D .tb_order tbody tr td:nth-of-type(14) {
+            min-width: 280px;
+        }
+
+        .block.D .tb_order thead tr th:nth-of-type(14), .block.D .tb_order tbody tr td:nth-of-type(15) {
             min-width: 450px;
         }
 
@@ -565,24 +569,24 @@ header( 'location:index' );
             min-width: 120px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(15) {
+        .block.D .tb_order tbody tr td:nth-of-type(16) {
             min-width: 450px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(16) {
+        .block.D .tb_order tbody tr td:nth-of-type(17) {
             min-width: 220px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(17),
         .block.D .tb_order tbody tr td:nth-of-type(18),
-        .block.D .tb_order tbody tr td:nth-of-type(19) {
+        .block.D .tb_order tbody tr td:nth-of-type(19),
+        .block.D .tb_order tbody tr td:nth-of-type(20) {
             min-width: 180px;
         }
 
-        .block.D .tb_order tbody tr td:nth-of-type(20),
         .block.D .tb_order tbody tr td:nth-of-type(21),
         .block.D .tb_order tbody tr td:nth-of-type(22),
-        .block.D .tb_order tbody tr td:nth-of-type(23) {
+        .block.D .tb_order tbody tr td:nth-of-type(23),
+        .block.D .tb_order tbody tr td:nth-of-type(24) {
             min-width: 400px;
         }
 
@@ -1508,7 +1512,8 @@ header( 'location:index' );
                         <th>Backup Qty</th>
                         <th>Unit</th>
                         <th style="display: none;">Amount</th>
-                        <th>Date Needed by Client</th>
+                        <th>Date Needed</th>
+                        <th>Inventory Remarks</th>
                         <th>Notes</th>
                         <th>Notes (Only for Approved Stage)</th>
                         <th>Shipping Way</th>
@@ -1648,6 +1653,17 @@ header( 'location:index' );
                 </div>
                 <div class="write_block" v-if="item.is_edit">
                     <input type="text" v-model="item.date_needed">
+                </div>
+            </td>
+
+            <td>
+                <div class="read_block">
+                    <!-- 收到的這個品項屬於哪種類型的庫存數量 -->
+                    Which Inventory Pool to Go?<br>
+                    {{ item.which_pool }}<br>
+                    <!-- 收到的這個品項是否當成樣品 -->
+                    Used as Sample?<br>
+                    {{ item.as_sample }}
                 </div>
             </td>
 
@@ -1829,7 +1845,7 @@ header( 'location:index' );
                     <th colspan="2">Description</th>
                     <th>Qty Needed</th>
                     <th style="display: none;">Amount</th>
-                    <th>Date Needed by Client</th>
+                    <th>Date Needed</th>
                     <th>Notes</th>
                     <th>Action</th>
                 </tr>

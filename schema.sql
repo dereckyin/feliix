@@ -5743,3 +5743,183 @@ CREATE TABLE IF NOT EXISTS `quotation_led_driver` (
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20250401
+ALTER TABLE od_item
+ADD COLUMN `which_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE od_item
+ADD COLUMN `as_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE product_category
+ADD COLUMN `project_qty` int(11) DEFAULT 0;
+
+ALTER TABLE product_category
+ADD COLUMN `project_s_qty` int(11) DEFAULT 0;
+
+ALTER TABLE product_category
+ADD COLUMN `stock_qty` int(11) DEFAULT 0;
+
+ALTER TABLE product_category
+ADD COLUMN `stock_s_qty` int(11) DEFAULT 0;
+
+-- 20250401
+ALTER TABLE od_item
+ADD COLUMN `received_list` JSON;
+
+-- 20250417
+CREATE TABLE IF NOT EXISTS `order_receive_item` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `od_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `item_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `receive_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `product_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `pic` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `v1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `v2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `v3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `v4` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `received_date` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `qty` int(11) DEFAULT 0,
+  `which_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `as_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `project_id` bigint(20) DEFAULT 0,
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `order_tracking_item` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `item_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `barcode` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+CREATE TABLE IF NOT EXISTS `inventory_change_history` (
+  `id` bigint(20)  NOT NULL AUTO_INCREMENT,
+  `item_id` bigint(20)  DEFAULT 0 NOT NULL,
+  `reason` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `affected_qty` int(11) DEFAULT 0,
+  `affected_sign` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `affected_tracking` JSON,
+  `status` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+-- 20250508
+CREATE TABLE IF NOT EXISTS `inventory_modify` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `check_name` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `request_no` varchar(10) COLLATE utf8mb4_unicode_ci default '',
+  `date_requested` varchar(20) COLLATE utf8mb4_unicode_ci default '',
+  `reason` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `listing` JSON,
+  `which_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `as_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `project_id` bigint(20) DEFAULT 0,
+  `checker` int(11) DEFAULT 0,
+  `approver`  int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `check_id` int(11) DEFAULT 0,
+  `check_at` timestamp NULL DEFAULT NULL,
+  `approval_id` bigint(20) unsigned default 0,
+  `approval_at` timestamp NULL DEFAULT NULL,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+ALTER TABLE access_control
+ADD COLUMN `inventory_modify` text COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE inventory_modify
+ADD COLUMN `note_1` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT '' AFTER `request_no`;
+
+ALTER TABLE inventory_modify
+ADD COLUMN `receive_id` bigint(20)  DEFAULT 0 NOT NULL AFTER `listing`;
+
+-- 20251516
+alter table quotation_page_type_block change `num` `num` VARCHAR(50) DEFAULT '';
+
+-- 20250516
+CREATE TABLE IF NOT EXISTS `inventory_modify_history` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `request_id` bigint(20) unsigned NOT NULL,
+  `reason` varchar(512) COLLATE utf8mb4_unicode_ci default '',
+  `item_id` bigint(20) DEFAULT 0 NOT NULL,
+  `barcode` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `listing` JSON,
+  receive_id bigint(20)  DEFAULT 0 NOT NULL,
+  `which_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `as_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `project_id` bigint(20) DEFAULT 0,
+  `version` int(11) DEFAULT 0,
+  `create_id` int(11) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_id` int(11) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
+
+
+ALTER TABLE inventory_change_history
+ADD COLUMN `modify_history_id` bigint(20)  DEFAULT 0 NOT NULL;
+
+ALTER TABLE inventory_change_history
+ADD COLUMN `pid` bigint(20)  DEFAULT 0 NOT NULL;
+
+ALTER TABLE inventory_change_history ADD COLUMN v1 VARCHAR(255) DEFAULT '';
+ALTER TABLE inventory_change_history ADD COLUMN v2 VARCHAR(255) DEFAULT '';
+ALTER TABLE inventory_change_history ADD COLUMN v3 VARCHAR(255) DEFAULT '';
+ALTER TABLE inventory_change_history ADD COLUMN v4 VARCHAR(255) DEFAULT '';
+
+ALTER TABLE inventory_change_history
+ADD COLUMN `related_record` varchar(10) COLLATE utf8mb4_unicode_ci default '';
+ALTER TABLE inventory_change_history
+ADD COLUMN `releated_item` JSON;
+ALTER TABLE inventory_change_history
+ADD COLUMN `influence_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE inventory_change_history
+ADD COLUMN `new_related_project` bigint(20) DEFAULT 0;
+ALTER TABLE inventory_change_history
+ADD COLUMN `influence_location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+ALTER TABLE inventory_change_history
+ADD COLUMN `influence_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE order_tracking_item
+ADD COLUMN `which_pool` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE order_tracking_item
+ADD COLUMN `as_sample` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE order_tracking_item
+ADD COLUMN `location` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+ALTER TABLE order_tracking_item
+ADD COLUMN `project_id` bigint(20) DEFAULT 0;
+
+ALTER TABLE order_tracking_item
+ADD COLUMN receive_id bigint(20)  DEFAULT 0;
+
+-- 20250526 method to return
+ALTER TABLE apply_for_petty
+ADD COLUMN  `method_of_return` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';

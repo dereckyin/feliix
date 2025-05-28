@@ -530,7 +530,11 @@ header( 'location:index' );
             min-width: 200px;
         }
 
-        .block.B .tb_order thead tr th:nth-of-type(11), .block.B .tb_order tbody tr td:nth-of-type(12) {
+        .block.B .tb_order thead tr th:nth-of-type(10), .block.B .tb_order tbody tr td:nth-of-type(12) {
+            min-width: 280px;
+        }
+
+        .block.B .tb_order thead tr th:nth-of-type(12), .block.B .tb_order tbody tr td:nth-of-type(13) {
             min-width: 450px;
         }
 
@@ -1459,7 +1463,8 @@ header( 'location:index' );
                         <th>Backup Qty</th>
                         <th>Unit</th>
                         <th style="display: none;">Amount</th>
-                        <th>Date Needed by Client</th>
+                        <th>Date Needed</th>
+                        <th>Inventory Remarks</th>
                         <th>Notes</th>
                         <th>Shipping Way</th>
                         <th>Action</th>
@@ -1591,6 +1596,17 @@ header( 'location:index' );
             </td>
 
             <td>
+                <div class="read_block">
+                    <!-- 收到的這個品項屬於哪種類型的庫存數量 -->
+                    Which Inventory Pool to Go?<br>
+                    {{ item.which_pool }}<br>
+                    <!-- 收到的這個品項是否當成樣品 -->
+                    Used as Sample?<br>
+                    {{ item.as_sample }}
+                </div>
+            </td>
+
+            <td>
                 <div class="msg_block">
                     <div :class="['msgbox', (note.status == -1 ? 'deleted' : '')]" v-for="note in item.notes">
                         <div class="msgtext">• {{ note.message }}</div>
@@ -1695,7 +1711,7 @@ header( 'location:index' );
                     <th colspan="2">Description</th>
                     <th>Qty Needed</th>
                     <th style="display: none;">Amount</th>
-                    <th>Date Needed by Client</th>
+                    <th>Date Needed</th>
                     <th>Notes</th>
                     <th>Action</th>
                 </tr>

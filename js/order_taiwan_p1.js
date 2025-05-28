@@ -1427,6 +1427,8 @@ var app = new Vue({
               v3:this.v3,
               v4:this.v4,
               btn2:"1",
+              which_pool:"Project Pool",
+            as_sample:"No",
             };
 
             items.push(item);
@@ -1598,6 +1600,8 @@ var app = new Vue({
               shipping_number:"",
             status:"",
             btn2:"1",
+            which_pool:"Project Pool",
+            as_sample:"No",
             notes:[]
           };
 
@@ -1968,7 +1972,7 @@ var app = new Vue({
   },
 
       product_catalog() {
-
+        this.sort_me(0);
         $('#modal_product_catalog').modal('toggle');
         $("#tag01").selectpicker("refresh");
       },
@@ -2387,6 +2391,8 @@ var app = new Vue({
                 notes:[],
                 shipping_way:item.shipping_way,
                 shipping_number:item.shipping_number,
+                which_pool:item.which_pool,
+                as_sample:item.as_sample,
               };
 
               items.push(item);
@@ -2482,7 +2488,9 @@ var app = new Vue({
                 shipping_way:"",
               shipping_number:"",
                 status:"",
-                notes:[]
+                notes:[],
+                which_pool:"Project Pool",
+            as_sample:"No",
               };
 
               items.push(item);
@@ -3643,7 +3651,8 @@ add_with_image_set_select(all) {
       v3: "",
       v4: "",
       btn2:"1",
-
+      which_pool:"Project Pool",
+            as_sample:"No",
       ps_var : sets,
     };
 
@@ -3808,7 +3817,8 @@ add_without_image_set_select(all) {
       status:"",
       notes:[],
       btn2:"1",
-
+      which_pool:"Project Pool",
+            as_sample:"No",
       ps_var : sets,
     };
 
@@ -3982,7 +3992,7 @@ else
 if(all == 'all')
 {
   list = "";
-  var k1, k2, k3;
+  var k1, k2, k3, k4;
   k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
   k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
   k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
@@ -4105,6 +4115,8 @@ item = {
     v3: all == 'all' ? '' : set.v3,
     v4: all == 'all' ? '' : set.v4,
   btn2:"1",
+  which_pool:"Project Pool",
+            as_sample:"No",
 };
 
 items.push(item);
@@ -4303,7 +4315,9 @@ item = {
       shipping_number:"",
     status:"",
     notes:[],
-    btn2:"1"
+    btn2:"1",
+    which_pool:"Project Pool",
+            as_sample:"No",
   };
 
   items.push(item);

@@ -89,6 +89,8 @@ if (!isset($jwt)) {
                     delivery,
                     final,
                     btn2,
+                    `which_pool`,
+                    `as_sample`,
                     `status`,
                     test_updated_name,
                     test_updated_at,
@@ -96,7 +98,7 @@ if (!isset($jwt)) {
                     delivery_updated_at,
                     normal,
                     status_at,
-                    date_send
+                    received_list
                     FROM od_item, 
                     (SELECT @a:=@a+1 serial_number, id FROM od_item, (SELECT @a:= 0) AS a WHERE status <> -1 and od_id=$id order by ABS(sn)) b
                     WHERE status <> -1 and od_id=$id and od_item.id = b.id
@@ -178,6 +180,8 @@ if (!isset($jwt)) {
 
         $ps_var = json_decode($row['ps_var'] == null ? "[]" : $row['ps_var'], true);
 
+        $received_list = json_decode($row['received_list'] == null ? "[]" : $row['received_list'], true);
+
         $serial_number = $row['serial_number'];
 
         $test_updated_name = $row['test_updated_name'];
@@ -186,6 +190,8 @@ if (!isset($jwt)) {
         $delivery_updated_at = $row['delivery_updated_at'];
 
         $btn2 = $row['btn2'];
+        $which_pool = $row['which_pool'];
+        $as_sample = $row['as_sample'];
 
         $status = $row['status'];
 
@@ -248,6 +254,8 @@ if (!isset($jwt)) {
             "final" => $final,
             "status" => $status,
             "btn2" => $btn2,
+            "which_pool" => $which_pool,
+            "as_sample" => $as_sample,
             "test_updated_name" => $test_updated_name,
             "test_updated_at" => $test_updated_at,
             "delivery_updated_name" => $delivery_updated_name,
@@ -259,6 +267,7 @@ if (!isset($jwt)) {
             "normal" => $normal,
             "status_at" => $status_at,
             "date_send" => $date_send,
+            "received_list" => $received_list,
         );
     }
 

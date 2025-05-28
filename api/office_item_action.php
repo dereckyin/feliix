@@ -25,6 +25,7 @@ $items_to_delete = (isset($_POST['items_to_delete']) ?  $_POST['items_to_delete'
 $items_array = json_decode($items_to_delete,true);
 
 $amount_of_return = (isset($_POST['amount_of_return']) ?  $_POST['amount_of_return'] : "");
+$method_of_return = (isset($_POST['method_of_return']) ?  $_POST['method_of_return'] : "");
 $total_amount_liquidate = (isset($_POST['total_amount_liquidate']) ?  $_POST['total_amount_liquidate'] : "");
 $petty = (isset($_POST['items']) ?  $_POST['items'] : "[]");
 $petty_array = json_decode($petty,true);
@@ -527,7 +528,7 @@ if (!isset($jwt)) {
                     if(isset($_FILES['files']['name'][$i]))
                     {
                         $image_name = $_FILES['files']['name'][$i];
-                        $valid_extensions = array("jpg","jpeg","png","gif","pdf","docx","doc","xls","xlsx","ppt","pptx","zip","rar","7z","txt","dwg","skp","psd","evo");
+                        $valid_extensions = array("jpg","jpeg","png","gif","pdf","docx","doc","xls","xlsx","ppt","pptx","zip","rar","7z","txt","dwg","skp","psd","evo","dwf","bmp");
                         $extension = pathinfo($image_name, PATHINFO_EXTENSION);
                         if (in_array(strtolower($extension), $valid_extensions)) 
                         {

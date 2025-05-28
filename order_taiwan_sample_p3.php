@@ -206,16 +206,16 @@ header( 'location:index' );
         }
 
         #tb_product_list tbody tr td:nth-of-type(2) {
-            width: 420px;
+            width: 380px;
             padding-right: 20px
         }
 
         #tb_product_list tbody tr td:nth-of-type(3) {
-            width: 460px;
+            width: 430px;
         }
 
         #tb_product_list tbody tr td:nth-of-type(4) {
-            width: 220px;
+            width: 210px;
         }
 
         #tb_product_list tbody tr td:nth-of-type(5) {
@@ -651,6 +651,11 @@ header( 'location:index' );
         }
 
         .block.C .tb_order thead tr th:nth-of-type(11), .block.C .tb_order tbody tr td:nth-of-type(12) {
+            min-width: 280px;
+        }
+
+
+        .block.C .tb_order thead tr th:nth-of-type(12), .block.C .tb_order tbody tr td:nth-of-type(13) {
             min-width: 450px;
         }
 
@@ -658,24 +663,24 @@ header( 'location:index' );
             min-width: 120px;
         }
 
-        .block.C .tb_order tbody tr td:nth-of-type(13) {
+        .block.C .tb_order tbody tr td:nth-of-type(14) {
             min-width: 450px;
         }
 
-        .block.C .tb_order tbody tr td:nth-of-type(14) {
+        .block.C .tb_order tbody tr td:nth-of-type(15) {
             min-width: 220px;
         }
 
-        .block.C .tb_order tbody tr td:nth-of-type(15),
         .block.C .tb_order tbody tr td:nth-of-type(16),
-        .block.C .tb_order tbody tr td:nth-of-type(17) {
+        .block.C .tb_order tbody tr td:nth-of-type(17),
+        .block.C .tb_order tbody tr td:nth-of-type(18) {
             min-width: 180px;
         }
 
-        .block.C .tb_order tbody tr td:nth-of-type(18),
         .block.C .tb_order tbody tr td:nth-of-type(19),
         .block.C .tb_order tbody tr td:nth-of-type(20),
-        .block.C .tb_order tbody tr td:nth-of-type(21) {
+        .block.C .tb_order tbody tr td:nth-of-type(21),
+        .block.C .tb_order tbody tr td:nth-of-type(22) {
             min-width: 400px;
         }
 
@@ -829,8 +834,24 @@ header( 'location:index' );
             content: none;
         }
 
-        .write_block .itembox .photo > div {
-            display: none;
+        .read_block .photo > div {
+            /* display: none; */
+            width: 36px;
+            height: 36px;
+            border: 1px dashed #3FA4F4;
+            border-radius: 18px;
+            line-height: 24px;
+            text-align: center;
+            color: #3FA4F4;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .registry_list .read_block .photo > div {
+            border: 1px dashed red;
+            color: red;
+            margin-left: calc( 50% - 18px );
         }
 
         .write_block .itembox.chosen .photo > div {
@@ -1598,6 +1619,336 @@ header( 'location:index' );
             cursor: pointer;	
         }
 
+        #modal_registry_received_items table.registry_info {
+            width: 100%;
+        }
+
+        table.registry_info td {
+            padding: 0 15px;
+            width: 50%;
+        }
+
+        table.registry_info select {
+            width: calc( 100% - 230px);
+            margin-left: 5px;
+        }
+
+        table.registry_info .photobox {
+            height: 210px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        table.registry_info .photobox .itembox {
+            display: inline-block;
+            margin: 5px 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        table.registry_info .photobox .itembox .photo {
+            border: 1px dashed #707070;
+            width: 150px;
+            height: 150px;
+            padding: 3px;
+            position: relative;
+        }
+
+        table.registry_info .photobox .itembox .photo::before {
+            content: "+";
+            display: block;
+            width: 36px;
+            height: 36px;
+            border: 1px dashed #3FA4F4;
+            border-radius: 18px;
+            line-height: 24px;
+            text-align: center;
+            color: #3FA4F4;
+            font-size: 36px;
+            font-weight: 300;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            padding: 2px 0 0;
+        }
+
+        table.registry_info .photobox .itembox .photo > input[type='file'] {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+
+        table.registry_info .photobox .itembox .photo > img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        table.registry_info .photobox .itembox.chosen .photo::before {
+            content: none;
+        }
+
+        table.registry_info .photobox .itembox .photo > div {
+            display: none;
+        }
+
+        table.registry_info .photobox .itembox.chosen .photo > div {
+            display: inline-block;
+            margin: 8px auto 5px;
+            width: 36px;
+            height: 36px;
+            border: 1px dashed #EA0029;
+            border-radius: 18px;
+            line-height: 28px;
+            text-align: center;
+            color: #EA0029;
+            font-size: 24px;
+            font-weight: 400;
+            cursor: pointer;
+            position: absolute;
+            bottom: -50px;
+            left: 57px;
+        }
+                
+        table.registry_info textarea {
+            border: 1px solid #707070;
+            font-size: 16px;
+            resize: none;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        #modal_registry_received_items .popupblock {
+            margin: -5px 0 5px;
+        }
+
+        #modal_registry_received_items .popupblock a {
+            background-color: #707070;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+        }
+
+        #modal_registry_received_items .popupblock a i {
+            font-size: 20px;
+            color: white;
+            line-height: 1.45;
+        }
+
+        #modal_registry_received_items table.registry_list {
+            width: 100%;
+        }
+
+        table.registry_list thead th, table.registry_list tbody td {
+            text-align: center;
+            padding: 10px;
+            vertical-align: middle;
+        }
+
+        table.registry_list thead th {
+            background-color: #E0E0E0;
+            border: 1px solid #C9C9C9;
+        }
+
+        table.registry_list tbody td {
+            border: 1px solid #dee2e6;
+        }
+
+        table.registry_list tbody tr:nth-of-type(even) {
+            background-color: #F6F6F6;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(1) {
+            width: 180px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(2) {
+            width: 400px;
+            padding-right: 20px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(2) .id,
+        table.registry_list tbody tr td:nth-of-type(2) .brand,
+        table.registry_list tbody tr td:nth-of-type(2) .code {
+            font-size: 16px;
+            font-weight: 800;
+            text-align: left;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(2) .brief {
+            font-size: 16px;
+            font-weight: 400;
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(2) .read_block .listing {
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 3px;
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(3) {
+            width: 140px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(4) {
+            width: 245px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(5) {
+            width: 130px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(6) {
+            width: 80px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(7) {
+            width: 110px;
+        }
+
+        table.registry_list tbody tr td:nth-of-type(7) a.btn {
+            display: block;
+            margin: 10px 0;
+            color: white;
+            width: 80px;
+        }
+
+        #modal_registry_received_items .btnbox {
+            text-align: right;
+            padding: 0;
+            margin-top: -10px;
+        }
+
+        #modal_registry_received_items .btnbox a.btn {
+            margin: 10px 0;
+            color: white;
+            width: 80px;
+        }
+
+         #modal_registry_received_items .btnbox a.btn:nth-of-type(1) {
+            margin-right: 20px;
+        }
+
+        #modal_barcode_printing table.barcode_list {
+            width: 100%;
+        }
+
+        #modal_barcode_printing .modal-body {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        #modal_barcode_printing .list_function {
+            margin: 8px 0;
+        }
+
+        table.barcode_list thead th, table.barcode_list tbody td {
+            text-align: center;
+            padding: 10px;
+            vertical-align: middle;
+        }
+
+        table.barcode_list thead th {
+            background-color: #E0E0E0;
+            border: 1px solid #C9C9C9;
+        }
+
+        table.barcode_list tbody td {
+            border: 1px solid #dee2e6;
+        }
+
+        table.barcode_list tbody tr:nth-of-type(even) {
+            background-color: #F6F6F6;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(1) {
+            width: 60px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(2) {
+            width: 140px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(3) {
+            width: 180px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(4) {
+            width: 400px;
+            padding-right: 20px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(4) .id,
+        table.barcode_list tbody tr td:nth-of-type(4) .brand,
+        table.barcode_list tbody tr td:nth-of-type(4) .code {
+            font-size: 16px;
+            font-weight: 800;
+            text-align: left;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(4) .brief {
+            font-size: 16px;
+            font-weight: 400;
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(4) .read_block .listing {
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 3px;
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(5) {
+            width: 245px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(6) {
+            width: 130px;
+        }
+
+        table.barcode_list tbody tr td:nth-of-type(7) {
+            width: 80px;
+        }
+
+        table.registry_list a.hyperlink,
+        table.barcode_list a.hyperlink {
+            color: #0056b3;
+        }
+
+        table.registry_list a.hyperlink.block,
+        table.barcode_list a.hyperlink.block {
+            display: block;
+        }
+
+        #modal_barcode_printing .modal-footer .btnbox {
+            padding: 0;
+        }
+
+        #modal_barcode_printing .modal-footer .btnbox a.btn {
+            margin: 5px 15px;
+            color: white;
+            width: 130px;
+        }
+
+        button.btn-secondary {
+            margin: 10px 0 5px;
+        }
+
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
@@ -1681,41 +2032,44 @@ header( 'location:index' );
                     <!-- buttons to add product -->
                     <div class="block">
 
-                        <div class="popupblock" v-if="info_type == '' && access2 == true && is_edit_dn != true">
+                        <div class="popupblock" v-if="info_type == '' && access2 == true && is_edit_dn != true && is_edit_remark != true">
                             <a title="Add Item by Manual Encoding">
                                 <i class="fas fa-plus" @click="addItem()"></i>
                             </a>
                         </div>
 
-                        <div class="popupblock" v-if="info_type == '' && access2 == true && is_edit_dn != true">
+                        <div class="popupblock" v-if="info_type == '' && access2 == true && is_edit_dn != true && is_edit_remark != true">
                             <a title="Add Item from Product Database">
                                 <i class="fas fa-list-alt"  @click="product_catalog()"></i>
                             </a>
                         </div>
 
-                        <div class="popupblock" v-if="info_type == '' && access2 == true && is_edit_dn != true"> 
+                        <div class="popupblock" v-if="info_type == '' && access2 == true && is_edit_dn != true && is_edit_remark != true"> 
                             <a title="Export Supplier's Document">
                                 <i class="fas fa-file-excel" @click="export_excel()"></i>
                             </a>
                         </div>
 
                         <div class="btn_block">
-                            <a class="btn small green" @click="approve()" v-if="MarkasApproved() && is_edit_dn != true">Mark as Approved</a>
-                            <a class="btn small green" @click="order()" v-if="MarkasOrdered() && is_edit_dn != true">Mark as Ordered</a>
-                            <a class="btn small green" @click="cancel()" v-if="MarkasCanceled() && is_edit_dn != true">Mark as Canceled</a>
+                            <a class="btn small green" @click="approve()" v-if="MarkasApproved() && is_edit_dn != true && is_edit_remark != true">Mark as Approved</a>
+                            <a class="btn small green" @click="order()" v-if="MarkasOrdered() && is_edit_dn != true && is_edit_remark != true">Mark as Ordered</a>
+                            <a class="btn small green" @click="cancel()" v-if="MarkasCanceled() && is_edit_dn != true && is_edit_remark != true">Mark as Canceled</a>
 
-                            <a class="btn small green" @click="edit_shipping_info('ship_info')" v-if="EditShippingInfo() && no_privlege() != true && is_edit_dn != true">Edit Shipping Info</a>
-                            <a class="btn small green" @click="edit_shipping_info_dn('date_needed')" v-if="EditDateNeeded()  && no_privlege() != true && is_edit_dn != true">Edit Date Needed</a>
-                            <a class="btn small green" @click="edit_shipping_info('ware_info')" v-if="EditWarehouseInfo() && no_privlege() != true && is_edit_dn != true">Edit Warehouse Info</a>
+                            <a class="btn small green" @click="edit_shipping_info('ship_info')" v-if="EditShippingInfo() && no_privlege() != true && is_edit_dn != true && is_edit_remark != true">Edit Shipping Info</a>
+                            <a class="btn small green" @click="edit_shipping_info_dn('date_needed')" v-if="EditDateNeeded()  && no_privlege() != true && is_edit_dn != true && is_edit_remark != true">Edit Date Needed</a>
+                            <a class="btn small green" style="width: 190px;" @click="edit_inventory_remark('inventory_remark')" v-if="EditInventoryRemark()  && no_privlege() != true && is_edit_remark != true && is_edit_dn != true">Edit Inventory Remarks</a>
+                            <a class="btn small green" @click="edit_shipping_info('ware_info')" v-if="EditWarehouseInfo() && no_privlege() != true && is_edit_dn != true && is_edit_remark != true && 1==0">Edit Warehouse Info</a>
                             <a class="btn small green" @click="edit_shipping_info('assing_test')" v-if="AssignTesting() && no_privlege() != true && 1==0">Assign Testing</a>
-                            <a class="btn small green" @click="edit_shipping_info('edit_test')" v-if="EditTestingInfo() && no_privlege() != true && is_edit_dn != true">Edit Testing Info</a>
+                            <a class="btn small green" @click="edit_shipping_info('edit_test')" v-if="EditTestingInfo() && no_privlege() != true && is_edit_dn != true && is_edit_remark != true">Edit Testing Info</a>
                             <a class="btn small green" @click="edit_shipping_info('assign_delivery')" v-if="AssignDelivery() && no_privlege() != true && 1==0">Assign Delivery</a>
-                            <a class="btn small green" @click="edit_shipping_info('edit_delivery')" v-if="EditDeliveryInfo() && no_privlege() != true && is_edit_dn != true">Edit Delivery Info</a>
-                            <a class="btn small green" @click="edit_shipping_info('edit_final')" v-if="EditFinalInfo() && no_privlege() != true && is_edit_dn != true">Edit Final Info</a>
+                            <a class="btn small green" @click="edit_shipping_info('edit_delivery')" v-if="EditDeliveryInfo() && no_privlege() != true && is_edit_dn != true && is_edit_remark != true">Edit Delivery Info</a>
+                            <a class="btn small green" @click="edit_shipping_info('edit_final')" v-if="EditFinalInfo() && no_privlege() != true && is_edit_dn != true && is_edit_remark != true">Edit Final Info</a>
                             <a class="btn small" @click="cancel_shipping_info()" v-if="Cancel()">Cancel</a>
                             <a class="btn small green" @click="save_shipping_info()" v-if="Save()">Save</a>
                             <a class="btn small" @click="cancel_date_needed()" v-if="is_edit_dn">Cancel</a>
                             <a class="btn small green" @click="save_date_needed()" v-if="is_edit_dn">Save</a>
+                            <a class="btn small" @click="cancel_inventory_remark()" v-if="is_edit_remark">Cancel</a>
+                            <a class="btn small green" @click="save_inventory_remark()" v-if="is_edit_remark">Save</a>
 
                             <input type="text" placeholder="Comment" v-model="comment" v-if="(access2 == true || access4 == true || access5 == true || access6 == true) && no_privlege() != true || is_edit_dn">
                         </div>
@@ -1739,6 +2093,7 @@ header( 'location:index' );
                         <th>Unit</th>
                         <th style="display: none;">Amount</th>
                         <th>Date Needed</th>
+                        <th>Inventory Remarks</th>
                         <th>Notes</th>
                         <th>Notes (Only for Approved Stage)</th>
                         <th>Shipping Way</th>
@@ -1879,6 +2234,30 @@ header( 'location:index' );
             </td>
 
             <td>
+                <div class="read_block" v-if="!is_edit_remark">
+                    <!-- 收到的這個品項屬於哪種類型的庫存數量 -->
+                    Which Inventory Pool to Go?<br>
+                    {{ item.which_pool }}<br>
+                    <!-- 收到的這個品項是否當成樣品 -->
+                    Used as Sample?<br>
+                    {{ item.as_sample }}
+                </div>
+                <div class="write_block" v-if="is_edit_remark">
+                    Which Inventory Pool to Go?<br>
+                    <select v-model="item.which_pool">
+                        <option>Project Pool</option>
+                        <option>Stock Pool</option>
+                    </select>
+                    <br><br>
+                    Used as Sample?<br>
+                    <select v-model="item.as_sample">
+                        <option>No</option>
+                        <option>Yes</option>
+                    </select>
+                </div>
+            </td>
+
+            <td>
                 <div class="msg_block">
                     <div :class="['msgbox', (note.status == -1 ? 'deleted' : '')]" v-for="note in item.notes">
                         <div class="msgtext">• {{ note.message }}</div>
@@ -2009,6 +2388,21 @@ header( 'location:index' );
             </td>
 
             <td>
+                <div class="read_block">
+                    <label>Arrival Status: </label> {{ item.charge == "" ? 'Not Yet Arrive' : (item.charge == "2" ? 'Partially Arrived' : (item.charge == "1" ? 'Completely Arrived' : '')) }}<br>
+                    <br>
+
+                    <div class="photobox">
+	                    <img v-if="item.photo4" :src="item.photo4">
+	                    <img v-if="item.photo5" :src="item.photo5">
+                    </div>
+
+                    <label>Remark:</label><br>
+                    <textarea rows="3" readonly v-model="item.remark"></textarea>
+                    <button type="button" class="btn btn-secondary" v-if="EditWarehouseInfo() && no_privlege() != true && is_edit_dn != true && is_edit_remark != true" @click="encode_warehouse(item)">Encode</button>
+                </div>
+
+            <!--
                 <div class="read_block" v-if="ArriveRemarkRead(item)">
                     Confirm Arrival:  <input type="checkbox" :value="item.charge" :true-value="1" v-model:checked="item.charge" class="alone" disabled>
 
@@ -2050,6 +2444,7 @@ header( 'location:index' );
 
                     <textarea rows="3" placeholder="Remarks" v-model="item.remark"></textarea>
             </td>
+            -->
 
             <td>
                 <div class="read_block" v-if="TestRead(item)">
@@ -2172,7 +2567,7 @@ header( 'location:index' );
                     <th colspan="2">Description</th>
                     <th>Qty Needed</th>
                     <th style="display: none;">Amount</th>
-                    <th>Date Needed by Client</th>
+                    <th>Date Needed</th>
                     <th>Notes</th>
                     <th>Action</th>
                 </tr>
@@ -2321,7 +2716,7 @@ header( 'location:index' );
 <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_product_catalog">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
 
         <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 
@@ -2329,7 +2724,11 @@ header( 'location:index' );
 
                 <h4 class="modal-title" id="myLargeModalLabel">Product Catalog</h4>
 
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close_product()" v-if="is_encode_warehouse">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-if="!is_encode_warehouse">
                     <span aria-hidden="true">&times;</span>
                 </button>
 
@@ -2652,6 +3051,15 @@ header( 'location:index' );
                                     <td>
                                         Incoming<br>
                                         <span class="stock_qty" @click="incoming_qty_info(set.incoming_html)">{{ set.incoming_qty }}</span><br>
+                                        Project Pool<br>
+                                        <span class="stock_qty_ware">{{ set.project_qty }}</span>
+                                        <span class="stock_qty_ware">{{ set.project_s_qty }}</span>
+                                        <br>
+
+                                        Stock Pool<br>
+                                        <span class="stock_qty_ware">{{ set.stock_qty }}</span>
+                                        <span class="stock_qty_ware">{{ set.stock_s_qty }}</span>
+                                        <br>
                                         <!--
                                         Project-Locked<br>
                                         <span class="stock_qty_ware">10</span><br>
@@ -2790,6 +3198,15 @@ header( 'location:index' );
                                 <td>
                                     Incoming<br>
                                     <span class="stock_qty" @click="incoming_qty_info(item.incoming_html)">{{ item.incoming_qty }}</span><br>
+                                    Project Pool<br>
+                                        <span class="stock_qty_ware">{{ item.project_qty }}</span>
+                                        <span class="stock_qty_ware">{{ item.project_s_qty }}</span>
+                                        <br>
+
+                                        Stock Pool<br>
+                                        <span class="stock_qty_ware">{{ item.stock_qty }}</span>
+                                        <span class="stock_qty_ware">{{ item.stock_s_qty }}</span>
+                                        <br>
                                     <!--
                                     Project-Locked<br>
                                     <span class="stock_qty_ware">10</span><br>
@@ -2823,7 +3240,7 @@ header( 'location:index' );
 <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_product_display">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
 
         <div class="modal-content"
              style="height: calc( 100vh - 3.75rem); overflow-y: auto; border: none; padding-bottom: 20px;">
@@ -2864,10 +3281,12 @@ header( 'location:index' );
                         <div class="btnbox">
                             <ul>
                                 <li v-if="toggle_type == 'A'">
-                                    <button class="btn btn-info" @click="add_with_image_set_select()" v-if="out==''">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_set_select_warehouse()" v-if="out=='' && is_encode_warehouse">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_set_select()" v-if="out=='' && !is_encode_warehouse">Add with Image</button>
                                 </li>
                                 <li>
-                                    <button class="btn btn-info" @click="add_without_image_set_select()" v-if="out==''">Add without Image</button>
+                                    <button class="btn btn-info" @click="add_without_image_set_select_warehouse()" v-if="out=='' && is_encode_warehouse">Add without Image</button>
+                                    <button class="btn btn-info" @click="add_without_image_set_select()" v-if="out=='' && !is_encode_warehouse">Add without Image</button>
                                 </li>
                             </ul>
 
@@ -2993,10 +3412,13 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out==''">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add with Image</button>
                                         </li>
                                         <li>
-                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out==''">Add without Image
+                                            <button class="btn btn-info" @click="add_without_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add without Image
+                                            </button>
+                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add without Image
                                             </button>
                                         </li>
                                     </ul>
@@ -3269,10 +3691,13 @@ header( 'location:index' );
                                 <div class="btnbox">
                                     <ul>
                                         <li v-if="toggle_type == 'A'">
-                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out==''">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add with Image</button>
+                                            <button class="btn btn-info" @click="add_with_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add with Image</button>
                                         </li>
                                         <li>
-                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out==''">Add without Image
+                                            <button class="btn btn-info" @click="add_without_image_set_warehouse(set)" v-if="set.out=='' && is_encode_warehouse">Add without Image
+                                            </button>
+                                            <button class="btn btn-info" @click="add_without_image_set(set)" v-if="set.out=='' && !is_encode_warehouse">Add without Image
                                             </button>
                                         </li>
                                     </ul>
@@ -3507,10 +3932,13 @@ header( 'location:index' );
                         <div class="btnbox">
                             <ul>
                                 <li v-if="toggle_type == 'A'">
-                                    <button class="btn btn-info" @click="add_with_image()" v-if="out==''">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image()" v-if="out=='' && !is_encode_warehouse">Add with Image</button>
                                 </li>
                                 <li>
-                                    <button class="btn btn-info" @click="add_without_image()" v-if="out==''">Add without Image
+                                    <button class="btn btn-info" @click="add_without_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add without Image
+                                    </button>
+                                    <button class="btn btn-info" @click="add_without_image()" v-if="out=='' && !is_encode_warehouse">Add without Image
                                     </button>
                                 </li>
                             </ul>
@@ -3782,10 +4210,13 @@ header( 'location:index' );
                         <div class="btnbox">
                             <ul>
                                 <li v-if="toggle_type == 'A'">
-                                    <button class="btn btn-info" @click="add_with_image()" v-if="out==''">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add with Image</button>
+                                    <button class="btn btn-info" @click="add_with_image()" v-if="out=='' && !is_encode_warehouse">Add with Image</button>
                                 </li>
                                 <li>
-                                    <button class="btn btn-info" @click="add_without_image()" v-if="out==''">Add without Image
+                                    <button class="btn btn-info" @click="add_without_image_warehouse()" v-if="out=='' && is_encode_warehouse">Add without Image
+                                    </button>
+                                    <button class="btn btn-info" @click="add_without_image()" v-if="out=='' && !is_encode_warehouse">Add without Image
                                     </button>
                                 </li>
                             </ul>
@@ -3962,7 +4393,7 @@ header( 'location:index' );
 <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_product_display_simple">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
 
         <div class="modal-content"
              style="height: calc( 100vh - 3.75rem); overflow-y: auto; border: none; padding-bottom: 20px;">
@@ -4199,7 +4630,7 @@ header( 'location:index' );
 <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="modal_quotation_list">
 
-    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1300px;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
 
         <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
 
@@ -4392,6 +4823,397 @@ header( 'location:index' );
     </div>
 
 </div>
+
+
+<!-- Warehouse in Charge 人員用來登錄 收貨物品登記簿 的彈出視窗 -->
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true" id="modal_registry_received_items">
+
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+
+        <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="myLargeModalLabel">Registry of Received Items</h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close_warehouse()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <table class="registry_info">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <label>Arrival Status of Ordered Items: </label>
+
+                            <select v-model="received_items.charge">
+                                <option value="">Not Yet Arrive</option>
+                                <option value="2">Partially Arrived</option>
+                                <option value="1">Completely Arrived</option>
+                            </select>
+                        </td>
+
+                        <td rowspan="2">
+
+                            <div class="photobox">
+
+                                <div :class="['itembox', (received_items.photo4 !== '' ? 'chosen' : '')]">
+                                    <div class="photo">
+                                        <input type="file" :id="'photo_4'"  @change="onMainFileChangeImage($event, received_items, 4)">
+                                        <img v-if="received_items.photo4" :src="received_items.photo4"/>
+                                        <div @click="clear_main_photo(received_items, 4)">x</div>
+                                    </div>
+                                </div>
+
+                                <div :class="['itembox', (received_items.photo5 !== '' ? 'chosen' : '')]">
+                                    <div class="photo">
+                                        <input type="file" :id="'photo_5'"  @change="onMainFileChangeImage($event, received_items, 5)">
+                                        <img v-if="received_items.photo5" :src="received_items.photo5"/>
+                                        <div @click="clear_main_photo(received_items, 5)">x</div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <textarea rows="4" placeholder="Remarks" v-model="received_items.remark"></textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <div class="popupblock">
+                    <a title="Add Item from Product Database"><i class="fas fa-list-alt" @click="product_catalog_warehouse()"></i></a>
+                </div>
+
+                <table class="registry_list">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Description</th>
+                        <th>Received Date<br>Qty</th>
+                        <th>Inventory Pool</th>
+                        <th>Location</th>
+                        <th>Sample</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr v-for="(item, index) in received_items.items" :key="index">
+                        <td class="pic">
+                            <!--
+                            <div class="read_block" v-if="!item.is_edit">
+                                <img v-if="item.photo1" :src="item.photo1">
+                            </div>
+
+                            <div class="write_block" v-if="item.is_edit">
+                                <div :class="['itembox', (item.photo1 !== null ? 'chosen' : '')]">
+                                    <div class="photo">
+                                        <input type="file" :id="'photo_' + item.id + '_1'"  @change="onFileChangeImage($event, item, 1)">
+                                        <img v-if="item.photo1" :src="item.photo1"/>
+                                        <div @click="clear_photo(item, 1)">x</div>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                            <div class="read_block" v-if="item.photo1 != '' && item.status == 1">
+                                <img :src="item.photo1">
+                            </div>
+
+                            <div class="read_block" v-if="item.photo1 != '' && item.status == 0">
+                                <img :src="item.photo1">
+                                <div class="photo">
+                                    <div @click="clear_photo(item, 1)">x</div>
+                                </div>
+                            </div>
+
+                            <div class="write_block" v-show="item.photo1 == '' && item.status == 0">
+                                <div class="itembox">
+                                    <div class="photo">
+                                        <input type="file" @change="onFileChangeImage($event, item, 1)" :id="'photo_' + item.id + '_1'">
+                                        <img v-if="item.photo1 != ''" :src="item.photo1"/>
+                                        <div @click="clear_photo(item, 1)" v-if="item.photo1 != ''">x</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="read_block" v-if="item.photo2 != '' && item.status == 1 && 1==0">
+                                <img :src="item.photo2">
+                            </div>
+
+                            <div class="read_block" v-if="item.photo2 != '' && item.status == 0 && 1==0">
+                                <img :src="item.photo2">
+                                <div class="photo">
+                                    <div @click="clear_photo(item, 2)">x</div>
+                                </div>
+                            </div>
+
+                            <div class="write_block" v-show="item.photo2 == '' && item.status == 0 && 1==0">
+                                <div class="itembox">
+                                    <div class="photo">
+                                        <input type="file" @change="onFileChangeImage($event, item, 2)" :id="'photo_' + item.id + '_2'">
+                                        <img v-if="item.photo2 != ''" :src="item.photo2"/>
+                                        <div @click="clear_photo(item, 2)" v-if="item.photo2 != ''">x</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </td>
+
+                        <td>
+                            <!--
+                            <div class="read_block" v-if="!item.is_edit">
+                                <div class="id">ID: {{ item.pid != 0 ? item.pid : ''}}</div>
+                                <div class="code">{{ item.code }} <i class="fas fa-edit" v-if="item.normal == 1" style="cursor: pointer;" @click="toggle_normal(item.pid, item.id)"></i></div>
+                                <div class="brief">{{ item.brief }}</div>
+                                <div class="listing">{{ item.listing }}</div>
+                            </div>
+                            <div class="write_block" v-if="item.is_edit">
+                                <input type="text" placeholder="Code" v-model="item.code" :readonly="item.btn2 == '1'"><br>
+                                <textarea rows="2" placeholder="Brief" v-model="item.brief" :readonly="item.btn2 == '1'"></textarea><br>
+                                <textarea rows="4" placeholder="Listing" v-model="item.listing"></textarea>
+                            </div>
+                            -->
+
+                            <div class="id">ID: <a class="hyperlink" :href="'product_display_code?id=' + item.pid + '&v1=' + item.v1 + '&v2=' + item.v2 + '&v3=' + item.v3 + '&v4=' + item.v4" target="_blank">{{ item.pid }}</a></div>
+                            <div class="brand">{{ item.brand }}</div>
+                            <div class="code">{{ item.code }}</div>
+                            <div class="brief">{{ item.brief }}</div>
+                            <div class="read_block">
+                                <div class="listing">{{ item.listing }}</div>
+                            </div>
+                            <div class="read_block" v-if="item.status == 1">
+                                <div class="listing">{{ item.desc }}</div>
+                            </div>
+                            <div class="write_block">
+                                <textarea rows="4" placeholder="Describe item's details if needed" v-model="item.desc" v-if="item.status == 0" ></textarea>
+                            </div>
+                        </td>
+
+                        <td>
+                            <!--
+                            <div class="read_block" v-if="!item.is_edit">
+                                {{ item.qty }}
+                            </div>
+                            <div class="write_block" v-if="item.is_edit">
+                                <input type="text" v-model="item.qty">
+                            </div>
+                            -->
+
+                            <div class="read_block" v-if="item.status == 1">
+                                {{ item.receive_date }}
+                                <br>
+                                {{ item.qty }}
+                            </div>
+                            <div class="write_block" v-if="item.status == 0">
+                                <input type="date" v-model="item.receive_date">
+                                <input type="number" min="0" v-model="item.qty" placeholder="Qty">
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="read_block" v-if="item.status == 1">
+                                {{ item.which_pool }}
+                                <a :href="'project02?p=' + item.project_id" target="_blank" v-if="item.which_pool == 'Project Pool'"><div>{{ item.project_name }}</div></a>
+                            </div>
+                            <div class="write_block" v-if="item.status == 0" @change="changePool()">
+                                <select v-model="item.which_pool">
+                                    <option value="Project Pool">Project Pool</option>
+                                    <option value="Stock Pool">Stock Pool</option>
+                                </select>
+
+                                <select v-model="item.project_id" v-show="item.which_pool == 'Project Pool'" @change="changeProjectName(item, $event)" >
+                                    <option v-for="(prj, idx) in projects" :value="prj.id">{{ prj.project_name }}</option>
+                                </select>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="read_block" v-if="item.status == 1">
+                                {{ item.location }}
+                            </div>
+                            <div class="write_block" v-if="item.status == 0">
+                                <select v-model="item.location">
+                                    <option value="Caloocan">Caloocan</option>
+                                    <option value="Makati">Makati</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="read_block" v-if="item.status == 1">
+                                {{ item.as_sample }}
+                            </div>
+                            <div class="write_block" v-if="item.status == 0">
+                                <select v-model="item.as_sample">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <a class="btn small" @click="remove_item(item.id)" v-if="item.status == 0">Delete</a>
+                            <a class="btn small green" @click="register(item)" v-if="item.status == 0">Register</a>
+                            <a class="btn small green" @click="barcode_printing(received_items.id, item.id)" v-if="item.status == 1">Label</a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+                <hr>
+
+                <div class="btnbox">
+                    <a class="btn small" @click="close_warehouse()">Cancel</a>
+                    <a class="btn small green" @click="save_encode()">Save</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<!-- Warehouse in Charge 人員用來 列印或註銷 Barcode 的彈出視窗 -->
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true" id="modal_barcode_printing">
+
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 1200px;">
+
+        <div class="modal-content" style="height: calc( 100vh - 3.75rem); overflow-y: auto;">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="myLargeModalLabel">Label Printing</h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btn_close" @click="close_barcode_printing()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="block">
+                    <div class="list_function">
+                    <!-- 分頁功能 -->
+                    <!-- 分頁 -->
+                        <div class="pagenation">
+                            <a class="prev" :disabled="barcode_page == 1" @click="pre_page_barcode(); get_barcode_records(received_items.id, item_id);">Prev 10</a>
+
+                            <a class="page" v-for="pg in barcode_pages_10" @click="barcode_page=pg; get_barcode_records(received_items.id, item_id);" v-bind:style="[pg == barcode_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
+
+                            <a class="next" :disabled="barcode_page == barcode_pages.length" @click="nex_page_barcode(); get_barcode_records(received_items.id, item_id);">Next 10</a>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="barcode_list">
+                    <thead>
+                    <tr>
+                        <th><i class="micons">view_list</i></th>
+                        <th>Barcode</th>
+                        <th>Image</th>
+                        <th>Description</th>
+                        <th>Inventory Pool</th>
+                        <th>Location</th>
+                        <th>Sample</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr v-for="(item, index) in displayBarcodeItems">
+                        <td><input type="checkbox" class="alone" :value="item.id" :true-value="1" v-model:checked="item.is_checked"></td>
+                        <td>
+                            {{ item.barcode }}
+                        </td>
+                        <td class="pic">
+                            <div class="read_block">
+                                <img :src="item.pic" v-if="item.pic != ''">
+                            </div>
+                        </td>
+
+                        <td>
+                        <div class="id">ID: <a class="hyperlink" :href="'product_display_code?id=' + item.product_id + '&v1=' + item.v1 + '&v2=' + item.v2 + '&v3=' + item.v3 + '&v4=' + item.v4" target="_blank">{{ item.product_id }}</a></div>
+                            <div class="brand">{{ item.brand }}</div>
+                            <div class="code">{{ item.code }}</div>
+                            <div class="brief">{{ item.brief }}</div>
+                            <div class="read_block">
+                                <div class="listing">{{ item.listing }} {{ item.desc }}</div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="read_block">
+                                {{ item.which_pool }}
+                                <a class="hyperlink block" :href="'project02?p=' + item.project_id" target="_blank" v-if="item.which_pool == 'Project Pool'">{{ item.project_name }}</a>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="read_block">
+                                {{ item.location }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="read_block">
+                                {{ item.as_sample }}
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+                <div class="block">
+                    <div class="list_function">
+                    <!-- 分頁功能 -->
+                    <!-- 分頁 -->
+                        <div class="pagenation">
+                            <a class="prev" :disabled="barcode_page == 1" @click="pre_page_barcode(); get_barcode_records(received_items.id, item_id);">Prev 10</a>
+
+                            <a class="page" v-for="pg in barcode_pages_10" @click="barcode_page=pg; get_barcode_records(received_items.id, item_id);" v-bind:style="[pg == barcode_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
+
+                            <a class="next" :disabled="barcode_page == barcode_pages.length" @click="nex_page_barcode(); get_barcode_records(received_items.id, item_id);">Next 10</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <div class="btnbox">
+                    <a class="btn small" @click="close_barcode_printing()">Cancel</a>
+                    <a class="btn small" @click="void_barcode_selected()">Void Barcode</a>
+                    <a class="btn small green" @click="print_barcode()">Print Label</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 
 
 </div>

@@ -185,6 +185,22 @@ var app = new Vue({
               _this.id = id;
               
               break;
+
+            case "v1":
+              _this.v1 = decodeURI(tmp[1]);
+              break;
+
+            case "v2":
+              _this.v2 = decodeURI(tmp[1]);
+              break;
+
+            case "v3":
+              _this.v3 = decodeURI(tmp[1]);
+              break;
+
+            case "v4":
+              _this.v4 = decodeURI(tmp[1]);
+              break;
    
             default:
               console.log(`Too many args`);
