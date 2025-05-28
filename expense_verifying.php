@@ -343,7 +343,7 @@ $(function(){
 
                             <li style="margin-top: 15px;"><b>Method to Return Money</b></li>
                             <li>
-                                <select style="width:100%" v-model="">
+                                <select style="width:100%" v-model="method_of_return">
                                     <option value="Cash">Cash</option>
                                     <option value="DigiBanker">DigiBanker</option>
                                     <option value="GCash">GCash</option>
