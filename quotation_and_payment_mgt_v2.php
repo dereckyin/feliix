@@ -338,6 +338,14 @@ $(function(){
             height: 30px;
         }
 
+        .modal-content .block .formbox dd input[type="text"] {
+            border: 1px solid #707070;
+            padding: 1px 3px;
+            font-size: 14px;
+            height: 30px;
+        }
+
+
         .modal-content .block .formbox dd input[type="date"] {
             border: 1px solid #707070;
             padding: 1px 3px;
