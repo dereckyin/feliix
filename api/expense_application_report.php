@@ -132,6 +132,7 @@ switch ($method) {
                         pm.amount_verified,
                         pm.total_amount_liquidate,
                         pm.amount_of_return,
+                        pm.method_of_return,
                         pm.rtype,
                         pm.dept_name
                 from apply_for_petty pm 
@@ -684,6 +685,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
         $total_amount_liquidate = "";
         $amount_of_return = "";
+        $method_of_return = "";
         $apply_for_petty_liquidate = [];
 
         $amount_liquidated = 0;
@@ -745,6 +747,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
             $total_amount_liquidate = $row['total_amount_liquidate'];
             $amount_of_return = $row['amount_of_return'];
+            $method_of_return = $row['method_of_return'];
 
             $combine_liquidate = [];
             if($amount_liquidated == null)
@@ -817,6 +820,7 @@ while($row = $stmt_cnt->fetch(PDO::FETCH_ASSOC)) {
 
                 "total_amount_liquidate" => $total_amount_liquidate,
                 "amount_of_return" => $amount_of_return,
+                "method_of_return" => $method_of_return,
                 "apply_for_petty_liquidate" => $combine_liquidate,
 
                 "checked_date" => $checked_date,

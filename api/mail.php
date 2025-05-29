@@ -7736,7 +7736,10 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
     $_list = explode(",", $access);
     foreach($_list as &$c_list)
     {
-        $notifior = GetAccessNotifiers($c_list, $serial_name);
+        if($action == 'approval')
+            $notifior = GetAccessNotifiersAccess($c_list, $serial_name, 'access3');
+        else
+            $notifior = GetAccessNotifiers($c_list, $serial_name);
         foreach($notifior as &$list)
         {
             if($action == 'finish_notes')
@@ -8429,7 +8432,11 @@ function mockup_notification($name, $access,  $access_cc, $project_name, $serial
     $_list = explode(",", $access);
     foreach($_list as &$c_list)
     {
-        $notifior = GetAccessNotifiers($c_list, $serial_name);
+        if($action == 'approval')
+            $notifior = GetAccessNotifiersAccess($c_list, $serial_name, 'access3');
+        else
+            $notifior = GetAccessNotifiers($c_list, $serial_name);
+
         foreach($notifior as &$list)
         {
             $receiver .= $list["username"] . ", ";
@@ -9680,7 +9687,11 @@ function order_type_notification($name, $access,  $access_cc, $project_name, $se
     $_list = explode(",", $access);
     foreach($_list as &$c_list)
     {
-        $notifior = GetAccessNotifiers($c_list, $serial_name);
+        if($action == 'approval')
+            $notifior = GetAccessNotifiersAccess($c_list, $serial_name, 'access3');
+        else
+            $notifior = GetAccessNotifiers($c_list, $serial_name);
+
         foreach($notifior as &$list)
         {
             $receiver .= $list["username"] . ", ";
@@ -10173,7 +10184,12 @@ function order_sample_notification($name, $access,  $access_cc, $project_name, $
     $_list = explode(",", $access);
     foreach($_list as &$c_list)
     {
-        $notifior = GetAccessNotifiers($c_list, $serial_name);
+        
+        if($action == 'approval')
+            $notifior = GetAccessNotifiersAccess($c_list, $serial_name, 'access3');
+        else
+            $notifior = GetAccessNotifiers($c_list, $serial_name);
+
         foreach($notifior as &$list)
         {
             $receiver .= $list["username"] . ", ";
@@ -15872,6 +15888,69 @@ function GetAccessNotifiers($field, $order_type){
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $merged_results[] = $row;
     }
+
+    return $merged_results;
+
+}
+
+
+function GetAccessNotifiersAccess($field, $order_type, $access){
+    $field = trim($field);
+    $username = "";
+    $database = new Database();
+    $db = $database->getConnection();
+
+    // split field by comma
+    $fields = explode(",", $field);
+    $merged_results = array();
+
+    foreach($fields as &$f)
+    {
+        $f = trim($f);
+
+        $query = "SELECT ". $f . " FROM access_control ";
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $username = $row[$f];
+        }
+
+        // splite usernames and implode with quotes
+        $usernames = explode(",", $username);
+        $username = implode("','", $usernames);
+
+        if($username == '')
+        return [];
+        
+        $sql = "
+            SELECT username, email, department 
+            FROM user
+            left join user_department ud on user.apartment_id = ud.id
+            WHERE username IN('" . $username . "') and user.status = 1";
+
+        // get first character from order type
+        $department = substr($order_type, 0, 1);
+
+        
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            if($row['department'] == 'Lighting' && $department == 'O' && $f == $access)
+            {
+                continue;
+            }
+
+            if($row['department'] == 'Office' && $department == 'L' && $f == $access)
+            {
+                continue;
+            }
+            $merged_results[] = $row;
+        }
+    }
+
+    
 
     return $merged_results;
 

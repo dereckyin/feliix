@@ -65,6 +65,7 @@ $sql = "SELECT  pm.id,
         pm.remark_liquidated,
         pm.total_amount_liquidate,
         pm.amount_of_return,
+        pm.method_of_return,
                         pm.rtype,
                         pm.dept_name
 from apply_for_petty pm 
@@ -107,6 +108,7 @@ $liquidate_items = [];
 
 $total_amount_liquidate = "";
         $amount_of_return = "";
+        $method_of_return = "";
         $apply_for_petty_liquidate = [];
 
 $amount_liquidated = 0;
@@ -159,6 +161,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
     $total_amount_liquidate = $row['total_amount_liquidate'];
     $amount_of_return = $row['amount_of_return'];
+    $method_of_return = $row['method_of_return'];
 
     $combine_liquidate = [];
     if($amount_liquidated == null)
@@ -385,6 +388,11 @@ $table4->addCell(7500, ['borderSize' => 6])->addText(number_format($amount_liqui
 $table4->addRow();
 $table4->addCell(3000, ['borderSize' => 6])->addText("Amount of Return Money", ['bold' => false], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
 $table4->addCell(7500, ['borderSize' => 6])->addText(number_format($amount_of_return, 2), ['bold' => false], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+
+
+$table4->addRow();
+$table4->addCell(3000, ['borderSize' => 6])->addText("Amount of Return Money", ['bold' => false], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
+$table4->addCell(7500, ['borderSize' => 6])->addText($method_of_return, ['bold' => false], ['align' => \PhpOffice\PhpWord\Style\Cell::VALIGN_CENTER]);
 
 
 $table4->addRow();

@@ -23,6 +23,7 @@ $items_to_delete = (isset($_POST['items_to_delete']) ?  $_POST['items_to_delete'
 $items_array = json_decode($items_to_delete,true);
 
 $amount_of_return = (isset($_POST['amount_of_return']) ?  $_POST['amount_of_return'] : "");
+$method_of_return = (isset($_POST['method_of_return']) ?  $_POST['method_of_return'] : "");
 $total_amount_liquidate = (isset($_POST['total_amount_liquidate']) ?  $_POST['total_amount_liquidate'] : "");
 $petty = (isset($_POST['items']) ?  $_POST['items'] : "[]");
 $petty_array = json_decode($petty,true);
@@ -200,7 +201,8 @@ if (!isset($jwt)) {
                   `remark_liquidated` =  :remark_liquidated,
 
                     `total_amount_liquidate` =  :total_amount_liquidate,
-                    `amount_of_return` =  :amount_of_return
+                    `amount_of_return` =  :amount_of_return,
+                    `method_of_return` =  :method_of_return
 
                    where id = :id ";
 
@@ -217,6 +219,7 @@ if (!isset($jwt)) {
 
             $stmt->bindParam(':total_amount_liquidate', $total_amount_liquidate);
             $stmt->bindParam(':amount_of_return', $amount_of_return);
+            $stmt->bindParam(':method_of_return', $method_of_return);
 
             $remark = '';
         } elseif ($crud == "Verifier Verified") {
@@ -224,7 +227,8 @@ if (!isset($jwt)) {
                    SET
                   `status` =  :status,
                   `updated_at` = now(),
-                  `amount_verified` =  :amount_verified
+                  `amount_verified` =  :amount_verified,
+                  `method_of_return` =  :method_of_return
                    where id = :id ";
 
             // prepare the query
@@ -234,6 +238,7 @@ if (!isset($jwt)) {
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':status', GetAction($crud));
             $stmt->bindParam(':amount_verified', $amount);
+            $stmt->bindParam(':method_of_return', $method_of_return);
         } else {
             $query = "update apply_for_petty
                    SET
