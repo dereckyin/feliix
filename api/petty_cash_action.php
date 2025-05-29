@@ -227,7 +227,8 @@ if (!isset($jwt)) {
                    SET
                   `status` =  :status,
                   `updated_at` = now(),
-                  `amount_verified` =  :amount_verified
+                  `amount_verified` =  :amount_verified,
+                  `method_of_return` =  :method_of_return
                    where id = :id ";
 
             // prepare the query
@@ -237,6 +238,7 @@ if (!isset($jwt)) {
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':status', GetAction($crud));
             $stmt->bindParam(':amount_verified', $amount);
+            $stmt->bindParam(':method_of_return', $method_of_return);
         } else {
             $query = "update apply_for_petty
                    SET

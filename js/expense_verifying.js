@@ -220,6 +220,7 @@ var app = new Vue({
       form_Data.append("crud", "Verifier Verified");
       form_Data.append("id", id);
       form_Data.append("amount", this.actual_amount.replaceAll(',', ''));
+      form_Data.append("method_of_return", this.method_of_return);
    
       for( var i = 0; i < this.$refs.file.files.length; i++ ){
         let file = this.$refs.file.files[i];
@@ -447,6 +448,7 @@ var app = new Vue({
         return;
       }
       
+        this.method_of_return = this.record.method_of_return;
         this.reject_reason = "";
         this.view_detail = true;
       
