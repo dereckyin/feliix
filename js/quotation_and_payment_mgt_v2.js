@@ -74,6 +74,10 @@ var app = new Vue({
     prof_canSub: true,
     prof_remark: "",
     payment_type: "",
+
+    payment_method_1: "",
+    payment_method_other: "",
+
     prof_fileArray: [],
 
     quote_canSub: true,
@@ -2019,6 +2023,8 @@ var app = new Vue({
     prof_clear() {
       this.prof_remark = "";
       this.payment_type = "";
+      this.payment_method_1 = "";
+      this.payment_method_other = "";
       this.prof_fileArray = [];
       this.$refs.prof_file.value = "";
 
@@ -2060,10 +2066,15 @@ var app = new Vue({
       var form_Data = new FormData();
       var token = localStorage.getItem("token");
 
+      if(this.payment_method_1 != 'Other')
+        this.payment_method_other = "";
+
       form_Data.append("jwt", token);
       form_Data.append("pid", this.proof_id);
       form_Data.append("remark", this.prof_remark.trim());
       form_Data.append("kind", this.payment_type.trim());
+      form_Data.append("payment_method_1", this.payment_method_1.trim());
+      form_Data.append("payment_method_other", this.payment_method_other.trim());
 
       for (var i = 0; i < this.prof_fileArray.length; i++) {
         let file = this.prof_fileArray[i];

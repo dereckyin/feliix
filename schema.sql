@@ -5923,3 +5923,9 @@ ADD COLUMN receive_id bigint(20)  DEFAULT 0;
 -- 20250526 method to return
 ALTER TABLE apply_for_petty
 ADD COLUMN  `method_of_return` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '';
+
+-- 20250529
+ALTER TABLE project_proof
+ADD COLUMN `payment_method_1` varchar(64) DEFAULT '';
+ALTER TABLE project_proof
+ADD COLUMN `payment_method_other` varchar(256) DEFAULT '';

@@ -1059,6 +1059,8 @@ function GetPayment($project_id, $db){
             pm.amount,
             pm.invoice,
             pm.detail,
+            pm.payment_method_1,
+            pm.payment_method_other,
             pm.status checked,
             pm.checked_id,
             pm.checked_at
@@ -1085,6 +1087,8 @@ function GetPayment($project_id, $db){
         $amount = $row['amount'];
         $invoice = $row['invoice'];
         $detail = $row['detail'];
+        $payment_method_1 = $row['payment_method_1'];
+        $payment_method_other = $row['payment_method_other'];
         $checked = $row['checked'];
         $checked_id = $row['checked_id'];
         $checked_at = $row['checked_at'];
@@ -1119,6 +1123,8 @@ function GetPayment($project_id, $db){
             "amount" => $amount,
             "invoice" => $invoice,
             "detail" => $detail,
+            "payment_method_1" => $payment_method_1,
+            "payment_method_other" => $payment_method_other,
             "checked" => $checked,
             "checked_id" => $checked_id,
             "checked_at" => $checked_at,
