@@ -16,6 +16,7 @@ var app = new Vue({
 
     proof_remark: "",
     reject_reason: "",
+    method_of_return: "",
 
     actual_amount: "",
 
