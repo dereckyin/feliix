@@ -7736,7 +7736,10 @@ function order_notification($name, $access,  $access_cc, $project_name, $serial_
     $_list = explode(",", $access);
     foreach($_list as &$c_list)
     {
-        $notifior = GetAccessNotifiers($c_list, $serial_name);
+        if($action == 'approval')
+            $notifior = GetAccessNotifiersAccess($c_list, $serial_name, 'access3');
+        else
+            $notifior = GetAccessNotifiers($c_list, $serial_name);
         foreach($notifior as &$list)
         {
             if($action == 'finish_notes')
@@ -15877,6 +15880,62 @@ function GetAccessNotifiers($field, $order_type){
 
 }
 
+
+function GetAccessNotifiersAccess($field, $order_type, $access){
+    $field = trim($field);
+    $username = "";
+    $database = new Database();
+    $db = $database->getConnection();
+
+    $query = "SELECT ". $field . " FROM access_control ";
+    $stmt = $db->prepare( $query );
+    $stmt->execute();
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $username = $row[$field];
+    }
+
+    // splite usernames and implode with quotes
+    $usernames = explode(",", $username);
+    $username = implode("','", $usernames);
+
+    if($username == '')
+     return [];
+    
+    $sql = "
+        SELECT username, email, department 
+        FROM user
+        left join user_department ud on user.apartment_id = ud.id
+        WHERE username IN('" . $username . "') and user.status = 1";
+
+    // get first character from order type
+    $department = substr($order_type, 0, 1);
+
+    if($field == $access)
+    {
+        if($department == 'O')
+        {
+            $sql = $sql . " and department = 'Office'";
+        }
+
+        if($department == 'L')
+        {
+            $sql = $sql . " and department = 'Lighting'";
+        }
+    }
+
+    $merged_results = array();
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $merged_results[] = $row;
+    }
+
+    return $merged_results;
+
+}
+
 function GetProjectCategoryByStageId($id)
 {
 
@@ -16938,24 +16997,24 @@ function _rawurlencode($string) {
 
 function SetupMail($mail, $conf)
 {
-    $mail->SMTPDebug  = 0;
-    $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = "ssl";
-    $mail->Port       = 465;
-    $mail->SMTPKeepAlive = true;
-    $mail->Host       = $conf::$mail_host;
-    $mail->Username   = $conf::$mail_username;
-    $mail->Password   = $conf::$mail_password;
-
-
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
-    // $mail->SMTPSecure = "tls";
-    // $mail->Port       = 587;
+    // $mail->SMTPSecure = "ssl";
+    // $mail->Port       = 465;
     // $mail->SMTPKeepAlive = true;
-    // $mail->Host       = 'smtp.ethereal.email';
-    // $mail->Username   = 'jermey.wilkinson@ethereal.email';
-    // $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
+    // $mail->Host       = $conf::$mail_host;
+    // $mail->Username   = $conf::$mail_username;
+    // $mail->Password   = $conf::$mail_password;
+
+
+    $mail->SMTPDebug  = 0;
+    $mail->SMTPAuth   = true;
+    $mail->SMTPSecure = "tls";
+    $mail->Port       = 587;
+    $mail->SMTPKeepAlive = true;
+    $mail->Host       = 'smtp.ethereal.email';
+    $mail->Username   = 'jermey.wilkinson@ethereal.email';
+    $mail->Password   = 'zXX3N6QwJ5AYZUjbKe';
 
     // $mail->SMTPDebug  = 0;
     // $mail->SMTPAuth   = true;
