@@ -2061,6 +2061,16 @@ var app = new Vue({
         return;
       }
 
+      if(this.payment_method_1 == 'Other' && this.payment_method_other.trim() == "")
+      {
+        Swal.fire({
+          text: "Please Specify Method of Payment!!",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
       _this.submit = true;
 
       var form_Data = new FormData();
