@@ -853,7 +853,7 @@ header( 'location:index' );
             font-size: 23px;
             font-weight: 500;
             background-color: rgba(7, 220, 237, 0.5);
-            z-index: 999;
+            z-index: 1100;
         }
 
         .modal{

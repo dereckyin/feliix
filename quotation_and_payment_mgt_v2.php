@@ -338,6 +338,14 @@ $(function(){
             height: 30px;
         }
 
+        .modal-content .block .formbox dd input[type="text"] {
+            border: 1px solid #707070;
+            padding: 1px 3px;
+            font-size: 14px;
+            height: 30px;
+        }
+
+
         .modal-content .block .formbox dd input[type="date"] {
             border: 1px solid #707070;
             padding: 1px 3px;
@@ -660,7 +668,6 @@ $(function(){
             color: var(--fth04);
         }
 
-f
     </style>
 
 
@@ -1253,6 +1260,22 @@ f
                                         <option value="2">2307</option>
                                     </select>
                                 </dd>
+
+                                <dt class="head">Method:</dt>
+                                <dd>
+                                    <select v-model="payment_method_1" @change="payment_method_other = ''">
+                                        <option value=""></option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Check">Check</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="GCash">GCash</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+
+                                    <input type="text" id="" placeholder="Please Specify ..." style="width: 100%; margin-top: 5px;" v-model="payment_method_other" v-show="payment_method_1 == 'Other'">
+                                </dd>
+
                                 <dt class="head">Remarks:</dt>
                                 <dd><textarea name="" id="" v-model="prof_remark"></textarea></dd>
                                 <dd style="display: flex; justify-content: flex_start;">
@@ -1331,7 +1354,7 @@ f
                                 <ul class="head">
                                     <li><i class="micons">view_list</i></li>
                                     <li>Type</li>
-                                    <li>Remarks</li>
+                                    <li>Method / Remarks</li>
                                     <li>Proof</li>
                                     <li>Uploader</li>
                                     <li>Status</li>
@@ -1341,7 +1364,7 @@ f
                                 <ul v-for='(receive_record, index) in displayedPayment'>
                                     <li><input type="checkbox" name="payment_id" class="alone black" :value="receive_record.id"></li>
                                     <li>{{ (receive_record.kind == 0) ? "Down Payment" : ((receive_record.kind == 1) ? "Full Payment" : "2307") }}</li>
-                                    <li>{{ receive_record.remark }}</li>
+                                    <li>{{ receive_record.payment_method_other != '' ? 'Other: ' +  receive_record.payment_method_other : receive_record.payment_method_1 }}<br>{{ receive_record.remark }}</li>
                                     <li class="display_file">
                                         <span v-for="item in receive_record.items" style="display: block;" v-if="view_proof || (item.username.toLowerCase() == username.toLowerCase())">
                                             <a :href="baseURL + item.bucket + '\\' + item.gcp_name" target="_blank" class="attch">•{{item.filename}}</a>

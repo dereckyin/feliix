@@ -53,6 +53,8 @@ if (!isset($jwt)) {
         $pid = (isset($_POST['pid']) ?  $_POST['pid'] : 0);
         $remark = (isset($_POST['remark']) ?  $_POST['remark'] : '');
         $kind = (isset($_POST['kind']) ?  $_POST['kind'] : 0);
+        $payment_method_1 = (isset($_POST['payment_method_1']) ?  $_POST['payment_method_1'] : '');
+        $payment_method_other = (isset($_POST['payment_method_other']) ?  $_POST['payment_method_other'] : '');
 
         $batch_id = 1;
         $query = "select coalesce(max(batch_id) + 1, 1) cnt from project_proof";
@@ -70,6 +72,8 @@ if (!isset($jwt)) {
                     remark = :remark,
                     batch_id = :batch_id,
                     kind = :kind,
+                    payment_method_1 = :payment_method_1,
+                    payment_method_other = :payment_method_other,
                     create_id = :create_id,
                     created_at = now()";
     
@@ -81,6 +85,8 @@ if (!isset($jwt)) {
         $stmt->bindParam(':remark', $remark);
         $stmt->bindParam(':batch_id', $batch_id);
         $stmt->bindParam(':kind', $kind);
+        $stmt->bindParam(':payment_method_1', $payment_method_1);
+        $stmt->bindParam(':payment_method_other', $payment_method_other);
         $stmt->bindParam(':create_id', $user_id);
 
         $last_id = 0;
