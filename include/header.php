@@ -173,12 +173,12 @@ try {
         // QOUTE AND PAYMENT Management
         if(trim(strtoupper($department)) == 'SALES')
         {
-            if(trim(strtoupper($position)) == 'SALES COORDINATOR'
+            if(trim(strtoupper($position)) == 'CUSTOMER VALUE COORDINATOR'
             || trim(strtoupper($position)) == 'JR. ACCOUNT EXECUTIVE'
-            || trim(strtoupper($position)) == 'ACCOUNT EXECUTIVE'
-            || trim(strtoupper($position)) == 'SR. ACCOUNT EXECUTIVE'
-            || trim(strtoupper($position)) == 'ASSISTANT SALES MANAGER'
-            || trim(strtoupper($position)) == 'SALES MANAGER')
+            || trim(strtoupper($position)) == 'CUSTOMER VALUE SUPERVISOR'
+            || trim(strtoupper($position)) == 'SENIOR CUSTOMER VALUE SUPERVISOR'
+            || trim(strtoupper($position)) == 'ASSISTANT CUSTOMER VALUE DIRECTOR'
+            || trim(strtoupper($position)) == 'CUSTOMER VALUE DIRECTOR')
             {
                 $access6 = true;
             }
@@ -186,7 +186,7 @@ try {
 
         if(trim(strtoupper($department)) == 'LIGHTING')
         {
-            if(trim(strtoupper($position)) == 'ASSISTANT LIGHTING MANAGER' || trim(strtoupper($position)) == 'LIGHTING MANAGER')
+            if(trim(strtoupper($position)) == 'ASSISTANT LIGHTING VALUE CREATION DIRECTOR' || trim(strtoupper($position)) == 'LIGHTING VALUE CREATION DIRECTOR')
             {
                 $access6 = true;
             }
@@ -194,7 +194,7 @@ try {
 
         if(trim(strtoupper($department)) == 'OFFICE')
         {
-            if(trim(strtoupper($position)) == 'ASSISTANT OFFICE SYSTEMS MANAGER' || trim(strtoupper($position)) == 'OFFICE SYSTEMS MANAGER')
+            if(trim(strtoupper($position)) == 'ASSISTANT OFFICE SPACE VALUE CREATION DIRECTOR' || trim(strtoupper($position)) == 'OFFICE SPACE VALUE CREATION DIRECTOR')
             {
                 $access6 = true;
             }
@@ -272,7 +272,7 @@ try {
         // access12 is for Employee Data Sheet
         // access13 is for Employee Basic Info
         if(trim(strtoupper($position)) == 'OWNER' || trim(strtoupper($position)) == 'MANAGING DIRECTOR' || trim(strtoupper($position)) == 'CHIEF ADVISOR' || trim(strtoupper($position)) == 'VALUE DELIVERY MANAGER'
-        || trim(strtoupper($position)) == 'SALES MANAGER' || trim(strtoupper($position)) == 'LIGHTING MANAGER' || trim(strtoupper($position)) == 'OFFICE SYSTEMS MANAGER'
+        || trim(strtoupper($position)) == 'CUSTOMER VALUE DIRECTOR' || trim(strtoupper($position)) == 'LIGHTING VALUE CREATION DIRECTOR' || trim(strtoupper($position)) == 'OFFICE SPACE VALUE CREATION DIRECTOR'
         || trim(strtoupper($position)) == 'ENGINEERING MANAGER' || trim(strtoupper($position)) == 'OPERATIONS MANAGER')
         {
                 $access12 = true;

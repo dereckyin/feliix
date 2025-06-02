@@ -844,7 +844,7 @@ var app = new Vue({
       )
         can_save = true;
 
-      if (this.my_title == "ENGINEERING MANAGER" || this.my_title == "LIGHTING MANAGER" || this.my_title == "OFFICE SYSTEMS MANAGER") {     // 20220321 for service leave
+      if (this.my_title == "ENGINEERING MANAGER" || this.my_title == "LIGHTING VALUE CREATION DIRECTOR" || this.my_title == "OFFICE SPACE VALUE CREATION DIRECTOR") {     // 20220321 for service leave
         if (
           _creator_title != "MANAGING DIRECTOR" &&
           _creator_title != "CHIEF ADVISOR"
@@ -852,12 +852,12 @@ var app = new Vue({
           can_save = true;
       }
 
-      if (this.my_title == "ASSISTANT ENGINEERING MANAGER" || "ASSISTANT LIGHTING MANAGER") { // 20220321 for service leave
+      if (this.my_title == "ASSISTANT ENGINEERING MANAGER" || "ASSISTANT LIGHTING VALUE CREATION DIRECTOR") { // 20220321 for service leave
         if (
           _creator_title != "MANAGING DIRECTOR" &&
           _creator_title != "CHIEF ADVISOR" &&
           _creator_title != "ENGINEERING MANAGER" &&
-          _creator_title != "LIGHTING MANAGER" &&
+          _creator_title != "LIGHTING VALUE CREATION DIRECTOR" &&
           _creator_title != "OFFICE SYSTEMS MANAGERR"
         )
           can_save = true;

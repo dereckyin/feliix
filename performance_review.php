@@ -39,8 +39,8 @@ header( 'location:index' );
             // QOUTE AND PAYMENT Management
             if(trim(strtoupper($department)) == 'SALES')
             {
-                if(trim(strtoupper($position)) == 'ASSISTANT SALES MANAGER'
-                || trim(strtoupper($position)) == 'SALES MANAGER')
+                if(trim(strtoupper($position)) == 'ASSISTANT CUSTOMER VALUE DIRECTOR'
+                || trim(strtoupper($position)) == 'CUSTOMER VALUE DIRECTOR')
                 {
                     $access6 = true;
                 }
@@ -48,12 +48,12 @@ header( 'location:index' );
 
             if(trim(strtoupper($department)) == 'LIGHTING')
             {
-                if(trim(strtoupper($position)) == 'LIGHTING MANAGER')
+                if(trim(strtoupper($position)) == 'LIGHTING VALUE CREATION DIRECTOR')
                 {
                     $access6 = true;
                 }
 
-                if(trim(strtoupper($position)) == 'ASSISTANT LIGHTING MANAGER')
+                if(trim(strtoupper($position)) == 'ASSISTANT LIGHTING VALUE CREATION DIRECTOR')
                 {
                     $access6 = true;
                 }
@@ -61,7 +61,7 @@ header( 'location:index' );
 
             if(trim(strtoupper($department)) == 'OFFICE')
             {
-                if(trim(strtoupper($position)) == 'OFFICE SYSTEMS MANAGER')
+                if(trim(strtoupper($position)) == 'OFFICE SPACE VALUE CREATION DIRECTOR')
                 {
                     $access6 = true;
                 }

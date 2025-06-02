@@ -62,7 +62,7 @@ $access5 = true;
 // QOUTE AND PAYMENT Management
 if(trim(strtoupper($department)) == 'SALES')
 {
-if(trim(strtoupper($position)) == 'SALES MANAGER')
+if(trim(strtoupper($position)) == 'CUSTOMER VALUE DIRECTOR')
 {
 $access5 = true;
 }
@@ -70,7 +70,7 @@ $access5 = true;
 
 if(trim(strtoupper($department)) == 'LIGHTING')
 {
-if(trim(strtoupper($position)) == 'LIGHTING MANAGER')
+if(trim(strtoupper($position)) == 'LIGHTING VALUE CREATION DIRECTOR')
 {
 $access6 = true;
 }
@@ -78,7 +78,7 @@ $access6 = true;
 
 if(trim(strtoupper($department)) == 'OFFICE')
 {
-if(trim(strtoupper($position)) == 'OFFICE SYSTEMS MANAGER')
+if(trim(strtoupper($position)) == 'OFFICE SPACE VALUE CREATION DIRECTOR')
 {
 $access6 = true;
 }

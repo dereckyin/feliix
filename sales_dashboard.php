@@ -346,7 +346,7 @@ background-color: #94BABB;
                         <div id="filter_dialog" class="dialog d-filter"><h6>Filter Function:</h6>
                             <div class="formbox">
                                 <dl>
-                                    <dt>Account Executive</dt>
+                                    <dt>Customer Value Supervisor</dt>
                                     <dd>
                                         <select v-model="fil_creator">
                                             <option value="">All</option>
@@ -408,7 +408,7 @@ background-color: #94BABB;
                         </tr>
 
                         <tr>
-                            <th>Account Executive</th>
+                            <th>Customer Value Supervisor</th>
                             <th>Monthly Quota</th>
                             <th>Category</th>
                             <th>Project Name</th>

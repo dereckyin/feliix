@@ -97,22 +97,22 @@ CREATE TABLE IF NOT EXISTS `user_title` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='utf8mb4_unicode_ci';
 
 INSERT INTO user_title(department_id, title) VALUES(1, 'JR. ACCOUNT EXECUTIVE');
-INSERT INTO user_title(department_id, title) VALUES(1, 'ACCOUNT EXECUTIVE');
+INSERT INTO user_title(department_id, title) VALUES(1, 'CUSTOMER VALUE SUPERVISOR');
 INSERT INTO user_title(department_id, title) VALUES(1, 'ACCOUNT MANAGER');
-INSERT INTO user_title(department_id, title) VALUES(1, 'ASSISTANT SALES MANAGER');
-INSERT INTO user_title(department_id, title) VALUES(1, 'SALES MANAGER');
+INSERT INTO user_title(department_id, title) VALUES(1, 'ASSISTANT CUSTOMER VALUE DIRECTOR');
+INSERT INTO user_title(department_id, title) VALUES(1, 'CUSTOMER VALUE DIRECTOR');
 
 INSERT INTO user_title(department_id, title) VALUES(2, 'JR. LIGHTING DESIGNER');
 INSERT INTO user_title(department_id, title) VALUES(2, 'LIGHTING DESIGNER');
-INSERT INTO user_title(department_id, title) VALUES(2, 'SR. LIGHTING DESIGNER');
-INSERT INTO user_title(department_id, title) VALUES(2, 'ASSISTANT LIGHTING MANAGER');
-INSERT INTO user_title(department_id, title) VALUES(2, 'LIGHTING MANAGER');
+INSERT INTO user_title(department_id, title) VALUES(2, 'SENIOR LIGHTING VALUE CREATION SUPERVISOR');
+INSERT INTO user_title(department_id, title) VALUES(2, 'ASSISTANT LIGHTING VALUE CREATION DIRECTOR');
+INSERT INTO user_title(department_id, title) VALUES(2, 'LIGHTING VALUE CREATION DIRECTOR');
 
 INSERT INTO user_title(department_id, title) VALUES(3, 'JR. OFFICE SYSTEMS DESIGNER');
 INSERT INTO user_title(department_id, title) VALUES(3, 'OFFICE SYSTEMS DESIGNER');
-INSERT INTO user_title(department_id, title) VALUES(3, 'SR. OFFICE SYSTEMS DESIGNER');
-INSERT INTO user_title(department_id, title) VALUES(3, 'ASSISTANT OFFICE SYSTEMS MANAGER');
-INSERT INTO user_title(department_id, title) VALUES(3, 'OFFICE SYSTEMS MANAGER');
+INSERT INTO user_title(department_id, title) VALUES(3, 'SENIOR OFFICE SPACE VALUE CREATION SUPERVISOR');
+INSERT INTO user_title(department_id, title) VALUES(3, 'ASSISTANT OFFICE SPACE VALUE CREATION DIRECTOR');
+INSERT INTO user_title(department_id, title) VALUES(3, 'OFFICE SPACE VALUE CREATION DIRECTOR');
 
 INSERT INTO user_title(department_id, title) VALUES(4, 'JR. GRAPHIC DESIGNER');
 INSERT INTO user_title(department_id, title) VALUES(4, 'GRAPHIC DESIGNER');
@@ -5929,3 +5929,32 @@ ALTER TABLE project_proof
 ADD COLUMN `payment_method_1` varchar(64) DEFAULT '';
 ALTER TABLE project_proof
 ADD COLUMN `payment_method_other` varchar(256) DEFAULT '';
+
+-- 20250602 user title update
+update user_title set title = 'Customer Value Director' where title = 'Sales Manager';
+
+insert into user_title (department_id, title) values(1, 'Deputy Customer Value Director');
+insert into user_title (department_id, title) values(1, 'Senior Customer Value Manager');
+insert into user_title (department_id, title) values(1, 'Customer Value Manager');
+
+update user_title set title = 'Assistant Customer Value Manager' where title = 'Assistant Sales Manager';
+update user_title set title = 'Senior Customer Value Supervisor' where title = 'Sr. Account Executive';
+update user_title set title = 'Customer Value Supervisor' where title = 'Account Executive';
+update user_title set title = 'Customer Value Coordinator' where title = 'Sales Coordinator';
+
+update user_title set title = 'Lighting Value Creation Director' where title = 'Lighting Manager';
+insert into user_title (department_id, title) values(2, 'Deputy Lighting Value Creation Director');
+insert into user_title (department_id, title) values(2, 'Senior Lighting Value Creation Manager');
+insert into user_title (department_id, title) values(2, 'Lighting Value Creation Manager');
+update user_title set title = 'Assistant Lighting Value Creation Manager' where title = 'Assistant Lighting Manager';
+update user_title set title = 'Senior Lighting Value Creation Supervisor' where title = 'Sr. Lighting Designer';
+update user_title set title = 'Lighting Value Creation Supervisor' where title = 'Lighting Designer';
+
+update user_title set title = 'Office Space Value Creation Director' where title = 'Office Systems Manager';
+insert into user_title (department_id, title) values(3, 'Deputy Office Space Value Creation Director');
+insert into user_title (department_id, title) values(3, 'Senior Office Space Value Creation Manager');
+insert into user_title (department_id, title) values(3, 'Office Space Value Creation Manager');
+update user_title set title = 'Assistant Office Space Value Creation Manager' where title = 'Assistant Office Systems Manager';
+update user_title set title = 'Senior Office Space Value Creation Supervisor' where title = 'Sr. Office Systems Designer';
+update user_title set title = 'Office Space Value Creation Supervisor' where title = 'Office Systems Designer';
+

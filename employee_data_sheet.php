@@ -33,8 +33,8 @@ try {
     $access6 = false;
 
     if (trim(strtoupper($position)) == 'OWNER' || trim(strtoupper($position)) == 'MANAGING DIRECTOR' || trim(strtoupper($position)) == 'CHIEF ADVISOR'
-        || trim(strtoupper($position)) == 'VALUE DELIVERY MANAGER' || trim(strtoupper($position)) == 'SALES MANAGER'
-        || trim(strtoupper($position)) == 'LIGHTING MANAGER' || trim(strtoupper($position)) == 'OFFICE SYSTEMS MANAGER' || trim(strtoupper($position)) == 'ENGINEERING MANAGER'
+        || trim(strtoupper($position)) == 'VALUE DELIVERY MANAGER' || trim(strtoupper($position)) == 'CUSTOMER VALUE DIRECTOR'
+        || trim(strtoupper($position)) == 'LIGHTING VALUE CREATION DIRECTOR' || trim(strtoupper($position)) == 'OFFICE SPACE VALUE CREATION DIRECTOR' || trim(strtoupper($position)) == 'ENGINEERING MANAGER'
         || trim(strtoupper($position)) == 'OPERATIONS MANAGER')
     {
         $access6 = true;

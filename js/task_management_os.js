@@ -848,7 +848,7 @@ var app = new Vue({
       )
         can_save = true;
 
-      if (this.my_title == "OFFICE SYSTEMS MANAGER") {
+      if (this.my_title == "OFFICE SPACE VALUE CREATION DIRECTOR") {
         if (
           _creator_title != "MANAGING DIRECTOR" &&
           _creator_title != "CHIEF ADVISOR"
@@ -856,11 +856,11 @@ var app = new Vue({
           can_save = true;
       }
 
-      if (this.my_title == "ASSISTANT OFFICE SYSTEMS MANAGER") {
+      if (this.my_title == "ASSISTANT OFFICE SPACE VALUE CREATION DIRECTOR") {
         if (
           _creator_title != "MANAGING DIRECTOR" &&
           _creator_title != "CHIEF ADVISOR" &&
-          _creator_title != "OFFICE SYSTEMS MANAGER"
+          _creator_title != "OFFICE SPACE VALUE CREATION DIRECTOR"
         )
           can_save = true;
       }
