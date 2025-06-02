@@ -1147,7 +1147,7 @@ $(function(){
                                 <ul v-for='(receive_record, index) in displayedPayment'>
                                     <li><input type="checkbox" name="payment_id" class="alone black" :value="receive_record.id"></li>
                                     <li>{{ (receive_record.kind == 0) ? "Down Payment" : ((receive_record.kind == 1) ? "Full Payment" : "2307") }}</li>
-                                    <li>{{ receive_record.payment_method_other != '' ? receive_record.payment_method_other : receive_record.payment_method_1 }}<br>{{ receive_record.remark }}</li>
+                                    <li>{{ receive_record.payment_method_other != '' ? 'Other: ' + receive_record.payment_method_other : receive_record.payment_method_1 }}<br>{{ receive_record.remark }}</li>
                                     <li class="display_file">
                                         <span v-for="item in receive_record.items" style="display: block;" v-if="view_proof || (item.username.toLowerCase() == username.toLowerCase())">
                                             <a :href="baseURL + item.bucket + '\\' + item.gcp_name" target="_blank" class="attch">•{{item.filename}}</a>
