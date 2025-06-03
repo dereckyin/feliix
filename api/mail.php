@@ -768,7 +768,7 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
     if($kind == 2)
         $payment = "2307";
 
-    //Sales Manager 和 所有的 Admin Team 成員
+    //Customer Value Director 和 所有的 Admin Team 成員
     $mail->AddAddress('manilynne@feliix.com', 'Manilynne Nicol');
     $mail->AddAddress('gina@feliix.com', 'Gina Donato');
     $mail->AddAddress('kayla@feliix.com', 'Marie Kayla Patricia Dequina');
@@ -9091,7 +9091,7 @@ function inquiry_notification($name, $access,  $access_cc, $project_name, $seria
     $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
     $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
 
-    //每一個 inquiry 都應該 cc 給 Sales Manager 
+    //每一個 inquiry 都應該 cc 給 Customer Value Director 
     $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
 
     $mail->Subject = "";
@@ -9258,7 +9258,7 @@ function inquiry_notification_reply($name, $access,  $access_cc, $project_name, 
     $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
     $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
 
-    //每一個 inquiry 都應該 cc 給 Sales Manager 
+    //每一個 inquiry 都應該 cc 給 Customer Value Director 
     $mail->AddCC("manilynne@feliix.com", "Manilynne Nicol");
 
     $mail->Subject = "";
@@ -12041,7 +12041,7 @@ function order_sample_delievery_notification($name, $access,  $access_cc, $proje
         //     }
         // }
 
-        // $notifior = GetChargeNotifiersByTitle('Sales Manager');
+        // $notifior = GetChargeNotifiersByTitle('Customer Value Director');
         // foreach($notifior as &$list)
         // {
         //     $mail->AddCC($list["email"], $list["username"]);
@@ -12286,7 +12286,7 @@ function order_stock_delievery_notification($name, $access,  $access_cc, $projec
         // }
         // $receiver = rtrim($receiver, ", ");
 
-        // $notifior = GetChargeNotifiersByTitle('Sales Manager');
+        // $notifior = GetChargeNotifiersByTitle('Customer Value Director');
         // foreach($notifior as &$list)
         // {
         //     $mail->AddAddress($list["email"], $list["username"]);
@@ -15678,8 +15678,8 @@ function GetProject01NotifiersByCatagory($catagory)
             LEFT JOIN user_title ut
             ON u.title_id = ut.id 
             WHERE title IN(
-                'Sales Manager',
-                'Office Systems Manager',
+                'Customer Value Director',
+                'Office Space Value Creation Director',
                 'Office Systems Assistant Manager',
                 'Operations Manager',
                 'Managing Director')  and u.status = 1";
@@ -15692,8 +15692,8 @@ function GetProject01NotifiersByCatagory($catagory)
             LEFT JOIN user_title ut
             ON u.title_id = ut.id 
             WHERE title IN(
-                'Sales Manager',
-                'Lighting Manager',
+                'Customer Value Director',
+                'Lighting Value Creation Director',
                 'Lighting Assistant Manager',
                 'Operations Manager',
                 'Managing Director')  and u.status = 1";
@@ -15724,7 +15724,7 @@ function GetProjectNotifiersByCatagory($catagory)
             LEFT JOIN user_title ut
             ON u.title_id = ut.id 
             WHERE title IN(
-                'Office Systems Manager',
+                'Office Space Value Creation Director',
                 'Managing Director') and u.status = 1";
     }
     else
@@ -15735,7 +15735,7 @@ function GetProjectNotifiersByCatagory($catagory)
             LEFT JOIN user_title ut
             ON u.title_id = ut.id 
             WHERE title IN(
-                'Lighting Manager',
+                'Lighting Value Creation Director',
                 'Managing Director') and u.status = 1";
     }
 
@@ -15790,13 +15790,13 @@ function GetProjectNotifiers()
         ON u.title_id = ut.id 
         WHERE title IN(
             'Jr. Account Executive',
-            'Account Executive',
-            'Sr. Account Executive',
-            'Assistant Sales Manager',
-            'Sales Manager',
-            'Lighting Manager',
+            'Customer Value Supervisor',
+            'Senior Customer Value Supervisor',
+            'Assistant Customer Value Director',
+            'Customer Value Director',
+            'Lighting Value Creation Director',
             'Lighting Assistant Manager',
-            'Office Systems Manager',
+            'Office Space Value Creation Director',
             'Office Systems Assistant Manager',
             'Operations Manager',
             'Managing Director') and u.status = 1";
@@ -16573,7 +16573,7 @@ function GetDataSheetChecker($requestor)
     $notifior = array();
 
 
-    if($my_title == "Sales Manager")
+    if($my_title == "Customer Value Director")
     {
         foreach($merged_results as &$list)
         {
@@ -16586,7 +16586,7 @@ function GetDataSheetChecker($requestor)
         return $notifior;
     }
 
-    if($my_title == "Lighting Manager")
+    if($my_title == "Lighting Value Creation Director")
     {
         foreach($merged_results as &$list)
         {
@@ -16599,7 +16599,7 @@ function GetDataSheetChecker($requestor)
         return $notifior;
     }
 
-    if($my_title == "Office Systems Manager")
+    if($my_title == "Office Space Value Creation Director")
     {
         foreach($merged_results as &$list)
         {
@@ -16669,7 +16669,7 @@ function GetDataSheetChecker($requestor)
     {
         foreach($merged_results as &$list)
         {
-            if($list["title"] == "Sales Manager")
+            if($list["title"] == "Customer Value Director")
             {
                 $notifior[] = $list;
             }
@@ -16683,7 +16683,7 @@ function GetDataSheetChecker($requestor)
     {
         foreach($merged_results as &$list)
         {
-            if($list["title"] == "Lighting Manager")
+            if($list["title"] == "Lighting Value Creation Director")
             {
                 $notifior[] = $list;
             }
@@ -16696,7 +16696,7 @@ function GetDataSheetChecker($requestor)
     {
         foreach($merged_results as &$list)
         {
-            if($list["title"] == "Office Systems Manager")
+            if($list["title"] == "Office Space Value Creation Director")
             {
                 $notifior[] = $list;
             }

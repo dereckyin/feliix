@@ -849,7 +849,7 @@ var app = new Vue({
       )
         can_save = true;
 
-      if (this.my_title == "LIGHTING MANAGER") {
+      if (this.my_title == "LIGHTING VALUE CREATION DIRECTOR") {
         if (
           _creator_title != "MANAGING DIRECTOR" &&
           _creator_title != "CHIEF ADVISOR"
@@ -857,11 +857,11 @@ var app = new Vue({
           can_save = true;
       }
 
-      if (this.my_title == "ASSISTANT LIGHTING MANAGER") {
+      if (this.my_title == "ASSISTANT LIGHTING VALUE CREATION DIRECTOR") {
         if (
           _creator_title != "MANAGING DIRECTOR" &&
           _creator_title != "CHIEF ADVISOR" &&
-          _creator_title != "LIGHTING MANAGER"
+          _creator_title != "LIGHTING VALUE CREATION DIRECTOR"
         )
           can_save = true;
       }

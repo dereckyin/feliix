@@ -2492,7 +2492,7 @@ catch (Exception $e) {
 
                 <ul>
                     <li>
-                        Account Executive
+                        Customer Value Supervisor
                     </li>
                     <li>
                         <select class="form-control one_whole" v-model="account_executive" :disabled="!is_Editing">
@@ -3124,20 +3124,20 @@ if ($test_manager[2]  == "1") {
             }
 
 
-            if (level === "LIGHTING MANAGER" || level === "OPERATIONS MANAGER") {
-                if (creator_level === "ASSISTANT LIGHTING MANAGER" || creator_level === "SR. LIGHTING DESIGNER" || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE") {
+            if (level === "LIGHTING VALUE CREATION DIRECTOR" || level === "OPERATIONS MANAGER") {
+                if (creator_level === "ASSISTANT LIGHTING VALUE CREATION DIRECTOR" || creator_level === "SENIOR LIGHTING VALUE CREATION SUPERVISOR" || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR") {
                     can_close = true;
                 }
             }
 
-            if (level === "ASSISTANT LIGHTING MANAGER") {
-                if (creator_level === "SR. LIGHTING DESIGNER" || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE") {
+            if (level === "ASSISTANT LIGHTING VALUE CREATION DIRECTOR") {
+                if (creator_level === "SENIOR LIGHTING VALUE CREATION SUPERVISOR" || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR") {
                     can_close = true;
                 }
             }
 
-            if (level === "SR. LIGHTING DESIGNER") {
-                if (creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE") {
+            if (level === "SENIOR LIGHTING VALUE CREATION SUPERVISOR") {
+                if (creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR") {
                     can_close = true;
                 }
             }
@@ -3151,20 +3151,20 @@ if ($test_manager[2]  == "1") {
                     can_close = true;
             }
 
-            if (level === "OFFICE SYSTEMS MANAGER" || level === "OPERATIONS MANAGER") {
-                if (creator_level === "ASSISTANT OFFICE SYSTEMS MANAGER" || creator_level === "SR. OFFICE SYSTEMS DESIGNER" || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE") {
+            if (level === "OFFICE SPACE VALUE CREATION DIRECTOR" || level === "OPERATIONS MANAGER") {
+                if (creator_level === "ASSISTANT OFFICE SPACE VALUE CREATION DIRECTOR" || creator_level === "SENIOR OFFICE SPACE VALUE CREATION SUPERVISOR" || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR") {
                     can_close = true;
                 }
             }
 
-            if (level === "ASSISTANT OFFICE SYSTEMS MANAGER") {
-                if (creator_level === "SR. OFFICE SYSTEMS DESIGNER" || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE") {
+            if (level === "ASSISTANT OFFICE SPACE VALUE CREATION DIRECTOR") {
+                if (creator_level === "SENIOR OFFICE SPACE VALUE CREATION SUPERVISOR" || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR") {
                     can_close = true;
                 }
             }
 
-            if (level === "SR. OFFICE SYSTEMS DESIGNER") {
-                if (creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE") {
+            if (level === "SENIOR OFFICE SPACE VALUE CREATION SUPERVISOR") {
+                if (creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR") {
                     can_close = true;
                 }
             }
@@ -3213,25 +3213,25 @@ if ($test_manager[2]  == "1") {
             }
                 
 
-            if(level === "LIGHTING MANAGER" || level === "OPERATIONS MANAGER" )
+            if(level === "LIGHTING VALUE CREATION DIRECTOR" || level === "OPERATIONS MANAGER" )
             {
-                if(creator_level === "ASSISTANT LIGHTING MANAGER" || creator_level === "SR. LIGHTING DESIGNER"  || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE")
+                if(creator_level === "ASSISTANT LIGHTING VALUE CREATION DIRECTOR" || creator_level === "SENIOR LIGHTING VALUE CREATION SUPERVISOR"  || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR")
                 {
                     can_close = true;
                 }
             }
 
-            if(level === "ASSISTANT LIGHTING MANAGER" )
+            if(level === "ASSISTANT LIGHTING VALUE CREATION DIRECTOR" )
             {
-                if(creator_level === "SR. LIGHTING DESIGNER"  || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE")
+                if(creator_level === "SENIOR LIGHTING VALUE CREATION SUPERVISOR"  || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR")
                 {
                     can_close = true;
                 }
             }
 
-            if(level === "SR. LIGHTING DESIGNER" )
+            if(level === "SENIOR LIGHTING VALUE CREATION SUPERVISOR" )
             {
-                if(creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE")
+                if(creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR")
                 {
                     can_close = true;
                 }
@@ -3250,25 +3250,25 @@ if ($test_manager[2]  == "1") {
                     can_close = true;
             }
 
-            if(level === "OFFICE SYSTEMS MANAGER" || level === "OPERATIONS MANAGER" )
+            if(level === "OFFICE SPACE VALUE CREATION DIRECTOR" || level === "OPERATIONS MANAGER" )
             {
-                if(creator_level === "ASSISTANT OFFICE SYSTEMS MANAGER" || creator_level === "SR. OFFICE SYSTEMS DESIGNER"  || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE")
+                if(creator_level === "ASSISTANT OFFICE SPACE VALUE CREATION DIRECTOR" || creator_level === "SENIOR OFFICE SPACE VALUE CREATION SUPERVISOR"  || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR")
                 {
                     can_close = true;
                 }
             }
 
-            if(level === "ASSISTANT OFFICE SYSTEMS MANAGER" )
+            if(level === "ASSISTANT OFFICE SPACE VALUE CREATION DIRECTOR" )
             {
-                if(creator_level === "SR. OFFICE SYSTEMS DESIGNER"  || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE")
+                if(creator_level === "SENIOR OFFICE SPACE VALUE CREATION SUPERVISOR"  || creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR")
                 {
                     can_close = true;
                 }
             }
 
-            if(level === "SR. OFFICE SYSTEMS DESIGNER" )
+            if(level === "SENIOR OFFICE SPACE VALUE CREATION SUPERVISOR" )
             {
-                if(creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "ACCOUNT EXECUTIVE" || creator_level === "SR. ACCOUNT EXECUTIVE")
+                if(creator_level === "JR. ACCOUNT EXECUTIVE" || creator_level === "CUSTOMER VALUE SUPERVISOR" || creator_level === "SENIOR CUSTOMER VALUE SUPERVISOR")
                 {
                     can_close = true;
                 }
@@ -3287,7 +3287,7 @@ if ($test_manager[2]  == "1") {
                     can_close = true;
             }
 
-            if(level === "SALES MANAGER" || level === "STORE MANAGER")
+            if(level === "CUSTOMER VALUE DIRECTOR" || level === "STORE MANAGER")
             {
                 if(creator_level !== "MANAGING DIRECTOR" && creator_level != "CHIEF ADVISOR")
                 {
@@ -3295,27 +3295,27 @@ if ($test_manager[2]  == "1") {
                 }
             }
 
-            if(level === "ASSISTANT SALES MANAGER" || level === "ASSISTANT STORE MANAGER")
+            if(level === "ASSISTANT CUSTOMER VALUE DIRECTOR" || level === "ASSISTANT STORE MANAGER")
             {
                 if(creator_level !== "MANAGING DIRECTOR" && 
                    creator_level != "CHIEF ADVISOR" && 
-                   creator_level != "SALES MANAGER" && 
+                   creator_level != "CUSTOMER VALUE DIRECTOR" && 
                    creator_level != "STORE MANAGER")
                 {
                     can_close = true;
                 }
             }
 
-            if(level === "SR. ACCOUNT EXECUTIVE" || level === "ACCOUNT EXECUTIVE" || level === "JR. ACCOUNT EXECUTIVE" || level === "SR. STORE SALES EXECUTIVE" || level === "STORE SALES EXECUTIVE")
+            if(level === "SENIOR CUSTOMER VALUE SUPERVISOR" || level === "CUSTOMER VALUE SUPERVISOR" || level === "JR. ACCOUNT EXECUTIVE" || level === "SR. STORE SALES EXECUTIVE" || level === "STORE SALES EXECUTIVE")
             {
                 if(creator_level !== "MANAGING DIRECTOR" && 
                    creator_level != "CHIEF ADVISOR" && 
-                   creator_level != "SALES MANAGER" && 
+                   creator_level != "CUSTOMER VALUE DIRECTOR" && 
                    creator_level != "STORE MANAGER" && 
-                   creator_level != "ASSISTANT SALES MANAGER" && 
+                   creator_level != "ASSISTANT CUSTOMER VALUE DIRECTOR" && 
                    creator_level != "ASSISTANT STORE MANAGER" && 
-                   creator_level != "SR. ACCOUNT EXECUTIVE" && 
-                   creator_level != "ACCOUNT EXECUTIVE" && 
+                   creator_level != "SENIOR CUSTOMER VALUE SUPERVISOR" && 
+                   creator_level != "CUSTOMER VALUE SUPERVISOR" && 
                    creator_level != "JR. ACCOUNT EXECUTIVE" && 
                    creator_level != "SR. STORE SALES EXECUTIVE" && 
                    creator_level != "STORE SALES EXECUTIVE")

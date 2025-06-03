@@ -345,21 +345,21 @@ var app = new Vue({
                     permission = false;
             }
 
-            if(this.title == "Sales Manager")
+            if(this.title == "Customer Value Director")
             {
-                if(data_title == "Sales Manager")
+                if(data_title == "Customer Value Director")
                     permission = false;
             }
         
-            if(this.title == "Lighting Manager")
+            if(this.title == "Lighting Value Creation Director")
             {
-                if(data_title == "Lighting Manager")
+                if(data_title == "Lighting Value Creation Director")
                     permission = false;
             }
 
-            if(this.title == "Office Systems Manager")
+            if(this.title == "Office Space Value Creation Director")
             {
-                if(data_title == "Office Systems Manager")
+                if(data_title == "Office Space Value Creation Director")
                     permission = false;
             }
 

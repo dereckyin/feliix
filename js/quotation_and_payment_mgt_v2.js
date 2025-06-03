@@ -1329,28 +1329,28 @@ var app = new Vue({
 
       if(this.department.trim().toUpperCase() == 'SALES')
       { 
-        if(this.title.trim().toUpperCase() == 'ASSISTANT SALES MANAGER')
+        if(this.title.trim().toUpperCase() == 'ASSISTANT CUSTOMER VALUE DIRECTOR')
           can_save = true;
 
-        if(this.title.trim().toUpperCase() == 'SALES MANAGER')
+        if(this.title.trim().toUpperCase() == 'CUSTOMER VALUE DIRECTOR')
           can_save = true;
       }
 
       if(this.department.trim().toUpperCase() == 'LIGHTING')
       { 
-        if(this.title.trim().toUpperCase() == 'ASSISTANT LIGHTING MANAGER')
+        if(this.title.trim().toUpperCase() == 'ASSISTANT LIGHTING VALUE CREATION DIRECTOR')
           can_save = true;
 
-        if(this.title.trim().toUpperCase() == 'LIGHTING MANAGER')
+        if(this.title.trim().toUpperCase() == 'LIGHTING VALUE CREATION DIRECTOR')
           can_save = true;
       }
 
       if(this.department.trim().toUpperCase() == 'OFFICE')
       { 
-        if(this.title.trim().toUpperCase() == 'ASSISTANT OFFICE SYSTEMS MANAGER')
+        if(this.title.trim().toUpperCase() == 'ASSISTANT OFFICE SPACE VALUE CREATION DIRECTOR')
           can_save = true;
 
-        if(this.title.trim().toUpperCase() == 'OFFICE SYSTEMS MANAGER')
+        if(this.title.trim().toUpperCase() == 'OFFICE SPACE VALUE CREATION DIRECTOR')
           can_save = true;
       }
 
@@ -1410,28 +1410,28 @@ var app = new Vue({
 
       if(this.department.trim().toUpperCase() == 'SALES')
       { 
-        if(this.title.trim().toUpperCase() == 'ASSISTANT SALES MANAGER')
+        if(this.title.trim().toUpperCase() == 'ASSISTANT CUSTOMER VALUE DIRECTOR')
           can_save = true;
 
-        if(this.title.trim().toUpperCase() == 'SALES MANAGER')
+        if(this.title.trim().toUpperCase() == 'CUSTOMER VALUE DIRECTOR')
           can_save = true;
       }
 
       if(this.department.trim().toUpperCase() == 'LIGHTING')
       { 
-        if(this.title.trim().toUpperCase() == 'ASSISTANT LIGHTING MANAGER')
+        if(this.title.trim().toUpperCase() == 'ASSISTANT LIGHTING VALUE CREATION DIRECTOR')
           can_save = true;
 
-        if(this.title.trim().toUpperCase() == 'LIGHTING MANAGER')
+        if(this.title.trim().toUpperCase() == 'LIGHTING VALUE CREATION DIRECTOR')
           can_save = true;
       }
 
       if(this.department.trim().toUpperCase() == 'OFFICE')
       { 
-        if(this.title.trim().toUpperCase() == 'ASSISTANT OFFICE SYSTEMS MANAGER')
+        if(this.title.trim().toUpperCase() == 'ASSISTANT OFFICE SPACE VALUE CREATION DIRECTOR')
           can_save = true;
 
-        if(this.title.trim().toUpperCase() == 'OFFICE SYSTEMS MANAGER')
+        if(this.title.trim().toUpperCase() == 'OFFICE SPACE VALUE CREATION DIRECTOR')
           can_save = true;
       }
 

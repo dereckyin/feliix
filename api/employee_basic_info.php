@@ -35,7 +35,7 @@ else
               $apartment_id = "";
           }
 
-          if($position == 'Sales Manager' || $position == 'Lighting Manager' || $position == 'Office Systems Manager' || $position == 'Engineering Manager') {
+          if($position == 'Customer Value Director' || $position == 'Lighting Value Creation Director' || $position == 'Office Space Value Creation Director' || $position == 'Engineering Manager') {
               $apartment_id = $decoded->data->apartment_id;
           }
 
