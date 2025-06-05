@@ -3379,6 +3379,19 @@ var app = new Vue({
       },
 
       async register(item) {
+
+        if(item.which_pool == "Stock Pool")
+          item.project_id = 0;
+
+        if(item.qty.trim() == "" || item.qty.trim() == "0" || item.receive_date == "")
+        {
+          Swal.fire({
+            text: "Please enter the required fields",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
         
         if(item.qty > item.incoming_qty)
         {
