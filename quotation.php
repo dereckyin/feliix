@@ -1285,7 +1285,7 @@ header( 'location:index' );
 
 
         .tb_format1 tbody tr.desc2 td div.picbox img {
-            max-height: 120px;
+            max-height: 180px;
             max-width: 220px;
             margin: 0 5px;
         }

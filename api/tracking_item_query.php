@@ -536,5 +536,18 @@ function getStatus($status)
     }
 }
 
+function getProjectName($db, $id)
+{
+    $project_name = "";
+    $query = "SELECT project_name FROM project_main WHERE id = :id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($row) {
+        $project_name = $row['project_name'];
+    }
+    return $project_name;
+}
 
 ?>
