@@ -3447,12 +3447,24 @@ var app = new Vue({
       async register(item) {
 
         if(item.which_pool == "Stock Pool")
+        {
           item.project_id = 0;
+        }
+
+        if(item.project_id == 0 && item.which_pool == "Project Pool")
+        {
+          Swal.fire({
+            text: "Please input the required fields: Received Date, Qty, Inventory Pool, Location and Sample.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
 
         if(item.qty.trim() == "" || item.qty.trim() == "0" || item.receive_date == "")
         {
           Swal.fire({
-            text: "Please enter the required fields",
+            text: "Please input the required fields: Received Date, Qty, Inventory Pool, Location and Sample.",
             icon: "warning",
             confirmButtonText: "OK",
           });
