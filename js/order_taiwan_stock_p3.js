@@ -3379,6 +3379,31 @@ var app = new Vue({
       },
 
       async register(item) {
+
+        if(item.which_pool == "Stock Pool")
+        {
+          item.project_id = 0;
+        }
+
+        if(item.project_id == 0 && item.which_pool == "Project Pool")
+        {
+          Swal.fire({
+            text: "Please input the required fields: Received Date, Qty, Inventory Pool, Location and Sample.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+
+        if(item.qty.trim() == "" || item.qty.trim() == "0" || item.receive_date == "")
+        {
+          Swal.fire({
+            text: "Please input the required fields: Received Date, Qty, Inventory Pool, Location and Sample.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
         
         if(item.qty > item.incoming_qty)
         {
@@ -3486,6 +3511,8 @@ var app = new Vue({
         form_Data.append("jwt", token);
         form_Data.append("received_items", JSON.stringify(this.received_items));
         form_Data.append("od_id", this.id);
+        form_Data.append("serial_name", this.serial_name);
+        form_Data.append("od_name", this.od_name);
         form_Data.append("index", index);
 
         for(var i=0; i<this.received_items.items.length; i++)

@@ -64,6 +64,8 @@ switch ($method) {
         $jwt = (isset($_POST['jwt']) ?  $_POST['jwt'] : null);
         $received_items = (isset($_POST['received_items']) ?  $_POST['received_items'] : []);
         $od_id = (isset($_POST['od_id']) ?  $_POST['od_id'] : 0);
+        $serial_name = (isset($_POST['serial_name']) ?  $_POST['serial_name'] : "");
+        $od_name = (isset($_POST['od_name']) ?  $_POST['od_name'] : "");
         $index = (isset($_POST['index']) ?  $_POST['index'] : 0);
 
         $block_array = json_decode($received_items,true);
@@ -111,7 +113,7 @@ switch ($method) {
                     UpdateProductQty($od_id, $item, $db);
                     $last_id = insertOrderReceiveItem($db, $od_id, $_id, $item, $user_id);
                     $barcode_list = insertOrderTrackingItem($db, $item, $last_id, $user_id);
-                    insertInventoryChangeHistory($db, $last_id, $barcode_list, $item, $user_id);
+                    insertInventoryChangeHistory($db, $last_id, $barcode_list, $item, $user_id, $serial_name, $od_name, $_id);
                 }
             }
 
@@ -417,7 +419,21 @@ function insertOrderTrackingItem($db, $item, $item_id, $user_id) {
     
     $query = "select barcode from order_tracking_item where barcode like :barcode order by barcode desc limit 1";
     $stmt = $db->prepare($query);
-    $barcode = date("ymd") . str_pad($item['pid'], 5, '0', STR_PAD_LEFT);
+    $str_date = $item['receive_date'];
+    // remove year 20 from date head
+    if($str_date != '')
+    {
+        $str_date = substr($str_date, 2);
+    }
+    
+    if($str_date == '')
+    {
+        $str_date = date("ymd");
+    }
+    $str_date = str_replace('-', '', $str_date);
+    $str_date = str_replace('/', '', $str_date);
+
+    $barcode = $str_date . str_pad($item['pid'], 5, '0', STR_PAD_LEFT);
     $barcode = $barcode . '%';
     $stmt->bindParam(':barcode', $barcode);
     $stmt->execute();
@@ -439,7 +455,7 @@ function insertOrderTrackingItem($db, $item, $item_id, $user_id) {
 
     for($i = 0; $i < $inc; $i++)
     {
-        $barcode = date("ymd") . str_pad($item['pid'], 5, '0', STR_PAD_LEFT) . str_pad($qty_base + $i + 1, 5, '0', STR_PAD_LEFT);
+        $barcode = $str_date . str_pad($item['pid'], 5, '0', STR_PAD_LEFT) . str_pad($qty_base + $i + 1, 5, '0', STR_PAD_LEFT);
         $query = "INSERT INTO order_tracking_item
         SET
             item_id = :item_id,
@@ -481,25 +497,51 @@ function insertOrderTrackingItem($db, $item, $item_id, $user_id) {
 }
 
 
-function insertInventoryChangeHistory($db, $last_id, $barcode_list, $item, $user_id) {
+function insertInventoryChangeHistory($db, $last_id, $barcode_list, $item, $user_id, $od_serial, $od_name, $related_item) {
     $query = "INSERT INTO inventory_change_history
             SET
                 item_id = :item_id,
                 reason = :reason,
+                pid = :pid,
+                v1 = :v1,
+                v2 = :v2,
+                v3 = :v3,
+                v4 = :v4,
+                related_record = :related_record,
+                releated_item = :releated_item,
                 affected_qty = :affected_qty,
                 affected_sign = 'Add',
                 affected_tracking = :affected_tracking,
+                influence_pool = :which_pool,
+                new_related_project = :project_id,
+                influence_location = :location,
+                influence_sample = :as_sample,
                 status = 0,
                 create_id = :create_id,
                 created_at = now();";
 
     $barcode_json = json_encode($barcode_list);
+    $related_record = $od_serial . " " . $od_name;
+
+    $reason = "Add item into inventory because of receiving item from order";
 
     $stmt = $db->prepare($query);
     $stmt->bindParam(':item_id', $last_id);
-    $stmt->bindParam(':reason', $item['remark']);
+    $stmt->bindParam(':reason', $reason);
+    $stmt->bindParam(':pid', $item['pid']);
+    $stmt->bindParam(':v1', $item['v1']);
+    $stmt->bindParam(':v2', $item['v2']);
+    $stmt->bindParam(':v3', $item['v3']);
+    $stmt->bindParam(':v4', $item['v4']);
+    $stmt->bindParam(':related_record', $related_record);
+    $stmt->bindParam(':releated_item', $related_item);
     $stmt->bindParam(':affected_qty', $item['qty']);
     $stmt->bindParam(':affected_tracking', $barcode_json);
+    $stmt->bindParam(':which_pool', $item['which_pool']);
+    $stmt->bindParam(':project_id', $item['project_id']);
+    $stmt->bindParam(':location', $item['location']);
+    $stmt->bindParam(':as_sample', $item['as_sample']);
+
     $stmt->bindParam(':create_id', $user_id);
 
     try {
