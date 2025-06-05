@@ -419,7 +419,13 @@ function insertOrderTrackingItem($db, $item, $item_id, $user_id) {
     
     $query = "select barcode from order_tracking_item where barcode like :barcode order by barcode desc limit 1";
     $stmt = $db->prepare($query);
-    $str_date = $item['received_date'];
+    $str_date = $item['receive_date'];
+    // remove year 20 from date head
+    if($str_date != '')
+    {
+        $str_date = substr($str_date, 2);
+    }
+    
     if($str_date == '')
     {
         $str_date = date("ymd");
