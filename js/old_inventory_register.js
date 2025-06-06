@@ -163,6 +163,11 @@ var app = new Vue({
 
       // version II new parameters
 
+      // items 
+      item_page: 1, 
+      item_pages: [],
+      item_pages_10: [],
+      item_total: 0,
       
 
         // paging
@@ -474,7 +479,6 @@ var app = new Vue({
         page: 0,
         pages_10:0,
 
-        received_items: {},
         projects: [],
         is_encode_warehouse: false,
         project_id : 0,
@@ -576,6 +580,11 @@ var app = new Vue({
         this.setPagesQuo();
         return this.paginateQuo(this.receive_records_quo_master);
 
+      },
+
+      received_items() {
+        this.setItemPages();
+        return this.paginateItem(this.receive_records);
       },
 
       displayBarcodeItems() {
@@ -1950,6 +1959,41 @@ var app = new Vue({
       to = this.product_page_quo * this.perPage;
 
         return  this.receive_records_quo_master.slice(from, to);
+      },
+
+
+      setItemPages () {
+        console.log('setItemPages');
+        this.item_pages = [];
+        let numberOfPages = Math.ceil(this.receive_records.length / this.perPage);
+
+        if(numberOfPages == 1)
+          this.item_page = 1;
+        for (let index = 1; index <= numberOfPages; index++) {
+          this.item_pages.push(index);
+        }
+
+        // this.setupChosen();
+      },
+
+      paginateItem: function (posts) {
+       
+      if (this.item_page < 1) this.item_page = 1;
+      if (this.item_page > this.item_pages.length) this.item_page = this.item_pages.length;
+
+      let tenPages = Math.floor((this.item_page - 1) / 10);
+      if(tenPages < 0)
+        tenPages = 0;
+      this.item_pages_10 = [];
+      let from = tenPages * 10;
+      let to = (tenPages + 1) * 10;
+      
+      this.item_pages_10 = this.item_pages.slice(from, to);
+
+      from = this.item_page * this.perPage - this.perPage;
+      to = this.item_page * this.perPage;
+
+        return  this.receive_records.slice(from, to);
       },
 
       getQuoMasterRecords: function(keyword) {
@@ -4009,8 +4053,11 @@ var app = new Vue({
             })
           .then(function(response) {
             console.log(response.data);
-            _this.received_items = response.data;
- 
+            _this.receive_records = response.data;
+            if(response.data.length > 0) {
+              _this.item_total = response.data[0].cnt;
+             
+            }
           })
           .catch(function(error) {
             console.log(error);
