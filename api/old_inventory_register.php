@@ -160,6 +160,7 @@ if (!isset($jwt)) {
         $project_name = "";
         $old_desc = "";
         $photo1 = "";
+        $receive_date = "";
 
         if($desc['code'] != '') 
             $code = $desc['code'];
@@ -178,6 +179,9 @@ if (!isset($jwt)) {
 
         if($desc['photo1'] != '') 
             $photo1 = $desc['photo1'];
+
+        if($desc['receive_date'] != '')
+            $receive_date = $desc['receive_date'];
      
 
         $barcodes = [];
@@ -208,6 +212,7 @@ if (!isset($jwt)) {
             "listing" => $listing,
             "project_name" => $project_name,
             "desc" => $old_desc,
+            "receive_date" => $receive_date,
             "info" => $desc,
             "barcodes" => $barcodes,
             "created_by" => $created_by,

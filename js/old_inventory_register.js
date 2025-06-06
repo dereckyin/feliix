@@ -1962,6 +1962,38 @@ var app = new Vue({
       },
 
 
+      item_pre_page: function(){
+        let tenPages = Math.floor((this.item_page - 1) / 10) + 1;
+  
+          this.item_page = parseInt(this.item_page) - 10;
+          if(this.item_page < 1)
+            this.item_page = 1;
+   
+          this.item_pages_10 = [];
+  
+          let from = tenPages * 10;
+          let to = (tenPages + 1) * 10;
+  
+          this.item_pages_10 = this.item_pages.slice(from, to);
+        
+      },
+  
+      item_nex_page: function(){
+        let tenPages = Math.floor((this.item_page - 1) / 10) + 1;
+  
+        this.item_page = parseInt(this.item_page) + 10;
+        if(this.item_page > this.item_pages.length)
+          this.item_page = this.item_pages.length;
+  
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+        let pages_10 = this.item_pages.slice(from, to);
+  
+        if(pages_10.length > 0)
+          this.item_pages_10 = pages_10;
+  
+      },
+
       setItemPages () {
         console.log('setItemPages');
         this.item_pages = [];

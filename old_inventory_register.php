@@ -91,8 +91,8 @@ header( 'location:index' );
         $(function () {
             $('header').load('include/header.php');
 
-            dialogshow($('.list_function .new_function a.filter'), $('.list_function .dialog.A'));
-            dialogshow($('.list_function .new_function a.sort'), $('.list_function .dialog.B'));
+            dialogshow($('.list_function .new_project a.filter'),$('.list_function .dialog.d-filter'));
+            dialogshow($('.list_function .new_project a.sort'),$('.list_function .dialog.d-sort'));
 
             $('.qn_page').click(function () {
                 app.close_all();
@@ -1750,12 +1750,12 @@ header( 'location:index' );
 
                 <!-- 分頁功能，下方的 tablebox 的內容要做分頁，每一頁 10 筆資料  -->
                 <div class="pagenation">
-                    <a class="prev" :disabled="item_page == 1" @click="pre_page();">Prev 10</a>
+                    <a class="prev" :disabled="item_page == 1" @click="item_pre_page();">Prev 10</a>
 
                     <a class="page" v-for="pg in item_pages_10" @click="item_page=pg;"
                        v-bind:style="[pg == item_page ? { 'background':'#1E6BA8', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                    <a class="next" :disabled="item_page == item_pages.length" @click="nex_page();">Next 10</a>
+                    <a class="next" :disabled="item_page == item_pages.length" @click="item_nex_page();">Next 10</a>
                 </div>
             </div>
 
