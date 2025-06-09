@@ -2702,7 +2702,7 @@ var app = new Vue({
               incoming_qty: incoming_qty,
             };
 
-            this.receive_records.push(item);
+            this.receive_records.unshift(item);
             alert('Add Successfully');
   app.$forceUpdate();
 
@@ -2859,7 +2859,7 @@ var app = new Vue({
             incoming_qty: incoming_qty,
           };
 
-          this.receive_records.push(item);
+          this.receive_records.unshift(item);
           alert('Add Successfully');
   app.$forceUpdate();
 
@@ -5619,6 +5619,7 @@ add_with_image_set_select_warehouse(all) {
       project_list: [],
       project_id: this.project_id,
       project_name: this.project_name,
+      product_id: this.product.id,
       desc:"",
       incoming_qty: incoming_qty,
     };
@@ -5629,7 +5630,7 @@ add_with_image_set_select_warehouse(all) {
     return;
   }
 
-  this.receive_records.push(item);
+  this.receive_records.unshift(item);
   alert('Add Successfully');
   app.$forceUpdate();
 
@@ -5773,6 +5774,7 @@ add_without_image_set_select_warehouse(all) {
       project_list: [],
       project_id: this.project_id,
       project_name: this.project_name,
+      product_id: this.product.id,
       desc:"",
       incoming_qty: incoming_qty,
     };
@@ -5783,7 +5785,7 @@ add_without_image_set_select_warehouse(all) {
     return;
   }
 
-  this.receive_records.push(item);
+  this.receive_records.unshift(item);
   alert('Add Successfully');
   app.$forceUpdate();
 
@@ -6470,11 +6472,12 @@ item = {
       project_list: [],
       project_id: this.project_id,
       project_name: this.project_name,
+      product_id: set.id,
       desc:"",
       incoming_qty: incoming_qty,
 };
 
-this.receive_records.push(item);
+this.receive_records.unshift(item);
 alert('Add Successfully');
   app.$forceUpdate();
 
@@ -6656,11 +6659,11 @@ item = {
       project_id: this.project_id,
       project_name: this.project_name,
       desc:"",
-      pid:0,
+      product_id:set.id,
       incoming_qty: incoming_qty,
   };
 
-  this.receive_records.push(item);
+  this.receive_records.unshift(item);
   alert('Add Successfully');
   app.$forceUpdate();
 
