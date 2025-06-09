@@ -162,14 +162,14 @@ if (!isset($jwt)) {
 
     if($fil_date_from != "")
     {
-        $query = $query . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') >= '" . $fil_date_from . "' ";
-        $query_cnt = $query_cnt . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') >= '" . $fil_date_from . "' ";
+        $query = $query . " and STR_TO_DATE(rec.received_date, '%Y-%m-%d') >= '" . $fil_date_from . "' ";
+        $query_cnt = $query_cnt . " and STR_TO_DATE(rec.received_date, '%Y-%m-%d') >= '" . $fil_date_from . "' ";
     }
 
     if($fil_date_to != "")
     {
-        $query = $query . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') <= '" . $fil_date_to . "' ";
-        $query_cnt = $query_cnt . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') <= '" . $fil_date_to . "' ";
+        $query = $query . " and STR_TO_DATE(rec.received_date, '%Y-%m-%d') <= '" . $fil_date_to . "' ";
+        $query_cnt = $query_cnt . " and STR_TO_DATE(rec.received_date, '%Y-%m-%d') <= '" . $fil_date_to . "' ";
     }
 
         
@@ -195,6 +195,12 @@ if (!isset($jwt)) {
                     $sOrder = "rec.project_id desc";
                 else
                     $sOrder = "rec.project_id ";
+                break;  
+            case 4:
+                if($od1 == 2)
+                    $sOrder = "Coalesce(rec.received_date, '0000-00-00') desc";
+                else
+                    $sOrder = "Coalesce(rec.received_date, '9999-99-99') ";
                 break;  
             
             default:
@@ -222,6 +228,12 @@ if (!isset($jwt)) {
                     $sOrder = ", rec.project_id desc";
                 else
                     $sOrder = ", rec.project_id ";
+                break;  
+            case 4:
+                if($od2 == 2)
+                    $sOrder .= ", Coalesce(rec.received_date, '0000-00-00') desc";
+                else
+                    $sOrder .= ", Coalesce(rec.received_date, '9999-99-99') ";
                 break;  
             
             default:

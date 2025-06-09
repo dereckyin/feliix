@@ -493,11 +493,11 @@ var app = new Vue({
 
         item_id: 0,
 
-        iq_opt1 : '',
-        iq_ord1 : '',
+        od_opt1 : '',
+        od_ord1 : '',
 
-        iq_opt2 : '',
-        iq_ord2 : '',
+        od_opt2 : '',
+        od_ord2 : '',
 
         fil_prod_id : '',
         fil_prod_code : '',
@@ -2697,6 +2697,7 @@ var app = new Vue({
               project_list: [],
               project_id: this.project_id,
               project_name: this.project_name,
+              product_id: this.product.id,
               desc:"",
               incoming_qty: incoming_qty,
             };
@@ -2852,6 +2853,7 @@ var app = new Vue({
       location: "Caloocan",
             project_list: [],
             project_id: this.project_id,
+            product_id: this.product.id,
             project_name: this.project_name,
             desc:"",
             incoming_qty: incoming_qty,
@@ -4050,7 +4052,7 @@ var app = new Vue({
           return;
         }
         
-        if(item.qty > item.incoming_qty)
+        if(parseInt(item.qty) > parseInt(item.incoming_qty))
         {
           Swal.fire({
             text: "According to the qty that you want to register, the incoming qty is not enough to deduct, please check the qty to register again.",
@@ -4063,7 +4065,6 @@ var app = new Vue({
         {
           item.status = 1;
           await this.save_encode_list(item);
-
         }
       },
 
@@ -4146,7 +4147,7 @@ var app = new Vue({
       },
 
       
-      save_encode_list(item) {
+      async save_encode_list(item)  {
 
         let _this = this;
 
@@ -4175,32 +4176,19 @@ var app = new Vue({
         //else
         //  post_url = "api/order_taiwan_p3_encode_list_update";
 
-        axios({
-          method: "post",
+        let res = await axios({
+          method: 'post',
+          url: post_url,
+          data: form_Data,
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          url: post_url,
-          data: form_Data,
-        })
-          .then(function(response) {
-            //handle success
-            // close modal
+        });
 
-            // Swal.fire({
-            //   text: response.data.message,
-            //   icon: "success",
-            //   confirmButtonText: "OK",
-            // });
-          })
-          .catch(function(error) {
-        
+        this.getRecord();
 
-            })
-            .finally(function() {
-              _this.submit = false;
+        this.submit = false;
 
-          });
       },
 
       changePool() {

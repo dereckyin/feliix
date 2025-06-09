@@ -3720,7 +3720,7 @@ var app = new Vue({
           return;
         }
         
-        if(item.qty > item.incoming_qty)
+        if(parseInt(item.qty) > parseInt(item.incoming_qty))
         {
           Swal.fire({
             text: "According to the qty that you want to register, the incoming qty is not enough to deduct, please check the qty to register again.",

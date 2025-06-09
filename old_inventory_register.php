@@ -1671,7 +1671,7 @@ header( 'location:index' );
                                 <div class="half">
                                     <dt>1st Criterion</dt>
                                     <dd>
-                                        <select v-model="iq_opt1">
+                                        <select v-model="od_opt1">
                                             <option value=""></option>
                                             <option value="1">
                                                 Created Time
@@ -1692,7 +1692,7 @@ header( 'location:index' );
                                 <div class="half">
                                     <dt></dt>
                                     <dd>
-                                        <select v-model="iq_ord1">
+                                        <select v-model="od_ord1">
                                             <option value="1">
                                                 Ascending
                                             </option>
@@ -1706,7 +1706,7 @@ header( 'location:index' );
                                 <div class="half">
                                     <dt>2nd Criterion</dt>
                                     <dd>
-                                        <select v-model="iq_opt2">
+                                        <select v-model="od_opt2">
                                             <option value=""></option>
                                             <option value="1">
                                                 Created Time
@@ -1727,7 +1727,7 @@ header( 'location:index' );
                                 <div class="half">
                                     <dt></dt>
                                     <dd>
-                                        <select v-model="iq_ord2">
+                                        <select v-model="od_ord2">
                                             <option value="1">
                                                 Ascending
                                             </option>
@@ -1821,7 +1821,7 @@ header( 'location:index' );
                             </div>
                         </td>
                         <td>
-                            <div class="id">ID: <a class="hyperlink" :href="'product_display_code?id=' + item.pid + '&v1=' + item.v1 + '&v2=' + item.v2 + '&v3=' + item.v3 + '&v4=' + item.v4" target="_blank">{{ item.pid }}</a></div>
+                            <div class="id">ID: <a class="hyperlink" :href="'product_display_code?id=' + item.product_id + '&v1=' + item.v1 + '&v2=' + item.v2 + '&v3=' + item.v3 + '&v4=' + item.v4" target="_blank">{{ item.product_id }}</a></div>
                             <div class="brand">{{ item.brand }}</div>
                             <div class="code">{{ item.code }}</div>
                             <div class="brief">{{ item.brief }}</div>

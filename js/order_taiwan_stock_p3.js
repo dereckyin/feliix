@@ -3405,7 +3405,7 @@ var app = new Vue({
           return;
         }
         
-        if(item.qty > item.incoming_qty)
+        if(parseInt(item.qty) > parseInt(item.incoming_qty))
         {
           Swal.fire({
             text: "According to the qty that you want to register, the incoming qty is not enough to deduct, please check the qty to register again.",
@@ -5488,7 +5488,7 @@ add_with_image_warehouse(all) {
         as_sample: "No",
         location: "Caloocan",
         project_list: [],
-        project_id: 0,
+        project_id: this.product.id,
         desc:"",
         incoming_qty: this.product.incoming_qty !== null ? this.product.incoming_qty : 0,
       };
@@ -5640,7 +5640,7 @@ add_without_image_warehouse(all) {
       as_sample: "No",
 location: "Caloocan",
       project_list: [],
-      project_id: 0,
+      project_id: this.product.id,
       desc:"",
       incoming_qty: this.product.incoming_qty !== null ? this.product.incoming_qty : 0,
     };
@@ -5786,7 +5786,7 @@ which_pool: "Stock Pool",
 as_sample: "No",
 location: "Caloocan",
 project_list: [],
-project_id: 0,
+project_id: this.product.id,
 desc:"",
 incoming_qty: this.product.incoming_qty !== null ? this.product.incoming_qty : 0,
 };
@@ -5936,7 +5936,7 @@ which_pool: "Stock Pool",
 as_sample: "No",
 location: "Caloocan",
 project_list: [],
-project_id: 0,
+project_id: this.product.id,
 desc:"",
 incoming_qty: this.product.incoming_qty !== null ? this.product.incoming_qty : 0,
 };
@@ -6135,7 +6135,7 @@ which_pool: "Stock Pool",
 as_sample: "No",
 location: "Caloocan",
 project_list: [],
-project_id: 0,
+project_id: set.id,
 desc:"",
 incoming_qty: set.incoming_qty !== null ? set.incoming_qty : 0,
 };
@@ -6298,6 +6298,7 @@ unit:"",
 srp:price,
 date_needed:"",
 pid: set.id,
+product_id: set.id,
 v1: all == 'all' ? '' : set.v1,
 v2: all == 'all' ? '' : set.v2,
 v3: all == 'all' ? '' : set.v3,
@@ -6316,9 +6317,9 @@ which_pool: "Stock Pool",
 as_sample: "No",
 location: "Caloocan",
 project_list: [],
-project_id: 0,
+project_id: set.id,
 desc:"",
-pid:0,
+
 incoming_qty: set.incoming_qty !== null ? set.incoming_qty : 0,
 };
 
