@@ -4040,32 +4040,44 @@ var app = new Vue({
       async register(item) {
 
         if(item.which_pool == "Stock Pool")
+        {
           item.project_id = 0;
+        }
+
+        if(item.project_id == 0 && item.which_pool == "Project Pool")
+        {
+          Swal.fire({
+            text: "Please input the required fields: Received Date, Qty, Inventory Pool, Location and Sample.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
 
         if(item.qty.trim() == "" || item.qty.trim() == "0" || item.receive_date == "")
         {
           Swal.fire({
-            text: "Please enter the required fields",
+            text: "Please input the required fields: Received Date, Qty, Inventory Pool, Location and Sample.",
             icon: "warning",
             confirmButtonText: "OK",
           });
           return;
         }
         
-        if(parseInt(item.qty) > parseInt(item.incoming_qty))
-        {
-          Swal.fire({
-            text: "According to the qty that you want to register, the incoming qty is not enough to deduct, please check the qty to register again.",
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-          return;
-        }
-        else
-        {
+        // if(parseInt(item.qty) > parseInt(item.incoming_qty))
+        // {
+        //   Swal.fire({
+        //     text: "According to the qty that you want to register, the incoming qty is not enough to deduct, please check the qty to register again.",
+        //     icon: "warning",
+        //     confirmButtonText: "OK",
+        //   });
+        //   return;
+        // }
+        // else
+        // {
           item.status = 1;
           await this.save_encode_list(item);
-        }
+        // }
       },
 
       remove_item(id) {
