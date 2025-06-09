@@ -40,6 +40,30 @@ if (!isset($jwt)) {
     $decoded = JWT::decode($jwt, $key, array('HS256'));
     $GLOBALS["user_id"] = $decoded->data->id;
 
+    $fil_tracking = (isset($_GET['tid']) ?  $_GET['tid'] : '');
+    $fil_prod_id = (isset($_GET['fpi']) ?  $_GET['fpi'] : '');
+    $fil_prod_code = (isset($_GET['fpc']) ?  $_GET['fpc'] : '');
+    $fil_prod_code = urldecode($fil_prod_code);
+    $fil_pool = (isset($_GET['fp']) ?  $_GET['fp'] : '');
+    $fil_project_related = (isset($_GET['fpr']) ?  $_GET['fpr'] : '');
+    $fil_project_related = urldecode($fil_project_related);
+    $fil_location = (isset($_GET['loc']) ?  $_GET['loc'] : '');
+    $fil_sample = (isset($_GET['sap']) ?  $_GET['sap'] : '');
+    $fil_status = (isset($_GET['fs']) ? $_GET['fs'] : '');
+    $fil_order = (isset($_GET['fo']) ? $_GET['fo'] : '');
+    $fil_date_from = (isset($_GET['fdf']) ? $_GET['fdf'] : '');
+    $fil_date_to = (isset($_GET['fdt']) ? $_GET['fdt'] : '');
+
+
+    $op1 = (isset($_GET['op1']) ?  urldecode($_GET['op1']) : '');
+    $od1 = (isset($_GET['od1']) ?  urldecode($_GET['od1']) : '');
+
+    $op2 = (isset($_GET['op2']) ?  urldecode($_GET['op2']) : '');
+    $od2 = (isset($_GET['od2']) ?  urldecode($_GET['od2']) : '');
+
+    $page = (isset($_GET['page']) ?  urldecode($_GET['page']) : "");
+    $size = (isset($_GET['size']) ?  urldecode($_GET['size']) : "");
+
     $merged_results = array();
 
     // $code = "";
@@ -66,16 +90,11 @@ if (!isset($jwt)) {
     //     $desc = $item['desc'];
     // }
 
-    $cnt = 0;
     $query_cnt = "SELECT COUNT(*) as cnt
                     FROM order_receive_item rec 
+                    LEFT JOIN product_category pc ON rec.product_id = pc.id
                     WHERE from_old = 'Y' and rec.status <> -1 ";
-    $stmt_cnt = $db->prepare($query_cnt);
 
-    $stmt_cnt->execute();
-
-    $row_cnt = $stmt_cnt->fetch(PDO::FETCH_ASSOC);
-    $cnt = $row_cnt['cnt'];
     
     $query = "SELECT rec.id,
                     rec.od_id,
@@ -99,29 +118,171 @@ if (!isset($jwt)) {
                     rec.created_at,
                     rec.updated_at
                     FROM order_receive_item rec 
+                    LEFT JOIN product_category pc ON rec.product_id = pc.id
                     LEFT JOIN user cuser ON rec.create_id = cuser.id
                     LEFT JOIN user uuser ON rec.updated_id = uuser.id
                     WHERE from_old = 'Y' and rec.status <> -1  ";
 
-    $query .= "  order by rec.created_at desc ";
+    if($fil_prod_id != "")
+    {
+        $query = $query . " and rec.product_id = '" . $fil_prod_id . "' ";
+        $query_cnt = $query_cnt . " and rec.product_id = '" . $fil_prod_id . "' ";
+    }
 
-    $query .= " LIMIT :pg, :size ";
+    if($fil_prod_code != "")
+    {
+        $query = $query . " and pc.`code` like '%" . $fil_prod_code . "%' ";
+        $query_cnt = $query_cnt . " and pc.`code` like '%" . $fil_prod_code . "%' ";
+    }
+
+    if($fil_pool != "")
+    {
+
+        $query = $query . " and rec.which_pool = '" . $fil_pool . "' ";
+        $query_cnt = $query_cnt . " and rec.which_pool = '" . $fil_pool . "' ";
+    }
+
+    if($fil_location != "")
+    {
+        $query = $query . " and rec.location = '" . $fil_location . "' ";
+        $query_cnt = $query_cnt . " and rec.location = '" . $fil_location . "' ";
+    }
+
+    if($fil_project_related != "")
+    {
+        $query = $query . " and rec.project_id = '" . $fil_project_related . "' ";
+        $query_cnt = $query_cnt . " and rec.project_id = '" . $fil_project_related . "' ";
+    }
+
+    if($fil_sample != "")
+    {
+        $query = $query . " and rec.as_sample = '" . $fil_sample . "' ";
+        $query_cnt = $query_cnt . " and rec.as_sample = '" . $fil_sample . "' ";
+    }
+
+    if($fil_date_from != "")
+    {
+        $query = $query . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') >= '" . $fil_date_from . "' ";
+        $query_cnt = $query_cnt . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') >= '" . $fil_date_from . "' ";
+    }
+
+    if($fil_date_to != "")
+    {
+        $query = $query . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') <= '" . $fil_date_to . "' ";
+        $query_cnt = $query_cnt . " and STR_TO_DATE(rec.created_at, '%Y-%m-%d') <= '" . $fil_date_to . "' ";
+    }
+
+        
+    $sOrder = "";
+    if($op1 != "" && $op1 != "0")
+    {
+        switch ($op1)
+        {
+            case 1:
+                if($od1 == 2)
+                    $sOrder = "Coalesce(rec.created_at, '0000-00-00') desc";
+                else
+                    $sOrder = "Coalesce(rec.created_at, '9999-99-99') ";
+                break;  
+            case 2:
+                if($od1 == 2)
+                    $sOrder = "Coalesce(rec.updated_at, '0000-00-00') desc";
+                else
+                    $sOrder = "Coalesce(rec.updated_at, '9999-99-99') ";
+                break;  
+            case 3:
+                if($od1 == 2)
+                    $sOrder = "rec.project_id desc";
+                else
+                    $sOrder = "rec.project_id ";
+                break;  
+            
+            default:
+        }
+    }
+
+    if($op2 != "" && $op2 != "0" && $sOrder != "")
+    {
+        switch ($op2)
+        {
+            case 1:
+                if($od2 == 2)
+                    $sOrder .= ", Coalesce(rec.created_at, '0000-00-00') desc";
+                else
+                    $sOrder .= ", Coalesce(rec.created_at, '9999-99-99') ";
+                break;  
+            case 2:
+                if($od2 == 2)
+                    $sOrder .= ", Coalesce(rec.updated_at, '0000-00-00') desc";
+                else
+                    $sOrder .= ", Coalesce(rec.updated_at, '9999-99-99') ";
+                break;  
+            case 3:
+                if($od1 == 2)
+                    $sOrder = ", rec.project_id desc";
+                else
+                    $sOrder = ", rec.project_id ";
+                break;  
+            
+            default:
+        }
+    }
+
+
+    if($op2 != "" && $op2 != "0" && $sOrder == "")
+    {
+        switch ($op2)
+        {
+            case 1:
+                if($od2 == 2)
+                    $sOrder = "tra.barcode desc";
+                else
+                    $sOrder = "tra.barcode ";
+                break;  
+            case 2:
+                if($od2 == 2)
+                    $sOrder = "Coalesce(rec.created_at, '0000-00-00') desc";
+                else
+                    $sOrder = "Coalesce(rec.created_at, '9999-99-99') ";
+                break;  
+            
+            default:
+        }
+    }
+
+    if($sOrder != "")
+        $query = $query . " order by  " . $sOrder;
+    else
+        $query = $query . " order by rec.created_at desc ";
+
+
+    if(!empty($_GET['page'])) {
+        $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
+        if(false === $page) {
+            $page = 1;
+        }
+    }
+
+    if(!empty($_GET['size'])) {
+        $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);
+        if(false === $size) {
+            $size = 10;
+        }
+
+        $offset = ($page - 1) * $size;
+
+        $query = $query . " LIMIT " . $offset . "," . $size;
+    }
+
+
     $stmt = $db->prepare($query);
-
-    if($pg == 0) {
-        $pg = 0;
-    } else {
-        $pg = ($pg - 1) * $size;
-    }
-    if($size == 0) {
-        $size = 10;
-    } else {
-        $size = $size;
-    }
-
-    $stmt->bindParam(':pg', $pg, PDO::PARAM_INT);
-    $stmt->bindParam(':size', $size, PDO::PARAM_INT);
     $stmt->execute();
+
+    $cnt = 0;
+    $stmt_cnt = $db->prepare($query_cnt);
+    $stmt_cnt->execute();
+    $row_cnt = $stmt_cnt->fetch(PDO::FETCH_ASSOC);
+    $cnt = $row_cnt['cnt'];
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id = $row['id'];

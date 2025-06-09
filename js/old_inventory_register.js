@@ -528,28 +528,57 @@ var app = new Vue({
                  _this.l_id = _this.id;
 
                 break;
-              // case "role":
-              //   var role = tmp[1];
-
-              //   if(role == 1)
-              //    _this.access1 = true;
-                
-              //    if(role == 2)
-              //    _this.access2 = true;
-
-              //    if(role == 3)
-              //    _this.access3 = true;
-
-              //    if(role == 4)
-              //    _this.access4 = true;
-
-              //    if(role == 5)
-              //    _this.access5 = true;
-
-              //    if(role == 6)
-              //    _this.access6 = true;
-
-              //   break;
+              case "fpi":
+              _this.fil_prod_id = decodeURI(tmp[1]);
+              break;
+            case "fpc":
+              _this.fil_prod_code = decodeURI(tmp[1]);
+              break;
+            case "fp":
+              _this.fil_pool = decodeURI(tmp[1]);
+              break;
+            case "fpr":
+              _this.fil_project_related = decodeURI(tmp[1]);
+              break;
+            case "loc":
+              _this.fil_location = decodeURI(tmp[1]);
+              break;
+            case "sap":
+              _this.fil_sample = decodeURI(tmp[1]);
+              break;
+            case "fs":
+              _this.fil_status = decodeURI(tmp[1]);
+              break;
+            case "fo":
+              _this.fil_order = decodeURI(tmp[1]);
+              break;
+            case "fdf":
+              _this.fil_date_from = decodeURI(tmp[1]);
+              break;
+            case "fdt":
+              _this.fil_date_to = decodeURI(tmp[1]);
+              break;
+            case "op1":
+              _this.od_opt1 = decodeURI(tmp[1]);
+              break;
+            case "od1":
+              _this.od_ord1 = decodeURI(tmp[1]);
+              break;
+            case "op2":
+              _this.od_opt2 = decodeURI(tmp[1]);
+              break;
+            case "od2":
+              _this.od_ord2 = decodeURI(tmp[1]);
+              break;
+              case "pg":
+              _this.pg = tmp[1];
+              break;
+            case "page":
+              _this.page = tmp[1];
+              break;
+            case "size":
+              _this.perPage = tmp[1];
+              break;
               default:
                 console.log(`Too many args`);
             }
@@ -3008,6 +3037,194 @@ var app = new Vue({
         this.set_up_variants();
         this.set_up_specification();
       },
+
+      
+      apply_filters: function(pg) {
+        let _this = this;
+
+        if(pg != undefined) this.item_page = pg;
+
+        window.location.href =
+          "old_inventory_register?" +
+          "fpi=" +
+          _this.fil_prod_id +
+          "&fpc=" +
+          _this.fil_prod_code +
+          "&fp=" +
+          _this.fil_pool +
+          "&fpr=" +
+          _this.fil_project_related +
+          "&loc=" +
+          _this.fil_location +
+          "&sap=" +
+          _this.fil_sample +
+          "&fs=" +
+          _this.fil_status +
+          "&fo=" +
+          _this.fil_order +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
+          "&op1=" +
+          _this.od_opt1 +
+          "&od1=" +
+          _this.od_ord1 +
+          "&op2=" +
+          _this.od_opt2 +
+          "&od2=" +
+          _this.od_ord2 +
+          "&pg=" +
+          _this.item_page + 
+          "&page=" +
+          _this.item_page +
+          "&size=" +
+          _this.perPage;
+      },
+
+      apply_orders: function() {
+        let _this = this;
+
+        window.location.href =
+          "old_inventory_register?" +
+          "fpi=" +
+          _this.fil_prod_id +
+          "&fpc=" +
+          _this.fil_prod_code +
+          "&fp=" +
+          _this.fil_pool +
+          "&fpr=" +
+          _this.fil_project_related +
+          "&loc=" +
+          _this.fil_location +
+          "&sap=" +
+          _this.fil_sample +
+          "&fs=" +
+          _this.fil_status +
+          "&fo=" +
+          _this.fil_order +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
+          "&op1=" +
+          _this.od_opt1 +
+          "&od1=" +
+          _this.od_ord1 +
+          "&op2=" +
+          _this.od_opt2 +
+          "&od2=" +
+          _this.od_ord2 +
+          "&pg=" +
+          _this.item_page + 
+          "&page=" +
+          _this.item_page +
+          "&size=" +
+          _this.perPage;
+      },
+
+      
+      clear_orders: function() {
+        this.od_opt1 = '';
+        this.od_ord1 = '';
+        this.od_opt2 = '';
+        this.od_ord2 = '';
+        this.item_page = 1;
+
+        let _this = this;
+
+        window.location.href =
+          "old_inventory_register?" +
+          "fpi=" +
+          _this.fil_prod_id +
+          "&fpc=" +
+          _this.fil_prod_code +
+          "&fp=" +
+          _this.fil_pool +
+          "&fpr=" +
+          _this.fil_project_related +
+          "&loc=" +
+          _this.fil_location +
+          "&sap=" +
+          _this.fil_sample +
+          "&fs=" +
+          _this.fil_status +
+          "&fo=" +
+          _this.fil_order +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
+          "&op1=" +
+          _this.od_opt1 +
+          "&od1=" +
+          _this.od_ord1 +
+          "&op2=" +
+          _this.od_opt2 +
+          "&od2=" +
+          _this.od_ord2 +
+          "&pg=" +
+          _this.item_page + 
+          "&page=" +
+          _this.item_page +
+          "&size=" +
+          _this.perPage;
+      },
+
+      clear_filters: function() {
+        this.fil_tracking = '';
+        this.fil_prod_id = '';
+        this.fil_prod_code = '';
+        this.fil_pool = '';
+        this.fil_project_related = '';
+        this.fil_location = '';
+        this.fil_sample = '';
+        this.fil_status = '';
+        this.fil_order = '';
+        this.fil_date_from = '';
+        this.fil_date_to = '';
+
+        this.item_page = 1;
+
+        let _this = this;
+
+        window.location.href =
+          "old_inventory_register?" +
+          "fpi=" +
+          _this.fil_prod_id +
+          "&fpc=" +
+          _this.fil_prod_code +
+          "&fp=" +
+          _this.fil_pool +
+          "&fpr=" +
+          _this.fil_project_related +
+          "&loc=" +
+          _this.fil_location +
+          "&sap=" +
+          _this.fil_sample +
+          "&fs=" +
+          _this.fil_status +
+          "&fo=" +
+          _this.fil_order +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
+          "&op1=" +
+          _this.od_opt1 +
+          "&od1=" +
+          _this.od_ord1 +
+          "&op2=" +
+          _this.od_opt2 +
+          "&od2=" +
+          _this.od_ord2 +
+          "&pg=" +
+          _this.item_page + 
+          "&page=" +
+          _this.item_page +
+          "&size=" +
+          _this.perPage;
+      },
       
     filter_apply_new: function() {
       let _this = this;
@@ -4072,9 +4289,30 @@ var app = new Vue({
         let _this = this;
 
         const params = {
+                tid : _this.fil_tracking,
+                fpi: _this.fil_prod_id,
+                fpc: _this.fil_prod_code,
+       
+                fp: _this.fil_pool,
+                fpr: _this.fil_project_related,
+                loc: _this.fil_location,
+                sap: _this.fil_sample,
 
-          pg: 0
-        };
+                fs: _this.fil_status,
+                fo: _this.fil_order,
+                fdf: _this.fil_date_from,
+                fdt: _this.fil_date_to,
+
+                op1: _this.od_opt1,
+                od1: _this.od_ord1,
+                op2: _this.od_opt2,
+                od2: _this.od_ord2,
+
+                page: _this.item_page,
+                size: _this.perPage,
+            };
+
+            this.item_total = 0;
   
         let token = localStorage.getItem("accessToken");
   
