@@ -139,6 +139,38 @@ switch ($method) {
                 }
             }
 
+            // check if all items are voided
+            $query = "select qty from order_receive_item where id = :order_id";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':order_id', $item_id);
+            $stmt->execute();
+
+            $num = $stmt->rowCount();
+            if ($num > 0) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $qty = $row['qty'];
+            } else {
+                http_response_code(501);
+                echo json_encode(array("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . "No order found."));
+                die();
+            }
+
+            if($qty <= 0)
+            {
+                // delete the order_receive_item
+                $query = "update order_receive_item set status = -1 where id = :item_id";
+                $stmt = $db->prepare($query);
+                $stmt->bindParam(':item_id', $item_id);
+                if (!$stmt->execute()) {
+                    $arr = $stmt->errorInfo();
+                    error_log($arr[2]);
+                    $db->rollback();
+                    http_response_code(501);
+                    echo json_encode("Failure at " . date("Y-m-d") . " " . date("h:i:sa") . " " . $arr[2]);
+                    die();
+                }
+            }
+
 
             $db->commit();
 

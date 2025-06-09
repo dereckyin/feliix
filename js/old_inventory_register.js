@@ -164,6 +164,7 @@ var app = new Vue({
       // version II new parameters
 
       // items 
+      item_pg : 0,
       item_page: 1, 
       item_pages: [],
       item_pages_10: [],
@@ -574,7 +575,7 @@ var app = new Vue({
               _this.pg = tmp[1];
               break;
             case "page":
-              _this.page = tmp[1];
+              _this.item_page = tmp[1];
               break;
             case "size":
               _this.perPage = tmp[1];
@@ -612,8 +613,11 @@ var app = new Vue({
       },
 
       received_items() {
-        this.setItemPages();
-        return this.paginateItem(this.receive_records);
+        if(this.item_total != 0)
+        {
+          this.setItemPages();
+          return this.paginateItem(this.receive_records);
+        }
       },
 
       displayBarcodeItems() {
@@ -2026,7 +2030,7 @@ var app = new Vue({
       setItemPages () {
         console.log('setItemPages');
         this.item_pages = [];
-        let numberOfPages = Math.ceil(this.receive_records.length / this.perPage);
+        let numberOfPages = Math.ceil(this.item_total / this.perPage);
 
         if(numberOfPages == 1)
           this.item_page = 1;
@@ -2054,7 +2058,9 @@ var app = new Vue({
       from = this.item_page * this.perPage - this.perPage;
       to = this.item_page * this.perPage;
 
-        return  this.receive_records.slice(from, to);
+      return  this.receive_records;
+
+        //return  this.receive_records.slice(from, to);
       },
 
       getQuoMasterRecords: function(keyword) {

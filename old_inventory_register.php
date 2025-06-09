@@ -1750,12 +1750,12 @@ header( 'location:index' );
 
                 <!-- 分頁功能，下方的 tablebox 的內容要做分頁，每一頁 10 筆資料  -->
                 <div class="pagenation">
-                    <a class="prev" :disabled="item_page == 1" @click="item_pre_page();">Prev 10</a>
+                    <a class="prev" :disabled="item_page == 1" @click="item_pre_page(); apply_filters(pg);">Prev 10</a>
 
-                    <a class="page" v-for="pg in item_pages_10" @click="item_page=pg;"
+                    <a class="page" v-for="pg in item_pages_10" @click="item_page=pg; apply_filters(pg);"
                        v-bind:style="[pg == item_page ? { 'background':'#1E6BA8', 'color': 'white'} : { }]">{{ pg }}</a>
 
-                    <a class="next" :disabled="item_page == item_pages.length" @click="item_nex_page();">Next 10</a>
+                    <a class="next" :disabled="item_page == item_pages.length" @click="item_nex_page(); apply_filters(pg);">Next 10</a>
                 </div>
             </div>
 
