@@ -327,7 +327,7 @@ function insertOrderReceiveItem($db, $od_id, $item_id, $item, $user_id) {
                 v2 = :v2,
                 v3 = :v3,
                 v4 = :v4,
-                received_date = now(),
+                received_date = :receive_date,
                 qty = :qty,
                 which_pool = :which_pool,
                 as_sample = :as_sample,
@@ -337,6 +337,8 @@ function insertOrderReceiveItem($db, $od_id, $item_id, $item, $user_id) {
                 remark_old = :remark_old,
                 status = 0,
                 create_id = :create_id,
+                updated_id = :create_id,
+                updated_at = now(),
                 created_at = now();";
 
     $remark_old = json_encode($item);
@@ -351,6 +353,7 @@ function insertOrderReceiveItem($db, $od_id, $item_id, $item, $user_id) {
     $stmt->bindParam(':v2', $item['v2']);
     $stmt->bindParam(':v3', $item['v3']);
     $stmt->bindParam(':v4', $item['v4']);
+    $stmt->bindParam(':receive_date', $item['receive_date']);
     $stmt->bindParam(':qty', $item['qty']);
     $stmt->bindParam(':which_pool', $item['which_pool']);
     $stmt->bindParam(':as_sample', $item['as_sample']);

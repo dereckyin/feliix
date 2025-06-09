@@ -1885,10 +1885,10 @@ header( 'location:index' );
                             </div>
                         </td>
                         <td>
-                            {{ item.created_at != undefined ? item.created_at : ''}} <br> {{ item.created_name !== undefined ? '(' + item.created_name + ')' : '' }}
+                            {{ item.created_at != undefined ? item.created_at : ''}} <br> {{ item.created_by != undefined ? '(' + item.created_by + ')' : '' }}
                         </td>
                         <td>
-                            {{ item.updated_name !== undefined ? item.updated_at : '' }} <br> {{ item.updated_name !== undefined ? '(' + item.updated_name + ')' : '' }}
+                            {{ item.updated_at != undefined ? item.updated_at : '' }} <br> {{ item.updated_by != undefined ? '(' + item.updated_by + ')' : '' }}
                         </td>
                         <td>
                             <a class="btn small" @click="remove_item(item.id)" v-if="item.status == 0">Delete</a>

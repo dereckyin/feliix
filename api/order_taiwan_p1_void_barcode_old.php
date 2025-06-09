@@ -239,7 +239,7 @@ function updateOrderReceiveItem($db, $item_id, $user_id) {
                 qty = qty - 1,
                 updated_id = :updated_id,
                 updated_at = now()
-            where item_id = :item_id;";
+            where id = :item_id;";
 
     $stmt = $db->prepare($query);
     $stmt->bindParam(':item_id', $item_id);
