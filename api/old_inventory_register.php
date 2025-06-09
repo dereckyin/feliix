@@ -192,9 +192,9 @@ if (!isset($jwt)) {
                 break;  
             case 3:
                 if($od1 == 2)
-                    $sOrder = "rec.project_id desc";
+                    $sOrder = "rec.product_id desc";
                 else
-                    $sOrder = "rec.project_id ";
+                    $sOrder = "rec.product_id ";
                 break;  
             case 4:
                 if($od1 == 2)
@@ -225,9 +225,9 @@ if (!isset($jwt)) {
                 break;  
             case 3:
                 if($od1 == 2)
-                    $sOrder = ", rec.project_id desc";
+                    $sOrder = ", rec.product_id desc";
                 else
-                    $sOrder = ", rec.project_id ";
+                    $sOrder = ", rec.product_id ";
                 break;  
             case 4:
                 if($od2 == 2)
