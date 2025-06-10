@@ -692,10 +692,7 @@ var app = new Vue({
             if(res.length > 0) 
               _this.barcode_total = response.data[0].cnt;
             else
-            {
-              _this.close_barcode_printing();
               _this.barcode_total = 0;
-            }
 
             _this.setPagesBarcode();
             _this.paginateBarcode(_this.barcode_list);
