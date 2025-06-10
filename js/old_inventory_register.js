@@ -672,8 +672,24 @@ var app = new Vue({
         
         // open label_printing.php and send list to it
         if(list.length > 0) {
-          var url = 'label_printing?items=' + JSON.stringify(list);
-          window.open(url, '_blank');
+          var mapForm = document.createElement("form");
+          mapForm.target = "Map";
+          mapForm.method = "POST"; // or "post" if appropriate
+          mapForm.action = "label_printing";
+
+          var mapInput = document.createElement("input");
+          mapInput.type = "text";
+          mapInput.name = "items";
+          mapInput.value = JSON.stringify(list);
+          mapForm.appendChild(mapInput);
+
+          document.body.appendChild(mapForm);
+
+          map = window.open("", "_blank", '');
+
+          if (map) {
+              mapForm.submit();
+          } 
         }
 
       },
