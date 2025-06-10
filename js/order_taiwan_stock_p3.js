@@ -627,6 +627,9 @@ var app = new Vue({
 
           map = window.open("", "_blank", '');
 
+          setTimeout(function (){
+            }, 1000);
+            
           if (map) {
               mapForm.submit();
           } 
