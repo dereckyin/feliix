@@ -2710,6 +2710,7 @@ var app = new Vue({
 
             this.receive_records.unshift(item);
             alert('Add Successfully');
+            this.item_total++;
   app.$forceUpdate();
 
       },
@@ -2867,6 +2868,7 @@ var app = new Vue({
 
           this.receive_records.unshift(item);
           alert('Add Successfully');
+          this.item_total++;
   app.$forceUpdate();
 
       },
@@ -5662,6 +5664,7 @@ add_with_image_set_select_warehouse(all) {
 
   this.receive_records.unshift(item);
   alert('Add Successfully');
+  this.item_total++;
   app.$forceUpdate();
 
 },
@@ -5817,6 +5820,7 @@ add_without_image_set_select_warehouse(all) {
 
   this.receive_records.unshift(item);
   alert('Add Successfully');
+  this.item_total++;
   app.$forceUpdate();
 
 },
@@ -6509,6 +6513,7 @@ item = {
 
 this.receive_records.unshift(item);
 alert('Add Successfully');
+this.item_total++;
   app.$forceUpdate();
 
 },
@@ -6695,6 +6700,7 @@ item = {
 
   this.receive_records.unshift(item);
   alert('Add Successfully');
+  this.item_total++;
   app.$forceUpdate();
 
 },
