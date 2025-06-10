@@ -628,7 +628,7 @@ var app = new Vue({
 
           document.body.appendChild(mapForm);
 
-          map = window.open("", "_blank", '');
+          map = window.open("label_printing", "_blank");
 
           setTimeout(function (){
             }, 1000);
