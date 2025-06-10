@@ -615,8 +615,25 @@ var app = new Vue({
         
         // open label_printing.php and send list to it
         if(list.length > 0) {
-          var url = 'label_printing?items=' + JSON.stringify(list);
-          window.open(url, '_blank');
+
+          var mapForm = document.createElement("form");
+          mapForm.target = "Map";
+          mapForm.method = "POST"; // or "post" if appropriate
+          mapForm.action = "label_printing";
+
+          var mapInput = document.createElement("input");
+          mapInput.type = "text";
+          mapInput.name = "items";
+          mapInput.value = JSON.stringify(list);
+          mapForm.appendChild(mapInput);
+
+          document.body.appendChild(mapForm);
+
+          map = window.open("", "_blank", '');
+
+          if (map) {
+              mapForm.submit();
+          } 
         }
 
       },
@@ -671,7 +688,7 @@ var app = new Vue({
           item_id : item_id,
           receive_id : receive_id,
           pg: this.barcode_page,
-          size: 10,
+          size: 100000,
         };
     
         let token = localStorage.getItem("accessToken");
@@ -707,7 +724,7 @@ var app = new Vue({
       setPagesBarcode() {
         console.log("setPagesBarcode");
         this.barcode_pages = [];
-        let numberOfPages = Math.ceil(this.barcode_total / this.perPage);
+        let numberOfPages = Math.ceil(this.barcode_total / t100000);
   
         if (numberOfPages == 1) this.barcode_page = 1;
         if (this.barcode_page < 1) this.barcode_page = 1;

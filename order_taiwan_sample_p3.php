@@ -5116,7 +5116,7 @@ header( 'location:index' );
                     <div class="list_function">
                     <!-- 分頁功能 -->
                     <!-- 分頁 -->
-                        <div class="pagenation">
+                        <div class="pagenation" v-show="false">
                             <a class="prev" :disabled="barcode_page == 1" @click="pre_page_barcode(); get_barcode_records(received_items.id, item_id);">Prev 10</a>
 
                             <a class="page" v-for="pg in barcode_pages_10" @click="barcode_page=pg; get_barcode_records(received_items.id, item_id);" v-bind:style="[pg == barcode_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
@@ -5188,7 +5188,7 @@ header( 'location:index' );
                     <div class="list_function">
                     <!-- 分頁功能 -->
                     <!-- 分頁 -->
-                        <div class="pagenation">
+                        <div class="pagenation" v-show="false">
                             <a class="prev" :disabled="barcode_page == 1" @click="pre_page_barcode(); get_barcode_records(received_items.id, item_id);">Prev 10</a>
 
                             <a class="page" v-for="pg in barcode_pages_10" @click="barcode_page=pg; get_barcode_records(received_items.id, item_id);" v-bind:style="[pg == barcode_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>

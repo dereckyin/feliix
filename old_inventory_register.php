@@ -196,7 +196,7 @@ header( 'location:index' );
         }
 
         .list_function .pagenation a {
-            border: 2px solid var(--fth01);
+            border-color: var(--fth01);
         }
 
         .list_function .pagenation a:hover {
