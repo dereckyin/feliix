@@ -710,7 +710,9 @@ var app = new Vue({
             confirmButtonText: "OK",
           });
 
-          await this.get_barcode_records_id(this.item_id);
+          this.get_barcode_records_id(this.item_id);
+
+          this.getRecord();
           // refresh warehouse info
           // var it = await this.refresh_warehouse(this.received_items.id);
           // if(it.id != undefined){        
@@ -743,13 +745,21 @@ var app = new Vue({
             let res = response.data;
             // if(res.length > 0) 
             // {
-            _this.barcode_list = response.data[0].barcodes;
+            
             if(res.length > 0) 
+            {
+              _this.barcode_list = response.data[0].barcodes;
               _this.barcode_total = response.data[0].cnt;
+            }
             else
+            {
+              _this.barcode_list = [];
               _this.barcode_total = 0;
 
-            let received_item = _this.received_items.find(item => item.id == id);
+              _this.close_barcode_printing();
+            }
+
+            let received_item = _this.receive_records.find(item => item.id == id);
      
               received_item.barcodes = _this.barcode_list;
 
