@@ -7,7 +7,7 @@ use Endroid\QrCode\Writer\PngWriter;
 
 $barcode = null; // Initialize variable for barcode image
 
-$items = $_GET['items'];
+$items = $_POST['items'];
 
 $items = json_decode($items, true);
 ?>

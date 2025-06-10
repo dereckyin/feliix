@@ -5958,3 +5958,13 @@ update user_title set title = 'Assistant Office Space Value Creation Manager' wh
 update user_title set title = 'Senior Office Space Value Creation Supervisor' where title = 'Sr. Office Systems Designer';
 update user_title set title = 'Office Space Value Creation Supervisor' where title = 'Office Systems Designer';
 
+-- 20250604 fix inventory_change_history value
+alter table inventory_change_history change `related_record` `related_record` VARCHAR(512) DEFAULT '';
+
+-- 20250603 old_inventory_register
+ALTER TABLE order_receive_item
+ADD COLUMN `from_old` varchar(10) DEFAULT '';
+
+ALTER TABLE order_receive_item
+ADD COLUMN `remark_old` JSON;
+

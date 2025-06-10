@@ -5117,7 +5117,7 @@ header( 'location:index' );
                     <div class="list_function">
                     <!-- 分頁功能 -->
                     <!-- 分頁 -->
-                        <div class="pagenation">
+                        <div class="pagenation" v-show="false">
                             <a class="prev" :disabled="barcode_page == 1" @click="pre_page_barcode(); get_barcode_records(received_items.id, item_id);">Prev 10</a>
 
                             <a class="page" v-for="pg in barcode_pages_10" @click="barcode_page=pg; get_barcode_records(received_items.id, item_id);" v-bind:style="[pg == barcode_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
@@ -5189,7 +5189,7 @@ header( 'location:index' );
                     <div class="list_function">
                     <!-- 分頁功能 -->
                     <!-- 分頁 -->
-                        <div class="pagenation">
+                        <div class="pagenation" v-show="false">
                             <a class="prev" :disabled="barcode_page == 1" @click="pre_page_barcode(); get_barcode_records(received_items.id, item_id);">Prev 10</a>
 
                             <a class="page" v-for="pg in barcode_pages_10" @click="barcode_page=pg; get_barcode_records(received_items.id, item_id);" v-bind:style="[pg == barcode_page ? { 'background':'#707071', 'color': 'white'} : { }]">{{ pg }}</a>
@@ -5205,6 +5205,8 @@ header( 'location:index' );
                 <div class="btnbox">
                     <a class="btn small" @click="close_barcode_printing()">Cancel</a>
                     <a class="btn small" @click="void_barcode_selected()">Void Barcode</a>
+                    <a class="btn small" @click="deselect_all()">Deselect All</a>
+                        <a class="btn small green" @click="select_all()">Select All</a>
                     <a class="btn small green" @click="print_barcode()">Print Label</a>
                 </div>
             </div>

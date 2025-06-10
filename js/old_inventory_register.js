@@ -163,6 +163,12 @@ var app = new Vue({
 
       // version II new parameters
 
+      // items 
+      item_pg : 0,
+      item_page: 1, 
+      item_pages: [],
+      item_pages_10: [],
+      item_total: 0,
       
 
         // paging
@@ -223,7 +229,7 @@ var app = new Vue({
         name :"",
         title: "",
         is_manager: "",
-        dept:"",
+        dept: "",
         url : "",
 
         brands: [],
@@ -231,7 +237,6 @@ var app = new Vue({
         fil_code: "",
         fil_tag : [],
         fil_id: "",
-        fil_category: "",
 
         special_infomation: [],
         special_infomation_detail: [],
@@ -249,7 +254,7 @@ var app = new Vue({
         fil_kind: '',
         fil_creator: '',
         fil_keyword: '',
-        fil_brand : '',
+        fil_category: '',
 
         users: [],
         creators: [],
@@ -297,6 +302,7 @@ var app = new Vue({
 
         od_name : '',
         stage_id : 0,
+
         project_name : '',
         serial_name : '',
 
@@ -313,149 +319,149 @@ var app = new Vue({
         out : "",
         out_cnt : 0,
 
-        // product information
-        p_product : {},
+                // product information
+                p_product : {},
 
-        p_baseURL: "https://storage.googleapis.com/feliiximg/",
-
-        p_category: "",
-        p_sub_category: "",
-        p_sub_category_name: "",
-        p_sub_cateory_item: [],
-
-        //
-        p_id:-1,
-        p_record: [],
-        p_tags: [],
-
-        p_cateory_item: [],
-
-        p_special_infomation: [],
-        p_special_infomation_detail: [],
-
-        p_accessory_infomation: [],
-        p_sub_accessory_item: [],
-        p_attributes:[],
-
-        //
-        p_accessory_item: [],
-
-        p_edit_mode: true,
-
-        p_title: [],
-
-        p_title_id: 0,
-
-        p_url: null,
-        p_url1: null,
-        p_url2: null,
-        p_url3: null,
-
-        // data
-        p_pid : "",
-        p_brand: "",
-        p_code: "",
-        p_price_ntd: "",
-        p_price: "",
-        p_price_quoted: "",
-        p_price_ntd_change: "",
-        p_price_change: "",
-        p_price_ntd_org: "",
-        p_price_org: "",
-        p_description: "",
-        p_notes: "",
-        p_accessory_mode: false,
-        p_variation_mode: false,
-
-        p_quoted_price:"",
-        p_quoted_price_org:"",
-        p_quoted_price_change:"",
-        p_moq:"",
-        p_currency: "",
-
-        p_str_quoted_price_change: "",
-        p_str_price_ntd_change: "",
-        p_str_price_change: "",
-
-        p_phased_out: "",
-
-        p_sheet_url: "",
-
-        // accessory
-
-        // variation
-        p_variation1: "",
-        p_variation2: "",
-        p_variation3: "",
+                p_baseURL: "https://storage.googleapis.com/feliiximg/",
+        
+                p_category: "",
+                p_sub_category: "",
+                p_sub_category_name: "",
+                p_sub_cateory_item: [],
+        
+                //
+                p_id:-1,
+                p_record: [],
+                p_tags: [],
+        
+                p_cateory_item: [],
+        
+                p_special_infomation: [],
+                p_special_infomation_detail: [],
+        
+                p_accessory_infomation: [],
+                p_sub_accessory_item: [],
+                p_attributes:[],
+        
+                //
+                p_accessory_item: [],
+        
+                p_edit_mode: true,
+        
+                p_title: [],
+        
+                p_title_id: 0,
+        
+                p_url: null,
+                p_url1: null,
+                p_url2: null,
+                p_url3: null,
+        
+                // data
+                p_pid : "",
+                p_brand: "",
+                p_code: "",
+                p_price_ntd: "",
+                p_price: "",
+                p_price_quoted: "",
+                p_price_ntd_change: "",
+                p_price_change: "",
+                p_price_ntd_org: "",
+                p_price_org: "",
+                p_description: "",
+                p_notes: "",
+                p_accessory_mode: false,
+                p_variation_mode: false,
+        
+                p_quoted_price:"",
+                p_quoted_price_org:"",
+                p_quoted_price_change:"",
+                p_moq:"",
+                p_currency: "",
+        
+                p_str_quoted_price_change: "",
+                p_str_price_ntd_change: "",
+                p_str_price_change: "",
+        
+                p_phased_out: "",
+        
+                p_sheet_url: "",
+        
+                // accessory
+        
+                // variation
+                p_variation1: "",
+                p_variation2: "",
+                p_variation3: "",
         p_variation4: "",
-        p_variation1_custom: "",
-        p_variation2_custom: "",
-        p_variation3_custom: "",
+                p_variation1_custom: "",
+                p_variation2_custom: "",
+                p_variation3_custom: "",
         p_variation4_custom: "",
-
-        p_variation1_text: "1st Variation",
-        p_variation2_text: "2nd Variation",
-        p_variation3_text: "3rd Variation",
+        
+                p_variation1_text: "1st Variation",
+                p_variation2_text: "2nd Variation",
+                p_variation3_text: "3rd Variation",
         p_variation4_text: "4th Variation",
-
-        p_variation1_value: [],
-        p_variation2_value: [],
-        p_variation3_value: [],
+        
+                p_variation1_value: [],
+                p_variation2_value: [],
+                p_variation3_value: [],
         p_variation4_value: [],
+        
+                p_variation_product: [],
+        
+                p_related_product : [],
+                p_nColumns: 4,
+                p_groupedItems: [],
 
-        p_variation_product: [],
-
-        p_related_product : [],
-        p_nColumns: 4,
-        p_groupedItems: [],
-
-        replacement_product : [],
+                replacement_product : [],
     is_replacement_product: [],
-
-        p_show_accessory: false,
-
-        p_v1:"",
-        p_v2:"",
-        p_v3:"",
+        
+                p_show_accessory: false,
+        
+                p_v1:"",
+                p_v2:"",
+                p_v3:"",
         p_v4:"",
-
-        // bulk insert
-        p_code_checked:'',
-        p_bulk_code:'',
-        p_price_ntd_checked:'',
-        p_bulk_price_ntd:'',
-        p_price_ntd_action :'',
-        p_price_checked:'',
-        p_bulk_price:'',
-        p_price_action:'',
-        p_image_checked:'',
-        p_bulk_url:'',
-        p_status_checked:'',
-        p_bulk_status:'',
-        p_currency:'',
-
-        p_submit: false,
-
-        p_specification: [],
-
-        // info
-        p_name :"",
-        p_title: "",
-        p_is_manager: "",
-
-        p_toggle: true,
-
-        p_print_pid: 'true',
-        p_print_brand: 'true',
-        p_print_srp: 'true',
-        p_print_qp: 'true',
-
-        p_out : "",
-        p_out_cnt : 0,
-        p_phased_out_text : [],
-
-        p_item_product : {},
-
+        
+                // bulk insert
+                p_code_checked:'',
+                p_bulk_code:'',
+                p_price_ntd_checked:'',
+                p_bulk_price_ntd:'',
+                p_price_ntd_action :'',
+                p_price_checked:'',
+                p_bulk_price:'',
+                p_price_action:'',
+                p_image_checked:'',
+                p_bulk_url:'',
+                p_status_checked:'',
+                p_bulk_status:'',
+                p_currency:'',
+        
+                p_submit: false,
+        
+                p_specification: [],
+        
+                // info
+                p_name :"",
+                p_title: "",
+                p_is_manager: "",
+        
+                p_toggle: true,
+        
+                p_print_pid: 'true',
+                p_print_brand: 'true',
+                p_print_srp: 'true',
+                p_print_qp: 'true',
+        
+                p_out : "",
+                p_out_cnt : 0,
+                p_phased_out_text : [],
+        
+                p_item_product : {},
+        
         product_set : [],
         show_accessory: false,
 
@@ -474,7 +480,6 @@ var app = new Vue({
         page: 0,
         pages_10:0,
 
-        received_items: {},
         projects: [],
         is_encode_warehouse: false,
         project_id : 0,
@@ -488,6 +493,22 @@ var app = new Vue({
         barcode_pages_10:0,
 
         item_id: 0,
+
+        od_opt1 : '',
+        od_ord1 : '',
+
+        od_opt2 : '',
+        od_ord2 : '',
+
+        fil_prod_id : '',
+        fil_prod_code : '',
+        fil_pool : '',
+        fil_project_related : '',
+        fil_location : '',
+        fil_sample : '',
+        fil_date_from : '',
+        fil_date_to : '',
+
     },
   
     created() {
@@ -508,28 +529,57 @@ var app = new Vue({
                  _this.l_id = _this.id;
 
                 break;
-              // case "role":
-              //   var role = tmp[1];
-
-              //   if(role == 1)
-              //    _this.access1 = true;
-                
-              //    if(role == 2)
-              //    _this.access2 = true;
-
-              //    if(role == 3)
-              //    _this.access3 = true;
-
-              //    if(role == 4)
-              //    _this.access4 = true;
-
-              //    if(role == 5)
-              //    _this.access5 = true;
-
-              //    if(role == 6)
-              //    _this.access6 = true;
-
-              //   break;
+              case "fpi":
+              _this.fil_prod_id = decodeURI(tmp[1]);
+              break;
+            case "fpc":
+              _this.fil_prod_code = decodeURI(tmp[1]);
+              break;
+            case "fp":
+              _this.fil_pool = decodeURI(tmp[1]);
+              break;
+            case "fpr":
+              _this.fil_project_related = decodeURI(tmp[1]);
+              break;
+            case "loc":
+              _this.fil_location = decodeURI(tmp[1]);
+              break;
+            case "sap":
+              _this.fil_sample = decodeURI(tmp[1]);
+              break;
+            case "fs":
+              _this.fil_status = decodeURI(tmp[1]);
+              break;
+            case "fo":
+              _this.fil_order = decodeURI(tmp[1]);
+              break;
+            case "fdf":
+              _this.fil_date_from = decodeURI(tmp[1]);
+              break;
+            case "fdt":
+              _this.fil_date_to = decodeURI(tmp[1]);
+              break;
+            case "op1":
+              _this.od_opt1 = decodeURI(tmp[1]);
+              break;
+            case "od1":
+              _this.od_ord1 = decodeURI(tmp[1]);
+              break;
+            case "op2":
+              _this.od_opt2 = decodeURI(tmp[1]);
+              break;
+            case "od2":
+              _this.od_ord2 = decodeURI(tmp[1]);
+              break;
+              case "pg":
+              _this.pg = tmp[1];
+              break;
+            case "page":
+              _this.item_page = tmp[1];
+              break;
+            case "size":
+              _this.perPage = tmp[1];
+              break;
               default:
                 console.log(`Too many args`);
             }
@@ -560,6 +610,14 @@ var app = new Vue({
         this.setPagesQuo();
         return this.paginateQuo(this.receive_records_quo_master);
 
+      },
+
+      received_items() {
+        if(this.item_total != 0)
+        {
+          this.setItemPages();
+          return this.paginateItem(this.receive_records);
+        }
       },
 
       displayBarcodeItems() {
@@ -600,8 +658,7 @@ var app = new Vue({
     },
   
     methods: {
-
-      print_barcode: function() {
+       print_barcode: function() {
 
         var list = this.barcode_list.filter((item) => item.is_checked == 1);
         // list only contains product_id and barcode
@@ -615,7 +672,6 @@ var app = new Vue({
         
         // open label_printing.php and send list to it
         if(list.length > 0) {
-
           var mapForm = document.createElement("form");
           mapForm.target = "Map";
           mapForm.method = "POST"; // or "post" if appropriate
@@ -657,7 +713,7 @@ var app = new Vue({
         if(list.length > 0) {
           res = await axios({
             method: 'post',
-            url: 'api/order_taiwan_p1_void_barcode',
+            url: 'api/order_taiwan_p1_void_barcode_old',
             data: {"items": list},
             headers: {
               "Content-Type": "application/json",
@@ -670,25 +726,25 @@ var app = new Vue({
             confirmButtonText: "OK",
           });
 
-          await this.get_barcode_records(this.received_items.id, this.item_id);
+          this.get_barcode_records_id(this.item_id);
+
+          this.getRecord();
           // refresh warehouse info
-          var it = await this.refresh_warehouse(this.received_items.id);
-          if(it.id != undefined){        
-            this.received_items = JSON.parse(JSON.stringify(it));
-            app.$forceUpdate();
-          }
+          // var it = await this.refresh_warehouse(this.received_items.id);
+          // if(it.id != undefined){        
+          //   this.received_items = JSON.parse(JSON.stringify(it));
+          //   app.$forceUpdate();
+          // }
 
         }
 
       },
-      
-      get_barcode_records: function(item_id, receive_id) {
+
+      get_barcode_records_id: function(id) {
+            
         let _this = this;
         const params = {
-          item_id : item_id,
-          receive_id : receive_id,
-          pg: this.barcode_page,
-          size: 100000,
+          id : id,
         };
     
         let token = localStorage.getItem("accessToken");
@@ -696,7 +752,7 @@ var app = new Vue({
         this.barcode_total = 0;
     
         axios
-          .get("api/order_receive_tracking_item", {
+          .get("api/order_receive_tracking_item_old", {
             params,
             headers: { Authorization: `Bearer ${token}` },
           })
@@ -705,11 +761,23 @@ var app = new Vue({
             let res = response.data;
             // if(res.length > 0) 
             // {
-            _this.barcode_list = response.data;
+            
             if(res.length > 0) 
+            {
+              _this.barcode_list = response.data[0].barcodes;
               _this.barcode_total = response.data[0].cnt;
+            }
             else
+            {
+              _this.barcode_list = [];
               _this.barcode_total = 0;
+
+              _this.close_barcode_printing();
+            }
+
+            let received_item = _this.receive_records.find(item => item.id == id);
+     
+              received_item.barcodes = _this.barcode_list;
 
             _this.setPagesBarcode();
             _this.paginateBarcode(_this.barcode_list);
@@ -719,12 +787,28 @@ var app = new Vue({
           .catch(function(error) {
             console.log(error);
           });
+
+      },
+      
+      get_barcode_records: function(item) {
+            
+        this.barcode_total = 0;
+    
+        this.barcode_list = item.barcodes;
+        if(item.barcodes.length > 0) 
+          this.barcode_total = item.barcodes[0].cnt;
+        else
+          this.barcode_total = 0;
+
+        this.setPagesBarcode();
+        this.paginateBarcode(this.barcode_list);
+
       },
 
       setPagesBarcode() {
         console.log("setPagesBarcode");
         this.barcode_pages = [];
-        let numberOfPages = Math.ceil(this.barcode_total / t100000);
+        let numberOfPages = Math.ceil(this.barcode_total / this.perPage);
   
         if (numberOfPages == 1) this.barcode_page = 1;
         if (this.barcode_page < 1) this.barcode_page = 1;
@@ -856,7 +940,6 @@ var app = new Vue({
                     
                 });
         },
-
       sort_me(type) {
 
         if(type == 1) {
@@ -875,8 +958,8 @@ var app = new Vue({
           this.fil_id = '';
           this.fil_code = '';
           this.fil_tag = [];
-          this.fil_category = '';
           this.fil_brand = '';
+          this.fil_category = '';
           this.fil_k = '';
           this.of1 = '';
           this.ofd1 = '';
@@ -1366,7 +1449,7 @@ var app = new Vue({
   
         axios({
           method: "post",
-          url: "api/order_taiwan_mockup_p1_export",
+          url: "api/order_taiwan_p1_export",
           data: form_Data,
           responseType: "blob",
         })
@@ -1427,7 +1510,7 @@ var app = new Vue({
         
         let res = await axios({
           method: 'post',
-          url: 'api/order_taiwan_mockup_p1_shipping',
+          url: 'api/order_taiwan_p1_shipping',
           data: form_Data,
           headers: {
             "Content-Type": "multipart/form-data",
@@ -1485,7 +1568,7 @@ var app = new Vue({
         
         let res = await axios({
           method: 'post',
-          url: 'api/order_taiwan_mockup_p1_shipping',
+          url: 'api/order_taiwan_p1_shipping',
           data: form_Data,
           headers: {
             "Content-Type": "multipart/form-data",
@@ -1541,13 +1624,15 @@ var app = new Vue({
       },
 
     p1() {
-        window.location.href = "order_taiwan_mockup_p1?id=" + this.id;
+        window.location.href = "order_taiwan_p1?id=" + this.id;
         },
 
-  
+    p2() {
+        window.location.href = "order_taiwan_p2?id=" + this.id;
+        },
 
         p4() {
-          window.location.href = "order_taiwan_mockup_p4?id=" + this.id;
+          window.location.href = "order_taiwan_p4?id=" + this.id;
         },
         
       approve : async function() {
@@ -1573,7 +1658,7 @@ var app = new Vue({
 
         let res = await axios({
           method: 'post',
-          url: 'api/order_taiwan_mockup_p1_approve',
+          url: 'api/order_taiwan_p1_approve',
           data: form_Data,
           headers: {
             "Content-Type": "multipart/form-data",
@@ -1616,7 +1701,7 @@ var app = new Vue({
 
         let res = await axios({
           method: 'post',
-          url: 'api/order_taiwan_mockup_p1_order',
+          url: 'api/order_taiwan_p1_order',
           data: form_Data,
           headers: {
             "Content-Type": "multipart/form-data",
@@ -1659,7 +1744,7 @@ var app = new Vue({
 
         let res = await axios({
           method: 'post',
-          url: 'api/order_taiwan_mockup_p1_cancel',
+          url: 'api/order_taiwan_p1_cancel',
           data: form_Data,
           headers: {
             "Content-Type": "multipart/form-data",
@@ -1704,7 +1789,7 @@ var app = new Vue({
 
         let res = await axios({
           method: 'post',
-          url: 'api/order_taiwan_mockup_p1_reject',
+          url: 'api/order_taiwan_p1_reject',
           data: form_Data,
           headers: {
             "Content-Type": "multipart/form-data",
@@ -1827,8 +1912,8 @@ var app = new Vue({
           sd: _this.fil_id,
           c: _this.fil_code,
           t: JSON.stringify(_this.fil_tag),
-          g: _this.fil_category,
           b: _this.fil_brand,
+          g: _this.fil_category,
           k: _this.fil_k,
           of1: _this.of1,
         ofd1: _this.ofd1,
@@ -1933,6 +2018,75 @@ var app = new Vue({
       to = this.product_page_quo * this.perPage;
 
         return  this.receive_records_quo_master.slice(from, to);
+      },
+
+
+      item_pre_page: function(){
+        let tenPages = Math.floor((this.item_page - 1) / 10) + 1;
+  
+          this.item_page = parseInt(this.item_page) - 10;
+          if(this.item_page < 1)
+            this.item_page = 1;
+   
+          this.item_pages_10 = [];
+  
+          let from = tenPages * 10;
+          let to = (tenPages + 1) * 10;
+  
+          this.item_pages_10 = this.item_pages.slice(from, to);
+        
+      },
+  
+      item_nex_page: function(){
+        let tenPages = Math.floor((this.item_page - 1) / 10) + 1;
+  
+        this.item_page = parseInt(this.item_page) + 10;
+        if(this.item_page > this.item_pages.length)
+          this.item_page = this.item_pages.length;
+  
+        let from = tenPages * 10;
+        let to = (tenPages + 1) * 10;
+        let pages_10 = this.item_pages.slice(from, to);
+  
+        if(pages_10.length > 0)
+          this.item_pages_10 = pages_10;
+  
+      },
+
+      setItemPages () {
+        console.log('setItemPages');
+        this.item_pages = [];
+        let numberOfPages = Math.ceil(this.item_total / this.perPage);
+
+        if(numberOfPages == 1)
+          this.item_page = 1;
+        for (let index = 1; index <= numberOfPages; index++) {
+          this.item_pages.push(index);
+        }
+
+        // this.setupChosen();
+      },
+
+      paginateItem: function (posts) {
+       
+      if (this.item_page < 1) this.item_page = 1;
+      if (this.item_page > this.item_pages.length) this.item_page = this.item_pages.length;
+
+      let tenPages = Math.floor((this.item_page - 1) / 10);
+      if(tenPages < 0)
+        tenPages = 0;
+      this.item_pages_10 = [];
+      let from = tenPages * 10;
+      let to = (tenPages + 1) * 10;
+      
+      this.item_pages_10 = this.item_pages.slice(from, to);
+
+      from = this.item_page * this.perPage - this.perPage;
+      to = this.item_page * this.perPage;
+
+      return  this.receive_records;
+
+        //return  this.receive_records.slice(from, to);
       },
 
       getQuoMasterRecords: function(keyword) {
@@ -2222,9 +2376,9 @@ var app = new Vue({
               v4:this.v4,
               status:"3",
               btn2:"1",
+              notes:[],
               which_pool:"Project Pool",
-              as_sample:"Yes",
-              notes:[]
+            as_sample:"No",
             };
 
             items.push(item);
@@ -2392,9 +2546,9 @@ var app = new Vue({
             v4:this.v4,
             status:"3",
             btn2:"1",
+            notes:[],
             which_pool:"Project Pool",
-              as_sample:"Yes",
-            notes:[]
+            as_sample:"No",
           };
 
           items.push(item);
@@ -2526,9 +2680,9 @@ var app = new Vue({
 
           var sn = 0;
 
-          for (let i = 0; i < this.received_items.items.length; i++) {
-              if (this.received_items.items[i].id * 1> sn) {
-                sn = this.received_items.items[i].id * 1;
+          for (let i = 0; i < this.receive_records.length; i++) {
+              if (this.receive_records[i].id * 1> sn) {
+                sn = this.receive_records[i].id * 1;
               }
           }
           sn = sn * 1 + 1;
@@ -2539,6 +2693,7 @@ var app = new Vue({
               is_checked:false,
               is_edit: false,
               id: sn,
+      is_new : true,
               sn: sn,
               confirm: "A",
               confirm_text: "Approved",
@@ -2556,7 +2711,6 @@ var app = new Vue({
               srp:price,
               date_needed:"",
               pid:this.product.id,
-              project_name: this.project_name,
               v1:this.v1,
               v2:this.v2,
               v3:this.v3,
@@ -2570,16 +2724,19 @@ var app = new Vue({
 
               receive_date: new Date().toISOString().slice(0, 10),
               which_pool: "Project Pool",
-              as_sample: "Yes",
+              as_sample: "No",
               location: "Caloocan",
               project_list: [],
               project_id: this.project_id,
+              project_name: this.project_name,
+              product_id: this.product.id,
               desc:"",
               incoming_qty: incoming_qty,
             };
 
-            this.received_items.items.push(item);
+            this.receive_records.unshift(item);
             alert('Add Successfully');
+            this.item_total++;
   app.$forceUpdate();
 
       },
@@ -2680,9 +2837,9 @@ var app = new Vue({
 
         var sn = 0;
         
-        for (let i = 0; i < this.received_items.items.length; i++) {
-          if (this.received_items.items[i].id * 1 > sn) {
-            sn = this.received_items.items[i].id * 1;
+        for (let i = 0; i < this.receive_records.length; i++) {
+          if (this.receive_records[i].id * 1 > sn) {
+            sn = this.receive_records[i].id * 1;
           }
       }
 
@@ -2694,6 +2851,7 @@ var app = new Vue({
             is_checked:false,
             is_edit: false,
             id: sn,
+      is_new : true,
             sn: sn,
             confirm: "A",
             confirm_text: "Approved",
@@ -2724,17 +2882,19 @@ var app = new Vue({
 
             receive_date: new Date().toISOString().slice(0, 10),
             which_pool: "Project Pool",
-            as_sample: "Yes",
+            as_sample: "No",
       location: "Caloocan",
             project_list: [],
             project_id: this.project_id,
+            product_id: this.product.id,
             project_name: this.project_name,
             desc:"",
             incoming_qty: incoming_qty,
           };
 
-          this.received_items.items.push(item);
+          this.receive_records.unshift(item);
           alert('Add Successfully');
+          this.item_total++;
   app.$forceUpdate();
 
       },
@@ -2913,6 +3073,206 @@ var app = new Vue({
         this.set_up_variants();
         this.set_up_specification();
       },
+
+      
+      apply_filters: function(pg) {
+        let _this = this;
+
+        if(pg != undefined) this.item_page = pg;
+
+        window.location.href =
+          "old_inventory_register?" +
+          "fpi=" +
+          _this.fil_prod_id +
+          "&fpc=" +
+          _this.fil_prod_code +
+          "&fp=" +
+          _this.fil_pool +
+          "&fpr=" +
+          _this.fil_project_related +
+          "&loc=" +
+          _this.fil_location +
+          "&sap=" +
+          _this.fil_sample +
+          "&fs=" +
+          _this.fil_status +
+          "&fo=" +
+          _this.fil_order +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
+          "&op1=" +
+          _this.od_opt1 +
+          "&od1=" +
+          _this.od_ord1 +
+          "&op2=" +
+          _this.od_opt2 +
+          "&od2=" +
+          _this.od_ord2 +
+          "&pg=" +
+          _this.item_page + 
+          "&page=" +
+          _this.item_page +
+          "&size=" +
+          _this.perPage;
+      },
+
+      apply_orders: function() {
+        let _this = this;
+
+        window.location.href =
+          "old_inventory_register?" +
+          "fpi=" +
+          _this.fil_prod_id +
+          "&fpc=" +
+          _this.fil_prod_code +
+          "&fp=" +
+          _this.fil_pool +
+          "&fpr=" +
+          _this.fil_project_related +
+          "&loc=" +
+          _this.fil_location +
+          "&sap=" +
+          _this.fil_sample +
+          "&fs=" +
+          _this.fil_status +
+          "&fo=" +
+          _this.fil_order +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
+          "&op1=" +
+          _this.od_opt1 +
+          "&od1=" +
+          _this.od_ord1 +
+          "&op2=" +
+          _this.od_opt2 +
+          "&od2=" +
+          _this.od_ord2 +
+          "&pg=" +
+          _this.item_page + 
+          "&page=" +
+          _this.item_page +
+          "&size=" +
+          _this.perPage;
+      },
+
+      
+      clear_orders: function() {
+        this.od_opt1 = '';
+        this.od_ord1 = '';
+        this.od_opt2 = '';
+        this.od_ord2 = '';
+        this.item_page = 1;
+
+        let _this = this;
+
+        window.location.href =
+          "old_inventory_register?" +
+          "fpi=" +
+          _this.fil_prod_id +
+          "&fpc=" +
+          _this.fil_prod_code +
+          "&fp=" +
+          _this.fil_pool +
+          "&fpr=" +
+          _this.fil_project_related +
+          "&loc=" +
+          _this.fil_location +
+          "&sap=" +
+          _this.fil_sample +
+          "&fs=" +
+          _this.fil_status +
+          "&fo=" +
+          _this.fil_order +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
+          "&op1=" +
+          _this.od_opt1 +
+          "&od1=" +
+          _this.od_ord1 +
+          "&op2=" +
+          _this.od_opt2 +
+          "&od2=" +
+          _this.od_ord2 +
+          "&pg=" +
+          _this.item_page + 
+          "&page=" +
+          _this.item_page +
+          "&size=" +
+          _this.perPage;
+      },
+
+      clear_filters: function() {
+        this.fil_tracking = '';
+        this.fil_prod_id = '';
+        this.fil_prod_code = '';
+        this.fil_pool = '';
+        this.fil_project_related = '';
+        this.fil_location = '';
+        this.fil_sample = '';
+        this.fil_status = '';
+        this.fil_order = '';
+        this.fil_date_from = '';
+        this.fil_date_to = '';
+
+        this.item_page = 1;
+
+        let _this = this;
+
+        window.location.href =
+          "old_inventory_register?" +
+          "fpi=" +
+          _this.fil_prod_id +
+          "&fpc=" +
+          _this.fil_prod_code +
+          "&fp=" +
+          _this.fil_pool +
+          "&fpr=" +
+          _this.fil_project_related +
+          "&loc=" +
+          _this.fil_location +
+          "&sap=" +
+          _this.fil_sample +
+          "&fs=" +
+          _this.fil_status +
+          "&fo=" +
+          _this.fil_order +
+          "&fdf=" +
+          _this.fil_date_from +
+          "&fdt=" +
+          _this.fil_date_to +
+          "&op1=" +
+          _this.od_opt1 +
+          "&od1=" +
+          _this.od_ord1 +
+          "&op2=" +
+          _this.od_opt2 +
+          "&od2=" +
+          _this.od_ord2 +
+          "&pg=" +
+          _this.item_page + 
+          "&page=" +
+          _this.item_page +
+          "&size=" +
+          _this.perPage;
+      },
+
+      cancel_filters:function() {
+        document.getElementById('filter_dialog').classList.toggle("show");
+        $('.list_function .new_project a.filter').toggleClass('focus');
+        this.is_modifying = false;
+      },
+
+      cancel_orders:function() {
+        document.getElementById('order_dialog').classList.toggle("show");
+        $('.list_function .new_project a.sort').toggleClass('focus');
+        this.is_modifying = false;
+      },
       
     filter_apply_new: function() {
       let _this = this;
@@ -2924,8 +3284,8 @@ var app = new Vue({
         c: _this.fil_code,
         t: JSON.stringify(_this.fil_tag),
         b: _this.fil_brand,
-        g: _this.fil_category,
         k: _this.fil_k,
+        g: _this.fil_category,
         of1: _this.of1,
         ofd1: _this.ofd1,
         of2: '',
@@ -3085,11 +3445,11 @@ var app = new Vue({
         $('#modal_product_catalog').modal('toggle');
       },
 
-      
-      barcode_printing(od_id, id) {
+      barcode_printing(item) {
         this.barcode_page = 0;
-        this.get_barcode_records(od_id, id);
-        this.item_id = id;
+        this.get_barcode_records(item);
+        this.item_id = item.id;
+
         $('#modal_registry_received_items').modal('toggle');
         $('#modal_barcode_printing').modal('toggle');
       },
@@ -3098,8 +3458,6 @@ var app = new Vue({
         $('#modal_registry_received_items').modal('toggle');
         $('#modal_barcode_printing').modal('toggle');
       },
-
-
 
       get_brands: function() {
         let _this = this;
@@ -3147,7 +3505,7 @@ var app = new Vue({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        url: "api/order_taiwan_mockup_p1_delete_message_a",
+        url: "api/order_taiwan_p1_delete_message_a",
         data: form_Data,
       })
         .then(function(response) {
@@ -3243,8 +3601,8 @@ var app = new Vue({
 
         if(item.shipping_way != '' 
         || item.shipping_number != '' 
-        || item.eta != '' 
         || item.date_send != '' 
+        || item.eta != '' 
         || item.arrive != '' 
         || item.charge != '' 
         || item.remark != '' 
@@ -3323,7 +3681,7 @@ var app = new Vue({
         let token = localStorage.getItem("accessToken");
   
         axios
-          .get("api/order_taiwan_mockup_p1_message_a", {
+          .get("api/order_taiwan_p1_message_a", {
             params,
             headers: { Authorization: `Bearer ${token}` },
           })
@@ -3387,7 +3745,7 @@ var app = new Vue({
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
-          url: "api/order_taiwan_mockup_p1_message_a",
+          url: "api/order_taiwan_p1_message_a",
           data: form_Data,
         })
           .then(function(response) {
@@ -3579,7 +3937,7 @@ var app = new Vue({
               headers: {
                 "Content-Type": "multipart/form-data",
               },
-              url: "api/order_taiwan_mockup_p1_item_update",
+              url: "api/order_taiwan_p1_item_update",
               data: form_Data,
             })
               .then(function(response) {
@@ -3635,7 +3993,7 @@ var app = new Vue({
                 status:"3",
                 notes:[],
                 which_pool:"Project Pool",
-                as_sample:"Yes",
+            as_sample:"No",
               };
 
               items.push(item);
@@ -3741,7 +4099,6 @@ var app = new Vue({
           });
           return;
         }
-          
 
         if(item.qty.trim() == "" || item.qty.trim() == "0" || item.receive_date == "")
         {
@@ -3752,28 +4109,26 @@ var app = new Vue({
           });
           return;
         }
-
-       
-        if(parseInt(item.qty) > parseInt(item.incoming_qty))
-        {
-          Swal.fire({
-            text: "According to the qty that you want to register, the incoming qty is not enough to deduct, please check the qty to register again.",
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-          return;
-        }
-        else
-        {
-           item.status = 1;
-          await this.save_encode_list(item.id);
-          app.$forceUpdate();
-        }
+        
+        // if(parseInt(item.qty) > parseInt(item.incoming_qty))
+        // {
+        //   Swal.fire({
+        //     text: "According to the qty that you want to register, the incoming qty is not enough to deduct, please check the qty to register again.",
+        //     icon: "warning",
+        //     confirmButtonText: "OK",
+        //   });
+        //   return;
+        // }
+        // else
+        // {
+          item.status = 1;
+          await this.save_encode_list(item);
+        // }
       },
 
       remove_item(id) {
-        this.received_items.items = this.received_items.items.filter(item => item.id !== id);
-        app.$forceUpdate();
+        this.receive_records = this.receive_records.filter(item => item.id !== id);
+
       },
 
       save_encode() {
@@ -3802,18 +4157,18 @@ var app = new Vue({
 
           for(var i=0; i<this.received_items.items.length; i++)
           {
-            var file = document.getElementById('photo_' + this.received_items.items[i].id + '_1');
+            var file = document.getElementById('photo_' + this.received_items + '_1');
             if(file) {
               let f = file.files[0];
               if(typeof f !== 'undefined')
-                form_Data.append('photo_1_' + this.received_items.items[i].id, f);
+                form_Data.append('photo_1_' + this.received_items, f);
             }
 
-            var file = document.getElementById('photo_' + this.received_items.items[i].id + '_2');
+            var file = document.getElementById('photo_' + this.received_items + '_2');
             if(file) {
               let f = file.files[0];
               if(typeof f !== 'undefined') 
-                form_Data.append('photo_2_' + this.received_items.items[i].id, f);
+                form_Data.append('photo_2_' + this.received_items, f);
             }
           }
 
@@ -3850,7 +4205,7 @@ var app = new Vue({
       },
 
       
-      save_encode_list(index) {
+      async save_encode_list(item)  {
 
         let _this = this;
 
@@ -3858,59 +4213,41 @@ var app = new Vue({
         var form_Data = new FormData();
 
         form_Data.append("jwt", token);
-        form_Data.append("received_items", JSON.stringify(this.received_items));
-        form_Data.append("od_id", this.id);
-        form_Data.append("serial_name", this.serial_name);
-        form_Data.append("od_name", this.od_name);
-        form_Data.append("index", index);
+        form_Data.append("received_items", JSON.stringify(item));
 
-        for(var i=0; i<this.received_items.items.length; i++)
-        {
-          if(this.received_items.items[i].id != index)
-            continue;
-
-          var file = document.getElementById('photo_' + this.received_items.items[i].id + '_1');
-          if(file) {
-            let f = file.files[0];
-            if(typeof f !== 'undefined')
-              form_Data.append('photo_1_' + this.received_items.items[i].id, f);
-          }
-
-          var file = document.getElementById('photo_' + this.received_items.items[i].id + '_2');
-          if(file) {
-            let f = file.files[0];
-            if(typeof f !== 'undefined') 
-              form_Data.append('photo_2_' + this.received_items.items[i].id, f);
-          }
+        var file = document.getElementById('photo_' + item.id + '_1');
+        if(file) {
+          let f = file.files[0];
+          if(typeof f !== 'undefined')
+            form_Data.append('photo_1_' + item.id, f);
         }
 
-        axios({
-          method: "post",
+        var file = document.getElementById('photo_' + item.id + '_2');
+        if(file) {
+          let f = file.files[0];
+          if(typeof f !== 'undefined') 
+            form_Data.append('photo_2_' + item.id, f);
+        }
+
+        //if(item.is_new == true) 
+          post_url = "api/old_inventory_register_encode_insert";
+        //else
+        //  post_url = "api/order_taiwan_p3_encode_list_update";
+
+        let res = await axios({
+          method: 'post',
+          url: post_url,
+          data: form_Data,
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          url: "api/order_taiwan_p3_encode_list",
-          data: form_Data,
-        })
-          .then(function(response) {
-            //handle success
-            // close modal
-
-            // Swal.fire({
-            //   text: response.data.message,
-            //   icon: "success",
-            //   confirmButtonText: "OK",
-            // });
-          })
-          .catch(function(error) {
-        
-
-          })
-          .finally(function() {
-            _this.submit = false;
-
         });
-    },
+
+        this.getRecord();
+
+        this.submit = false;
+
+      },
 
       changePool() {
         app.$forceUpdate();
@@ -3925,7 +4262,6 @@ var app = new Vue({
             }
           })
         },
-
 
       clear_photo(item, num) {
 
@@ -3998,27 +4334,45 @@ var app = new Vue({
       getRecord: function() {
         let _this = this;
 
-        if(_this.id == 0)
-          return;
-  
         const params = {
-          id: _this.id,
-          pg: 3
-        };
+                tid : _this.fil_tracking,
+                fpi: _this.fil_prod_id,
+                fpc: _this.fil_prod_code,
+       
+                fp: _this.fil_pool,
+                fpr: _this.fil_project_related,
+                loc: _this.fil_location,
+                sap: _this.fil_sample,
+
+                fs: _this.fil_status,
+                fo: _this.fil_order,
+                fdf: _this.fil_date_from,
+                fdt: _this.fil_date_to,
+
+                op1: _this.od_opt1,
+                od1: _this.od_ord1,
+                op2: _this.od_opt2,
+                od2: _this.od_ord2,
+
+                page: _this.item_page,
+                size: _this.perPage,
+            };
+
+            this.item_total = 0;
   
         let token = localStorage.getItem("accessToken");
   
         axios
-          .get("api/order_taiwan_p1", {
+          .get("api/old_inventory_register", {
               params,
               headers: { Authorization: `Bearer ${token}` },
             })
           .then(function(response) {
             console.log(response.data);
-            _this.items = response.data;
-            if (_this.receive_records.length > 0) {
-            
-              
+            _this.receive_records = response.data;
+            if(response.data.length > 0) {
+              _this.item_total = response.data[0].cnt;
+             
             }
           })
           .catch(function(error) {
@@ -4222,7 +4576,7 @@ var app = new Vue({
   
         axios({
           method: "post",
-          url: "api/order_taiwan_mockup_p1_print",
+          url: "api/order_taiwan_p1_print",
           data: form_Data,
           responseType: "blob",
         })
@@ -4292,8 +4646,6 @@ var app = new Vue({
       
       },
 
-      
-      
       toggle_normal: function(pid, id) {
 
         this.get_records(pid, id);
@@ -4403,6 +4755,7 @@ var app = new Vue({
       form_Data.append('v2', v2);
       form_Data.append('v3', v3);
       form_Data.append('v4', v4);
+
 
       axios({
         method: "post",
@@ -4866,7 +5219,7 @@ check_all_set(){
   {
     //this.price_ntd = price_ntd;
     this.product.price = "PHP " + Number(price).toLocaleString();;
-        this.product.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
+    this.product.quoted_price = "PHP " + Number(quoted_price).toLocaleString();
   }
   else
       {
@@ -4874,7 +5227,6 @@ check_all_set(){
           this.product.quoted_price = this.quoted_price;
       }
 },
-
 
 add_with_image_set_select(all) {
   let change = true;
@@ -4886,10 +5238,9 @@ add_with_image_set_select(all) {
 
   let list = "";
   let ps_var = "";
+  let _this = this;
 
   let sets = [];
-
-  let _this = this;
 
   for(var i=0; i < this.product_set.length; i++){
     let item_product = this.shallowCopy(
@@ -4990,19 +5341,21 @@ add_with_image_set_select(all) {
       listing:"",
       qty:"",
       backup_qty:"",
-      unit: "",
+      unit:"",
       srp:srp,
       date_needed:"",
       pid: this.product.id,
       status:"3",
-      btn2:"1",
+      shipping_way:"",
+      shipping_number:"",
       notes:[],
       v1: "",
       v2: "",
       v3: "",
       v4: "",
+      btn2:"1",
       which_pool:"Project Pool",
-      as_sample:"Yes",
+      as_sample:"No",
       ps_var : sets,
     };
 
@@ -5013,7 +5366,6 @@ add_with_image_set_select(all) {
   }
 
   items.push(item);
-
   var token = localStorage.getItem("token");
   var form_Data = new FormData();
 
@@ -5057,7 +5409,6 @@ add_without_image_set_select(all) {
   let ps_var = "";
 
   let sets = [];
-
   let _this = this;
 
   for(var i=0; i < this.product_set.length; i++){
@@ -5151,16 +5502,15 @@ add_without_image_set_select(all) {
       photo1:'',
       photo2:'',
       photo3:'',
-      code: this.product.code,
+      code:this.product.code,
       brief:list,
       listing:"",
-      qty:1,
+      qty:"",
       backup_qty:"",
-      unit: "",
+      unit:"",
       srp:srp,
       date_needed:"",
       pid: this.product.id,
-      
       v1: "",
       v2: "",
       v3: "",
@@ -5171,7 +5521,7 @@ add_without_image_set_select(all) {
       notes:[],
       btn2:"1",
       which_pool:"Project Pool",
-      as_sample:"Yes",
+      as_sample:"No",
       ps_var : sets,
     };
 
@@ -5182,34 +5532,322 @@ add_without_image_set_select(all) {
   }
 
   items.push(item);
-  var token = localStorage.getItem("token");
-  var form_Data = new FormData();
+  alert('Add Successfully');
 
-  form_Data.append("jwt", token);
-  form_Data.append("od_id", this.id);
-  form_Data.append("block", JSON.stringify(items));
+},
 
-  form_Data.append("access7", this.access7);
 
-  axios({
-    method: "post",
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-    url: "api/order_taiwan_p1_item_insert",
-    data: form_Data,
-  })
-    .then(function(response) {
-      //handle success
+add_with_image_set_select_warehouse(all) {
+  let change = true;
+  let price_ntd = 0;
+  let price = 0;
+  let quoted_price = 0;
+  let qty = 0;
+  let srp = 0;
 
-      _this.getRecord();
-      alert('Add Successfully');
+  let list = "";
+  let ps_var = "";
+  let _this = this;
 
-    })
-    .catch(function(error) {
-  
+  let sets = [];
 
-    });
+  for(var i=0; i < this.product_set.length; i++){
+    let item_product = this.shallowCopy(
+      this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
+    )
+
+    var list_g = "";
+
+    for(var j=0; j<this.product_set[i].specification.length; j++)
+    {
+        if(this.product_set[i].specification[j].k1 !== '')
+          list_g += this.product_set[i].specification[j].k1 + ': ' + this.product_set[i].specification[j].v1 + "\n";
+        if(this.product_set[i].specification[j].k2 !== '')
+          list_g += this.product_set[i].specification[j].k2 + ': ' + this.product_set[i].specification[j].v2 + "\n";
+    }
+
+    // add phased out information
+    if((this.product_set[i].phased_out_cnt > 0 && this.phased == 1) || (this.product_set[i].phased_out_cnt > 0 && all == 'all'))
+    {
+      list_g += "\n";
+      list_g += "Phased-out Variants:\n";
+      list_g += this.product_set[i].phased_out_text.split("<br/>").join("\n");
+    }
+    
+
+    if(item_product.id != undefined)
+    {
+      if(item_product.photo != "")
+        this.product_set[i].photo = item_product.photo;
+
+      price_ntd += item_product.price_ntd * 1;
+      price += item_product.price * 1;
+      quoted_price += item_product.quoted_price * 1;
+      qty += this.product_set[i].qty * 1;
+
+      srp = quoted_price != 0 ? quoted_price : price;
+
+      ps_var = ('id: ' + this.product_set[i].id) + "\n";
+
+      if(item_product.v1 != ""){
+        list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+        ps_var += (item_product.k1 + ': ' + item_product.v1) + "\n";
+      }
+      if(item_product.v2 != ""){
+        list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+        ps_var += (item_product.k2 + ': ' + item_product.v2) + "\n";
+      }
+      if(item_product.v3 != ""){
+        list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+        ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+      }
+      if(item_product.v4 != ""){
+        list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+        ps_var += (item_product.k4 + ': ' + item_product.v4) + "\n";
+      }
+
+      sets.push(ps_var);
+
+      list += list_g;
+
+      list += "\n";
+
+    }
+    else
+      change = false;
+  }
+
+  if(change)
+  {
+    list.replace(/\n+$/, "");
+
+    var sn = 0;
+
+    for (let i = 0; i < this.receive_records.length; i++) {
+      if (this.receive_records[i].id * 1 > sn) {
+        sn = this.receive_records[i].id * 1;
+      }
+    }
+
+    sn = sn * 1 + 1;
+
+    incoming_qty = item_product.incoming_qty != undefined ? item_product.incoming_qty : 0;
+
+    item = {
+      is_checked:false,
+      is_edit: false,
+      id: sn,
+      is_new : true,
+      sn: sn,
+      confirm: "A",
+      confirm_text: "Approved",
+      brand:"",
+      brand_other:"",
+      photo1: this.product_set[0] != undefined ? this.img_url + this.product_set[0].photo : "",
+      photo2: this.product_set[1] != undefined ? this.img_url + this.product_set[1].photo : "",
+      photo3: this.product_set[2] != undefined ? this.img_url + this.product_set[2].photo : "",
+      code: this.product.code,
+      brief:list,
+      listing:"",
+      qty:"",
+      backup_qty:"",
+      unit:"",
+      srp:srp,
+      date_needed:"",
+      pid: this.product.id,
+      status:0,
+      shipping_way:"",
+      shipping_number:"",
+      notes:[],
+      v1: "",
+      v2: "",
+      v3: "",
+      v4: "",
+      btn2:"1",
+
+      ps_var : sets,
+
+      photo4: "",
+      photo5: "",
+
+      receive_date: new Date().toISOString().slice(0, 10),
+      which_pool: "Project Pool",
+      as_sample: "No",
+      location: "Caloocan",
+      project_list: [],
+      project_id: this.project_id,
+      project_name: this.project_name,
+      product_id: this.product.id,
+      desc:"",
+      incoming_qty: incoming_qty,
+    };
+
+  }
+  else{
+    alert('Please choose option for each attribute of every sub-product');
+    return;
+  }
+
+  this.receive_records.unshift(item);
+  alert('Add Successfully');
+  this.item_total++;
+  app.$forceUpdate();
+
+},
+
+
+add_without_image_set_select_warehouse(all) {
+  let change = true;
+  let price_ntd = 0;
+  let price = 0;
+  let quoted_price = 0;
+  let qty = 0;
+  let srp = 0;
+
+  let list = "";
+  let ps_var = "";
+
+  let sets = [];
+  let _this = this;
+
+  for(var i=0; i < this.product_set.length; i++){
+    let item_product = this.shallowCopy(
+      this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
+    )
+
+    var list_g = "";
+
+    for(var j=0; j<this.product_set[i].specification.length; j++)
+    {
+        if(this.product_set[i].specification[j].k1 !== '')
+          list_g += this.product_set[i].specification[j].k1 + ': ' + this.product_set[i].specification[j].v1 + "\n";
+        if(this.product_set[i].specification[j].k2 !== '')
+          list_g += this.product_set[i].specification[j].k2 + ': ' + this.product_set[i].specification[j].v2 + "\n";
+    }
+
+    // add phased out information
+    if((this.product_set[i].phased_out_cnt > 0 && this.phased == 1) || (this.product_set[i].phased_out_cnt > 0 && all == 'all'))
+    {
+      list_g += "\n";
+      list_g += "Phased-out Variants:\n";
+      list_g += this.product_set[i].phased_out_text.split("<br/>").join("\n");
+    }
+
+    if(item_product.id != undefined)
+    {
+      price_ntd += item_product.price_ntd * 1;
+      price += item_product.price * 1;
+      quoted_price += item_product.quoted_price * 1;
+      qty += this.product_set[i].qty * 1;
+
+      srp = quoted_price != 0 ? quoted_price : price;
+
+      ps_var = ('id: ' + this.product_set[i].id) + "\n";
+
+      if(item_product.v1 != ""){
+        list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+        ps_var += (item_product.k1 + ': ' + item_product.v1) + "\n";
+      }
+      if(item_product.v2 != ""){
+        list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+        ps_var += (item_product.k2 + ': ' + item_product.v2) + "\n";
+      }
+      if(item_product.v3 != ""){
+        list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+        ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
+      }
+      if(item_product.v4 != ""){
+        list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+        ps_var += (item_product.k4 + ': ' + item_product.v4) + "\n";
+      }
+
+      sets.push(ps_var);
+
+      list += list_g;
+
+      list += "\n";
+
+    }
+    else
+      change = false;
+  }
+
+  if(change)
+  {
+
+    list.replace(/\n+$/, "");
+
+    var sn = 0;
+
+    for (let i = 0; i < this.receive_records.length; i++) {
+      if (this.receive_records[i].id * 1 > sn) {
+        sn = this.receive_records[i].id * 1;
+      }
+    }
+
+    sn = sn * 1 + 1;
+
+    incoming_qty = item_product.incoming_qty != undefined ? item_product.incoming_qty : 0;
+
+    item = {
+      is_checked:false,
+      is_edit: false,
+      id: sn,
+      is_new : true,
+      sn: sn,
+      confirm: "A",
+      confirm_text: "Approved",
+      brand:"",
+      brand_other:"",
+      photo1:'',
+      photo2:'',
+      photo3:'',
+      code:this.product.code,
+      brief:list,
+      listing:"",
+      qty:"",
+      backup_qty:"",
+      unit:"",
+      srp:srp,
+      date_needed:"",
+      pid: this.product.id,
+      v1: "",
+      v2: "",
+      v3: "",
+      v4: "",
+      shipping_way:"",
+      shipping_number:"",
+      status:0,
+      notes:[],
+      btn2:"1",
+
+      ps_var : sets,
+
+      photo4: "",
+      photo5: "",
+
+      receive_date: new Date().toISOString().slice(0, 10),
+      which_pool: "Project Pool",
+      as_sample: "No",
+      location: "Caloocan",
+      project_list: [],
+      project_id: this.project_id,
+      project_name: this.project_name,
+      product_id: this.product.id,
+      desc:"",
+      incoming_qty: incoming_qty,
+    };
+
+  }
+  else{
+    alert('Please choose option for each attribute of every sub-product');
+    return;
+  }
+
+  this.receive_records.unshift(item);
+  alert('Add Successfully');
+  this.item_total++;
+  app.$forceUpdate();
 
 },
 
@@ -5290,6 +5928,424 @@ set_up_specification_set(set) {
 },
 
 add_with_image_set(set, all) {
+
+  var photo = "";
+  var photo2 = "";
+  var photo3 = "";
+  
+  var price = "";
+  var list = "";
+  
+  var srp = 0;
+  
+  let _this = this;
+  
+  let item_product = this.shallowCopy(
+    set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
+  )
+  
+  if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
+    alert('Please choose an option for each attribute');
+    return;
+  }
+  
+  if(item_product.id != undefined)
+  {
+    if(item_product.photo != "")
+      photo = item_product.photo;
+  
+      photo2 = set.photo2;
+      photo3 = set.photo3;
+  
+      // price = Number(item_product.price) != 0 ? Number(item_product.price) : Number(item_product.quoted_price);
+      price = Number(item_product.quoted_price) != 0 ? Number(item_product.quoted_price) : Number(item_product.price);
+      srp =  Number(item_product.price);
+      if(set.v1 != "")
+        list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+      if(set.v2 != "")
+        list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+      if(set.v3 != "")
+        list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+      if(set.v4 != "")
+        list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+  }
+  else
+  {
+    photo = set.photo1;
+    photo2 = set.photo2;
+    photo3 = set.photo3;
+    // price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+    price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+    srp = Number(set.price_org);
+    list = "";
+  }
+  
+  if(all == 'all')
+  {
+    list = "";
+    var k1, k2, k3;
+    k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
+    k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
+    k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
+    k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
+  
+    if(k1 !== '')
+      list += set.variation1 === "custom" ? set.variation1_custom + ': ' + set.variation1_value.join(', ') + "\n" : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+    if(k2 !== '')
+      list += set.variation2 === "custom" ? set.variation2_custom + ': ' + set.variation2_value.join(', ') + "\n" : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+    if(k3 !== '')
+      list += set.variation3 === "custom" ? set.variation3_custom + ': ' + set.variation3_value.join(', ') + "\n" : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+    if(k4 !== '')
+      list += set.variation4 === "custom" ? set.variation4_custom + ': ' + set.variation4_value.join(', ') + "\n" : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
+  
+    photo = set.photo1;
+    photo2 = set.photo2;
+    photo3 = set.photo3;
+  
+    if(set.srp !== null || set.srp_quoted !== null)
+      price = set.srp_quoted !== null ? set.srp_quoted : set.srp;
+  
+    srp = set.srp;
+      //price = set.srp !== null ? set.srp : set.srp_quoted;
+  
+    if(price == null)
+      //price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+      price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+      
+  }
+  
+  for(var i=0; i<set.specification.length; i++)
+  {
+      if(set.specification[i].k1 !== '')
+        list += set.specification[i].k1 + ': ' + set.specification[i].v1 + "\n";
+      if(set.specification[i].k2 !== '')
+        list += set.specification[i].k2 + ': ' + set.specification[i].v2 + "\n";
+  }
+  
+  // add phased out information
+  if((set.phased_out_cnt > 0 && set.phased == 1) || (set.phased_out_cnt > 0 && all == 'all'))
+  {
+    // if string or is string array
+    if(typeof set.phased_out_text === 'string' || set.phased_out_text instanceof String)
+    {
+      list += "\n";
+      list += "Phased-out Variants:\n";
+      list += set.phased_out_text.split("<br/>").join("\n");
+    }
+    else if(Array.isArray(set.phased_out_text))
+    {
+      for(var i=0; i<set.phased_out_text.length; i++)
+      {
+        list += "\n";
+        list += "Phased-out Variants:\n";
+        list += set.phased_out_text[i].split("<br/>").join("\n");
+      }
+    }
+    else
+    {
+      list += "\n";
+      list += "Phased-out Variants:\n";
+      list += set.phased_out_text.split("<br/>").join("\n");
+    }
+    
+  }
+  
+  if(price == null)
+    price = set.srp_quoted !== 0 ?  set.srp_quoted : set.srp;
+    // price = set.srp !== 0 ?  set.srp : set.srp_quoted;
+  
+  if(srp == null)
+    srp = 0;
+  
+  
+    var sn = 0;
+  
+    for (let i = 0; i < this.items.length; i++) {
+        if (this.items[i].id * 1> sn) {
+          sn = this.items[i].id * 1;
+        }
+    }
+    sn = sn * 1 + 1;
+  
+    items = [];
+  
+  
+  list.replace(/\n+$/, "");
+  sn = sn + 1;
+  
+  
+  
+  
+  item = {
+    is_checked:false,
+    is_edit: false,
+    id: sn,
+    sn: sn,
+    confirm: "A",
+                confirm_text: "Approved",
+    brand:set.brand,
+    brand_other:"",
+    photo1:photo != '' ? photo : '',
+    photo2:set.photo2 != '' ? set.photo2 : '',
+    photo3:set.photo3 != '' ? set.photo3 : '',
+    code:set.code,
+    brief:list,
+    listing:"",
+    qty:set.qty,
+    backup_qty:"",
+    unit:"",
+    srp:price,
+    date_needed:"",
+    pid: set.id,
+    status:"3",
+    shipping_way:"",
+    shipping_number:"",
+    notes:[],
+    v1: all == 'all' ? '' : set.v1,
+      v2: all == 'all' ? '' : set.v2,
+      v3: all == 'all' ? '' : set.v3,
+      v4: all == 'all' ? '' : set.v4,
+    btn2:"1",
+    which_pool:"Project Pool",
+            as_sample:"No",
+  };
+  
+  items.push(item);
+  
+  var token = localStorage.getItem("token");
+    var form_Data = new FormData();
+  
+    form_Data.append("jwt", token);
+    form_Data.append("od_id", this.id);
+    form_Data.append("block", JSON.stringify(items));
+  
+    form_Data.append("access7", this.access7);
+  
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      url: "api/order_taiwan_p1_item_insert",
+      data: form_Data,
+    })
+      .then(function(response) {
+        //handle success
+  
+        _this.getRecord();
+        alert('Add Successfully');
+  
+      })
+      .catch(function(error) {
+        alert(error);
+  
+      });
+  
+  
+  },
+  
+  add_without_image_set(set, all) {
+  
+  var photo = "";
+  var price = "";
+  var list = "";
+  
+  var srp = 0;
+  
+  let _this = this;
+  
+  let item_product = this.shallowCopy(
+    set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
+  )
+  
+  if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
+    alert('Please choose an option for each attribute');
+    return;
+  }
+  
+  if(item_product.id != undefined)
+  {
+    if(item_product.photo != "")
+      photo = item_product.photo;
+      //price = Number(item_product.price) != 0 ? Number(item_product.price) : Number(item_product.quoted_price);
+      price = Number(item_product.quoted_price) != 0 ? Number(item_product.quoted_price) : Number(item_product.price);
+      srp =  Number(item_product.price);
+      if(set.v1 != "")
+        list += (item_product.k1 + ': ' + item_product.v1) + "\n";
+      if(set.v2 != "")
+        list += (item_product.k2 + ': ' + item_product.v2) + "\n";
+      if(set.v3 != "")
+        list += (item_product.k3 + ': ' + item_product.v3) + "\n";
+      if(set.v4 != "")
+        list += (item_product.k4 + ': ' + item_product.v4) + "\n";
+  }
+  else
+  {
+    photo = set.photo1;
+    //price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+    price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+    srp = Number(set.price_org);
+    list = "";
+  }
+  
+  if(all == 'all')
+  {
+    list = "";
+    var k1, k2, k3;
+    k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
+    k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
+    k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
+    k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
+  
+    if(k1 !== '')
+      list += set.variation1 === "custom" ? set.variation1_custom + ': ' + set.variation1_value.join(', ') + "\n" : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
+    if(k2 !== '')
+      list += set.variation2 === "custom" ? set.variation2_custom + ': ' + set.variation2_value.join(', ') + "\n" : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
+    if(k3 !== '')
+      list += set.variation3 === "custom" ? set.variation3_custom + ': ' + set.variation3_value.join(', ') + "\n" : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
+    if(k4 !== '')
+      list += set.variation4 === "custom" ? set.variation4_custom + ': ' + set.variation4_value.join(', ') + "\n" : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
+  
+    photo = set.photo1;
+  
+    if(set.srp !== null || set.srp_quoted !== null)
+      price = set.srp_quoted !== null ? set.srp_quoted : set.srp;
+  
+      //price = set.srp !== null ? set.srp : set.srp_quoted;
+  
+    if(price == null)
+      //price = set.price_org !== null ? set.price_org : set.quoted_price_org;
+      price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
+      
+      
+    srp = set.srp;
+  }
+  
+  if(price == null)
+    price = set.srp_quoted !== 0 ?  set.srp_quoted : set.srp;
+    //price = set.srp !== 0 ?  set.srp : set.srp_quoted;
+  
+  if(srp == null)
+    srp = 0;
+  
+  for(var i=0; i<set.specification.length; i++)
+  {
+      if(set.specification[i].k1 !== '')
+        list += set.specification[i].k1 + ': ' + set.specification[i].v1 + "\n";
+      if(set.specification[i].k2 !== '')
+        list += set.specification[i].k2 + ': ' + set.specification[i].v2 + "\n";
+  }
+  
+  // add phased out information
+  if((set.phased_out_cnt > 0 && set.phased == 1) || (set.phased_out_cnt > 0 && all == 'all'))
+  {
+    // if string or is string array
+    if(typeof set.phased_out_text === 'string' || set.phased_out_text instanceof String)
+    {
+      list += "\n";
+      list += "Phased-out Variants:\n";
+      list += set.phased_out_text.split("<br/>").join("\n");
+    }
+    else if(Array.isArray(set.phased_out_text))
+    {
+      for(var i=0; i<set.phased_out_text.length; i++)
+      {
+        list += "\n";
+        list += "Phased-out Variants:\n";
+        list += set.phased_out_text[i].split("<br/>").join("\n");
+      }
+    }
+    else
+    {
+      list += "\n";
+      list += "Phased-out Variants:\n";
+      list += set.phased_out_text.split("<br/>").join("\n");
+    }
+  }
+  
+  list.replace(/\n+$/, "");
+  
+  var sn = 0;
+  
+  for (let i = 0; i < this.items.length; i++) {
+    if (this.items[i].id * 1 > sn) {
+      sn = this.items[i].id * 1;
+    }
+  }
+  
+  sn = sn * 1 + 1;
+  
+  items = [];
+  
+  item = {
+      is_checked:false,
+      is_edit: false,
+      id: sn,
+      sn: sn,
+      confirm: "A",
+              confirm_text: "Approved",
+      brand:set.brand,
+      brand_other:"",
+      photo1:'',
+      photo2:'',
+      photo3:'',
+      code:set.code,
+      brief:list,
+      listing:"",
+      qty:set.qty,
+      backup_qty:"",
+      unit:"",
+      srp:price,
+      date_needed:"",
+      pid: set.id,
+      v1: all == 'all' ? '' : set.v1,
+      v2: all == 'all' ? '' : set.v2,
+      v3: all == 'all' ? '' : set.v3,
+      v4: all == 'all' ? '' : set.v4,
+      shipping_way:"",
+        shipping_number:"",
+        status:"3",
+      notes:[],
+      btn2:"1",
+      which_pool:"Project Pool",
+            as_sample:"No",
+    };
+  
+    items.push(item);
+  
+      var token = localStorage.getItem("token");
+        var form_Data = new FormData();
+  
+        form_Data.append("jwt", token);
+        form_Data.append("od_id", this.id);
+        form_Data.append("block", JSON.stringify(items));
+  
+        form_Data.append("access7", this.access7);
+  
+        axios({
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          url: "api/order_taiwan_p1_item_insert",
+          data: form_Data,
+        })
+          .then(function(response) {
+            //handle success
+  
+            _this.getRecord();
+            alert('Add Successfully');
+  
+          })
+          .catch(function(error) {
+        
+  
+          });
+  
+  },
+    
+
+add_with_image_set_warehouse(set, all) {
 
 var photo = "";
 var photo2 = "";
@@ -5422,89 +6478,73 @@ if(srp == null)
 
   var sn = 0;
 
-  for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].id * 1> sn) {
-        sn = this.items[i].id * 1;
+  for (let i = 0; i < this.receive_records.length; i++) {
+      if (this.receive_records[i].id * 1> sn) {
+        sn = this.receive_records[i].id * 1;
       }
   }
   sn = sn * 1 + 1;
 
-  items = [];
-
-
 list.replace(/\n+$/, "");
 sn = sn + 1;
 
-
-
+incoming_qty = set.incoming_qty != undefined ? set.incoming_qty : 0;
 
 item = {
   is_checked:false,
   is_edit: false,
   id: sn,
+      is_new : true,
   sn: sn,
   confirm: "A",
-  confirm_text: "Approved",
+              confirm_text: "Approved",
   brand:set.brand,
   brand_other:"",
-  photo1:photo != '' ? photo : '',
-  photo2:set.photo2 != '' ? set.photo2 : '',
-  photo3:set.photo3 != '' ? set.photo3 : '',
+  photo1:photo != '' ? this.img_url + photo : '',
+  photo2:set.photo2 != '' ? this.img_url + set.photo2 : '',
+  photo3:set.photo3 != '' ? this.img_url + set.photo3 : '',
   code:set.code,
   brief:list,
   listing:"",
   qty:set.qty,
   backup_qty:"",
-  unit: "",
+  unit:"",
   srp:price,
   date_needed:"",
   pid: set.id,
-  status:"3",
-  btn2:"1",
+  status:0,
+  shipping_way:"",
+  shipping_number:"",
   notes:[],
   v1: all == 'all' ? '' : set.v1,
     v2: all == 'all' ? '' : set.v2,
     v3: all == 'all' ? '' : set.v3,
     v4: all == 'all' ? '' : set.v4,
-    which_pool:"Project Pool",
-              as_sample:"Yes",
+  btn2:"1",
+
+  photo4: "",
+      photo5: "",
+
+      receive_date: new Date().toISOString().slice(0, 10),
+      which_pool: "Project Pool",
+      as_sample: "No",
+      location: "Caloocan",
+      project_list: [],
+      project_id: this.project_id,
+      project_name: this.project_name,
+      product_id: set.id,
+      desc:"",
+      incoming_qty: incoming_qty,
 };
 
-items.push(item);
-
-var token = localStorage.getItem("token");
-  var form_Data = new FormData();
-
-  form_Data.append("jwt", token);
-  form_Data.append("od_id", this.id);
-  form_Data.append("block", JSON.stringify(items));
-
-  form_Data.append("access7", this.access7);
-
-  axios({
-    method: "post",
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-    url: "api/order_taiwan_p1_item_insert",
-    data: form_Data,
-  })
-    .then(function(response) {
-      //handle success
-
-      _this.getRecord();
-      alert('Add Successfully');
-
-    })
-    .catch(function(error) {
-      alert(error);
-
-    });
-
+this.receive_records.unshift(item);
+alert('Add Successfully');
+this.item_total++;
+  app.$forceUpdate();
 
 },
 
-add_without_image_set(set, all) {
+add_without_image_set_warehouse(set, all) {
 
 var photo = "";
 var price = "";
@@ -5558,13 +6598,13 @@ if(all == 'all')
   k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
 
   if(k1 !== '')
-    list += (set.variation1 === "custom" ? set.variation1_custom : set.variation1) + ': ' + set.variation1_value.join(', ') + "\n";
+    list += set.variation1 === "custom" ? set.variation1_custom + ': ' + set.variation1_value.join(', ') + "\n" : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
   if(k2 !== '')
-    list += (set.variation2 === "custom" ? set.variation2_custom : set.variation2) + ': ' + set.variation2_value.join(', ') + "\n";
+    list += set.variation2 === "custom" ? set.variation2_custom + ': ' + set.variation2_value.join(', ') + "\n" : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
   if(k3 !== '')
-    list += (set.variation3 === "custom" ? set.variation3_custom : set.variation3) + ': ' + set.variation3_value.join(', ') + "\n";
+    list += set.variation3 === "custom" ? set.variation3_custom + ': ' + set.variation3_value.join(', ') + "\n" : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
   if(k4 !== '')
-    list += (set.variation4 === "custom" ? set.variation4_custom : set.variation4) + ': ' + set.variation4_value.join(', ') + "\n";
+    list += set.variation4 === "custom" ? set.variation4_custom + ': ' + set.variation4_value.join(', ') + "\n" : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
 
   photo = set.photo1;
 
@@ -5627,20 +6667,21 @@ list.replace(/\n+$/, "");
 
 var sn = 0;
 
-for (let i = 0; i < this.items.length; i++) {
-  if (this.items[i].id * 1 > sn) {
-    sn = this.items[i].id * 1;
+for (let i = 0; i < this.receive_records.length; i++) {
+  if (this.receive_records[i].id * 1 > sn) {
+    sn = this.receive_records[i].id * 1;
   }
 }
 
 sn = sn * 1 + 1;
 
-items = [];
+incoming_qty = set.incoming_qty != undefined ? set.incoming_qty : 0;
 
 item = {
     is_checked:false,
     is_edit: false,
     id: sn,
+      is_new : true,
     sn: sn,
     confirm: "A",
             confirm_text: "Approved",
@@ -5654,7 +6695,7 @@ item = {
     listing:"",
     qty:set.qty,
     backup_qty:"",
-    unit: "",
+    unit:"",
     srp:price,
     date_needed:"",
     pid: set.id,
@@ -5664,727 +6705,31 @@ item = {
     v4: all == 'all' ? '' : set.v4,
     shipping_way:"",
       shipping_number:"",
-      status:"3",
+      status:0,
     notes:[],
     btn2:"1",
-    which_pool:"Project Pool",
-              as_sample:"Yes",
+
+    photo4: "",
+      photo5: "",
+
+      receive_date: new Date().toISOString().slice(0, 10),
+      which_pool: "Project Pool",
+      as_sample: "No",
+      location: "Caloocan",
+      project_list: [],
+      project_id: this.project_id,
+      project_name: this.project_name,
+      desc:"",
+      product_id:set.id,
+      incoming_qty: incoming_qty,
   };
 
-  items.push(item);
-
-    var token = localStorage.getItem("token");
-      var form_Data = new FormData();
-
-      form_Data.append("jwt", token);
-      form_Data.append("od_id", this.id);
-      form_Data.append("block", JSON.stringify(items));
-
-      form_Data.append("access7", this.access7);
-
-      axios({
-        method: "post",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        url: "api/order_taiwan_p1_item_insert",
-        data: form_Data,
-      })
-        .then(function(response) {
-          //handle success
-
-          _this.getRecord();
-          alert('Add Successfully');
-
-        })
-        .catch(function(error) {
-      
-
-        });
+  this.receive_records.unshift(item);
+  alert('Add Successfully');
+  this.item_total++;
+  app.$forceUpdate();
 
 },
-
-
-add_with_image_set_select_warehouse(all) {
-  let change = true;
-  let price_ntd = 0;
-  let price = 0;
-  let quoted_price = 0;
-  let qty = 0;
-  let srp = 0;
-  
-  let list = "";
-  let ps_var = "";
-  let _this = this;
-  
-  let sets = [];
-  
-  for(var i=0; i < this.product_set.length; i++){
-  let item_product = this.shallowCopy(
-  this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
-  )
-  
-  var list_g = "";
-  
-  for(var j=0; j<this.product_set[i].specification.length; j++)
-  {
-    if(this.product_set[i].specification[j].k1 !== '')
-      list_g += this.product_set[i].specification[j].k1 + ': ' + this.product_set[i].specification[j].v1 + "\n";
-    if(this.product_set[i].specification[j].k2 !== '')
-      list_g += this.product_set[i].specification[j].k2 + ': ' + this.product_set[i].specification[j].v2 + "\n";
-  }
-  
-  // add phased out information
-  if((this.product_set[i].phased_out_cnt > 0 && this.phased == 1) || (this.product_set[i].phased_out_cnt > 0 && all == 'all'))
-  {
-  list_g += "\n";
-  list_g += "Phased-out Variants:\n";
-  list_g += this.product_set[i].phased_out_text.split("<br/>").join("\n");
-  }
-  
-  
-  if(item_product.id != undefined)
-  {
-  if(item_product.photo != "")
-    this.product_set[i].photo = item_product.photo;
-  
-  price_ntd += item_product.price_ntd * 1;
-  price += item_product.price * 1;
-  quoted_price += item_product.quoted_price * 1;
-  qty += this.product_set[i].qty * 1;
-  
-  srp = quoted_price != 0 ? quoted_price : price;
-  
-  ps_var = ('id: ' + this.product_set[i].id) + "\n";
-  
-  if(item_product.v1 != ""){
-    list += (item_product.k1 + ': ' + item_product.v1) + "\n";
-    ps_var += (item_product.k1 + ': ' + item_product.v1) + "\n";
-  }
-  if(item_product.v2 != ""){
-    list += (item_product.k2 + ': ' + item_product.v2) + "\n";
-    ps_var += (item_product.k2 + ': ' + item_product.v2) + "\n";
-  }
-  if(item_product.v3 != ""){
-    list += (item_product.k3 + ': ' + item_product.v3) + "\n";
-    ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
-  }
-  if(item_product.v4 != ""){
-    list += (item_product.k4 + ': ' + item_product.v4) + "\n";
-    ps_var += (item_product.k4 + ': ' + item_product.v4) + "\n";
-  }
-  
-  sets.push(ps_var);
-  
-  list += list_g;
-  
-  list += "\n";
-  
-  }
-  else
-  change = false;
-  }
-  
-  if(change)
-  {
-  list.replace(/\n+$/, "");
-  
-  var sn = 0;
-  
-  for (let i = 0; i < this.received_items.items.length; i++) {
-  if (this.received_items.items[i].id * 1 > sn) {
-    sn = this.received_items.items[i].id * 1;
-  }
-  }
-  
-  sn = sn * 1 + 1;
-  
-  item = {
-  is_checked:false,
-  is_edit: false,
-  id: sn,
-  sn: sn,
-  confirm: "A",
-  confirm_text: "Approved",
-  brand:"",
-  brand_other:"",
-  photo1: this.product_set[0] != undefined ? this.img_url + this.product_set[0].photo : "",
-  photo2: this.product_set[1] != undefined ? this.img_url + this.product_set[1].photo : "",
-  photo3: this.product_set[2] != undefined ? this.img_url + this.product_set[2].photo : "",
-  code: this.product.code,
-  brief:list,
-  listing:"",
-  qty:"",
-  backup_qty:"",
-  unit:"",
-  srp:srp,
-  date_needed:"",
-  pid: this.product.id,
-  status:0,
-  shipping_way:"",
-  shipping_number:"",
-  notes:[],
-  v1: "",
-  v2: "",
-  v3: "",
-  v4: "",
-  btn2:"1",
-  
-  ps_var : sets,
-  
-  photo4: "",
-  photo5: "",
-  
-  receive_date: new Date().toISOString().slice(0, 10),
-  which_pool: "Project Pool",
-  as_sample: "Yes",
-  location: "Caloocan",
-  project_list: [],
-  project_id: this.project_id,
-  project_name: this.project_name,
-  desc:"",
-  incoming_qty: this.product.incoming_qty !== null ? this.product.incoming_qty : 0,
-  };
-  
-  }
-  else{
-  alert('Please choose option for each attribute of every sub-product');
-  return;
-  }
-  
-  this.received_items.items.push(item);
-  alert('Add Successfully');
-  app.$forceUpdate();
-  
-  },
-  
-  
-  add_without_image_set_select_warehouse(all) {
-  let change = true;
-  let price_ntd = 0;
-  let price = 0;
-  let quoted_price = 0;
-  let qty = 0;
-  let srp = 0;
-  
-  let list = "";
-  let ps_var = "";
-  
-  let sets = [];
-  let _this = this;
-  
-  for(var i=0; i < this.product_set.length; i++){
-  let item_product = this.shallowCopy(
-  this.product_set[i].variation_product.find((element) => element.v1 == this.product_set[i].v1 && element.v2 == this.product_set[i].v2 && element.v3 == this.product_set[i].v3 && element.v4 == this.product_set[i].v4)
-  )
-  
-  var list_g = "";
-  
-  for(var j=0; j<this.product_set[i].specification.length; j++)
-  {
-    if(this.product_set[i].specification[j].k1 !== '')
-      list_g += this.product_set[i].specification[j].k1 + ': ' + this.product_set[i].specification[j].v1 + "\n";
-    if(this.product_set[i].specification[j].k2 !== '')
-      list_g += this.product_set[i].specification[j].k2 + ': ' + this.product_set[i].specification[j].v2 + "\n";
-  }
-  
-  // add phased out information
-  if((this.product_set[i].phased_out_cnt > 0 && this.phased == 1) || (this.product_set[i].phased_out_cnt > 0 && all == 'all'))
-  {
-  list_g += "\n";
-  list_g += "Phased-out Variants:\n";
-  list_g += this.product_set[i].phased_out_text.split("<br/>").join("\n");
-  }
-  
-  if(item_product.id != undefined)
-  {
-  price_ntd += item_product.price_ntd * 1;
-  price += item_product.price * 1;
-  quoted_price += item_product.quoted_price * 1;
-  qty += this.product_set[i].qty * 1;
-  
-  srp = quoted_price != 0 ? quoted_price : price;
-  
-  ps_var = ('id: ' + this.product_set[i].id) + "\n";
-  
-  if(item_product.v1 != ""){
-    list += (item_product.k1 + ': ' + item_product.v1) + "\n";
-    ps_var += (item_product.k1 + ': ' + item_product.v1) + "\n";
-  }
-  if(item_product.v2 != ""){
-    list += (item_product.k2 + ': ' + item_product.v2) + "\n";
-    ps_var += (item_product.k2 + ': ' + item_product.v2) + "\n";
-  }
-  if(item_product.v3 != ""){
-    list += (item_product.k3 + ': ' + item_product.v3) + "\n";
-    ps_var += (item_product.k3 + ': ' + item_product.v3) + "\n";
-  }
-  if(item_product.v4 != ""){
-    list += (item_product.k4 + ': ' + item_product.v4) + "\n";
-    ps_var += (item_product.k4 + ': ' + item_product.v4) + "\n";
-  }
-  
-  sets.push(ps_var);
-  
-  list += list_g;
-  
-  list += "\n";
-  
-  }
-  else
-  change = false;
-  }
-  
-  if(change)
-  {
-  
-  list.replace(/\n+$/, "");
-  
-  var sn = 0;
-  
-  for (let i = 0; i < this.received_items.items.length; i++) {
-  if (this.received_items.items[i].id * 1 > sn) {
-    sn = this.received_items.items[i].id * 1;
-  }
-  }
-  
-  sn = sn * 1 + 1;
-  
-  item = {
-  is_checked:false,
-  is_edit: false,
-  id: sn,
-  sn: sn,
-  confirm: "A",
-  confirm_text: "Approved",
-  brand:"",
-  brand_other:"",
-  photo1:'',
-  photo2:'',
-  photo3:'',
-  code:this.product.code,
-  brief:list,
-  listing:"",
-  qty:"",
-  backup_qty:"",
-  unit:"",
-  srp:srp,
-  date_needed:"",
-  pid: this.product.id,
-  v1: "",
-  v2: "",
-  v3: "",
-  v4: "",
-  shipping_way:"",
-  shipping_number:"",
-  status:0,
-  notes:[],
-  btn2:"1",
-  
-  ps_var : sets,
-  
-  photo4: "",
-  photo5: "",
-  
-  receive_date: new Date().toISOString().slice(0, 10),
-  which_pool: "Project Pool",
-  as_sample: "Yes",
-  location: "Caloocan",
-  project_list: [],
-  project_id: this.project_id,
-  project_name: this.project_name,
-  desc:"",
-  incoming_qty: this.product.incoming_qty !== null ? this.product.incoming_qty : 0,
-  };
-  
-  }
-  else{
-  alert('Please choose option for each attribute of every sub-product');
-  return;
-  }
-  
-  this.received_items.items.push(item);
-  alert('Add Successfully');
-  app.$forceUpdate();
-  
-  },
-  
-  add_with_image_set_warehouse(set, all) {
-  
-  var photo = "";
-  var photo2 = "";
-  var photo3 = "";
-  
-  var price = "";
-  var list = "";
-  
-  var srp = 0;
-  
-  let _this = this;
-  
-  let item_product = this.shallowCopy(
-  set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
-  )
-  
-  if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
-  alert('Please choose an option for each attribute');
-  return;
-  }
-  
-  if(item_product.id != undefined)
-  {
-  if(item_product.photo != "")
-  photo = item_product.photo;
-  
-  photo2 = set.photo2;
-  photo3 = set.photo3;
-  
-  // price = Number(item_product.price) != 0 ? Number(item_product.price) : Number(item_product.quoted_price);
-  price = Number(item_product.quoted_price) != 0 ? Number(item_product.quoted_price) : Number(item_product.price);
-  srp =  Number(item_product.price);
-  if(set.v1 != "")
-  list += (item_product.k1 + ': ' + item_product.v1) + "\n";
-  if(set.v2 != "")
-  list += (item_product.k2 + ': ' + item_product.v2) + "\n";
-  if(set.v3 != "")
-  list += (item_product.k3 + ': ' + item_product.v3) + "\n";
-  if(set.v4 != "")
-  list += (item_product.k4 + ': ' + item_product.v4) + "\n";
-  }
-  else
-  {
-  photo = set.photo1;
-  photo2 = set.photo2;
-  photo3 = set.photo3;
-  // price = set.price_org !== null ? set.price_org : set.quoted_price_org;
-  price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
-  srp = Number(set.price_org);
-  list = "";
-  }
-  
-  if(all == 'all')
-  {
-  list = "";
-  var k1, k2, k3;
-  k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
-  k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
-  k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
-  k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
-  
-  if(k1 !== '')
-  list += set.variation1 === "custom" ? set.variation1_custom + ': ' + set.variation1_value.join(', ') + "\n" : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
-  if(k2 !== '')
-  list += set.variation2 === "custom" ? set.variation2_custom + ': ' + set.variation2_value.join(', ') + "\n" : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
-  if(k3 !== '')
-  list += set.variation3 === "custom" ? set.variation3_custom + ': ' + set.variation3_value.join(', ') + "\n" : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
-  if(k4 !== '')
-  list += set.variation4 === "custom" ? set.variation4_custom + ': ' + set.variation4_value.join(', ') + "\n" : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
-  
-  photo = set.photo1;
-  photo2 = set.photo2;
-  photo3 = set.photo3;
-  
-  if(set.srp !== null || set.srp_quoted !== null)
-  price = set.srp_quoted !== null ? set.srp_quoted : set.srp;
-  
-  srp = set.srp;
-  //price = set.srp !== null ? set.srp : set.srp_quoted;
-  
-  if(price == null)
-  //price = set.price_org !== null ? set.price_org : set.quoted_price_org;
-  price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
-  
-  }
-  
-  for(var i=0; i<set.specification.length; i++)
-  {
-  if(set.specification[i].k1 !== '')
-  list += set.specification[i].k1 + ': ' + set.specification[i].v1 + "\n";
-  if(set.specification[i].k2 !== '')
-  list += set.specification[i].k2 + ': ' + set.specification[i].v2 + "\n";
-  }
-  
-  // add phased out information
-  if((set.phased_out_cnt > 0 && set.phased == 1) || (set.phased_out_cnt > 0 && all == 'all'))
-  {
-  // if string or is string array
-  if(typeof set.phased_out_text === 'string' || set.phased_out_text instanceof String)
-  {
-  list += "\n";
-  list += "Phased-out Variants:\n";
-  list += set.phased_out_text.split("<br/>").join("\n");
-  }
-  else if(Array.isArray(set.phased_out_text))
-  {
-  for(var i=0; i<set.phased_out_text.length; i++)
-  {
-  list += "\n";
-  list += "Phased-out Variants:\n";
-  list += set.phased_out_text[i].split("<br/>").join("\n");
-  }
-  }
-  else
-  {
-  list += "\n";
-  list += "Phased-out Variants:\n";
-  list += set.phased_out_text.split("<br/>").join("\n");
-  }
-  
-  }
-  
-  if(price == null)
-  price = set.srp_quoted !== 0 ?  set.srp_quoted : set.srp;
-  // price = set.srp !== 0 ?  set.srp : set.srp_quoted;
-  
-  if(srp == null)
-  srp = 0;
-  
-  
-  var sn = 0;
-  
-  for (let i = 0; i < this.received_items.items.length; i++) {
-  if (this.received_items.items[i].id * 1> sn) {
-    sn = this.received_items.items[i].id * 1;
-  }
-  }
-  sn = sn * 1 + 1;
-  
-  list.replace(/\n+$/, "");
-  sn = sn + 1;
-  
-  item = {
-  is_checked:false,
-  is_edit: false,
-  id: sn,
-  sn: sn,
-  confirm: "A",
-          confirm_text: "Approved",
-  brand:set.brand,
-  brand_other:"",
-  photo1:photo != '' ? this.img_url + photo : '',
-  photo2:set.photo2 != '' ? this.img_url + set.photo2 : '',
-  photo3:set.photo3 != '' ? this.img_url + set.photo3 : '',
-  code:set.code,
-  brief:list,
-  listing:"",
-  qty:set.qty,
-  backup_qty:"",
-  unit:"",
-  srp:price,
-  date_needed:"",
-  pid: set.id,
-  status:0,
-  shipping_way:"",
-  shipping_number:"",
-  notes:[],
-  v1: all == 'all' ? '' : set.v1,
-  v2: all == 'all' ? '' : set.v2,
-  v3: all == 'all' ? '' : set.v3,
-  v4: all == 'all' ? '' : set.v4,
-  btn2:"1",
-  
-  photo4: "",
-  photo5: "",
-  
-  receive_date: new Date().toISOString().slice(0, 10),
-  which_pool: "Project Pool",
-  as_sample: "Yes",
-  location: "Caloocan",
-  project_list: [],
-  project_id: this.project_id,
-  project_name: this.project_name,
-  desc:"",
-  incoming_qty: set.incoming_qty !== null ? set.incoming_qty : 0,
-  };
-  
-  this.received_items.items.push(item);
-  alert('Add Successfully');
-  app.$forceUpdate();
-  
-  },
-  
-  add_without_image_set_warehouse(set, all) {
-  
-  var photo = "";
-  var price = "";
-  var list = "";
-  
-  var srp = 0;
-  
-  let _this = this;
-  
-  let item_product = this.shallowCopy(
-  set.product.find((element) => element.v1 == set.v1 && element.v2 == set.v2 && element.v3 == set.v3 && element.v4 == set.v4)
-  )
-  
-  if(set.product.length > 0 && item_product.id == undefined && all != 'all') {
-  alert('Please choose an option for each attribute');
-  return;
-  }
-  
-  if(item_product.id != undefined)
-  {
-  if(item_product.photo != "")
-  photo = item_product.photo;
-  //price = Number(item_product.price) != 0 ? Number(item_product.price) : Number(item_product.quoted_price);
-  price = Number(item_product.quoted_price) != 0 ? Number(item_product.quoted_price) : Number(item_product.price);
-  srp =  Number(item_product.price);
-  if(set.v1 != "")
-  list += (item_product.k1 + ': ' + item_product.v1) + "\n";
-  if(set.v2 != "")
-  list += (item_product.k2 + ': ' + item_product.v2) + "\n";
-  if(set.v3 != "")
-  list += (item_product.k3 + ': ' + item_product.v3) + "\n";
-  if(set.v4 != "")
-  list += (item_product.k4 + ': ' + item_product.v4) + "\n";
-  }
-  else
-  {
-  photo = set.photo1;
-  //price = set.price_org !== null ? set.price_org : set.quoted_price_org;
-  price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
-  srp = Number(set.price_org);
-  list = "";
-  }
-  
-  if(all == 'all')
-  {
-  list = "";
-  var k1, k2, k3;
-  k1 = set.variation1 === "custom" ? set.variation1_custom : set.variation1;
-  k2 = set.variation2 === "custom" ? set.variation2_custom : set.variation2;
-  k3 = set.variation3 === "custom" ? set.variation3_custom : set.variation3;
-  k4 = set.variation4 === "custom" ? set.variation4_custom : set.variation4;
-  
-  if(k1 !== '')
-  list += set.variation1 === "custom" ? set.variation1_custom + ': ' + set.variation1_value.join(', ') + "\n" : set.variation1 + ': ' + set.variation1_value.join(', ') + "\n";
-  if(k2 !== '')
-  list += set.variation2 === "custom" ? set.variation2_custom + ': ' + set.variation2_value.join(', ') + "\n" : set.variation2 + ': ' + set.variation2_value.join(', ') + "\n";
-  if(k3 !== '')
-  list += set.variation3 === "custom" ? set.variation3_custom + ': ' + set.variation3_value.join(', ') + "\n" : set.variation3 + ': ' + set.variation3_value.join(', ') + "\n";
-  if(k4 !== '')
-  list += set.variation4 === "custom" ? set.variation4_custom + ': ' + set.variation4_value.join(', ') + "\n" : set.variation4 + ': ' + set.variation4_value.join(', ') + "\n";
-  
-  photo = set.photo1;
-  
-  if(set.srp !== null || set.srp_quoted !== null)
-  price = set.srp_quoted !== null ? set.srp_quoted : set.srp;
-  
-  //price = set.srp !== null ? set.srp : set.srp_quoted;
-  
-  if(price == null)
-  //price = set.price_org !== null ? set.price_org : set.quoted_price_org;
-  price = set.quoted_price_org !== null ? set.quoted_price_org : set.price_org;
-  
-  
-  srp = set.srp;
-  }
-  
-  if(price == null)
-  price = set.srp_quoted !== 0 ?  set.srp_quoted : set.srp;
-  //price = set.srp !== 0 ?  set.srp : set.srp_quoted;
-  
-  if(srp == null)
-  srp = 0;
-  
-  for(var i=0; i<set.specification.length; i++)
-  {
-  if(set.specification[i].k1 !== '')
-  list += set.specification[i].k1 + ': ' + set.specification[i].v1 + "\n";
-  if(set.specification[i].k2 !== '')
-  list += set.specification[i].k2 + ': ' + set.specification[i].v2 + "\n";
-  }
-  
-  // add phased out information
-  if((set.phased_out_cnt > 0 && set.phased == 1) || (set.phased_out_cnt > 0 && all == 'all'))
-  {
-  // if string or is string array
-  if(typeof set.phased_out_text === 'string' || set.phased_out_text instanceof String)
-  {
-  list += "\n";
-  list += "Phased-out Variants:\n";
-  list += set.phased_out_text.split("<br/>").join("\n");
-  }
-  else if(Array.isArray(set.phased_out_text))
-  {
-  for(var i=0; i<set.phased_out_text.length; i++)
-  {
-  list += "\n";
-  list += "Phased-out Variants:\n";
-  list += set.phased_out_text[i].split("<br/>").join("\n");
-  }
-  }
-  else
-  {
-  list += "\n";
-  list += "Phased-out Variants:\n";
-  list += set.phased_out_text.split("<br/>").join("\n");
-  }
-  }
-  
-  list.replace(/\n+$/, "");
-  
-  var sn = 0;
-  
-  for (let i = 0; i < this.received_items.items.length; i++) {
-  if (this.received_items.items[i].id * 1 > sn) {
-  sn = this.received_items.items[i].id * 1;
-  }
-  }
-  
-  sn = sn * 1 + 1;
-  
-  item = {
-  is_checked:false,
-  is_edit: false,
-  id: sn,
-  sn: sn,
-  confirm: "A",
-        confirm_text: "Approved",
-  brand:set.brand,
-  brand_other:"",
-  photo1:'',
-  photo2:'',
-  photo3:'',
-  code:set.code,
-  brief:list,
-  listing:"",
-  qty:set.qty,
-  backup_qty:"",
-  unit:"",
-  srp:price,
-  date_needed:"",
-  pid: set.id,
-  v1: all == 'all' ? '' : set.v1,
-  v2: all == 'all' ? '' : set.v2,
-  v3: all == 'all' ? '' : set.v3,
-  v4: all == 'all' ? '' : set.v4,
-  shipping_way:"",
-  shipping_number:"",
-  status:0,
-  notes:[],
-  btn2:"1",
-  
-  photo4: "",
-  photo5: "",
-  
-  receive_date: new Date().toISOString().slice(0, 10),
-  which_pool: "Project Pool",
-  as_sample: "Yes",
-  location: "Caloocan",
-  project_list: [],
-  project_id: this.project_id,
-  project_name: this.project_name,
-  desc:"",
-  pid:0,
-  incoming_qty: set.incoming_qty !== null ? set.incoming_qty : 0,
-  };
-  
-  this.received_items.items.push(item);
-  alert('Add Successfully');
-  app.$forceUpdate();
-  
-  },
     }
   
   });
