@@ -675,7 +675,7 @@ var app = new Vue({
           var mapForm = document.createElement("form");
           mapForm.target = "Map";
           mapForm.method = "POST"; // or "post" if appropriate
-          mapForm.action = "label_printing";
+          mapForm.action = "./label_printing";
 
           var mapInput = document.createElement("input");
           mapInput.type = "text";
