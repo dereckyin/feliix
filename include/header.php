@@ -388,6 +388,9 @@ try {
             <li class="sec03">
                 <a class="uni">Inventory<br>Management</a>
                 <a class="list" href="transmittal_mgt">Transmittal Management</a>
+                <a class="list" href="old_inventory_register">Registry and Tracking Code for Old Inventory</a>
+                <a class="list" href="inventory_modify_mgt">Inventory Modification Management</a>
+                <a class="list" href="tracking_item_query">Query of Tracking Code</a>
                 <?=($office_inventory_approver_releaser == true) ? '<a class="list" href="office_item_inventory_check_mgt">Office Items Inventory Management</a>' : '' ?>
             </li>
 

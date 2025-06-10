@@ -5207,6 +5207,8 @@ header( 'location:index' );
                 <div class="btnbox">
                     <a class="btn small" @click="close_barcode_printing()">Cancel</a>
                     <a class="btn small" @click="void_barcode_selected()">Void Barcode</a>
+                    <a class="btn small" @click="deselect_all()">Deselect All</a>
+                    <a class="btn small green" @click="select_all()">Select All</a>
                     <a class="btn small green" @click="print_barcode()">Print Label</a>
                 </div>
             </div>

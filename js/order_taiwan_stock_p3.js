@@ -617,6 +617,18 @@ var app = new Vue({
 
       },
 
+      select_all() {
+        for (let i = 0; i < this.barcode_list.length; i++) {
+          this.barcode_list[i].is_checked = 1;
+        }
+      },
+
+      deselect_all() {
+        for (let i = 0; i < this.barcode_list.length; i++) {
+          this.barcode_list[i].is_checked = 0;
+        }
+      },
+
       void_barcode_selected: async function() {
 
         var list = this.barcode_list.filter((item) => item.is_checked == 1);
@@ -676,7 +688,10 @@ var app = new Vue({
             if(res.length > 0) 
               _this.barcode_total = response.data[0].cnt;
             else
+            {
+              _this.close_barcode_printing();
               _this.barcode_total = 0;
+            }
 
             _this.setPagesBarcode();
             _this.paginateBarcode(_this.barcode_list);

@@ -195,6 +195,10 @@ header( 'location:index' );
             padding-top: 6px;
         }
 
+        .list_function .pagenation a {
+            border: 2px solid var(--fth01);
+        }
+
         .list_function .pagenation a:hover {
             color: #FFF;
             background-color: var(--fth01);
@@ -1522,6 +1526,10 @@ header( 'location:index' );
 
         #modal_product_catalog tbody td div.phasedout_variant button:focus {
             outline-color: transparent!important;
+        }
+
+        #modal_product_display select {
+            background-image: url(../images/ui/icon_form_select_arrow_gray.svg);
         }
 
         #tb_product_list ul li:nth-of-type(1) span.phasedout_replacement {
