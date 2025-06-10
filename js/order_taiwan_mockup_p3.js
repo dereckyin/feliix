@@ -629,14 +629,14 @@ var app = new Vue({
 
           document.body.appendChild(mapForm);
 
-          map = window.open("label_printing", "_blank");
+          // map = window.open("label_printing", "_blank");
 
-          setTimeout(function (){
-            }, 1000);
+          // setTimeout(function (){
+          //   }, 1000);
 
-          if (map) {
+          // if (map) {
               mapForm.submit();
-          } 
+          // } 
         }
 
       },
