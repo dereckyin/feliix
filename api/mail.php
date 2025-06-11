@@ -1117,13 +1117,11 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
     if($special == ""){
         $mail->AddAddress('glen@feliix.com', 'Glendon Wendell Co');
 	$mail->AddCC('kuan@feliix.com', 'Kuan');
-	$mail->AddCC('kristel@feliix.com', 'Kristel Tan');
     }
 
     // Project Type = X-Deal and Kind = 0 or 1
     if($special == "s" && ($kind == 0 || $kind == 1)){
         $mail->AddAddress('kuan@feliix.com', 'Kuan');
-	$mail->AddCC('kristel@feliix.com', 'Kristel Tan');
 	$mail->AddCC('glen@feliix.com', 'Glendon Wendell Co');
     }
 
@@ -1131,7 +1129,6 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
     if($special == "s" && $kind == 2){
         $mail->AddAddress('glen@feliix.com', 'Glendon Wendell Co');
 	$mail->AddCC('kuan@feliix.com', 'Kuan');
-	$mail->AddCC('kristel@feliix.com', 'Kristel Tan');
     }
 
     // Project Type = No DP and Kind = 0 and Amount <= 10萬
@@ -1139,13 +1136,11 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
         $mail->AddAddress('manilynne@feliix.com', 'Manilynne Nicol');
         $mail->AddCC('kuan@feliix.com', 'Kuan');
         $mail->AddCC('glen@feliix.com', 'Glendon Wendell Co');
-        $mail->AddCC('kristel@feliix.com', 'Kristel Tan');
     }
 
     // Project Type = No DP and Kind = 0 and Amount > 10萬
     if($special == "sn" && $kind == 0 && $final_amount > 100000){
         $mail->AddAddress('kuan@feliix.com', 'Kuan');
-	$mail->AddCC('kristel@feliix.com', 'Kristel Tan');
 	$mail->AddCC('glen@feliix.com', 'Glendon Wendell Co');
     }
 
@@ -1153,14 +1148,12 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
         if($special == "sn" && ($kind == 1 || $kind == 2) && $final_amount <= 100000){
         $mail->AddAddress('glen@feliix.com', 'Glendon Wendell Co');
 	$mail->AddCC('kuan@feliix.com', 'Kuan');
-	$mail->AddCC('kristel@feliix.com', 'Kristel Tan');
     }
 
     // Project Type = No DP and Kind = 1 or 2 and Amount > 10萬
     if($special == "sn" && ($kind == 1 || $kind == 2) && $final_amount > 100000){
         $mail->AddAddress('glen@feliix.com', 'Glendon Wendell Co');
 	$mail->AddCC('kuan@feliix.com', 'Kuan');
-	$mail->AddCC('kristel@feliix.com', 'Kristel Tan');
     }
 
 
@@ -1185,8 +1178,6 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
         //$mail->AddCC('edneil@feliix.com', 'Edneil Fernandez');
     //if($category == '2' && ($kind == 0 || $kind == 1))
         //$mail->AddCC('aiza@feliix.com', 'Aiza Eisma');
-
-    $mail->AddCC('dennis@feliix.com', 'Dennis Lin');
 
     $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
     $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
@@ -1366,14 +1357,12 @@ function send_pay_notify_mail($name, $email1,  $leaver, $projectname, $remark, $
     if($category == '1')
         $mail->AddAddress('johmar@feliix.com', 'Johmar Maximo');
 
-    //if($category == '2')
-        //$mail->AddAddress('nestor@feliix.com', 'Nestor Rosales');
+    if($category == '2')
+        $mail->AddAddress('jack@feliix.com', 'Jack Beringuela');
 
     $mail->AddCC('kuan@feliix.com', 'Kuan');
-    $mail->AddCC('kristel@feliix.com', 'Kristel Tan');
     $mail->AddCC($email1, $name);
 
-    $mail->AddCC('dennis@feliix.com', 'Dennis Lin');
 
     $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
     $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
@@ -4041,7 +4030,8 @@ function batch_date_start_company_notify_mail($user_array)
 
     $mail->IsHTML(true);
 
-    $mail->AddAddress("dennis@feliix.com", "Dennis");
+    $mail->AddAddress("anita@feliix.com", "Anita Liu");
+    $mail->AddAddress("dennis@feliix.com", "Dennis Lin");
 
     $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
     $mail->AddReplyTo("feliix.it@gmail.com", "Feliix.System");
@@ -7557,9 +7547,7 @@ function send_pay_reminder_mail_new($name, $email1,  $leaver, $projectname, $rem
 
     if($special == "")
     {
-        $mail->AddCC('kristel@feliix.com', 'Kristel Tan');
         $mail->AddCC($email1, $name);
-        $mail->AddCC('dennis@feliix.com', 'Dennis Lin');
     }
 
     $mail->SetFrom("feliix.it@gmail.com", "Feliix.System");
