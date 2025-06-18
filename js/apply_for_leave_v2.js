@@ -83,12 +83,12 @@ var app = new Vue({
     apply_end () {
 
       //this.setPeriod();
-      this.getUserPeriod();
+      this.getUserPeriodManager();
     },
 
     apply_start () {
       //this.setPeriod();
-      this.getUserPeriod();
+      this.getUserPeriodManager();
     },
 
     leave_type (){
@@ -548,6 +548,98 @@ let _this = this;
         'Content-Type': 'multipart/form-data',
       },
       url: 'api/leave_caculate_v2',
+      data: form_Data
+    })
+    .then(function(response) {
+            //handle success
+            _this.period = response.data.period;
+            _this.sil_consume = response.data.sil_consume;
+            _this.vlsl_consume = response.data.vl_sl_consume;
+            _this.vl_consume = response.data.vl_consume;
+            _this.sl_consume = response.data.sl_consume;
+            _this.halfday_consume = response.data.halfday_consume;
+
+            _this.message = response.data.message;
+          })
+    .catch(function(response) {
+            //handle error
+            _this.period = 0;
+            Swal.fire({
+              text: JSON.stringify(response.data.message),
+              icon: 'warning',
+              confirmButtonText: 'OK'
+            })
+          });
+  },
+
+  getUserPeriodManager: function() {
+    if (this.apply_start === undefined || this.apply_end === undefined)
+      return;
+
+    if (this.apply_start === '' || this.apply_end === '')
+      return;
+
+    if(this.leave_type == "")
+      return;
+
+    if(this.apply_start > this.apply_end)
+    {
+      Swal.fire({
+        text: JSON.stringify("Apply time no valid."),
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      })
+      return;
+    }
+
+    this.apply_start = this.normalize(this.apply_start);
+    this.apply_end = this.normalize(this.apply_end);
+
+    if(this.apply_start === this.apply_end)
+    {
+      this.period = 0;
+      return;
+    }
+
+    // 取得日期和時間
+    var timeStart = this.apply_start.slice(0, 10);
+    var timeEnd = this.apply_end.slice(0, 10);
+    
+    // 取得小時
+    var startHour = this.apply_start.slice(11, 13); // 取得 HH
+    var endHour = this.apply_end.slice(11, 13);     // 取得 HH
+
+    // 如果是半天假，需要特別處理
+    if(this.leave_level == 'B' || this.leave_level == 'C' || this.leave_type == 'H')
+    {
+      // // 如果是上午，結束時間設為 12:00
+      // if(this.IsAm(this.apply_start, true) === 'A') {
+      //   endHour = '12';
+      // }
+      // // 如果是下午，開始時間設為 13:00
+      // else {
+      //   startHour = '13';
+      // }
+    }
+
+    var token = localStorage.getItem('token');
+    var form_Data = new FormData();
+    let _this = this;
+
+    form_Data.append('jwt', token);
+    form_Data.append('is_manager', this.is_manager);
+    form_Data.append('timeStart', timeStart);
+    form_Data.append('timeEnd', timeEnd);
+    form_Data.append('startHour', startHour);
+    form_Data.append('endHour', endHour);
+    form_Data.append('leave_type', this.leave_type);
+
+    axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      url: 'api/leave_caculate_v3',
       data: form_Data
     })
     .then(function(response) {

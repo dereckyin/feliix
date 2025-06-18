@@ -287,6 +287,8 @@ var app = new Vue({
         fil_keyword: "",
         fil_category: "",
 
+        categorys : {},
+
         special_infomation: [],
         special_infomation_detail: [],
         attributes:[],
@@ -358,6 +360,7 @@ var app = new Vue({
         last_have_spec : true,
         cost_lighting : false,
         cost_furniture : false,
+
     },
   
     created() {
@@ -394,6 +397,7 @@ var app = new Vue({
 
       this.getAccess();
       this.getProductControl();
+      this.getProjectCategorys();
     },
   
     computed: {
@@ -559,6 +563,28 @@ var app = new Vue({
     },
   
     methods: {
+      
+    getProjectCategorys () {
+
+          let _this = this;
+    
+          let token = localStorage.getItem('accessToken');
+    
+          axios
+              .get('api/admin/project_category', { headers: {"Authorization" : `Bearer ${token}`} })
+              .then(
+              (res) => {
+                  _this.categorys = res.data;
+              },
+              (err) => {
+                  alert(err.response);
+              },
+              )
+              .finally(() => {
+                  
+              });
+      },
+
       getProductControl: function() {
         var token = localStorage.getItem('token');
         var form_Data = new FormData();

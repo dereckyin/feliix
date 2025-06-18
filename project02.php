@@ -262,6 +262,19 @@ header('location:index');
             background-image: url(../images/ui/icon_form_select_arrow_blue.svg);
         }
 
+        .tablebox.lv2a.b-3 li i.new_priority {
+            font-size: 16px;
+            color: black;
+            font-style: normal;
+        }
+
+        .tablebox.lv2a.b-3 li i.new_priority > img {
+            width: 20px;
+            height: 20px;
+            margin-left: 4px;
+            vertical-align: -2px;
+        }
+
         .list_function .info_btnbox {
             display: inline-block;
             width: 40px;
@@ -1314,7 +1327,16 @@ header('location:index');
                         <li>Scope of Works</li>
                     </ul>
                     <ul>
-                        <li>{{ priority }}</li>
+                        <li>
+                            <i v-if="priority == 'A'" class="new_priority">A <img src="images/ui/priority_A.png"/></i>
+                            <i v-if="priority == 'B'" class="new_priority">B <img src="images/ui/priority_B.png"/></i>
+                            <i v-if="priority == 'C'" class="new_priority">C <img src="images/ui/priority_C.png"/></i>
+                            <i v-if="priority == 'D'" class="new_priority">D <img src="images/ui/priority_D.png"/></i>
+
+                            <template v-if="priority.length > 1">
+                            {{ priority }}
+                            </template>
+                        </li>
                         <li>{{ type }}</li>
                         <li>{{ (scope == 'Other' ? 'Other : ' + scope_other : scope) }}</li>
                     </ul>

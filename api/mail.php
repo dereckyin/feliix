@@ -1,5 +1,5 @@
 <?php
- error_reporting(0);
+error_reporting(0);
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -117,7 +117,7 @@ function sendGridMail($name, $email1,  $leaver, $projectname, $remark)
         return true;
 
     } catch (Exception $e) {
-        logMail($email1, $e->ErrorInfo);
+        logMail($email1, $e->getMessage());
         return false;
     }
 }
@@ -879,11 +879,11 @@ function send_check_notify_mail_new($name, $email1, $projectname, $remark, $subt
                                 </eng>
                             </td>
                         <td style="background-color: #FDB72F44; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
-    if($category == '1')
-        $content = $content . " " . "Office Systems" . " ";
-    else
-        $content = $content . " " . "Lighting" . " ";
-    //$content = $content . " " . $category == '1' ? "Office Systems" : "Lighting" . " ";
+    $prj_category = GetProjectCategoryById($category);
+    // if($category == '1')
+    //     $content = $content . " " . "Office Systems" . " ";
+    // else
+        $content = $content . " " . $prj_category . " ";
     $content = $content . '</td>
                         </tr>
                         <tr>
@@ -1257,10 +1257,11 @@ function send_pay_notify_mail_new($name, $email1,  $leaver, $projectname, $remar
                             </td>
                         <td style="background-color: #C3F69D99; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
     //$content = $content . " " . $category == '1' ? "Office Systems" : "Lighting" . " ";
-    if($category == '1')
-        $content = $content . " " . "Office Systems" . " ";
-    else
-        $content = $content . " " . "Lighting" . " ";
+    $prj_category = GetProjectCategoryById($category);
+    // if($category == '1')
+    //     $content = $content . " " . "Office Systems" . " ";
+    // else
+        $content = $content . " " . $prj_category . " ";
     $content = $content . '</td>
                         </tr>
                         <tr>
@@ -7623,10 +7624,12 @@ function send_pay_reminder_mail_new($name, $email1,  $leaver, $projectname, $rem
                             </td>
                         <td style="background-color: #C3F69D99; border: 2px solid #FFFFFF; padding: 8px; width: 440px; font-size: 16px;">';
     //$content = $content . " " . $category == '1' ? "Office Systems" : "Lighting" . " ";
-    if($category == '1')
-        $content = $content . " " . "Office Systems" . " ";
-    else
-        $content = $content . " " . "Lighting" . " ";
+    $prj_category = GetProjectCategoryById($category);
+    // if($category == '1')
+    //     $content = $content . " " . $prj_category . " ";
+    // else
+    $content = $content . " " . $prj_category . " ";
+
     $content = $content . '</td>
                         </tr>
                         <tr>
@@ -14569,7 +14572,7 @@ function tag_notification($name, $user_id, $tag_group, $items)
 
     //cc收件人名單
     // 異動者(也就是點擊 Save 按鈕的人) 放入 cc收件人名單名字
-    $notifior = GetNotifiers($_record["create_id"]);
+    $notifior = GetNotifiers($user_id);
     foreach($notifior as &$list)
     {
         $mail->AddCC($list["email"], $list["username"]);
@@ -15591,12 +15594,12 @@ if( $action == "delete")
 
     $mail->MsgHTML($content);
     if($mail->Send()) {
-        logMail($email1, $content);
+        logMail($mail, $content);
         return true;
 //        echo "Error while sending Email.";
 //        var_dump($mail);
     } else {
-        logMail($email1, $mail->ErrorInfo . $content);
+        logMail($mail, $mail->ErrorInfo . $content);
         return false;
 //        echo "Email sent successfully";
     }
@@ -15658,7 +15661,7 @@ function GetProject01NotifiersByCatagory($catagory)
     $database = new Database();
     $db = $database->getConnection();
 
-    if($catagory == 'Office Systems')
+    if(str_starts_with($catagory,'Office'))
     {
         $sql = "
             SELECT username, email, title 
@@ -15704,7 +15707,7 @@ function GetProjectNotifiersByCatagory($catagory)
     $database = new Database();
     $db = $database->getConnection();
 
-    if($catagory == 'Office Systems')
+    if(str_starts_with($catagory,'Office'))
     {
         $sql = "
             SELECT username, email, title 
@@ -17002,6 +17005,30 @@ function _rawurlencode($string) {
     $string = rawurlencode($string);
         return $string;
 }
+
+function GetProjectCategoryById($id)
+{
+    $database = new Database();
+    $db = $database->getConnection();
+
+    // get department and position from user
+    $sql = "SELECT category FROM project_category WHERE id = :id";
+
+    // prepare the query
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id',  $id);
+    $stmt->execute();
+
+    $project_category = "";
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $project_category = $row['category'];
+    }
+
+    return $project_category;
+}
+
+
 
 function SetupMail($mail, $conf)
 {

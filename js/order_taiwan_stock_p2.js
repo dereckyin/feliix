@@ -301,6 +301,8 @@ var app = new Vue({
 
         cost_lighting : false,
         cost_furniture : false,
+
+        categorys : {},
     },
   
     created() {
@@ -361,7 +363,7 @@ var app = new Vue({
       this.getOdMain();
       this.getTagGroup();
       this.getProductControl();
-
+      this.getProjectCategorys();
     },
   
     computed: {
@@ -406,6 +408,27 @@ var app = new Vue({
     },
   
     methods: {
+      getProjectCategorys () {
+
+          let _this = this;
+    
+          let token = localStorage.getItem('accessToken');
+    
+          axios
+              .get('api/admin/project_category', { headers: {"Authorization" : `Bearer ${token}`} })
+              .then(
+              (res) => {
+                  _this.categorys = res.data;
+              },
+              (err) => {
+                  alert(err.response);
+              },
+              )
+              .finally(() => {
+                  
+              });
+      },
+      
       getProductControl: function() {
         var token = localStorage.getItem('token');
         var form_Data = new FormData();

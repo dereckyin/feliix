@@ -487,6 +487,8 @@ var app = new Vue({
         barcode_pages_10:0,
 
         item_id: 0,
+
+        categorys : {},
     },
   
     created() {
@@ -549,6 +551,8 @@ var app = new Vue({
       this.getTagGroup();
       this.getProductControl();
       this.getProjects();
+
+      this.getProjectCategorys();
     },
   
     computed: {
@@ -599,6 +603,26 @@ var app = new Vue({
     },
   
     methods: {
+      getProjectCategorys () {
+
+          let _this = this;
+    
+          let token = localStorage.getItem('accessToken');
+    
+          axios
+              .get('api/admin/project_category', { headers: {"Authorization" : `Bearer ${token}`} })
+              .then(
+              (res) => {
+                  _this.categorys = res.data;
+              },
+              (err) => {
+                  alert(err.response);
+              },
+              )
+              .finally(() => {
+                  
+              });
+      },
 
       print_barcode: function() {
 

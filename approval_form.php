@@ -3221,7 +3221,7 @@ header( 'location:index' );
 
                 <div class="right_block">
 
-                    <div class="af_category">{{ project_category == 'Lighting' ? 'FIXTURE' : (project_category == 'Office Systems' ? 'FURNITURE' : '' ) }} APPROVAL FORM</div>
+                    <div class="af_category">{{ project_category.startsWith('Lighting') ? 'FIXTURE' : (project_category.startsWith('Office') ? 'FURNITURE' : '' ) }} APPROVAL FORM</div>
 
                     <div class="af_qo_po">
                         <table>

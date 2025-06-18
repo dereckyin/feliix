@@ -248,6 +248,7 @@ var app = new Vue({
         fil_keyword: '',
         fil_category: '',
 
+        categorys : {},
         users: [],
         creators: [],
 
@@ -358,6 +359,7 @@ var app = new Vue({
       this.get_product_records();
       //this.getQuoMasterRecords();
       this.getRecord();
+      this.getProjectCategorys();
       this.getUserName();
       this.get_brands();
       this.getUsers();
@@ -412,6 +414,27 @@ var app = new Vue({
     },
   
     methods: {
+      getProjectCategorys () {
+
+          let _this = this;
+    
+          let token = localStorage.getItem('accessToken');
+    
+          axios
+              .get('api/admin/project_category', { headers: {"Authorization" : `Bearer ${token}`} })
+              .then(
+              (res) => {
+                  _this.categorys = res.data;
+              },
+              (err) => {
+                  alert(err.response);
+              },
+              )
+              .finally(() => {
+                  
+              });
+      },
+
       getProductControl: function() {
         var token = localStorage.getItem('token');
         var form_Data = new FormData();

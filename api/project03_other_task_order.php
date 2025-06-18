@@ -125,10 +125,10 @@ switch ($method) {
         $serial = $stmt->fetchColumn();
         $serial = str_pad($serial, 4, '0', STR_PAD_LEFT);
 
-        if($category == 'Office Systems')
+        if(str_starts_with($category,'Office'))
             $serial = 'OPO-TW-' . $serial;
 
-        if($category == 'Lighting')
+        if(str_starts_with($category, 'Lighting'))
             $serial = 'LPO-TW-' . $serial;
     
 

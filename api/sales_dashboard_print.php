@@ -160,7 +160,7 @@ if($jwt){
                         $i = $i + 1;
                         $sheet->setCellValue('A' . $i, $rp['username']);
                         $sheet->setCellValue('B' . $i, $row['date'] > '2025/01' ? '6,600,000.00' : '2,200,000.00');
-                        $sheet->setCellValue('C' . $i, 'Office Systems');
+                        $sheet->setCellValue('C' . $i, 'Office Space');
                         $sheet->setCellValue('D' . $i, $oow['project_name']);
                         $sheet->setCellValue('E' . $i, number_format((float)$oow['amount'], 2, '.', ''));
                         //$sheet->setCellValue('F' . $i, number_format($quota - (float)$rp['subtotal'], 2, '.', ''));
