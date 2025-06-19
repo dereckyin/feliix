@@ -68,7 +68,7 @@ else
                 }
             }
 
-            $sql = $sql . " ORDER BY id ";
+            $sql = $sql . " ORDER BY sn ";
 
             if(!empty($_GET['size'])) {
                 $size = filter_input(INPUT_GET, 'size', FILTER_VALIDATE_INT);

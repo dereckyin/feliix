@@ -5995,3 +5995,13 @@ INSERT INTO project_status(project_status, sn, created_at, updated_at) VALUES('S
 INSERT INTO project_status(project_status, sn, created_at, updated_at) VALUES('Stage 2', '2',now(), now());
 INSERT INTO project_status(project_status, sn, created_at, updated_at) VALUES('90%', '3',now(), now());
 INSERT INTO project_status(project_status, sn, created_at, updated_at) VALUES('Closed Deal', '4',now(), now());
+
+ALTER TABLE project_category
+ADD COLUMN `sn` varchar(10) DEFAULT '';
+
+update project_category set sn = '1' where id = 2;
+update project_category set sn = '2' where id = 4;
+update project_category set sn = '3' where id = 5;
+update project_category set sn = '4' where id = 1;
+update project_category set sn = '5' where id = 6;
+update project_category set sn = '6' where id = 7;
