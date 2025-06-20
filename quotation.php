@@ -2892,7 +2892,7 @@ header( 'location:index' );
 
 
 
-                <div class="popupblock" v-if="(quotation_control && project_category.startsWith('Office') || !project_category.startsWith('Office') ">
+                <div class="popupblock" v-if="(quotation_control && project_category.startsWith('Office')) || !project_category.startsWith('Office') ">
                     <?php
                 if ($test_manager[0]  == "1")
                 {
