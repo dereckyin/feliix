@@ -1528,6 +1528,7 @@ var app = new Vue({
         alert("error");
       }
 
+      $("#tracking_code").val("");
       return data;
     },
 
@@ -2269,7 +2270,6 @@ var app = new Vue({
         }
       }
 
-      $("#tracking_code").val("");
     },
 
     _cancel_criterion: function() {

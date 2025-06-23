@@ -1425,7 +1425,7 @@ ELEMENT.locale(ELEMENT.lang.en)
                     codeReader.reset();
                     document.getElementById('video_area').style.display = 'none';
                     document.getElementById('tracking_code').value += ";" + result.text;
-                    app.fil_tracking += ";" + result.text;
+                    //app.fil_tracking += ";" + result.text;
                 }
                 
               }
@@ -1454,7 +1454,7 @@ ELEMENT.locale(ELEMENT.lang.en)
                     codeReader.reset();
                     document.getElementById('video_area').style.display = 'none';
                     document.getElementById('tracking_code').value += ";" + result.text;
-                    app.fil_tracking += ";" + result.text;
+                    //app.fil_tracking += ";" + result.text;
                 }
               }
               if (err && !(err instanceof ZXing.NotFoundException)) {
