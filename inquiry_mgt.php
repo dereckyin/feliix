@@ -360,8 +360,9 @@ header( 'location:index' );
                                 <dd>
                                     <select v-model="fil_project_category">
                                         <option value=""></option>
-                                        <option value="2">Lighting</option>
-                                        <option value="1">Office Systems</option>
+                                        <option v-for="item in categorys" :value="item.id" :key="item.category">
+                                            {{ item.category }}
+                                        </option>
                                     </select>
                                 </dd>
 

@@ -2495,7 +2495,7 @@
             </div>
 
             <div class="block fn">
-                <div class="popupblock" v-if="quotation_control && project_category == 'Office Systems'">
+                <div class="popupblock" v-if="quotation_control && project_category.startsWith('Office')">
 
                     <a id="status_fn1" class="fn1" :ref="'a_fn1'" @click="show_access = !show_access">Access</a>
 

@@ -5679,14 +5679,14 @@ CREATE TABLE IF NOT EXISTS quotation_slogan
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---20250306
+-- 20250306
 ALTER TABLE access_control
 ADD COLUMN `for_user` text COLLATE utf8mb4_unicode_ci;
 
 ALTER TABLE access_control
 ADD COLUMN `for_profile` text COLLATE utf8mb4_unicode_ci;
 
---20250307
+-- 20250307
 ALTER TABLE access_control
 ADD COLUMN `product_edit` text COLLATE utf8mb4_unicode_ci;
 
@@ -5968,3 +5968,40 @@ ADD COLUMN `from_old` varchar(10) DEFAULT '';
 ALTER TABLE order_receive_item
 ADD COLUMN `remark_old` JSON;
 
+-- 20250617
+update project_category SET category = 'Office Space' WHERE id = 1;
+INSERT INTO project_category(category, created_at, updated_at) VALUES('Lighting - After-sales Service', now(), now());
+INSERT INTO project_category(category, created_at, updated_at) VALUES('Lighting - Additional Order', now(), now());
+INSERT INTO project_category(category, created_at, updated_at) VALUES('Office Space - After-sales Service', now(), now());
+INSERT INTO project_category(category, created_at, updated_at) VALUES('Office Space - Additional Order', now(), now());
+
+update project_priority set status = -1 where id in(1, 2, 3, 4, 5);
+INSERT INTO project_priority(priority, class_name, created_at, updated_at) VALUES('A', 'priority_A.png', now(), now());
+INSERT INTO project_priority(priority, class_name, created_at, updated_at) VALUES('B', 'priority_B.png', now(), now());
+INSERT INTO project_priority(priority, class_name, created_at, updated_at) VALUES('C', 'priority_C.png', now(), now());
+INSERT INTO project_priority(priority, class_name, created_at, updated_at) VALUES('D', 'priority_D.png', now(), now());
+
+
+ALTER TABLE project_status
+ADD COLUMN `sn` varchar(10) DEFAULT '';
+
+update project_status set status = -1 where id in(1, 2, 3, 4, 7, 8, 10);
+
+update project_status set sn = '5' where id = 5;
+update project_status set sn = '6' where id = 6;
+update project_status set sn = '7' where id = 9;
+
+INSERT INTO project_status(project_status, sn, created_at, updated_at) VALUES('Stage 1', '1', now(), now());
+INSERT INTO project_status(project_status, sn, created_at, updated_at) VALUES('Stage 2', '2',now(), now());
+INSERT INTO project_status(project_status, sn, created_at, updated_at) VALUES('90%', '3',now(), now());
+INSERT INTO project_status(project_status, sn, created_at, updated_at) VALUES('Closed Deal', '4',now(), now());
+
+ALTER TABLE project_category
+ADD COLUMN `sn` varchar(10) DEFAULT '';
+
+update project_category set sn = '1' where id = 2;
+update project_category set sn = '2' where id = 4;
+update project_category set sn = '3' where id = 5;
+update project_category set sn = '4' where id = 1;
+update project_category set sn = '5' where id = 6;
+update project_category set sn = '6' where id = 7;

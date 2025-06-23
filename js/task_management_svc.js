@@ -129,6 +129,8 @@ var app = new Vue({
     fileArray_i: [],
     editfileArray_i: [],
 
+    categorys : {},
+
   },
 
   created() {
@@ -191,6 +193,7 @@ var app = new Vue({
     //_this.getStatuses();
     _this.getCreators();
     _this.getUserName();
+    _this.getProjectCategorys();
   },
 
   computed: {
@@ -422,6 +425,26 @@ var app = new Vue({
   },
 
   methods: {
+  getProjectCategorys () {
+
+          let _this = this;
+    
+          let token = localStorage.getItem('accessToken');
+    
+          axios
+              .get('api/admin/project_category', { headers: {"Authorization" : `Bearer ${token}`} })
+              .then(
+              (res) => {
+                  _this.categorys = res.data;
+              },
+              (err) => {
+                  alert(err.response);
+              },
+              )
+              .finally(() => {
+                  
+              });
+      },
 
     changeEditFile_o() {
       var fileTarget = this.$refs.editfile_o;

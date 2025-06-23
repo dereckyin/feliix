@@ -75,15 +75,33 @@ else
 
         $can_view = "";
         $project_category = "";
-        if($info == 1)  // Office Systems
+        if($info == 1)  // Office Space
         {
             $can_view = "N";
-            $project_category = "Office Systems";
+            $project_category = "Office Space";
+        }
+        if($info == 5)  // Office Space - After-sales Service
+        {
+            $can_view = "N";
+            $project_category = "Office Space - After-sales Service";
+        }
+        if($info == 6)  // Office Space - Additional Order
+        {
+            $can_view = "N";
+            $project_category = "Office Space - Additional Order";
         }
 
         if($info == 2)  // Lighting
         {
             $project_category = "Lighting";
+        }
+        if($info == 3)  // Lighting - After-sales Service
+        {
+            $project_category = "Lighting - After-sales Service";
+        }
+        if($info == 4)  // Lighting - Additional Order
+        {
+            $project_category = "Lighting - Additional Order";
         }
   
         // now you can apply

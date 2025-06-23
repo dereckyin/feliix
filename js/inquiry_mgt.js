@@ -156,6 +156,7 @@ var app = new Vue({
     }
 
     this.getRecords();
+    this.getProjectCategorys();
     this.getAllRecords();
     this.getProjects();
     this.getCreators();
@@ -283,6 +284,26 @@ var app = new Vue({
 
 
   methods:{
+    getProjectCategorys () {
+
+          let _this = this;
+    
+          let token = localStorage.getItem('accessToken');
+    
+          axios
+              .get('api/admin/project_category', { headers: {"Authorization" : `Bearer ${token}`} })
+              .then(
+              (res) => {
+                  _this.categorys = res.data;
+              },
+              (err) => {
+                  alert(err.response);
+              },
+              )
+              .finally(() => {
+                  
+              });
+      },
 
     getProjectGroups () {
 

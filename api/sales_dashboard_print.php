@@ -160,7 +160,7 @@ if($jwt){
                         $i = $i + 1;
                         $sheet->setCellValue('A' . $i, $rp['username']);
                         $sheet->setCellValue('B' . $i, $row['date'] > '2025/01' ? '6,600,000.00' : '2,200,000.00');
-                        $sheet->setCellValue('C' . $i, 'Office Systems');
+                        $sheet->setCellValue('C' . $i, 'Office Space');
                         $sheet->setCellValue('D' . $i, $oow['project_name']);
                         $sheet->setCellValue('E' . $i, number_format((float)$oow['amount'], 2, '.', ''));
                         //$sheet->setCellValue('F' . $i, number_format($quota - (float)$rp['subtotal'], 2, '.', ''));
@@ -264,6 +264,10 @@ function GetMonthSaleReport($PeriodStart, $PeriodEnd, $sale_person, $category, $
                     CASE pm.catagory_id  
                             WHEN 1 THEN 'Office System'
                             WHEN 2 THEN 'Lighting'
+                            WHEN 4 THEN 'Lighting'
+                            WHEN 5 THEN 'Lighting'
+                            WHEN 6 THEN 'Office System'
+                            WHEN 7 THEN 'Office System'
                             ELSE ''  
                         END   catagory,
                     sum(pp.amount) amount

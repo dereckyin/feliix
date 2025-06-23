@@ -110,6 +110,18 @@ $(function(){
 <style>
     .tablebox.lv1 li:nth-of-type(10) a {color:var(--fth01);}
 
+    .tablebox.lv1 li i.new_priority {
+        font-size: 16px;
+        color: black;
+    }
+
+    .tablebox.lv1 li i.new_priority > img {
+        width: 20px;
+        height: 20px;
+        margin-left: 4px;
+        vertical-align: -2px;
+    }
+
     .list_function .new_project {
             margin-top: -15px;
         }
@@ -517,7 +529,14 @@ $(function(){
                  <ul v-for='(receive_record, index) in receive_records'>
                      <li>{{ receive_record.category }}</li>
                      <li><i v-bind:class="receive_record.pct_class">{{ receive_record.client_type }}</i></li>
-                     <li><i v-bind:class="receive_record.pp_class">{{ receive_record.priority }}</i></li>
+                     <li>
+                        <i v-if="receive_record.priority == 'A'" class="new_priority">A <img src="images/ui/priority_A.png"/></i>
+                        <i v-if="receive_record.priority == 'B'" class="new_priority">B <img src="images/ui/priority_B.png"/></i>
+                        <i v-if="receive_record.priority == 'C'" class="new_priority">C <img src="images/ui/priority_C.png"/></i>
+                        <i v-if="receive_record.priority == 'D'" class="new_priority">D <img src="images/ui/priority_D.png"/></i>
+
+                        <i v-if="receive_record.priority.length > 1" v-bind:class="receive_record.pp_class">{{ receive_record.priority }}</i>
+                     </li>
                      <li><a v-bind:href="'project02?p='+ receive_record.id">{{ receive_record.project_name }}<br><span style="color: red">(Reason: {{ receive_record.reason }})</span></a></li>
                      <li>{{ receive_record.project_status }}</li>
                      <li>{{ receive_record.estimate_close_prob }}</li>

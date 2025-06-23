@@ -270,6 +270,10 @@ function GetMonthSaleReport($PeriodStart, $PeriodEnd, $sale_person, $category, $
                 CASE pm.catagory_id  
                         WHEN 1 THEN 'Office System'
                         WHEN 2 THEN 'Lighting'
+                        WHEN 4 THEN 'Lighting'
+                        WHEN 5 THEN 'Lighting'
+                        WHEN 6 THEN 'Office System'
+                        WHEN 7 THEN 'Office System'
                         ELSE ''  
                     END   catagory,
                     COALESCE(ps.project_status, '') project_status, 
