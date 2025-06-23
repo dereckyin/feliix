@@ -258,7 +258,7 @@ var app = new Vue({
 
       await this.add_filtered();
 
-       $("#tracking_code").val("");
+       //$("#tracking_code").val("");
        //this.items = [];
     },
 
@@ -2268,6 +2268,8 @@ var app = new Vue({
           this.items.push(it_records[i]);
         }
       }
+
+      $("#tracking_code").val("");
     },
 
     _cancel_criterion: function() {
