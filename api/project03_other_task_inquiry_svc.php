@@ -128,10 +128,10 @@ switch ($method) {
         $serial = $stmt->fetchColumn();
         $serial = str_pad($serial, 4, '0', STR_PAD_LEFT);
 
-        if(str_starts_with($category,'Office'))
+        if(substr($result[0]["project_category"], 0, 6) == 'Office')
             $serial = 'OI-' . $serial;
 
-        if(str_starts_with($category, 'Lighting'))
+        if(substr($catagory, 0, 8) == 'Lighting')
             $serial = 'LI-' . $serial;
     
         $task_type = 'SVC';

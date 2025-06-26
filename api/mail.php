@@ -15661,7 +15661,7 @@ function GetProject01NotifiersByCatagory($catagory)
     $database = new Database();
     $db = $database->getConnection();
 
-    if(str_starts_with($catagory,'Office'))
+    if(substr($catagory, 0, 6) == 'Office')
     {
         $sql = "
             SELECT username, email, title 
@@ -15707,7 +15707,7 @@ function GetProjectNotifiersByCatagory($catagory)
     $database = new Database();
     $db = $database->getConnection();
 
-    if(str_starts_with($catagory,'Office'))
+    if(substr($catagory, 0, 6) == 'Office')
     {
         $sql = "
             SELECT username, email, title 

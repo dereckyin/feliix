@@ -130,7 +130,8 @@ $query = "INSERT INTO project_edit_stage
                     }
 
                     
-                    if(str_starts_with($result[0]["project_category"], 'Lighting'))
+                    
+                    if(substr($result[0]["project_category"], 0, 8) == 'Lighting')
                         stage_close_notify( $result[0]["project_creator"],  // $project_creator_id, 
                                             $result[0]["project_id"],       // $project_id, 
                                             $result[0]["project_name"],     // $project_name, 
@@ -140,7 +141,7 @@ $query = "INSERT INTO project_edit_stage
                                             $result[0]["stage_created_at"],       // $stage_create_at, 
                                             $title,                         // $title
                                             $result[0]["light_id"]);        // $cc_to                       
-                    if(str_starts_with($result[0]["project_category"],'Office'))
+                    if(substr($result[0]["project_category"], 0, 6) == 'Office')
                         stage_close_notify($result[0]["project_creator"],  // $project_creator_id, 
                                             $result[0]["project_id"],       // $project_id, 
                                             $result[0]["project_name"],     // $project_name, 
