@@ -127,7 +127,7 @@ switch ($method) {
         if(substr($category, 0, 6) == 'Office')
             $serial = 'OI-' . $serial;
 
-        if(substr($catagory, 0, 8) == 'Lighting')
+        if(substr($category, 0, 8) == 'Lighting')
             $serial = 'LI-' . $serial;
     
 
